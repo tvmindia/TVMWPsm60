@@ -1,0 +1,282 @@
+﻿@using PilotSmithApp.DataAccessObject.DTO
+@using PilotSmithApp.UserInterface.Models
+@using PilotSmithApp.UserInterface.App_Start
+<!DOCTYPE html>
+@{ 
+    string sysModuleCode = ViewBag.SysModuleCode;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/png" href=@Url.Content("~/Content/images/wheel.png") />    
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/AdminLTE/css/plugins")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/boot")
+
+    @RenderSection("styles", required: false)
+     
+</head>
+<body class="hold-transition skin-green-light sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a id="ahrefHome" class='button glyphicon glyphicon-equalizer'></a>
+            <a href="@Url.Action("Index", "Home")" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>M ERP</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>Manufacturing</b>ERP</span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-fixed-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <span class="main-header title" >@ViewBag.Title</span>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Messages: style can be found in dropdown.less-->
+                        @*<li class="dropdown messages-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-envelope-o"></i>
+            <span class="label label-success">0</span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">You have 0 messages</li>
+            <li>
+
+            </li>
+
+        </ul>
+    </li> 
+    *@
+    <!-- Notifications: style can be found in dropdown.less -->
+    <li class="dropdown notifications-menu">     
+       <a href="@Url.Action("Index", "Home")" >
+            <i class="fa fa-home" style="font-size:15px"> Home </i>
+        </a>
+    </li>
+    <!-- Tasks: style can be found in dropdown.less -->
+     @*<li class="dropdown tasks-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-flag-o"></i>
+            <span class="label label-danger">0</span>
+        </a>
+    </li>*@
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-user-o" aria-hidden="true" style="font-size:15px"></i>
+                                <span class="hidden-xs"><strong>@User.Identity.Name</strong></span>
+                            </a>
+                            <ul class="dropdown-menu">
+
+                                <!-- Menu Body -->
+                                <li class="user-body">
+                                   @{
+                                       if (Session["AppUA"] != null)
+                                       {
+                                           AppUA _appUA = Session["AppUA"] as AppUA;
+                                        <span>Role : @_appUA.RolesCSV </span>
+                                       }
+
+
+                                }
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-info btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="/Account/Logout" class="btn btn-info btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        @*<li>
+                              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                            </li>*@
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        @Html.Action("_MenuNavBar", "DynamicUI", new { Code = sysModuleCode })
+
+        <!-- Content Wrapper. Contains page content --> 
+        <div class="content-wrapper" style="margin-top:4.6%">
+            <div class="container-fluid">
+                @RenderBody()
+
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong> &copy; @DateTime.Now.Year <a href="http://thrithvam.com">Thrithvam Tehnology</a>.</strong>
+        </footer>
+        <!-- Control Sidebar -->
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+             immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+        </div>
+
+    <!-- Master add/edit Model start-->
+    <div class="modal fade" id="divModelMasterPopUp" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" @*style="overflow-y:hidden !important;"*@>
+        <div class="modal-dialog" role="document" style="min-width:550px !important;max-width:600px !important;">
+            <div class="modal-content">
+                <div class="modal-header" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 36px;padding: 3px;border-bottom:2px solid rgb(40, 45, 51)!important;">
+                    <div class="container-fluid" style="padding-right: 0px;">
+                        <div class="col-md-12">
+                            <h3 class="modal-title SCHeader col-md-10" id="h3ModelMasterContextLabel"></h3>
+                            <a class="close" data-dismiss="modal" aria-label="Close"><i style="font-size:33px;color:rgb(40, 45, 51)!important;" class="fa fa-times-circle" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" style="padding:0" id="divMasterBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Master add/edit Model end -->
+    <!-- PRELOADER -->
+    <div class="spn_hol" id="divLoader">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+    <div class='wrap'>
+        <div class='content'>
+            <div class="container-fluid">
+
+
+                <div class="row" style="margin-top:2%;">
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Purchase</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DynamicUI/UnderConstruction?Code=PURCH&amp;Name=Purchase" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Stores</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DashboardStore?Code=STR&amp;Name=Stores" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Production</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DynamicUI/UnderConstruction?Code=PROD&amp;Name=Production" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Sales</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DynamicUI/UnderConstruction?Code=SALE&amp;Name=Sales" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Accounts</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DynamicUI/UnderConstruction?Code=ACC&amp;Name=Accounts" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Masters</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DynamicUI/UnderConstruction?Code=MSTR&amp;Name=Masters" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Reports</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DynamicUI/UnderConstruction?Code=RPT&amp;Name=Reports" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-8">
+                        <!-- small box -->
+                        <div class="small-box bg-blue-gradient">
+                            <div class="inner">
+                                <h3>⚝</h3>
+                                <p>Settings</p>
+                            </div>
+                            <div class="icon">
+                                <i class=""></i>
+                            </div>
+                            <a href="/DynamicUI/UnderConstruction?Code=SETT&amp;Name=Settings" class="small-box-footer">Dashboard <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>   
+        </div>
+    </div>
+    <!-- END PRELOADER -->
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jquery")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrap")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrapdatepicker")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/AdminLTE")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/userpluginjs")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
