@@ -683,6 +683,20 @@
     <Content Include="Views\Shared\ToolBoxView.cshtml" />
     <Content Include="Views\Shared\_Fileupload.cshtml" />
     <Content Include="Views\Shared\_LayoutPage.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Application\Index.cshtml" />
+    <Content Include="Views\AppObject\Index.cshtml" />
+    <Content Include="Views\AppObject\Subobjects.cshtml" />
+    <Content Include="Views\DynamicUI\_MenuNavBar.cshtml" />
+    <Content Include="Views\DynamicUI\UnderConstruction.cshtml" />
+    <Content Include="Views\ManageAccess\Index.cshtml" />
+    <Content Include="Views\ManageAccess\SubobjectIndex.cshtml" />
+    <Content Include="Views\Privileges\Index.cshtml" />
+    <Content Include="Views\Privileges\PrivilegesView.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\SAMPanel\Index.cshtml" />
+    <Content Include="Views\User\_RoleList.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -694,16 +708,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Application\" />
-    <Folder Include="Views\AppObject\" />
-    <Folder Include="Views\DynamicUI\" />
     <Folder Include="Views\FileUpload\" />
-    <Folder Include="Views\ManageAccess\" />
-    <Folder Include="Views\Privileges\" />
-    <Folder Include="Views\Roles\" />
-    <Folder Include="Views\SAMPanel\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.BusinessService\PilotSmithApp.BusinessService.csproj">
