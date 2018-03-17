@@ -1,17 +1,18 @@
-﻿@model ProductionApp.UserInterface.Models.LoginViewModel
-@using ProductionApp.UserInterface.App_Start
+﻿@model PilotSmithApp.UserInterface.Models.LoginViewModel
+@using PilotSmithApp.UserInterface.App_Start
 @{
     Layout = null;
 }
 @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/boot")
 @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/AdminLTE/css/plugins")
 @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/UserCSS/Login")
-<link rel="shortcut icon" href="~/Content/images/wheel.png" />
+<link rel="shortcut icon" href="~/Content/images/pilotsmithlanding.jpg" />
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
+    <link rel="icon" type="image/png" href=@Url.Content("~/Content/images/logoPS.png") />  
     <style>
         .spn_hol {
             background:#ffffff;
@@ -22,7 +23,7 @@
     <div class="container">
     <br/><br /><br />
         <div class="card card-container">
-            <div style="text-align:center;width:100%;font-size:35px;color: #015E9A;font-family:'Lucida Sans'">
+            <div style="text-align:center;width:100%;font-size:35px;color: #6FE621;font-family:'Lucida Sans'">
             SIGN  IN
             </div>
             <p id="profile-name" class="profile-name-card"></p>
@@ -44,7 +45,7 @@
 
             }
 
-            <a href="#" class="forgot-password">
+            <a href="#" class="forgot-password" style="color:white;">
                 Forgot the password?
             </a>
             <br />

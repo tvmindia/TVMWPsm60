@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PilotSmithApp.UserInterface.Models
 {
-    public class CommonViewModel
+    public class PSASysCommonViewModel
     {
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

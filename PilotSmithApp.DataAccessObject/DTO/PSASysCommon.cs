@@ -6,7 +6,7 @@ using System.Web.SessionState;
 
 namespace PilotSmithApp.DataAccessObject.DTO
 {
-    public class Common
+    public class PSASysCommon
     {
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -168,7 +168,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string FileType { get; set; }
         public string FileSize { get; set; }
         public string AttachmentURL { get; set; }
-        public Common CommonObj { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
     }
 
 }

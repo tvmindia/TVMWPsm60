@@ -17,6 +17,5 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string IconURL { get; set; }
         public string Parameters { get; set; }
         public decimal MenuOrder { get; set; }
-        public PSASysModule AMCSysModuleObj { get; set; }
     }
 }

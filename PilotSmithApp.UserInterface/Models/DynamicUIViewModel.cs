@@ -7,6 +7,6 @@ namespace PilotSmithApp.UserInterface.Models
 {
     public class DynamicUIViewModel
     {
-        public List<AMCSysMenuViewModel> AMCSysMenuViewModelList { get; set; }
+        public List<PSASysMenuViewModel> PSASSysMenuViewModelList { get; set; }
     }
 }

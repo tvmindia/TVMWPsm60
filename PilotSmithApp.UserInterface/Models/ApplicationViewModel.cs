@@ -13,7 +13,6 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Please Enter Application name")]
         [Display(Name = "Application Name")]
         public string Name { get; set; }
-
-        public CommonViewModel commonDetails { get; set; }
+        public PSASysCommonViewModel commonDetails { get; set; }
     }
 }

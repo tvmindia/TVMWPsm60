@@ -21,7 +21,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ApplicationViewModel, SAMTool.DataAccessObject.DTO.Application>().ReverseMap();
                 config.CreateMap<AppObjectViewModel, SAMTool.DataAccessObject.DTO.AppObject>().ReverseMap();
                 config.CreateMap<AppSubobjectViewmodel, SAMTool.DataAccessObject.DTO.AppSubobject>().ReverseMap();
-                config.CreateMap<CommonViewModel, SAMTool.DataAccessObject.DTO.Common>().ReverseMap();
+                config.CreateMap<PSASysCommonViewModel, SAMTool.DataAccessObject.DTO.Common>().ReverseMap();
                 config.CreateMap<ManageAccessViewModel, SAMTool.DataAccessObject.DTO.ManageAccess>().ReverseMap();
                 config.CreateMap<ManageSubObjectAccessViewModel, SAMTool.DataAccessObject.DTO.ManageSubObjectAccess>().ReverseMap();
                 config.CreateMap<PrivilegesViewModel, SAMTool.DataAccessObject.DTO.Privileges>().ReverseMap();
@@ -29,7 +29,7 @@ namespace PilotSmithApp.UserInterface.App_Start
 
                 //****SAMTOOL MODELS END
 
-                //****PilotSmith APP MODELS
+                //****PilotSmithApp APP MODELS
             });
         }
     }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace PilotSmithApp.UserInterface.Models
 {
-    public class AMCSysMenuViewModel
+    public class PSASysMenuViewModel
     {
         public Int16 ID { get; set; }
         public Int16 ParentID { get; set; }
@@ -17,7 +17,6 @@ namespace PilotSmithApp.UserInterface.Models
         public string IconURL { get; set; }
         public string Parameters { get; set; }
         public decimal MenuOrder { get; set; }
-        public AMCSysModuleViewModel AMCSysModuleObj { get; set; }
     }
 
     public class SAMPanelViewModel

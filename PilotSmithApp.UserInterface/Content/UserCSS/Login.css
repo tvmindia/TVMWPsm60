@@ -4,9 +4,8 @@ p    {color:white}
 body, html {
     height: 100%;
     background-repeat: no-repeat;
-    background-image:url(../images/123.jpg);
+    background-image:url(../images/pilotsmithlanding.jpg);
     background-size: 100% 100%;
-   
 }
 
 .card-container.card {
@@ -107,7 +106,7 @@ body, html {
 }
 
 .btn.btn-signin {
-    /*background-color: #4d90fe; */
+    background-color: #6FE621; 
     /*background-color: rgb(104, 145, 162);
     / background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
     padding: 0px;
@@ -140,13 +139,14 @@ body, html {
 }
 
 .customLogin {
-    background-color: #5bc0de!important;
-    background-image: linear-gradient(to bottom, #015E9A 0%, #5bc0de 100%)!important;
-    border-color: #015E9A!important;
+    background-color: #339a45!important;
+    background-image: linear-gradient(to bottom, #6FE621 0%, #339a45 100%)!important;
+    border-color: #6FE621!important;
 }
 
 .card {
-    background-color: rgba(247, 247, 247, 0.79);
+    background-color: rgba(60, 66, 57, 0.5);
+    border-radius:5px;
 }
 
 .card-container.card {

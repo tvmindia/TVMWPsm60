@@ -44,7 +44,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Select Roles")]
         public List<RolesViewModel> RoleList { get; set; }
 
-        public CommonViewModel commonDetails { get; set; }
+        public PSASysCommonViewModel commonDetails { get; set; }
 
         public List<SelectListItem> userList { get; set; }
         public List<SelectListItem> ApplicationList { get; set; }

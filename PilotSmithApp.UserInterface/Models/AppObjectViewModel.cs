@@ -15,7 +15,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Please Enter Object name")]
         [Display(Name = "Object Name")]
         public string ObjectName { get; set; }
-        public CommonViewModel commonDetails { get; set; }
+        public PSASysCommonViewModel commonDetails { get; set; }
         public List<SelectListItem> ApplicationList { get; set; }
     }
 
@@ -33,7 +33,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string AppName { get; set; }
         public string ObjectName { get; set; }
 
-        public CommonViewModel commonDetails { get; set; }
+        public PSASysCommonViewModel commonDetails { get; set; }
         public List<SelectListItem> ApplicationList { get; set; }
         public List<SelectListItem> ObjectList { get; set; }
     }

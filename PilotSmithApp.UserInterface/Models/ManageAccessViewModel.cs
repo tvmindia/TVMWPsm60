@@ -15,7 +15,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool Write { get; set; }
         public bool Delete { get; set; }
         public bool Special { get; set; }
-        public CommonViewModel commonObj { get; set; }
+        public PSASysCommonViewModel commonObj { get; set; }
         public AppObjectViewModel AppObjectObj { get; set; }
         public List<ManageAccessViewModel> ManageAccessList { get; set; }
         public List<SelectListItem> ApplicationList { get; set; }
@@ -29,7 +29,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid RoleID { get; set; }
         public bool Read { get; set; }
         public bool Write { get; set; }
-        public CommonViewModel commonObj { get; set; }
+        public PSASysCommonViewModel commonObj { get; set; }
         public AppObjectViewModel AppObjectObj { get; set; }
         public AppSubobjectViewmodel AppSubObjectObj { get; set; }
         public ManageAccessViewModel ManageAccessObj { get; set; }

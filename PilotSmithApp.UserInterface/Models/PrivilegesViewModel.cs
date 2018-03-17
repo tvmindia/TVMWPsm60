@@ -26,7 +26,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Description")]
         public string AccessDescription { get; set; }
 
-        public CommonViewModel commonDetails { get; set; }
+        public PSASysCommonViewModel commonDetails { get; set; }
 
         public string ApplicationName { get; set; }
         public string RoleName { get; set; }

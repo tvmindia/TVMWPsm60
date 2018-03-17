@@ -42,8 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\PSASysMenu.cs" />
-    <Compile Include="DTO\PSASysModule.cs" />
-    <Compile Include="DTO\Common.cs" />
+    <Compile Include="DTO\PSASysCommon.cs" />
     <Compile Include="DTO\DataTablePaging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

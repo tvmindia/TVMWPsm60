@@ -26,8 +26,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string RoleDescription { get; set; }
 
         public List<SelectListItem> ApplicationList { get; set; }
-
-        public CommonViewModel commonDetails { get; set; }
+        public PSASysCommonViewModel commonDetails { get; set; }
         public string PathToAttachment { get; set; }
         public HttpPostedFile FileUpload { get; set; }
         public string Name1 { get; set; }

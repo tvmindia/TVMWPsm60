@@ -56,7 +56,7 @@ namespace PilotSmithApp.UserInterface.SecurityFilter
                     appUA.RolesCSV = authTicket.UserData;
                     appUA.UserName = _ua.UserName;
                     LoggedUserName = appUA.UserName;
-                    PilotSmithApp.DataAccessObject.DTO.Common common = new PilotSmithApp.DataAccessObject.DTO.Common();
+                    PilotSmithApp.DataAccessObject.DTO.PSASysCommon common = new PilotSmithApp.DataAccessObject.DTO.PSASysCommon();
                     appUA.LoginDateTime = common.GetCurrentDateTime();
                     appUA.AppID = _ua.AppID;
                     filterContext.HttpContext.Session.Add("AppUA", appUA);
