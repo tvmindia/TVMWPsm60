@@ -1,7 +1,7 @@
 ﻿@model PilotSmithApp.UserInterface.Models.DynamicUIViewModel
 
 @{
-    List<ProductionApp.UserInterface.Models.AMCSysMenuViewModel> menuList = Model.AMCSysMenuViewModelList;
+    List<PilotSmithApp.UserInterface.Models.PSASysMenuViewModel> menuList = Model.PSASSysMenuViewModelList;
 }
 
 
@@ -22,14 +22,14 @@
                     if (mp.ID == 100)
                     {
                         <li class="">
-                            <a href="@Url.Action(mp.Action, mp.Controller,new { code=mp.AMCSysModuleObj.Code })"><i class="@mp.IconClass"></i> <span>@mp.MenuText</span></a>
+                            <a href="@Url.Action(mp.Action, mp.Controller, null)"><i class="@mp.IconClass"></i> <span>@mp.MenuText</span></a>
 
                         </li>
                     }
                     else
                     {
                         <li>
-                            <a href="@Url.Action(mp.Action, mp.Controller,new { code=mp.AMCSysModuleObj.Code })">   <i class="@mp.IconClass"></i> <span>@mp.MenuText</span>   </a>
+                            <a href="@Url.Action(mp.Action, mp.Controller, null)">   <i class="@mp.IconClass"></i> <span>@mp.MenuText</span>   </a>
 
                         </li>
 
@@ -58,18 +58,18 @@
 
 
 
-                @helper RenderMenuItem(List<ProductionApp.UserInterface.Models.AMCSysMenuViewModel> menuList, ProductionApp.UserInterface.Models.AMCSysMenuViewModel mi)
+            @helper RenderMenuItem(List<PilotSmithApp.UserInterface.Models.PSASysMenuViewModel> menuList, PilotSmithApp.UserInterface.Models.PSASysMenuViewModel mi)
+            {
+                foreach (var cp in menuList.Where(p => p.ParentID == mi.ID))
                 {
-                    foreach (var cp in menuList.Where(p => p.ParentID == mi.ID))
-                    {
 
-                        
-                            <li><a href="@Url.Action(cp.Action, cp.Controller,new { code = cp.AMCSysModuleObj.Code })"><i class="@cp.IconClass"></i>@cp.MenuText</a></li>
- 
 
-                    }
+                        <li><a href="@Url.Action(cp.Action, cp.Controller, null)"><i class="@cp.IconClass"></i>@cp.MenuText</a></li>
+
+
                 }
-             
+                }
+
         </ul>
     </section>
     <!-- /.sidebar -->

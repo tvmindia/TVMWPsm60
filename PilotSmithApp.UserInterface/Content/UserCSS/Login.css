@@ -106,7 +106,7 @@ body, html {
 }
 
 .btn.btn-signin {
-    background-color: #6FE621; 
+    background-color: #00BFA5; 
     /*background-color: rgb(104, 145, 162);
     / background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
     padding: 0px;
@@ -140,8 +140,8 @@ body, html {
 
 .customLogin {
     background-color: #339a45!important;
-    background-image: linear-gradient(to bottom, #6FE621 0%, #339a45 100%)!important;
-    border-color: #6FE621!important;
+    background-image: linear-gradient(to bottom, #00BFA5 0%, #339a45 100%)!important;
+    border-color: #00BFA5!important;
 }
 
 .card {

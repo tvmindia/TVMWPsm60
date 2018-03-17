@@ -1,4 +1,4 @@
-﻿ @using PilotSmithApp.DataAccessObject.DTO
+﻿@using PilotSmithApp.DataAccessObject.DTO
 @using PilotSmithApp.UserInterface.App_Start
 <!DOCTYPE html>
 
@@ -17,15 +17,14 @@
 <body class="hold-transition skin-green-light sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
-            <!-- Logo -->
-            <a href="Dashboard" class="logo">
+            <a href="@Url.Action("Index", "Home")" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>SPA</b></span>
+                <span class="logo-mini"><img src="~/Content/images/logo2.png" /></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>SPA</b>ccounts</span>
+                <span class="logo-lg"><img src="~/Content/images/logo1.png" /></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-static-top">
+            <nav class="navbar navbar-fixed-top">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
@@ -109,7 +108,7 @@
         @Html.Action("_MenuNavBar", "DynamicUI")
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="margin-top:4.6%">
             <div class="container-fluid">
                 @RenderBody()
 
@@ -125,6 +124,60 @@
         <!-- Add the sidebar's background. This div must be placed
              immediately after the control sidebar -->
         <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- Master add/edit Model start-->
+    <div class="modal fade" id="divModelMasterPopUp" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" @*style="overflow-y:hidden !important;"*@>
+        <div class="modal-dialog" role="document" style="min-width:550px !important;max-width:600px !important;">
+            <div class="modal-content">
+                <div class="modal-header" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 36px;padding: 3px;border-bottom:2px solid rgb(40, 45, 51)!important;">
+                    <div class="container-fluid" style="padding-right: 0px;">
+                        <div class="col-md-12">
+                            <h3 class="modal-title SCHeader col-md-10" id="h3ModelMasterContextLabel"></h3>
+                            <a class="close" data-dismiss="modal" aria-label="Close"><i style="font-size:33px;color:rgb(40, 45, 51)!important;" class="fa fa-times-circle" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body" style="padding:0" id="divMasterBody">
+
+                </div>
+                <input type="hidden" id="hdnMasterCall" value="" />
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="RedirectToLoginModel" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div style="padding-top:15px;">
+
+                    @*<div class="sa-icon sa-custom" style="display: block; background-image: url(&quot;Content/images/hourglass.jpg&quot;);width:80px; height:80px"></div>*@
+                    <div class="thumbnail" style="border:none; -webkit-box-shadow:none;box-shadow:none;">
+
+                        @*<img src="Content/images/hourglass.png" alt="...">*@
+
+                        <img src=@Url.Content("~/Content/images/hourglass.png") alt="">
+                        <div class="caption" style="text-align:center;padding:0px;">
+                            <h1 style="color:#b50808;">Session Expired!</h1>
+                            <p style="font-size:14px;">Please Sign in again</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div style="border-top: none;text-align: center;padding-bottom: 15px;">
+                    <a href="@Url.Action("Logout","Account")" class="btn btn-success">Sign in</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- Master add/edit Model end -->
+    <!-- PRELOADER -->
+    <div class="spn_hol" id="divLoader">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
     </div>
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jquery")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrap")

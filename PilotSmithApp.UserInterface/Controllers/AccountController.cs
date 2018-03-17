@@ -114,7 +114,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         private ActionResult RedirectToAdminDashboard()
         {
-            return RedirectToAction("Admin", "DashBoard");
+            return RedirectToAction("Index", "DashBoard");
         }
 
         [HttpGet]

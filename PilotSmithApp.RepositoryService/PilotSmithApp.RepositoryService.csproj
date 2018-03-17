@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,7 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\IDatabaseFactory.cs" />
+    <Compile Include="Contract\IDynamicUIRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\DatabaseFactory.cs" />
+    <Compile Include="Service\DynamicUIRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.DataAccessObject\PilotSmithApp.DataAccessObject.csproj">
@@ -48,6 +53,7 @@
       <Name>PilotSmithApp.DataAccessObject</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

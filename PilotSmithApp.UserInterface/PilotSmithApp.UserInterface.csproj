@@ -451,7 +451,11 @@
     <Content Include="Content\images\List1.png" />
     <Content Include="Content\images\listdlt.png" />
     <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\logo1.png" />
+    <Content Include="Content\images\logo2.png" />
     <Content Include="Content\images\logoPS.PNG" />
+    <Content Include="Content\images\logoT.png" />
     <Content Include="Content\images\MasterLoading.gif" />
     <Content Include="Content\images\MaxLimit.png" />
     <Content Include="Content\images\Notification.png" />
@@ -696,6 +700,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\AppObjectController.cs" />
+    <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ManageAccessController.cs" />
@@ -723,10 +728,13 @@
     <Compile Include="SecurityFilter\ToolBarAccess.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\AdminLTE\css\adminlte.css.map" />
     <Content Include="Content\AdminLTE\css\adminlte.min.css.map" />
@@ -774,6 +782,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\DashBoard\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -15,7 +15,7 @@ namespace PilotSmithApp.UserInterface.Controllers
       //  public string ReadAccess;
         IHomeBusiness _homeBusiness;
         public SAMPanelController(IHomeBusiness home)
-        {
+        { 
             _homeBusiness = home;
         }
     
