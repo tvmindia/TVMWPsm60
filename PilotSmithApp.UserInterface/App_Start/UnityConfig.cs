@@ -41,16 +41,15 @@ namespace PilotSmithApp.UserInterface
             // Make sure to add a Unity.Configuration to the using statements.
             // container.LoadConfiguration();
 
-            // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
             // TODO: Register your types here
             // container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "PilotSmithApp.BusinessService.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
-            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "PilotSmithApp.RepositoryServices.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
+            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "PilotSmithApp.BusinessService.Service"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
+            container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "PilotSmithApp.RepositoryService.Service"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
             //container.RegisterType<IDynamicUIBusiness, DynamicUIBusiness>();
             //SAMTOOL DEPENDENCIES
             container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "SAMTool.BusinessServices.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
             container.RegisterTypes(AllClasses.FromLoadedAssemblies().Where(t => t.Namespace == "SAMTool.RepositoryServices.Services"), WithMappings.FromMatchingInterface, WithName.Default, WithLifetime.Transient);
+
         }
     }
 }

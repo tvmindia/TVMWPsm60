@@ -53,8 +53,10 @@
                 <div class="col-md-6">
                     <div class="form-group col-md-8">
                         <div class="col-md-12">
-                            <label class="control-label">Select Application</label>
-                        </div>
+                            <div class="col-md-10">
+                                <label class="control-label">Select Application</label>
+                                </div>
+                            </div>
                         <div class="col-md-12">
                             <div class="col-md-10">
                                 @Html.DropDownListFor(model => model.AppID, Model.ApplicationList, "--Select Application--", new { @class = "form-control" })
@@ -69,8 +71,10 @@
                 
                     <div class="form-group col-md-8">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.RoleName, htmlAttributes: new { @class = "control-label" })
-                        </div>
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.RoleName, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                            </div>
                         <div class="col-md-12">
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control BlockEnter" } })
@@ -86,8 +90,10 @@
                   
                     <div class="form-group col-md-8">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.RoleDescription, htmlAttributes: new { @class = "control-label" })
-                        </div>
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.RoleDescription, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            </div>
                         <div class="col-md-12">
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.RoleDescription, new { htmlAttributes = new { @class = "form-control ", rows = 4 } })

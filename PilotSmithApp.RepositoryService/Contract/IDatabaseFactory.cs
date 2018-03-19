@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PilotSmithApp.RepositoryServices.Contracts
+namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IDatabaseFactory
     {

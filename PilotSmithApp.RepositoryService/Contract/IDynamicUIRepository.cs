@@ -2,7 +2,7 @@
 using System.Collections.Generic;
  
 
-namespace PilotSmithApp.RepositoryServices.Contracts
+namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IDynamicUIRepository
     {

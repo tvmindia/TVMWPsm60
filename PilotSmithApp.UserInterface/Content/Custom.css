@@ -132,8 +132,7 @@ body    {
     font-size:12px;
 }
 .main-sidebar{
-    border-right: 1px solid #015E9A!important;
-    /*background-color:black!important;*/
+   box-shadow: #05917e 3px 0px 18px -7px;
 }
 .skin-green-light .sidebar a{
    /*color:white!important;*/
@@ -1175,4 +1174,13 @@ background-position: 0% 50%;
 .box {
     box-shadow: 0 8px 6px -6px #868282;
     border:1px solid #efefef;
+}
+.navbar,.logo{
+    background-image: -webkit-gradient(linear, left 0%, left 100%, from(#00BFA5), to(#068a78))
+}
+.logo-mini img{
+    height:30px!important;
+}
+select{
+    padding: 4px 12px!important;
 }

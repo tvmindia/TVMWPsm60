@@ -11,10 +11,10 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         // GET: DynamicUI
         private IDynamicUIBusiness _dynamicUIBusiness;
-        public DynamicUIController(IDynamicUIBusiness dynamicUIBusiness )
+        public DynamicUIController(IDynamicUIBusiness dynamicUIBusiness)
         {
             _dynamicUIBusiness = dynamicUIBusiness;
-           
+
         }
 
         public ActionResult _MenuNavBar()

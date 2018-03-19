@@ -1,12 +1,12 @@
 ﻿using System; 
-using PilotSmithApp.RepositoryServices.Contracts;
+using PilotSmithApp.RepositoryService.Contract;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.OleDb;
 
 
-namespace PilotSmithApp.RepositoryServices.Services
+namespace PilotSmithApp.RepositoryService.Service
 {
     public class DatabaseFactory: IDatabaseFactory
     {

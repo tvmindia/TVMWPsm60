@@ -40,20 +40,22 @@
                 <div class="col-md-6">
                     <div class="form-group col-md-8">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control BlockEnter" } })
-                                @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "control-label col-lg-2", id = "ID", Value = Guid.Empty })
-                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
                             </div>
-                            <div class="col-md-1 mandatory"></div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-1"></div>
-                        </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control BlockEnter" } })
+                                    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "control-label col-lg-2", id = "ID", Value = Guid.Empty })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-1 mandatory"></div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1"></div>
+                            </div>
 
-                    </div>
+                        </div>
                 
                 </div>
                 <div class="col-md-3 ">

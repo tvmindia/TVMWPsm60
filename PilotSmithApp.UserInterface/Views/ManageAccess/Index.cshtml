@@ -35,9 +35,8 @@
                         <label class="control-label">Select Application</label>
                     </div>
                     <div class="col-md-12">
-                        <div class="col-md-10">
                             @Html.DropDownListFor(model => model.AppObjectObj.AppID, Model.ApplicationList, "--Select Application--", new { @class = "form-control", @id = "ddlApplication", @onchange = "GetAllAppRoles()" })
-                        </div>
+                        
                        
                         <div class="col-md-1"></div>
                         <div class="col-md-1"></div>
@@ -53,9 +52,8 @@
                         <label class="control-label">Select Role</label>
                     </div>
                     <div class="col-md-12">
-                        <div class="col-md-10">
                             @Html.DropDownListFor(model => model.RoleID, Model.RoleList, "--Select Role--", new { @class = "form-control", @id = "ddlRole" })
-                        </div>
+                        
 
                         <div class="col-md-1"></div>
                         <div class="col-md-1"></div>

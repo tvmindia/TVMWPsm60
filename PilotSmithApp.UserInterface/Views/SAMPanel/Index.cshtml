@@ -3,10 +3,10 @@
     ViewBag.Title = "System Access Management Panel";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
-@model ProductionApp.UserInterface.Models.SAMPanelViewModel
+@model PilotSmithApp.UserInterface.Models.SAMPanelViewModel
 
 @*@model IEnumerable<HomeViewModel>*@
-@using ProductionApp.UserInterface.App_Start
+@using PilotSmithApp.UserInterface.App_Start
 
 <style>
     .container {
@@ -57,7 +57,7 @@
                     {
                         <div class="col-lg-6">
                             <div class="list-group">
-                                @foreach (ProductionApp.UserInterface.Models.SysMenuViewModel svm in Model._LHSSysMenuViewModel)
+                                @foreach (PilotSmithApp.UserInterface.Models.SysMenuViewModel svm in Model._LHSSysMenuViewModel)
                                 {
 
                                     <div class="list-group-item">
@@ -88,7 +88,7 @@
                     {
                         <div class="col-lg-6">
                             <div class="list-group">
-                                @foreach (ProductionApp.UserInterface.Models.SysMenuViewModel svm in Model._RHSSysMenuViewModel)
+                                @foreach (PilotSmithApp.UserInterface.Models.SysMenuViewModel svm in Model._RHSSysMenuViewModel)
                                 {
 
                                     <div class="list-group-item">

@@ -1,45 +1,45 @@
 var appAddress = window.location.protocol + "//" + window.location.host + "/";   //Retrieving browser Url 
 var fileArray = [];
-//(function Checker() {
-//    var flag = false;
-//    $.ajax({
-//        url: appAddress + 'Account/AreyouAlive/',
-//        contentType: "application/json; charset=utf-8",
-//        dataType: "json",
-//        success: function (data) {
+(function Checker() {
+    var flag = false;
+    $.ajax({
+        url: appAddress + 'Account/AreyouAlive/',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
 
-//            if (data.Result == "OK") {
-//                switch (data.Record) {
-//                    case "dead":
-//                        $('.modal').modal('hide');
-//                        $("#RedirectToLoginModel").modal('show');
+            if (data.Result == "OK") {
+                switch (data.Record) {
+                    case "dead":
+                        $('.modal').modal('hide');
+                        $("#RedirectToLoginModel").modal('show');
   
-//                        flag = true;
-//                        break;
-//                    case "alive":
-//                        flag = false;
-//                        break;
-//                }
+                        flag = true;
+                        break;
+                    case "alive":
+                        flag = false;
+                        break;
+                }
 
 
-//            }
-//            if (data.Result == "ERROR") {
-//                notyAlert('error', data.Message);
-//            }
+            }
+            if (data.Result == "ERROR") {
+                notyAlert('error', data.Message);
+            }
 
-//        },
-//        complete: function () {
-//            // Schedule the next request when the current one's complete
-//            //  setTimeout(Checker, 126000);
-//            if (flag != true) {
-//                //for 15.2 minutes
-//                setTimeout(Checker, 912000);
-//               // setTimeout(Checker, 126000);
-//            }
+        },
+        complete: function () {
+            // Schedule the next request when the current one's complete
+            //  setTimeout(Checker, 126000);
+            if (flag != true) {
+                //for 15.2 minutes
+                setTimeout(Checker, 912000);
+               // setTimeout(Checker, 126000);
+            }
 
-//        }
-//    });
-//})();
+        }
+    });
+})();
 
 //LOADER/SPINNER
 $(window).bind("load", function () {
@@ -49,6 +49,10 @@ $(window).bind("load", function () {
 });
 $(document).ready(function () {
     debugger;
+    $("input.Amount").on('click',function () {
+        debugger;
+        $(this).select();
+    });
     $('#ahrefHome').on('click',function () {
         $('.wrap,a').toggleClass('active');
         return false;
@@ -191,7 +195,12 @@ function notyAlert(type, msgtxt,title) {
     //});
    
 }
-
+function formattToCurrency(n, currency) {
+    n = parseFloat(n);
+    return currency + " " + n.toFixed(2).replace(/./g, function (c, i, a) {
+        return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," + c : c;
+    });
+}
 function SelectAllValue(e) {
     $(e).select();
 }
@@ -343,6 +352,14 @@ function isNumber(e) {
     }
 }
 
+//only number validation with negative 
+function isNumberNegative(e) {
+    var unicode = e.charCode ? e.charCode : e.keyCode
+    if (unicode != 8 && unicode != 46 && unicode!=45) { //if the key isn't the backspace key (which we should allow)
+        if (unicode < 48 || unicode > 57 ) //if not a number
+            return false //disable key press
+    }
+}
 
 function notyConfirm(msg, functionIfSuccess,msg2,btnText,value) {
     var m = 'You will not be able to recover this action!'
@@ -510,7 +527,7 @@ function UploadFile(FileObject)
                 }
 
                 // Adding one more key to FormData object  
-                fileData.append('ParentID', "");
+                fileData.append('ParentID', FileObject.ParentID);
                 fileData.append('ParentType', FileObject.ParentType);
                 $.ajax({
                     url: '/' + FileObject.Controller + '/UploadFiles',
@@ -887,3 +904,66 @@ function clearCookie(cname) {
 
     }
 }
+
+//------------------------------------Send/ReSend Document For Approval-----------------------------------------//
+
+function SendDocForApproval(documentID,documentTypeCode,approvers)
+{
+    debugger;
+
+    try {
+        var data = { "documentID": documentID, "documentTypeCode": documentTypeCode, "approvers": approvers };
+        var result = "";
+        var message = "";
+        var jsonData = {};
+        jsonData = GetDataFromServer("DocumentApproval/SendDocForApproval/", data);
+        if (jsonData != '') {
+            jsonData = JSON.parse(jsonData);
+            result = jsonData.Result;
+            message = jsonData.Message;
+        }
+        if (result == "OK") {
+            message = jsonData.Message.Message;
+            notyAlert('success',message);
+        }
+        if (result == "ERROR") {
+            notyAlert('error', message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+
+}
+function ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID) {
+    debugger;
+    try {
+        var data = { "documentID": documentID, "documentTypeCode": documentTypeCode, "latestApprovalID": latestApprovalID };
+        var result = "";
+        var message = "";
+        var jsonData = {};
+        jsonData = GetDataFromServer("DocumentApproval/ReSendDocForApproval/", data);
+        if (jsonData != '') {
+            jsonData = JSON.parse(jsonData);
+            result = jsonData.Result;
+            message = jsonData.Message;
+        }
+        if (result == "OK") {
+            message = jsonData.Message.Message;
+            notyAlert('success', message);
+        }
+        if (result == "ERROR") {
+            notyAlert('error', message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+
+}
+
+
+
+
+
+//-----------------------------------------------------------------------------//

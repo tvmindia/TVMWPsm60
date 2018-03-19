@@ -1,6 +1,6 @@
 ﻿using PilotSmithApp.BusinessService.Contracts;
 using PilotSmithApp.DataAccessObject.DTO;
-using PilotSmithApp.RepositoryServices.Contracts;
+using PilotSmithApp.RepositoryService.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;

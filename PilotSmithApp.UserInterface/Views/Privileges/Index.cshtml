@@ -51,8 +51,10 @@
                     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "control-label col-lg-2", id = "ID", Value = Guid.Empty })
                     <div class="form-group col-md-10">
                         <div class="col-md-12">
-                            <label class="control-label">Select Application</label>
-                        </div>
+                            <div class="col-md-10">
+                                <label class="control-label">Select Application</label>
+                                </div>
+                            </div>
                         <div class="col-md-12">
                             <div class="col-md-10">
                                 @Html.DropDownListFor(model => model.AppID, Model.ApplicationList, "--Select Application--", new { @class = "form-control" })
@@ -67,8 +69,10 @@
                
                     <div class="form-group col-md-10">
                         <div class="col-md-12">
-                            <label class="control-label">Select Role</label>
-                        </div>
+                            <div class="col-md-10">
+                                <label class="control-label">Select Role</label>
+                                </div>
+                            </div>
                         <div class="col-md-12">
                             <div class="col-md-10">
                                 @Html.DropDownListFor(model => model.RoleID, Model.RoleList, "--Select Role--", new { @class = "form-control" })
@@ -83,8 +87,10 @@
                 
                     <div class="form-group col-md-10">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.ModuleName, htmlAttributes: new { @class = "control-label" })
-                        </div>
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.ModuleName, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            </div>
                         <div class="col-md-12">
                             <div class="col-md-10">
                                 @Html.EditorFor(model => model.ModuleName, new { htmlAttributes = new { @class = "form-control BlockEnter" } })
@@ -100,8 +106,10 @@
 
                     <div class="form-group col-md-10">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.AccessDescription, htmlAttributes: new { @class = "control-label" })
-                        </div>
+                            <div class="col-md-10">
+                                @Html.LabelFor(model => model.AccessDescription, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            </div>
                         <div class="col-md-12">
                             <div class="col-md-10">
                                @Html.EditorFor(model => model.AccessDescription, new { htmlAttributes = new { @class = "form-control ", rows = 4 } })
@@ -112,9 +120,7 @@
                             <div class="col-md-1"></div>
                         </div>
 
-                    </div>
-               
-                   
+                    </div>                   
 
                 </div>
                 <div class="col-md-3 ">

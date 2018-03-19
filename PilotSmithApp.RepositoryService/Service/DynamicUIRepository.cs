@@ -1,11 +1,11 @@
-﻿using PilotSmithApp.RepositoryServices.Contracts;
+﻿using PilotSmithApp.RepositoryService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections.Generic;
 using System;
 
-namespace PilotSmithApp.RepositoryServices.Services
+namespace PilotSmithApp.RepositoryService.Service
 {
     public class DynamicUIRepository: IDynamicUIRepository
     {
