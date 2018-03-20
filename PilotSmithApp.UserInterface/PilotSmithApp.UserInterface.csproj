@@ -457,6 +457,7 @@
     <Content Include="Content\images\searchdefault.png" />
     <Content Include="Content\images\Transfer.png" />
     <Content Include="Content\images\withdraw.png" />
+    <Content Include="Content\Site.css" />
     <Content Include="Content\sweetalert.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.min.css" />
@@ -636,6 +637,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jszip.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\PDF.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
@@ -645,11 +647,16 @@
     <Content Include="Scripts\UserJS\Application.js" />
     <Content Include="Scripts\UserJS\AppObject.js" />
     <Content Include="Scripts\UserJS\AppSubobject.js" />
+    <Content Include="Scripts\UserJS\Area.js" />
+    <Content Include="Scripts\UserJS\District.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
     <Content Include="Scripts\UserJS\ManageSubObjectAccess.js" />
     <Content Include="Scripts\UserJS\Privileges.js" />
     <Content Include="Scripts\UserJS\PrivilegesView.js" />
+    <Content Include="Scripts\UserJS\ProductCategory.js" />
+    <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
+    <Content Include="Scripts\UserJS\State.js" />
     <Content Include="Scripts\UserJS\User.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -666,18 +673,29 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\AppObjectController.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
+    <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
+    <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ManageAccessController.cs" />
     <Compile Include="Controllers\PrivilegesController.cs" />
+    <Compile Include="Controllers\ProductCategoryController.cs" />
+    <Compile Include="Controllers\ProductSpecificationController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
+    <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AreaViewModel.cs" />
+    <Compile Include="Models\BankViewModel.cs" />
+    <Compile Include="Models\DistrictViewModel.cs" />
+    <Compile Include="Models\ProductCategoryViewModel.cs" />
+    <Compile Include="Models\ProductSpecificationViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\PaymentTermViewModel.cs" />
     <Compile Include="Models\PSASysMenuViewModel.cs" />
@@ -690,6 +708,7 @@
     <Compile Include="Models\ManageAccessViewModel.cs" />
     <Compile Include="Models\PrivilegesViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
+    <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -732,6 +751,23 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutPage.cshtml" />
     <Content Include="Views\DashBoard\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\ProductCategory\_AddProductCategory.cshtml" />
+    <Content Include="Views\ProductCategory\_ProductCategoryDropDown.cshtml" />
+    <Content Include="Views\ProductCategory\Index.cshtml" />
+    <Content Include="Views\ProductSpecification\_AddProductSpecification.cshtml" />
+    <Content Include="Views\ProductSpecification\_ProductSpecificationDropDown.cshtml" />
+    <Content Include="Views\ProductSpecification\Index.cshtml" />
+    <Content Include="Views\State\_AddState.cshtml" />
+    <Content Include="Views\State\_StateDropDown.cshtml" />
+    <Content Include="Views\State\Index.cshtml" />
+    <Content Include="Views\District\_AddDistrict.cshtml" />
+    <Content Include="Views\District\_DistrictDropDown.cshtml" />
+    <Content Include="Views\District\Index.cshtml" />
+    <Content Include="Views\Area\_AddArea.cshtml" />
+    <Content Include="Views\Area\_AreaDropDown.cshtml" />
+    <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -743,6 +779,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Uploads\" />
+    <Folder Include="Views\Bank\" />
     <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>
