@@ -470,7 +470,7 @@ function openNav() {
     //$('.EntryForms').attr('style', 'height: ' + resultHeight + '');
   
     $('.main').fadeOut();
-    document.getElementById("myNav").style.left = "3%";
+    document.getElementById("myNav").style.left = "3.5%";
     $('#main').fadeOut();
 
     if ($("body").hasClass("sidebar-collapse")) {

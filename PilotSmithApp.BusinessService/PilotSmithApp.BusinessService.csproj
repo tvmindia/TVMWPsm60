@@ -40,10 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\ICustomerBusiness.cs" />
     <Compile Include="Contract\IDynamicUIBusiness.cs" />
     <Compile Include="Contract\IFileUploadBusiness.cs" />
+    <Compile Include="Contract\IPaymentTermBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\CustomerBusiness.cs" />
     <Compile Include="Service\DynamicUIBusiness.cs" />
+    <Compile Include="Service\PaymentTermBusiness.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.DataAccessObject\PilotSmithApp.DataAccessObject.csproj">

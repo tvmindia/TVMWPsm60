@@ -41,11 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IDatabaseFactory.cs" />
     <Compile Include="Contract\IDynamicUIRepository.cs" />
+    <Compile Include="Contract\IPaymentTermRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\CustomerRepository.cs" />
     <Compile Include="Service\DatabaseFactory.cs" />
     <Compile Include="Service\DynamicUIRepository.cs" />
+    <Compile Include="Service\PaymentTermRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.DataAccessObject\PilotSmithApp.DataAccessObject.csproj">
