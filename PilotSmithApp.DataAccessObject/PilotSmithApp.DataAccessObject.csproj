@@ -41,9 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\Area.cs" />
+    <Compile Include="DTO\Bank.cs" />
+    <Compile Include="DTO\District.cs" />
+    <Compile Include="DTO\ProductCategory.cs" />
+    <Compile Include="DTO\ProductSpecification.cs" />
     <Compile Include="DTO\PSASysMenu.cs" />
     <Compile Include="DTO\PSASysCommon.cs" />
     <Compile Include="DTO\DataTablePaging.cs" />
+    <Compile Include="DTO\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
