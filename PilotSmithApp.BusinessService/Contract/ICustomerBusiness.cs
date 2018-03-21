@@ -10,5 +10,8 @@ namespace PilotSmithApp.BusinessService.Contract
     public interface ICustomerBusiness
     {
         List<Titles> GetAllTitles();
+        List<Customer> GetAllCustomer(CustomerAdvanceSearch customerAdvanceSearch);
+        Customer GetCustomer(Guid id);
+        object InsertUpdateCustomer(Customer customer);
     }
 }

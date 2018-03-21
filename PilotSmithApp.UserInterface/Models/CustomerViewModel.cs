@@ -65,6 +65,15 @@ namespace PilotSmithApp.UserInterface.Models
         public PSASysCommonViewModel common { get; set; }
         public List<SelectListItem> CustomerList { get; set; }
         public List<SelectListItem> TitlesList { get; set; }
+        //Additional properties
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
+    }
+    public class CustomerAdvanceSearchViewModel
+    {
+        public string SearchTerm { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
     }
     public class TitlesViewModel
     {

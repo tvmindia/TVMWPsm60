@@ -29,10 +29,16 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal AdvanceAmount { get; set; }
         public decimal OutStanding { get; set; }
         public PSASysCommon common { get; set; }
-        public string ToDate { get; set; }
-        public string FromDate { get; set; }
+        //Additional properties
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
     }
-
+    public class CustomerAdvanceSearch
+    {
+        public string SearchTerm { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
+    }
     public class Titles
     {
         public string Title { get; set; }

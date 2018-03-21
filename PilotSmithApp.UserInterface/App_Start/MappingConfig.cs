@@ -1,4 +1,5 @@
-﻿using PilotSmithApp.UserInterface.Models;
+﻿using PilotSmithApp.DataAccessObject.DTO;
+using PilotSmithApp.UserInterface.Models;
 
 namespace PilotSmithApp.UserInterface.App_Start
 {
@@ -30,6 +31,13 @@ namespace PilotSmithApp.UserInterface.App_Start
                 //****SAMTOOL MODELS END
 
                 //****PilotSmithApp APP MODELS
+                config.CreateMap<CustomerViewModel,Customer>().ReverseMap();
+                config.CreateMap<CustomerAdvanceSearchViewModel, CustomerAdvanceSearch>().ReverseMap();
+                config.CreateMap<TitlesViewModel, Titles>().ReverseMap();
+                config.CreateMap<PaymentTermViewModel, PaymentTerm>().ReverseMap();
+                config.CreateMap<PSASysCommonViewModel, PSASysCommon>().ReverseMap();
+
+
             });
         }
     }

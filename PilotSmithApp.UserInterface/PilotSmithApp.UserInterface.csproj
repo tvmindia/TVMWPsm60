@@ -434,6 +434,7 @@
     <Content Include="Content\images\helmet.png" />
     <Content Include="Content\images\history.png" />
     <Content Include="Content\images\hourglass.png" />
+    <Content Include="Content\images\import.png" />
     <Content Include="Content\images\indian-rupee.png" />
     <Content Include="Content\images\List1.png" />
     <Content Include="Content\images\listdlt.png" />
@@ -648,6 +649,7 @@
     <Content Include="Scripts\UserJS\AppObject.js" />
     <Content Include="Scripts\UserJS\AppSubobject.js" />
     <Content Include="Scripts\UserJS\Area.js" />
+    <Content Include="Scripts\UserJS\CustomerJS\Customer.js" />
     <Content Include="Scripts\UserJS\District.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
     <Content Include="Scripts\UserJS\ManageSubObjectAccess.js" />
@@ -751,8 +753,6 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutPage.cshtml" />
     <Content Include="Views\DashBoard\Index.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\ProductCategory\_AddProductCategory.cshtml" />
     <Content Include="Views\ProductCategory\_ProductCategoryDropDown.cshtml" />
     <Content Include="Views\ProductCategory\Index.cshtml" />
@@ -769,6 +769,7 @@
     <Content Include="Views\Area\_AreaDropDown.cshtml" />
     <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Customer\_CustomerForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

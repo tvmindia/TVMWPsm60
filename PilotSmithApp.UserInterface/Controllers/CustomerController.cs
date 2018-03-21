@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
@@ -15,7 +16,8 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         #region Constructor_Injection 
 
-        AppConst c = new AppConst();
+        AppConst _appConstant = new AppConst();
+        PSASysCommon _pSASysCommon = new PSASysCommon();
         ICustomerBusiness _customerBusiness;
         IPaymentTermBusiness _paymentTermBusiness;
         public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness)
@@ -28,10 +30,27 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
         public ActionResult Index()
         {
-            CustomerViewModel customerViewModel = null;
+            CustomerAdvanceSearchViewModel customerAdvanceSearchVM = new CustomerAdvanceSearchViewModel();
+            return View(customerAdvanceSearchVM);
+        }
+        [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
+        public ActionResult CustomerForm(Guid id)
+        {
+            CustomerViewModel customerVM = null;
             try
             {
-                customerViewModel = new CustomerViewModel();
+               
+                if (id != Guid.Empty)
+                {
+                    customerVM = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomer(id));
+                    customerVM.IsUpdate = true;
+                }
+                else
+                {
+                    customerVM = new CustomerViewModel();
+                    customerVM.IsUpdate = false;
+                    customerVM.ID = Guid.Empty;
+                }
                 List<SelectListItem> selectListItem = new List<SelectListItem>();
                 List<TitlesViewModel> titlesList = Mapper.Map<List<Titles>, List<TitlesViewModel>>(_customerBusiness.GetAllTitles());
                 titlesList = titlesList == null ? null : titlesList.OrderBy(attset => attset.Title).ToList();
@@ -44,8 +63,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Selected = false
                     });
                 }
-                customerViewModel.TitlesList = selectListItem;
-                customerViewModel.DefaultPaymentTermList = new List<SelectListItem>();
+                customerVM.TitlesList = selectListItem;
+                customerVM.DefaultPaymentTermList = new List<SelectListItem>();
                 selectListItem = new List<SelectListItem>();
                 List<PaymentTermViewModel> PayTermList = Mapper.Map<List<PaymentTerm>, List<PaymentTermViewModel>>(_paymentTermBusiness.GetAllPayTerm());
                 foreach (PaymentTermViewModel PayT in PayTermList)
@@ -57,80 +76,144 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Selected = false
                     });
                 }
-                customerViewModel.DefaultPaymentTermList = selectListItem;
+                customerVM.DefaultPaymentTermList = selectListItem;
+                         
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
-            return View(customerViewModel);
+            return PartialView("_CustomerForm", customerVM);
         }
+        #region GetAllCustomer
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
+        public JsonResult GetAllCustomer(DataTableAjaxPostModel model, CustomerAdvanceSearchViewModel customerAdvanceSearchVM)
+        {
+            //setting options to our model
+            customerAdvanceSearchVM.DataTablePaging.Start = model.start;
+            customerAdvanceSearchVM.DataTablePaging.Length = (customerAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : customerAdvanceSearchVM.DataTablePaging.Length;
 
+            //CustomerAdvanceSearchVM.OrderColumn = model.order[0].column;
+            //CustomerAdvanceSearchVM.OrderDir = model.order[0].dir;
+
+            // action inside a standard controller
+            List<CustomerViewModel> CustomerVMList = Mapper.Map<List<Customer>, List<CustomerViewModel>>(_customerBusiness.GetAllCustomer(Mapper.Map<CustomerAdvanceSearchViewModel, CustomerAdvanceSearch>(customerAdvanceSearchVM)));
+            if (customerAdvanceSearchVM.DataTablePaging.Length == -1)
+            {
+                int totalResult = CustomerVMList.Count != 0 ? CustomerVMList[0].TotalCount : 0;
+                int filteredResult = CustomerVMList.Count != 0 ? CustomerVMList[0].FilteredCount : 0;
+                CustomerVMList = CustomerVMList.Skip(0).Take(filteredResult > 10000 ? 10000 : filteredResult).ToList();
+            }
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+            return Json(new
+            {
+                // this is what datatables wants sending back
+                draw = model.draw,
+                recordsTotal = CustomerVMList.Count != 0 ? CustomerVMList[0].TotalCount : 0,
+                recordsFiltered = CustomerVMList.Count != 0 ? CustomerVMList[0].FilteredCount : 0,
+                data = CustomerVMList
+            });
+        }
+        #endregion GetAllCustomer
+        #region InsertUpdateCustomer
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
+        public string InsertUpdateCustomer(CustomerViewModel customerVM)
+        {
+            object result = null;
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                customerVM.common = new PSASysCommonViewModel();
+                customerVM.common.CreatedBy = appUA.UserName;
+                customerVM.common.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.common.UpdatedBy = appUA.UserName;
+                customerVM.common.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                result = _customerBusiness.InsertUpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record="", Message = cm.Message });
+            }
+        }
+        #endregion InsertUpdateCustomer
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string ActionType)
+        public ActionResult ChangeButtonStyle(string actionType)
         {
-            ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
-            switch (ActionType)
+            ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            switch (actionType)
             {
                 case "List":
-                    ToolboxViewModelObj.addbtn.Visible = true;
-                    ToolboxViewModelObj.addbtn.Text = "Add";
-                    ToolboxViewModelObj.addbtn.Title = "Add New";
-                    ToolboxViewModelObj.addbtn.Event = "openNav();";
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddCustomer();";
+
+                    toolboxVM.ImportBtn.Visible = true;
+                    toolboxVM.ImportBtn.Text = "Import";
+                    toolboxVM.ImportBtn.Title = "Import to excel";
+                    toolboxVM.ImportBtn.Event = "ExportCustomerData()";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Event = "ResetCustomerList();";
 
                     break;
                 case "Edit":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddCustomer();";   
 
-                    ToolboxViewModelObj.addbtn.Visible = true;
-                    ToolboxViewModelObj.addbtn.Text = "New";
-                    ToolboxViewModelObj.addbtn.Title = "Add New";
-                    ToolboxViewModelObj.addbtn.Event = "openNav();";
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Event = "SaveCustomer();";
 
-                    ToolboxViewModelObj.savebtn.Visible = true;
-                    ToolboxViewModelObj.savebtn.Text = "Save";
-                    ToolboxViewModelObj.savebtn.Title = "Save Customer";
-                    ToolboxViewModelObj.savebtn.Event = "Save();";
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
 
-                    ToolboxViewModelObj.deletebtn.Visible = true;
-                    ToolboxViewModelObj.deletebtn.Text = "Delete";
-                    ToolboxViewModelObj.deletebtn.Title = "Delete Customer";
-                    ToolboxViewModelObj.deletebtn.Event = "Delete()";
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Event = "ResetCustomer();";
 
-                    ToolboxViewModelObj.resetbtn.Visible = true;
-                    ToolboxViewModelObj.resetbtn.Text = "Reset";
-                    ToolboxViewModelObj.resetbtn.Title = "Reset";
-                    ToolboxViewModelObj.resetbtn.Event = "Reset();";
-
-                    ToolboxViewModelObj.CloseBtn.Visible = true;
-                    ToolboxViewModelObj.CloseBtn.Text = "Close";
-                    ToolboxViewModelObj.CloseBtn.Title = "Close";
-                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Event = "DeleteCustomer();";
 
                     break;
                 case "Add":
 
-                    ToolboxViewModelObj.savebtn.Visible = true;
-                    ToolboxViewModelObj.savebtn.Text = "Save";
-                    ToolboxViewModelObj.savebtn.Title = "Save";
-                    ToolboxViewModelObj.savebtn.Event = "Save();";
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Event = "SaveCustomer();";
 
-                    ToolboxViewModelObj.CloseBtn.Visible = true;
-                    ToolboxViewModelObj.CloseBtn.Text = "Close";
-                    ToolboxViewModelObj.CloseBtn.Title = "Close";
-                    ToolboxViewModelObj.CloseBtn.Event = "closeNav();";
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
 
-                    ToolboxViewModelObj.resetbtn.Visible = true;
-                    ToolboxViewModelObj.resetbtn.Text = "Reset";
-                    ToolboxViewModelObj.resetbtn.Title = "Reset";
-                    ToolboxViewModelObj.resetbtn.Event = "";
-
-                    ToolboxViewModelObj.addbtn.Visible = true;
-                    ToolboxViewModelObj.addbtn.Text = "Add";
-                    ToolboxViewModelObj.addbtn.Title = "Add";
-                    ToolboxViewModelObj.addbtn.Event = "";
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Event = "ResetCustomer();";
 
                     break;
                 case "AddSub":
@@ -145,7 +228,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
-            return PartialView("ToolboxView", ToolboxViewModelObj);
+            return PartialView("ToolboxView", toolboxVM);
         }
 
         #endregion

@@ -179,10 +179,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset All";
                     toolboxVM.resetbtn.Event = "ResetBankList();";
                     //----added for export button--------------
-                    toolboxVM.PrintBtn.Visible = true;
-                    toolboxVM.PrintBtn.Text = "Export";
-                    toolboxVM.PrintBtn.Title = "Export";
-                    toolboxVM.PrintBtn.Event = "ExportBankData();";
+                    toolboxVM.ImportBtn.Visible = true;
+                    toolboxVM.ImportBtn.Text = "Export";
+                    toolboxVM.ImportBtn.Title = "Export";
+                    toolboxVM.ImportBtn.Event = "ExportBankData();";
                     //---------------------------------------
                     break;
                 default:

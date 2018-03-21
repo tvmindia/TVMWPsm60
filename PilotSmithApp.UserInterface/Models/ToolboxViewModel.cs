@@ -16,7 +16,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ToolBoxStructure returnBtn;
         public ToolBoxStructure calculateBtn;
         public ToolBoxStructure CloseBtn;
-        public ToolBoxStructure PrintBtn;
+        public ToolBoxStructure ImportBtn;
         public ToolBoxStructure DepositBtn;
         public ToolBoxStructure WithdrawBtn;
         public ToolBoxStructure ClearBtn;
@@ -40,7 +40,7 @@ namespace PilotSmithApp.UserInterface.Models
             returnBtn.SecurityObject = "ButtonReturn";
             calculateBtn.SecurityObject = "ButtonCalculate";
             CloseBtn.SecurityObject = "ButtonClose";
-            PrintBtn.SecurityObject = "ButtonPrint";
+            ImportBtn.SecurityObject = "ButtonPrint";
             DepositBtn.SecurityObject = "ButtonDeposit";
             WithdrawBtn.SecurityObject = "ButtonWithdraw";
             ClearBtn.SecurityObject = "ButtonClear";
@@ -62,7 +62,7 @@ namespace PilotSmithApp.UserInterface.Models
             returnBtn.HasAccess = true;
             calculateBtn.HasAccess = true;
             CloseBtn.HasAccess = true;
-            PrintBtn.HasAccess = true;
+            ImportBtn.HasAccess = true;
             DepositBtn.HasAccess = true;
             WithdrawBtn.HasAccess = true;
             ClearBtn.HasAccess = true;

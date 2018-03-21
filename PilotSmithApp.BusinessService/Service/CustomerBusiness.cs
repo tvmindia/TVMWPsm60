@@ -21,5 +21,17 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _customerRepository.GetAllTitles();
         }
+        public Customer GetCustomer(Guid id)
+        {
+            return _customerRepository.GetCustomer(id);
+        }
+        public object InsertUpdateCustomer(Customer customer)
+        {
+            return _customerRepository.InsertUpdateCustomer(customer);
+        }
+        public List<Customer> GetAllCustomer(CustomerAdvanceSearch customerAdvanceSearch)
+        {
+            return _customerRepository.GetAllCustomer(customerAdvanceSearch);
+        }
     }
 }

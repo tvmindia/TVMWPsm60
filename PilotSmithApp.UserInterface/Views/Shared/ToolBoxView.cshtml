@@ -70,7 +70,7 @@
         {
 
             <a class="thr_disbtn" title="@Model.deletebtn.Title-@Model.deletebtn.DisableReason">
-                <img class="btnImg" src="@Url.Content("~/Content/images/delete.PNG")">
+                <img class="btnImg" src="@Url.Content("~/Content/images/delete.png")">
                 <span class="btnText">@Model.deletebtn.Text</span>
             </a>
         }
@@ -78,7 +78,7 @@
         {
 
             <a title="@Model.deletebtn.Title" class="thr_btn" onclick=@Model.deletebtn.Event>
-                <img class="btnImg" src="@Url.Content("~/Content/images/delete.PNG")">
+                <img class="btnImg" src="@Url.Content("~/Content/images/delete.png")">
                 <span class="btnText">@Model.deletebtn.Text</span>
             </a>
         }
@@ -108,22 +108,22 @@
 
     
 
-    @if (Model.PrintBtn.Visible)
+    @if (Model.ImportBtn.Visible)
     {
-        if (Model.PrintBtn.Disable || Model.PrintBtn.HasAccess == false)
+        if (Model.ImportBtn.Disable || Model.ImportBtn.HasAccess == false)
         {
 
-            <a class="thr_disbtn" title="@Model.PrintBtn.Title-@Model.PrintBtn.DisableReason">
-                <img class="btnImg" src="@Url.Content("~/Content/images/printer.png")">
-                <span class="btnText">@Model.PrintBtn.Text</span>
+            <a class="thr_disbtn" title="@Model.ImportBtn.Title-@Model.ImportBtn.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/import.png")">
+                <span class="btnText">@Model.ImportBtn.Text</span>
             </a>
         }
         else
         {
 
-            <a title="@Model.PrintBtn.Title" class="thr_btn" onclick=@Model.PrintBtn.Event>
-                <img class="btnImg" src="@Url.Content("~/Content/images/printer.png")">
-                <span class="btnText">@Model.PrintBtn.Text</span>
+            <a title="@Model.ImportBtn.Title" class="thr_btn" onclick=@Model.ImportBtn.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/import.png")">
+                <span class="btnText">@Model.ImportBtn.Text</span>
             </a>
         }
 
