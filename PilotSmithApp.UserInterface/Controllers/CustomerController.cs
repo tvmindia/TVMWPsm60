@@ -160,10 +160,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Title = "Add New";
                     toolboxVM.addbtn.Event = "AddCustomer();";
 
-                    toolboxVM.ImportBtn.Visible = true;
-                    toolboxVM.ImportBtn.Text = "Export";
-                    toolboxVM.ImportBtn.Title = "Export to excel";
-                    toolboxVM.ImportBtn.Event = "ExportCustomerData()";
+                    toolboxVM.ExportBtn.Visible = true;
+                    toolboxVM.ExportBtn.Text = "Export";
+                    toolboxVM.ExportBtn.Title = "Export to excel";
+                    toolboxVM.ExportBtn.Event = "ExportCustomerData()";
 
                     toolboxVM.resetbtn.Visible = true;
                     toolboxVM.resetbtn.Text = "Reset";

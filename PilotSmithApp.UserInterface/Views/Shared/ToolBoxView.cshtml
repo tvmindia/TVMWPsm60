@@ -108,22 +108,22 @@
 
     
 
-    @if (Model.ImportBtn.Visible)
+    @if (Model.ExportBtn.Visible)
     {
-        if (Model.ImportBtn.Disable || Model.ImportBtn.HasAccess == false)
+        if (Model.ExportBtn.Disable || Model.ExportBtn.HasAccess == false)
         {
 
-            <a class="thr_disbtn" title="@Model.ImportBtn.Title-@Model.ImportBtn.DisableReason">
+            <a class="thr_disbtn" title="@Model.ExportBtn.Title-@Model.ExportBtn.DisableReason">
                 <img class="btnImg" src="@Url.Content("~/Content/images/import.png")">
-                <span class="btnText">@Model.ImportBtn.Text</span>
+                <span class="btnText">@Model.ExportBtn.Text</span>
             </a>
         }
         else
         {
 
-            <a title="@Model.ImportBtn.Title" class="thr_btn" onclick=@Model.ImportBtn.Event>
+            <a title="@Model.ExportBtn.Title" class="thr_btn" onclick=@Model.ExportBtn.Event>
                 <img class="btnImg" src="@Url.Content("~/Content/images/import.png")">
-                <span class="btnText">@Model.ImportBtn.Text</span>
+                <span class="btnText">@Model.ExportBtn.Text</span>
             </a>
         }
 

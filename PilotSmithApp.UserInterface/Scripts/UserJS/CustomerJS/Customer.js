@@ -2,10 +2,8 @@
 var _emptyGuid = "00000000-0000-0000-0000-000000000000";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
-    try {
-        
-        BindOrReloadCustomerTable('Init');
-       
+    try {        
+        BindOrReloadCustomerTable('Init');       
     }
     catch (e) {
         console.log(e.message);
@@ -27,6 +25,9 @@ function BindOrReloadCustomerTable(action) {
                 $('#ToDate').val('');
                 break;
             case 'Init':
+                $('#SearchTerm').val('');
+                $('#FromDate').val('');
+                $('#ToDate').val('');
                 break;
             case 'Search':
                 if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == ""))
@@ -109,7 +110,7 @@ function BindOrReloadCustomerTable(action) {
                         }
                     }
                     $(".buttons-excel").trigger('click');
-                    BindOrReloadCustomerTable('Search');
+                    BindOrReloadCustomerTable();
                     
                 }
             }

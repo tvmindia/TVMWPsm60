@@ -25,7 +25,7 @@ namespace PilotSmithApp.UserInterface.SecurityFilter
                     toolbar.DepositBtn = setAccess(toolbar.DepositBtn, _permission);
                     toolbar.NotyBtn = setAccess(toolbar.NotyBtn, _permission);
                     toolbar.PayBtn = setAccess(toolbar.PayBtn, _permission);
-                    toolbar.ImportBtn = setAccess(toolbar.ImportBtn, _permission);
+                    toolbar.ExportBtn = setAccess(toolbar.ExportBtn, _permission);
                     toolbar.resetbtn = setAccess(toolbar.resetbtn, _permission);
                     toolbar.returnBtn = setAccess(toolbar.returnBtn, _permission);
                     toolbar.savebtn = setAccess(toolbar.savebtn, _permission);

@@ -24,7 +24,7 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new StyleBundle("~/Content/UserCSS/Login").Include("~/Content/UserCSS/Login.css"));
             bundles.Add(new StyleBundle("~/Content/css/Select2").Include("~/Content/css/select2.css"));
             bundles.Add(new StyleBundle("~/Content/css/Selectmin").Include("~/Content/css/select2.min.css"));
-
+            bundles.Add(new StyleBundle("~/Content/PSAForms").Include("~/Content/PSAForms.css"));
             //---------------------
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include("~/Scripts/jquery-3.1.1.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.min.js"));
