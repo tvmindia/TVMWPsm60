@@ -73,6 +73,12 @@ namespace PilotSmithApp.UserInterface.Models
     public class CustomerAdvanceSearchViewModel
     {
         public string SearchTerm { get; set; }
+        [Display(Name ="From Date")]
+        public string FromDate { get; set; }
+        [Display(Name = "To Date")]
+        public string ToDate { get; set; }
+        [Display(Name = "Is internal company")]
+        public string IsInternalComp { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
     }
     public class TitlesViewModel

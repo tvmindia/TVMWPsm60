@@ -134,7 +134,12 @@ $(document).ready(function () {
 
     });
    
+   
 });
+function CloseAdvanceSearch()
+{
+    $('.divboxASearch').hide();
+}
 //for showing loading while saving data
 function OnMasterBegin() {
     debugger;
@@ -470,7 +475,7 @@ function openNav() {
     //$('.EntryForms').attr('style', 'height: ' + resultHeight + '');
   
     $('.main').fadeOut();
-    document.getElementById("myNav").style.left = "3.5%";
+    document.getElementById("myNav").style.left = "3%";
     $('#main').fadeOut();
 
     if ($("body").hasClass("sidebar-collapse")) {

@@ -78,7 +78,7 @@
                                    @{
                                        if (Session["AppUA"] != null)
                                        {
-                                           AppUA _appUA = Session["AppUA"] as AppUA;
+                                        AppUA _appUA = Session["AppUA"] as AppUA;
                                         <span>Role : @_appUA.RolesCSV </span>
                                        }
 
@@ -108,7 +108,7 @@
        @Html.Action("_MenuNavBar", "DynamicUI")
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" style="margin-top:3.6%">
+        <div class="content-wrapper" style="margin-top:4%;min-height:88vh!important;">
             <div class="container-fluid">
                 @RenderBody()
 
@@ -117,7 +117,16 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
 
-            <strong> &copy; <a href="http://thrithvam.com">Thrithvam Tehnology</a>.</strong>
+            <strong> &copy; <a href="http://thrithvam.com">Thrithvam Tehnology</a>
+             @{
+                if (Session["AppUA"] != null)
+                {
+                    AppUA _appUA = Session["AppUA"] as AppUA;
+                    <span style="position: relative;left: 55%;color: #000000;">⏲ Last Login Time: @_appUA.LoginDateTime.ToString("dd-MMM-yyyy HH:MM:ss") </span>
+                }
+
+
+            }</strong>
         </footer>
         <!-- Control Sidebar -->
         <!-- /.control-sidebar -->

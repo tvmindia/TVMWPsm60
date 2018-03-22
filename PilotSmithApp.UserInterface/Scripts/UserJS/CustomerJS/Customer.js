@@ -3,7 +3,9 @@ var _emptyGuid = "00000000-0000-0000-0000-000000000000";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
+        
         BindOrReloadCustomerTable('Init');
+       
     }
     catch (e) {
         console.log(e.message);
@@ -12,6 +14,7 @@ $(document).ready(function () {
 //function bind the Customer list checking search and filter
 function BindOrReloadCustomerTable(action) {
     try {
+        
         //creating advancesearch object
         CustomerAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
@@ -20,20 +23,28 @@ function BindOrReloadCustomerTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
+                $('#FromDate').val('');
+                $('#ToDate').val('');
                 break;
             case 'Init':
                 break;
             case 'Search':
+                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == ""))
+                {
+                    return true;
+                }
                 break;
-            case 'Export':
+            case 'Export':                
                 DataTablePagingViewModel.Length = -1;
                 break;
             default:
                 break;
         }
+        $('#tblCustomer').fadeOut('fast');
         CustomerAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         CustomerAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-
+        CustomerAdvanceSearchViewModel.FromDate = $('#FromDate').val();
+        CustomerAdvanceSearchViewModel.ToDate = $('#ToDate').val();
         //apply datatable plugin on Customer table
         _dataTable.customerList = $('#tblCustomer').DataTable(
         {
@@ -60,7 +71,7 @@ function BindOrReloadCustomerTable(action) {
                 data: { "CustomerAdvanceSearchVM": CustomerAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 10,
+            pageLength: 12,
             columns: [
                { "data": "ID" },
                {
@@ -78,7 +89,7 @@ function BindOrReloadCustomerTable(action) {
                { "data": "TaxRegNo", "defaultContent": "<i>-</i>" },
                { "data": "PANNO", "defaultContent": "<i>-</i>" },
                 { "data": "OutStanding", "defaultContent": "<i>-</i>" },
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditCustomer(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditCustomer(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' }
             ],
             columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                  { className: "text-right", "targets": [6] },
@@ -89,19 +100,21 @@ function BindOrReloadCustomerTable(action) {
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
-                debugger;
+                $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
+                $('#tblCustomer').fadeIn('slow');
                 if (action === 'Export') {
                     if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 10000) {
-                            MasterAlert("info", 'We are able to download maximum 10000 rows of data, There exist more than 10000 rows of data please filter and download')
+                        if (json.data[0].TotalCount > 1000) {
+                            MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
                         }
                     }
                     $(".buttons-excel").trigger('click');
                     BindOrReloadCustomerTable('Search');
+                    
                 }
             }
         });
-        $(".buttons-excel").hide();
+        $(".buttons-excel").hide();        
     }
     catch (e) {
         console.log(e.message);

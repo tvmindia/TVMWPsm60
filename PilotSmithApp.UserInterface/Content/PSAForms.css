@@ -1,0 +1,87 @@
+﻿.newinput {
+            border: 0px;
+            border-radius: 0px;
+            /* box-shadow: white 1px 6px 1px; */
+            height: 30px;
+            border-bottom: 1px solid #4bd24b;
+            background-color: #fffdf9;
+        }
+        .searchicon {
+              position: absolute;
+              left: 86%;
+              z-index: 4;
+              margin-top: 5px;
+              cursor:pointer;
+              opacity:0.4;
+            }
+        :hover.searchicon{
+            opacity:1;
+        }
+        .divboxASearch{
+            position:absolute;
+            width:39.4%;
+            z-index:1;
+            /*visibility:hidden;*/
+            display:none;
+            padding-left: 0px;
+            padding-right: 1.7%;
+            background-color: white;
+            margin-top: -0.6%;
+            margin-left: 1.2%;
+            box-shadow: #a09e9e 0px 1px 11px 1px;
+        }
+        .divbox1{
+            padding-left: 0px;
+            padding-right: 1.7%;
+            background-color: white;
+            margin-top: 1.5%;
+            margin-left: 4%;
+            border-radius: 2%;
+        }
+        .divbox2 {
+            padding: 0px;
+            background-color: white;
+            margin: 1%;
+        }
+
+        .headSeperator {
+            background-color: white;
+            margin-bottom: 10px !important;
+            margin-top: 0px;
+            color: #DB8B0B;
+        }
+
+        .no-padding {
+            padding: 0px;
+        }
+
+        .no-left-padding,.dataTables_info{
+            padding-left: 0px;
+        }
+
+        .no-right-padding,.dataTables_paginate {
+            padding-right: 0px;
+        }
+        .overlay{
+            background-color:#EEF5F9;
+        }
+        .searchbtn{
+            height: 30px;
+            background-color: #02a68f;
+            color: #ffffff;
+            border-radius: 0;
+            box-shadow: #4bd24b 0px 0px 2px 1px
+        }
+        .content-wrapper{
+            min-height:88vh!important;
+        }
+        .fa-pencil-square-o{
+            color:#DB8B0B;
+        }
+        .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+            background-color: #02a68f;
+            border-color:#02a68f;
+        }
+        .odd{
+            background-color:rgba(2, 166, 143, 0.11)!important; 
+        }

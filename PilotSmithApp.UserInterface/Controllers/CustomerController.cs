@@ -103,7 +103,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
                 int totalResult = CustomerVMList.Count != 0 ? CustomerVMList[0].TotalCount : 0;
                 int filteredResult = CustomerVMList.Count != 0 ? CustomerVMList[0].FilteredCount : 0;
-                CustomerVMList = CustomerVMList.Skip(0).Take(filteredResult > 10000 ? 10000 : filteredResult).ToList();
+                CustomerVMList = CustomerVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
             }
             var settings = new JsonSerializerSettings
             {
@@ -161,8 +161,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Event = "AddCustomer();";
 
                     toolboxVM.ImportBtn.Visible = true;
-                    toolboxVM.ImportBtn.Text = "Import";
-                    toolboxVM.ImportBtn.Title = "Import to excel";
+                    toolboxVM.ImportBtn.Text = "Export";
+                    toolboxVM.ImportBtn.Title = "Export to excel";
                     toolboxVM.ImportBtn.Event = "ExportCustomerData()";
 
                     toolboxVM.resetbtn.Visible = true;

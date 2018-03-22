@@ -182,6 +182,8 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = customerAdvanceSearch.DataTablePaging.Length;
                         //cmd.Parameters.Add("@OrderDir", SqlDbType.NVarChar, 5).Value = model.order[0].dir;
                         //cmd.Parameters.Add("@OrderColumn", SqlDbType.NVarChar, -1).Value = model.order[0].column;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = customerAdvanceSearch.FromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = customerAdvanceSearch.ToDate;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

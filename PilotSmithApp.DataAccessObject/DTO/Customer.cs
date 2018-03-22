@@ -37,6 +37,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
     public class CustomerAdvanceSearch
     {
         public string SearchTerm { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public string IsInternalComp { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
     }
     public class Titles
