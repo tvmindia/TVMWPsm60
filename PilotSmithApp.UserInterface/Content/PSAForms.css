@@ -85,3 +85,15 @@
         .odd{
             background-color:rgba(2, 166, 143, 0.11)!important; 
         }
+        .excelExport{
+            z-index: -900;
+            background-image: url(../../Content/images/excel_export.png);
+            bottom: 0;
+            top: 0;
+            position: absolute;
+            left: 0;
+            right: 0;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            background-color: #eef5f9;
+        }

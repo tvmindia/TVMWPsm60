@@ -101,12 +101,20 @@ function BindOrReloadCustomerTable(action) {
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
+                debugger;
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblCustomer').fadeIn('slow');
+                if (action == undefined)
+                {
+                    $('.excelExport').css('z-index','-999');
+                    OnServerCallComplete();
+                }
                 if (action === 'Export') {
                     if (json.data.length > 0) {
                         if (json.data[0].TotalCount > 1000) {
-                            MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
+                            setTimeout(function () { 
+                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
+                            },10000)
                         }
                     }
                     $(".buttons-excel").trigger('click');
@@ -127,6 +135,8 @@ function ResetCustomerList() {
 }
 //function export data to excel
 function ExportCustomerData() {
+    $('.excelExport').css('z-index', '6');
+    OnServerCallBegin();
     BindOrReloadCustomerTable('Export');
 }
 // add customer section
