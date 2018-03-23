@@ -13,6 +13,18 @@ namespace PilotSmithApp.BusinessService.Service
     {
         private ICustomerRepository _customerRepository;
 
+        public bool CheckCompanyNameExist(string companyName)
+        {
+            return _customerRepository.CheckCompanyNameExist(companyName);
+        }
+        public bool CheckCustomerEmailExist(string contactEmail)
+        {
+            return _customerRepository.CheckCustomerEmailExist(contactEmail);
+        }
+        public bool CheckMobileNumberExist(string mobile)
+        {
+            return _customerRepository.CheckMobileNumberExist(mobile);
+        }
         public CustomerBusiness(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
@@ -32,6 +44,10 @@ namespace PilotSmithApp.BusinessService.Service
         public List<Customer> GetAllCustomer(CustomerAdvanceSearch customerAdvanceSearch)
         {
             return _customerRepository.GetAllCustomer(customerAdvanceSearch);
+        }
+        public object DeleteCustomer(Guid id)
+        {
+            return _customerRepository.DeleteCustomer(id);
         }
     }
 }

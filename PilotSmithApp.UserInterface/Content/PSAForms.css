@@ -86,7 +86,7 @@
             background-color:rgba(2, 166, 143, 0.11)!important; 
         }
         .excelExport{
-            z-index: -900;
+            z-index:6;
             background-image: url(../../Content/images/excel_export.png);
             bottom: 0;
             top: 0;

@@ -33,6 +33,46 @@ namespace PilotSmithApp.UserInterface.Controllers
             CustomerAdvanceSearchViewModel customerAdvanceSearchVM = new CustomerAdvanceSearchViewModel();
             return View(customerAdvanceSearchVM);
         }
+        #region Check Company Exists
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckCompanyNameExist(CustomerViewModel customerVM)
+        {
+            bool exists = customerVM.IsUpdate ? false : _customerBusiness.CheckCompanyNameExist(customerVM.CompanyName);
+            if (exists)
+            {
+                return Json("<p><span style='vertical-align: 2px'>Company name is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+            }
+            //var result = new { success = true, message = "Success" };
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Check Company Exists
+        #region Check CustomerEmail Exists
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckCustomerEmailExist(CustomerViewModel customerVM)
+        {
+            bool exists = customerVM.IsUpdate ? false : _customerBusiness.CheckCustomerEmailExist(customerVM.ContactEmail);
+            if (exists)
+            {
+                return Json("<p><span style='vertical-align: 2px'>Email is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+            }
+            //var result = new { success = true, message = "Success" };
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Check CustomerEmail Exists
+        #region Check Mobile number Exists
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckMobileNumberExist(CustomerViewModel customerVM)
+        {
+            bool exists = customerVM.IsUpdate ? false : _customerBusiness.CheckMobileNumberExist(customerVM.Mobile);
+            if (exists)
+            {
+                return Json("<p><span style='vertical-align: 2px'>Mobile number is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+            }
+            //var result = new { success = true, message = "Success" };
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Check Mobile number Exists
+        #region Customer Form
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
         public ActionResult CustomerForm(Guid id)
         {
@@ -85,6 +125,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
             return PartialView("_CustomerForm", customerVM);
         }
+        #endregion Customer Form
         #region GetAllCustomer
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
@@ -146,6 +187,27 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion InsertUpdateCustomer
+        #region DeleteCustomer
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Customers", Mode = "D")]
+        public string DeleteCustomer(Guid id)
+        {
+
+            try
+            {
+                object result = _customerBusiness.DeleteCustomer(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion DeleteCustomer
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]

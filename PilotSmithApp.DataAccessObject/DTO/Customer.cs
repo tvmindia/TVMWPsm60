@@ -11,7 +11,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public Guid ID { get; set; }
         public string CompanyName { get; set; }
-        public bool IsInternalComp { get; set; }
         public string ContactPerson { get; set; }
         public string ContactEmail { get; set; }
         public string ContactTitle { get; set; }

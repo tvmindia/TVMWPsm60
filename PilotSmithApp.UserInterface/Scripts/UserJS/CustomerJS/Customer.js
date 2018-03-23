@@ -1,5 +1,9 @@
 ﻿var _dataTable = {};
 var _emptyGuid = "00000000-0000-0000-0000-000000000000";
+var _jsonData = {};
+var _message = "";
+var _status = "";
+var _result = "";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {        
@@ -12,7 +16,6 @@ $(document).ready(function () {
 //function bind the Customer list checking search and filter
 function BindOrReloadCustomerTable(action) {
     try {
-        
         //creating advancesearch object
         CustomerAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
@@ -41,7 +44,6 @@ function BindOrReloadCustomerTable(action) {
             default:
                 break;
         }
-        $('#tblCustomer').fadeOut('fast');
         CustomerAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         CustomerAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         CustomerAdvanceSearchViewModel.FromDate = $('#FromDate').val();
@@ -63,7 +65,6 @@ function BindOrReloadCustomerTable(action) {
             lengthChange: false,
             processing: true,
             language: {
-
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
             serverSide: true,
@@ -72,9 +73,8 @@ function BindOrReloadCustomerTable(action) {
                 data: { "CustomerAdvanceSearchVM": CustomerAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 12,
+            pageLength: 13,
             columns: [
-               { "data": "ID" },
                {
                    "data": "CompanyName", render: function (data, type, row) {
                        if (row.IsInternalComp) {
@@ -89,15 +89,13 @@ function BindOrReloadCustomerTable(action) {
                { "data": "Mobile", "defaultContent": "<i>-</i>" },
                { "data": "TaxRegNo", "defaultContent": "<i>-</i>" },
                { "data": "PANNO", "defaultContent": "<i>-</i>" },
-                { "data": "OutStanding", "defaultContent": "<i>-</i>" },
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditCustomer(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' }
+               { "data": "OutStanding", "defaultContent": "<i>-</i>" },
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditCustomer(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },               
             ],
-            columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                 { className: "text-right", "targets": [6] },
-                  { className: "text-left", "targets": [1, 2] },
-            { className: "text-center", "targets": [3, 4, 5] }
-
-            ],
+            columnDefs: [{ className: "text-right", "targets": [5] },
+                  { className: "text-left", "targets": [0, 1] },
+            { className: "text-center", "targets": [2, 3, 4] }
+            ],           
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
@@ -106,7 +104,7 @@ function BindOrReloadCustomerTable(action) {
                 $('#tblCustomer').fadeIn('slow');
                 if (action == undefined)
                 {
-                    $('.excelExport').css('z-index','-999');
+                    $('.excelExport').hide();
                     OnServerCallComplete();
                 }
                 if (action === 'Export') {
@@ -118,8 +116,7 @@ function BindOrReloadCustomerTable(action) {
                         }
                     }
                     $(".buttons-excel").trigger('click');
-                    BindOrReloadCustomerTable();
-                    
+                    BindOrReloadCustomerTable();                    
                 }
             }
         });
@@ -135,7 +132,7 @@ function ResetCustomerList() {
 }
 //function export data to excel
 function ExportCustomerData() {
-    $('.excelExport').css('z-index', '6');
+    $('.excelExport').show();
     OnServerCallBegin();
     BindOrReloadCustomerTable('Export');
 }
@@ -168,21 +165,21 @@ function SaveCustomer() {
 
 function SaveSuccessCustomer(data, status) {
     try {
-        var jsonData = JSON.parse(data)
+        var _jsonData = JSON.parse(data)
         //message field will return error msg only
-        message = jsonData.Message;
-        status = jsonData.Status;
-        result = jsonData.Record;
-        switch (status) {
+        _message = jsonData.Message;
+        _status = jsonData.Status;
+        _result = jsonData.Record;
+        switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $('#ID').val(result.ID);
                 ChangeButtonPatchView("Customer", "btnPatchCustomerNew", "Edit");
                 BindOrReloadCustomerTable('Init');
-                notyAlert('success', result.Message);
+                notyAlert('success', _result.Message);
                 break;
             case "ERROR":
-                notyAlert('error', message);
+                notyAlert('error', _message);
                 break;
             default:
                 break;
@@ -200,25 +197,24 @@ function DeleteCustomer() {
 function DeleteItem(id) {
     try {
         if (id) {
-            var data = { "id": id };
-            var jsonData = {};
-            var message = "";
-            var status = "";
-            var result = "";
-            jsonData = GetDataFromServer("Customer/DeleteCustomer/", data);
-            if (jsonData != '') {
-                jsonData = JSON.parse(jsonData);
-                message = jsonData.Message;
-                status = jsonData.Status;
-                result = jsonData.Record;
+            var data = { "id": id };            
+            _jsonData = GetDataFromServer("Customer/DeleteCustomer/", data);
+            if (_jsonData != '') {
+                _jsonData = JSON.parse(_jsonData);
+                _message = _jsonData.Message;
+                _status = _jsonData.Status;
+                _result = _jsonData.Record;
             }
-            switch (status) {
+            switch (_status) {
                 case "OK":
-                    notyAlert('success', result.Message);
+                    notyAlert('success', _result.Message);
+                    $('#ID').val(_emptyGuid);
+                    ChangeButtonPatchView("Customer", "btnPatchCustomerNew", "Add");
+                    ResetCustomer();
                     BindOrReloadCustomerTable('Init');
                     break;
                 case "ERROR":
-                    notyAlert('error', message);
+                    notyAlert('error', _message);
                     break;
                 default:
                     break;

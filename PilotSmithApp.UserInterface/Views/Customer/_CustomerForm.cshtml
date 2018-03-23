@@ -18,22 +18,6 @@
                         @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.IsInternalComp, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @{
-                            List<SelectListItem> dropdownList = new List<SelectListItem>();
-                            dropdownList.Add(new SelectListItem
-                            { Text = "No", Value = "false", Selected = true });
-                            dropdownList.Add(new SelectListItem
-                            { Text = "Yes", Value = "true" });
-                        }
-                        @Html.DropDownListFor(model => model.IsInternalComp, dropdownList, new { @class = "form-control BlockEnter newinput", style = "padding:4px 12px;", @id = "IsInternalComp" })
-                    </div>
-                </div>
             </div>
             <div class="col-md-12">&nbsp;</div>
         </div>

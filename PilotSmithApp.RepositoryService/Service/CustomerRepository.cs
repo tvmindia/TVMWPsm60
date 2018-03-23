@@ -23,6 +23,93 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
+        #region Check Company  Name Exist
+        public bool CheckCompanyNameExist(string companyName)
+        {
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[CheckCompanyNameExist]";
+                        cmd.Parameters.Add("@CompanyName", SqlDbType.NVarChar).Value = companyName;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        Object res = cmd.ExecuteScalar();
+                        return (res.ToString() == "Exists" ? true : false);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Check Company  Name Exist
+        #region Check Contact Email Exist
+        public bool CheckCustomerEmailExist(string contactEmail)
+        {
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[CheckCustomerEmailExist]";
+                        cmd.Parameters.Add("@ContactEmail", SqlDbType.NVarChar).Value = contactEmail;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        Object res = cmd.ExecuteScalar();
+                        return (res.ToString() == "Exists" ? true : false);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Check Contact Email Exist
+        #region Check Contact Email Exist
+        public bool CheckMobileNumberExist(string mobile)
+        {
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[CheckMobileNumberExist ]";
+                        cmd.Parameters.Add("@Mobile", SqlDbType.NVarChar).Value = mobile;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        Object res = cmd.ExecuteScalar();
+                        return (res.ToString() == "Exists" ? true : false);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Check Contact Email Exist
         #region GetAllTitles
         public List<Titles> GetAllTitles()
         {
@@ -95,7 +182,6 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customer.ID;
                         }
                         cmd.Parameters.Add("@CompanyName", SqlDbType.VarChar, 150).Value = customer.CompanyName;
-                        cmd.Parameters.Add("@IsInternalComp", SqlDbType.Bit).Value = customer.IsInternalComp;
                         cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar, 100).Value = customer.ContactPerson;
                         cmd.Parameters.Add("@ContactEmail", SqlDbType.VarChar, 150).Value = customer.ContactEmail;
                         cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = customer.ContactTitle;
@@ -196,7 +282,6 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         customer.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : customer.ID);
                                         customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : customer.CompanyName);
-                                        customer.IsInternalComp = (sdr["IsInternalComp"].ToString() != "" ? bool.Parse(sdr["IsInternalComp"].ToString()) : customer.IsInternalComp);
                                         customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : customer.ContactPerson);
                                         customer.ContactEmail = (sdr["ContactEmail"].ToString() != "" ? sdr["ContactEmail"].ToString() : customer.ContactEmail);
                                         customer.ContactTitle = (sdr["ContactTitle"].ToString() != "" ? sdr["ContactTitle"].ToString() : customer.ContactTitle);
@@ -263,7 +348,6 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     customer.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : customer.ID);
                                     customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : customer.CompanyName);
-                                    customer.IsInternalComp = (sdr["IsInternalComp"].ToString() != "" ? bool.Parse(sdr["IsInternalComp"].ToString()) : customer.IsInternalComp);
                                     customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : customer.ContactPerson);
                                     customer.ContactEmail = (sdr["ContactEmail"].ToString() != "" ? sdr["ContactEmail"].ToString() : customer.ContactEmail);
                                     customer.ContactTitle = (sdr["ContactTitle"].ToString() != "" ? sdr["ContactTitle"].ToString() : customer.ContactTitle);
@@ -300,5 +384,55 @@ namespace PilotSmithApp.RepositoryService.Service
             return customer;
         }
         #endregion Get Customer
+        #region DeleteCustomer
+        public object DeleteCustomer(Guid id)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[DeleteCustomer]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(_appConstant.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.DeleteSuccess
+            };
+        }
+        #endregion DeleteCustomer
     }
 }

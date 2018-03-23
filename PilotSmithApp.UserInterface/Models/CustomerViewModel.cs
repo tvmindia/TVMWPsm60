@@ -15,15 +15,15 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Company Name")]
         [MaxLength(150)]
         [Required(ErrorMessage = "Company Name is missing")]
+        [Remote(action: "CheckCompanyNameExist", controller: "Customer", AdditionalFields = nameof(IsUpdate))]
         public string CompanyName { get; set; }
-        [Display(Name = "Is Internal Company")]
-        public bool IsInternalComp { get; set; }
         [Display(Name = "Contact Person")]
         [MaxLength(100)]
         public string ContactPerson { get; set; }
         [Display(Name = "Email")]
-        [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Please enter a valid e-mail adress")]
+        [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Enter a valid e-mail adress")]
         [MaxLength(150)]
+        [Remote(action: "CheckCustomerEmailExist", controller: "Customer", AdditionalFields = nameof(IsUpdate))]
         public string ContactEmail { get; set; }
         [Display(Name = "Title")] 
         [MaxLength(10)]
@@ -36,6 +36,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string LandLine { get; set; }
         [Display(Name = "Mobile")]
         [StringLength(50, MinimumLength = 5)]
+        [RegularExpression(@"^((\+91-?)|0)?[0-9]{10}$", ErrorMessage = "Entered phone format is not valid.")]
+        [Remote(action: "CheckMobileNumberExist", controller: "Customer", AdditionalFields = nameof(IsUpdate))]
         public string Mobile { get; set; }
         [Display(Name = "Fax")]
         [StringLength(50, MinimumLength = 5)]
