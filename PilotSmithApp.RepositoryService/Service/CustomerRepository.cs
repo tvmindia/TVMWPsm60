@@ -24,7 +24,7 @@ namespace PilotSmithApp.RepositoryService.Service
             _databaseFactory = databaseFactory;
         }
         #region Check Company  Name Exist
-        public bool CheckCompanyNameExist(string companyName)
+        public bool CheckCompanyNameExist(Customer customer)
         {
             try
             {
@@ -38,7 +38,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[CheckCompanyNameExist]";
-                        cmd.Parameters.Add("@CompanyName", SqlDbType.NVarChar).Value = companyName;
+                        cmd.Parameters.Add("@CompanyName", SqlDbType.NVarChar).Value = customer.CompanyName;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customer.ID;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);
@@ -53,7 +54,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion Check Company  Name Exist
         #region Check Contact Email Exist
-        public bool CheckCustomerEmailExist(string contactEmail)
+        public bool CheckCustomerEmailExist(Customer customer)
         {
             try
             {
@@ -67,7 +68,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[CheckCustomerEmailExist]";
-                        cmd.Parameters.Add("@ContactEmail", SqlDbType.NVarChar).Value = contactEmail;
+                        cmd.Parameters.Add("@ContactEmail", SqlDbType.NVarChar).Value = customer.ContactEmail;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customer.ID;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);
@@ -82,7 +84,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion Check Contact Email Exist
         #region Check Contact Email Exist
-        public bool CheckMobileNumberExist(string mobile)
+        public bool CheckMobileNumberExist(Customer customer)
         {
             try
             {
@@ -96,7 +98,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[CheckMobileNumberExist ]";
-                        cmd.Parameters.Add("@Mobile", SqlDbType.NVarChar).Value = mobile;
+                        cmd.Parameters.Add("@Mobile", SqlDbType.NVarChar).Value = customer.Mobile;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customer.ID;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

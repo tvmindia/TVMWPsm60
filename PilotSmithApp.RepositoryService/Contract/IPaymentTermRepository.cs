@@ -10,5 +10,7 @@ namespace PilotSmithApp.RepositoryService.Contract
     public interface IPaymentTermRepository
     {
         List<PaymentTerm> GetAllPayTerm();
+        List<PaymentTerm> GetPaymentTermForSelectList();
+
     }
 }

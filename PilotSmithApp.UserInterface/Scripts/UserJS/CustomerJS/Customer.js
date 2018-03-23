@@ -128,6 +128,7 @@ function BindOrReloadCustomerTable(action) {
 }
 //function reset the list to initial
 function ResetCustomerList() {
+    $(".searchicon").removeClass('filterApplied');
     BindOrReloadCustomerTable('Reset');
 }
 //function export data to excel
@@ -162,18 +163,24 @@ function ResetCustomer() {
 function SaveCustomer() {
     $('#btnInsertUpdateCustomer').trigger('click');
 }
-
+function ApplyFilterThenSearch()
+{
+    $(".searchicon").addClass('filterApplied');
+    CloseAdvanceSearch();
+    BindOrReloadCustomerTable('Search');
+}
 function SaveSuccessCustomer(data, status) {
     try {
+        debugger;
         var _jsonData = JSON.parse(data)
         //message field will return error msg only
-        _message = jsonData.Message;
-        _status = jsonData.Status;
-        _result = jsonData.Record;
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $('#ID').val(result.ID);
+                $('#ID').val(_result.ID);
                 ChangeButtonPatchView("Customer", "btnPatchCustomerNew", "Edit");
                 BindOrReloadCustomerTable('Init');
                 notyAlert('success', _result.Message);

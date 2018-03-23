@@ -21,5 +21,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _paymentTermRepository.GetAllPayTerm();
         }
+        public List<PaymentTerm> GetPaymentTermForSelectList()
+        {
+            return _paymentTermRepository.GetPaymentTermForSelectList();
+        }
+        
     }
 }

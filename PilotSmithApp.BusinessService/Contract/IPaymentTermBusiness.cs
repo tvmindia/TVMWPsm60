@@ -10,5 +10,6 @@ namespace PilotSmithApp.BusinessService.Contract
     public interface IPaymentTermBusiness
     {
         List<PaymentTerm> GetAllPayTerm();
+        List<PaymentTerm> GetPaymentTermForSelectList();
     }
 }
