@@ -47,6 +47,8 @@
     <Compile Include="Contract\IDatabaseFactory.cs" />
     <Compile Include="Contract\IDistrictRepository.cs" />
     <Compile Include="Contract\IDynamicUIRepository.cs" />
+    <Compile Include="Contract\IEnquiryFollowupRepository.cs" />
+    <Compile Include="Contract\IEnquiryRepository.cs" />
     <Compile Include="Contract\IProductCategoryRepository.cs" />
     <Compile Include="Contract\IProductSpecificationRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
@@ -58,6 +60,8 @@
     <Compile Include="Service\DatabaseFactory.cs" />
     <Compile Include="Service\DistrictRepository.cs" />
     <Compile Include="Service\DynamicUIRepository.cs" />
+    <Compile Include="Service\EnquiryFollowupRepository.cs" />
+    <Compile Include="Service\EnquiryRepository.cs" />
     <Compile Include="Service\ProductCategoryRepository.cs" />
     <Compile Include="Service\ProductSpecificationRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
