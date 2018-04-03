@@ -1,4 +1,9 @@
-﻿using System;
+﻿using AutoMapper;
+using Newtonsoft.Json;
+using PilotSmithApp.BusinessService.Contract;
+using PilotSmithApp.DataAccessObject.DTO;
+using PilotSmithApp.UserInterface.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +13,209 @@ namespace PilotSmithApp.UserInterface.Controllers
 {
     public class AreaController : Controller
     {
+        AppConst _appConst = new AppConst();
+        private PSASysCommon _psaSysCommon = new PSASysCommon();
+        private IAreaBusiness _areaBusiness;
+        private IStateBusiness _stateBusiness;
+        private IDistrictBusiness _districtBusiness;
         // GET: Area
-        public ActionResult Index()
+        #region Constructor Injection
+        public AreaController(IAreaBusiness areaBusiness, IStateBusiness stateBusiness, IDistrictBusiness districtBusiness)
         {
+            _areaBusiness = areaBusiness;
+            _stateBusiness = stateBusiness;
+            _districtBusiness = districtBusiness;
+        }
+        #endregion
+        public ActionResult Index(string code)
+        {
+            ViewBag.SysModuleCode = code;
+            AreaAdvanceSearchViewModel areaAdvanceSearchVM = new AreaAdvanceSearchViewModel();
             return View();
         }
+
+        #region InsertUpdateArea
+        public string InsertUpdateArea(AreaViewModel areaVM)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                areaVM.PSASysCommon = new PSASysCommonViewModel
+                {
+                    CreatedBy = appUA.UserName,
+                    CreatedDate = _psaSysCommon.GetCurrentDateTime(),
+                    UpdatedBy = appUA.UserName,
+                    UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
+                };
+                var result = _areaBusiness.InsertUpdateArea(Mapper.Map<AreaViewModel, Area>(areaVM));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConst.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion
+
+        #region CheckAreaCodeExist
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckAreaCodeExist(Area areaVM)
+        {
+            bool exists = areaVM.IsUpdate ? false : _areaBusiness.CheckAreaCodeExist(areaVM.Code);
+            if (exists)
+            {
+                return Json("<p><span style='vertical-align: 2px'>Area Code is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+            }
+            //var result = new { success = true, message = "Success" };
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region MasterPartial
+        [HttpGet]
+        public ActionResult MasterPartial(string masterCode)
+        {
+            AreaViewModel areaVM = masterCode=="0"? new AreaViewModel() : Mapper.Map<Area, AreaViewModel>(_areaBusiness.GetArea(int.Parse(masterCode)));
+            areaVM.IsUpdate = masterCode=="0" ? false : true;
+            areaVM.State = new StateViewModel();
+            areaVM.State.SelectList = StateDropDown();
+            areaVM.District = new DistrictViewModel();
+            areaVM.District.SelectList = DistrictDropDown();
+            return PartialView("_AddArea", areaVM);
+        }
+        #endregion
+
+        #region StateDropDown
+        public List<SelectListItem> StateDropDown()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<StateViewModel> stateList = Mapper.Map<List<State>, List<StateViewModel>>(_stateBusiness.GetStateForSelectList());
+            if (stateList != null)
+                foreach (StateViewModel state in stateList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = state.Description,
+                        Value = state.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
+        }
+        #endregion StateDropDown
+
+        #region DistrictDropDown
+        public List<SelectListItem> DistrictDropDown()
+        {           
+            List<SelectListItem> selectListItem = new List<SelectListItem>();            
+            List<DistrictViewModel> districtList = Mapper.Map<List<District>, List<DistrictViewModel>>(_districtBusiness.GetDistrictForSelectList());
+            if (districtList != null)
+                foreach (DistrictViewModel district in districtList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = district.Description,
+                        Value = district.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;           
+        }
+        #endregion
+
+        #region GetAllArea
+        public JsonResult GetAllArea(DataTableAjaxPostModel model, AreaAdvanceSearchViewModel areaAdvanceSearchVM)
+        {
+            areaAdvanceSearchVM.DataTablePaging.Start = model.start;
+            areaAdvanceSearchVM.DataTablePaging.Length = (areaAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : areaAdvanceSearchVM.DataTablePaging.Length;
+            List<AreaViewModel> areaVMList = Mapper.Map<List<Area>, List<AreaViewModel>>(_areaBusiness.GetAllArea(Mapper.Map<AreaAdvanceSearchViewModel, AreaAdvanceSearch>(areaAdvanceSearchVM)));
+            if (areaAdvanceSearchVM.DataTablePaging.Length == -1)
+            {
+                int totalResult = areaVMList.Count != 0 ? areaVMList[0].TotalCount : 0;
+                int filteredResult = areaVMList.Count != 0 ? areaVMList[0].FilteredCount : 0;
+                areaVMList = areaVMList.Skip(0).Take(filteredResult > 10000 ? 10000 : filteredResult).ToList();
+            }
+            return Json(new
+            {
+                // this is what datatables wants sending back
+                draw = model.draw,
+                recordsTotal = areaVMList.Count != 0 ? areaVMList[0].TotalCount : 0,
+                recordsFiltered = areaVMList.Count != 0 ? areaVMList[0].FilteredCount : 0,
+                data = areaVMList
+            });
+        }
+        #endregion
+
+        #region DeleteArea
+        public string DeleteArea(int code)
+        {
+            try
+            {
+                var result = _areaBusiness.DeleteArea(code);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConst.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion
+
+        #region AreaDropDown
+        public ActionResult AreaDropDown(AreaViewModel areaVM)
+        {
+            areaVM.AreaCode = areaVM.Code;
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            areaVM.SelectList = new List<SelectListItem>();
+            List<AreaViewModel> areaList = Mapper.Map<List<Area>, List<AreaViewModel>>(_areaBusiness.GetAreaForSelectList());
+            if (areaList != null)
+                foreach (AreaViewModel area in areaList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = area.Description,
+                        Value = area.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            areaVM.SelectList = selectListItem;
+            return PartialView("_AreaDropDown", areaVM);
+        }
+        #endregion
+
+        #region ButtonStyling
+        [HttpGet]
+        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        public ActionResult ChangeButtonStyle(string actionType)
+        {
+            ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            switch (actionType)
+            {
+                case "List":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddAreaMaster('MSTR')";
+                    //----added for reset button---------------
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset All";
+                    toolboxVM.resetbtn.Event = "ResetAreaList();";
+                    //----added for export button--------------
+                    toolboxVM.ExportBtn.Visible = true;
+                    toolboxVM.ExportBtn.Text = "Export";
+                    toolboxVM.ExportBtn.Title = "Export";
+                    toolboxVM.ExportBtn.Event = "ExportAreaData();";
+                    //---------------------------------------
+                    break;
+                default:
+                    return Content("Nochange");
+            }
+            return PartialView("ToolboxView", toolboxVM);
+        }
+
+        #endregion
     }
 }

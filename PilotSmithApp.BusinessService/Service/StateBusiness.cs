@@ -1,4 +1,7 @@
-﻿using System;
+﻿using PilotSmithApp.BusinessService.Contract;
+using PilotSmithApp.DataAccessObject.DTO;
+using PilotSmithApp.RepositoryService.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,37 @@ using System.Threading.Tasks;
 
 namespace PilotSmithApp.BusinessService.Service
 {
-    class StateBusiness
+    public class StateBusiness:IStateBusiness
     {
+        private IStateRepository _stateRepository;
+        public StateBusiness(IStateRepository stateRepository)
+        {
+            _stateRepository = stateRepository;
+        }
+        public object InsertUpdateState(State state)
+        {
+            return _stateRepository.InsertUpdateState(state);
+        }
+        public List<State> GetAllState(StateAdvanceSearch stateAdvanceSearch)
+        {
+            return _stateRepository.GetAllState(stateAdvanceSearch);
+        }
+        public State GetState(int code)
+        {
+            return _stateRepository.GetState(code);
+        }
+        public bool CheckStateCodeExist(int code)
+        {
+            return _stateRepository.CheckStateCodeExist(code);
+        }
+        public object DeleteState(int code)
+        {
+            return _stateRepository.DeleteState(code);
+        }
+        public List<State> GetStateForSelectList()
+        {
+            return _stateRepository.GetStateForSelectList();
+        }
+
     }
 }

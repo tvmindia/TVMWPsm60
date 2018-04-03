@@ -1,1 +1,5 @@
-﻿
+﻿@model PilotSmithApp.UserInterface.Models.DistrictViewModel
+<div class="input-group">
+    @Html.DropDownListFor(model => model.DistrictCode, Model.SelectList, "--Select District--", new { @class = "form-control" })
+    <span class="input-group-addon" style="cursor:pointer;color:#015E9A" onclick="AddDistrictMaster('OTR')"><i class="fa fa-plus-square-o"></i></span>
+</div>

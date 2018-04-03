@@ -46,6 +46,11 @@ namespace PilotSmithApp.UserInterface.App_Start
 
             //----------------------
             bundles.Add(new ScriptBundle("~/bundles/CustomerJS/Customer").Include("~/Scripts/UserJS/CustomerJS/Customer.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/ProductCategory").Include("~/Scripts/UserJS/ProductCategory.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/ProductSpecification").Include("~/Scripts/UserJS/ProductSpecification.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/State").Include("~/Scripts/UserJS/State.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/District").Include("~/Scripts/UserJS/District.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/Area").Include("~/Scripts/UserJS/Area.js"));
         }
     }
 }

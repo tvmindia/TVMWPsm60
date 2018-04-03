@@ -1,1 +1,52 @@
-﻿
+﻿@model PilotSmithApp.UserInterface.Models.StateViewModel
+
+@using (Ajax.BeginForm("InsertUpdateState", "State", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessState", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormState" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal ">
+        @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group col-md-12">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label lblrequired " })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control BlockEnter newinput",@readonly= "true" } })                   
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label lblrequired" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control newinput", rows = 5 } })
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group ">
+            <div class="col-md-12">
+                <input type="submit" value="Save Changes" id="btnSaveMaster" class="btn btn-info" style="margin-left:5%" />
+                <img src="~/Content/images/MasterLoading.gif" id="imgMasterLoading" style="display:none" />
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormState");
+    });
+</script>
+
+

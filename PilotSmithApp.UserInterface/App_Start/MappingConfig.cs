@@ -36,8 +36,16 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<TitlesViewModel, Titles>().ReverseMap();
                 config.CreateMap<PaymentTermViewModel, PaymentTerm>().ReverseMap();
                 config.CreateMap<PSASysCommonViewModel, PSASysCommon>().ReverseMap();
-
-
+                config.CreateMap<ProductCategoryViewModel, ProductCategory>().ReverseMap();
+                config.CreateMap<ProductCategoryAdvanceSearchViewModel, ProductCategoryAdvanceSearch>().ReverseMap();
+                config.CreateMap<ProductSpecificationViewModel, ProductSpecification>().ReverseMap();
+                config.CreateMap<ProductSpecificationAdvanceSearchViewModel, ProductSpecificationAdvanceSearch>().ReverseMap();
+                config.CreateMap<StateViewModel, State>().ReverseMap();
+                config.CreateMap<StateAdvanceSearchViewModel, StateAdvanceSearch>().ReverseMap();
+                config.CreateMap<DistrictViewModel, District>().ReverseMap();
+                config.CreateMap<DistrictAdvanceSearchViewModel, DistrictAdvanceSearch>().ReverseMap();
+                config.CreateMap<AreaViewModel, Area>().ReverseMap();
+                config.CreateMap<AreaAdvanceSearchViewModel, AreaAdvanceSearch>().ReverseMap();
             });
         }
     }
