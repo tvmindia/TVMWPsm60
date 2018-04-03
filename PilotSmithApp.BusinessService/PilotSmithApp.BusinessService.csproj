@@ -45,6 +45,8 @@
     <Compile Include="Contract\IDistrictBusiness.cs" />
     <Compile Include="Contract\ICustomerBusiness.cs" />
     <Compile Include="Contract\IDynamicUIBusiness.cs" />
+    <Compile Include="Contract\IEnquiryBusiness.cs" />
+    <Compile Include="Contract\IEnquiryFollowupBusiness.cs" />
     <Compile Include="Contract\IFileUploadBusiness.cs" />
     <Compile Include="Contract\IProductCategoryBusiness.cs" />
     <Compile Include="Contract\IProductSpecificationBusiness.cs" />
@@ -56,6 +58,8 @@
     <Compile Include="Service\DistrictBusiness.cs" />
     <Compile Include="Service\CustomerBusiness.cs" />
     <Compile Include="Service\DynamicUIBusiness.cs" />
+    <Compile Include="Service\EnquiryBusiness.cs" />
+    <Compile Include="Service\EnquiryFollowupBusiness.cs" />
     <Compile Include="Service\ProductCategoryBusiness.cs" />
     <Compile Include="Service\ProductSpecificationBusiness.cs" />
     <Compile Include="Service\StateBusiness.cs" />

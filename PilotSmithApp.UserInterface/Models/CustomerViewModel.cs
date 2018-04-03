@@ -15,7 +15,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Company Name")]
         [MaxLength(150)]
         [Required(ErrorMessage = "Company Name is missing")]
-        [Remote(action: "CheckCompanyNameExist", controller: "Customer", AdditionalFields = nameof(IsUpdate))]
+        [Remote(action: "CheckCompanyNameExist", controller: "Customer", AdditionalFields = "IsUpdate,ID")]
         public string CompanyName { get; set; }
         [Display(Name = "Contact Person")]
         [MaxLength(100)]

@@ -13,17 +13,17 @@ namespace PilotSmithApp.BusinessService.Service
     {
         private ICustomerRepository _customerRepository;
 
-        public bool CheckCompanyNameExist(string companyName)
+        public bool CheckCompanyNameExist(Customer customer)
         {
-            return _customerRepository.CheckCompanyNameExist(companyName);
+            return _customerRepository.CheckCompanyNameExist(customer);
         }
-        public bool CheckCustomerEmailExist(string contactEmail)
+        public bool CheckCustomerEmailExist(Customer customer)
         {
-            return _customerRepository.CheckCustomerEmailExist(contactEmail);
+            return _customerRepository.CheckCustomerEmailExist(customer);
         }
-        public bool CheckMobileNumberExist(string mobile)
+        public bool CheckMobileNumberExist(Customer customer)
         {
-            return _customerRepository.CheckMobileNumberExist(mobile);
+            return _customerRepository.CheckMobileNumberExist(customer);
         }
         public CustomerBusiness(ICustomerRepository customerRepository)
         {

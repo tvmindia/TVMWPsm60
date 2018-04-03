@@ -15,6 +15,6 @@ namespace PilotSmithApp.UserInterface.Models
         public string Description { get; set; }
         public int NoOfDays { get; set; }
         public PSASysCommonViewModel common { get; set; }
-        public List<SelectListItem> PaymentTermsList { set; get; }
+        public List<SelectListItem> SelectList { set; get; }
     }
 }

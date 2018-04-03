@@ -686,8 +686,11 @@
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
+    <Compile Include="Controllers\EnquiryController.cs" />
+    <Compile Include="Controllers\EnquiryFollowupController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ManageAccessController.cs" />
+    <Compile Include="Controllers\PaymentTermController.cs" />
     <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductSpecificationController.cs" />
@@ -701,6 +704,8 @@
     <Compile Include="Models\AreaViewModel.cs" />
     <Compile Include="Models\BankViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
+    <Compile Include="Models\EnquiryFollowupViewModel.cs" />
+    <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductSpecificationViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
@@ -775,6 +780,9 @@
     <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Customer\_CustomerForm.cshtml" />
+    <Content Include="Views\PaymentTerm\_PaymentTermDropdown.cshtml" />
+    <Content Include="Views\Enquiry\Index.cshtml" />
+    <Content Include="Views\Enquiry\_EnquiryForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -786,6 +794,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\Bank\" />
+    <Folder Include="Views\EnquiryFollowup\" />
     <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>

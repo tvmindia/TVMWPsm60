@@ -37,7 +37,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckCompanyNameExist(CustomerViewModel customerVM)
         {
-            bool exists = customerVM.IsUpdate ? false : _customerBusiness.CheckCompanyNameExist(customerVM.CompanyName);
+            bool exists = _customerBusiness.CheckCompanyNameExist(Mapper.Map<CustomerViewModel, Customer>(customerVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>Company name is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
@@ -50,7 +50,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckCustomerEmailExist(CustomerViewModel customerVM)
         {
-            bool exists = customerVM.IsUpdate ? false : _customerBusiness.CheckCustomerEmailExist(customerVM.ContactEmail);
+            bool exists = _customerBusiness.CheckCustomerEmailExist(Mapper.Map<CustomerViewModel, Customer>(customerVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>Email is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
@@ -63,7 +63,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckMobileNumberExist(CustomerViewModel customerVM)
         {
-            bool exists = customerVM.IsUpdate ? false : _customerBusiness.CheckMobileNumberExist(customerVM.Mobile);
+            bool exists = _customerBusiness.CheckMobileNumberExist(Mapper.Map<CustomerViewModel, Customer>(customerVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>Mobile number is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
@@ -79,7 +79,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             CustomerViewModel customerVM = null;
             try
             {
-               
+
                 if (id != Guid.Empty)
                 {
                     customerVM = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomer(id));
@@ -117,7 +117,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     });
                 }
                 customerVM.DefaultPaymentTermList = selectListItem;
-                         
+
             }
             catch (Exception ex)
             {
@@ -183,7 +183,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
 
                 AppConstMessage cm = _appConstant.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Status = "ERROR", Record="", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
             }
         }
         #endregion InsertUpdateCustomer
@@ -237,7 +237,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Event = "AddCustomer();";   
+                    toolboxVM.addbtn.Event = "AddCustomer();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";

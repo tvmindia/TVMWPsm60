@@ -9,9 +9,9 @@ namespace PilotSmithApp.BusinessService.Contract
 {
     public interface ICustomerBusiness
     {
-        bool CheckCompanyNameExist(string companyName);
-        bool CheckCustomerEmailExist(string contactEmail);
-        bool CheckMobileNumberExist(string mobile);
+        bool CheckCompanyNameExist(Customer customer);
+        bool CheckCustomerEmailExist(Customer customer);
+        bool CheckMobileNumberExist(Customer customer);
         List<Titles> GetAllTitles();
         List<Customer> GetAllCustomer(CustomerAdvanceSearch customerAdvanceSearch);
         Customer GetCustomer(Guid id);
