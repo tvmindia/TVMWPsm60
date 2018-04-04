@@ -24,27 +24,5 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
-        #region ProductDropdown
-        public ActionResult PaymentTermDropdown(PaymentTermViewModel paymentTermVM)
-        {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            paymentTermVM.SelectList = new List<SelectListItem>();
-            List<PaymentTermViewModel> paymentTermList = Mapper.Map<List<PaymentTerm>, List<PaymentTermViewModel>>(_paymentTermBusiness.GetPaymentTermForSelectList());
-            if (paymentTermList != null)
-                foreach (PaymentTermViewModel paymentTerm in paymentTermList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = paymentTerm.Code +" || "+ paymentTerm.Description,
-                        Value = paymentTerm.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            paymentTermVM.SelectList = selectListItem;
-            ViewBag.PostingProperty = "PaymentTermCode";
-            ViewBag.SelectList = selectListItem;
-            return PartialView("_PaymentTermDropdown", paymentTermVM);
-        }
-        #endregion ProductDropdown
     }
 }

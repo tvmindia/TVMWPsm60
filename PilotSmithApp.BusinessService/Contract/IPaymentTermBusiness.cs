@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
     public interface IPaymentTermBusiness
     {
         List<PaymentTerm> GetAllPayTerm();
-        List<PaymentTerm> GetPaymentTermForSelectList();
+        List<SelectListItem> GetPaymentTermForSelectList();
     }
 }

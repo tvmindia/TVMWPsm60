@@ -91,32 +91,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     customerVM.IsUpdate = false;
                     customerVM.ID = Guid.Empty;
                 }
-                List<SelectListItem> selectListItem = new List<SelectListItem>();
-                List<TitlesViewModel> titlesList = Mapper.Map<List<Titles>, List<TitlesViewModel>>(_customerBusiness.GetAllTitles());
-                titlesList = titlesList == null ? null : titlesList.OrderBy(attset => attset.Title).ToList();
-                foreach (TitlesViewModel tvm in titlesList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = tvm.Title,
-                        Value = tvm.Title,
-                        Selected = false
-                    });
-                }
-                customerVM.TitlesList = selectListItem;
-                customerVM.DefaultPaymentTermList = new List<SelectListItem>();
-                selectListItem = new List<SelectListItem>();
-                List<PaymentTermViewModel> PayTermList = Mapper.Map<List<PaymentTerm>, List<PaymentTermViewModel>>(_paymentTermBusiness.GetAllPayTerm());
-                foreach (PaymentTermViewModel PayT in PayTermList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PayT.Description,
-                        Value = PayT.Code,
-                        Selected = false
-                    });
-                }
-                customerVM.DefaultPaymentTermList = selectListItem;
+                customerVM.TitlesList = _customerBusiness.GetTitleSelectList();
+                customerVM.DefaultPaymentTermList = _paymentTermBusiness.GetPaymentTermForSelectList();
 
             }
             catch (Exception ex)

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -29,9 +30,21 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _customerRepository = customerRepository;
         }
-        public List<Titles> GetAllTitles()
+        public List<SelectListItem> GetTitleSelectList()
         {
-            return _customerRepository.GetAllTitles();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<Titles> titlesList = _customerRepository.GetAllTitles();
+            if(titlesList!=null)
+            foreach (Titles tvm in titlesList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text = tvm.Title,
+                    Value = tvm.Title,
+                    Selected = false
+                });
+            }
+            return selectListItem;
         }
         public Customer GetCustomer(Guid id)
         {
@@ -48,6 +61,22 @@ namespace PilotSmithApp.BusinessService.Service
         public object DeleteCustomer(Guid id)
         {
             return _customerRepository.DeleteCustomer(id);
+        }
+        public List<SelectListItem> GetCustomerSelectList()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<Customer> customerList =_customerRepository.GetCustomerSelectList();
+            if (customerList != null)
+                foreach (Customer customer in customerList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = customer.CompanyName,
+                        Value = customer.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
     }
 }

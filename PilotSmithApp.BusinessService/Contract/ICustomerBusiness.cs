@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -12,10 +13,11 @@ namespace PilotSmithApp.BusinessService.Contract
         bool CheckCompanyNameExist(Customer customer);
         bool CheckCustomerEmailExist(Customer customer);
         bool CheckMobileNumberExist(Customer customer);
-        List<Titles> GetAllTitles();
+        List<SelectListItem> GetTitleSelectList();
         List<Customer> GetAllCustomer(CustomerAdvanceSearch customerAdvanceSearch);
         Customer GetCustomer(Guid id);
         object InsertUpdateCustomer(Customer customer);
         object DeleteCustomer(Guid id);
+        List<SelectListItem> GetCustomerSelectList();
     }
 }

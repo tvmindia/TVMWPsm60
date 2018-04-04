@@ -15,9 +15,11 @@ namespace PilotSmithApp.UserInterface.Controllers
     public class EnquiryController : Controller
     {
         IEnquiryBusiness _enquiryBusiness;
-        public EnquiryController(IEnquiryBusiness enquiryBusiness)
+        ICustomerBusiness _customerBusiness;
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
+            _customerBusiness = customerBusiness;
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -25,9 +27,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
-        #region Customer Form
-        [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
-        public ActionResult CustomerForm(Guid id)
+        #region Enquiry Form
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public ActionResult EnquiryForm(Guid id)
         {
             EnquiryViewModel enquiryVM = null;
             try
@@ -44,19 +46,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsUpdate = false;
                     enquiryVM.ID = Guid.Empty;
                 }
-                List<SelectListItem> selectListItem = new List<SelectListItem>();
-                List<TitlesViewModel> titlesList = null;//Mapper.Map<List<Titles>, List<TitlesViewModel>>(_customerBusiness.GetAllTitles());
-                titlesList = titlesList == null ? null : titlesList.OrderBy(attset => attset.Title).ToList();
-                foreach (TitlesViewModel tvm in titlesList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = tvm.Title,
-                        Value = tvm.Title,
-                        Selected = false
-                    });
-                }
-                //enquiryVM.TitlesList = selectListItem;
+                enquiryVM.Customer = new CustomerViewModel {
+                    TitlesList = _customerBusiness.GetTitleSelectList(),
+                    CustomerList = _customerBusiness.GetCustomerSelectList()
+                };
 
             }
             catch (Exception ex)
@@ -65,7 +58,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
             return PartialView("_EnquiryForm", enquiryVM);
         }
-        #endregion Customer Form
+        #endregion Enquiry Form
         #region GetAllEnquiry
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]

@@ -437,5 +437,48 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion DeleteCustomer
+        #region Get Customer Dropdown
+        public List<Customer> GetCustomerSelectList()
+        {
+            List<Customer> customerList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetCustomerForSelectList]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                customerList = new List<Customer>();
+                                while (sdr.Read())
+                                {
+                                    Customer customer = new Customer();
+                                    {
+                                        customer.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : customer.ID);
+                                        customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : customer.CompanyName);
+                                    }
+                                    customerList.Add(customer);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return customerList;
+        }
+        #endregion Get Customer Dropdown
     }
 }
