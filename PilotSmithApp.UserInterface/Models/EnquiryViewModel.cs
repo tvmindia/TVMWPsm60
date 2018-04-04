@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -20,6 +21,13 @@ namespace PilotSmithApp.UserInterface.Models
         public string GeneralNotes { get; set; }
         public Guid DocumentOwnerID { get; set; }
         public int BranchCode { get; set; }
+        //Additional properties
+        [Display(Name ="Enquiry Date")]
+        public string EnquiryDateFormatted { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
+        public CustomerViewModel Customer { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<EnquiryDetailViewModel> EnquiryDetailList { get; set; }
     }
@@ -29,6 +37,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string SearchTerm { get; set; }
         public string FromDate { get; set; }
         public string ToDate { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
     }
     public class EnquiryDetailViewModel
     {
