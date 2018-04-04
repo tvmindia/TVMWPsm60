@@ -46,6 +46,7 @@
     <Compile Include="DTO\District.cs" />
     <Compile Include="DTO\Enquiry.cs" />
     <Compile Include="DTO\EnquiryFollowup.cs" />
+    <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\ProductCategory.cs" />
     <Compile Include="DTO\ProductSpecification.cs" />
     <Compile Include="DTO\Customer.cs" />

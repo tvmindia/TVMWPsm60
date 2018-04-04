@@ -660,6 +660,7 @@
     <Content Include="Scripts\UserJS\Master.js" />
     <Content Include="Scripts\UserJS\Privileges.js" />
     <Content Include="Scripts\UserJS\PrivilegesView.js" />
+    <Content Include="Scripts\UserJS\Product.js" />
     <Content Include="Scripts\UserJS\ProductCategory.js" />
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
@@ -693,6 +694,7 @@
     <Compile Include="Controllers\PaymentTermController.cs" />
     <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductSpecificationController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
@@ -710,6 +712,7 @@
     <Compile Include="Models\ProductSpecificationViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\PaymentTermViewModel.cs" />
+    <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\PSASysMenuViewModel.cs" />
     <Compile Include="Models\ApplicationViewModel.cs" />
     <Compile Include="Models\AppObjectViewModel.cs" />
@@ -783,6 +786,8 @@
     <Content Include="Views\PaymentTerm\_PaymentTermDropdown.cshtml" />
     <Content Include="Views\Enquiry\Index.cshtml" />
     <Content Include="Views\Enquiry\_EnquiryForm.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\_AddProduct.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

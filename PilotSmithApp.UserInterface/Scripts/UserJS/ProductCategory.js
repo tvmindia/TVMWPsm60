@@ -143,11 +143,7 @@ function DeleteProductCategory(code)
     {
         if(code)
         {
-            var data = { "code": code };
-             _jsonData = {};
-            _message = "";
-            _status = "";
-            _result = "";
+            var data = { "code": code };           
             _jsonData = GetDataFromServer("ProductCategory/DeleteProductCategory/", data);
             if (_jsonData != '')
             {
