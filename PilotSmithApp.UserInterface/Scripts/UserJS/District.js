@@ -1,1 +1,173 @@
-﻿
+﻿var DataTables = {};
+var EmptyGuid = "00000000-0000-0000-0000-000000000000";
+var _jsonData = {};
+var _message = "";
+var _status = "";
+var _result = "";
+$(document).ready(function () {
+    try {
+
+        //$("#StateCode").select2({});
+
+        BindOrReloadDistrictTable('Init');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+});
+
+function BindOrReloadDistrictTable(action) {
+    try {
+        debugger;
+        //creating advancesearch object
+        DistrictAdvanceSearchViewModel = new Object();
+        DataTablePagingViewModel = new Object();
+        DataTablePagingViewModel.Length = 0;
+        //switch case to check the operation
+        switch (action) {
+            case 'Reset':
+                $('#SearchTerm').val('');
+                break;
+            case 'Init':
+                break;
+            case 'Search':
+                if ($('#SearchTerm').val() == '') {
+                    return true;
+                }
+                break;
+            case 'Export':
+                DataTablePagingViewModel.Length = -1;
+                break;
+            default:
+                break;
+        }
+        DistrictAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+        DistrictAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
+        //apply datatable plugin on bank table
+        DataTables.DistrictList = $('#tblDistrict').DataTable(
+            {
+                dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
+                buttons: [{
+                    extend: 'excel',
+                    exportOptions:
+                                 {
+                                     columns: [0, 1, 2, 3]
+                                 }
+                }],
+                ordering: false,
+                searching: false,
+                paging: true,
+                lengthChange: false,
+                processing: true,
+                language: {
+
+                    "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
+                },
+                serverSide: true,
+                ajax: {
+
+                    url: "District/GetAllDistrict",
+                    data: { "DistrictAdvanceSearchVM": DistrictAdvanceSearchViewModel },
+                    type: 'POST'
+                },
+                pageLength: 10,
+                columns: [
+                { "data": "Code", "defaultContent": "<i>-</i>" },
+                {"data" :"State.Description","defaultContent":"<i>-</i>"},
+                { "data": "Description", "defaultContent": "<i>-</i>" },
+                { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
+                {
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditDistrictMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteDistrictMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'
+                }
+                ],
+                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
+                { className: "text-center", "targets": [3] },
+                { "targets": [0], "width": "10%" },
+                {"targets":[1],"width":"10%"},
+                { "targets": [2], "width": "50%" },
+                { "targets": [3], "width": "20%" },
+                { "targets": [4], "width": "10%" }
+                ],
+                destroy: true,
+                initComplete: function (settings, json) {
+                    $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
+                    $('#tblDistrict').fadeIn('slow');
+                    if (action == undefined) {
+                        $('.excelExport').hide();
+                        OnServerCallComplete();
+                    }
+                    if (action === 'Export') {
+                        if (json.data.length > 0) {
+                            if (json.data[0].TotalCount > 10000) {
+                                MasterAlert("info", 'We are able to download maximum 10000 rows of data, There exist more than 10000 rows of data please filter and download')
+                            }
+                        }
+                        $('.buttons-excel').trigger('click');
+                        BindOrReloadDistrictTable();
+                    }
+                }
+            });
+        $('.buttons-excel').hide();
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+function ResetDistrictList() {
+    BindOrReloadDistrictTable('Reset');
+}
+
+function ExportDistrictData() {
+    $('.excelExport').show();
+    OnServerCallBegin();
+    BindOrReloadDistrictTable('Export');
+}
+
+function EditDistrictMaster(thisObj) {
+    debugger;
+    DistrictVM = DataTables.DistrictList.row($(thisObj).parents('tr')).data();
+    GetMasterPartial('District', DistrictVM.Code);
+    $('#h3ModelMasterContextLabel').text('Edit District')
+    $('#divModelMasterPopUp').modal('show');
+    $('#hdnMasterCall').val('MSTR');
+}
+function DeleteDistrictMaster(thisObj) {
+    debugger;
+    DistrictVM = DataTables.DistrictList.row($(thisObj).parents('tr')).data();
+    notyConfirm('Are you sure to delete?', 'DeleteDistrict("' + DistrictVM.Code + '")');
+}
+
+function DeleteDistrict(code) {
+    debugger;
+    try {
+        if (code) {
+            var data = { "code": code };
+            _jsonData = {};
+            _message = "";
+            _status = "";
+            _result = "";
+            _jsonData = GetDataFromServer("District/DeleteDistrict/", data);
+            if (_jsonData != '') {
+                _jsonData = JSON.parse(_jsonData);
+                _message = _jsonData.Message;
+                _status = _jsonData.Status;
+                _result = _jsonData.Record;
+            }
+            switch (_status) {
+                case "OK":
+                    notyAlert('success', _result.Message);
+                    BindOrReloadDistrictTable('Reset');
+                    break;
+                case "ERROR":
+                    notyAlert('error', _message);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}

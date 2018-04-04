@@ -1,1 +1,5 @@
-﻿
+﻿@model PilotSmithApp.UserInterface.Models.ProductCategoryViewModel
+<div class="input-group">
+    @Html.DropDownListFor(model => model.ProductCategoryCode, Model.SelectList, "--Select Product Category--", new { @class = "form-control" })
+    <span class="input-group-addon" style="cursor:pointer;color:#015E9A" onclick="AddProductCategoryMaster('OTR')"><i class="fa fa-plus-square-o"></i></span>
+</div>

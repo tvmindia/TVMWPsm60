@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PilotSmithApp.DataAccessObject.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,13 @@ using System.Threading.Tasks;
 
 namespace PilotSmithApp.RepositoryService.Contract
 {
-    interface IStateRepository
+    public interface IStateRepository
     {
+        object InsertUpdateState(State state);
+        List<State> GetAllState(StateAdvanceSearch stateAdvanceSearch);
+        State GetState(int code);
+        bool CheckStateCodeExist(int code);
+        object DeleteState(int code);
+        List<State> GetStateForSelectList();
     }
 }
