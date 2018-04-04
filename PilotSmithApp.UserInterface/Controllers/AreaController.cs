@@ -166,9 +166,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region AreaDropDown
         public ActionResult AreaDropDown(AreaViewModel areaVM)
         {
-            areaVM.AreaCode = areaVM.Code;
+            //areaVM.AreaCode = areaVM.Code;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            areaVM.SelectList = new List<SelectListItem>();
+           // areaVM.SelectList = new List<SelectListItem>();
             List<AreaViewModel> areaList = Mapper.Map<List<Area>, List<AreaViewModel>>(_areaBusiness.GetAreaForSelectList());
             if (areaList != null)
                 foreach (AreaViewModel area in areaList)

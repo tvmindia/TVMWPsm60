@@ -50,6 +50,7 @@
     <Compile Include="Contract\IEnquiryFollowupRepository.cs" />
     <Compile Include="Contract\IEnquiryRepository.cs" />
     <Compile Include="Contract\IProductCategoryRepository.cs" />
+    <Compile Include="Contract\IProductRepository.cs" />
     <Compile Include="Contract\IProductSpecificationRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
     <Compile Include="Contract\IPaymentTermRepository.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Service\EnquiryFollowupRepository.cs" />
     <Compile Include="Service\EnquiryRepository.cs" />
     <Compile Include="Service\ProductCategoryRepository.cs" />
+    <Compile Include="Service\ProductRepository.cs" />
     <Compile Include="Service\ProductSpecificationRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
     <Compile Include="Service\PaymentTermRepository.cs" />

@@ -144,11 +144,7 @@ function DeleteArea(code) {
     debugger;
     try {
         if (code) {
-            var data = { "code": code };
-            _jsonData = {};
-            _message = "";
-            _status = "";
-            _result = "";
+            var data = { "code": code };           
             _jsonData = GetDataFromServer("Area/DeleteArea/", data);
             if (_jsonData != '') {
                 _jsonData = JSON.parse(_jsonData);
