@@ -655,6 +655,7 @@
     <Content Include="Scripts\UserJS\Area.js" />
     <Content Include="Scripts\UserJS\CustomerJS\Customer.js" />
     <Content Include="Scripts\UserJS\District.js" />
+    <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
     <Content Include="Scripts\UserJS\ManageSubObjectAccess.js" />
     <Content Include="Scripts\UserJS\Master.js" />

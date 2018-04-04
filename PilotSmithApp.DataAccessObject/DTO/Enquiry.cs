@@ -21,8 +21,22 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public Guid DocumentOwnerID { get; set; }
         public int BranchCode { get; set; }
+        //Additional properties
+        public string EnquiryDateFormatted { get; set;}
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
+        public Customer Customer { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public List<EnquiryDetail> EnquiryDetailList { get; set; }
+    }
+    public class EnquiryAdvanceSearch
+    {
+        public string EnquiryDate { get; set; }
+        public string SearchTerm { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
     }
     public class EnquiryDetail
     {
