@@ -706,8 +706,13 @@
     </Compile>
     <Compile Include="Models\AreaViewModel.cs" />
     <Compile Include="Models\BankViewModel.cs" />
+    <Compile Include="Models\BranchViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
+    <Compile Include="Models\DocumentStatusViewModel.cs" />
+    <Compile Include="Models\DocumentTypeViewModel.cs" />
+    <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\EnquiryFollowupViewModel.cs" />
+    <Compile Include="Models\EnquiryGradeViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductSpecificationViewModel.cs" />
@@ -723,6 +728,8 @@
     <Compile Include="Models\DynamicUIViewModel.cs" />
     <Compile Include="Models\ManageAccessViewModel.cs" />
     <Compile Include="Models\PrivilegesViewModel.cs" />
+    <Compile Include="Models\ReferencePersonViewModel.cs" />
+    <Compile Include="Models\ReferenceTypeViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
@@ -784,7 +791,6 @@
     <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Customer\_CustomerForm.cshtml" />
-    <Content Include="Views\PaymentTerm\_PaymentTermDropdown.cshtml" />
     <Content Include="Views\Enquiry\Index.cshtml" />
     <Content Include="Views\Enquiry\_EnquiryForm.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
@@ -802,6 +808,7 @@
     <Folder Include="Views\Bank\" />
     <Folder Include="Views\EnquiryFollowup\" />
     <Folder Include="Views\FileUpload\" />
+    <Folder Include="Views\PaymentTerm\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.BusinessService\PilotSmithApp.BusinessService.csproj">

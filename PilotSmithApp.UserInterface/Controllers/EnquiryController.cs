@@ -16,10 +16,12 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         IEnquiryBusiness _enquiryBusiness;
         ICustomerBusiness _customerBusiness;
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness)
+        IBranchBusiness _branchBusiness;
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,IBranchBusiness branchBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
+            _branchBusiness = branchBusiness;
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -50,7 +52,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     TitlesList = _customerBusiness.GetTitleSelectList(),
                     CustomerList = _customerBusiness.GetCustomerSelectList()
                 };
-
+                enquiryVM.Branch = new BranchViewModel
+                {
+                    BranchList = _branchBusiness.GetBranchForSelectList()
+                };
             }
             catch (Exception ex)
             {

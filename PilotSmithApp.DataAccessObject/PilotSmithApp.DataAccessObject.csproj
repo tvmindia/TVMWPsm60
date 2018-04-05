@@ -43,9 +43,14 @@
   <ItemGroup>
     <Compile Include="DTO\Area.cs" />
     <Compile Include="DTO\Bank.cs" />
+    <Compile Include="DTO\Branch.cs" />
     <Compile Include="DTO\District.cs" />
+    <Compile Include="DTO\DocumentStatus.cs" />
+    <Compile Include="DTO\DocumentType.cs" />
+    <Compile Include="DTO\Employee.cs" />
     <Compile Include="DTO\Enquiry.cs" />
     <Compile Include="DTO\EnquiryFollowup.cs" />
+    <Compile Include="DTO\EnquiryGrade.cs" />
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\ProductCategory.cs" />
     <Compile Include="DTO\ProductSpecification.cs" />
@@ -54,6 +59,8 @@
     <Compile Include="DTO\PSASysMenu.cs" />
     <Compile Include="DTO\PSASysCommon.cs" />
     <Compile Include="DTO\DataTablePaging.cs" />
+    <Compile Include="DTO\ReferencePerson.cs" />
+    <Compile Include="DTO\ReferenceType.cs" />
     <Compile Include="DTO\State.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

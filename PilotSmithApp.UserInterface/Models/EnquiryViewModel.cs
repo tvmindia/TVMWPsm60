@@ -28,6 +28,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public CustomerViewModel Customer { get; set; }
+        public BranchViewModel Branch { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<EnquiryDetailViewModel> EnquiryDetailList { get; set; }
     }
