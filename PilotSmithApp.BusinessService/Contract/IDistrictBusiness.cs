@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -14,6 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         District GetDistrict(int code);
         bool CheckDistrictCodeExist(int code);
         object DeleteDistrict(int code);
-        List<District> GetDistrictForSelectList();
+        List<SelectListItem> GetDistrictForSelectList();
     }
 }

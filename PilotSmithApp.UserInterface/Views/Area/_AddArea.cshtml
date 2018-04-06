@@ -3,32 +3,26 @@
 @using (Ajax.BeginForm("InsertUpdateArea", "Area", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessArea", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormArea" }))
 {
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal ">
         @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group col-md-12">
-            <div class="col-md-12">
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-12 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label" })
                 </div>
-            </div>
-            <div class="col-md-12">
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control BlockEnter newinput" , @readonly="readonly" } })
+                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control newinput" , @readonly="readonly" } })
                     
                 </div>
             </div>
         </div>
 
-        <div class="form-group col-md-12">
-            <div class="col-md-12">
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-12 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.StateCode, htmlAttributes: new { @class = "control-label " })
                 </div>
-            </div>
-            <div class="col-md-12">
                 <div class="col-md-12">
                     <div id="divStateSelectList">
                         @Html.Action("StateSelectList", "State", new { required = "required" })
@@ -38,44 +32,35 @@
             </div>
         </div>
 
-        <div class="form-group col-md-12">
-            <div class="col-md-12">
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-12 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.DistrictCode, htmlAttributes: new { @class = "control-label " })
                 </div>
-            </div>
-            <div class="col-md-12">
                 <div class="col-md-12">
-                    <div class="input-group">
-                        @Html.DropDownListFor(model => model.DistrictCode, Model.District.SelectList, "--Select District--", new { @class = "form-control" })
-                        <span class="input-group-addon" style="cursor:pointer;color:#015E9A" onclick="AddDistrictMaster('OTR')"><i class="fa fa-plus-square-o"></i></span>
+                    <div id="divDistrictSelectList">
+                        @Html.Action("DistrictSelectList", "District", new { required = "required" })
                     </div>
 
                 </div>
             </div>
         </div>
 
-        <div class="form-group col-md-12">
-            <div class="col-md-12">
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label lblrequired" })
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
                 </div>
-            </div>
-            <div class="col-md-12">
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control newinput", rows = 5 } })
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control newinput"} })
 
                 </div>
             </div>
         </div>
 
-        <div class="form-group ">
-            <div class="col-md-12">
-                <input type="submit" value="Save Changes" id="btnSaveMaster" class="btn btn-info" style="margin-left:5%" />
-                <img src="~/Content/images/MasterLoading.gif" id="imgMasterLoading" style="display:none" />
-            </div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
         </div>
-    </div>
 }
 <script>
     $(document).ready(function () {

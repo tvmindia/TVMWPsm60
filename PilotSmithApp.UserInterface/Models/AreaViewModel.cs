@@ -17,11 +17,10 @@ namespace PilotSmithApp.UserInterface.Models
         public string Description { get; set; }
 
         public PSASysCommonViewModel PSASysCommon { get; set; }
-        public int AreaCode { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public List<SelectListItem> SelectList { get; set; }
+        public List<SelectListItem> AreaSelectList { get; set; }
         public StateViewModel State { get; set; }
         public DistrictViewModel District { get; set; }
     }

@@ -127,10 +127,11 @@ function ExportDistrictData() {
 function EditDistrictMaster(thisObj) {
     debugger;
     DistrictVM = DataTables.DistrictList.row($(thisObj).parents('tr')).data();
-    GetMasterPartial('District', DistrictVM.Code);
-    $('#h3ModelMasterContextLabel').text('Edit District')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("District/MasterPartial?masterCode=" + DistrictVM.Code, function () {
+        $('#lblModelMasterContextLabel').text('Edit District Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val('MSTR');
+    });
 }
 function DeleteDistrictMaster(thisObj) {
     debugger;

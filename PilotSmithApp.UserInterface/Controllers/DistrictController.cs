@@ -46,12 +46,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
                 };
                 var result = _districtBusiness.InsertUpdateDistrict(Mapper.Map<DistrictViewModel, District>(stateVM));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record ="", Message = cm.Message });
             }
         }
         #endregion
@@ -72,12 +72,10 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(int masterCode)
         {
-            DistrictViewModel districtVM = masterCode=="0" ? new DistrictViewModel() : Mapper.Map<District, DistrictViewModel>(_districtBusiness.GetDistrict(int.Parse(masterCode)));
-            districtVM.IsUpdate = masterCode=="0" ? false : true;
-            districtVM.State = new StateViewModel();
-            //districtVM.State.SelectList = StateDropDown();
+            DistrictViewModel districtVM = masterCode==0 ? new DistrictViewModel() : Mapper.Map<District, DistrictViewModel>(_districtBusiness.GetDistrict(masterCode));
+            districtVM.IsUpdate = masterCode==0 ? false : true;
             return PartialView("_AddDistrict", districtVM);
         }
         #endregion
@@ -121,27 +119,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region DistrictDropDown
-        public ActionResult DistrictDropDown(DistrictViewModel districtVM)
+        #region District SelectList
+        public ActionResult DistrictSelectList(string required)
         {
-            districtVM.DistrictCode = districtVM.Code;
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            districtVM.SelectList = new List<SelectListItem>();
-            List<DistrictViewModel> districtList = Mapper.Map<List<District>, List<DistrictViewModel>>(_districtBusiness.GetDistrictForSelectList());
-            if (districtList != null)
-                foreach (DistrictViewModel district in districtList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = district.Description,
-                        Value = district.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            districtVM.SelectList = selectListItem;
-            return PartialView("_DistrictDropDown", districtVM);
+            ViewBag.IsRequired = required;
+            DistrictViewModel districtVM = new DistrictViewModel();
+            districtVM.DistrictSelectList = _districtBusiness.GetDistrictForSelectList();
+            return PartialView("_DistrictSelectList", districtVM);
         }
-        #endregion
+        #endregion District SelectList
 
         #region ButtonStyling
         [HttpGet]

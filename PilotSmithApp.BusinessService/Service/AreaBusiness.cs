@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -36,9 +37,21 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _areaRepository.DeleteArea(code);
         }
-        public List<Area> GetAreaForSelectList()
+        public List<SelectListItem> GetAreaForSelectList()
         {
-            return _areaRepository.GetAreaForSelectList();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<Area> areaList = _areaRepository.GetAreaForSelectList();
+            if (areaList != null)
+                foreach (Area area in areaList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = area.Description,
+                        Value = area.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
     }
 }
