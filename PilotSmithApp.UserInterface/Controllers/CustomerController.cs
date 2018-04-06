@@ -102,6 +102,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_CustomerForm", customerVM);
         }
         #endregion Customer Form
+        #region Customer SelectList
+        public ActionResult CustomerSelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            CustomerViewModel customerVM = new CustomerViewModel();
+            customerVM.CustomerList = _customerBusiness.GetCustomerSelectList();
+            return PartialView("_CustomerSelectList", customerVM);
+        }
+        #endregion Customer SelectList
+        #region AddCustomerPartial
+        [HttpGet]
+        public ActionResult AddCustomerPartial()
+        {
+            CustomerViewModel customerVM = new CustomerViewModel();
+            customerVM.TitlesList = _customerBusiness.GetTitleSelectList();
+            customerVM.IsUpdate = false;
+            return PartialView("_AddCustomerMaster", customerVM);
+        }
+        #endregion AddCustomerPartial
         #region GetAllCustomer
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
@@ -163,6 +182,31 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion InsertUpdateCustomer
+        #region InsertUpdateCustomer Master
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
+        public string InsertUpdateCustomerMaster(CustomerViewModel customerVM)
+        {
+            object result = null;
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                customerVM.common = new PSASysCommonViewModel();
+                customerVM.common.CreatedBy = appUA.UserName;
+                customerVM.common.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.common.UpdatedBy = appUA.UserName;
+                customerVM.common.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                result = _customerBusiness.InsertUpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion InsertUpdateCustomer Master
         #region DeleteCustomer
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Customers", Mode = "D")]

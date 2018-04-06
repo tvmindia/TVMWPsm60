@@ -10,7 +10,6 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/AdminLTE/css/plugins")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/boot")
-
     @RenderSection("styles", required: false)
      
 </head>
@@ -68,7 +67,7 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-user-o" aria-hidden="true"></i>
+                                <i class="fas fa-user" aria-hidden="true"></i>
                                 <span class="hidden-xs"><strong>@User.Identity.Name</strong></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -135,7 +134,7 @@
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- Master add/edit Model start-->
-    <div class="modal fade" id="divModelMasterPopUp" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" @*style="overflow-y:hidden !important;"*@>
+    @*<div class="modal fade"  tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document" style="min-width:550px !important;max-width:600px !important;">
             <div class="modal-content">
                 <div class="modal-header" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 36px;padding: 3px;border-bottom:2px solid rgb(40, 45, 51)!important;">
@@ -152,7 +151,30 @@
                 <input type="hidden" id="hdnMasterCall" value="" />
             </div>
         </div>
-    </div>
+    </div>*@
+    <div class="modal fade" id="divModelMasterPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="clearfix" style="background-color:#068a78;">
+                <div class="col-md-10 no-right-padding" style="background-color:white">
+                    <div class="modal-header text-center">
+                        <label style="font-size:16px;">Customer Information</label>
+
+                    </div>
+                    <div class="no-padding" id="divMasterBody">
+
+                    </div>
+                </div>
+                <div class="col-md-2" style="font-size: 90px;color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white;font-size: 2em;">&times;</span>
+                    </button>
+                    <label style="transform: rotate(20deg)"><i class="fas fa-chess-king"></i></label>
+                </div>
+
+                </div>
+                
+            </div>
+        </div>
     <!-- Modal -->
     <div class="modal fade" id="RedirectToLoginModel" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
         <div class="modal-dialog" role="document">
@@ -189,6 +211,7 @@
         </div>
     </div>
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jquery")
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrap")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrapdatepicker")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/AdminLTE")

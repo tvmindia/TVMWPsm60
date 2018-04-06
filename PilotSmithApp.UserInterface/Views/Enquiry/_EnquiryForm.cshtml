@@ -7,14 +7,14 @@
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Enquiry</div>
+            <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EnquiryNo, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.EnquiryNo, new { htmlAttributes = new { @class = "form-control BlockEnter newinput", @autofocus = true } })
+                        @Html.EditorFor(model => model.EnquiryNo, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true, @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.EnquiryNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control BlockEnter newinput datepicker", @autofocus = true } })
+                        @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autofocus = true } })
                         @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -31,9 +31,9 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.CustomerID, Model.Customer.CustomerList, "-- select customer --", new { @class = "form-control BlockEnter newinput", value = -1, style = "padding:4px 12px;" })
-                        @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+                    <div class="col-md-12" id="divCustomerSelectList">
+                        @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+
                     </div>
                 </div>
                 <div class="col-md-12 no-padding">
@@ -41,7 +41,7 @@
                         @Html.LabelFor(model => model.RequirementSpec, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.RequirementSpec, 5, 0, new { @class = "form-control HeaderBox BlockEnter newinput" })
+                        @Html.TextAreaFor(model => model.RequirementSpec, 5, 0, new { @class = "form-control BlockEnter newinput" })
                         @Html.ValidationMessageFor(model => model.RequirementSpec, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -79,22 +79,31 @@
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.BranchCode, Model.Branch.BranchList, "-- select customer --", new { @class = "form-control BlockEnter newinput", value = -1, style = "padding:4px 12px;" })
-                        @Html.ValidationMessageFor(model => model.BranchCode, "", new { @class = "text-danger" })
+                        <div id="divBranchSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
-                <div class="">
-                    <div class="col-md-offset-2 col-md-10" hidden="hidden">
-                        <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
-                        <input id="btnResetEnquiry" type="reset" />
-                    </div>
-                </div>
-                }
-                <script>
-                    $(document).ready(function () {
-                        $.validator.unobtrusive.parse("#EnquiryForm");
-                    });
-                </script>
+    </div>
+        <div class="" hidden="hidden">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#EnquiryForm");
+
+        $('input.datepicker').datepicker({
+            format: "dd-M-yyyy",
+            maxViewMode: 0,
+            todayBtn: "linked",
+            clearBtn: true,
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>

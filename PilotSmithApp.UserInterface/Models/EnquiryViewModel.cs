@@ -20,6 +20,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid AttendedByID { get; set; }
         public string GeneralNotes { get; set; }
         public Guid DocumentOwnerID { get; set; }
+        [Required(ErrorMessage ="Branch Code is missing")]
         public int BranchCode { get; set; }
         //Additional properties
         [Display(Name ="Enquiry Date")]

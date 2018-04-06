@@ -236,3 +236,29 @@ function SaveSuccessCompany(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+}
+//==========================================================================================================
+//Add Customer master
+function AddCustomerMaster(flag) {
+    $("#divMasterBody").load("Customer/AddCustomerPartial", function () {
+        $('#divModelMasterPopUp').modal('show');
+    });    
+}
+
+//onsuccess function for formsubmitt customer master
+function SaveSuccessCustomerMaster(data, status) {
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            $('#divCustomerSelectList').load('/Customer/CustomerSelectList?required=required');
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}

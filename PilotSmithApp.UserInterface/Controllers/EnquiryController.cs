@@ -50,11 +50,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 enquiryVM.Customer = new CustomerViewModel {
                     TitlesList = _customerBusiness.GetTitleSelectList(),
-                    CustomerList = _customerBusiness.GetCustomerSelectList()
-                };
-                enquiryVM.Branch = new BranchViewModel
-                {
-                    BranchList = _branchBusiness.GetBranchForSelectList()
                 };
             }
             catch (Exception ex)
