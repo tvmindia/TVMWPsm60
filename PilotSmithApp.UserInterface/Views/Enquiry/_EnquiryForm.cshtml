@@ -14,7 +14,7 @@
                         @Html.LabelFor(model => model.EnquiryNo, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.EnquiryNo, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true ,@readonly="readonly"} })
+                        @Html.EditorFor(model => model.EnquiryNo, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true, @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.EnquiryNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-md-12" id="divCustomerSelectList">
                         @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
-                        
+
                     </div>
                 </div>
                 <div class="col-md-12 no-padding">
@@ -80,30 +80,30 @@
                     </div>
                     <div class="col-md-12">
                         <div id="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch",new {required="required" })
+                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
         </div>
-                <div class="" hidden="hidden">
-                    <div class="col-md-offset-2 col-md-10" >
-                        <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
-                        <input id="btnResetEnquiry" type="reset" />
-                    </div>
-                </div>
-                }
-                <script>
-                    $(document).ready(function () {
-                        $.validator.unobtrusive.parse("#EnquiryForm");
-                        $('input.datepicker').datepicker({
-                            format: "dd-M-yyyy",//",
-                            maxViewMode: 0,
-                            todayBtn: "linked",
-                            clearBtn: true,
-                            autoclose: true,
-                            todayHighlight: true
-                        });
-                    });
-                </script>
+    </div>
+        <div class="" hidden="hidden">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#EnquiryForm");
+
+        $('input.datepicker').datepicker({
+            format: "dd-M-yyyy",
+            maxViewMode: 0,
+            todayBtn: "linked",
+            clearBtn: true,
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>

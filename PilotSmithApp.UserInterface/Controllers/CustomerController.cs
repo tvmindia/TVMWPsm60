@@ -158,7 +158,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllCustomer
         #region InsertUpdateCustomer
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
         public string InsertUpdateCustomer(CustomerViewModel customerVM)
         {
@@ -182,6 +182,31 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion InsertUpdateCustomer
+        #region InsertUpdateCustomer Master
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
+        public string InsertUpdateCustomerMaster(CustomerViewModel customerVM)
+        {
+            object result = null;
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                customerVM.common = new PSASysCommonViewModel();
+                customerVM.common.CreatedBy = appUA.UserName;
+                customerVM.common.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.common.UpdatedBy = appUA.UserName;
+                customerVM.common.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                result = _customerBusiness.InsertUpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion InsertUpdateCustomer Master
         #region DeleteCustomer
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Customers", Mode = "D")]

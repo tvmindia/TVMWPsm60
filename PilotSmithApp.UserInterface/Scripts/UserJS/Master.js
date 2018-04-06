@@ -167,17 +167,16 @@ function SaveSuccessArea(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
-//Add Customer
+//==========================================================================================================
+//Add Customer master
 function AddCustomerMaster(flag) {
     $("#divMasterBody").load("Customer/AddCustomerPartial", function () {
-        $('#h3ModelMasterContextLabel').text('Add Customer')
         $('#divModelMasterPopUp').modal('show');
     });    
 }
 
-//onsuccess function for formsubmitt
+//onsuccess function for formsubmitt customer master
 function SaveSuccessCustomerMaster(data, status) {
-    debugger;
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":

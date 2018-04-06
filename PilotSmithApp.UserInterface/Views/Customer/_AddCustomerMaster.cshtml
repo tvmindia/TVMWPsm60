@@ -1,6 +1,6 @@
 ﻿@model PilotSmithApp.UserInterface.Models.CustomerViewModel
 
-    @using (Ajax.BeginForm("InsertUpdateCustomer", "Customer", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessCustomerMaster", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormCustomerMaster" }))
+    @using (Ajax.BeginForm("InsertUpdateCustomerMaster", "Customer", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessCustomerMaster", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormCustomerMaster" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
@@ -61,7 +61,7 @@
                     </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <input class="btn btn-default" type="submit" style="margin-right:3%;margin-top:2%" value="Save Changes" />
+                        <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                     </div>
                     }
 <script>

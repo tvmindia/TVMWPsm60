@@ -144,11 +144,11 @@ function CloseAdvanceSearch()
 function OnMasterBegin() {
     debugger;
     $('#btnSaveMaster').prop('disabled', true);
-    $('#imgMasterLoading').show()    
+    $('#icnMasterLoading').show()    
 }
 function OnMasterComplete() {
     $('#btnSaveMaster').prop('disabled', false);
-    $('#imgMasterLoading').fadeOut(1000)
+    $('#icnMasterLoading').fadeOut(1000)
     
 }
 function OnServerCallBegin(){
