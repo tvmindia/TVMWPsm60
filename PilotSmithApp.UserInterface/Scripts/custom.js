@@ -74,7 +74,6 @@ $(document).ready(function () {
             $("#divStatus").show();
         }
     });
-    //GetUndepositedChequeBubbleCount();
     $('input.datepicker').datepicker({
         format: "dd-M-yyyy",//",
         maxViewMode: 0,
@@ -83,15 +82,15 @@ $(document).ready(function () {
         autoclose: true,
         todayHighlight: true
     });
-   
-    $('input').keydown(function (e) {
-        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-        if (key == 13) {
-            e.preventDefault();
-            var inputs = $(this).closest('form').find(':input');
-            inputs.eq(inputs.index(this) + 1).focus();
-        }
-    });
+   //code depreciated
+    //$('input').keydown(function (e) {
+    //    var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+    //    if (key == 13) {
+    //        e.preventDefault();
+    //        var inputs = $(this).closest('form').find(':input');
+    //        inputs.eq(inputs.index(this) + 1).focus();
+    //    }
+    //});
 
     $('input,textarea').attr('autocomplete', 'off');
    
@@ -117,7 +116,6 @@ $(document).ready(function () {
             dropdownMenu.parent().toggleClass("open");
         }
     });
-
     $('.BlockEnter').keydown(function (e) {
     
         try {
@@ -136,10 +134,12 @@ $(document).ready(function () {
    
    
 });
+//function will hide the advance searchbox
 function CloseAdvanceSearch()
 {
     $('.divboxASearch').hide();
 }
+
 //for showing loading while saving data
 function OnMasterBegin() {
     debugger;
@@ -158,47 +158,61 @@ function OnServerCallComplete() {
     $('#divLoader').fadeOut(1000);
 }
 //---------------------------------------------
+//function to notify messages for the user
 function MasterAlert(type,msgtxt)
 {
-    var iconclass = (type == "success") ? "fa fa-check" : ((type == "info") ? "fa fa-info-circle" : "fa fa-warning")
-    $.notify({
-        title: msgtxt,
-        message: ""
-    }, {
-        type: 'pastel-' + type,
-        allow_dismiss: false,
-        placement: {
-            from: 'top',
-            align: 'right'
-        },
-        z_index: 21031,
-        delay: 5000,
-        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-            '<span data-notify="title">{1}</span>' +
-            '<i class="'+iconclass+'" style="font-size:48px;color:white"></i></span>' +
-        '</div>'
-    });
+    try
+    {
+        var iconclass = (type == "success") ? "fas fa-check" : ((type == "info") ? "fas fa-info-circle" : "fas fa-warning")
+        $.notify({
+            title: msgtxt,
+            message: ""
+        }, {
+            type: 'pastel-' + type,
+            allow_dismiss: false,
+            placement: {
+                from: 'top',
+                align: 'right'
+            },
+            z_index: 21031,
+            delay: 5000,
+            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                '<span data-notify="title">{1}</span>' +
+                '<i class="'+iconclass+'" style="font-size:48px;color:white"></i></span>' +
+            '</div>'
+        });
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
 }
-function notyAlert(type, msgtxt,title) {
-    var t = '';
-    if (title == undefined) {
-        t = type;
-    }
-    else {
-        t = title;
-    }
+function notyAlert(type, msgtxt, title) {
+    try
+    {
+        var t = '';
+        if (title == undefined) {
+            t = type;
+        }
+        else {
+            t = title;
+        }
 
-    swal({ title: t, text: msgtxt, type: type, timer: 6000 });
-    //var n = noty({
-    //    text: msgtxt,
-    //    type: type,//'alert','information','error','warning','notification','success'
-    //    dismissQueue: true,
-    //    timeout: 3000,
-    //    layout: 'center',
-    //    theme: 'defaultTheme',//closeWith: ['click'],
-    //    maxVisible: 5
-    //});
-   
+        swal({ title: t, text: msgtxt, type: type, timer: 6000 });
+        //var n = noty({
+        //    text: msgtxt,
+        //    type: type,//'alert','information','error','warning','notification','success'
+        //    dismissQueue: true,
+        //    timeout: 3000,
+        //    layout: 'center',
+        //    theme: 'defaultTheme',//closeWith: ['click'],
+        //    maxVisible: 5
+        //});
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
 }
 function formattToCurrency(n, currency) {
     n = parseFloat(n);
@@ -211,100 +225,115 @@ function SelectAllValue(e) {
 }
 function PostDataToServer(page, formData, callback)
 {
-    debugger;
-   $.ajax({
-        type: "POST",
-        url: appAddress+page,
-        async: true,
-        data: formData,
-        beforeSend: function () {
-            showLoader();
-        },
-        cache: false,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            callback(data);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            notyAlert('error', errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
-        },
-        complete:function()
-        {
-            hideLoader();
-        }
-
-    });
-    
-}
-
-
-function GetDataFromServer(page, formData) {
-    var jsonResult = {};
-    $.ajax({
-        
-        type: "GET",
-        url: appAddress + page,
-        data: formData,
-        beforeSend: function () {
-            showLoader();
-        },
-        async: false,
-        cache: false,
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-         jsonResult = data;
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          notyAlert('error',errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
-        },
-        complete: function () {
-            hideLoader();
-        }
-
-    });
-    return jsonResult;
-}
-
-function GetDataFromServerTraditional(page, formData) {
-    var jsonResult = {};
-    $.ajax({
-
-        type: "GET",
-        url: appAddress + page,
-        data: formData,
-        beforeSend: function () {
-            showLoader();
-        },
-        async: false,
-        cache: false,
-        traditional: true,
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            jsonResult = data;
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            notyAlert('error', errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
-        },
-        complete: function () {
-            hideLoader();
-        }
-
-    });
-    return jsonResult;
-}
-
-function ChangeButtonPatchView(Controller, Dom, Action) {
-    debugger
-    var data = { actionType: Action };
-    var ds = {};
-    ds = GetDataFromServer(Controller + "/ChangeButtonStyle/", data);
-    if (ds == "Nochange")
-    {
-        return;0
+    try{
+        $.ajax({
+            type: "POST",
+            url: appAddress + page,
+            async: true,
+            data: formData,
+            beforeSend: function () {
+                showLoader();
+            },
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                callback(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                notyAlert('error', errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
+            },
+            complete: function () {
+                hideLoader();
+            }
+        });
     }
-    $("#" + Dom).empty();
-    $("#" + Dom).html(ds);
+    catch(e)
+    {
+        console.log(e.message);
+    }
+}
+function GetDataFromServer(page, formData) {
+    try{
+        var jsonResult = {};
+        $.ajax({
+
+            type: "GET",
+            url: appAddress + page,
+            data: formData,
+            beforeSend: function () {
+                showLoader();
+            },
+            async: false,
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                jsonResult = data;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                notyAlert('error', errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
+            },
+            complete: function () {
+                hideLoader();
+            }
+
+        });
+        return jsonResult;
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
+}
+function GetDataFromServerTraditional(page, formData) {
+    try{
+        var jsonResult = {};
+        $.ajax({
+            type: "GET",
+            url: appAddress + page,
+            data: formData,
+            beforeSend: function () {
+                showLoader();
+            },
+            async: false,
+            cache: false,
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                jsonResult = data;
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                notyAlert('error', errorThrown + ',' + textStatus + ',' + jqXHR.statusText);
+            },
+            complete: function () {
+                hideLoader();
+            }
+
+        });
+        return jsonResult;
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
+}
+//function will route the call for button patch change from js to controller 
+function ChangeButtonPatchView(Controller, Dom, Action) {
+    try
+    {
+        var data = { actionType: Action };
+        var ds = {};
+        ds = GetDataFromServer(Controller + "/ChangeButtonStyle/", data);
+        if (ds == "Nochange") {
+            return; 0
+        }
+        $("#" + Dom).empty();
+        $("#" + Dom).html(ds);
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
 }
 function GetMasterPartial(Controller, MasterCode) {
     try
@@ -328,25 +357,6 @@ function GetMasterPartial(Controller, MasterCode) {
 function NetworkFailure(data, status, xhr) {
     console.log(e.message);
 }
-
-
-//Common function for clearing input fields
-function ClearFields() {
-    $(':input').each(function () {
-
-        if (this.type == 'text' || this.type == 'textarea' || this.type == 'file'|| this.type == 'search') {
-            this.value = '';
-        }
-        else if (this.type == 'checkbox') {
-            this.checked = false;
-        }
-        else if (this.type == 'select-one' || this.type == 'select-multiple') {
-            this.value = '-1';
-        }
-    });
-
-}
-
 
 //only number validation
 function isNumber(e) {
@@ -809,27 +819,6 @@ function ShowFiles() {
     }
     document.getElementById("text_info").value = msgs.join("\r\n");
 }
-function GetUndepositedChequeBubbleCount() {
-    try {
-        var data = {};
-        var ds = {};
-        ds = GetDataFromServer("DepositAndWithdrawals/GetUndepositedChequeCount/", data);
-        if (ds != '') {
-            ds = JSON.parse(ds);
-        }
-        if (ds.Result == "OK") {
-            $('#undepositedCount').text(ds.Records);
-            $('#undepositedCount').attr('title', ds.Records + ' Cheque(s) to be deposited Today');
-            $('#undepositedCount1').attr('title', ds.Records + ' Cheque(s) to be deposited Today');
-        }
-        if (ds.Result == "ERROR") {
-            $('#undepositedCount').text("0");
-        }    
-    }
-    catch (e) {
-
-    }
-}
 
 function formatCurrency(amount) {
     try{
@@ -852,24 +841,6 @@ function formatCurrency(amount) {
  
 
 }
-
-
-
-function OpenCustExpeditionReport(Filter) {
-
-    var url = '../Report/CustomerPaymentExpeditingDetails/__id__';
-    window.location.href = url.replace('__id__', Filter);
-}
-
-
-function OpenSuppExpeditionReport(Filter) {
-
-    var url = '../Report/SupplierPaymentExpeditingDetails/__id__';
-    window.location.href = url.replace('__id__', Filter);
-}
-
-
-
 function setCookie(cname, cvalue, exdays) {
     try {
         var d = new Date();
@@ -909,66 +880,3 @@ function clearCookie(cname) {
 
     }
 }
-
-//------------------------------------Send/ReSend Document For Approval-----------------------------------------//
-
-function SendDocForApproval(documentID,documentTypeCode,approvers)
-{
-    debugger;
-
-    try {
-        var data = { "documentID": documentID, "documentTypeCode": documentTypeCode, "approvers": approvers };
-        var result = "";
-        var message = "";
-        var jsonData = {};
-        jsonData = GetDataFromServer("DocumentApproval/SendDocForApproval/", data);
-        if (jsonData != '') {
-            jsonData = JSON.parse(jsonData);
-            result = jsonData.Result;
-            message = jsonData.Message;
-        }
-        if (result == "OK") {
-            message = jsonData.Message.Message;
-            notyAlert('success',message);
-        }
-        if (result == "ERROR") {
-            notyAlert('error', message);
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-
-}
-function ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID) {
-    debugger;
-    try {
-        var data = { "documentID": documentID, "documentTypeCode": documentTypeCode, "latestApprovalID": latestApprovalID };
-        var result = "";
-        var message = "";
-        var jsonData = {};
-        jsonData = GetDataFromServer("DocumentApproval/ReSendDocForApproval/", data);
-        if (jsonData != '') {
-            jsonData = JSON.parse(jsonData);
-            result = jsonData.Result;
-            message = jsonData.Message;
-        }
-        if (result == "OK") {
-            message = jsonData.Message.Message;
-            notyAlert('success', message);
-        }
-        if (result == "ERROR") {
-            notyAlert('error', message);
-        }
-    }
-    catch (e) {
-        notyAlert('error', e.message);
-    }
-
-}
-
-
-
-
-
-//-----------------------------------------------------------------------------//

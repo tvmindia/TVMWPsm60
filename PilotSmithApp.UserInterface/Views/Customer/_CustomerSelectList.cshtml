@@ -1,0 +1,23 @@
+﻿@model PilotSmithApp.UserInterface.Models.CustomerViewModel
+@if (@ViewBag.IsRequired == "required")
+{
+    <div class="input-group">
+        @Html.DropDownList("CustomerID", Model.CustomerList, "--Select customer--", new { @class = "form-control newinput", @required = "", @title = "The Customer is missing" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCustomerMaster('OTR')"><i class="far fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    <div class="input-group">
+        @Html.DropDownList("CustomerID", Model.CustomerList, "--Select customer--", new { @class = "form-control newinput" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCustomerMaster('OTR')"><i class="far fa-plus-square"></i></span>
+    </div>
+}
+
+@Html.ValidationMessage("CustomerID", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#CustomerID");
+    });
+</script>

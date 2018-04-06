@@ -102,6 +102,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_CustomerForm", customerVM);
         }
         #endregion Customer Form
+        #region Customer SelectList
+        public ActionResult CustomerSelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            CustomerViewModel customerVM = new CustomerViewModel();
+            customerVM.CustomerList = _customerBusiness.GetCustomerSelectList();
+            return PartialView("_CustomerSelectList", customerVM);
+        }
+        #endregion Customer SelectList
+        #region AddCustomerPartial
+        [HttpGet]
+        public ActionResult AddCustomerPartial()
+        {
+            CustomerViewModel customerVM = new CustomerViewModel();
+            customerVM.TitlesList = _customerBusiness.GetTitleSelectList();
+            customerVM.IsUpdate = false;
+            return PartialView("_AddCustomerMaster", customerVM);
+        }
+        #endregion AddCustomerPartial
         #region GetAllCustomer
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
@@ -139,7 +158,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllCustomer
         #region InsertUpdateCustomer
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
         public string InsertUpdateCustomer(CustomerViewModel customerVM)
         {

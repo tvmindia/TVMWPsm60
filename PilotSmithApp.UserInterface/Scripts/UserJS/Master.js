@@ -167,3 +167,29 @@ function SaveSuccessArea(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+//Add Customer
+function AddCustomerMaster(flag) {
+    $("#divMasterBody").load("Customer/AddCustomerPartial", function () {
+        $('#h3ModelMasterContextLabel').text('Add Customer')
+        $('#divModelMasterPopUp').modal('show');
+    });    
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessCustomerMaster(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            $('#divCustomerSelectList').load('/Customer/CustomerSelectList?required=required');
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}

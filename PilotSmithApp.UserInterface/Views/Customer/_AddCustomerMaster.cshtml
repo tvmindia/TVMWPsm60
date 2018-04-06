@@ -1,0 +1,71 @@
+﻿@model PilotSmithApp.UserInterface.Models.CustomerViewModel
+
+    @using (Ajax.BeginForm("InsertUpdateCustomer", "Customer", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessCustomerMaster", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormCustomerMaster" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-8 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+                <div class="form-group col-md-12 no-padding">
+                    <div class="col-md-4 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.ContactTitle, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.ContactTitle, Model.TitlesList, "-- select title --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
+                            @Html.ValidationMessageFor(model => model.ContactTitle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-8 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.ContactPerson, htmlAttributes: new { @class = "control-label " })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.ContactPerson, new { htmlAttributes = new { @class = "form-control newinput" } })
+                            @Html.ValidationMessageFor(model => model.ContactPerson, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 no-padding">
+                    <div class="col-md-12 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label " })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control newinput" } })
+                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 no-padding">
+                    <div class="col-md-12 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.ContactEmail, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.ContactEmail, new { htmlAttributes = new { @class = "form-control newinput", } })
+                            @Html.ValidationMessageFor(model => model.ContactEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <input class="btn btn-default" type="submit" style="margin-right:3%;margin-top:2%" value="Save Changes" />
+                    </div>
+                    }
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormCustomerMaster");
+    });
+</script>
