@@ -77,28 +77,10 @@ namespace PilotSmithApp.UserInterface.Controllers
             DistrictViewModel districtVM = masterCode=="0" ? new DistrictViewModel() : Mapper.Map<District, DistrictViewModel>(_districtBusiness.GetDistrict(int.Parse(masterCode)));
             districtVM.IsUpdate = masterCode=="0" ? false : true;
             districtVM.State = new StateViewModel();
-            districtVM.State.SelectList = StateDropDown();
+            //districtVM.State.SelectList = StateDropDown();
             return PartialView("_AddDistrict", districtVM);
         }
         #endregion
-        #region StateDropDown
-        public List<SelectListItem> StateDropDown()
-        {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<StateViewModel> stateList = Mapper.Map<List<State>, List<StateViewModel>>(_stateBusiness.GetStateForSelectList());
-            if (stateList != null)
-                foreach (StateViewModel state in stateList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = state.Description,
-                        Value = state.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
-        }
-        #endregion StateDropDown
 
         #region GetAllDistrict
         public JsonResult GetAllDistrict(DataTableAjaxPostModel model, DistrictAdvanceSearchViewModel districtAdvanceSearchVM)

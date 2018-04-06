@@ -11,14 +11,15 @@ namespace PilotSmithApp.UserInterface.Models
     {
         [Required]
         public int Code { get; set; }
+        [Required(ErrorMessage ="Description is missing")]
         public string Description { get; set; }
 
-        public PSASysCommonViewModel PSASysCommon { get; set; }
-        public int StateCode { get; set; }
+        //Additional Fields
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public List<SelectListItem> SelectList { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
+        public List<SelectListItem> StateSelectList { get; set; }
     }
 
     public class StateAdvanceSearchViewModel

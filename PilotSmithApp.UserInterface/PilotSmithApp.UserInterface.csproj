@@ -782,7 +782,7 @@
     <Content Include="Views\ProductSpecification\_ProductSpecificationDropDown.cshtml" />
     <Content Include="Views\ProductSpecification\Index.cshtml" />
     <Content Include="Views\State\_AddState.cshtml" />
-    <Content Include="Views\State\_StateDropDown.cshtml" />
+    <Content Include="Views\State\_StateSelectList.cshtml" />
     <Content Include="Views\State\Index.cshtml" />
     <Content Include="Views\District\_AddDistrict.cshtml" />
     <Content Include="Views\District\_DistrictDropDown.cshtml" />

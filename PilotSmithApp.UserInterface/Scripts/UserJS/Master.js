@@ -67,19 +67,21 @@ function SaveSuccessProductSpecification(data, status) {
     $('#divModelMasterPopUp').modal('hide');
 }
 
-//Add State
+//Add State master
 function AddStateMaster(flag) {
-    GetMasterPartial('State', '0');
-    $('#h3ModelMasterContextLabel').text('Add State')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
+    $("#divMasterBody").load("State/MasterPartial?masterCode=0", function () {
+        $('#lblModelMasterContextLabel').text('Add State')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
+   
 }
 
 //onsuccess function for formsubmitt
 function SaveSuccessState(data, status) {
     debugger;
     var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
+    switch (JsonResult.Status) {
         case "OK":
             if ($('#hdnMasterCall').val() == "MSTR") {
                 $('#IsUpdate').val('True');
@@ -88,7 +90,7 @@ function SaveSuccessState(data, status) {
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('#divState').load('/State/StateDropDown');
             }
-            MasterAlert("success", JsonResult.Records.Message)
+            MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":
             MasterAlert("danger", JsonResult.Message)

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -36,9 +37,21 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _stateRepository.DeleteState(code);
         }
-        public List<State> GetStateForSelectList()
+        public List<SelectListItem> GetStateForSelectList()
         {
-            return _stateRepository.GetStateForSelectList();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<State> stateList = _stateRepository.GetStateForSelectList();
+            if (stateList != null)
+                foreach (State state in stateList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = state.Description,
+                        Value = state.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
 
     }

@@ -1,5 +1,5 @@
-﻿var DataTables = {};
-var EmptyGuid = "00000000-0000-0000-0000-000000000000";
+﻿var _dataTables = {};
+var _emptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
 var _status = "";
@@ -40,7 +40,7 @@ function BindOrReloadStateTable(action) {
         StateAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         StateAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         //apply datatable plugin on bank table
-        DataTables.StateList = $('#tblState').DataTable(
+        _dataTables.StateList = $('#tblState').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -119,12 +119,12 @@ function ExportStateData() {
 }
 
 function EditStateMaster(thisObj) {
-    debugger;
     StateVM = DataTables.StateList.row($(thisObj).parents('tr')).data();
-    GetMasterPartial('State', StateVM.Code);
-    $('#h3ModelMasterContextLabel').text('Edit State')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("State/MasterPartial?masterCode=" + StateVM.Code, function () {
+        $('#lblModelMasterContextLabel').text('Edit State Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val('MSTR');
+    });
 }
 function DeleteStateMaster(thisObj) {
     debugger;

@@ -44,12 +44,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
                 };
                 var result = _stateBusiness.InsertUpdateState(Mapper.Map<StateViewModel, State>(stateVM));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
             }
         }
         #endregion
@@ -70,10 +70,10 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(int masterCode)
         {
-            StateViewModel stateVM = masterCode=="0" ? new StateViewModel() : Mapper.Map<State, StateViewModel>(_stateBusiness.GetState(int.Parse(masterCode)));
-            stateVM.IsUpdate = masterCode=="0" ? false : true;
+            StateViewModel stateVM = masterCode==0 ? new StateViewModel() : Mapper.Map<State, StateViewModel>(_stateBusiness.GetState(masterCode));
+            stateVM.IsUpdate = masterCode==0 ? false : true;
             return PartialView("_AddState", stateVM);
         }
         #endregion
@@ -117,24 +117,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region StateDropDown
-        public List<SelectListItem> StateDropDown()
+        #region State SelectList
+        public ActionResult StateSelectList(string required)
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<StateViewModel> stateList = Mapper.Map<List<State>, List<StateViewModel>>(_stateBusiness.GetStateForSelectList());
-            if (stateList != null)
-                foreach (StateViewModel state in stateList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = state.Description,
-                        Value = state.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            ViewBag.IsRequired = required;
+            StateViewModel stateVM = new StateViewModel();
+            stateVM.StateSelectList = _stateBusiness.GetStateForSelectList();
+            return PartialView("_StateSelectList", stateVM);
         }
-        #endregion StateDropDown
+        #endregion State SelectList
 
         #region ButtonStyling
         [HttpGet]

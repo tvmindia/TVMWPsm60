@@ -79,31 +79,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             AreaViewModel areaVM = masterCode=="0"? new AreaViewModel() : Mapper.Map<Area, AreaViewModel>(_areaBusiness.GetArea(int.Parse(masterCode)));
             areaVM.IsUpdate = masterCode=="0" ? false : true;
             areaVM.State = new StateViewModel();
-            areaVM.State.SelectList = StateDropDown();
+            //areaVM.State.SelectList = StateDropDown();
             areaVM.District = new DistrictViewModel();
             areaVM.District.SelectList = DistrictDropDown();
             return PartialView("_AddArea", areaVM);
         }
         #endregion
 
-        #region StateDropDown
-        public List<SelectListItem> StateDropDown()
-        {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<StateViewModel> stateList = Mapper.Map<List<State>, List<StateViewModel>>(_stateBusiness.GetStateForSelectList());
-            if (stateList != null)
-                foreach (StateViewModel state in stateList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = state.Description,
-                        Value = state.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
-        }
-        #endregion StateDropDown
+        
 
         #region DistrictDropDown
         public List<SelectListItem> DistrictDropDown()

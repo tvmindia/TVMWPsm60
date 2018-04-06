@@ -30,9 +30,8 @@
             </div>
             <div class="col-md-12">
                 <div class="col-md-12">
-                    <div class="input-group">
-                        @Html.DropDownListFor(model => model.StateCode, Model.State.SelectList, "--Select State--", new { @class = "form-control" })
-                        <span class="input-group-addon" style="cursor:pointer;color:#015E9A" onclick="AddStateMaster('OTR')"><i class="fa fa-plus-square-o"></i></span>
+                    <div id="divStateSelectList">
+                        @Html.Action("StateSelectList", "State", new { required = "required" })
                     </div>
 
                 </div>

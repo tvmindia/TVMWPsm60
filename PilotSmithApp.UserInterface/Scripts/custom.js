@@ -175,9 +175,9 @@ function MasterAlert(type,msgtxt)
                 align: 'right'
             },
             z_index: 21031,
-            delay: 5000,
+            delay: 50000,
             template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                '<span data-notify="title">{1}</span>' +
+                '<span data-notify="title">{1}</span><button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="display:block;position: absolute; right: 10px; top: 5px; z-index: 10312;">&times;</button>' +
                 '<i class="'+iconclass+'" style="font-size:48px;color:white"></i></span>' +
             '</div>'
         });
