@@ -14,11 +14,11 @@ namespace PilotSmithApp.UserInterface.Models
         public string Description { get; set; }
 
         public PSASysCommonViewModel PSASysCommon { get; set; }
-        public int ProductCategoryCode { get; set; }
+        
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public List<SelectListItem> SelectList { get; set; }
+        public List<SelectListItem> ProductCategorySelectList { get; set; }
     }
     public class ProductCategoryAdvanceSearchViewModel
     {

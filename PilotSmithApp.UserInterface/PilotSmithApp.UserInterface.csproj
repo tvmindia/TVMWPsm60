@@ -779,7 +779,7 @@
     <Content Include="Views\Shared\_LayoutPage.cshtml" />
     <Content Include="Views\DashBoard\Index.cshtml" />
     <Content Include="Views\ProductCategory\_AddProductCategory.cshtml" />
-    <Content Include="Views\ProductCategory\_ProductCategoryDropDown.cshtml" />
+    <Content Include="Views\ProductCategory\_ProductCategorySelectList.cshtml" />
     <Content Include="Views\ProductCategory\Index.cshtml" />
     <Content Include="Views\ProductSpecification\_AddProductSpecification.cshtml" />
     <Content Include="Views\ProductSpecification\_ProductSpecificationDropDown.cshtml" />
@@ -806,6 +806,7 @@
     <Content Include="Views\Branch\_BranchSelectList.cshtml" />
     <Content Include="Views\Customer\_CustomerSelectList.cshtml" />
     <Content Include="Views\Customer\_AddCustomerMaster.cshtml" />
+    <Content Include="Views\Product\_ProductSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

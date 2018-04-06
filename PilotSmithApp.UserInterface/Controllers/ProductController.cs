@@ -74,15 +74,25 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(Guid masterCode)
         {
-            ProductViewModel productVM = masterCode == Guid.Empty.ToString() ? new ProductViewModel() : Mapper.Map<Product, ProductViewModel>(_productBusiness.GetProduct(Guid.Parse(masterCode)));
-            productVM.IsUpdate = masterCode == Guid.Empty.ToString() ? false : true;
+            ProductViewModel productVM = masterCode == Guid.Empty ? new ProductViewModel() : Mapper.Map<Product, ProductViewModel>(_productBusiness.GetProduct(masterCode));
+            productVM.IsUpdate = masterCode == Guid.Empty ? false : true;
             productVM.ProductCategory = new ProductCategoryViewModel();
-            productVM.ProductCategory.SelectList = _productCategoryBusiness.GetProductCategoryForSelectList();
+            productVM.ProductCategory.ProductCategorySelectList = _productCategoryBusiness.GetProductCategoryForSelectList();
             return PartialView("_AddProduct", productVM);
         }
         #endregion MasterPartial
+
+        # region ProductSelectList
+        public ActionResult ProductSelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            ProductViewModel productVM = new ProductViewModel();
+            productVM.ProductSelectList = _productBusiness.GetProductForSelectList();
+            return PartialView("_ProductSelectList", productVM);
+        }
+        #endregion ProductSelectList
 
         #region GetAllProduct
         public JsonResult GetAllProduct(DataTableAjaxPostModel model, ProductAdvanceSearchViewModel productAdvanceSearchVM)

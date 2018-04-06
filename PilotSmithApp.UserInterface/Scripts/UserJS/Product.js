@@ -77,7 +77,7 @@ function BindOrReloadProductTable(action)
                 { "data": "ID", "defaultContent": "<i>-</i>" },
                 { "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Name", "defaultContent": "<i>-</i>" },               
-                { "data": "CategoryCode", "defaultContent": "<i>-</i>" },
+                { "data": "ProductCategoryCode", "defaultContent": "<i>-</i>" },
                 { "data": "IntroducedDateFormatted", "defaultContent": "<i>-</i>" },
                 { "data": "CompanyID", "defaultContent": "<i>-</i>" },
                 { "data": "HSNCode", "defaultContent": "<i>-</i>" },
@@ -128,10 +128,18 @@ function ExportProductData() {
 function EditProductMaster(thisObj) {
     debugger;
     ProductVM = DataTables.ProductList.row($(thisObj).parents('tr')).data();
-    GetMasterPartial('Product', ProductVM.ID);
-    $('#h3ModelMasterContextLabel').text('Edit Product')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val('MSTR');
+
+        $("#divMasterBody").load("Product/MasterPartial?masterCode=" + ProductVM.ID, function () {
+        $('#hdnMasterCall').val('MSTR');
+        $('#lblModelMasterContextLabel').text('Edit Product Information')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
+   // GetMasterPartial('Product', ProductVM.ID);
+    //$("#divmasterbody").load("product",productvm.id);
+    //$('#lblmodelmastercontextlabel').text('edit product')
+    //$('#divmodelmasterpopup').modal('show');
+    //$('#hdnmastercall').val('mstr');
 }
 function DeleteProductMaster(thisObj) {
     debugger;

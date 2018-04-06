@@ -11,7 +11,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid ID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public int CategoryCode { get; set; }
+        public int ProductCategoryCode { get; set; }
         public DateTime IntroducedDate { get; set; }
         public Guid CompanyID { get; set; }
         public string HSNCode { get; set; }

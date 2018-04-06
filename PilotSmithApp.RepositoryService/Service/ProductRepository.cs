@@ -52,7 +52,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar).Value = product.Code;
                         cmd.Parameters.Add("@Name", SqlDbType.VarChar).Value = product.Name;
-                        cmd.Parameters.Add("@CategoryCode", SqlDbType.Int).Value = product.CategoryCode;
+                        cmd.Parameters.Add("@ProductCategoryCode", SqlDbType.Int).Value = product.ProductCategoryCode;
                         cmd.Parameters.Add("@IntroducedDate", SqlDbType.DateTime).Value = product.IntroducedDateFormatted;
                        // cmd.Parameters.Add("@CompanyID", SqlDbType.UniqueIdentifier).Value = product.CompanyID;
                         cmd.Parameters.Add("@HSNCode", SqlDbType.VarChar).Value = product.HSNCode;
@@ -131,7 +131,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         product.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : product.ID);
                                         product.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : product.Code);
                                         product.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : product.Name);
-                                        product.CategoryCode = (sdr["CategoryCode"].ToString() != "" ? int.Parse(sdr["CategoryCode"].ToString()) : product.CategoryCode);
+                                        product.ProductCategoryCode = (sdr["ProductCategoryCode"].ToString() != "" ? int.Parse(sdr["ProductCategoryCode"].ToString()) : product.ProductCategoryCode);
                                         product.IntroducedDate = (sdr["IntroducedDate"].ToString() != "" ? DateTime.Parse(sdr["IntroducedDate"].ToString()) : product.IntroducedDate);
                                         product.IntroducedDateFormatted = (sdr["IntroducedDate"].ToString() != "" ? DateTime.Parse(sdr["IntroducedDate"].ToString()).ToString(_settings.DateFormat) : product.IntroducedDateFormatted);
                                         //product.CompanyID = (sdr["CompanyID"].ToString() != "" ? Guid.Parse(sdr["CompanyID"].ToString()) : product.CompanyID);
@@ -182,7 +182,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     product.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : product.ID);
                                     product.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : product.Code);
                                     product.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : product.Name);
-                                    product.CategoryCode = (sdr["CategoryCode"].ToString() != "" ? int.Parse(sdr["CategoryCode"].ToString()) : product.CategoryCode);
+                                    product.ProductCategoryCode = (sdr["ProductCategoryCode"].ToString() != "" ? int.Parse(sdr["ProductCategoryCode"].ToString()) : product.ProductCategoryCode);
                                     product.IntroducedDateFormatted = (sdr["IntroducedDate"].ToString() != "" ? DateTime.Parse(sdr["IntroducedDate"].ToString()).ToString(_settings.DateFormat) : product.IntroducedDateFormatted);
                                     //product.CompanyID = (sdr["CompanyID"].ToString() != "" ? Guid.Parse(sdr["CompanyID"].ToString()) : product.CompanyID);
                                     product.HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : product.HSNCode);

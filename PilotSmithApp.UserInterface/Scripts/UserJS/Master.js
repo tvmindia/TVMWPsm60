@@ -2,10 +2,15 @@
 //Add Product Category
 function AddProductCategoryMaster(flag)
 {
-    GetMasterPartial('ProductCategory', "0");
-    $('#h3ModelMasterContextLabel').text('Add ProductCategory')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
+    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=0", function () {       
+        $('#hdnMasterCall').val(flag);
+        $('#lblModelMasterContextLabel').text('Add ProductCategory')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
+    //GetMasterPartial('ProductCategory', "0");
+    //$('#h3ModelMasterContextLabel').text('Add ProductCategory')
+   
 }
 
 //onsuccess function for formsubmitt
@@ -172,10 +177,17 @@ function SaveSuccessArea(data, status) {
 //Add Product
 function AddProductMaster(flag) {
     debugger;
-    GetMasterPartial('Product', EmptyGuid);
-    $('#h3ModelMasterContextLabel').text('Add Product')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
+
+        $("#divMasterBody").load("Product/MasterPartial?masterCode=" + EmptyGuid, function () {
+        $('#hdnMasterCall').val(flag);
+        $('#lblModelMasterContextLabel').text('Add Product')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
+    //GetMasterPartial('Product', EmptyGuid);
+    //$('#h3ModelMasterContextLabel').text('Add Product')
+    //$('#divModelMasterPopUp').modal('show');
+    //$('#hdnMasterCall').val(flag);
 }
 
 //onsuccess function for formsubmitt
@@ -189,7 +201,7 @@ function SaveSuccessProduct(data, status) {
                 BindOrReloadProductTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divProduct').load('/Product/ProductDropDown');
+                $('#divProductSelectList').load('/Product/ProductDropDown');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -206,10 +218,11 @@ function SaveSuccessProduct(data, status) {
 //Add Company
 function AddCompanyMaster(flag) {
     debugger;
-    GetMasterPartial('Company', EmptyGuid);
-    $('#h3ModelMasterContextLabel').text('Add Company')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
+
+    //GetMasterPartial('Company', EmptyGuid);
+    //$('#h3ModelMasterContextLabel').text('Add Company')
+    //$('#divModelMasterPopUp').modal('show');
+    //$('#hdnMasterCall').val(flag);
 }
 
 //onsuccess function for formsubmitt
@@ -235,7 +248,6 @@ function SaveSuccessCompany(data, status) {
             break;
     }
     $('#divModelMasterPopUp').modal('hide');
-}
 }
 //==========================================================================================================
 //Add Customer master

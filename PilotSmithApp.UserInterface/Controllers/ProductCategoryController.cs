@@ -117,6 +117,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
+        # region ProductCategorySelectList
+        public ActionResult ProductCategorySelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            ProductCategoryViewModel productCategoryVM = new ProductCategoryViewModel();
+            productCategoryVM.ProductCategorySelectList = _productCategoryBusiness.GetProductCategoryForSelectList();
+            return PartialView("_ProductCategorySelectList", productCategoryVM);
+        }
+        #endregion ProductCategorySelectList
+
         //#region ProductCategoryDropDown
         //public ActionResult ProductCategoryDropDown(ProductCategoryViewModel productCategoryVM)
         //{
