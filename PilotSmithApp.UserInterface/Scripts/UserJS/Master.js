@@ -1,4 +1,5 @@
-﻿//Add Product Category
+﻿var EmptyGuid = "00000000-0000-0000-0000-000000000000";
+//Add Product Category
 function AddProductCategoryMaster(flag)
 {
     GetMasterPartial('ProductCategory', "0");
@@ -157,6 +158,74 @@ function SaveSuccessArea(data, status) {
                 $('#divArea').load('/Area/AreaDropDown');
             }
             MasterAlert("success", JsonResult.Records.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+
+//Add Product
+function AddProductMaster(flag) {
+    debugger;
+    GetMasterPartial('Product', EmptyGuid);
+    $('#h3ModelMasterContextLabel').text('Add Product')
+    $('#divModelMasterPopUp').modal('show');
+    $('#hdnMasterCall').val(flag);
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessProduct(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadProductTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('#divProduct').load('/Product/ProductDropDown');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+
+//Add Company
+function AddCompanyMaster(flag) {
+    debugger;
+    GetMasterPartial('Company', EmptyGuid);
+    $('#h3ModelMasterContextLabel').text('Add Company')
+    $('#divModelMasterPopUp').modal('show');
+    $('#hdnMasterCall').val(flag);
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessCompany(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadCompanyTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('#divCompany').load('/Company/CompanyDropDown');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":
             MasterAlert("danger", JsonResult.Message)

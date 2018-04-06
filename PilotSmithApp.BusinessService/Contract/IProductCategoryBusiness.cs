@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -14,6 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         ProductCategory GetProductCategory(int code);
         bool CheckProductCategoryCodeExist(int code);
         object DeleteProductCategory(int code);
-        List<ProductCategory> GetProductCategoryForSelectList();
+        List<SelectListItem> GetProductCategoryForSelectList();
     }
 }

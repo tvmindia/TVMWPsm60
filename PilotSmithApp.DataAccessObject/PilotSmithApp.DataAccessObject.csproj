@@ -44,6 +44,7 @@
     <Compile Include="DTO\Area.cs" />
     <Compile Include="DTO\Bank.cs" />
     <Compile Include="DTO\Branch.cs" />
+    <Compile Include="DTO\Company.cs" />
     <Compile Include="DTO\District.cs" />
     <Compile Include="DTO\DocumentStatus.cs" />
     <Compile Include="DTO\DocumentType.cs" />

@@ -44,6 +44,7 @@
     <Compile Include="Contract\IAreaRepository.cs" />
     <Compile Include="Contract\IBankRepository.cs" />
     <Compile Include="Contract\IBranchRepository.cs" />
+    <Compile Include="Contract\ICompanyRepository.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IDatabaseFactory.cs" />
     <Compile Include="Contract\IDistrictRepository.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Service\AreaRepository.cs" />
     <Compile Include="Service\BankRepository.cs" />
     <Compile Include="Service\BranchRepository.cs" />
+    <Compile Include="Service\CompanyRepository.cs" />
     <Compile Include="Service\CustomerRepository.cs" />
     <Compile Include="Service\DatabaseFactory.cs" />
     <Compile Include="Service\DistrictRepository.cs" />

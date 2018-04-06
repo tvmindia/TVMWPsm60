@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -42,9 +43,21 @@ namespace PilotSmithApp.BusinessService.Service
             return _productCategoryRepository.DeleteProductCategory(code);
         }
 
-        public List<ProductCategory> GetProductCategoryForSelectList()
+        public List<SelectListItem> GetProductCategoryForSelectList()
         {
-            return _productCategoryRepository.GetProductCategoryForSelectList();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();           
+            List<ProductCategory> productCategoryList = _productCategoryRepository.GetProductCategoryForSelectList();
+            if (productCategoryList != null)
+                foreach (ProductCategory productCategory in productCategoryList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = productCategory.Description,
+                        Value = productCategory.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
     }
 }
