@@ -11,10 +11,11 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         [Required]
+        [Remote(action: "CheckProductCodeExist", controller: "Product", AdditionalFields = "IsUpdate,ID")]
         public string Code { get; set; }
         public string Name { get; set; }
         [Display(Name="Category Code")]
-        public int CategoryCode { get; set; }
+        public int ProductCategoryCode { get; set; }
         public DateTime IntroducedDate { get; set; }        
         public Guid CompanyID { get; set; }
         public string HSNCode { get; set; }
@@ -23,10 +24,11 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Introduced Date")]
         public string IntroducedDateFormatted { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
-        public List<SelectListItem> SelectList { get; set; }
+        public List<SelectListItem> ProductSelectList { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        public ProductCategoryViewModel ProductCategory { get; set; }
     }
 
     public class ProductAdvanceSearchViewModel

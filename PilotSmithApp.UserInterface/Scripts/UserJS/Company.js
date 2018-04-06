@@ -6,22 +6,18 @@ var _status = "";
 var _result = "";
 $(document).ready(function () {
     try {
-
-        //$("#StateCode").select2({});
-        //$("#DistrictCode").select2({});
-
-        BindOrReloadAreaTable('Init');
+        BindOrReloadCompanyTable('Init');
     }
     catch (e) {
         console.log(e.message);
     }
 });
-
-function BindOrReloadAreaTable(action) {
+//function bind the Product Specification list and cheking and filter
+function BindOrReloadCompanyTable(action) {
     try {
         debugger;
         //creating advancesearch object
-        AreaAdvanceSearchViewModel = new Object();
+        CompanyAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
         //switch case to check the operation
@@ -42,17 +38,17 @@ function BindOrReloadAreaTable(action) {
             default:
                 break;
         }
-        AreaAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        AreaAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        //apply datatable plugin on Area table
-        DataTables.AreaList = $('#tblArea').DataTable(
+        CompanyAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+        CompanyAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
+        //apply datatable plugin on Company table
+        DataTables.CompanyList = $('#tblCompany').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [0, 1, 2, 3, 4]
+                                     columns: [1]
                                  }
                 }],
                 ordering: false,
@@ -67,34 +63,23 @@ function BindOrReloadAreaTable(action) {
                 serverSide: true,
                 ajax: {
 
-                    url: "Area/GetAllArea",
-                    data: { "AreaAdvanceSearchVM": AreaAdvanceSearchViewModel },
+                    url: "Company/GetAllCompany",
+                    data: { "CompanyAdvanceSearchVM": CompanyAdvanceSearchViewModel },
                     type: 'POST'
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "Code", "defaultContent": "<i>-</i>" },
-                { "data": "State.Description", "defaultContent": "<i>-</i>" },
-                {"data" :"District.Description","defaultContent":"<i>-</i>"},
-                { "data": "Description", "defaultContent": "<i>-</i>" },
-                { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
+                { "data": "ID", "defaultContent": "<i>-</i>" },
+                { "data": "Name", "defaultContent": "<i>-</i>"},
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditAreaMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteAreaMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditCompanyMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteCompanyMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>', "width": "10%"
                 }
                 ],
-                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [4] },
-                { "targets": [0], "width": "10%" },
-                { "targets": [1], "width": "10%" },
-                { "targets": [2], "width": "10%" },
-                { "targets": [3], "width": "40%" },
-                { "targets": [4], "width": "20%" },
-                { "targets": [5], "width": "10%" }
-                ],
+                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },],
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblArea').fadeIn('slow');
+                    $('#tblCompany').fadeIn('slow');
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();
@@ -106,46 +91,48 @@ function BindOrReloadAreaTable(action) {
                             }
                         }
                         $('.buttons-excel').trigger('click');
-                        BindOrReloadAreaTable();
+                        BindOrReloadCompanyTable();
                     }
                 }
             });
         $('.buttons-excel').hide();
     }
-    catch (e) {
+    catch(e)
+    {
         console.log(e.message);
     }
 }
-function ResetAreaList() {
-    BindOrReloadAreaTable('Reset');
+
+function ResetCompanyList() {
+    BindOrReloadCompanyTable('Reset');
 }
 
-function ExportAreaData() {
+function ExportCompanyData() {
     $('.excelExport').show();
     OnServerCallBegin();
-    BindOrReloadAreaTable('Export');
+    BindOrReloadCompanyTable('Export');
 }
 
-function EditAreaMaster(thisObj) {
+function EditCompanyMaster(thisObj) {
     debugger;
-    AreaVM = DataTables.AreaList.row($(thisObj).parents('tr')).data();
-    GetMasterPartial('Area', AreaVM.Code);
-    $('#h3ModelMasterContextLabel').text('Edit Area')
+    CompanyVM = DataTables.CompanyList.row($(thisObj).parents('tr')).data();
+    GetMasterPartial('Company', CompanyVM.ID);
+    $('#h3ModelMasterContextLabel').text('Edit Company')
     $('#divModelMasterPopUp').modal('show');
     $('#hdnMasterCall').val('MSTR');
 }
-function DeleteAreaMaster(thisObj) {
+function DeleteCompanyMaster(thisObj) {
     debugger;
-    AreaVM = DataTables.AreaList.row($(thisObj).parents('tr')).data();
-    notyConfirm('Are you sure to delete?', 'DeleteArea("' + AreaVM.Code + '")');
+    CompanyVM = DataTables.CompanyList.row($(thisObj).parents('tr')).data();
+    notyConfirm('Are you sure to delete?', 'DeleteCompany("' + CompanyVM.ID + '")');
 }
 
-function DeleteArea(code) {
+function DeleteCompany(id) {
     debugger;
     try {
-        if (code) {
-            var data = { "code": code };           
-            _jsonData = GetDataFromServer("Area/DeleteArea/", data);
+        if (id) {
+            var data = { "ID": id };
+            _jsonData = GetDataFromServer("Company/DeleteCompany/", data);
             if (_jsonData != '') {
                 _jsonData = JSON.parse(_jsonData);
                 _message = _jsonData.Message;
@@ -155,7 +142,7 @@ function DeleteArea(code) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _result.Message);
-                    BindOrReloadAreaTable('Reset');
+                    BindOrReloadCompanyTable('Reset');
                     break;
                 case "ERROR":
                     notyAlert('error', _message);

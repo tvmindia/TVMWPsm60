@@ -117,27 +117,37 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region ProductCategoryDropDown
-        public ActionResult ProductCategoryDropDown(ProductCategoryViewModel productCategoryVM)
+        # region ProductCategorySelectList
+        public ActionResult ProductCategorySelectList(string required)
         {
-            productCategoryVM.ProductCategoryCode = productCategoryVM.Code;
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            productCategoryVM.SelectList = new List<SelectListItem>();
-            List<ProductCategoryViewModel> productCategoryList = Mapper.Map<List<ProductCategory>, List<ProductCategoryViewModel>>(_productCategoryBusiness.GetProductCategoryForSelectList());
-            if(productCategoryList!=null)
-                foreach(ProductCategoryViewModel productCategory in productCategoryList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = productCategory.Description,
-                        Value = productCategory.Code.ToString(),
-                        Selected = false
-                    });  
-                }
-            productCategoryVM.SelectList = selectListItem;
-            return PartialView("_ProductCategoryDropDown", productCategoryVM);
+            ViewBag.IsRequired = required;
+            ProductCategoryViewModel productCategoryVM = new ProductCategoryViewModel();
+            productCategoryVM.ProductCategorySelectList = _productCategoryBusiness.GetProductCategoryForSelectList();
+            return PartialView("_ProductCategorySelectList", productCategoryVM);
         }
-        #endregion
+        #endregion ProductCategorySelectList
+
+        //#region ProductCategoryDropDown
+        //public ActionResult ProductCategoryDropDown(ProductCategoryViewModel productCategoryVM)
+        //{
+        //    productCategoryVM.ProductCategoryCode = productCategoryVM.Code;
+        //    List<SelectListItem> selectListItem = new List<SelectListItem>();
+        //    productCategoryVM.SelectList = new List<SelectListItem>();
+        //    List<ProductCategoryViewModel> productCategoryList = Mapper.Map<List<ProductCategory>, List<ProductCategoryViewModel>>(_productCategoryBusiness.GetProductCategoryForSelectList());
+        //    if(productCategoryList!=null)
+        //        foreach(ProductCategoryViewModel productCategory in productCategoryList)
+        //        {
+        //            selectListItem.Add(new SelectListItem
+        //            {
+        //                Text = productCategory.Description,
+        //                Value = productCategory.Code.ToString(),
+        //                Selected = false
+        //            });  
+        //        }
+        //    productCategoryVM.SelectList = selectListItem;
+        //    return PartialView("_ProductCategoryDropDown", productCategoryVM);
+        //}
+        //#endregion
 
         #region ButtonStyling
         [HttpGet]

@@ -653,6 +653,7 @@
     <Content Include="Scripts\UserJS\AppObject.js" />
     <Content Include="Scripts\UserJS\AppSubobject.js" />
     <Content Include="Scripts\UserJS\Area.js" />
+    <Content Include="Scripts\UserJS\Company.js" />
     <Content Include="Scripts\UserJS\CustomerJS\Customer.js" />
     <Content Include="Scripts\UserJS\District.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
@@ -685,6 +686,7 @@
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
@@ -708,6 +710,7 @@
     <Compile Include="Models\AreaViewModel.cs" />
     <Compile Include="Models\BankViewModel.cs" />
     <Compile Include="Models\BranchViewModel.cs" />
+    <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\DocumentStatusViewModel.cs" />
     <Compile Include="Models\DocumentTypeViewModel.cs" />
@@ -776,7 +779,7 @@
     <Content Include="Views\Shared\_LayoutPage.cshtml" />
     <Content Include="Views\DashBoard\Index.cshtml" />
     <Content Include="Views\ProductCategory\_AddProductCategory.cshtml" />
-    <Content Include="Views\ProductCategory\_ProductCategoryDropDown.cshtml" />
+    <Content Include="Views\ProductCategory\_ProductCategorySelectList.cshtml" />
     <Content Include="Views\ProductCategory\Index.cshtml" />
     <Content Include="Views\ProductSpecification\_AddProductSpecification.cshtml" />
     <Content Include="Views\ProductSpecification\_ProductSpecificationDropDown.cshtml" />
@@ -796,10 +799,14 @@
     <Content Include="Views\Enquiry\_EnquiryForm.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\_AddProduct.cshtml" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\Company\_AddCompany.cshtml" />
+    <Content Include="Views\Company\_CompanyDropDown.cshtml" />
     <Content Include="Views\Branch\Index.cshtml" />
     <Content Include="Views\Branch\_BranchSelectList.cshtml" />
     <Content Include="Views\Customer\_CustomerSelectList.cshtml" />
     <Content Include="Views\Customer\_AddCustomerMaster.cshtml" />
+    <Content Include="Views\Product\_ProductSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

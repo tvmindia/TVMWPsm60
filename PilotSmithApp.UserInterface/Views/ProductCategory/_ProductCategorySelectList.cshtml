@@ -1,0 +1,25 @@
+﻿@model PilotSmithApp.UserInterface.Models.ProductCategoryViewModel
+@if (ViewBag.IsRequired == "required")
+{
+    <div class="input-group">
+        @Html.DropDownList("ProductCategoryCode", Model.ProductCategorySelectList, "--Select Category--", new { @class = "form-control newinput", @required = "", @title = "The Category is missing",@onchange= "$('#hdnProductCategoryCode').val(this.value)" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductCategoryMaster('OTR')"><i class="fas fa-plus-square"></i></span>
+    </div>
+
+}
+else
+{
+    <div class="input-group">
+        @Html.DropDownList("ProductCategoryCode", Model.ProductCategorySelectList, "--Select Category--", new { @class = "form-control newinput", @onchange = "$('#hdnProductCategoryCode').val(this.value)" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductCategoryMaster('OTR')"><i class="fas fa-plus-square"></i></span>
+    </div>
+
+}
+@Html.ValidationMessage("ProductCategoryCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#ProductCategoryCode");
+        $('#ProductCategoryCode').val($('#hdnProductCategoryCode').val());
+    });
+</script>

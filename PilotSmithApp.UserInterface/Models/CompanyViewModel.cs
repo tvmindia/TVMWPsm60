@@ -7,20 +7,20 @@ using System.Web.Mvc;
 
 namespace PilotSmithApp.UserInterface.Models
 {
-    public class ProductCategoryViewModel
+    public class CompanyViewModel
     {
-        [Required]
-        public int Code { get; set; }
-        public string Description { get; set; }
+        public Guid ID { get; set; }
+        public string Name { get; set; }
 
+        //Additional Fields
         public PSASysCommonViewModel PSASysCommon { get; set; }
-        
+        public List<SelectListItem> SelectList { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public List<SelectListItem> ProductCategorySelectList { get; set; }
     }
-    public class ProductCategoryAdvanceSearchViewModel
+
+    public class CompanyAdvanceSearchViewModel
     {
         [Display(Name = "Search")]
         public string SearchTerm { get; set; }
