@@ -10,6 +10,7 @@ namespace PilotSmithApp.UserInterface.Models
     public class CompanyViewModel
     {
         public Guid ID { get; set; }
+        [Required (ErrorMessage ="Company Name is Missing")]
         public string Name { get; set; }
 
         //Additional Fields
