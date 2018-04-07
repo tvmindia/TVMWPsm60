@@ -11,9 +11,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public int Code { get; set; }
         [Display(Name ="State")]
-        public int StateCode { get; set; }
+        public int? StateCode { get; set; }
         [Display(Name = "District")]
-        public int DistrictCode { get; set; }
+        public int? DistrictCode { get; set; }
         [Required(ErrorMessage = "Description is missing")]
         public string Description { get; set; }
         //Additional fields

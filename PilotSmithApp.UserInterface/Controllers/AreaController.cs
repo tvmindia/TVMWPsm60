@@ -48,12 +48,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
                 };
                 var result = _areaBusiness.InsertUpdateArea(Mapper.Map<AreaViewModel, Area>(areaVM));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result,Message="Success" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
             }
         }
         #endregion
@@ -74,15 +74,13 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(int masterCode)
         {
-            AreaViewModel areaVM = masterCode=="0"? new AreaViewModel() : Mapper.Map<Area, AreaViewModel>(_areaBusiness.GetArea(int.Parse(masterCode)));
-            areaVM.IsUpdate = masterCode=="0" ? false : true;
+            AreaViewModel areaVM = masterCode==0? new AreaViewModel() : Mapper.Map<Area, AreaViewModel>(_areaBusiness.GetArea(masterCode));
+            areaVM.IsUpdate = masterCode==0 ? false : true;
             return PartialView("_AddArea", areaVM);
         }
         #endregion
-
-        
 
         #region GetAllArea
         public JsonResult GetAllArea(DataTableAjaxPostModel model, AreaAdvanceSearchViewModel areaAdvanceSearchVM)

@@ -26,7 +26,7 @@ function SaveSuccessProductCategory(data, status)
                 BindOrReloadProductCategoryTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divProductCategory').load('/ProductCategory/ProductCategoryDropDown');
+                $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList');
             }
             MasterAlert("success", JsonResult.Records.Message)
             break;
@@ -59,7 +59,7 @@ function SaveSuccessProductSpecification(data, status) {
                 BindOrReloadProductSpecificationTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divProductSpecification').load('/ProductSpecification/ProductSpecificationDropDown');
+                $('.divProductSpecificationSelectList').load('/ProductSpecification/ProductSpecificationSelectList');
             }
             MasterAlert("success", JsonResult.Records.Message)
             break;
@@ -94,7 +94,7 @@ function SaveSuccessState(data, status) {
                 BindOrReloadStateTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divStateSelectList').load('/State/StateSelectList');
+                $('.divStateSelectList').load('/State/StatSelectList');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -129,7 +129,7 @@ function SaveSuccessDistrict(data, status) {
                 BindOrReloadDistrictTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divDistrict').load('/District/DistrictDropDown');
+                $('.divDistrictSelectList').load('/District/DistrictSelectList');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -146,26 +146,27 @@ function SaveSuccessDistrict(data, status) {
 //Add Area
 function AddAreaMaster(flag) {
     debugger;
-    GetMasterPartial('Area', '0');
-    $('#h3ModelMasterContextLabel').text('Add Area')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
+    $("#divMasterBody").load("Area/MasterPartial?masterCode=0", function () {
+        $('#lblModelMasterContextLabel').text('Add Area Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
 }
 
 //onsuccess function for formsubmitt
 function SaveSuccessArea(data, status) {
     debugger;
     var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
+    switch (JsonResult.Status) {
         case "OK":
             if ($('#hdnMasterCall').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadAreaTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divArea').load('/Area/AreaDropDown');
+                $('.divAreaSelectList').load('/Area/AreaSelectList');
             }
-            MasterAlert("success", JsonResult.Records.Message)
+            MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":
             MasterAlert("danger", JsonResult.Message)
@@ -204,7 +205,7 @@ function SaveSuccessProduct(data, status) {
                 BindOrReloadProductTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divProductSelectList').load('/Product/ProductDropDown');
+                $('.divProductSelectList').load('/Product/ProductSelectList');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -241,7 +242,7 @@ function SaveSuccessCompany(data, status) {
                 BindOrReloadCompanyTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divCompanySelectList').load('/Company/CompanyDropDown');
+                $('.divCompanySelectList').load('/Company/CompanySelectList');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -267,7 +268,7 @@ function SaveSuccessCustomerMaster(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            $('#divCustomerSelectList').load('/Customer/CustomerSelectList?required=required');
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=required');
             MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":

@@ -12,7 +12,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required]
         public int Code { get; set; }
         [Display(Name ="State")]
-        public int StateCode { get; set; }
+        public int? StateCode { get; set; }
         [Required(ErrorMessage ="Description is missing")]
         public string Description { get; set; }
         //Additional fields

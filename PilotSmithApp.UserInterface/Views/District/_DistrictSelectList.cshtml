@@ -19,5 +19,6 @@ else
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#DistrictCode");
+        $('#DistrictCode').val($('#hdnDistrictCode').val());
     });
 </script>

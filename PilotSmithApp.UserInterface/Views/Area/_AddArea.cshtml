@@ -34,7 +34,7 @@
                     @Html.LabelFor(model => model.StateCode, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    <div id="divStateSelectList">
+                    <div class="divStateSelectList">
                         @Html.Action("StateSelectList", "State", new { required = "" })
                         @Html.HiddenFor(model => model.StateCode, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
                     </div>
@@ -49,7 +49,7 @@
                     @Html.LabelFor(model => model.DistrictCode, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    <div id="divDistrictSelectList">
+                    <div class="divDistrictSelectList">
                         @Html.Action("DistrictSelectList", "District", new { required = "" })
                         @Html.HiddenFor(model=>model.DistrictCode, htmlAttributes: new { @class = "",@id= "hdnDistrictCode" })
                     </div>
