@@ -9,10 +9,10 @@ namespace PilotSmithApp.DataAccessObject.DTO
     public class PSASysCommon
     {
         public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedDateString { get; set; }
         public string UpdatedBy { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public string UpdatedDateString { get; set; }        
         public DateTime GetCurrentDateTime()
         {

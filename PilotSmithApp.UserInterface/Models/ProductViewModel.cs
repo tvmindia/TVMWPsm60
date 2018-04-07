@@ -10,15 +10,16 @@ namespace PilotSmithApp.UserInterface.Models
     public class ProductViewModel
     {
         public Guid ID { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Product Code is missing")]
         [Remote(action: "CheckProductCodeExist", controller: "Product", AdditionalFields = "IsUpdate,ID")]
         public string Code { get; set; }
+        [Required(ErrorMessage = "Product Name is missing")]
         public string Name { get; set; }
         [Display(Name="Category")]
-        public int ProductCategoryCode { get; set; }
-        public DateTime IntroducedDate { get; set; } 
+        public int? ProductCategoryCode { get; set; }
+        public DateTime? IntroducedDate { get; set; } 
         [Display(Name ="Company")]       
-        public Guid CompanyID { get; set; }
+        public Guid? CompanyID { get; set; }
         public string HSNCode { get; set; }
 
         //Additional Fields

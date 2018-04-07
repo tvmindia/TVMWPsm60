@@ -11,10 +11,10 @@ namespace PilotSmithApp.UserInterface.Models
     {
         [Required]
         public int Code { get; set; }
+        [Required(ErrorMessage = "Description is missing")]
         public string Description { get; set; }
-
+        //additional fields
         public PSASysCommonViewModel PSASysCommon { get; set; }
-        
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }

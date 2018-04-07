@@ -9,6 +9,7 @@ namespace PilotSmithApp.UserInterface.Models
     public class EnquiryViewModel
     {
         public Guid ID { get; set; }
+        [Required(ErrorMessage = "Enquiry Number is missing")]
         public string EnquiryNo { get; set; }
         public DateTime EnquiryDate { get; set; }
         public string RequirementSpec { get; set; }
@@ -46,12 +47,12 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid EnquiryID { get; set; }
-        public Guid ProductID { get; set; }
-        public Guid ModelID { get; set; }
+        public Guid? ProductID { get; set; }
+        public Guid? ModelID { get; set; }
         public string ProductSpec { get; set; }
-        public decimal Qty { get; set; }
-        public int UnitCode { get; set; }
-        public decimal Rate { get; set; }
+        public decimal? Qty { get; set; }
+        public int? UnitCode { get; set; }
+        public decimal? Rate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
     }
 }

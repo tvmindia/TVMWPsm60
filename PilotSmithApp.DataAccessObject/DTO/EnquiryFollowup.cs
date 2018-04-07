@@ -16,10 +16,13 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Subject { get; set; }
         public string ContactName { get; set; }
         public string ContactNo { get; set; }
-        public int RemindPriorTo { get; set; }
+        public int? RemindPriorTo { get; set; }
         public string ReminderType { get; set; }
         public string Status { get; set; }
         public string GeneralNotes { get; set; }
+        //additional fields
+        public string FollowupDateFormatted { get; set; }
+        public string FollowupTimeFormatted { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
     }
 }
