@@ -2,14 +2,14 @@
 @if (@ViewBag.IsRequired == "required")
 {
     <div class="input-group">
-        @Html.DropDownList("CustomerID", Model.CustomerList, "--Select customer--", new { @class = "form-control newinput", @required = "", @title = "The Customer is missing" })
+        @Html.DropDownList("CustomerID", Model.CustomerSelectList, "--Select customer--", new { @class = "form-control newinput", @required = "", @title = "The Customer is missing", @onchange = "$('#hdnCustomerID').val(this.value)" })
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCustomerMaster('OTR')"><i class="far fa-plus-square"></i></span>
     </div>
 }
 else
 {
     <div class="input-group">
-        @Html.DropDownList("CustomerID", Model.CustomerList, "--Select customer--", new { @class = "form-control newinput" })
+        @Html.DropDownList("CustomerID", Model.CustomerSelectList, "--Select customer--", new { @class = "form-control newinput", @onchange = "$('#hdnCustomerID').val(this.value)" })
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCustomerMaster('OTR')"><i class="far fa-plus-square"></i></span>
     </div>
 }
@@ -19,5 +19,6 @@ else
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#CustomerID");
+        $('#CustomerID').val($('#hdnCustomerID').val());
     });
 </script>

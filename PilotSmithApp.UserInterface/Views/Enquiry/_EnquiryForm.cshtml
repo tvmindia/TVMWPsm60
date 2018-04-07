@@ -31,10 +31,12 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
-                    <div class="col-md-12" id="divCustomerSelectList">
-                        @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
-
+                    <div class="col-md-12">
+                        <div class="divCustomerSelectList">
+                            @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                        </div>
                     </div>
+                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
@@ -79,9 +81,10 @@
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div id="divBranchSelectList">
+                        <div class="divBranchSelectList">
                             @Html.Action("BranchSelectList", "Branch", new { required = "required" })
                         </div>
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
                 </div>
             </div>

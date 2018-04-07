@@ -65,8 +65,8 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal AdvanceAmount { get; set; }
         public decimal OutStanding { get; set; }
         public PSASysCommonViewModel common { get; set; }
-        public List<SelectListItem> CustomerList { get; set; }
-        public List<SelectListItem> TitlesList { get; set; }
+        public List<SelectListItem> CustomerSelectList { get; set; }
+        public List<SelectListItem> TitlesSelectList { get; set; }
         //Additional properties
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }

@@ -35,8 +35,8 @@
                 <div class="col-md-12">
                     <div class="divStateSelectList">
                         @Html.Action("StateSelectList", "State", new { required = "" })
-                        @Html.HiddenFor(model => model.StateCode, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
                     </div>
+                    @Html.HiddenFor(model => model.StateCode, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
                 </div>
             </div>
         </div>
