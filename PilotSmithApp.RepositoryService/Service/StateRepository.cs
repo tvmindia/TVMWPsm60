@@ -181,7 +181,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion
 
-        #region CheckStateCodeExist
+        #region CheckStateNameExist
         public bool CheckStateCodeExist(int code)
         {
             try
@@ -195,7 +195,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckStateCodeExist]";
+                        cmd.CommandText = "[PSA].[CheckStateNameExist]";
                         cmd.Parameters.Add("@Code", SqlDbType.Int).Value = code;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
@@ -209,7 +209,7 @@ namespace PilotSmithApp.RepositoryService.Service
                 throw ex;
             }
         }
-        #endregion
+        #endregion CheckStateNameExist
 
         #region DeleteState
         public object DeleteState(int code)

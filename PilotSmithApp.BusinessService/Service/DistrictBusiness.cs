@@ -29,9 +29,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _districtRepository.GetDistrict(code);
         }
-        public bool CheckDistrictCodeExist(int code)
+        public bool CheckDistrictNameExist(int code)
         {
-            return _districtRepository.CheckDistrictCodeExist(code);
+            return _districtRepository.CheckDistrictNameExist(code);
         }
         public object DeleteDistrict(int code)
         {

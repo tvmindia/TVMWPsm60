@@ -56,19 +56,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region CheckDistrictCodeExist
+        #region CheckDistrictNameExist
         [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckStateCodeExist(DistrictViewModel districtVM)
+        public ActionResult CheckDistrictNameExist(DistrictViewModel districtVM)
         {
-            bool exists = districtVM.IsUpdate ? false : _districtBusiness.CheckDistrictCodeExist(districtVM.Code);
+            bool exists = districtVM.IsUpdate ? false : _districtBusiness.CheckDistrictNameExist(districtVM.Code);
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Distriction Code is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>District alredy is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        #endregion
+        #endregion CheckDistrictNameExist
 
         #region MasterPartial
         [HttpGet]

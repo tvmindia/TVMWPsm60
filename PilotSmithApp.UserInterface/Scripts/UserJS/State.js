@@ -119,7 +119,8 @@ function ExportStateData() {
 }
 
 function EditStateMaster(thisObj) {
-    StateVM = DataTables.StateList.row($(thisObj).parents('tr')).data();
+    debugger;
+    StateVM = _dataTables.StateList.row($(thisObj).parents('tr')).data();
     $("#divMasterBody").load("State/MasterPartial?masterCode=" + StateVM.Code, function () {
         $('#lblModelMasterContextLabel').text('Edit State Information')
         $('#divModelMasterPopUp').modal('show');
@@ -128,7 +129,7 @@ function EditStateMaster(thisObj) {
 }
 function DeleteStateMaster(thisObj) {
     debugger;
-    StateVM = DataTables.StateList.row($(thisObj).parents('tr')).data();
+    StateVM = _dataTables.StateList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteState("' + StateVM.Code + '")');
 }
 

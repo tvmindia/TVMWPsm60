@@ -8,10 +8,10 @@ using System.Web.Mvc;
 namespace PilotSmithApp.UserInterface.Models
 {
     public class StateViewModel
-    {
-        [Required]
+    {      
         public int Code { get; set; }
         [Required(ErrorMessage ="Description is missing")]
+        [Remote(action: "CheckStateNameExist", controller: "State", AdditionalFields = "IsUpdate,Code")]
         public string Description { get; set; }
 
         //Additional Fields
