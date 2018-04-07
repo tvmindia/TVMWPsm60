@@ -166,11 +166,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             try
             {
                 AppUA appUA = Session["AppUA"] as AppUA;
-                customerVM.common = new PSASysCommonViewModel();
-                customerVM.common.CreatedBy = appUA.UserName;
-                customerVM.common.CreatedDate = _pSASysCommon.GetCurrentDateTime();
-                customerVM.common.UpdatedBy = appUA.UserName;
-                customerVM.common.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon = new PSASysCommonViewModel();
+                customerVM.PSASysCommon.CreatedBy = appUA.UserName;
+                customerVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                customerVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
                 result = _customerBusiness.InsertUpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }
@@ -191,11 +191,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             try
             {
                 AppUA appUA = Session["AppUA"] as AppUA;
-                customerVM.common = new PSASysCommonViewModel();
-                customerVM.common.CreatedBy = appUA.UserName;
-                customerVM.common.CreatedDate = _pSASysCommon.GetCurrentDateTime();
-                customerVM.common.UpdatedBy = appUA.UserName;
-                customerVM.common.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon = new PSASysCommonViewModel();
+                customerVM.PSASysCommon.CreatedBy = appUA.UserName;
+                customerVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                customerVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
                 result = _customerBusiness.InsertUpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }

@@ -19,7 +19,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public List<SelectListItem> SelectList { get; set; }
+        public List<SelectListItem> ProductSpecificationSelectList { get; set; }
     }
 
     public class ProductSpecificationAdvanceSearchViewModel

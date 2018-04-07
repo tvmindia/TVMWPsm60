@@ -12,7 +12,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int Code { get; set; }
         [Required(ErrorMessage ="Description is missing")]
         public string Description { get; set; }
-        public PSASysCommonViewModel psaSysCommon { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> BranchList { get; set; }
     }
 }
