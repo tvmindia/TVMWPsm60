@@ -801,7 +801,7 @@
     <Content Include="Views\Product\_AddProduct.cshtml" />
     <Content Include="Views\Company\Index.cshtml" />
     <Content Include="Views\Company\_AddCompany.cshtml" />
-    <Content Include="Views\Company\_CompanyDropDown.cshtml" />
+    <Content Include="Views\Company\_CompanySelectList.cshtml" />
     <Content Include="Views\Branch\Index.cshtml" />
     <Content Include="Views\Branch\_BranchSelectList.cshtml" />
     <Content Include="Views\Customer\_CustomerSelectList.cshtml" />

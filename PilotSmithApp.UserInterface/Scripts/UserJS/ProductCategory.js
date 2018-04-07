@@ -125,10 +125,17 @@ function EditProductCategoryMaster(thisObj)
 {
     debugger;
     productCategoryVM = DataTables.ProductCategoryList.row($(thisObj).parents('tr')).data();
-    GetMasterPartial('ProductCategory', productCategoryVM.Code);
-    $('#h3ModelMasterContextLabel').text('Edit ProductCategory')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val('MSTR');  
+
+    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=" + productCategoryVM.Code, function () {
+        $('#hdnMasterCall').val('MSTR');
+        $('#lblModelMasterContextLabel').text('Edit Category Information')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
+    //GetMasterPartial('ProductCategory', productCategoryVM.Code);
+    //$('#h3ModelMasterContextLabel').text('Edit ProductCategory')
+    //$('#divModelMasterPopUp').modal('show');
+    //$('#hdnMasterCall').val('MSTR');  
 }
 function DeleteProductCategoryMaster(thisObj) {
     debugger;

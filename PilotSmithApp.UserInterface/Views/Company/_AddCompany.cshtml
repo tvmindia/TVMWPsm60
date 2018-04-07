@@ -2,16 +2,14 @@
 
 @using (Ajax.BeginForm("InsertUpdateCompany", "Company", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessCompany", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormCompany" }))
 {
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal ">
+        @Html.AntiForgeryToken()   
         @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
         <div class="form-group col-md-12">
             <div class="col-md-12">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label lblrequired" })
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label " })
                 </div>
             </div>
             <div class="col-md-12">
@@ -28,7 +26,6 @@
                 <img src="~/Content/images/MasterLoading.gif" id="imgMasterLoading" style="display:none" />
             </div>
         </div>
-    </div>
 }
 <script>
     $(document).ready(function () {

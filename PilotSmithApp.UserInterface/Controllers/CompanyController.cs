@@ -56,14 +56,24 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(Guid masterCode)
         {
-            CompanyViewModel companyVM = masterCode == Guid.Empty.ToString() ? new CompanyViewModel() : Mapper.Map<Company, CompanyViewModel>(_companyBusiness.GetCompany(Guid.Parse(masterCode)));
-            companyVM.IsUpdate = masterCode == Guid.Empty.ToString() ? false : true;
+            CompanyViewModel companyVM = masterCode == Guid.Empty? new CompanyViewModel() : Mapper.Map<Company, CompanyViewModel>(_companyBusiness.GetCompany(masterCode));
+            companyVM.IsUpdate = masterCode == Guid.Empty ? false : true;
            
             return PartialView("_AddCompany", companyVM);
         }
         #endregion MasterPartial
+
+        #region CompanySelectList
+        public ActionResult CompanySelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            CompanyViewModel companyVM = new CompanyViewModel();
+            companyVM.CompanySelectList = _companyBusiness.GetCompanyForSelectList();
+            return PartialView("_CompanySelectList", companyVM);
+        }
+        #endregion CompanySelectList
 
         #region GetAllCompany
         public JsonResult GetAllCompany(DataTableAjaxPostModel model, CompanyAdvanceSearchViewModel companyAdvanceSearchVM)

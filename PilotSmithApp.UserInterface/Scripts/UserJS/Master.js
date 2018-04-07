@@ -221,10 +221,12 @@ function SaveSuccessProduct(data, status) {
 function AddCompanyMaster(flag) {
     debugger;
 
-    //GetMasterPartial('Company', EmptyGuid);
-    //$('#h3ModelMasterContextLabel').text('Add Company')
-    //$('#divModelMasterPopUp').modal('show');
-    //$('#hdnMasterCall').val(flag);
+    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + EmptyGuid, function () {
+        $('#hdnMasterCall').val(flag);
+        $('#lblModelMasterContextLabel').text('Add Company')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
 }
 
 //onsuccess function for formsubmitt
@@ -238,7 +240,7 @@ function SaveSuccessCompany(data, status) {
                 BindOrReloadCompanyTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divCompany').load('/Company/CompanyDropDown');
+                $('#divCompanySelectList').load('/Company/CompanyDropDown');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

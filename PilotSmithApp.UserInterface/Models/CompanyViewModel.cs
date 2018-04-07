@@ -14,7 +14,7 @@ namespace PilotSmithApp.UserInterface.Models
 
         //Additional Fields
         public PSASysCommonViewModel PSASysCommon { get; set; }
-        public List<SelectListItem> SelectList { get; set; }
+        public List<SelectListItem> CompanySelectList { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }

@@ -29,6 +29,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public ProductCategoryViewModel ProductCategory { get; set; }
+        public CompanyViewModel Company { get; set; }
     }
 
     public class ProductAdvanceSearchViewModel

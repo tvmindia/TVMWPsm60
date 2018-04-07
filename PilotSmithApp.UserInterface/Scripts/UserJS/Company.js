@@ -116,10 +116,17 @@ function ExportCompanyData() {
 function EditCompanyMaster(thisObj) {
     debugger;
     CompanyVM = DataTables.CompanyList.row($(thisObj).parents('tr')).data();
-    GetMasterPartial('Company', CompanyVM.ID);
-    $('#h3ModelMasterContextLabel').text('Edit Company')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val('MSTR');
+
+    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + CompanyVM.ID, function () {
+        $('#hdnMasterCall').val('MSTR');
+        $('#lblModelMasterContextLabel').text('Edit Company Information')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
+    //GetMasterPartial('Company', CompanyVM.ID);
+    //$('#h3ModelMasterContextLabel').text('Edit Company')
+    //$('#divModelMasterPopUp').modal('show');
+    //$('#hdnMasterCall').val('MSTR');
 }
 function DeleteCompanyMaster(thisObj) {
     debugger;

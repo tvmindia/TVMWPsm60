@@ -23,6 +23,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public ProductCategory ProductCategory { get; set; }
+        public Company Company { get; set; }
     }
 
     public class ProductAdvanceSearch
