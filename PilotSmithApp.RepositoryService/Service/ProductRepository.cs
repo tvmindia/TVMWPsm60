@@ -184,9 +184,11 @@ namespace PilotSmithApp.RepositoryService.Service
                                     product.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : product.ID);
                                     product.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : product.Code);
                                     product.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : product.Name);
+                                    product.ProductCategoryCode = (sdr["ProductCategoryCode"].ToString() != "" ? int.Parse(sdr["ProductCategoryCode"].ToString()) : product.ProductCategoryCode);
                                     product.ProductCategory = new ProductCategory();
                                     product.ProductCategory.Description = (sdr["Category"].ToString() != "" ? (sdr["Category"].ToString()) : product.ProductCategory.Description);
                                     product.IntroducedDateFormatted = (sdr["IntroducedDate"].ToString() != "" ? DateTime.Parse(sdr["IntroducedDate"].ToString()).ToString(_settings.DateFormat) : product.IntroducedDateFormatted);
+                                    product.CompanyID = (sdr["CompanyID"].ToString() != "" ? Guid.Parse(sdr["CompanyID"].ToString()) : product.CompanyID);
                                     product.Company = new Company();
                                     product.Company.Name = (sdr["CompanyName"].ToString() != "" ? (sdr["CompanyName"].ToString()) : product.Company.Name);
                                     product.HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : product.HSNCode);

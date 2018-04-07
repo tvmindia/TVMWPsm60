@@ -18,10 +18,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IProductCategoryBusiness _productCategoryBusiness;
         IProductBusiness _productBusiness;
-        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness)
+        ICompanyBusiness _companyBusiness;
+        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness,ICompanyBusiness companyBusiness)
         {
             _productCategoryBusiness = productCategoryBusiness;
             _productBusiness = productBusiness;
+            _companyBusiness = companyBusiness;
         }
         #endregion Constructor_Injection
         // GET: Product
@@ -80,6 +82,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             productVM.IsUpdate = masterCode == Guid.Empty ? false : true;
             productVM.ProductCategory = new ProductCategoryViewModel();
             productVM.ProductCategory.ProductCategorySelectList = _productCategoryBusiness.GetProductCategoryForSelectList();
+            productVM.Company = new CompanyViewModel();
+            productVM.Company.CompanySelectList = _companyBusiness.GetCompanyForSelectList();
             return PartialView("_AddProduct", productVM);
         }
         #endregion MasterPartial

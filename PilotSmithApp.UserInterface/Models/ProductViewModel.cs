@@ -14,9 +14,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Remote(action: "CheckProductCodeExist", controller: "Product", AdditionalFields = "IsUpdate,ID")]
         public string Code { get; set; }
         public string Name { get; set; }
-        [Display(Name="Category Code")]
+        [Display(Name="Category")]
         public int ProductCategoryCode { get; set; }
-        public DateTime IntroducedDate { get; set; }        
+        public DateTime IntroducedDate { get; set; } 
+        [Display(Name ="Company")]       
         public Guid CompanyID { get; set; }
         public string HSNCode { get; set; }
 
