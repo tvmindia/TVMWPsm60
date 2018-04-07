@@ -10,9 +10,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public string Code { get; set; }
         public string Name { get; set; }
-        public decimal Opening { get; set; }
-        public decimal ActualODLimit { get; set; }
-        public decimal DisplayODLimit { get; set; }
+        public decimal? Opening { get; set; }
+        public decimal? ActualODLimit { get; set; }
+        public decimal? DisplayODLimit { get; set; }
         //additional fields
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }

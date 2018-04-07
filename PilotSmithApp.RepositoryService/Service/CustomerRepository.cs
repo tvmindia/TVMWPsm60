@@ -199,10 +199,10 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = customer.TaxRegNo;
                         cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = customer.PANNO;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customer.GeneralNotes;
-                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = customer.common.CreatedBy;
-                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = customer.common.CreatedDate;
-                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = customer.common.UpdatedBy;
-                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = customer.common.UpdatedDate;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = customer.PSASysCommon.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = customer.PSASysCommon.CreatedDate;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = customer.PSASysCommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = customer.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
@@ -300,13 +300,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);
                                         //customer.OutStanding = (sdr["OutStanding"].ToString() != "" ? decimal.Parse(sdr["OutStanding"].ToString()) : customer.OutStanding);
                                         customer.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : customer.GeneralNotes);
-                                        customer.common = new PSASysCommon();
-                                        customer.common.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.common.CreatedBy);
-                                        customer.common.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.common.CreatedDateString);
-                                        customer.common.CreatedDate = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()) : customer.common.CreatedDate);
-                                        customer.common.UpdatedBy = (sdr["UpdatedBy"].ToString() != "" ? sdr["UpdatedBy"].ToString() : customer.common.UpdatedBy);
-                                        customer.common.UpdatedDate = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()) : customer.common.UpdatedDate);
-                                        customer.common.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : customer.common.UpdatedDateString);
+                                        customer.PSASysCommon = new PSASysCommon();
+                                        customer.PSASysCommon.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.PSASysCommon.CreatedBy);
+                                        customer.PSASysCommon.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.CreatedDateString);
+                                        customer.PSASysCommon.CreatedDate = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()) : customer.PSASysCommon.CreatedDate);
+                                        customer.PSASysCommon.UpdatedBy = (sdr["UpdatedBy"].ToString() != "" ? sdr["UpdatedBy"].ToString() : customer.PSASysCommon.UpdatedBy);
+                                        customer.PSASysCommon.UpdatedDate = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()) : customer.PSASysCommon.UpdatedDate);
+                                        customer.PSASysCommon.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.UpdatedDateString);
                                         customer.FilteredCount= (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : customer.FilteredCount);
                                         customer.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : customer.FilteredCount);
 
@@ -365,13 +365,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                     customer.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : customer.TaxRegNo);
                                     customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);
                                     customer.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : customer.GeneralNotes);
-                                    customer.common = new PSASysCommon();
-                                    customer.common.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.common.CreatedBy);
-                                    customer.common.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.common.CreatedDateString);
-                                    customer.common.CreatedDate = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()) : customer.common.CreatedDate);
-                                    customer.common.UpdatedBy = (sdr["UpdatedBy"].ToString() != "" ? sdr["UpdatedBy"].ToString() : customer.common.UpdatedBy);
-                                    customer.common.UpdatedDate = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()) : customer.common.UpdatedDate);
-                                    customer.common.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : customer.common.UpdatedDateString);
+                                    customer.PSASysCommon = new PSASysCommon();
+                                    customer.PSASysCommon.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.PSASysCommon.CreatedBy);
+                                    customer.PSASysCommon.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.CreatedDateString);
+                                    customer.PSASysCommon.CreatedDate = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()) : customer.PSASysCommon.CreatedDate);
+                                    customer.PSASysCommon.UpdatedBy = (sdr["UpdatedBy"].ToString() != "" ? sdr["UpdatedBy"].ToString() : customer.PSASysCommon.UpdatedBy);
+                                    customer.PSASysCommon.UpdatedDate = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()) : customer.PSASysCommon.UpdatedDate);
+                                    customer.PSASysCommon.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.UpdatedDateString);
 
                                 }
                         }

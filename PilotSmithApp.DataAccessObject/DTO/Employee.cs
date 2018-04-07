@@ -14,8 +14,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string MobileNo { get; set; }
         public string Address { get; set; }
         public string ImageURL { get; set; }
-        public int DepartmentCode { get; set; }
-        public int PositionCode { get; set; }
+        public int? DepartmentCode { get; set; }
+        public int? PositionCode { get; set; }
         public bool IsActive { get; set; }
         public string GeneralNotes { get; set; }
         public PSASysCommon PSASysCommon { get; set; }

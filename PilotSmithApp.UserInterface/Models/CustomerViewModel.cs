@@ -64,7 +64,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Available Advance Amount:")]
         public decimal AdvanceAmount { get; set; }
         public decimal OutStanding { get; set; }
-        public PSASysCommonViewModel common { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> CustomerSelectList { get; set; }
         public List<SelectListItem> TitlesSelectList { get; set; }
         //Additional properties

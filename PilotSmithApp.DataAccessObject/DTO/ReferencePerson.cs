@@ -10,8 +10,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public int Code { get; set; }
         public string Name { get; set; }
-        public int ReferenceTypeCode { get; set; }
-        public int AreaCode { get; set; }
+        public int? ReferenceTypeCode { get; set; }
+        public int? AreaCode { get; set; }
         public string Organization { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }

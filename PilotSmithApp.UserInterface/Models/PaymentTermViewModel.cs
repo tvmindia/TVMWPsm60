@@ -12,9 +12,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Payment Term is missing")]
         [Display(Name = "Payment Term")]
         public string Code { get; set; }
+        [Required(ErrorMessage = "Description is missing")]
         public string Description { get; set; }
-        public int NoOfDays { get; set; }
-        public PSASysCommonViewModel common { get; set; }
-        public List<SelectListItem> SelectList { set; get; }
+        public int? NoOfDays { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
+        public List<SelectListItem> PaymentTermSelectList { set; get; }
     }
 }

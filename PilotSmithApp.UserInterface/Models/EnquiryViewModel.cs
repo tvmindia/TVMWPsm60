@@ -9,21 +9,23 @@ namespace PilotSmithApp.UserInterface.Models
     public class EnquiryViewModel
     {
         public Guid ID { get; set; }
+        [Required(ErrorMessage = "Enquiry Number is missing")]
         public string EnquiryNo { get; set; }
         public DateTime EnquiryDate { get; set; }
         public string RequirementSpec { get; set; }
-        public Guid CustomerID { get; set; }
-        public int GradeCode { get; set; }
-        public int StatusCode { get; set; }
-        public int ReferredByCode { get; set; }
-        public Guid ResponsiblePersonID { get; set; }
-        public Guid AttendedByID { get; set; }
+        public Guid? CustomerID { get; set; }
+        public int? GradeCode { get; set; }
+        public int? StatusCode { get; set; }
+        public int? ReferredByCode { get; set; }
+        public Guid? ResponsiblePersonID { get; set; }
+        public Guid? AttendedByID { get; set; }
         public string GeneralNotes { get; set; }
-        public Guid DocumentOwnerID { get; set; }
+        public Guid? DocumentOwnerID { get; set; }
         [Required(ErrorMessage ="Branch Code is missing")]
-        public int BranchCode { get; set; }
+        public int? BranchCode { get; set; }
         //Additional properties
         [Display(Name ="Enquiry Date")]
+        [Required(ErrorMessage ="Enquiry Date is missing")]
         public string EnquiryDateFormatted { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
@@ -45,12 +47,12 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid EnquiryID { get; set; }
-        public Guid ProductID { get; set; }
-        public Guid ModelID { get; set; }
+        public Guid? ProductID { get; set; }
+        public Guid? ModelID { get; set; }
         public string ProductSpec { get; set; }
-        public decimal Qty { get; set; }
-        public int UnitCode { get; set; }
-        public decimal Rate { get; set; }
+        public decimal? Qty { get; set; }
+        public int? UnitCode { get; set; }
+        public decimal? Rate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
     }
 }

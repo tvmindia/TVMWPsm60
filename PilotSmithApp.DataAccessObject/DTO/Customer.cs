@@ -27,7 +27,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public decimal AdvanceAmount { get; set; }
         public decimal OutStanding { get; set; }
-        public PSASysCommon common { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
         //Additional properties
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }

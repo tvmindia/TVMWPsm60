@@ -91,7 +91,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     customerVM.IsUpdate = false;
                     customerVM.ID = Guid.Empty;
                 }
-                customerVM.TitlesList = _customerBusiness.GetTitleSelectList();
+                customerVM.TitlesSelectList = _customerBusiness.GetTitleSelectList();
                 customerVM.DefaultPaymentTermList = _paymentTermBusiness.GetPaymentTermForSelectList();
 
             }
@@ -107,7 +107,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ViewBag.IsRequired = required;
             CustomerViewModel customerVM = new CustomerViewModel();
-            customerVM.CustomerList = _customerBusiness.GetCustomerSelectList();
+            customerVM.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
             return PartialView("_CustomerSelectList", customerVM);
         }
         #endregion Customer SelectList
@@ -116,7 +116,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult AddCustomerPartial()
         {
             CustomerViewModel customerVM = new CustomerViewModel();
-            customerVM.TitlesList = _customerBusiness.GetTitleSelectList();
+            customerVM.TitlesSelectList = _customerBusiness.GetTitleSelectList();
             customerVM.IsUpdate = false;
             return PartialView("_AddCustomerMaster", customerVM);
         }
@@ -166,11 +166,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             try
             {
                 AppUA appUA = Session["AppUA"] as AppUA;
-                customerVM.common = new PSASysCommonViewModel();
-                customerVM.common.CreatedBy = appUA.UserName;
-                customerVM.common.CreatedDate = _pSASysCommon.GetCurrentDateTime();
-                customerVM.common.UpdatedBy = appUA.UserName;
-                customerVM.common.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon = new PSASysCommonViewModel();
+                customerVM.PSASysCommon.CreatedBy = appUA.UserName;
+                customerVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                customerVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
                 result = _customerBusiness.InsertUpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }
@@ -191,11 +191,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             try
             {
                 AppUA appUA = Session["AppUA"] as AppUA;
-                customerVM.common = new PSASysCommonViewModel();
-                customerVM.common.CreatedBy = appUA.UserName;
-                customerVM.common.CreatedDate = _pSASysCommon.GetCurrentDateTime();
-                customerVM.common.UpdatedBy = appUA.UserName;
-                customerVM.common.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon = new PSASysCommonViewModel();
+                customerVM.PSASysCommon.CreatedBy = appUA.UserName;
+                customerVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                customerVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                customerVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
                 result = _customerBusiness.InsertUpdateCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }

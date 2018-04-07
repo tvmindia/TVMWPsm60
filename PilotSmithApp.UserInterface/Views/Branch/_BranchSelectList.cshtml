@@ -1,17 +1,19 @@
 ﻿@model PilotSmithApp.UserInterface.Models.BranchViewModel
     @if (@ViewBag.IsRequired == "required")
     {
-        <div class="input-group">
-            @Html.DropDownList("BranchCode", Model.BranchList, "--Select branch--", new { @class = "form-control newinput", @required="" , @title = "The Branch is missing" })
-            <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddBranchMaster('OTR')"><i class="far fa-plus-square"></i></span>
-        </div>
+            @Html.DropDownList("BranchCode", Model.BranchList, "--Select branch--", new { @class = "form-control newinput", @required="" , @title = "The Branch is missing", @onchange = "$('#hdnBranchCode').val(this.value)" })
+            
     }
     else
     {
-        <div class="input-group">
-            @Html.DropDownList("BranchCode", Model.BranchList, "--Select branch--", new { @class = "form-control newinput"})
-            <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddBranchMaster('OTR')"><i class="far fa-plus-square"></i></span>
-        </div>
+            @Html.DropDownList("BranchCode", Model.BranchList, "--Select branch--", new { @class = "form-control newinput", @onchange = "$('#hdnBranchCode').val(this.value)" })
+           
     }
 
 @Html.ValidationMessage("BranchCode", "", new { @class = "text-danger" })
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#BranchCode");
+        $('#BranchCode').val($('#hdnBranchCode').val());
+    });
+</script>

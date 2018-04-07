@@ -26,7 +26,7 @@ function SaveSuccessProductCategory(data, status)
                 BindOrReloadProductCategoryTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList');
+                $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList?required=');
             }
             MasterAlert("success", JsonResult.Records.Message)
             break;
@@ -59,7 +59,7 @@ function SaveSuccessProductSpecification(data, status) {
                 BindOrReloadProductSpecificationTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divProductSpecificationSelectList').load('/ProductSpecification/ProductSpecificationSelectList');
+                $('.divProductSpecificationSelectList').load('/ProductSpecification/ProductSpecificationSelectList?required=');
             }
             MasterAlert("success", JsonResult.Records.Message)
             break;
@@ -94,7 +94,7 @@ function SaveSuccessState(data, status) {
                 BindOrReloadStateTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divStateSelectList').load('/State/StatSelectList');
+                $('.divStateSelectList').load('/State/StatSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -129,7 +129,7 @@ function SaveSuccessDistrict(data, status) {
                 BindOrReloadDistrictTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divDistrictSelectList').load('/District/DistrictSelectList');
+                $('.divDistrictSelectList').load('/District/DistrictSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -164,7 +164,7 @@ function SaveSuccessArea(data, status) {
                 BindOrReloadAreaTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divAreaSelectList').load('/Area/AreaSelectList');
+                $('.divAreaSelectList').load('/Area/AreaSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -205,7 +205,7 @@ function SaveSuccessProduct(data, status) {
                 BindOrReloadProductTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divProductSelectList').load('/Product/ProductSelectList');
+                $('.divProductSelectList').load('/Product/ProductSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -242,7 +242,7 @@ function SaveSuccessCompany(data, status) {
                 BindOrReloadCompanyTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divCompanySelectList').load('/Company/CompanySelectList');
+                $('.divCompanySelectList').load('/Company/CompanySelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -259,6 +259,7 @@ function SaveSuccessCompany(data, status) {
 //Add Customer master
 function AddCustomerMaster(flag) {
     $("#divMasterBody").load("Customer/AddCustomerPartial", function () {
+        $('#lblModelMasterContextLabel').text('Add Customer Information')
         $('#divModelMasterPopUp').modal('show');
     });    
 }

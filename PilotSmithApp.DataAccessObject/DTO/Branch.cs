@@ -10,6 +10,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public int Code { get; set; }
         public string Description { get; set; }
-        public PSASysCommon psaSysCommon { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
     }
 }

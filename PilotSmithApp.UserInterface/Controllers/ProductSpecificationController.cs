@@ -122,7 +122,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             productSpecificationVM.ProductSpecificationCode = productSpecificationVM.Code;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            productSpecificationVM.SelectList = new List<SelectListItem>();
+            productSpecificationVM.ProductSpecificationSelectList = new List<SelectListItem>();
             List<ProductSpecificationViewModel> productSpecificationList = Mapper.Map<List<ProductSpecification>, List<ProductSpecificationViewModel>>(_productSpecificationBusiness.GetProductSpecificationForSelectList());
             if (productSpecificationList != null)
                 foreach (ProductSpecificationViewModel productSpecification in productSpecificationList)
@@ -134,7 +134,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Selected = false
                     });
                 }
-            productSpecificationVM.SelectList = selectListItem;
+            productSpecificationVM.ProductSpecificationSelectList = selectListItem;
             return PartialView("_ProductSpecificationDropDown", productSpecificationVM);
         }
         #endregion
