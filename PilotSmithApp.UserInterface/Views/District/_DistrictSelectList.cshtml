@@ -1,0 +1,23 @@
+﻿@model PilotSmithApp.UserInterface.Models.DistrictViewModel
+@if (@ViewBag.IsRequired == "required")
+{
+    <div class="input-group">
+        @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select district--", new { @class = "form-control newinput", @required = "", @title = "The State is missing", @onchange = "$('#hdnDistrictCode').val(this.value)" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDistrictMaster('OTR')"><i class="far fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    <div class="input-group">
+        @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select district--", new { @class = "form-control newinput", @onchange = "$('#hdnDistrictCode').val(this.value)" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDistrictMaster('OTR')"><i class="far fa-plus-square"></i></span>
+    </div>
+}
+
+@Html.ValidationMessage("DistrictCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#DistrictCode");
+    });
+</script>

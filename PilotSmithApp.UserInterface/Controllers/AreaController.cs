@@ -78,34 +78,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             AreaViewModel areaVM = masterCode=="0"? new AreaViewModel() : Mapper.Map<Area, AreaViewModel>(_areaBusiness.GetArea(int.Parse(masterCode)));
             areaVM.IsUpdate = masterCode=="0" ? false : true;
-            areaVM.State = new StateViewModel();
-            //areaVM.State.SelectList = StateDropDown();
-            areaVM.District = new DistrictViewModel();
-            areaVM.District.SelectList = DistrictDropDown();
             return PartialView("_AddArea", areaVM);
         }
         #endregion
 
         
-
-        #region DistrictDropDown
-        public List<SelectListItem> DistrictDropDown()
-        {           
-            List<SelectListItem> selectListItem = new List<SelectListItem>();            
-            List<DistrictViewModel> districtList = Mapper.Map<List<District>, List<DistrictViewModel>>(_districtBusiness.GetDistrictForSelectList());
-            if (districtList != null)
-                foreach (DistrictViewModel district in districtList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = district.Description,
-                        Value = district.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;           
-        }
-        #endregion
 
         #region GetAllArea
         public JsonResult GetAllArea(DataTableAjaxPostModel model, AreaAdvanceSearchViewModel areaAdvanceSearchVM)
@@ -146,27 +123,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region AreaDropDown
-        public ActionResult AreaDropDown(AreaViewModel areaVM)
+        #region Area SelectList
+        public ActionResult AreaSelectList(string required)
         {
-            //areaVM.AreaCode = areaVM.Code;
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-           // areaVM.SelectList = new List<SelectListItem>();
-            List<AreaViewModel> areaList = Mapper.Map<List<Area>, List<AreaViewModel>>(_areaBusiness.GetAreaForSelectList());
-            if (areaList != null)
-                foreach (AreaViewModel area in areaList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = area.Description,
-                        Value = area.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            areaVM.SelectList = selectListItem;
-            return PartialView("_AreaDropDown", areaVM);
+            ViewBag.IsRequired = required;
+            AreaViewModel areaVM = new AreaViewModel();
+            areaVM.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            return PartialView("_AreaSelectList", areaVM);
         }
-        #endregion
+        #endregion Area SelectList
 
         #region ButtonStyling
         [HttpGet]

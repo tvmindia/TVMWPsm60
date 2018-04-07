@@ -788,10 +788,10 @@
     <Content Include="Views\State\_StateSelectList.cshtml" />
     <Content Include="Views\State\Index.cshtml" />
     <Content Include="Views\District\_AddDistrict.cshtml" />
-    <Content Include="Views\District\_DistrictDropDown.cshtml" />
+    <Content Include="Views\District\_DistrictSelectList.cshtml" />
     <Content Include="Views\District\Index.cshtml" />
     <Content Include="Views\Area\_AddArea.cshtml" />
-    <Content Include="Views\Area\_AreaDropDown.cshtml" />
+    <Content Include="Views\Area\_AreaSelectList.cshtml" />
     <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Customer\_CustomerForm.cshtml" />

@@ -76,7 +76,7 @@ function SaveSuccessProductSpecification(data, status) {
 //Add State master
 function AddStateMaster(flag) {
     $("#divMasterBody").load("State/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add State')
+        $('#lblModelMasterContextLabel').text('Add State Information')
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val(flag);
     });
@@ -94,7 +94,7 @@ function SaveSuccessState(data, status) {
                 BindOrReloadStateTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('#divState').load('/State/StateDropDown');
+                $('#divStateSelectList').load('/State/StateSelectList');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -111,17 +111,18 @@ function SaveSuccessState(data, status) {
 //Add District
 function AddDistrictMaster(flag) {
     debugger;
-    GetMasterPartial('District', '0'); 
-    $('#h3ModelMasterContextLabel').text('Add District')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
+    $("#divMasterBody").load("District/MasterPartial?masterCode=0", function () {
+        $('#lblModelMasterContextLabel').text('Add District Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
 }
 
 //onsuccess function for formsubmitt
 function SaveSuccessDistrict(data, status) {
     debugger;
     var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
+    switch (JsonResult.Status) {
         case "OK":
             if ($('#hdnMasterCall').val() == "MSTR") {
                 $('#IsUpdate').val('True');
@@ -130,7 +131,7 @@ function SaveSuccessDistrict(data, status) {
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('#divDistrict').load('/District/DistrictDropDown');
             }
-            MasterAlert("success", JsonResult.Records.Message)
+            MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":
             MasterAlert("danger", JsonResult.Message)

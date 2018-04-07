@@ -13,15 +13,15 @@ namespace PilotSmithApp.UserInterface.Models
         public int Code { get; set; }
         [Display(Name ="State")]
         public int StateCode { get; set; }
+        [Required(ErrorMessage ="Description is missing")]
         public string Description { get; set; }
-
-        public PSASysCommonViewModel PSASysCommon { get; set; }
-        public int DistrictCode { get; set; }
+        //Additional fields
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public List<SelectListItem> SelectList { get; set; }
+        public List<SelectListItem> DistrictSelectList { get; set; }
         public StateViewModel State { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
     }
 
     public class DistrictAdvanceSearchViewModel
