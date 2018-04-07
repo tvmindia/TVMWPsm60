@@ -58,7 +58,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckStateNameExist(StateViewModel stateVM)
         {
-            bool exists = stateVM.IsUpdate ? false : _stateBusiness.CheckStateNameExist(stateVM.Code);
+            bool exists = stateVM.IsUpdate ? false : _stateBusiness.CheckStateNameExist(Mapper.Map<StateViewModel,State>(stateVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>State already is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);

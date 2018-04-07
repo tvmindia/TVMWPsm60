@@ -14,6 +14,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="State")]
         public int? StateCode { get; set; }
         [Required(ErrorMessage ="Description is missing")]
+        [Remote(action: "CheckDistrictNameExist", controller: "District", AdditionalFields = "IsUpdate,Code")]
         public string Description { get; set; }
         //Additional fields
         public int TotalCount { get; set; }

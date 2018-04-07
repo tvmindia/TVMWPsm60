@@ -189,7 +189,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region CheckDistrictNameExist
-        public bool CheckDistrictNameExist(int code)
+        public bool CheckDistrictNameExist(District district)
         {
             try
             {
@@ -203,7 +203,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[CheckDistrictNameExist]";
-                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = code;
+                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = district.Code;
+                        cmd.Parameters.Add("@Description",SqlDbType.VarChar).Value=district.Description;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

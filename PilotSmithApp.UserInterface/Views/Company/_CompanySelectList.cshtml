@@ -18,8 +18,7 @@ else
 @Html.ValidationMessage("CompanyID", "", new { @class = "text-danger" })
 
 <script>
-    $(document).ready(function () {
-        $.validator.unobtrusive.parse("#hdnCompanyID");
+    $(document).ready(function () {        
         $('#hdnCompanyID').val($('#hdnCompanyID').val());
     });
 </script>

@@ -12,7 +12,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateDistrict(District district);
         List<District> GetAllDistrict(DistrictAdvanceSearch districtAdvanceSearch);
         District GetDistrict(int code);
-        bool CheckDistrictNameExist(int code);
+        bool CheckDistrictNameExist(District district);
         object DeleteDistrict(int code);
         List<District> GetDistrictForSelectList();
     }

@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control newinput" } })
-
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

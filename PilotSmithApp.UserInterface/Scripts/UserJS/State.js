@@ -7,6 +7,9 @@ var _result = "";
 $(document).ready(function () {
     try {
         BindOrReloadStateTable('Init');
+        $('#tblState tbody').on('dblclick', 'td', function () {
+            EditStateMaster(this);
+        });
     }
     catch (e) {
         console.log(e.message);

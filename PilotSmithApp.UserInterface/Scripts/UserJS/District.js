@@ -1,4 +1,4 @@
-﻿var DataTables = {};
+﻿var _dataTables = {};
 var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
@@ -10,6 +10,9 @@ $(document).ready(function () {
         //$("#StateCode").select2({});
 
         BindOrReloadDistrictTable('Init');
+        $('#tblDistrict tbody').on('dblclick', 'td', function () {
+            EditDistrictMaster(this);
+        });
     }
     catch (e) {
         console.log(e.message);
@@ -44,7 +47,7 @@ function BindOrReloadDistrictTable(action) {
         DistrictAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         DistrictAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         //apply datatable plugin on bank table
-        DataTables.DistrictList = $('#tblDistrict').DataTable(
+        _dataTables.DistrictList = $('#tblDistrict').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -126,7 +129,7 @@ function ExportDistrictData() {
 
 function EditDistrictMaster(thisObj) {
     debugger;
-    DistrictVM = DataTables.DistrictList.row($(thisObj).parents('tr')).data();
+    DistrictVM = _dataTables.DistrictList.row($(thisObj).parents('tr')).data();
     $("#divMasterBody").load("District/MasterPartial?masterCode=" + DistrictVM.Code, function () {
         $('#lblModelMasterContextLabel').text('Edit District Information')
         $('#divModelMasterPopUp').modal('show');
@@ -135,7 +138,7 @@ function EditDistrictMaster(thisObj) {
 }
 function DeleteDistrictMaster(thisObj) {
     debugger;
-    DistrictVM = DataTables.DistrictList.row($(thisObj).parents('tr')).data();
+    DistrictVM = _dataTables.DistrictList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteDistrict("' + DistrictVM.Code + '")');
 }
 

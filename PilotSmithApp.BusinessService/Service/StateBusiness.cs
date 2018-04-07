@@ -29,9 +29,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _stateRepository.GetState(code);
         }
-        public bool CheckStateNameExist(int code)
+        public bool CheckStateNameExist(State state)
         {
-            return _stateRepository.CheckStateNameExist(code);
+            return _stateRepository.CheckStateNameExist(state);
         }
         public object DeleteState(int code)
         {

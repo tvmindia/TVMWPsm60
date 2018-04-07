@@ -182,7 +182,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region CheckStateNameExist
-        public bool CheckStateCodeExist(int code)
+        public bool CheckStateNameExist(State state)
         {
             try
             {
@@ -196,7 +196,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[CheckStateNameExist]";
-                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = code;
+                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = state.Code;
+                        cmd.Parameters.Add("@Description", SqlDbType.VarChar).Value = state.Description;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

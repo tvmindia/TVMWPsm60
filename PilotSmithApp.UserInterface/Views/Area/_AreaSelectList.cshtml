@@ -17,8 +17,7 @@ else
 @Html.ValidationMessage("AreaCode", "", new { @class = "text-danger" })
 
 <script>
-    $(document).ready(function () {
-        $.validator.unobtrusive.parse("#AreaCode");
+    $(document).ready(function () {        
         $('#AreaCode').val($('#hdnAreaCode').val());
     });
 </script>

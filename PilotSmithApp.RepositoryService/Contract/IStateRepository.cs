@@ -12,7 +12,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateState(State state);
         List<State> GetAllState(StateAdvanceSearch stateAdvanceSearch);
         State GetState(int code);
-        bool CheckStateNameExist(int code);
+        bool CheckStateNameExist(State state);
         object DeleteState(int code);
         List<State> GetStateForSelectList();
     }
