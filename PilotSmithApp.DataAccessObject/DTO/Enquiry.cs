@@ -12,15 +12,15 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string EnquiryNo { get; set; }
         public DateTime EnquiryDate { get; set; }
         public string RequirementSpec { get; set; }
-        public Guid CustomerID { get; set; }
-        public int GradeCode { get; set; }
-        public int StatusCode { get; set; }
-        public int ReferredByCode { get; set; }
-        public Guid ResponsiblePersonID { get; set; }
-        public Guid AttendedByID { get; set; }
+        public Guid? CustomerID { get; set; }
+        public int? GradeCode { get; set; }
+        public int? StatusCode { get; set; }
+        public int? ReferredByCode { get; set; }
+        public Guid? ResponsiblePersonID { get; set; }
+        public Guid? AttendedByID { get; set; }
         public string GeneralNotes { get; set; }
-        public Guid DocumentOwnerID { get; set; }
-        public int BranchCode { get; set; }
+        public Guid? DocumentOwnerID { get; set; }
+        public int? BranchCode { get; set; }
         //Additional properties
         public string EnquiryDateFormatted { get; set;}
         public int TotalCount { get; set; }

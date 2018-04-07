@@ -91,7 +91,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     customerVM.IsUpdate = false;
                     customerVM.ID = Guid.Empty;
                 }
-                customerVM.TitlesList = _customerBusiness.GetTitleSelectList();
+                customerVM.TitlesSelectList = _customerBusiness.GetTitleSelectList();
                 customerVM.DefaultPaymentTermList = _paymentTermBusiness.GetPaymentTermForSelectList();
 
             }
@@ -107,7 +107,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ViewBag.IsRequired = required;
             CustomerViewModel customerVM = new CustomerViewModel();
-            customerVM.CustomerList = _customerBusiness.GetCustomerSelectList();
+            customerVM.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
             return PartialView("_CustomerSelectList", customerVM);
         }
         #endregion Customer SelectList
@@ -116,7 +116,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult AddCustomerPartial()
         {
             CustomerViewModel customerVM = new CustomerViewModel();
-            customerVM.TitlesList = _customerBusiness.GetTitleSelectList();
+            customerVM.TitlesSelectList = _customerBusiness.GetTitleSelectList();
             customerVM.IsUpdate = false;
             return PartialView("_AddCustomerMaster", customerVM);
         }
