@@ -9,7 +9,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
     public class District
     {
         public int Code { get; set; }
-        public int StateCode { get; set; }
+        public int? StateCode { get; set; }
         public string Description { get; set; }
 
         public int TotalCount { get; set; }

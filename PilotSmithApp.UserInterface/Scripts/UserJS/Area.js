@@ -129,10 +129,11 @@ function ExportAreaData() {
 function EditAreaMaster(thisObj) {
     debugger;
     AreaVM = DataTables.AreaList.row($(thisObj).parents('tr')).data();
-    GetMasterPartial('Area', AreaVM.Code);
-    $('#h3ModelMasterContextLabel').text('Edit Area')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function () {
+        $('#lblModelMasterContextLabel').text('Edit Area Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val('MSTR');
+    });
 }
 function DeleteAreaMaster(thisObj) {
     debugger;
