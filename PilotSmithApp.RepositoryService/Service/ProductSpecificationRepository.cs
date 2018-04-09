@@ -180,8 +180,8 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion
 
-        #region CheckProductSpecificationCodeExist
-        public bool CheckProductSpecificationCodeExist(int code)
+        #region CheckProductSpecificationExist
+        public bool CheckProductSpecificationExist(ProductSpecification productSpecification)
         {
             try
             {
@@ -194,8 +194,9 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckProductSpecificationCodeExist]";
-                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = code;
+                        cmd.CommandText = "[PSA].[CheckProductSpecificationExist]";
+                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = productSpecification.Code;
+                        cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = productSpecification.Description;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

@@ -18,8 +18,7 @@ else
 @Html.ValidationMessage("ProductCategoryCode", "", new { @class = "text-danger" })
 
 <script>
-    $(document).ready(function () {
-        $.validator.unobtrusive.parse("#ProductCategoryCode");
+    $(document).ready(function () {       
         $('#ProductCategoryCode').val($('#hdnProductCategoryCode').val());
     });
 </script>

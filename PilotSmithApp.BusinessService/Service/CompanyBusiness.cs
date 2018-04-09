@@ -22,6 +22,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _companyRepository.InsertUpdateCompany(company);
         }
+        public bool CheckCompanyNameExist(Company company)
+        {
+            return _companyRepository.CheckCompanyNameExist(company);
+        }
         public List<Company> GetAllCompany(CompanyAdvanceSearch companyAdvanceSearch)
         {
             return _companyRepository.GetAllCompany(companyAdvanceSearch);

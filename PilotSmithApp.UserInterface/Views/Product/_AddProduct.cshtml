@@ -86,6 +86,7 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProduct");
+        $('#ProductCode').val($('#hdnProductCode').val());
 
         $('input.datepicker').datepicker({
             format: "dd-M-yyyy",//",

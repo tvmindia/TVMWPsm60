@@ -63,7 +63,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool exists = districtVM.IsUpdate ? false : _districtBusiness.CheckDistrictNameExist(Mapper.Map<DistrictViewModel,District>(districtVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>District alredy is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>District alredy is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);

@@ -23,8 +23,8 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
-        #region Check Company  Name Exist
-        public bool CheckCompanyNameExist(Customer customer)
+        #region Check Company Name Exist For Customer
+        public bool CheckCompanyNameExistForCustomer(Customer customer)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckCompanyNameExist]";
+                        cmd.CommandText = "[PSA].[CheckCompanyNameExistForCustomer]";
                         cmd.Parameters.Add("@CompanyName", SqlDbType.NVarChar).Value = customer.CompanyName;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customer.ID;
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -52,7 +52,7 @@ namespace PilotSmithApp.RepositoryService.Service
                 throw ex;
             }
         }
-        #endregion Check Company  Name Exist
+        #endregion Check Company Name Exist For Customer
         #region Check Contact Email Exist
         public bool CheckCustomerEmailExist(Customer customer)
         {

@@ -9,7 +9,7 @@ namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface ICustomerRepository
     {
-        bool CheckCompanyNameExist(Customer customer);
+        bool CheckCompanyNameExistForCustomer(Customer customer);
         bool CheckCustomerEmailExist(Customer customer);
         bool CheckMobileNumberExist(Customer customer);
         List<Titles> GetAllTitles();

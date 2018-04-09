@@ -91,6 +91,37 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion InsertUpdateCompany
 
+        #region CheckCompanyNameExist
+        public bool CheckCompanyNameExist(Company company)
+        {
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[CheckCompanyNameExist]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = company.ID;
+                        cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = company.Name;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        Object res = cmd.ExecuteScalar();
+                        return (res.ToString() == "Exists" ? true : false);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion CheckCompanyNameExist
+
         #region GetAllCompany
         public List<Company> GetAllCompany(CompanyAdvanceSearch companyAdvanceSearch)
         {
@@ -125,6 +156,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         company.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : company.ID);
                                         company.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : company.Name);
+                                        company.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : company.TotalCount);
+                                        company.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : company.FilteredCount);
                                     }
                                     companyList.Add(company);
                                 }

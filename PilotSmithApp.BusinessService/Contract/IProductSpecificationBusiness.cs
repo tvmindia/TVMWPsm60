@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -12,8 +13,8 @@ namespace PilotSmithApp.BusinessService.Contract
         object InsertUpdateProductSpecification(ProductSpecification productSpecification);
         List<ProductSpecification> GetAllProductSpecification(ProductSpecificationAdvanceSearch productSpecificationAdvanceSearch);
         ProductSpecification GetProductSpecification(int code);
-        bool CheckProductSpecificationCodeExist(int code);
+        bool CheckProductSpecificationExist(ProductSpecification productSpecification);
         object DeleteProductSpecification(int code);
-        List<ProductSpecification> GetProductSpecificationForSelectList();
+        List<SelectListItem> GetProductSpecificationForSelectList();
     }
 }

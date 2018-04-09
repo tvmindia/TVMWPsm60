@@ -13,7 +13,7 @@ namespace PilotSmithApp.BusinessService.Contract
         object InsertUpdateArea(Area area);
         List<Area> GetAllArea(AreaAdvanceSearch areaAdvanceSearch);
         Area GetArea(int code);
-        bool CheckAreaCodeExist(int code);
+        bool CheckAreaNameExist(Area area);
         object DeleteArea(int code);
         List<SelectListItem> GetAreaForSelectList();
     }

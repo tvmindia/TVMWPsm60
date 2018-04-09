@@ -12,6 +12,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required]
         public int Code { get; set; }
         [Required(ErrorMessage = "Description is missing")]
+        [Remote(action: "CheckProductSpecificationExist", controller: "ProductSpecification", AdditionalFields = "IsUpdate,Code")]
         public string Description { get; set; }
         //additional fields
         public PSASysCommonViewModel PSASysCommon { get; set; }

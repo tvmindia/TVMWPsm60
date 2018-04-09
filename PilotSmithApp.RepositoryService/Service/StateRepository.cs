@@ -197,7 +197,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[CheckStateNameExist]";
                         cmd.Parameters.Add("@Code", SqlDbType.Int).Value = state.Code;
-                        cmd.Parameters.Add("@Description", SqlDbType.VarChar).Value = state.Description;
+                        cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = state.Description;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

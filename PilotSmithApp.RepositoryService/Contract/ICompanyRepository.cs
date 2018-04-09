@@ -10,6 +10,7 @@ namespace PilotSmithApp.RepositoryService.Contract
     public interface ICompanyRepository
     {
         object InsertUpdateCompany(Company company);
+        bool CheckCompanyNameExist(Company company);
         List<Company> GetAllCompany(CompanyAdvanceSearch companyAdvanceSearch);
         Company GetCompany(Guid id);
         object DeleteCompany(Guid id);

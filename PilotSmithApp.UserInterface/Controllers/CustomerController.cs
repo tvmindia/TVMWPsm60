@@ -33,11 +33,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             CustomerAdvanceSearchViewModel customerAdvanceSearchVM = new CustomerAdvanceSearchViewModel();
             return View(customerAdvanceSearchVM);
         }
-        #region Check Company Exists
+        #region Check Company Name Exist ForCustomer
         [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckCompanyNameExist(CustomerViewModel customerVM)
+        public ActionResult CheckCompanyNameExistForCustomer(CustomerViewModel customerVM)
         {
-            bool exists = _customerBusiness.CheckCompanyNameExist(Mapper.Map<CustomerViewModel, Customer>(customerVM));
+            bool exists = _customerBusiness.CheckCompanyNameExistForCustomer(Mapper.Map<CustomerViewModel, Customer>(customerVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>Company name is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
@@ -45,7 +45,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        #endregion Check Company Exists
+        #endregion  Check Company Name Exist For Customer
         #region Check CustomerEmail Exists
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckCustomerEmailExist(CustomerViewModel customerVM)

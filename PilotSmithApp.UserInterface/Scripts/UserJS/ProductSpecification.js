@@ -1,4 +1,4 @@
-﻿var DataTables = {};
+﻿var _dataTables = {};
 var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
@@ -40,7 +40,7 @@ function BindOrReloadProductSpecificationTable(action) {
         ProductSpecificationAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         ProductSpecificationAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         //apply datatable plugin on bank table
-        DataTables.ProductSpecificationList = $('#tblProductSpecification').DataTable(
+        _dataTables.ProductSpecificationList = $('#tblProductSpecification').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -120,7 +120,7 @@ function ExportProductSpecificationData() {
 
 function EditProductSpecificationMaster(thisObj) {
     debugger;
-    productSpecificationVM = DataTables.ProductSpecificationList.row($(thisObj).parents('tr')).data();
+    productSpecificationVM = _dataTables.ProductSpecificationList.row($(thisObj).parents('tr')).data();
     GetMasterPartial('ProductSpecification', productSpecificationVM.Code);
     $('#h3ModelMasterContextLabel').text('Edit ProductSpecification')
     $('#divModelMasterPopUp').modal('show');
@@ -128,7 +128,7 @@ function EditProductSpecificationMaster(thisObj) {
 }
 function DeleteProductSpecificationMaster(thisObj) {
     debugger;
-    productSpecificationVM = DataTables.ProductSpecificationList.row($(thisObj).parents('tr')).data();
+    productSpecificationVM = _dataTables.ProductSpecificationList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteProductSpecification("' + productSpecificationVM.Code + '")');
 }
 

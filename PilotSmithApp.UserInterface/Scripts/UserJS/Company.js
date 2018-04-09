@@ -1,4 +1,4 @@
-﻿var DataTables = {};
+﻿var _dataTables = {};
 var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
@@ -41,7 +41,7 @@ function BindOrReloadCompanyTable(action) {
         CompanyAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         CompanyAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         //apply datatable plugin on Company table
-        DataTables.CompanyList = $('#tblCompany').DataTable(
+        _dataTables.CompanyList = $('#tblCompany').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -75,7 +75,7 @@ function BindOrReloadCompanyTable(action) {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditCompanyMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteCompanyMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>', "width": "10%"
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },],
+                columnDefs: [{ "targets": [0], "visible": false, "searchable": false }],
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
@@ -115,22 +115,17 @@ function ExportCompanyData() {
 
 function EditCompanyMaster(thisObj) {
     debugger;
-    CompanyVM = DataTables.CompanyList.row($(thisObj).parents('tr')).data();
+    CompanyVM = _dataTables.CompanyList.row($(thisObj).parents('tr')).data();
 
     $("#divMasterBody").load("Company/MasterPartial?masterCode=" + CompanyVM.ID, function () {
         $('#hdnMasterCall').val('MSTR');
         $('#lblModelMasterContextLabel').text('Edit Company Information')
         $('#divModelMasterPopUp').modal('show');
     });
-
-    //GetMasterPartial('Company', CompanyVM.ID);
-    //$('#h3ModelMasterContextLabel').text('Edit Company')
-    //$('#divModelMasterPopUp').modal('show');
-    //$('#hdnMasterCall').val('MSTR');
 }
 function DeleteCompanyMaster(thisObj) {
     debugger;
-    CompanyVM = DataTables.CompanyList.row($(thisObj).parents('tr')).data();
+    CompanyVM = _dataTables.CompanyList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteCompany("' + CompanyVM.ID + '")');
 }
 

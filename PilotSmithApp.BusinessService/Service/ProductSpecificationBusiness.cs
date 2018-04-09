@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -28,17 +29,30 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _productSpecificationRepository.GetProductSpecification(code);
         }
-        public bool CheckProductSpecificationCodeExist(int code)
+        public bool CheckProductSpecificationExist(ProductSpecification productSpecification)
         {
-            return _productSpecificationRepository.CheckProductSpecificationCodeExist(code);
+            return _productSpecificationRepository.CheckProductSpecificationExist(productSpecification);
         }
         public object DeleteProductSpecification(int code)
         {
             return _productSpecificationRepository.DeleteProductSpecification(code);
         }
-        public List<ProductSpecification> GetProductSpecificationForSelectList()
+        public List<SelectListItem> GetProductSpecificationForSelectList()
         {
-            return _productSpecificationRepository.GetProductSpecificationForSelectList();
+
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<ProductSpecification> productSpecificationList = _productSpecificationRepository.GetProductSpecificationForSelectList();
+            if (productSpecificationList != null)
+                foreach (ProductSpecification prodctSpecification in productSpecificationList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = prodctSpecification.Description,
+                        Value = prodctSpecification.Code.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
     }
 }

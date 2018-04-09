@@ -58,22 +58,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
                 };
                 var result = _productCategoryBusiness.InsertUpdateProductCategory(Mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryVM));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Record = "", Message = cm.Message });
             }
         }
         #endregion
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(int masterCode)
         {
-            ProductCategoryViewModel productCategoryVM = masterCode=="0" ? new ProductCategoryViewModel() : Mapper.Map<ProductCategory, ProductCategoryViewModel>(_productCategoryBusiness.GetProductCategory(int.Parse(masterCode)));
-            productCategoryVM.IsUpdate = masterCode=="0" ? false : true;
+            ProductCategoryViewModel productCategoryVM = masterCode==0 ? new ProductCategoryViewModel() : Mapper.Map<ProductCategory, ProductCategoryViewModel>(_productCategoryBusiness.GetProductCategory(masterCode));
+            productCategoryVM.IsUpdate = masterCode==0 ? false : true;
             return PartialView("_AddProductCategory", productCategoryVM);
         }
         #endregion
