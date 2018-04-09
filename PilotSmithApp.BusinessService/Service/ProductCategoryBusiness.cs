@@ -33,9 +33,9 @@ namespace PilotSmithApp.BusinessService.Service
             return _productCategoryRepository.GetProductCategory(code);
         }
 
-        public bool CheckProductCategoryCodeExist(int code)
+        public bool CheckProductCategoryExist(ProductCategory productCategory)
         {
-            return _productCategoryRepository.CheckProductCategoryCodeExist(code);
+            return _productCategoryRepository.CheckProductCategoryExist(productCategory);
         }
 
         public object DeleteProductCategory(int code)

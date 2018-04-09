@@ -30,14 +30,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View(productCategoryAvanceSearchVM);
         }
 
-        #region CheckProductCategoryCodeExist
+        #region CheckProductCategoryExist
         [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckProductCategoryCodeExist(ProductCategoryViewModel productCategoryVM)
+        public ActionResult CheckProductCategoryExist(ProductCategoryViewModel productCategoryVM)
         {
-            bool exists = productCategoryVM.IsUpdate ? false : _productCategoryBusiness.CheckProductCategoryCodeExist(productCategoryVM.Code);
+            bool exists = productCategoryVM.IsUpdate ? false : _productCategoryBusiness.CheckProductCategoryExist(Mapper.Map<ProductCategoryViewModel,ProductCategory>(productCategoryVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Product Category Code is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Product Category is already in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);

@@ -12,7 +12,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateProductCategory(ProductCategory productCategory);
         List<ProductCategory> GetAllProductCategory(ProductCategoryAdvanceSearch productCategoryAdvanceSearch);
         ProductCategory GetProductCategory(int code);
-        bool CheckProductCategoryCodeExist(int code);
+        bool CheckProductCategoryExist(ProductCategory productCategory);
         object DeleteProductCategory(int code);
         List<ProductCategory> GetProductCategoryForSelectList();
     }
