@@ -29,6 +29,8 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Followup Time")]
         [Required(ErrorMessage = "Followup Time is missing")]
         public string FollowupTimeFormatted { get; set; }
+        public int TotalCount { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public List<EnquiryFollowupViewModel> EnquiryFollowupList { get; set;}
     }
 }
