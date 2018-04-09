@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PilotSmithApp.UserInterface.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         // GET: EnquiryFollowup
         public ActionResult Index()
         {
-            return View();
+            EnquiryFollowupViewModel enquiryVm = new EnquiryFollowupViewModel();
+            enquiryVm.TotalCount = 11;
+            ViewBag.Ispager = true;
+            return View(enquiryVm);
         }
     }
 }

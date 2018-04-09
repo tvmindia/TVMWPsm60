@@ -20,5 +20,8 @@ else
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#CustomerID");
         $('#CustomerID').val($('#hdnCustomerID').val());
+        $('#CustomerID').change(function () {
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + this.value)
+        });
     });
 </script>

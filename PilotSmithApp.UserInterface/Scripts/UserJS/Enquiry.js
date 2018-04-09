@@ -8,6 +8,7 @@ var _result = "";
 $(document).ready(function () {
     try {
         BindOrReloadEnquiryTable('Init');
+      
     }
     catch (e) {
         console.log(e.message);

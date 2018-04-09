@@ -91,9 +91,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                     customerVM.IsUpdate = false;
                     customerVM.ID = Guid.Empty;
                 }
-                customerVM.TitlesSelectList = _customerBusiness.GetTitleSelectList();
-                customerVM.DefaultPaymentTermList = _paymentTermBusiness.GetPaymentTermForSelectList();
-
+                customerVM.Titles = new TitlesViewModel()
+                {
+                    TitlesSelectList = _customerBusiness.GetTitleSelectList()
+                };
+                customerVM.PaymentTerm = new PaymentTermViewModel()
+                {
+                    PaymentTermSelectList = _paymentTermBusiness.GetPaymentTermForSelectList()
+                };
             }
             catch (Exception ex)
             {
@@ -102,6 +107,16 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_CustomerForm", customerVM);
         }
         #endregion Customer Form
+        #region Customer Basic Information
+        public ActionResult CustomerBasicInfo(CustomerViewModel customerVM)
+        {
+            if(customerVM.ID!=Guid.Empty)
+            {
+                customerVM = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomer(customerVM.ID));
+            }
+            return PartialView("_CustomerBasicInfo", customerVM);
+        }
+        #endregion Customer Basic Information
         #region Customer SelectList
         public ActionResult CustomerSelectList(string required)
         {
@@ -116,7 +131,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult AddCustomerPartial()
         {
             CustomerViewModel customerVM = new CustomerViewModel();
-            customerVM.TitlesSelectList = _customerBusiness.GetTitleSelectList();
+            customerVM.Titles=new TitlesViewModel() {
+                TitlesSelectList = _customerBusiness.GetTitleSelectList()
+            };
             customerVM.IsUpdate = false;
             return PartialView("_AddCustomerMaster", customerVM);
         }

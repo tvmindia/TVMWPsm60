@@ -1,4 +1,10 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EnquiryViewModel
+<style>
+    .todo-list > li{
+        background:#ffffff;
+        border-left:none;
+    }
+</style>
 @using (Ajax.BeginForm("InsertUpdateEnquiry", "Enquiry", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEnquiry", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "EnquiryForm" }))
 {
     @Html.AntiForgeryToken()
@@ -23,7 +29,7 @@
                         @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autofocus = true } })
+                        @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker"} })
                         @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -38,15 +44,21 @@
                     </div>
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
                 </div>
-                <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.RequirementSpec, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.RequirementSpec, 5, 0, new { @class = "form-control BlockEnter newinput" })
-                        @Html.ValidationMessageFor(model => model.RequirementSpec, "", new { @class = "text-danger" })
+                <div id="divCustomerBasicInfo">
+                    @Html.Action("CustomerBasicInfo","Customer",Model.Customer)
+                </div>                
+                    <div class="col-md-12 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.RequirementSpec, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.RequirementSpec, 5, 0, new { @class = "form-control newinput" })
+                            @Html.ValidationMessageFor(model => model.RequirementSpec, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
+            <div class="form-group col-md-6" id="divFollowupList">
+
             </div>
             <div class="col-md-12">&nbsp;</div>
         </div>
@@ -99,7 +111,7 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#EnquiryForm");
-
+        
         $('input.datepicker').datepicker({
             format: "dd-M-yyyy",
             maxViewMode: 0,
@@ -107,6 +119,10 @@
             clearBtn: true,
             autoclose: true,
             todayHighlight: true
+        });
+
+        $('#CustomerID').change(function () {
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + this.value)
         });
     });
 </script>

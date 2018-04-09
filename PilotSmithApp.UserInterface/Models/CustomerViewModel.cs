@@ -52,7 +52,6 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Default Payment Term")]
         [MaxLength(10)]
         public string PaymentTermCode { get; set; }
-        public List<SelectListItem> DefaultPaymentTermList { get; set; }
         [Display(Name = "Tax Registration Number")]
         [MaxLength(50)]
         public string TaxRegNo { get; set; }
@@ -66,7 +65,9 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal OutStanding { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> CustomerSelectList { get; set; }
-        public List<SelectListItem> TitlesSelectList { get; set; }
+        public TitlesViewModel Titles { get; set; }
+        public PaymentTermViewModel PaymentTerm { get; set; }
+        
         //Additional properties
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
@@ -86,5 +87,6 @@ namespace PilotSmithApp.UserInterface.Models
     public class TitlesViewModel
     {
         public string Title { get; set; }
+        public List<SelectListItem> TitlesSelectList { get; set; }
     }
 }

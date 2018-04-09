@@ -49,7 +49,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.ID = Guid.Empty;
                 }
                 enquiryVM.Customer = new CustomerViewModel {
-                    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                    Titles=new TitlesViewModel() {
+                        TitlesSelectList=_customerBusiness.GetTitleSelectList(),
+                    }, 
                 };
             }
             catch (Exception ex)

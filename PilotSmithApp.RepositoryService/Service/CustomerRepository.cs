@@ -37,7 +37,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckCompanyNameExist]";
+                        cmd.CommandText = "[PSA].[CheckCompanyNameExistForCustomer]";
                         cmd.Parameters.Add("@CompanyName", SqlDbType.NVarChar).Value = customer.CompanyName;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customer.ID;
                         cmd.CommandType = CommandType.StoredProcedure;

@@ -31,7 +31,7 @@
                         @Html.LabelFor(model => model.ContactTitle, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.ContactTitle, Model.TitlesList, "-- select title --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
+                        @Html.DropDownListFor(model => model.ContactTitle, Model.Titles.TitlesSelectList, "-- select title --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
                         @Html.ValidationMessageFor(model => model.ContactTitle, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                         @Html.LabelFor(model => model.PaymentTermCode, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div class="col-md-12">
-                            @Html.DropDownListFor(model => model.PaymentTermCode, Model.DefaultPaymentTermList, "-- Select Payment Term --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
+                            @Html.DropDownListFor(model => model.PaymentTermCode, Model.PaymentTerm.PaymentTermSelectList, "-- Select Payment Term --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
                             @Html.ValidationMessageFor(model => model.PaymentTermCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -192,7 +192,7 @@
 }
 <script>
     $(document).ready(function () {
-        $.validator.unobtrusive.parse("#CustomerForm");
+        $.validator.unobtrusive.parse("#CustomerForm");        
     });
 </script>
 

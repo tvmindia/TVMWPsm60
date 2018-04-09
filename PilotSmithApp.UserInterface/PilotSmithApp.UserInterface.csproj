@@ -807,6 +807,8 @@
     <Content Include="Views\Customer\_CustomerSelectList.cshtml" />
     <Content Include="Views\Customer\_AddCustomerMaster.cshtml" />
     <Content Include="Views\Product\_ProductSelectList.cshtml" />
+    <Content Include="Views\EnquiryFollowup\Index.cshtml" />
+    <Content Include="Views\Customer\_CustomerBasicInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -818,7 +820,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\Bank\" />
-    <Folder Include="Views\EnquiryFollowup\" />
     <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\PaymentTerm\" />
   </ItemGroup>
