@@ -56,6 +56,7 @@
     <Compile Include="Contract\IEnquiryGradeRepository.cs" />
     <Compile Include="Contract\IEnquiryRepository.cs" />
     <Compile Include="Contract\IProductCategoryRepository.cs" />
+    <Compile Include="Contract\IProductModelRepository.cs" />
     <Compile Include="Contract\IProductRepository.cs" />
     <Compile Include="Contract\IProductSpecificationRepository.cs" />
     <Compile Include="Contract\IReferencePersonRepository.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Service\EnquiryGradeRepository.cs" />
     <Compile Include="Service\EnquiryRepository.cs" />
     <Compile Include="Service\ProductCategoryRepository.cs" />
+    <Compile Include="Service\ProductModelRepository.cs" />
     <Compile Include="Service\ProductRepository.cs" />
     <Compile Include="Service\ProductSpecificationRepository.cs" />
     <Compile Include="Service\ReferencePersonRepository.cs" />

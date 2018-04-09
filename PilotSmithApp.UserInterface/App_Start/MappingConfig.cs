@@ -50,6 +50,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ProductAdvanceSearchViewModel, ProductAdvanceSearch>().ReverseMap();
                 config.CreateMap<CompanyViewModel, Company>().ReverseMap();
                 config.CreateMap<CompanyAdvanceSearchViewModel, CompanyAdvanceSearch>().ReverseMap();
+                config.CreateMap<ProductModelViewModel, ProductModel>().ReverseMap();
+                config.CreateMap<ProductModelAdvanceSearchViewModel, ProductModelAdvanceSearch>().ReverseMap();
+
             });
         }
     }
