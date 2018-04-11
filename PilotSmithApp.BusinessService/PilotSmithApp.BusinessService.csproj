@@ -59,6 +59,7 @@
     <Compile Include="Contract\IFileUploadBusiness.cs" />
     <Compile Include="Contract\IProductBusiness.cs" />
     <Compile Include="Contract\IProductCategoryBusiness.cs" />
+    <Compile Include="Contract\IProductModelBusiness.cs" />
     <Compile Include="Contract\IProductSpecificationBusiness.cs" />
     <Compile Include="Contract\IReferencePersonBusiness.cs" />
     <Compile Include="Contract\IReferenceTypeBusiness.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Service\FileUploadBusiness.cs" />
     <Compile Include="Service\ProductBusiness.cs" />
     <Compile Include="Service\ProductCategoryBusiness.cs" />
+    <Compile Include="Service\ProductModelBusiness.cs" />
     <Compile Include="Service\ProductSpecificationBusiness.cs" />
     <Compile Include="Service\ReferencePersonBusiness.cs" />
     <Compile Include="Service\ReferenceTypeBusiness.cs" />

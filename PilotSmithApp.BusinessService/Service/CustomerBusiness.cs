@@ -14,9 +14,9 @@ namespace PilotSmithApp.BusinessService.Service
     {
         private ICustomerRepository _customerRepository;
 
-        public bool CheckCompanyNameExist(Customer customer)
+        public bool CheckCompanyNameExistForCustomer(Customer customer)
         {
-            return _customerRepository.CheckCompanyNameExist(customer);
+            return _customerRepository.CheckCompanyNameExistForCustomer(customer);
         }
         public bool CheckCustomerEmailExist(Customer customer)
         {

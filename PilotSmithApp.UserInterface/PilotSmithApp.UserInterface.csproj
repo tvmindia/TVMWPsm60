@@ -664,6 +664,7 @@
     <Content Include="Scripts\UserJS\PrivilegesView.js" />
     <Content Include="Scripts\UserJS\Product.js" />
     <Content Include="Scripts\UserJS\ProductCategory.js" />
+    <Content Include="Scripts\UserJS\ProductModel.js" />
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
     <Content Include="Scripts\UserJS\State.js" />
@@ -701,6 +702,7 @@
     <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductModelController.cs" />
     <Compile Include="Controllers\ProductSpecificationController.cs" />
     <Compile Include="Controllers\ReferencePersonController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
@@ -722,6 +724,7 @@
     <Compile Include="Models\EnquiryGradeViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
+    <Compile Include="Models\ProductModelViewModel.cs" />
     <Compile Include="Models\ProductSpecificationViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\PaymentTermViewModel.cs" />
@@ -785,7 +788,7 @@
     <Content Include="Views\ProductCategory\_ProductCategorySelectList.cshtml" />
     <Content Include="Views\ProductCategory\Index.cshtml" />
     <Content Include="Views\ProductSpecification\_AddProductSpecification.cshtml" />
-    <Content Include="Views\ProductSpecification\_ProductSpecificationDropDown.cshtml" />
+    <Content Include="Views\ProductSpecification\_ProductSpecificationSelectList.cshtml" />
     <Content Include="Views\ProductSpecification\Index.cshtml" />
     <Content Include="Views\State\_AddState.cshtml" />
     <Content Include="Views\State\_StateSelectList.cshtml" />
@@ -812,6 +815,9 @@
     <Content Include="Views\Product\_ProductSelectList.cshtml" />
     <Content Include="Views\EnquiryFollowup\Index.cshtml" />
     <Content Include="Views\Customer\_CustomerBasicInfo.cshtml" />
+    <Content Include="Views\ProductModel\Index.cshtml" />
+    <Content Include="Views\ProductModel\_AddProductModel.cshtml" />
+    <Content Include="Views\ProductModel\_ProductModelSelectList.cshtml" />
     <Content Include="Views\EnquiryFollowup\_EnquiryList.cshtml" />
     <Content Include="Views\DocumentStatus\_DocumentStatusSelectList.cshtml" />
     <Content Include="Views\ReferencePerson\_ReferencePersonSelectList.cshtml" />

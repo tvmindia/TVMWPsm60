@@ -1,0 +1,24 @@
+﻿@model PilotSmithApp.UserInterface.Models.ProductSpecificationViewModel
+@if (ViewBag.IsRequired == "required")
+{
+    <div class="input-group">
+        @Html.DropDownList("ProductSpecificationCode", Model.ProductSpecificationSelectList, "--Select Category--", new { @class = "form-control newinput", @required = "", @title = "The Category is missing", @onchange = "$('#hdnProductSpecificationCode').val(this.value)" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductspecificationMaster('OTR')"><i class="fas fa-plus-square"></i></span>
+    </div>
+
+}
+else
+{
+    <div class="input-group">
+        @Html.DropDownList("ProductSpecificationCode", Model.ProductSpecificationSelectList, "--Select Category--", new { @class = "form-control newinput", @onchange = "$('#hdnProductSpecificationCode').val(this.value)" })
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductspecificationMaster('OTR')"><i class="fas fa-plus-square"></i></span>
+    </div>
+
+}
+@Html.ValidationMessage("ProductSpecificationCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $('#ProductSpecificationCode').val($('#ProductSpecificationCode').val());
+    });
+</script>

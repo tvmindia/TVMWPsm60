@@ -1,4 +1,4 @@
-﻿var DataTables = {};
+﻿var _dataTables = {};
 var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
@@ -42,7 +42,7 @@ function BindOrReloadProductCategoryTable(action)
         ProductCategoryAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         ProductCategoryAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         //apply datatable plugin on bank table
-        DataTables.ProductCategoryList = $('#tblProductCategory').DataTable(
+        _dataTables.ProductCategoryList = $('#tblProductCategory').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -124,7 +124,7 @@ function ExportProductCategoryData()
 function EditProductCategoryMaster(thisObj)
 {
     debugger;
-    productCategoryVM = DataTables.ProductCategoryList.row($(thisObj).parents('tr')).data();
+    productCategoryVM = _dataTables.ProductCategoryList.row($(thisObj).parents('tr')).data();
 
     $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=" + productCategoryVM.Code, function () {
         $('#hdnMasterCall').val('MSTR');
@@ -139,7 +139,7 @@ function EditProductCategoryMaster(thisObj)
 }
 function DeleteProductCategoryMaster(thisObj) {
     debugger;
-    productCategoryVM = DataTables.ProductCategoryList.row($(thisObj).parents('tr')).data();
+    productCategoryVM = _dataTables.ProductCategoryList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteProductCategory("' + productCategoryVM.Code + '")');
 }
 

@@ -193,8 +193,8 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion
 
-        #region CheckAreaCodeExist
-        public bool CheckAreaCodeExist(int code)
+        #region CheckAreaNameExist
+        public bool CheckAreaNameExist(Area area)
         {
             try
             {
@@ -207,8 +207,9 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckAreaCodeExist]";
-                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = code;
+                        cmd.CommandText = "[PSA].[CheckAreaNameExist]";
+                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = area.Code;
+                        cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = area.Description;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

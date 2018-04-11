@@ -29,9 +29,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _areaRepository.GetArea(code);
         }
-        public bool CheckAreaCodeExist(int code)
+        public bool CheckAreaNameExist(Area area)
         {
-            return _areaRepository.CheckAreaCodeExist(code);
+            return _areaRepository.CheckAreaNameExist(area);
         }
         public object DeleteArea(int code)
         {

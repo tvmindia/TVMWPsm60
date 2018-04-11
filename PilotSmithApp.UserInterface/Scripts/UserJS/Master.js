@@ -18,7 +18,7 @@ function SaveSuccessProductCategory(data, status)
 {
     debugger;
     var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result)
+    switch (JsonResult.Status)
     {
         case "OK":
             if ($('#hdnMasterCall').val() == "MSTR") {
@@ -28,7 +28,7 @@ function SaveSuccessProductCategory(data, status)
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList?required=');
             }
-            MasterAlert("success", JsonResult.Records.Message)
+            MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":
             MasterAlert("danger", JsonResult.Message)
@@ -42,17 +42,21 @@ function SaveSuccessProductCategory(data, status)
 
 //Add Product Specification
 function AddProductSpecificationMaster(flag) {
-    GetMasterPartial('ProductSpecification', '0');
-    $('#h3ModelMasterContextLabel').text('Add ProductSpecification')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
+
+
+    $("#divMasterBody").load("ProductSpecification/MasterPartial?masterCode=0", function () {
+        $('#hdnMasterCall').val(flag);
+        $('#lblModelMasterContextLabel').text('Add ProductSpecification')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
 }
 
 //onsuccess function for formsubmitt
 function SaveSuccessProductSpecification(data, status) {
     debugger;
     var JsonResult = JSON.parse(data)
-    switch (JsonResult.Result) {
+    switch (JsonResult.Status) {
         case "OK":
             if ($('#hdnMasterCall').val() == "MSTR") {
                 $('#IsUpdate').val('True');
@@ -61,7 +65,7 @@ function SaveSuccessProductSpecification(data, status) {
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('.divProductSpecificationSelectList').load('/ProductSpecification/ProductSpecificationSelectList?required=');
             }
-            MasterAlert("success", JsonResult.Records.Message)
+            MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":
             MasterAlert("danger", JsonResult.Message)

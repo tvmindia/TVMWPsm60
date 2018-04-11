@@ -1,4 +1,4 @@
-﻿var DataTables = {};
+﻿var _dataTables = {};
 var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
@@ -45,7 +45,7 @@ function BindOrReloadAreaTable(action) {
         AreaAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         AreaAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         //apply datatable plugin on Area table
-        DataTables.AreaList = $('#tblArea').DataTable(
+        _dataTables.AreaList = $('#tblArea').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -128,7 +128,7 @@ function ExportAreaData() {
 
 function EditAreaMaster(thisObj) {
     debugger;
-    AreaVM = DataTables.AreaList.row($(thisObj).parents('tr')).data();
+    AreaVM = _dataTables.AreaList.row($(thisObj).parents('tr')).data();
     $("#divMasterBody").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function () {
         $('#lblModelMasterContextLabel').text('Edit Area Information')
         $('#divModelMasterPopUp').modal('show');
@@ -137,7 +137,7 @@ function EditAreaMaster(thisObj) {
 }
 function DeleteAreaMaster(thisObj) {
     debugger;
-    AreaVM = DataTables.AreaList.row($(thisObj).parents('tr')).data();
+    AreaVM = _dataTables.AreaList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteArea("' + AreaVM.Code + '")');
 }
 

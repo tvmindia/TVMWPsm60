@@ -30,14 +30,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View();
         }
 
-        #region CheckProductSpecificationCodeExist
+        #region CheckProductSpecificationExist
         [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckProductSpecificationCodeExist(ProductSpecificationViewModel productSpecificationVM)
+        public ActionResult CheckProductSpecificationExist(ProductSpecificationViewModel productSpecificationVM)
         {
-            bool exists = productSpecificationVM.IsUpdate ? false : _productSpecificationBusiness.CheckProductSpecificationCodeExist(productSpecificationVM.Code);
+            bool exists = productSpecificationVM.IsUpdate ? false : _productSpecificationBusiness.CheckProductSpecificationExist(Mapper.Map<ProductSpecificationViewModel, ProductSpecification>(productSpecificationVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Product Specification Code is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Product Specification is already in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -58,22 +58,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
                 };
                 var result = _productSpecificationBusiness.InsertUpdateProductSpecification(Mapper.Map<ProductSpecificationViewModel, ProductSpecification>(productSpecificationVM));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Record = "", Message = cm.Message });
             }
         }
         #endregion
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(int masterCode)
         {
-            ProductSpecificationViewModel productSpecificationVM = masterCode=="0" ? new ProductSpecificationViewModel() : Mapper.Map<ProductSpecification, ProductSpecificationViewModel>(_productSpecificationBusiness.GetProductSpecification(int.Parse(masterCode)));
-            productSpecificationVM.IsUpdate = masterCode=="0" ? false : true;
+            ProductSpecificationViewModel productSpecificationVM = masterCode==0 ? new ProductSpecificationViewModel() : Mapper.Map<ProductSpecification, ProductSpecificationViewModel>(_productSpecificationBusiness.GetProductSpecification(masterCode));
+            productSpecificationVM.IsUpdate = masterCode==0 ? false : true;
             return PartialView("_AddProductSpecification", productSpecificationVM);
         }
         #endregion
@@ -117,25 +117,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region ProductSpecificationDropDown
-        public ActionResult ProductSpecificationDropDown(ProductSpecificationViewModel productSpecificationVM)
+        #region ProductSpecificationSelectList
+        public ActionResult ProductSpecificationSelectList(string required)
         {
-            productSpecificationVM.ProductSpecificationCode = productSpecificationVM.Code;
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            productSpecificationVM.ProductSpecificationSelectList = new List<SelectListItem>();
-            List<ProductSpecificationViewModel> productSpecificationList = Mapper.Map<List<ProductSpecification>, List<ProductSpecificationViewModel>>(_productSpecificationBusiness.GetProductSpecificationForSelectList());
-            if (productSpecificationList != null)
-                foreach (ProductSpecificationViewModel productSpecification in productSpecificationList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = productSpecification.Description,
-                        Value = productSpecification.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            productSpecificationVM.ProductSpecificationSelectList = selectListItem;
-            return PartialView("_ProductSpecificationDropDown", productSpecificationVM);
+            ViewBag.IsRequired = required;
+            ProductSpecificationViewModel productSpecificationVM = new ProductSpecificationViewModel();
+            productSpecificationVM.ProductSpecificationSelectList = _productSpecificationBusiness.GetProductSpecificationForSelectList();
+            return PartialView("_ProductSpecificationSelectList", productSpecificationVM);
         }
         #endregion
 

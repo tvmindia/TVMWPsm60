@@ -11,6 +11,7 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         [Required (ErrorMessage ="Company Name is Missing")]
+        [Remote(action: "CheckCompanyNameExist", controller: "Company", AdditionalFields = "IsUpdate,Code")]
         public string Name { get; set; }
 
         //Additional Fields

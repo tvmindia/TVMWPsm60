@@ -12,7 +12,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateProductSpecification(ProductSpecification productSpecification);
         List<ProductSpecification> GetAllProductSpecification(ProductSpecificationAdvanceSearch productSpecificationAdvanceSearch);
         ProductSpecification GetProductSpecification(int code);
-        bool CheckProductSpecificationCodeExist(int code);
+        bool CheckProductSpecificationExist(ProductSpecification productSpecification);
         object DeleteProductSpecification(int code);
         List<ProductSpecification> GetProductSpecificationForSelectList();
     }

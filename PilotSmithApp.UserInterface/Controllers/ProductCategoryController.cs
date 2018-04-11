@@ -30,14 +30,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View(productCategoryAvanceSearchVM);
         }
 
-        #region CheckProductCategoryCodeExist
+        #region CheckProductCategoryExist
         [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckProductCategoryCodeExist(ProductCategoryViewModel productCategoryVM)
+        public ActionResult CheckProductCategoryExist(ProductCategoryViewModel productCategoryVM)
         {
-            bool exists = productCategoryVM.IsUpdate ? false : _productCategoryBusiness.CheckProductCategoryCodeExist(productCategoryVM.Code);
+            bool exists = productCategoryVM.IsUpdate ? false : _productCategoryBusiness.CheckProductCategoryExist(Mapper.Map<ProductCategoryViewModel,ProductCategory>(productCategoryVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Product Category Code is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Product Category is already in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -58,22 +58,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
                 };
                 var result = _productCategoryBusiness.InsertUpdateProductCategory(Mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryVM));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Record = "", Message = cm.Message });
             }
         }
         #endregion
 
         #region MasterPartial
         [HttpGet]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(int masterCode)
         {
-            ProductCategoryViewModel productCategoryVM = masterCode=="0" ? new ProductCategoryViewModel() : Mapper.Map<ProductCategory, ProductCategoryViewModel>(_productCategoryBusiness.GetProductCategory(int.Parse(masterCode)));
-            productCategoryVM.IsUpdate = masterCode=="0" ? false : true;
+            ProductCategoryViewModel productCategoryVM = masterCode==0 ? new ProductCategoryViewModel() : Mapper.Map<ProductCategory, ProductCategoryViewModel>(_productCategoryBusiness.GetProductCategory(masterCode));
+            productCategoryVM.IsUpdate = masterCode==0 ? false : true;
             return PartialView("_AddProductCategory", productCategoryVM);
         }
         #endregion
