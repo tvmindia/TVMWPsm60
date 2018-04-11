@@ -2,14 +2,14 @@
 @if (@ViewBag.IsRequired == "required")
 {
     <div class="input-group">
-        @Html.DropDownList("ResponsiblePersonID", Model.EmployeeSelectList, "--Select responsible person--", new { @class = "form-control newinput", @required = "", @title = "The Employee is missing", @onchange = "$('#hdnResponsiblePersonID').val(this.value)" })
+        @Html.DropDownList("ResponsiblePersonID", Model.EmployeeSelectList, "--Select responsible person--", new { @class = "form-control newinput", @required = "", @title = "The Employee is missing", @style = "width:100%!important", @onchange = "$('#hdnResponsiblePersonID').val(this.value)" })
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddStateMaster('OTR')"><i class="fa fa-plus-square"></i></span>
     </div>
 }
 else
 {
     <div class="input-group">
-        @Html.DropDownList("ResponsiblePersonID", Model.EmployeeSelectList, "--Select responsible person--", new { @class = "form-control newinput", @onchange = "$('#hdnResponsiblePersonID').val(this.value)" })
+        @Html.DropDownList("ResponsiblePersonID", Model.EmployeeSelectList, "--Select responsible person--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnResponsiblePersonID').val(this.value)" })
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddStateMaster('OTR')"><i class="fa fa-plus-square"></i></span>
     </div>
 }
@@ -19,6 +19,8 @@ else
 <script>
     $(document).ready(function () {
         $('#ResponsiblePersonID').val($('#hdnResponsiblePersonID').val());
+        $('#ResponsiblePersonID').select2({});
+        $('.select2').addClass('form-control newinput');
     });
 </script>
 

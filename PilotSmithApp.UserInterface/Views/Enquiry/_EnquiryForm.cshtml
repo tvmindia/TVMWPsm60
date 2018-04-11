@@ -225,5 +225,12 @@
         catch (e) {
             console.log(e.message);
         }
+        try {
+            $('#EnquiryGradeCode').select2({});
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
     });
 </script>
