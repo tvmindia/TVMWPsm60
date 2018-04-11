@@ -125,6 +125,47 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetAllEnquiry
+        #region InsertUpdateEnquiry
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string InsertUpdateEnquiry(EnquiryViewModel enquiryVM)
+        {
+            //object resultFromBusiness = null;
+
+            try
+            {
+                AppUA appUA = Session["AppUAOffice"] as AppUA;
+                enquiryVM.PSASysCommon = new PSASysCommonViewModel();
+                enquiryVM.PSASysCommon.CreatedBy = appUA.UserName;
+                enquiryVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                enquiryVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                enquiryVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                //object ResultFromJS = JsonConvert.DeserializeObject(enquiryVM.DetailJSON);
+                //string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                //enquiryVM.enquiryItemList = JsonConvert.DeserializeObject<List<EnquiryItemViewModel>>(ReadableFormat);
+                EnquiryViewModel enquiryObj = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(enquiryVM)));
+
+                if (enquiryVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+
+        }
+
+        #endregion InsertUpdateEnquiry
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
