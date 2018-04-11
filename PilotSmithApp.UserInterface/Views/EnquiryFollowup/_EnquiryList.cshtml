@@ -1,15 +1,16 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EnquiryFollowupViewModel
 <style>
-    .pagination{
-        margin:5px 0px;
+    .pagination {
+        margin: 5px 0px;
     }
-    .todo-list > li{
-        background:#ffffff;
-        border-left:none;
+
+    .todo-list > li {
+        background: #ffffff;
+        border-left: none;
     }
-    .box-footer
-    {
-        background-color:transparent;
+
+    .box-footer {
+        background-color: transparent;
     }
     /*.round-button {
     -webkit-transition: width 2s, height 2s;
@@ -20,40 +21,43 @@
         height:38px;
     }*/
     .round-button {
-    display:block;
-    width:35px;
-    height:35px;
-    line-height:25px;
-    border: 1.5px solid #ffffff;
-    border-radius: 50%;
-    color:#f5f5f5;
-    text-align:center;
-    text-decoration:none!important;
-    background: #dd9546;
-    box-shadow:0 0 9px #6f6f6f;
-    font-size:33px;
-    font-weight:bold;
+        display: block;
+        width: 35px;
+        height: 35px;
+        line-height: 25px;
+        border: 1.5px solid #ffffff;
+        border-radius: 50%;
+        color: #f5f5f5;
+        text-align: center;
+        text-decoration: none !important;
+        background: #dd9546;
+        box-shadow: 0 0 9px #6f6f6f;
+        font-size: 33px;
+        font-weight: bold;
     }
-    .box{
-        border:5px solid #efefef;
+
+    .box {
+        border: 5px solid #efefef;
     }
-.round-button:hover {
-    background: #dd9546;
-    color:white;
-}
-.text {
-   overflow: hidden;
-   text-overflow: ellipsis;
-   display: -webkit-box;
-   line-height: 16px;     /* fallback */
-   max-height: 32px;      /* fallback */
-   -webkit-line-clamp: 2; /* number of lines to show */
-   -webkit-box-orient: vertical;
-}
+
+    .round-button:hover {
+        background: #dd9546;
+        color: white;
+    }
+
+    .text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-height: 16px; /* fallback */
+        max-height: 32px; /* fallback */
+        -webkit-line-clamp: 2; /* number of lines to show */
+        -webkit-box-orient: vertical;
+    }
 </style>
 @if (ViewBag.Ispager)
 {
-    @if (Model.EnquiryFollowupList.Count > 0)
+    if(Model.EnquiryFollowupList.Count > 0)
     {
         <ul class="todo-list ui-sortable">
             @foreach (var enquiryVm in Model.EnquiryFollowupList)
@@ -121,5 +125,6 @@ else
         </div>
     </div>
                                 }
+
 
 

@@ -9,19 +9,29 @@ namespace PilotSmithApp.UserInterface.Models
     public class EnquiryViewModel
     {
         public Guid ID { get; set; }
-        [Required(ErrorMessage = "Enquiry Number is missing")]
+        [Display(Name ="Enquiry No")]
         public string EnquiryNo { get; set; }
         public DateTime EnquiryDate { get; set; }
+        [Display(Name = "Requirement Specification")]
         public string RequirementSpec { get; set; }
+        [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
-        public int? GradeCode { get; set; }
-        public int? StatusCode { get; set; }
+        [Display(Name = "Grade")]
+        public int? EnquiryGradeCode { get; set; }
+        [Display(Name = "Status")]
+        public int? DocumentStatusCode { get; set; }
+        [Display(Name = "Referred By")]
         public int? ReferredByCode { get; set; }
+        [Display(Name = "Responsible Person")]
         public Guid? ResponsiblePersonID { get; set; }
+        [Display(Name = "Attended By")]
         public Guid? AttendedByID { get; set; }
+        [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
+        [Display(Name = "Owner")]
         public Guid? DocumentOwnerID { get; set; }
         [Required(ErrorMessage ="Branch Code is missing")]
+        [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
         //Additional properties
         [Display(Name ="Enquiry Date")]
@@ -30,9 +40,11 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        public Guid hdnFileID { get; set; }
         public CustomerViewModel Customer { get; set; }
         public BranchViewModel Branch { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public EnquiryGradeViewModel EnquiryGrade { get; set; }
         public List<EnquiryDetailViewModel> EnquiryDetailList { get; set; }
     }
     public class EnquiryAdvanceSearchViewModel

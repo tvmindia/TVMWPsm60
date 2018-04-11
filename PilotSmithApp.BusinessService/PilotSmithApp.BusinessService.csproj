@@ -78,6 +78,7 @@
     <Compile Include="Service\EnquiryBusiness.cs" />
     <Compile Include="Service\EnquiryFollowupBusiness.cs" />
     <Compile Include="Service\EnquiryGradeBusiness.cs" />
+    <Compile Include="Service\FileUploadBusiness.cs" />
     <Compile Include="Service\ProductBusiness.cs" />
     <Compile Include="Service\ProductCategoryBusiness.cs" />
     <Compile Include="Service\ProductSpecificationBusiness.cs" />

@@ -202,8 +202,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                             ID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.Customer.ID),
                                             CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.Customer.CompanyName),
                                         };
-                                        enquiry.GradeCode = (sdr["GradeCode"].ToString() != "" ? int.Parse(sdr["GradeCode"].ToString()) : enquiry.GradeCode);
-                                        enquiry.StatusCode = (sdr["StatusCode"].ToString() != "" ? int.Parse(sdr["StatusCode"].ToString()) : enquiry.StatusCode);
+                                        enquiry.EnquiryGradeCode = (sdr["GradeCode"].ToString() != "" ? int.Parse(sdr["GradeCode"].ToString()) : enquiry.EnquiryGradeCode);
+                                        enquiry.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatusCode);
                                         enquiry.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["Mobile"].ToString()) : enquiry.ReferredByCode);
                                         enquiry.ResponsiblePersonID = (sdr["ResponsiblePersonID"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
                                         enquiry.AttendedByID = (sdr["AttendedByID"].ToString() != "" ? Guid.Parse(sdr["AttendedByID"].ToString()) : enquiry.AttendedByID);
@@ -339,5 +339,64 @@ namespace PilotSmithApp.RepositoryService.Service
         //    };
         //}
         //#endregion DeleteEnquiry
+        #region GetAllEnquiryItems
+        public List<EnquiryDetail> GetEnquiryDetailListByEnquiryID(Guid enquiryID)
+        {
+            List<EnquiryDetail> enquiryDetailList = new List<EnquiryDetail>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnquiryDetailListByEnquiryID]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = enquiryID;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    EnquiryDetail enquiryDetail = new EnquiryDetail();
+                                    {
+                                        enquiryDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiryDetail.ID);
+                                        enquiryDetail.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : enquiryDetail.EnquiryID);
+                                        enquiryDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : enquiryDetail.ProductSpec);
+                                        enquiryDetail.Product = new Product()
+                                        {
+                                            ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
+                                            Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty),
+                                            Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : string.Empty)
+                                        };
+                                        enquiryDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
+                                        enquiryDetail.ModelID = (sdr["ModelID"].ToString() != "" ? Guid.Parse(sdr["ModelID"].ToString()) : Guid.Empty);
+                                        //enquiryDetail.OldProductCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : string.Empty);
+                                        enquiryDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : enquiryDetail.Rate);
+                                        //enquiryDetail.TaxPerc = (sdr["TaxPerc"].ToString() != "" ? decimal.Parse(sdr["TaxPerc"].ToString()) : enquiryDetail.TaxPerc);
+
+                                    }
+                                    enquiryDetailList.Add(enquiryDetail);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return enquiryDetailList;
+        }
+
+
+        #endregion GetQuotationDetails
     }
 }

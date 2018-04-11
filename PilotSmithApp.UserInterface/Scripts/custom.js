@@ -163,7 +163,7 @@ function MasterAlert(type,msgtxt)
 {
     try
     {
-        var iconclass = (type == "success") ? "fas fa-check" : ((type == "info") ? "fas fa-info-circle" : "fas fa-warning")
+        var iconclass = (type == "success") ? "fa fa-check" : ((type == "info") ? "fa fa-info-circle" : "fa fa-warning")
         $.notify({
             title: msgtxt,
             message: ""

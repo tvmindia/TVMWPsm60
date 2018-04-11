@@ -690,7 +690,9 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
+    <Compile Include="Controllers\DocumentStatusController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EnquiryController.cs" />
     <Compile Include="Controllers\EnquiryFollowupController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
@@ -700,6 +702,7 @@
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductSpecificationController.cs" />
+    <Compile Include="Controllers\ReferencePersonController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\StateController.cs" />
@@ -809,6 +812,12 @@
     <Content Include="Views\Product\_ProductSelectList.cshtml" />
     <Content Include="Views\EnquiryFollowup\Index.cshtml" />
     <Content Include="Views\Customer\_CustomerBasicInfo.cshtml" />
+    <Content Include="Views\EnquiryFollowup\_EnquiryList.cshtml" />
+    <Content Include="Views\DocumentStatus\_DocumentStatusSelectList.cshtml" />
+    <Content Include="Views\ReferencePerson\_ReferencePersonSelectList.cshtml" />
+    <Content Include="Views\Employee\_EmployeeSelectList.cshtml" />
+    <Content Include="Views\Employee\_ResponsiblePersonSelectList.cshtml" />
+    <Content Include="Views\Employee\_AttendedBySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

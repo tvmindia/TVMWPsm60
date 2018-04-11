@@ -1,0 +1,46 @@
+Linx track 28-Mar-2018
+================================
+# Merged the develop with
+# Error corrected in dispatcher
+# Committed the changes
+# Removed Bridge Radio type from unit type dropdow
+Linx track 29-Mar-2018
+================================
+# Commit the changes
+# Label change for dispatcher email
+# SP changes for delete_dispatcher, delete_unit
+# committed changes
+# Mailed the SPs to jomon sir
+Linx track 2-Apr-2018
+=====================================
+# SP changes insert_update_bridge
+# Synced 
+# Caught unchange in mailed sp
+# Update the SP in linx-8
+# Found error in sp get_group_unit_info (failed to update the changes through email)
+# Updated the sp change in linx-dev-8
+# Notify Jomon sir
+# Change in SP for dropdown dispatcher in Unit get_unit_dispatcher()--- executed in linx-dev-8 and my local db
+# Notify Jomon sir about the SP change
+# Sp change get_unit_info --updated in linx-dev-8 and my local db
+# SP change get_commonattributes_for_multipleunits at both side
+# Change the label as per the need
+# Click on the logo redirects to Home done
+# SP change get_geofence reflected both db
+# Notified Jomon sir
+Linx track 3-Apr-2018
+=====================================
+# Help Linked with following track
+   ------------------change in md file, js file, html file created a staticFile request path having access like wwwROOT
+   ------------------- AND change the path prepending the root file
+# Committed the changes (we have pending points to cover)
+# Notified Jomon sir
+Linx track 4-Apr-2018
+=====================================
+# Recieved a mail having the test result
+# Schedulled the work on 5-Apr after the discussion with Jomon
+Linx track 5-Apr-2018
+=====================================
+# Changes made and updated the status in the sheet 
+# Mail the updates alone with the test sheet with my commets to Jomon(body holding the explanation too)
+# Committed the changes in to develop branch 

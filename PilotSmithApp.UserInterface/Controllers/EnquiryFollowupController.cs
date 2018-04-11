@@ -17,5 +17,9 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.Ispager = true;
             return View(enquiryVm);
         }
+        public ActionResult GetEnquiryList(EnquiryFollowupViewModel enquiryFollowupVM)
+        {
+            return PartialView("_EnquiryList", enquiryFollowupVM);
+        }
     }
 }
