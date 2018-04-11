@@ -10,5 +10,8 @@ namespace PilotSmithApp.BusinessService.Contract
     public interface IEnquiryBusiness
     {
         List<Enquiry> GetAllEnquiry(EnquiryAdvanceSearch enquiryAdvanceSearch);
+        List<EnquiryDetail> GetEnquiryDetailListByEnquiryID(Guid enquiryID);
+        object InsertUpdateEnquiry(Enquiry enquiry);
+
     }
 }

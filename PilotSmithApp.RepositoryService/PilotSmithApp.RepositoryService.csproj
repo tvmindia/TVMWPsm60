@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,6 +45,7 @@
     <Compile Include="Contract\IAreaRepository.cs" />
     <Compile Include="Contract\IBankRepository.cs" />
     <Compile Include="Contract\IBranchRepository.cs" />
+    <Compile Include="Contract\ICommonRepository.cs" />
     <Compile Include="Contract\ICompanyRepository.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IDatabaseFactory.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="Contract\IEnquiryFollowupRepository.cs" />
     <Compile Include="Contract\IEnquiryGradeRepository.cs" />
     <Compile Include="Contract\IEnquiryRepository.cs" />
+    <Compile Include="Contract\IFileUploadRepository.cs" />
     <Compile Include="Contract\IProductCategoryRepository.cs" />
     <Compile Include="Contract\IProductModelRepository.cs" />
     <Compile Include="Contract\IProductRepository.cs" />
@@ -67,6 +70,7 @@
     <Compile Include="Service\AreaRepository.cs" />
     <Compile Include="Service\BankRepository.cs" />
     <Compile Include="Service\BranchRepository.cs" />
+    <Compile Include="Service\CommonRepository.cs" />
     <Compile Include="Service\CompanyRepository.cs" />
     <Compile Include="Service\CustomerRepository.cs" />
     <Compile Include="Service\DatabaseFactory.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="Service\EnquiryFollowupRepository.cs" />
     <Compile Include="Service\EnquiryGradeRepository.cs" />
     <Compile Include="Service\EnquiryRepository.cs" />
+    <Compile Include="Service\FileUploadRepository.cs" />
     <Compile Include="Service\ProductCategoryRepository.cs" />
     <Compile Include="Service\ProductModelRepository.cs" />
     <Compile Include="Service\ProductRepository.cs" />

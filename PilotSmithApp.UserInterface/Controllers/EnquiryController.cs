@@ -14,14 +14,18 @@ namespace PilotSmithApp.UserInterface.Controllers
 {
     public class EnquiryController : Controller
     {
+        AppConst _appConstant = new AppConst();
+        PSASysCommon _pSASysCommon = new PSASysCommon();
         IEnquiryBusiness _enquiryBusiness;
         ICustomerBusiness _customerBusiness;
         IBranchBusiness _branchBusiness;
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,IBranchBusiness branchBusiness)
+        IEnquiryGradeBusiness _enquiryGradeBusiness;
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
+            _enquiryGradeBusiness = enquiryGradeBusiness;
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -53,6 +57,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         TitlesSelectList=_customerBusiness.GetTitleSelectList(),
                     }, 
                 };
+                enquiryVM.EnquiryGrade = new EnquiryGradeViewModel()
+                {
+                    EnquiryGradeSelectList = _enquiryGradeBusiness.GetEnquiryGradeSelectList()
+                };
             }
             catch (Exception ex)
             {
@@ -61,6 +69,27 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_EnquiryForm", enquiryVM);
         }
         #endregion Enquiry Form
+        #region Get Enquiry DetailList By EnquiryID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string GetEnquiryDetailListByEnquiryID(Guid enquiryID)
+        {
+            try
+            {
+                if (Guid.Empty== enquiryID)
+                {
+                    throw new Exception("ID required");
+                }
+                List<EnquiryDetailViewModel> enquiryItemViewModelList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));//Guid.Parse(id)
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = enquiryItemViewModelList,Message="Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records ="" ,Message = cm.Message });
+            }
+        }
+        #endregion Get Enquiry DetailList By EnquiryID
         #region GetAllEnquiry
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -96,6 +125,47 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetAllEnquiry
+        #region InsertUpdateEnquiry
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        public string InsertUpdateEnquiry(EnquiryViewModel enquiryVM)
+        {
+            //object resultFromBusiness = null;
+
+            try
+            {
+                AppUA appUA = Session["AppUAOffice"] as AppUA;
+                enquiryVM.PSASysCommon = new PSASysCommonViewModel();
+                enquiryVM.PSASysCommon.CreatedBy = appUA.UserName;
+                enquiryVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                enquiryVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                enquiryVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                //object ResultFromJS = JsonConvert.DeserializeObject(enquiryVM.DetailJSON);
+                //string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                //enquiryVM.enquiryItemList = JsonConvert.DeserializeObject<List<EnquiryItemViewModel>>(ReadableFormat);
+                EnquiryViewModel enquiryObj = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(enquiryVM)));
+
+                if (enquiryVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = c.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+
+        }
+
+        #endregion InsertUpdateEnquiry
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]

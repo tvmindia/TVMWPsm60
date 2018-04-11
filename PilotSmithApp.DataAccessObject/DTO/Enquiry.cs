@@ -13,8 +13,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime EnquiryDate { get; set; }
         public string RequirementSpec { get; set; }
         public Guid? CustomerID { get; set; }
-        public int? GradeCode { get; set; }
-        public int? StatusCode { get; set; }
+        public int? EnquiryGradeCode { get; set; }
+        public int? DocumentStatusCode { get; set; }
         public int? ReferredByCode { get; set; }
         public Guid? ResponsiblePersonID { get; set; }
         public Guid? AttendedByID { get; set; }
@@ -48,6 +48,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? Qty { get; set; }
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }
+        public Product Product { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
     }
 }

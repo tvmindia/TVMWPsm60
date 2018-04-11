@@ -133,6 +133,7 @@ function AddEnquiry() {
     //this will return form body(html)
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
+        BindEnquiryDetailList(_emptyGuid);
         //resides in customjs for sliding
         openNav();
     });
@@ -220,5 +221,62 @@ function DeleteItem(id) {
     catch (e) {
         //this will show the error msg in the browser console(F12) 
         console.log(e.message);
+    }
+}
+function BindEnquiryDetailList(id) {
+    _dataTable.EnquiryDetailList = $('#tblEnquiryDetails').DataTable(
+         {
+             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             order: [],
+             searching: false,
+             paging: true,
+             data: id=_emptyGuid?null:GetEnquiryDetailListByEnquiryID(id),
+             language: {
+                 search: "_INPUT_",
+                 searchPlaceholder: "Search"
+             },
+             columns: [
+             { "data": "ID", "defaultContent": "<i></i>" },
+             { "data": "ProductID", "defaultContent": "<i></i>" },
+             { "data": "ProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "OldProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "TaxPerc", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductDescription", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
+             ],
+             columnDefs: [{ "targets": [0, 1], "visible": false, "searchable": false },
+                 { "targets": [2, 3], "width": "15%" },
+                 { "targets": [4, 5, 6], "width": "20%" },
+                  { className: "text-right", "targets": [] },
+                   { className: "text-left", "targets": [2, 3, 4] },
+             { className: "text-center", "targets": [5] }
+             ]
+         });
+}
+function GetEnquiryDetailListByEnquiryID(id) {
+    debugger;
+    try {
+
+        var data = { "ID": id };
+        var enquiryDetailList = [];
+        _jsonData = GetDataFromServer("Enquiry/GetEnquiryDetailListByEnquiryID/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            enquiryDetailList = _jsonData.Records;
+        }
+        if (_status == "OK") {
+            return enquiryDetailList;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
     }
 }

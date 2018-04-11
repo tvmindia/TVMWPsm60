@@ -20,5 +20,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _enquiryRepository.GetAllEnquiry(enquiryAdvanceSearch);
         }
+        public List<EnquiryDetail> GetEnquiryDetailListByEnquiryID(Guid enquiryID)
+        {
+            return _enquiryRepository.GetEnquiryDetailListByEnquiryID(enquiryID);
+        }
+        public object InsertUpdateEnquiry(Enquiry enquiry)
+        {
+            return _enquiryRepository.InsertUpdateEnquiry(enquiry);
+        }
     }
 }
