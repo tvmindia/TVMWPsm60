@@ -259,6 +259,45 @@ function SaveSuccessCompany(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+
+//Add Product Model
+function AddProductModelMaster(flag) {
+    debugger;
+
+    $("#divMasterBody").load("ProductModel/MasterPartial?masterCode=" + EmptyGuid, function () {
+        $('#hdnMasterCall').val(flag);
+        $('#lblModelMasterContextLabel').text('Add Product Model')
+        $('#divModelMasterPopUp').modal('show');
+    });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessProductModel(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadProductModelTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divProductModelSelectList').load('/ProductModel/ProductModelSelectList?required=');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+
+
+
 //==========================================================================================================
 //Add Customer master
 function AddCustomerMaster(flag) {

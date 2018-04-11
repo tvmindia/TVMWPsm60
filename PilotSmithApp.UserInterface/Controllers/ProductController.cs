@@ -79,11 +79,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult MasterPartial(Guid masterCode)
         {
             ProductViewModel productVM = masterCode == Guid.Empty ? new ProductViewModel() : Mapper.Map<Product, ProductViewModel>(_productBusiness.GetProduct(masterCode));
-            productVM.IsUpdate = masterCode == Guid.Empty ? false : true;
-            productVM.ProductCategory = new ProductCategoryViewModel();
-            productVM.ProductCategory.ProductCategorySelectList = _productCategoryBusiness.GetProductCategoryForSelectList();
-            productVM.Company = new CompanyViewModel();
-            productVM.Company.CompanySelectList = _companyBusiness.GetCompanyForSelectList();
+            productVM.IsUpdate = masterCode == Guid.Empty ? false : true;          
             return PartialView("_AddProduct", productVM);
         }
         #endregion MasterPartial

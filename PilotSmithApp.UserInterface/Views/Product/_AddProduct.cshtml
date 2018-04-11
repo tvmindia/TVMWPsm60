@@ -19,74 +19,76 @@
         </div>
     </div>
 
-        <div class="form-group col-md-12 no-padding">
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control  newinput" } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control  newinput" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group col-md-12 no-padding">
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.ProductCategoryCode, htmlAttributes: new { @class = "control-label" })
-                </div>
-                <div class="col-md-12 divProductCategorySelectList">
+    </div>
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductCategoryCode, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                <div class="divProductCategorySelectList">
                     @Html.Action("ProductCategorySelectList", "ProductCategory", new { required = "" })
                 </div>
                 @Html.HiddenFor(model => model.ProductCategoryCode, htmlAttributes: new { @class = "", @id = "hdnProductCategoryCode" })
             </div>
         </div>
-            <div class="form-group col-md-12 no-padding">
-                <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.IntroducedDateFormatted, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.IntroducedDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
-                        @Html.ValidationMessageFor(model => model.IntroducedDateFormatted, "", new { @class = "text-danger" })
-                    </div>
+    </div>
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.IntroducedDateFormatted, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.IntroducedDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                    @Html.ValidationMessageFor(model => model.IntroducedDateFormatted, "", new { @class = "text-danger" })
                 </div>
             </div>
+        </div>
 
-            <div class="form-group col-md-12 no-padding">
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.CompanyID, htmlAttributes: new { @class = "control-label" })
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="divCompanySelectList">
+                    @Html.Action("CompanySelectList", "Company", new { required = "" })
+                </div>
+                @Html.HiddenFor(model => model.CompanyID, htmlAttributes: new { @class = "", @id = "hdnCompanyID" })
+            </div>
+        </div>
+
+                <div class="form-group col-md-12 no-padding">
                     <div class="col-md-12 no-padding">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.CompanyID, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.HSNCode, htmlAttributes: new { @class = "control-label" })
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-md-12" id="divCompanySelectList">
-                            @Html.Action("CompanySelectList", "Company", new { required = "" })
-                            @Html.HiddenFor(model => model.CompanyID, htmlAttributes: new { @class = "", @id = "hdnCompanyID" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.HSNCode, new { htmlAttributes = new { @class = "form-control newinput", } })
+                            @Html.ValidationMessageFor(model => model.HSNCode, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
-
-            <div class="form-group col-md-12 no-padding">
-                <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.HSNCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.HSNCode, new { htmlAttributes = new { @class = "form-control newinput", } })
-                        @Html.ValidationMessageFor(model => model.HSNCode, "", new { @class = "text-danger" })
-                    </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-            </div>
 }
 
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProduct");
-        $('#ProductCode').val($('#hdnProductCode').val());
+        $('#ProductID').val($('#hdnProductID').val());
 
         $('input.datepicker').datepicker({
             format: "dd-M-yyyy",//",

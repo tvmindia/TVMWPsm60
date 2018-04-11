@@ -11,6 +11,7 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid? ProductID { get; set; }
+        [Remote(action: "CheckProductModelNameExist", controller: "ProductModel", AdditionalFields = "IsUpdate,ID")]
         public string Name { get; set; }
         [Display(Name="Unit Code")]
         public int? UnitCode { get; set; }
@@ -33,6 +34,8 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        public int? ProductSpecificationCode { get; set; }
+        public ProductViewModel Product { get; set; }
     }
     public class ProductModelAdvanceSearchViewModel
     {

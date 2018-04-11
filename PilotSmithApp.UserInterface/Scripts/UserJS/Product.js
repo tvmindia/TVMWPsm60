@@ -1,4 +1,4 @@
-﻿var DataTables = {};
+﻿var _dataTables = {};
 var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
@@ -46,7 +46,7 @@ function BindOrReloadProductTable(action)
         ProductAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         ProductAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         //apply datatable plugin on Product table
-        DataTables.ProductList = $('#tblProduct').DataTable(
+        _dataTables.ProductList = $('#tblProduct').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -127,7 +127,7 @@ function ExportProductData() {
 
 function EditProductMaster(thisObj) {
     debugger;
-    ProductVM = DataTables.ProductList.row($(thisObj).parents('tr')).data();
+    ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
 
         $("#divMasterBody").load("Product/MasterPartial?masterCode=" + ProductVM.ID, function () {
         $('#hdnMasterCall').val('MSTR');
@@ -137,7 +137,7 @@ function EditProductMaster(thisObj) {
 }
 function DeleteProductMaster(thisObj) {
     debugger;
-    ProductVM = DataTables.ProductList.row($(thisObj).parents('tr')).data();
+    ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteProduct("' + ProductVM.ID + '")');
 }
 
