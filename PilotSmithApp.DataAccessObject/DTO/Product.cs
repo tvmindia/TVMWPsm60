@@ -24,6 +24,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public ProductCategory ProductCategory { get; set; }
         public Company Company { get; set; }
+        public ProductModel ProductModel { get; set; }
     }
 
     public class ProductAdvanceSearch

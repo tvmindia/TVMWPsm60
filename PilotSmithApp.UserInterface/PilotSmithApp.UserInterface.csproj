@@ -824,6 +824,8 @@
     <Content Include="Views\Employee\_EmployeeSelectList.cshtml" />
     <Content Include="Views\Employee\_ResponsiblePersonSelectList.cshtml" />
     <Content Include="Views\Employee\_AttendedBySelectList.cshtml" />
+    <Content Include="Views\Enquiry\_AddEnquiryDetail.cshtml" />
+    <Content Include="Views\Product\_ProductBasicInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

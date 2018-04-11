@@ -84,11 +84,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion MasterPartial
 
         # region ProductModelSelectList
-        public ActionResult ProductModelSelectList(string required)
+        public ActionResult ProductModelSelectList(string required,Guid productID)
         {
             ViewBag.IsRequired = required;
             ProductModelViewModel productModelVM = new ProductModelViewModel();
-            productModelVM.ProductModelSelectList = _productModelBusiness.GetProductModelForSelectList();
+            productModelVM.ProductModelSelectList = _productModelBusiness.GetProductModelForSelectList(productID);
             return PartialView("_ProductModelSelectList", productModelVM);
         }
         #endregion ProductModelSelectList

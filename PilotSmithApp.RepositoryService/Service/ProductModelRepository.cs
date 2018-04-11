@@ -291,7 +291,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region GetProductModelForSelectList
-        public List<ProductModel> GetProductModelForSelectList()
+        public List<ProductModel> GetProductModelForSelectList(Guid productID)
         {
             List<ProductModel> productModelList = null;
             try
@@ -307,6 +307,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetProductModelForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        if(productID!=Guid.Empty)
+                        cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = productID;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))

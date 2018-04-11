@@ -59,7 +59,17 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion InsertUpdateProduct
-
+        #region Product Basic Information
+        public ActionResult ProductBasicInfo(Guid ID)
+        {
+            ProductViewModel productVM = new ProductViewModel();
+            if (ID != Guid.Empty)
+            {
+                productVM = Mapper.Map<Product, ProductViewModel>(_productBusiness.GetProduct(ID));
+            }
+            return PartialView("_ProductBasicInfo", productVM);
+        }
+        #endregion Product Basic Information
         #region CheckProductCodeExist
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckProductCodeExist(ProductViewModel productVM)

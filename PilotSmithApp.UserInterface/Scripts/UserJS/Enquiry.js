@@ -280,3 +280,12 @@ function GetEnquiryDetailListByEnquiryID(id) {
 
     }
 }
+function AddEnquiryDetailList()
+{
+    debugger;
+    
+    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail", function () {
+        $('#lblModelPopEnquiry').text('Enquiry Detail')
+        $('#divModelPopEnquiry').modal('show');
+    });
+}

@@ -104,6 +104,28 @@
         </div>
     </div>
 </section>
+<div class="modal fade" id="divModelPopEnquiry" tabindex="-1" role="dialog" aria-labelledby="Enquiry" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="clearfix" style="background-color:#068a78;">
+            <div class="col-md-10 no-right-padding" style="background-color:white">
+                <div class="modal-header text-center">
+                    <label style="font-size:16px;" id="lblModelPopEnquiry"></label>
+                </div>
+                <div class="no-padding" id="divModelEnquiryPopBody">
+
+                </div>
+            </div>
+            <div class="col-md-2" style="font-size: 90px;color: white;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: white;font-size: 2em;">&times;</span>
+                </button>
+                <label style="transform: rotate(20deg)"><i id="iconModelEnquiryPop" class=""></i></label>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jsZip")
