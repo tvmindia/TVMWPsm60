@@ -20,7 +20,7 @@
         </div>
         <div class="col-md-12">
             <div class="divProductModelIDSelectList">
-                <span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>
+                <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                 @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
             </div>
             @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
@@ -34,8 +34,26 @@
             @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
         </div>
         <div class="col-md-12">
-            @Html.TextAreaFor(model => model.ProductSpec, 5, 0, new { @class = "form-control newinput" })
+            @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
             @Html.ValidationMessageFor(model => model.ProductSpec, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6 no-padding">
+        <div class="col-md-12">
+            @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "control-label " })
+        </div>
+        <div class="col-md-12">
+            @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control newinput Amount", @onkeypress = "return isNumber(event)" } })
+            @Html.ValidationMessageFor(model => model.Qty, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-6 no-padding">
+        <div class="col-md-12">
+            @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
+        </div>
+        <div class="col-md-12">
+            @Html.EditorFor(model => model.UnitCode, new { htmlAttributes = new { @class = "form-control newinput Amount", @onkeypress = "return isNumber(event)" } })
+            @Html.ValidationMessageFor(model => model.UnitCode, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="col-md-6 no-padding">
@@ -43,7 +61,7 @@
             @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
         </div>
         <div class="col-md-12">
-            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput" } })
+            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency" , @onkeypress= "return isNumber(event)" } })
             @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -55,12 +73,30 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormEnquiryDetail");
-        debugger;
-        $('#ProductID').change(function () {
-            debugger;
-            if ($('.divProductModelIDSelectList') != undefined)
-                $('#dropLoad').addClass('fa-spin');
-                $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+        $('#ProductID').select2({
+            dropdownParent: $("#divModelPopEnquiry")
         });
+        $('.select2').addClass('form-control newinput');
+        $('#ProductID').change(function () {
+            if ($('#divProductBasicInfo') != undefined)
+            {
+                $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                    $('#ProductSpec').val($('#spnProductName').text());
+                });
+            }
+            if ($('.divProductModelIDSelectList') != undefined) {
+                $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                if (this.value != "")
+                {
+                    $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                }
+                else
+                {
+                    $('.divProductModelIDSelectList').empty();
+                    $('.divProductModelIDSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                }
+            }
+        });
+       
     });
 </script>

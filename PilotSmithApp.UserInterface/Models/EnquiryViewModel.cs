@@ -60,8 +60,11 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid EnquiryID { get; set; }
+        [Display(Name ="Product")]
         public Guid? ProductID { get; set; }
+        [Display(Name = "Model")]
         public Guid? ProductModelID { get; set; }
+        [Display(Name = "Specification")]
         public string ProductSpec { get; set; }
         public decimal? Qty { get; set; }
         public int? UnitCode { get; set; }

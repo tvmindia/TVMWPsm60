@@ -257,6 +257,7 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
     <Content Include="Content\images\excel_export.png" />
+    <Content Include="Content\images\patternPop.png" />
     <Content Include="Content\images\rupee.png" />
     <Content Include="Content\PSAForms.css" />
     <Content Include="Content\Custom.css" />
@@ -827,6 +828,7 @@
     <Content Include="Views\Employee\_AttendedBySelectList.cshtml" />
     <Content Include="Views\Enquiry\_AddEnquiryDetail.cshtml" />
     <Content Include="Views\Product\_ProductBasicInfo.cshtml" />
+    <Content Include="Views\ProductModel\_ProductModelBasicInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

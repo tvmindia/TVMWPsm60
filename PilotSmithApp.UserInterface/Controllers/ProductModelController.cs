@@ -83,7 +83,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion MasterPartial
 
-        # region ProductModelSelectList
+        #region ProductModelSelectList
         public ActionResult ProductModelSelectList(string required,Guid productID)
         {
             ViewBag.IsRequired = required;
@@ -92,7 +92,17 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_ProductModelSelectList", productModelVM);
         }
         #endregion ProductModelSelectList
-
+        #region ProductModel Basic Information
+        public ActionResult ProductModelBasicInfo(Guid ID)
+        {
+            ProductModelViewModel productModelVM = new ProductModelViewModel();
+            if (ID != Guid.Empty)
+            {
+                productModelVM = Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(ID));
+            }
+            return PartialView("_ProductModelBasicInfo", productModelVM);
+        }
+        #endregion ProductModel Basic Information
         #region GetAllProductModel
         public JsonResult GetAllProductModel(DataTableAjaxPostModel model, ProductModelAdvanceSearchViewModel productModelAdvanceSearchVM)
         {
