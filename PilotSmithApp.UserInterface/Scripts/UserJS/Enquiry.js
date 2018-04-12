@@ -301,14 +301,15 @@ function AddEnquiryDetailList()
     });
 }
 function AddEnquiryDetailToList() {
+    debugger;
     $("#FormEnquiryDetail").submit(function () {
         if ($('#ProductID').val()!="")
         if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
             _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
             debugger;
             var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
-            enquiryDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("|")[0].trim() : "";
-            enquiryDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("|")[1].trim() : "";
+            enquiryDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+            enquiryDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
             enquiryDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
             enquiryDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
             enquiryDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
@@ -325,8 +326,8 @@ function AddEnquiryDetailToList() {
             var ProductModel=new Object()
             EnquiryDetailVM.ID = _emptyGuid;
             EnquiryDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-            Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("|")[0].trim() : "";
-            Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("|")[1].trim() : "";
+            Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+            Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
             EnquiryDetailVM.Product = Product;
             EnquiryDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
