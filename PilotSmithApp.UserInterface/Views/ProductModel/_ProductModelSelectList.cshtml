@@ -22,6 +22,14 @@ else
         $('#ProductModelID').val($('#hdnProductModelID').val());
         $('#ProductModelID').select2({});
         $('.select2').addClass('form-control newinput');
+        $('#ProductModelID').change(function () {
+            if ($('#divProductBasicInfo') != undefined) {
+                $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                    $('#ProductSpec').val($('#spnProductName').text());
+                    $('#Rate').val($('#spnSellingPrice').text().replace('₹ ', '').trim());
+                });
+            }
+        });
     });
 </script>
 

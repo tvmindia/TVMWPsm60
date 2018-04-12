@@ -1,0 +1,23 @@
+﻿@model PilotSmithApp.UserInterface.Models.ProductModelViewModel
+<div class="col-md-12 no-padding">
+    <div class="col-md-12 box-body">
+        <ul class="todo-list ui-sortable">
+            <li style="border-bottom: 1px solid grey;width:50%;padding:5px 10px 5px 10px;">
+                <span class="control-label">@Html.DisplayNameFor(Model => Model.CostPrice):</span>
+                <!-- todo text -->
+                <span>₹ @Model.CostPrice</span>
+            </li>
+
+            <li style="border-bottom: 1px solid grey;width:50%;padding:5px 10px 5px 10px;">
+                <span class="control-label">@Html.DisplayNameFor(Model => Model.SellingPrice):</span>
+                <!-- todo text -->
+                <span id="spnSellingPrice">₹ @Model.SellingPrice</span>
+            </li>
+            <li style="border-bottom: 1px solid grey">
+                <span class="control-label">@Html.DisplayNameFor(Model => Model.Specification):</span>
+                <!-- todo text -->
+                <span id="spnProductName">@Model.Specification</span>
+            </li>
+        </ul>
+    </div>
+</div>
