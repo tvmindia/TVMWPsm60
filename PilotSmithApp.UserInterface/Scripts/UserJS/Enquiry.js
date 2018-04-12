@@ -229,25 +229,29 @@ function BindEnquiryDetailList(id) {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
              order: [],
              searching: false,
-             paging: true,
+             paging: false,
+             ordering:false,
              data: id=_emptyGuid?null:GetEnquiryDetailListByEnquiryID(id),
              language: {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
              },
              columns: [
-             { "data": "ID", "defaultContent": "<i></i>" },
-             { "data": "ProductID", "defaultContent": "<i></i>" },
-             { "data": "ProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "OldProductCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Qty", render: function (data, type, row) {
+                     return data +" "+ row.Unit.Description
+                 }, "defaultContent": "<i></i>"
+             },
              { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "TaxPerc", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductDescription", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
              ],
-             columnDefs: [{ "targets": [0, 1], "visible": false, "searchable": false },
+             columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                  { "targets": [2, 3], "width": "15%" },
-                 { "targets": [4, 5, 6], "width": "20%" },
+                 { "targets": [4, 5], "width": "20%" },
                   { className: "text-right", "targets": [] },
                    { className: "text-left", "targets": [2, 3, 4] },
              { className: "text-center", "targets": [5] }
