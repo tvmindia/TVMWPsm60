@@ -27,12 +27,12 @@
         line-height: 25px;
         border: 1.5px solid #ffffff;
         border-radius: 50%;
-        color: #f5f5f5;
+        color: #f5f5f5!important;
         text-align: center;
         text-decoration: none !important;
         background: #dd9546;
         box-shadow: 0 0 9px #6f6f6f;
-        font-size: 33px;
+        font-size: 33px!important;
         font-weight: bold;
     }
 
@@ -55,7 +55,7 @@
         -webkit-box-orient: vertical;
     }
 </style>
-@if (ViewBag.Ispager)
+@*@if (ViewBag.Ispager)
 {
     if(Model.EnquiryFollowupList.Count > 0)
     {
@@ -86,8 +86,8 @@
     }
 }
 else
-{
-    <div class="col-md-5">
+{*@
+    <div class="col-md-12">
         <div class="box box-success" style="position: relative; left: 0px; top: 0px;">
             <div class="box-header ui-sortable-handle">
                 <i class="fa fa-list"></i>
@@ -113,7 +113,14 @@ else
             <!-- /.box-header -->
             <div class="box-body">
                 <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                <ul class="todo-list ui-sortable">
+                    
+                        <li style="border-bottom: 1px solid grey">
+                            <!-- drag handle -->
+                            <span>Awaiting Followups...</span>
+                        </li>
 
+                </ul>
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix no-border">
@@ -124,7 +131,7 @@ else
             </div>
         </div>
     </div>
-                                }
+                                @*}*@
 
 
 

@@ -204,7 +204,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         };
                                         enquiry.EnquiryGradeCode = (sdr["GradeCode"].ToString() != "" ? int.Parse(sdr["GradeCode"].ToString()) : enquiry.EnquiryGradeCode);
                                         enquiry.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatusCode);
-                                        enquiry.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["Mobile"].ToString()) : enquiry.ReferredByCode);
+                                        enquiry.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferredByCode);
+
                                         enquiry.ResponsiblePersonID = (sdr["ResponsiblePersonID"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
                                         enquiry.AttendedByID = (sdr["AttendedByID"].ToString() != "" ? Guid.Parse(sdr["AttendedByID"].ToString()) : enquiry.AttendedByID);
                                         enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
@@ -228,67 +229,58 @@ namespace PilotSmithApp.RepositoryService.Service
             return enquiryList;
         }
         #endregion Get All Enquiry
-        //#region Get Enquiry
-        //public Enquiry GetEnquiry(Guid id)
-        //{
-        //    Enquiry enquiry = new Enquiry();
-        //    try
-        //    {
-        //        using (SqlConnection con = _databaseFactory.GetDBConnection())
-        //        {
-        //            using (SqlCommand cmd = new SqlCommand())
-        //            {
-        //                if (con.State == ConnectionState.Closed)
-        //                {
-        //                    con.Open();
-        //                }
-        //                cmd.Connection = con;
-        //                cmd.CommandText = "[PSA].[GetEnquiry]";
-        //                cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                using (SqlDataReader sdr = cmd.ExecuteReader())
-        //                {
-        //                    if ((sdr != null) && (sdr.HasRows))
-        //                        if (sdr.Read())
-        //                        {
-        //                            enquiry.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiry.ID);
-        //                            enquiry.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.CompanyName);
-        //                            enquiry.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiry.ContactPerson);
-        //                            enquiry.ContactEmail = (sdr["ContactEmail"].ToString() != "" ? sdr["ContactEmail"].ToString() : enquiry.ContactEmail);
-        //                            enquiry.ContactTitle = (sdr["ContactTitle"].ToString() != "" ? sdr["ContactTitle"].ToString() : enquiry.ContactTitle);
-        //                            enquiry.Website = (sdr["Website"].ToString() != "" ? sdr["Website"].ToString() : enquiry.Website);
-        //                            enquiry.LandLine = (sdr["LandLine"].ToString() != "" ? sdr["LandLine"].ToString() : enquiry.LandLine);
-        //                            enquiry.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : enquiry.Mobile);
-        //                            enquiry.Fax = (sdr["Fax"].ToString() != "" ? sdr["Fax"].ToString() : enquiry.Fax);
-        //                            enquiry.OtherPhoneNos = (sdr["OtherPhoneNos"].ToString() != "" ? sdr["OtherPhoneNos"].ToString() : enquiry.OtherPhoneNos);
-        //                            enquiry.BillingAddress = (sdr["BillingAddress"].ToString() != "" ? sdr["BillingAddress"].ToString() : enquiry.BillingAddress);
-        //                            enquiry.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : enquiry.ShippingAddress);
-        //                            enquiry.PaymentTermCode = (sdr["PaymentTermCode"].ToString() != "" ? sdr["PaymentTermCode"].ToString() : enquiry.PaymentTermCode);
-        //                            enquiry.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : enquiry.TaxRegNo);
-        //                            enquiry.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : enquiry.PANNO);
-        //                            enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
-        //                            enquiry.common = new PSASysCommon();
-        //                            enquiry.common.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : enquiry.common.CreatedBy);
-        //                            enquiry.common.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : enquiry.common.CreatedDateString);
-        //                            enquiry.common.CreatedDate = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()) : enquiry.common.CreatedDate);
-        //                            enquiry.common.UpdatedBy = (sdr["UpdatedBy"].ToString() != "" ? sdr["UpdatedBy"].ToString() : enquiry.common.UpdatedBy);
-        //                            enquiry.common.UpdatedDate = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()) : enquiry.common.UpdatedDate);
-        //                            enquiry.common.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : enquiry.common.UpdatedDateString);
+        #region Get Enquiry
+        public Enquiry GetEnquiry(Guid id)
+        {
+            Enquiry enquiry = new Enquiry();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnquiry]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                                if (sdr.Read())
+                                {
+                                    enquiry.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiry.ID);
+                                    enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : enquiry.EnquiryNo);
+                                    enquiry.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()) : enquiry.EnquiryDate);
+                                    enquiry.EnquiryDateFormatted = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString("dd-MMM-yyyy") : enquiry.EnquiryDateFormatted);
+                                    enquiry.RequirementSpec = (sdr["RequirementSpec"].ToString() != "" ? sdr["RequirementSpec"].ToString() : enquiry.RequirementSpec);
+                                    enquiry.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.CustomerID);
+                                    enquiry.EnquiryGradeCode = (sdr["GradeCode"].ToString() != "" ? int.Parse(sdr["GradeCode"].ToString()) : enquiry.EnquiryGradeCode);
+                                    enquiry.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatusCode);
+                                    enquiry.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferredByCode);
+                                    enquiry.ResponsiblePersonID = (sdr["ResponsiblePersonID"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
+                                    enquiry.AttendedByID = (sdr["AttendedByID"].ToString() != "" ? Guid.Parse(sdr["AttendedByID"].ToString()) : enquiry.AttendedByID);
+                                    enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
+                                    enquiry.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : enquiry.DocumentOwnerID);
+                                    enquiry.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : enquiry.BranchCode);
+                                    
+                                }
+                        }
+                    }
+                }
+            }
 
-        //                        }
-        //                }
-        //            }
-        //        }
-        //    }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-
-        //    return enquiry;
-        //}
-        //#endregion Get Enquiry
+            return enquiry;
+        }
+        #endregion Get Enquiry
         //#region DeleteEnquiry
         //public object DeleteEnquiry(Guid id)
         //{
@@ -375,7 +367,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                             Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : string.Empty)
                                         };
                                         enquiryDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
-                                        enquiryDetail.ProductModelID = (sdr["ModelID"].ToString() != "" ? Guid.Parse(sdr["ModelID"].ToString()) : Guid.Empty);
+                                        enquiryDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         //enquiryDetail.OldProductCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : string.Empty);
                                         enquiryDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : enquiryDetail.Rate);
                                         //enquiryDetail.TaxPerc = (sdr["TaxPerc"].ToString() != "" ? decimal.Parse(sdr["TaxPerc"].ToString()) : enquiryDetail.TaxPerc);
@@ -401,9 +393,9 @@ namespace PilotSmithApp.RepositoryService.Service
         #region Insert Update Enquiry
         public object InsertUpdateEnquiry(Enquiry enquiry)
         {
+            SqlParameter outputStatus, outputID, outputEnquiryNo = null;
             try
             {
-                SqlParameter outputStatus, outputID, outputEnquiryNo = null;
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
                 {
                     using (SqlCommand cmd = new SqlCommand())
@@ -413,44 +405,51 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[Office].[InsertEnquiry]";
+                        cmd.CommandText = "[PSA].[InsertUpdateEnquiry]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@EnquiryDate", SqlDbType.DateTime).Value = enquiry.EnquiryDate;
-                        cmd.Parameters.Add("@EnquiryStatus", SqlDbType.VarChar, 100).Value = enquiry.DocumentStatusCode;
+                        cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = enquiry.IsUpdate;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = enquiry.ID;
+                        cmd.Parameters.Add("@EnquiryNo", SqlDbType.VarChar, 20).Value = enquiry.EnquiryNo;
+                        cmd.Parameters.Add("@EnquiryDate", SqlDbType.DateTime).Value = enquiry.EnquiryDateFormatted;
+                        cmd.Parameters.Add("@RequirementSpec", SqlDbType.NVarChar, -1).Value = enquiry.RequirementSpec;
+                        cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = enquiry.CustomerID;
+                        cmd.Parameters.Add("@GradeCode", SqlDbType.Int).Value = enquiry.EnquiryGradeCode;                        
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = enquiry.DocumentStatusCode;
+                        cmd.Parameters.Add("@ReferredByCode", SqlDbType.Int).Value = enquiry.ReferredByCode;
+                        cmd.Parameters.Add("@ResponsiblePersonID", SqlDbType.UniqueIdentifier).Value = enquiry.ResponsiblePersonID;
+                        cmd.Parameters.Add("@AttendedByID", SqlDbType.UniqueIdentifier).Value = enquiry.AttendedByID;
+                        cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = enquiry.DetailXML;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = enquiry.GeneralNotes;
-
-                        //----- new fields------ //
-                        //cmd.Parameters.Add("@EnquirySourceCode", SqlDbType.VarChar, 10).Value = enquiry.EnquirySource;
-                        //cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = enquiry.IndustryCode;
-                        //cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = enquiry.ProgressStatus;
-                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = enquiry.DocumentOwnerID;
-                        //cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = enquiry.Subject;
-                        //cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = enquiry.DetailXML;
+                        cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiry.DocumentOwnerID;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = enquiry.BranchCode;
                         //-----------------------//
-
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = enquiry.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = enquiry.PSASysCommon.CreatedDate;
-                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = enquiry.PSASysCommon.CreatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = enquiry.PSASysCommon.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
-                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
                         outputID.Direction = ParameterDirection.Output;
-                        outputEnquiryNo = cmd.Parameters.Add("@EnquiryNo", SqlDbType.VarChar, 20);
+                        outputEnquiryNo = cmd.Parameters.Add("@EnquiryNoOut", SqlDbType.VarChar, 20);
                         outputEnquiryNo.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
-
-
                     }
                 }
-
                 switch (outputStatus.Value.ToString())
                 {
                     case "0":
-                        AppConst Cobj = new AppConst();
-                        throw new Exception(Cobj.InsertFailure);
+                        throw new Exception(_appConstant.InsertFailure);
                     case "1":
                         enquiry.ID = Guid.Parse(outputID.Value.ToString());
                         enquiry.EnquiryNo = outputEnquiryNo.Value.ToString();
-                        break;
+                        return new
+                        {
+                            ID = enquiry.ID,
+                            EnquiryNo= enquiry.EnquiryNo,
+                            Status = outputStatus.Value.ToString(),
+                            Message = enquiry.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+                        };
                     default:
                         break;
                 }
@@ -458,10 +457,15 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-            return enquiry;
+            return new
+            {
+                ID = enquiry.ID,
+                EnquiryNo = enquiry.EnquiryNo,
+                Status = outputStatus.Value.ToString(),
+                Message = enquiry.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+            };
         }
         #endregion Insert Update Enquiry
     }

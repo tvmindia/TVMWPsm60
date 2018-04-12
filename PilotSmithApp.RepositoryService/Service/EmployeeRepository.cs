@@ -49,7 +49,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     Employee employee = new Employee();
                                     {
-                                        employee.ID= (sdr["Code"].ToString() != "" ? Guid.Parse(sdr["Code"].ToString()) : employee.ID);
+                                        employee.ID= (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : employee.ID);
                                         employee.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : employee.Code);
                                         employee.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : employee.Name);
                                     }

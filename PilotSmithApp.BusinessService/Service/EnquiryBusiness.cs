@@ -12,9 +12,11 @@ namespace PilotSmithApp.BusinessService.Service
     public class EnquiryBusiness:IEnquiryBusiness
     {
         IEnquiryRepository _enquiryRepository;
-        public EnquiryBusiness(IEnquiryRepository enquiryRepository)
+        ICommonBusiness _commonBusiness;
+        public EnquiryBusiness(IEnquiryRepository enquiryRepository, ICommonBusiness commonBusiness)
         {
             _enquiryRepository = enquiryRepository;
+            _commonBusiness = commonBusiness;
         }
         public List<Enquiry> GetAllEnquiry(EnquiryAdvanceSearch enquiryAdvanceSearch)
         {
@@ -26,7 +28,12 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public object InsertUpdateEnquiry(Enquiry enquiry)
         {
+            enquiry.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(enquiry.EnquiryDetailList, "ProductID");
             return _enquiryRepository.InsertUpdateEnquiry(enquiry);
+        }
+        public Enquiry GetEnquiry(Guid id)
+        {
+           return _enquiryRepository.GetEnquiry(id);
         }
     }
 }

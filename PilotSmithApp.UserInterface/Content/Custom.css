@@ -692,7 +692,7 @@ input.ApplyCurrency {
  
 
 .overlay a {
-    padding-right: 8px;
+    /*padding-right: 8px;*/
     text-decoration: none;
     font-size: 12px;
     color:  #337ab7;     

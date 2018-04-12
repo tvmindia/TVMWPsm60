@@ -43,7 +43,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                 if (id != Guid.Empty)
                 {
-                    //customerVM = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomer(id));
+                    enquiryVM = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.GetEnquiry(id));
                     enquiryVM.IsUpdate = true;
                 }
                 else
@@ -83,11 +83,37 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             try
             {
-                if (Guid.Empty== enquiryID)
+                List<EnquiryDetailViewModel> enquiryItemViewModelList = new List<EnquiryDetailViewModel>();
+                if(enquiryID==Guid.Empty)
                 {
-                    throw new Exception("ID required");
+                    EnquiryDetailViewModel enquiryDetailVM = new EnquiryDetailViewModel()
+                    {
+                        ID = Guid.Empty,
+                        EnquiryID = Guid.Empty,
+                        ProductID = Guid.Empty,
+                        ProductModelID = Guid.Empty,
+                        ProductSpec = string.Empty,
+                        Qty = 0,
+                        UnitCode = 1,
+                        Rate=0,
+                        Product=new ProductViewModel()
+                        {
+                            ID=Guid.Empty,
+                            Code=string.Empty,
+                            Name=string.Empty,
+                        },
+                        ProductModel=new ProductModelViewModel()
+                        {
+                            ID=Guid.Empty,
+                            Name=string.Empty
+                        },
+                    };
+                    enquiryItemViewModelList.Add(enquiryDetailVM);
                 }
-                List<EnquiryDetailViewModel> enquiryItemViewModelList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));//Guid.Parse(id)
+                else
+                {
+                    enquiryItemViewModelList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));
+                }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = enquiryItemViewModelList,Message="Success" });
             }
             catch (Exception ex)
@@ -141,15 +167,15 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                AppUA appUA = Session["AppUAOffice"] as AppUA;
+                AppUA appUA = Session["AppUA"] as AppUA;
                 enquiryVM.PSASysCommon = new PSASysCommonViewModel();
                 enquiryVM.PSASysCommon.CreatedBy = appUA.UserName;
                 enquiryVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
                 enquiryVM.PSASysCommon.UpdatedBy = appUA.UserName;
                 enquiryVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
-                //object ResultFromJS = JsonConvert.DeserializeObject(enquiryVM.DetailJSON);
-                //string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
-                //enquiryVM.enquiryItemList = JsonConvert.DeserializeObject<List<EnquiryItemViewModel>>(ReadableFormat);
+                object ResultFromJS = JsonConvert.DeserializeObject(enquiryVM.DetailJSON);
+                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                enquiryVM.EnquiryDetailList = JsonConvert.DeserializeObject<List<EnquiryDetailViewModel>>(ReadableFormat);
                 object result = _enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(enquiryVM));
 
                 if (enquiryVM.ID == Guid.Empty)
