@@ -34,6 +34,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
         //Additional properties
+        public string DetailJSON { get; set; }
         [Display(Name ="Enquiry Date")]
         [Required(ErrorMessage ="Enquiry Date is missing")]
         public string EnquiryDateFormatted { get; set; }
@@ -60,7 +61,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid ID { get; set; }
         public Guid EnquiryID { get; set; }
         public Guid? ProductID { get; set; }
-        public Guid? ModelID { get; set; }
+        public Guid? ProductModelID { get; set; }
         public string ProductSpec { get; set; }
         public decimal? Qty { get; set; }
         public int? UnitCode { get; set; }

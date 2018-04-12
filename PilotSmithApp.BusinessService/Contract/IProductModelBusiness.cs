@@ -15,6 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         ProductModel GetProductModel(Guid id);
         bool CheckProductModelNameExist(ProductModel productModel);
         object DeleteProductModel(Guid id);
-        List<SelectListItem> GetProductModelForSelectList();
+        List<SelectListItem> GetProductModelForSelectList(Guid productID);
     }
 }

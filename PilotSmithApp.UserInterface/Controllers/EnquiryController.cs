@@ -69,6 +69,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_EnquiryForm", enquiryVM);
         }
         #endregion Enquiry Form
+        #region Enquiry Detail Add
+        public ActionResult AddEnquiryDetail()
+        {
+            EnquiryDetailViewModel enquiryDetailVM = new EnquiryDetailViewModel();
+            return PartialView("_AddEnquiryDetail", enquiryDetailVM);
+        }
+        #endregion Enquiry Detail Add
         #region Get Enquiry DetailList By EnquiryID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -143,15 +150,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                 //object ResultFromJS = JsonConvert.DeserializeObject(enquiryVM.DetailJSON);
                 //string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 //enquiryVM.enquiryItemList = JsonConvert.DeserializeObject<List<EnquiryItemViewModel>>(ReadableFormat);
-                EnquiryViewModel enquiryObj = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(enquiryVM)));
+                object result = _enquiryBusiness.InsertUpdateEnquiry(Mapper.Map<EnquiryViewModel, Enquiry>(enquiryVM));
 
                 if (enquiryVM.ID == Guid.Empty)
                 {
-                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Insertion successfull" });
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = result, Message = "Insertion successfull" });
                 }
                 else
                 {
-                    return JsonConvert.SerializeObject(new { Result = "OK", Records = enquiryObj, Message = "Updation successfull" });
+                    return JsonConvert.SerializeObject(new { Result = "OK", Records = result, Message = "Updation successfull" });
                 }
 
 
@@ -159,7 +166,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             catch (Exception ex)
             {
 
-                AppConstMessage cm = c.GetMessage(ex.Message);
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
             }
 

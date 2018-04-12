@@ -37,10 +37,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _prductModelRepository.DeleteProductModel(id);
         }
-        public List<SelectListItem> GetProductModelForSelectList()
+        public List<SelectListItem> GetProductModelForSelectList(Guid productID)
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<ProductModel> productModelList = _prductModelRepository.GetProductModelForSelectList();
+            List<ProductModel> productModelList = _prductModelRepository.GetProductModelForSelectList(productID);
             if (productModelList != null)
                 foreach (ProductModel productModel in productModelList)
                 {

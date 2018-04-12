@@ -375,7 +375,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                             Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : string.Empty)
                                         };
                                         enquiryDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
-                                        enquiryDetail.ModelID = (sdr["ModelID"].ToString() != "" ? Guid.Parse(sdr["ModelID"].ToString()) : Guid.Empty);
+                                        enquiryDetail.ProductModelID = (sdr["ModelID"].ToString() != "" ? Guid.Parse(sdr["ModelID"].ToString()) : Guid.Empty);
                                         //enquiryDetail.OldProductCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : string.Empty);
                                         enquiryDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : enquiryDetail.Rate);
                                         //enquiryDetail.TaxPerc = (sdr["TaxPerc"].ToString() != "" ? decimal.Parse(sdr["TaxPerc"].ToString()) : enquiryDetail.TaxPerc);
@@ -398,5 +398,71 @@ namespace PilotSmithApp.RepositoryService.Service
 
 
         #endregion GetQuotationDetails
+        #region Insert Update Enquiry
+        public object InsertUpdateEnquiry(Enquiry enquiry)
+        {
+            try
+            {
+                SqlParameter outputStatus, outputID, outputEnquiryNo = null;
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[Office].[InsertEnquiry]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@EnquiryDate", SqlDbType.DateTime).Value = enquiry.EnquiryDate;
+                        cmd.Parameters.Add("@EnquiryStatus", SqlDbType.VarChar, 100).Value = enquiry.DocumentStatusCode;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = enquiry.GeneralNotes;
+
+                        //----- new fields------ //
+                        //cmd.Parameters.Add("@EnquirySourceCode", SqlDbType.VarChar, 10).Value = enquiry.EnquirySource;
+                        //cmd.Parameters.Add("@IndustryCode", SqlDbType.VarChar, 10).Value = enquiry.IndustryCode;
+                        //cmd.Parameters.Add("@ProgressStatus", SqlDbType.VarChar, 10).Value = enquiry.ProgressStatus;
+                        cmd.Parameters.Add("@EnquiryOwnerID", SqlDbType.UniqueIdentifier).Value = enquiry.DocumentOwnerID;
+                        //cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = enquiry.Subject;
+                        //cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = enquiry.DetailXML;
+                        //-----------------------//
+
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = enquiry.PSASysCommon.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = enquiry.PSASysCommon.CreatedDate;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        outputEnquiryNo = cmd.Parameters.Add("@EnquiryNo", SqlDbType.VarChar, 20);
+                        outputEnquiryNo.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        AppConst Cobj = new AppConst();
+                        throw new Exception(Cobj.InsertFailure);
+                    case "1":
+                        enquiry.ID = Guid.Parse(outputID.Value.ToString());
+                        enquiry.EnquiryNo = outputEnquiryNo.Value.ToString();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return enquiry;
+        }
+        #endregion Insert Update Enquiry
     }
 }

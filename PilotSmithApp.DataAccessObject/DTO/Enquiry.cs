@@ -43,7 +43,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid ID { get; set; }
         public Guid EnquiryID { get; set; }
         public Guid? ProductID { get; set; }
-        public Guid? ModelID { get; set; }
+        public Guid? ProductModelID { get; set; }
         public string ProductSpec { get; set; }
         public decimal? Qty { get; set; }
         public int? UnitCode { get; set; }
