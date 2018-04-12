@@ -116,29 +116,50 @@ function BindOrReloadProductTable(action)
 }
 
 function ResetProductList() {
-    BindOrReloadProductTable('Reset');
+    try{
+        BindOrReloadProductTable('Reset');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
 
 function ExportProductData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
-    BindOrReloadProductTable('Export');
+    try{
+        $('.excelExport').show();
+        OnServerCallBegin();
+        BindOrReloadProductTable('Export');
+    }
+    catch(e)
+    {
+        console.log(e.message);
+    }
 }
 
 function EditProductMaster(thisObj) {
-    debugger;
-    ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
+    try{
+        debugger;
+        ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
 
         $("#divMasterBody").load("Product/MasterPartial?masterCode=" + ProductVM.ID, function () {
-        $('#hdnMasterCall').val('MSTR');
-        $('#lblModelMasterContextLabel').text('Edit Product Information')
-        $('#divModelMasterPopUp').modal('show');
-    });
+            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel').text('Edit Product Information')
+            $('#divModelMasterPopUp').modal('show');
+        });
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
 function DeleteProductMaster(thisObj) {
-    debugger;
-    ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
-    notyConfirm('Are you sure to delete?', 'DeleteProduct("' + ProductVM.ID + '")');
+    try{
+        debugger;
+        ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
+        notyConfirm('Are you sure to delete?', 'DeleteProduct("' + ProductVM.ID + '")');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
 
 function DeleteProduct(id) {

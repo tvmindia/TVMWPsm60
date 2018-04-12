@@ -46,7 +46,7 @@ namespace PilotSmithApp.BusinessService.Service
                 {
                     selectListItem.Add(new SelectListItem
                     {
-                        Text = product.Code+" | "+product.Name,
+                        Text = product.Code+" - "+product.Name,
                         Value = product.ID.ToString(),
                         Selected = false
                     });

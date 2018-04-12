@@ -257,6 +257,7 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
     <Content Include="Content\images\excel_export.png" />
+    <Content Include="Content\images\rupee.png" />
     <Content Include="Content\PSAForms.css" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -835,6 +836,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\ProductImages\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\Bank\" />
     <Folder Include="Views\FileUpload\" />

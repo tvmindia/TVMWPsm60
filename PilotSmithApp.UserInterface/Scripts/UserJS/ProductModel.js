@@ -7,8 +7,8 @@ var _result = "";
 $(document).ready(function () {
     try {
 
-        //$("#StateCode").select2({});
-        //$("#DistrictCode").select2({});
+        //$('#ProductModelID').select2({});
+        //$('.select2').addClass('form-control newinput');
         debugger;
         BindOrReloadProductModelTable('Init');
     }
@@ -52,7 +52,7 @@ function BindOrReloadProductModelTable(action) {
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [1, 2, 3, 4, 5, 6,7]
+                                     columns: [1, 2, 3, 4, 5, 6,7,8]
                                  }
                 }],
                 ordering: false,
@@ -87,7 +87,8 @@ function BindOrReloadProductModelTable(action) {
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [6] },
+                { className: "text-center", "targets": [7] },
+                { className: "text-right", "targets": [5,6] },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
@@ -116,29 +117,49 @@ function BindOrReloadProductModelTable(action) {
 }
 
 function ResetProductModelList() {
-    BindOrReloadProductModelTable('Reset');
+    try{
+        BindOrReloadProductModelTable('Reset');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
 
 function ExportProductModelData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
-    BindOrReloadProductModelTable('Export');
+    try{
+        $('.excelExport').show();
+        OnServerCallBegin();
+        BindOrReloadProductModelTable('Export');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
 
 function EditProductModelMaster(thisObj) {
-    debugger;
-    ProductModelVM = _dataTables.ProductModelList.row($(thisObj).parents('tr')).data();
+    try{
+        debugger;
+        ProductModelVM = _dataTables.ProductModelList.row($(thisObj).parents('tr')).data();
 
-    $("#divMasterBody").load("ProductModel/MasterPartial?masterCode=" + ProductModelVM.ID, function () {
-        $('#hdnMasterCall').val('MSTR');
-        $('#lblModelMasterContextLabel').text('Edit Product Model Information')
-        $('#divModelMasterPopUp').modal('show');
-    });
+        $("#divMasterBody").load("ProductModel/MasterPartial?masterCode=" + ProductModelVM.ID, function () {
+            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel').text('Edit Product Model Information')
+            $('#divModelMasterPopUp').modal('show');
+        });
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
 function DeleteProductModelMaster(thisObj) {
-    debugger;
-    ProductModelVM = _dataTables.ProductModelList.row($(thisObj).parents('tr')).data();
-    notyConfirm('Are you sure to delete?', 'DeleteProductModel("' + ProductModelVM.ID + '")');
+    try{
+        debugger;
+        ProductModelVM = _dataTables.ProductModelList.row($(thisObj).parents('tr')).data();
+        notyConfirm('Are you sure to delete?', 'DeleteProductModel("' + ProductModelVM.ID + '")');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
 
 function DeleteProductModel(id) {
