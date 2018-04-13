@@ -76,7 +76,7 @@ function BindOrReloadProductModelTable(action) {
                 { "data": "ID", "defaultContent": "<i>-</i>" },
                 { "data": "Product.Name", "defaultContent": "<i>-</i>" },
                 { "data": "Name", "defaultContent": "<i>-</i>" },
-                { "data": "UnitCode", "defaultContent": "<i>-</i>" },
+                { "data": "Unit.Description", "defaultContent": "<i>-</i>" },
                 { "data": "Specification", "defaultContent": "<i>-</i>" },
                 { "data": "CostPrice", "defaultContent": "<i>-</i>" },
                 { "data": "SellingPrice", "defaultContent": "<i>-</i>" },
@@ -191,3 +191,6 @@ function DeleteProductModel(id) {
         console.log(e.message);
     }
 }
+
+//file upload
+

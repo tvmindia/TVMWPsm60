@@ -66,6 +66,7 @@
     <Compile Include="Contract\IReferenceTypeRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
     <Compile Include="Contract\IPaymentTermRepository.cs" />
+    <Compile Include="Contract\IUnitRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AreaRepository.cs" />
     <Compile Include="Service\BankRepository.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Service\ReferenceTypeRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
     <Compile Include="Service\PaymentTermRepository.cs" />
+    <Compile Include="Service\UnitRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.DataAccessObject\PilotSmithApp.DataAccessObject.csproj">

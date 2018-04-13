@@ -89,6 +89,15 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProduct");
         $('#ProductID').val($('#hdnProductID').val());
+        try {
+            $('#CompanyID,#ProductCategoryCode').select2({
+                dropdownParent: $("#divModelMasterPopUp")
+            });
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
 
         $('input.datepicker').datepicker({
             format: "dd-M-yyyy",//",

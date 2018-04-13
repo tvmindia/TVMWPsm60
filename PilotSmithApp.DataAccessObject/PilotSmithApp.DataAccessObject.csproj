@@ -64,6 +64,7 @@
     <Compile Include="DTO\ReferencePerson.cs" />
     <Compile Include="DTO\ReferenceType.cs" />
     <Compile Include="DTO\State.cs" />
+    <Compile Include="DTO\Unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

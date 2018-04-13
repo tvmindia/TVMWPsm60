@@ -66,6 +66,7 @@
     <Compile Include="Contract\IReferenceTypeBusiness.cs" />
     <Compile Include="Contract\IStateBusiness.cs" />
     <Compile Include="Contract\IPaymentTermBusiness.cs" />
+    <Compile Include="Contract\IUnitBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AreaBusiness.cs" />
     <Compile Include="Service\BankBusiness.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Service\ReferenceTypeBusiness.cs" />
     <Compile Include="Service\StateBusiness.cs" />
     <Compile Include="Service\PaymentTermBusiness.cs" />
+    <Compile Include="Service\UnitBusiness.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.DataAccessObject\PilotSmithApp.DataAccessObject.csproj">
