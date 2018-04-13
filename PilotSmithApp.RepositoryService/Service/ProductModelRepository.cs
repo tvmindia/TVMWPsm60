@@ -135,7 +135,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productModel.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : productModel.Product.Name);
                                        // productModel.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : productModel.ProductID);
                                         productModel.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : productModel.Name);
-                                        productModel.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : productModel.UnitCode);
+                                        productModel.Unit = new Unit();
+                                        productModel.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : productModel.Unit.Description);
+                                       // productModel.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : productModel.UnitCode);
                                         productModel.Specification = (sdr["Specification"].ToString() != "" ? sdr["Specification"].ToString() : productModel.Specification);
                                         productModel.CostPrice = (sdr["CostPrice"].ToString() != "" ? Decimal.Parse(sdr["CostPrice"].ToString()) : productModel.CostPrice);
                                         productModel.SellingPrice = (sdr["SellingPrice"].ToString() != "" ? Decimal.Parse(sdr["SellingPrice"].ToString()) : productModel.SellingPrice);                                       

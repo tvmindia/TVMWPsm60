@@ -36,6 +36,8 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsUpdate { get; set; }
         public int? ProductSpecificationCode { get; set; }
         public ProductViewModel Product { get; set; }
+        public UnitViewModel Unit { get; set; }
+       // public Guid hdnFileID { get; set; }
     }
     public class ProductModelAdvanceSearchViewModel
     {

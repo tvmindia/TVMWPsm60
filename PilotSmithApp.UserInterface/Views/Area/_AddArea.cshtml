@@ -63,6 +63,15 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormArea");
         $('#AreaCode').val($('#hdnAreaCode').val());
+        try {
+            $('#StateCode,#DistrictCode').select2({
+                dropdownParent: $("#divModelMasterPopUp")
+            });
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
     });
 </script>
 
