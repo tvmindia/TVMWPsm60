@@ -820,7 +820,7 @@
     <Content Include="Views\ProductModel\Index.cshtml" />
     <Content Include="Views\ProductModel\_AddProductModel.cshtml" />
     <Content Include="Views\ProductModel\_ProductModelSelectList.cshtml" />
-    <Content Include="Views\EnquiryFollowup\_EnquiryList.cshtml" />
+    <Content Include="Views\EnquiryFollowup\_EnquiryFollowupList.cshtml" />
     <Content Include="Views\DocumentStatus\_DocumentStatusSelectList.cshtml" />
     <Content Include="Views\ReferencePerson\_ReferencePersonSelectList.cshtml" />
     <Content Include="Views\Employee\_EmployeeSelectList.cshtml" />

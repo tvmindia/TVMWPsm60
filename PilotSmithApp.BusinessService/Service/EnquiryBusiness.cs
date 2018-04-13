@@ -28,7 +28,10 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public object InsertUpdateEnquiry(Enquiry enquiry)
         {
-            enquiry.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(enquiry.EnquiryDetailList, "ProductID");
+            if(enquiry.EnquiryDetailList.Count>0)
+            {
+                enquiry.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(enquiry.EnquiryDetailList, "ProductID");
+            }
             return _enquiryRepository.InsertUpdateEnquiry(enquiry);
         }
         public Enquiry GetEnquiry(Guid id)

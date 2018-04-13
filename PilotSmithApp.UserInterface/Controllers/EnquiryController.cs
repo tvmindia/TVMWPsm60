@@ -180,11 +180,11 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                 if (enquiryVM.ID == Guid.Empty)
                 {
-                    return JsonConvert.SerializeObject(new { Result = "OK", Records = result, Message = "Insertion successfull" });
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
                 }
                 else
                 {
-                    return JsonConvert.SerializeObject(new { Result = "OK", Records = result, Message = "Updation successfull" });
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
                 }
 
 
@@ -193,7 +193,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
 
                 AppConstMessage cm = _appConstant.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR",Record="", Message = cm.Message });
             }
 
         }

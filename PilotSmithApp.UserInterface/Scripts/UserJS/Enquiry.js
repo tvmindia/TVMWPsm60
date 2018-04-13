@@ -175,7 +175,10 @@ function SaveSuccessEnquiry(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $('#ID').val(_result.ID);
+                $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _result.ID, function () {
+                    ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+                    BindEnquiryDetailList(_result.ID);
+                });
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
                 BindOrReloadEnquiryTable('Init');
                 notyAlert('success', _result.Message);
