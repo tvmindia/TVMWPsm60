@@ -46,7 +46,7 @@ function AddProductSpecificationMaster(flag) {
 
     $("#divMasterBody").load("ProductSpecification/MasterPartial?masterCode=0", function () {
         $('#hdnMasterCall').val(flag);
-        $('#lblModelMasterContextLabel').text('Add ProductSpecification')
+        $('#lblModelMasterContextLabel').text('Add Product Specification')
         $('#divModelMasterPopUp').modal('show');
     });
 

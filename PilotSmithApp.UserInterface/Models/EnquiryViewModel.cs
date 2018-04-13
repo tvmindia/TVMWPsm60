@@ -46,6 +46,8 @@ namespace PilotSmithApp.UserInterface.Models
         public BranchViewModel Branch { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public EnquiryGradeViewModel EnquiryGrade { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<EnquiryDetailViewModel> EnquiryDetailList { get; set; }
     }
     public class EnquiryAdvanceSearchViewModel
@@ -69,6 +71,8 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? Qty { get; set; }
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }
+        public ProductViewModel Product { get; set; }     
+        public ProductModelViewModel ProductModel { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
     }
 }

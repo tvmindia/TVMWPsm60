@@ -11,6 +11,7 @@ namespace PilotSmithApp.RepositoryService.Contract
     {
         List<Enquiry> GetAllEnquiry(EnquiryAdvanceSearch enquiryAdvanceSearch);
         List<EnquiryDetail> GetEnquiryDetailListByEnquiryID(Guid enquiryID);
+        Enquiry GetEnquiry(Guid id);
         object InsertUpdateEnquiry(Enquiry enquiry);
     }
 }

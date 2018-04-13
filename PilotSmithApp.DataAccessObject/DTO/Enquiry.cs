@@ -21,12 +21,16 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public Guid? DocumentOwnerID { get; set; }
         public int? BranchCode { get; set; }
+        public string DetailXML { get; set; }
         //Additional properties
         public string EnquiryDateFormatted { get; set;}
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public Customer Customer { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
+        public EnquiryGrade EnquiryGrade { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public List<EnquiryDetail> EnquiryDetailList { get; set; }
     }
