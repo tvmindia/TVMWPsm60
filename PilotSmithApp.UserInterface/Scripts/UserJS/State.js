@@ -75,7 +75,7 @@ function BindOrReloadStateTable(action) {
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditStateMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteStateMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditStateMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteStateMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },

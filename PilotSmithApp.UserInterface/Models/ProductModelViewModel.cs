@@ -10,6 +10,7 @@ namespace PilotSmithApp.UserInterface.Models
     public class ProductModelViewModel
     {
         public Guid ID { get; set; }
+        [Display(Name ="Product")]
         public Guid? ProductID { get; set; }
         [Remote(action: "CheckProductModelNameExist", controller: "ProductModel", AdditionalFields = "IsUpdate,ID")]
         public string Name { get; set; }

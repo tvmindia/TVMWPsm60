@@ -7,6 +7,9 @@ var _result = "";
 $(document).ready(function () {
     try {
         BindOrReloadCompanyTable('Init');
+        $('#tblCompany tbody').on('dblclick', 'td', function () {
+            EditCompanyMaster(this);
+        });
     }
     catch (e) {
         console.log(e.message);
@@ -72,7 +75,7 @@ function BindOrReloadCompanyTable(action) {
                 { "data": "ID", "defaultContent": "<i>-</i>" },
                 { "data": "Name", "defaultContent": "<i>-</i>"},
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditCompanyMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteCompanyMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>', "width": "10%"
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditCompanyMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteCompanyMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>', "width": "10%"
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false }],

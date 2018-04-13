@@ -7,7 +7,10 @@ var _result = "";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {        
-        BindOrReloadCustomerTable('Init');       
+        BindOrReloadCustomerTable('Init');
+        $('#tblCustomer tbody').on('dblclick', 'td', function () {
+            EditCustomer(this);
+        });
     }
     catch (e) {
         console.log(e.message);

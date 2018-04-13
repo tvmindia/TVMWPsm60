@@ -78,6 +78,9 @@
         .fa-pencil-square-o{
             color:#DB8B0B;
         }
+        .fa-trash-o{
+            color:#DB8B0B;
+        }
         .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
             background-color: #02a68f;
             border-color:#02a68f;

@@ -7,6 +7,9 @@ var _result = "";
 $(document).ready(function () {
     try {
         BindOrReloadProductSpecificationTable('Init');
+        $('#tblProductSpecification tbody').on('dblclick', 'td', function () {
+            EditProductSpecificationMaster(this);
+        });
     }
     catch (e) {
         console.log(e.message);
@@ -72,7 +75,7 @@ function BindOrReloadProductSpecificationTable(action) {
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductSpecificationMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductSpecificationMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductSpecificationMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductSpecificationMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },

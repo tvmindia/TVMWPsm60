@@ -5,12 +5,11 @@ var _message = "";
 var _status = "";
 var _result = "";
 $(document).ready(function () {
-    try {
-
-        //$("#StateCode").select2({});
-        //$("#DistrictCode").select2({});
-
+    try {     
         BindOrReloadProductTable('Init');
+        $('#tblProduct tbody').on('dblclick', 'td', function () {
+            EditProductMaster(this);
+        });
     }
     catch (e) {
         console.log(e.message);
@@ -82,11 +81,11 @@ function BindOrReloadProductTable(action)
                 { "data": "Company.Name", "defaultContent": "<i>-</i>" },
                 { "data": "HSNCode", "defaultContent": "<i>-</i>" },
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [5] },
+                { className: "text-center", "targets": [4] },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

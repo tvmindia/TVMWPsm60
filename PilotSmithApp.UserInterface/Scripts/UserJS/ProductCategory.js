@@ -7,6 +7,9 @@ var _result = "";
 $(document).ready(function () {
     try {
         BindOrReloadProductCategoryTable('Init');
+        $('#tblProductCategory tbody').on('dblclick', 'td', function () {
+            EditProductCategoryMaster(this);
+        });
     }
     catch (e) {
         console.log(e.message);
@@ -74,7 +77,8 @@ function BindOrReloadProductCategoryTable(action)
                 { "data": "Description", "defaultContent": "<i>-</i>"},
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>"},
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductCategoryMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductCategoryMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'}
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductCategoryMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductCategoryMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [2] },

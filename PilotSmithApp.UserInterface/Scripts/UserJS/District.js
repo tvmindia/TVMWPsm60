@@ -80,7 +80,7 @@ function BindOrReloadDistrictTable(action) {
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditDistrictMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteDistrictMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditDistrictMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteDistrictMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },

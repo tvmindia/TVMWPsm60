@@ -5,12 +5,11 @@ var _message = "";
 var _status = "";
 var _result = "";
 $(document).ready(function () {
-    try {
-
-        //$('#ProductModelID').select2({});
-        //$('.select2').addClass('form-control newinput');
-        debugger;
+    try {     
         BindOrReloadProductModelTable('Init');
+        $('#tblProductModel tbody').on('dblclick', 'td', function () {
+            EditProductModelMaster(this);
+        });
     }
     catch (e) {
         console.log(e.message);
@@ -83,12 +82,13 @@ function BindOrReloadProductModelTable(action) {
                 { "data": "IntroducedDateFormatted", "defaultContent": "<i>-</i>" },
                 { "data": "StockQty", "defaultContent": "<i>-</i>" },
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductModelMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductModelMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductModelMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductModelMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [7] },
-                { className: "text-right", "targets": [5,6] },
+                { className: "text-right", "targets": [5, 6] },                
+                {"targets":[9],"width":"7%"}
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
