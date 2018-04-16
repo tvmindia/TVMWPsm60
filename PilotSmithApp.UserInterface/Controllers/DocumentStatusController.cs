@@ -21,11 +21,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View();
         }
         #region DocumentStatus SelectList
-        public ActionResult DocumentStatusSelectList(string required)
+        public ActionResult DocumentStatusSelectList(string required,string code)
         {
             ViewBag.IsRequired = required;
             DocumentStatusViewModel documentStatusVM = new DocumentStatusViewModel();
-            documentStatusVM.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus();
+            documentStatusVM.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus(code);
             return PartialView("_DocumentStatusSelectList", documentStatusVM);
         }
         #endregion DocumentStatus SelectList

@@ -9,6 +9,6 @@ namespace PilotSmithApp.BusinessService.Contract
 {
     public interface IDocumentStatusBusiness
     {
-        List<SelectListItem> GetSelectListForDocumentStatus();
+        List<SelectListItem> GetSelectListForDocumentStatus(string code);
     }
 }
