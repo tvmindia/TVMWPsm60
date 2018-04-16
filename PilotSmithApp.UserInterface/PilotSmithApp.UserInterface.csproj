@@ -659,6 +659,7 @@
     <Content Include="Scripts\UserJS\CustomerJS\Customer.js" />
     <Content Include="Scripts\UserJS\District.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
+    <Content Include="Scripts\UserJS\Estimate.js" />
     <Content Include="Scripts\UserJS\ManageAccess.js" />
     <Content Include="Scripts\UserJS\ManageSubObjectAccess.js" />
     <Content Include="Scripts\UserJS\Master.js" />
@@ -699,6 +700,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EnquiryController.cs" />
     <Compile Include="Controllers\EnquiryFollowupController.cs" />
+    <Compile Include="Controllers\EstimateController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ManageAccessController.cs" />
     <Compile Include="Controllers\PaymentTermController.cs" />
@@ -727,6 +729,7 @@
     <Compile Include="Models\EnquiryFollowupViewModel.cs" />
     <Compile Include="Models\EnquiryGradeViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
+    <Compile Include="Models\EstimateViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductModelViewModel.cs" />
     <Compile Include="Models\ProductSpecificationViewModel.cs" />
@@ -835,6 +838,9 @@
     <Content Include="Views\Unit\Index.cshtml" />
     <Content Include="Views\Unit\_AddUnit.cshtml" />
     <Content Include="Views\Unit\_UnitSelectList.cshtml" />
+    <Content Include="Views\Estimate\Index.cshtml" />
+    <Content Include="Views\Estimate\_EstimateForm.cshtml" />
+    <Content Include="Views\Estimate\_AddEstimateDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

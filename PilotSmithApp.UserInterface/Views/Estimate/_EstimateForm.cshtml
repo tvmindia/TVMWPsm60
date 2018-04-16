@@ -1,0 +1,234 @@
+﻿@model PilotSmithApp.UserInterface.Models.EstimateViewModel
+<style>
+    .todo-list > li {
+        background: #ffffff;
+        border-left: none;
+    }
+</style>
+@using (Ajax.BeginForm("InsertUpdateEstimate", "Estimate", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEstimate", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "EstimateForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
+
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator"> General Details</div>
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.EnquiryID, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    <div class="divEnquirySelectList">
+                        @*@Html.Action("EnquirySelectList", "Enquiry", new { required = "required" })*@
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
+            </div>
+
+            <div class="form-group col-md-12 no-padding">
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.EstimateNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.EstimateNo, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true, @readonly = "readonly", @placeholder = "Autogenerared filed" } })
+                        @Html.ValidationMessageFor(model => model.EstimateNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.EstimateRefNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.EstimateRefNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.EstimateRefNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.EstimateDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                        @Html.ValidationMessageFor(model => model.EstimateDateFormatted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12 no-padding">
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divCustomerSelectList">
+                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                        </div>
+                    </div>
+                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.DocumentStatusCode, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.DocumentStatusCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                        @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+    </div>
+
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Estimate Details<a class="btn btn-openid pull-right" onclick="AddEstimateDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
+
+            @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+            <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
+                <table id="tblEstimateDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                    <thead>
+                        <tr class="text-center TableHead">                            
+                            <th>Product </th>
+                            <th>Model</th>
+                            <th>Spec.</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Cost Price</th>
+                            <th>Selling Price</th>
+                            <th>...</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Status & Other details</div>
+            <div class="form-group col-md-12">
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDocOwnerSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                        </div>
+                        @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divBranchSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                        </div>
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+    </div>
+
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Estimate Attachment</div>
+            @Html.Partial("_Fileupload")
+        </div>
+    </div>
+    <div class="" hidden="hidden">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="btnInsertUpdateEstimate" type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        try {
+            $.validator.unobtrusive.parse("#EstimateForm");
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('input.datepicker').datepicker({
+                format: "dd-M-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            //Fileupload
+            $('#btnUpload').click(function () {
+                debugger;
+                //Pass the controller name
+                var FileObject = new Object;
+                if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
+                    FileObject.ParentID = (($('#ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#ID').val()) : $('#hdnFileDupID').val());
+                }
+                else {
+                    FileObject.ParentID = ($('#ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#ID').val();
+                }
+
+                FileObject.ParentType = "Estimate";
+                FileObject.Controller = "FileUpload";
+                UploadFile(FileObject);
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('#EstimateGradeCode').select2({});
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    });
+</script>
+
