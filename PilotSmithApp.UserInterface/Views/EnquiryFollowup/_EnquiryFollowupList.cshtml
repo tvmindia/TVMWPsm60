@@ -27,12 +27,12 @@
         line-height: 25px;
         border: 1.5px solid #ffffff;
         border-radius: 50%;
-        color: #f5f5f5!important;
+        color: #f5f5f5 !important;
         text-align: center;
         text-decoration: none !important;
         background: #dd9546;
         box-shadow: 0 0 9px #6f6f6f;
-        font-size: 33px!important;
+        font-size: 33px !important;
         font-weight: bold;
     }
 
@@ -55,9 +55,9 @@
         -webkit-box-orient: vertical;
     }
 </style>
-@*@if (ViewBag.Ispager)
+@if (ViewBag.Ispager)
 {
-    if(Model.EnquiryFollowupList.Count > 0)
+    if (Model.EnquiryFollowupList.Count > 0)
     {
         <ul class="todo-list ui-sortable">
             @foreach (var enquiryVm in Model.EnquiryFollowupList)
@@ -70,13 +70,13 @@
                     <span style="font-size:14px;-webkit-line-clamp: 1;text-overflow: ellipsis;">@enquiryVm.Subject</span>
                     <div class="col-lg-12" style="background-color:#4cff00"></div>
                     <!-- todo text -->
-                    <span class="text">@enquiryVm.GeneralNotes</span>
+                    <span class="text clearfix" style="width:100%">@enquiryVm.GeneralNotes</span>
                     <!-- Emphasis label -->
                     <small class="label label-success"><i class="fa fa-calendar"></i> @enquiryVm.FollowupDateFormatted</small>
                     <small class="label label-danger"><i class="fa fa-clock"></i> @enquiryVm.FollowupTimeFormatted</small>
                     <!-- General tools such as edit or delete-->
                     <div class="tools">
-                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-edit" onclick="EditEnquiryFollowup('@enquiryVm.ID')"></i>
                         <i class="fa fa-trash"></i>
                     </div>
                 </li>
@@ -86,7 +86,7 @@
     }
 }
 else
-{*@
+{
     <div class="col-md-12 no-right-padding">
         <div class="box box-success" style="position: relative; left: 0px; top: 0px;">
             <div class="box-header ui-sortable-handle">
@@ -95,43 +95,74 @@ else
                 <h3 class="box-title">Followup List</h3>
 
                 <div class="box-tools pull-right">
-                    @if (Model.TotalCount > 4)
+                    @if (Model.TotalCount > 3)
                     {
                         <ul class="pagination pagination-sm inline">
-                            <li><a href="#">«</a></li>
-                            @{var pager = Math.Round((decimal)Model.TotalCount / 4);
+                            @{var pager = Math.Round((decimal)Model.TotalCount / 3);
                                 for (int i = 1; i <= pager; i++)
                                 {
-                                    <li><a href="#">@i</a></li>
+                                    int count = i==1?0:i+2;
+                                    <li onclick="EnquiryFollowUpPaging(@count)"><a href="#">@i</a></li>
                                 }
                             }
-                            <li><a href="#">»</a></li>
+                           
                         </ul>
                                 }
                 </div>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-                <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-                <ul class="todo-list ui-sortable">
-                    
+            <div class="box-body" id="divEnquiryFollowupboxbody">
+                    @if (Model.EnquiryFollowupList.Count > 0)
+                    {
+                        <ul class="todo-list ui-sortable">
+                            @foreach (var enquiryVm in Model.EnquiryFollowupList)
+                            {
+                                <li style="border-bottom: 1px solid grey">
+                                    <!-- drag handle -->
+                                    <span class="ui-sortable-handle" style="font-size:14px;color:#4cff00;">
+                                        <i class="fa fa-phone-volume"></i>
+                                    </span>
+                                    <span style="font-size:14px;-webkit-line-clamp: 1;text-overflow: ellipsis;">@enquiryVm.Subject</span>
+                                    <div class="col-lg-12" style="background-color:#4cff00"></div>
+                                    <!-- todo text -->
+                                    <span class="text clearfix" style="width:100%">@enquiryVm.GeneralNotes</span>
+                                    <!-- Emphasis label -->
+                                    <small class="label label-success"><i class="fa fa-calendar"></i> @enquiryVm.FollowupDateFormatted</small>
+                                    <small class="label label-danger"><i class="fa fa-clock"></i> @enquiryVm.FollowupTimeFormatted</small>
+                                    <!-- General tools such as edit or delete-->
+                                    <div class="tools">
+                                        <i class="fa fa-edit" onclick="EditEnquiryFollowup('@enquiryVm.ID')"></i>
+                                        <i class="fa fa-trash"></i>
+                                    </div>
+                                </li>
+                            }
+
+                        </ul>
+                    }
+                else
+                {
+                    <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                    <ul class="todo-list ui-sortable">
+
                         <li style="border-bottom: 1px solid grey">
                             <!-- drag handle -->
                             <span>Awaiting Followups...</span>
                         </li>
 
-                </ul>
+                    </ul>
+                }
+                
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix no-border">
                 <div class="col-md-7">
                     @*<button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>*@
-                    <a href="#" class="round-button pull-right">+</a>
+                    <a href="#" class="round-button pull-right" onclick="AddEnquiryFollowUp()">+</a>
                 </div>
             </div>
         </div>
     </div>
-                                @*}*@
+    }
 
 
 

@@ -197,16 +197,24 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiry.EnquiryDateFormatted= (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiry.EnquiryDateFormatted);
                                         enquiry.RequirementSpec = (sdr["RequirementSpec"].ToString() != "" ? sdr["RequirementSpec"].ToString() : enquiry.RequirementSpec);
                                         enquiry.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.CustomerID);
-                                        enquiry.Customer = new Customer
-                                        {
-                                            ID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.Customer.ID),
-                                            CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.Customer.CompanyName),
-                                        };
+                                        enquiry.Customer = new Customer();
+                                        enquiry.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.Customer.ID);
+                                        enquiry.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.Customer.CompanyName);
+                                        enquiry.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiry.Customer.ContactPerson);
+                                        enquiry.Customer.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : enquiry.Customer.Mobile);
                                         enquiry.EnquiryGradeCode = (sdr["GradeCode"].ToString() != "" ? int.Parse(sdr["GradeCode"].ToString()) : enquiry.EnquiryGradeCode);
+                                        enquiry.EnquiryGrade = new EnquiryGrade();
+                                        enquiry.EnquiryGrade.Code = (sdr["GradeCode"].ToString() != "" ? int.Parse(sdr["GradeCode"].ToString()) : enquiry.EnquiryGrade.Code);
+                                        enquiry.EnquiryGrade.Description = (sdr["EnquiryGradeDescription"].ToString() != "" ? sdr["EnquiryGradeDescription"].ToString() : enquiry.EnquiryGrade.Description);
                                         enquiry.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatusCode);
+                                        enquiry.DocumentStatus = new DocumentStatus();
+                                        enquiry.DocumentStatus.Code= (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatus.Code);
+                                        enquiry.DocumentStatus.Description= (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
                                         enquiry.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferredByCode);
-
-                                        enquiry.ResponsiblePersonID = (sdr["ResponsiblePersonID"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
+                                        enquiry.ReferencePerson = new ReferencePerson();
+                                        enquiry.ReferencePerson.Code= (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferencePerson.Code);
+                                        enquiry.ReferencePerson.Name= (sdr["ReferredByCode"].ToString() != "" ? (sdr["ReferencePersonName"].ToString()) : enquiry.ReferencePerson.Name);
+                                        enquiry.ResponsiblePersonID = (sdr["ReferencePersonName"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
                                         enquiry.AttendedByID = (sdr["AttendedByID"].ToString() != "" ? Guid.Parse(sdr["AttendedByID"].ToString()) : enquiry.AttendedByID);
                                         enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
                                         enquiry.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : enquiry.DocumentOwnerID);

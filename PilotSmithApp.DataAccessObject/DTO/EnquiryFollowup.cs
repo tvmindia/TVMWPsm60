@@ -12,7 +12,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid EnquiryID { get; set; }
         public DateTime FollowupDate { get; set; }
         public DateTime FollowupTime { get; set; }
-        public string Priority { get; set; }
+        public int PriorityCode { get; set; }
         public string Subject { get; set; }
         public string ContactName { get; set; }
         public string ContactNo { get; set; }
@@ -21,8 +21,12 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Status { get; set; }
         public string GeneralNotes { get; set; }
         //additional fields
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
         public string FollowupDateFormatted { get; set; }
         public string FollowupTimeFormatted { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
     }
 }

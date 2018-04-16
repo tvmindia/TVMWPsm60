@@ -835,6 +835,7 @@
     <Content Include="Views\Unit\Index.cshtml" />
     <Content Include="Views\Unit\_AddUnit.cshtml" />
     <Content Include="Views\Unit\_UnitSelectList.cshtml" />
+    <Content Include="Views\EnquiryFollowup\_AddEnquiryFollowup.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

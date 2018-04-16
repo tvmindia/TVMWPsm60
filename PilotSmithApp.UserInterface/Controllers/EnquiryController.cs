@@ -73,6 +73,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult AddEnquiryDetail()
         {
             EnquiryDetailViewModel enquiryDetailVM = new EnquiryDetailViewModel();
+            enquiryDetailVM.IsUpdate = false;
             return PartialView("_AddEnquiryDetail", enquiryDetailVM);
         }
         #endregion Enquiry Detail Add

@@ -133,7 +133,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             try
             {
-
+               
                 RolesViewModel roleList = Mapper.Map<Roles, RolesViewModel>(_rolesBusiness.GetRolesDetailsByID(Id));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = roleList });
             }

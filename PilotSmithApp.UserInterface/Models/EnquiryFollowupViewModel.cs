@@ -12,7 +12,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid EnquiryID { get; set; }
         public DateTime FollowupDate { get; set; }
         public DateTime FollowupTime { get; set; }
-        public string Priority { get; set; }
+        public int PriorityCode { get; set; }
         [Required(ErrorMessage = "Subject is missing")]
         public string Subject { get; set; }
         public string ContactName { get; set; }
@@ -30,7 +30,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Followup Time is missing")]
         public string FollowupTimeFormatted { get; set; }
         public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<EnquiryFollowupViewModel> EnquiryFollowupList { get; set;}
+        public DataTablePagingViewModel DataTablePaging { get; set; }
     }
 }
