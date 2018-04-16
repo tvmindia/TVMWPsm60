@@ -77,7 +77,7 @@
                     <!-- General tools such as edit or delete-->
                     <div class="tools">
                         <i class="fa fa-edit" onclick="EditEnquiryFollowup('@enquiryVm.ID')"></i>
-                        <i class="fa fa-trash"></i>
+                        <i onclick="ConfirmDeleteEnquiryFollowup('@enquiryVm.ID')" class="fa fa-trash"></i>
                     </div>
                 </li>
             }
@@ -132,7 +132,7 @@ else
                                     <!-- General tools such as edit or delete-->
                                     <div class="tools">
                                         <i class="fa fa-edit" onclick="EditEnquiryFollowup('@enquiryVm.ID')"></i>
-                                        <i class="fa fa-trash"></i>
+                                        <i onclick="ConfirmDeleteEnquiryFollowup('@enquiryVm.ID')" class="fa fa-trash"></i>
                                     </div>
                                 </li>
                             }

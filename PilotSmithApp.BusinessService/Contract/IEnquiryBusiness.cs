@@ -13,6 +13,8 @@ namespace PilotSmithApp.BusinessService.Contract
         Enquiry GetEnquiry(Guid id);
         List<EnquiryDetail> GetEnquiryDetailListByEnquiryID(Guid enquiryID);
         object InsertUpdateEnquiry(Enquiry enquiry);
+        object DeleteEnquiry(Guid id);
+        object DeleteEnquiryDetail(Guid id);
 
     }
 }

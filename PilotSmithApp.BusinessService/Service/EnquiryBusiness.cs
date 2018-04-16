@@ -38,5 +38,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
            return _enquiryRepository.GetEnquiry(id);
         }
+        public object DeleteEnquiry(Guid id)
+        {
+            return _enquiryRepository.DeleteEnquiry(id);
+        }
+        public object DeleteEnquiryDetail(Guid id)
+        {
+            return _enquiryRepository.DeleteEnquiryDetail(id);
+        }
     }
 }

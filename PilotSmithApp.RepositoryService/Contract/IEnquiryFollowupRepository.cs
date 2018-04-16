@@ -12,5 +12,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateEnquiryFollowup(EnquiryFollowup enquiryFollowup);
         List<EnquiryFollowup> GetAllEnquiryFollowup(EnquiryFollowup enquiryFollowup);
         EnquiryFollowup GetEnquiryFollowup(Guid id);
+        object DeleteEnquiryFollowup(Guid id);
     }
 }

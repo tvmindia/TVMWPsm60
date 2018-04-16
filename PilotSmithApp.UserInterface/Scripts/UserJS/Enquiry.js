@@ -216,9 +216,9 @@ function SaveSuccessEnquiry(data, status) {
 }
 
 function DeleteEnquiry() {
-    notyConfirm('Are you sure to delete?', 'DeleteItem("' + $('#ID').val() + '")');
+    notyConfirm('Are you sure to delete?', 'DeleteEnquiryItem("' + $('#EnquiryForm #ID').val() + '")');
 }
-function DeleteItem(id) {
+function DeleteEnquiryItem(id) {
     try {
         if (id) {
             var data = { "id": id };
@@ -522,5 +522,32 @@ function SaveSuccessEnquiryFollowup(data, status) {
     catch (e) {
         //this will show the error msg in the browser console(F12) 
         console.log(e.message);
+    }
+}
+function ConfirmDeleteEnquiryFollowup(ID) {
+    if (ID != _emptyGuid)
+    {
+        notyConfirm('Are you sure to delete?', 'DeleteEnquiryDetail("' + ID + '")');
+    }
+}
+function DeleteEnquiryFollowup(ID) {
+    if (ID != _emptyGuid && ID != null && ID != '') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("EnquiryFollowup/DeleteEnquiryFollowup/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            $("#divFollowupList").load("EnquiryFollowup/GetEnquiryFollowupList?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+            });
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
     }
 }

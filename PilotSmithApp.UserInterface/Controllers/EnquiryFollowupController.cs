@@ -104,5 +104,26 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion InsertUpdate EnquiryFollowup
+        #region Delete EnquiryFollowup
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "D")]
+        public string DeleteEnquiryFollowup(Guid id)
+        {
+
+            try
+            {
+                object result = _enquiryFollowupBusiness.DeleteEnquiryFollowup(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion Delete EnquiryFollowup
     }
 }

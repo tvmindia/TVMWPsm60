@@ -28,5 +28,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _enquiryFollowupRepository.GetEnquiryFollowup(id);
         }
+        public object DeleteEnquiryFollowup(Guid id)
+        {
+            return _enquiryFollowupRepository.DeleteEnquiryFollowup(id);
+        }
     }
 }
