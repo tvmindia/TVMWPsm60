@@ -371,15 +371,20 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
-                                            Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : string.Empty),
-                                            Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : string.Empty)
+                                            Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : string.Empty),
+                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty)
                                         };
                                         enquiryDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         enquiryDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
-                                        //enquiryDetail.OldProductCode = (sdr["OldCode"].ToString() != "" ? sdr["OldCode"].ToString() : string.Empty);
+                                        enquiryDetail.ProductModel = new ProductModel();
+                                        enquiryDetail.ProductModel.ID= (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
+                                        enquiryDetail.ProductModel.Name= (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : enquiryDetail.ProductModel.Name);
+                                        enquiryDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : enquiryDetail.Qty);
                                         enquiryDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : enquiryDetail.Rate);
-                                        //enquiryDetail.TaxPerc = (sdr["TaxPerc"].ToString() != "" ? decimal.Parse(sdr["TaxPerc"].ToString()) : enquiryDetail.TaxPerc);
-
+                                        enquiryDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetail.UnitCode);
+                                        enquiryDetail.Unit = new Unit();
+                                        enquiryDetail.Unit.Code= (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetail.Unit.Code);
+                                        enquiryDetail.Unit.Description= (sdr["UnitDescription"].ToString() != "" ? (sdr["UnitDescription"].ToString()) : enquiryDetail.Unit.Description);
                                     }
                                     enquiryDetailList.Add(enquiryDetail);
                                 }

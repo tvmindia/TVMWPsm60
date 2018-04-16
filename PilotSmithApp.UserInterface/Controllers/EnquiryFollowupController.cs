@@ -30,7 +30,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.Ispager = false;
             enquiryFollowupVM.DataTablePaging = new DataTablePagingViewModel()
             {
-                Length = 2,
+                Length = 3,
                 Start = 0
             };
             enquiryFollowupVM.EnquiryFollowupList = Mapper.Map<List<EnquiryFollowup>, List<EnquiryFollowupViewModel>>(_enquiryFollowupBusiness.GetAllEnquiryFollowup(Mapper.Map<EnquiryFollowupViewModel, EnquiryFollowup>(enquiryFollowupVM)));
@@ -44,7 +44,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 enquiryFollowupVM.DataTablePaging = new DataTablePagingViewModel()
                 {
                     Length = 3,
-                    Start = 1
+                    Start = 0
                 };
             }
             else

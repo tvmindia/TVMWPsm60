@@ -95,18 +95,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ProductModelID = Guid.Empty,
                         ProductSpec = string.Empty,
                         Qty = 0,
-                        UnitCode = 1,
-                        Rate=0,
-                        Product=new ProductViewModel()
+                        UnitCode = null,
+                        Rate = 0,
+                        Product = new ProductViewModel()
                         {
-                            ID=Guid.Empty,
-                            Code=string.Empty,
-                            Name=string.Empty,
+                            ID = Guid.Empty,
+                            Code = string.Empty,
+                            Name = string.Empty,
                         },
-                        ProductModel=new ProductModelViewModel()
+                        ProductModel = new ProductModelViewModel()
                         {
-                            ID=Guid.Empty,
-                            Name=string.Empty
+                            ID = Guid.Empty,
+                            Name = string.Empty
+                        },
+                        Unit = new UnitViewModel()
+                        {
+                            Description = null,
                         },
                     };
                     enquiryItemViewModelList.Add(enquiryDetailVM);

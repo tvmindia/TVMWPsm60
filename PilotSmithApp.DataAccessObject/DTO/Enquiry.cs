@@ -53,6 +53,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }
         public Product Product { get; set; }
+        public ProductModel ProductModel { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public Unit Unit { get; set; }
     }
 }
