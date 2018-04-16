@@ -24,7 +24,7 @@ namespace PilotSmithApp.RepositoryService.Service
             _databaseFactory = databaseFactory;
         }
         #region Get DocumentStatus Dropdown
-        public List<DocumentStatus> GetDocumentStatusSelectList()
+        public List<DocumentStatus> GetDocumentStatusSelectList(string code)
         {
             List<DocumentStatus> documentStatusList = null;
             try
@@ -40,6 +40,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetDocumentStatusForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.VarChar, 5).Value = code;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))

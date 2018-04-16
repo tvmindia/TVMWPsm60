@@ -841,6 +841,7 @@
     <Content Include="Views\Estimate\Index.cshtml" />
     <Content Include="Views\Estimate\_EstimateForm.cshtml" />
     <Content Include="Views\Estimate\_AddEstimateDetail.cshtml" />
+    <Content Include="Views\EnquiryFollowup\_AddEnquiryFollowup.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,7 +1,8 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EnquiryDetailViewModel
-@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "AddEnquiryDetailToList", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEnquiryDetail" }))
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEnquiryDetail" }))
 {
 @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "" })
+@Html.HiddenFor(model=>model.IsUpdate, htmlAttributes: new { @class = "" })
 <div class="form-group col-md-12 no-padding">
     <div class="col-md-12 no-padding">
         <div class="col-md-12">
@@ -52,8 +53,10 @@
             @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
         </div>
         <div class="col-md-12">
-            @Html.EditorFor(model => model.UnitCode, new { htmlAttributes = new { @class = "form-control newinput Amount", @onkeypress = "return isNumber(event)" } })
-            @Html.ValidationMessageFor(model => model.UnitCode, "", new { @class = "text-danger" })
+            <div class="divProductIDSelectList">
+                @Html.Action("UnitSelectList", "Unit", new { required = "" })
+            </div>
+            @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
         </div>
     </div>
     <div class="col-md-6 no-padding">
@@ -67,13 +70,13 @@
     </div>
 </div>
 <div class="modal-footer d-flex justify-content-center">
-    <button class="btn btn-default" id="btnAddEnquiryDetail" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+    <button class="btn btn-default" id="btnAddEnquiryDetail" onclick="AddEnquiryDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
 </div>
 }
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormEnquiryDetail");
-        $('#ProductID').select2({
+        $('#ProductID,#UnitCode').select2({
             dropdownParent: $("#divModelPopEnquiry")
         });
         $('.select2').addClass('form-control newinput');

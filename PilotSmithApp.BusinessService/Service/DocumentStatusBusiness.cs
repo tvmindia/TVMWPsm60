@@ -17,10 +17,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _documentStatusRepository = documentStatusRepository;
         }
-        public List<SelectListItem> GetSelectListForDocumentStatus()
+        public List<SelectListItem> GetSelectListForDocumentStatus(string code)
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<DocumentStatus> documentStatusList = _documentStatusRepository.GetDocumentStatusSelectList();
+            List<DocumentStatus> documentStatusList = _documentStatusRepository.GetDocumentStatusSelectList(code);
             if (documentStatusList != null)
                 foreach (DocumentStatus documentStatus in documentStatusList)
                 {

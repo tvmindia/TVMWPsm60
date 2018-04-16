@@ -73,6 +73,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult AddEnquiryDetail()
         {
             EnquiryDetailViewModel enquiryDetailVM = new EnquiryDetailViewModel();
+            enquiryDetailVM.IsUpdate = false;
             return PartialView("_AddEnquiryDetail", enquiryDetailVM);
         }
         #endregion Enquiry Detail Add
@@ -94,18 +95,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ProductModelID = Guid.Empty,
                         ProductSpec = string.Empty,
                         Qty = 0,
-                        UnitCode = 1,
-                        Rate=0,
-                        Product=new ProductViewModel()
+                        UnitCode = null,
+                        Rate = 0,
+                        Product = new ProductViewModel()
                         {
-                            ID=Guid.Empty,
-                            Code=string.Empty,
-                            Name=string.Empty,
+                            ID = Guid.Empty,
+                            Code = string.Empty,
+                            Name = string.Empty,
                         },
-                        ProductModel=new ProductModelViewModel()
+                        ProductModel = new ProductModelViewModel()
                         {
-                            ID=Guid.Empty,
-                            Name=string.Empty
+                            ID = Guid.Empty,
+                            Name = string.Empty
+                        },
+                        Unit = new UnitViewModel()
+                        {
+                            Description = null,
                         },
                     };
                     enquiryItemViewModelList.Add(enquiryDetailVM);
@@ -123,6 +128,48 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get Enquiry DetailList By EnquiryID
+        #region Delete Enquiry
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "D")]
+        public string DeleteEnquiry(Guid id)
+        {
+
+            try
+            {
+                object result = _enquiryBusiness.DeleteEnquiry(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion Delete Enquiry
+        #region Delete Enquiry Detail
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "D")]
+        public string DeleteEnquiryDetail(Guid id)
+        {
+
+            try
+            {
+                object result = _enquiryBusiness.DeleteEnquiryDetail(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion Delete Enquiry Detail
         #region GetAllEnquiry
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]

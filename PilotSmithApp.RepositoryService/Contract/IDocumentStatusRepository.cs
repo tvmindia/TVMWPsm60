@@ -9,6 +9,6 @@ namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IDocumentStatusRepository
     {
-        List<DocumentStatus> GetDocumentStatusSelectList();
+        List<DocumentStatus> GetDocumentStatusSelectList(string code);
     }
 }

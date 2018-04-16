@@ -1,5 +1,6 @@
 ﻿var _dataTable = {};
 var _emptyGuid = "00000000-0000-0000-0000-000000000000";
+var _datatablerowindex = -1;
 var _jsonData = {};
 var _message = "";
 var _status = "";
@@ -8,7 +9,9 @@ var _result = "";
 $(document).ready(function () {
     try {
         BindOrReloadEnquiryTable('Init');
-      
+        $('#tblEnquiry tbody').on('dblclick', 'td', function () {
+            EditEnquiry(this);
+        });
     }
     catch (e) {
         console.log(e.message);
@@ -56,7 +59,7 @@ function BindOrReloadEnquiryTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [1, 2, 3, 4, 5, 6]
+                                 columns: [0,1, 2, 3, 4, 5, 6,7]
                              }
             }],
             ordering: false,
@@ -78,16 +81,22 @@ function BindOrReloadEnquiryTable(action) {
                { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+               { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
                { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
-               { "data": "ReferredByCode", "defaultContent": "<i>-</i>" },
-               { "data": "ResponsiblePersonID", "defaultContent": "<i>-</i>" },
-               { "data": "AttendedByID", "defaultContent": "<i>-</i>" },
+               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
+               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEnquiry(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
-            columnDefs: [{ className: "text-right", "targets": [5] },
-                  { className: "text-left", "targets": [0, 1] },
-            { className: "text-center", "targets": [2, 3, 4] }
-            ],
+            columnDefs: [ { className: "text-right", "targets": [] },
+                          { className: "text-left", "targets": [2,3,5,6] },
+                          { className: "text-center", "targets": [0, 1, 4, 7, 8] },
+                            { "targets": [0,1,4], "width": "10%" },
+                            { "targets": [2,3], "width": "10%" },
+                            { "targets": [5], "width": "30%" },
+                            { "targets": [6], "width": "10%" },
+                            { "targets": [7,8], "width": "5%" },
+                        ],
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
@@ -131,28 +140,38 @@ function ExportEnquiryData() {
 // add Enquiry section
 function AddEnquiry() {
     //this will return form body(html)
+    OnServerCallBegin();
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
         BindEnquiryDetailList(_emptyGuid);
-        //resides in customjs for sliding
-        openNav();
+        OnServerCallComplete();
+        setTimeout(function () {
+            //resides in customjs for sliding
+            openNav();
+        }, 100);
     });
 }
 function EditEnquiry(this_Obj) {
+    OnServerCallBegin();
     var Enquiry = _dataTable.EnquiryList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + Enquiry.ID, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
         BindEnquiryDetailList(Enquiry.ID);
-        
-        //resides in customjs for sliding
-        openNav();
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+        OnServerCallComplete();
+        setTimeout(function () {
+            //resides in customjs for sliding
+            openNav();
+        }, 100);
     });
 }
 function ResetEnquiry() {
-    //this will return form body(html)
-    $('#divEnquiryForm').load("Enquiry/EnquiryForm?id=" + $('#ID').val());
+    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + $('#EnquiryForm #ID').val(), function () {
+        BindEnquiryDetailList($('#ID').val());
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
+    });
 }
 function SaveEnquiry() {
     var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data().toArray();
@@ -197,9 +216,9 @@ function SaveSuccessEnquiry(data, status) {
 }
 
 function DeleteEnquiry() {
-    notyConfirm('Are you sure to delete?', 'DeleteItem("' + $('#ID').val() + '")');
+    notyConfirm('Are you sure to delete?', 'DeleteEnquiryItem("' + $('#EnquiryForm #ID').val() + '")');
 }
-function DeleteItem(id) {
+function DeleteEnquiryItem(id) {
     try {
         if (id) {
             var data = { "id": id };
@@ -253,11 +272,11 @@ function BindEnquiryDetailList(id) {
              { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Qty", render: function (data, type, row) {
-                     return data +" "+ row.UnitCode
+                     return data +" "+ row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
                  { "targets": [0, 4], "width": "10%" },
@@ -306,42 +325,229 @@ function AddEnquiryDetailList()
 function AddEnquiryDetailToList() {
     debugger;
     $("#FormEnquiryDetail").submit(function () {
-        if ($('#ProductID').val()!="")
-        if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
-            _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
+        debugger;
+        if ($('#FormEnquiryDetail #IsUpdate').val()=='True')
+        {
             debugger;
-            var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
-            enquiryDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-            enquiryDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-            enquiryDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-            enquiryDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-            enquiryDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-            enquiryDetailList[0].ProductSpec = $('#ProductSpec').val();
-            enquiryDetailList[0].Qty = $('#Qty').val();
-            enquiryDetailList[0].UnitCode = $('#UnitCode').val();
-            enquiryDetailList[0].Rate = $('#Rate').val();
-            _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
-            $('#divModelPopEnquiry').modal('hide');
+            if ($('#ProductID').val() != "")
+            {
+                debugger;
+                var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
+                enquiryDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                enquiryDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                enquiryDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                enquiryDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                ProductModel = new Object;
+                ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                enquiryDetailList[_datatablerowindex].ProductModel = ProductModel;
+                enquiryDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
+                enquiryDetailList[_datatablerowindex].Qty = $('#Qty').val();
+                enquiryDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
+                enquiryDetailList[_datatablerowindex].Rate = $('#Rate').val();
+                _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
+                $('#divModelPopEnquiry').modal('hide');
+                _datatablerowindex = -1;
+            }
         }
-        else {
-            var EnquiryDetailVM = new Object();
-            var Product = new Object;
-            var ProductModel=new Object()
-            EnquiryDetailVM.ID = _emptyGuid;
-            EnquiryDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-            Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-            Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-            EnquiryDetailVM.Product = Product;
-            EnquiryDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-            EnquiryDetailVM.ProductModel = ProductModel;
-            EnquiryDetailVM.ProductSpec = $('#ProductSpec').val();
-            EnquiryDetailVM.Qty = $('#Qty').val();
-            EnquiryDetailVM.UnitCode = $('#UnitCode').val();
-            EnquiryDetailVM.Rate = $('#Rate').val();
-            _dataTable.EnquiryDetailList.row.add(EnquiryDetailVM).draw(true);
-            $('#divModelPopEnquiry').modal('hide');
+        else
+        {
+            if ($('#ProductID').val() != "")
+                if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
+                    _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
+                    debugger;
+                    var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
+                    enquiryDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                    enquiryDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    enquiryDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                    enquiryDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                    enquiryDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                    enquiryDetailList[0].ProductSpec = $('#ProductSpec').val();
+                    enquiryDetailList[0].Qty = $('#Qty').val();
+                    enquiryDetailList[0].UnitCode = $('#UnitCode').val();
+                    enquiryDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                    enquiryDetailList[0].Rate = $('#Rate').val();
+                    _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
+                    $('#divModelPopEnquiry').modal('hide');
+                }
+                else {
+                    debugger;
+                    var EnquiryDetailVM = new Object();
+                    var Product = new Object;
+                    var ProductModel = new Object()
+                    var Unit = new Object();
+                    EnquiryDetailVM.ID = _emptyGuid;
+                    EnquiryDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                    Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                    Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    EnquiryDetailVM.Product = Product;
+                    EnquiryDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                    ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                    EnquiryDetailVM.ProductModel = ProductModel;
+                    EnquiryDetailVM.ProductSpec = $('#ProductSpec').val();
+                    EnquiryDetailVM.Qty = $('#Qty').val();
+                    Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                    EnquiryDetailVM.Unit = Unit;
+                    EnquiryDetailVM.UnitCode = $('#UnitCode').val();
+                    EnquiryDetailVM.Rate = $('#Rate').val();
+                    _dataTable.EnquiryDetailList.row.add(EnquiryDetailVM).draw(true);
+                    $('#divModelPopEnquiry').modal('hide');
+                }
         }
+        
     });
    
+}
+function EditEnquiryDetail(this_Obj)
+{
+    debugger;
+    _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
+    var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
+    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail", function () {
+        $('#lblModelPopEnquiry').text('Enquiry Detail')
+        $('#FormEnquiryDetail #IsUpdate').val('True');
+        $('#FormEnquiryDetail #ID').val(enquiryDetail.ID);
+        $("#FormEnquiryDetail #ProductID").val(enquiryDetail.ProductID)
+        $("#FormEnquiryDetail #hdnProductID").val(enquiryDetail.ProductID)
+        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID="+$('#hdnProductID').val(), function () {
+        });
+        
+        if ($('#hdnProductID').val() != _emptyGuid) {
+            $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+        }
+        else {
+            $('.divProductModelIDSelectList').empty();
+            $('.divProductModelIDSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        }
+        $("#FormEnquiryDetail #ProductModelID").val(enquiryDetail.ProductModelID);
+        $("#FormEnquiryDetail #hdnProductModelID").val(enquiryDetail.ProductModelID);
+        if($('#hdnProductModelID').val()!=_emptyGuid)
+        {
+            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
+            });
+        }
+        $('#FormEnquiryDetail #ProductSpec').val(enquiryDetail.ProductSpec);
+        $('#FormEnquiryDetail #Qty').val(enquiryDetail.Qty);
+        $('#FormEnquiryDetail #UnitCode').val(enquiryDetail.UnitCode);
+        $('#FormEnquiryDetail #hdnUnitCode').val(enquiryDetail.UnitCode);
+        $('#FormEnquiryDetail #Rate').val(enquiryDetail.Rate);
+        $('#divModelPopEnquiry').modal('show');
+    });
+}
+function ConfirmDeleteEnquiryDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
+    var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
+    if (enquiryDetail.ID === _emptyGuid) {
+        var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
+        enquiryDetailList.splice(_datatablerowindex, 1);
+        _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
+        notyAlert('success', 'Detail Row deleted successfully');
+    }
+    else {
+        notyConfirm('Are you sure to delete?', 'DeleteEnquiryDetail("' + enquiryDetail.ID + '")');
+
+    }
+}
+function DeleteEnquiryDetail(ID) {
+    if (ID != _emptyGuid && ID != null && ID !='') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("Enquiry/DeleteEnquiryDetail/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
+            enquiryDetailList.splice(_datatablerowindex, 1);
+            _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+}
+//================================================================================================
+//EnquiryFollowup Section
+function AddEnquiryFollowUp()
+{
+    debugger;
+    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+        $('#lblModelPopEnquiry').text('Add Enquiry Followup')
+        $('#divModelPopEnquiry').modal('show');
+    });
+}
+function EnquiryFollowUpPaging(start)
+{
+    $("#divEnquiryFollowupboxbody").load("EnquiryFollowup/GetEnquiryFollowupList?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val() + "&DataTablePaging.Start=" + start, function () {
+       
+    });
+}
+function EditEnquiryFollowup(id)
+{
+    debugger;
+    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + id + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+        $('#lblModelPopEnquiry').text('Edit Enquiry Followup')
+        $('#divModelPopEnquiry').modal('show');
+    });
+}
+function SaveSuccessEnquiryFollowup(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                MasterAlert("success", _result.Message)
+                $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + _result.ID + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+                    $('#lblModelPopEnquiry').text('Edit Enquiry Followup')
+                });
+                $("#divFollowupList").load("EnquiryFollowup/GetEnquiryFollowupList?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+                });
+                break;
+            case "ERROR":
+                MasterAlert("danger", _message)
+                break;
+            default:
+                console.log(_message);
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function ConfirmDeleteEnquiryFollowup(ID) {
+    if (ID != _emptyGuid)
+    {
+        notyConfirm('Are you sure to delete?', 'DeleteEnquiryDetail("' + ID + '")');
+    }
+}
+function DeleteEnquiryFollowup(ID) {
+    if (ID != _emptyGuid && ID != null && ID != '') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("EnquiryFollowup/DeleteEnquiryFollowup/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            $("#divFollowupList").load("EnquiryFollowup/GetEnquiryFollowupList?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+            });
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
 }
