@@ -121,6 +121,39 @@ namespace PilotSmithApp.BusinessService.Service
             }
 
         }
+        public string GetXMLfromQuotationObject(List<QuotationDetail> quotationDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int mandIndx = getMAndatoryIndex(quotationDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in quotationDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
+        }
 
         //Send Message
         #region messageSending

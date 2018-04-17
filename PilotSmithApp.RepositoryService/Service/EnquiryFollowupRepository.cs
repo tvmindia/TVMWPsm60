@@ -93,6 +93,7 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Insert Update EnquiryFollowup
+        #region GetAll Enquiry Followup
         public List<EnquiryFollowup> GetAllEnquiryFollowup(EnquiryFollowup enquiryFollowup)
         {
             List<EnquiryFollowup> enquiryFollowupList = null;
@@ -125,7 +126,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryFollowup.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : enquiryFollowup.EnquiryID);
                                         enquiryFollowup.FollowupDate = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()) : enquiryFollowup.FollowupDate);
                                         enquiryFollowup.FollowupDateFormatted = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()).ToString(_settings.DateFormat) : enquiryFollowup.FollowupDateFormatted);
-                                        //enquiryFollowup.FollowupTimeFormatted = (sdr["FollowupTime"].ToString() != "" ? TimeSpan.Parse(sdr["FollowupTime"].ToString()).ToString("hh:mm") : enquiryFollowup.FollowupTimeFormatted);
+                                        enquiryFollowup.FollowupTimeFormatted = (sdr["FollowupTime"].ToString() != "" ? DateTime.Parse(sdr["FollowUpTime"].ToString()).ToString("hh:mm tt") : enquiryFollowup.FollowupTimeFormatted);
                                         enquiryFollowup.PriorityCode = (sdr["PriorityCode"].ToString() != "" ? int.Parse(sdr["PriorityCode"].ToString()) : enquiryFollowup.PriorityCode);
                                        
                                         enquiryFollowup.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : enquiryFollowup.Subject);
@@ -153,6 +154,8 @@ namespace PilotSmithApp.RepositoryService.Service
 
             return enquiryFollowupList;
         }
+        #endregion GetAll Enquiry Followup
+        #region Get Enquiry Followup
         public EnquiryFollowup GetEnquiryFollowup(Guid id)
         {
             EnquiryFollowup enquiryFollowup = new EnquiryFollowup();
@@ -179,7 +182,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiryFollowup.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : enquiryFollowup.EnquiryID);
                                     enquiryFollowup.FollowupDate = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()) : enquiryFollowup.FollowupDate);
                                     enquiryFollowup.FollowupDateFormatted = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()).ToString(_settings.DateFormat) : enquiryFollowup.FollowupDateFormatted);
-                                    //enquiryFollowup.FollowupTimeFormatted = (sdr["FollowupTime"].ToString() != "" ? TimeSpan.Parse(sdr["FollowupTime"].ToString()).ToString("hh:mm") : enquiryFollowup.FollowupTimeFormatted);
+                                    enquiryFollowup.FollowupTimeFormatted = (sdr["FollowupTime"].ToString() != "" ? DateTime.Parse(sdr["FollowUpTime"].ToString()).ToString("hh:mm tt") : enquiryFollowup.FollowupTimeFormatted);
                                     enquiryFollowup.PriorityCode = (sdr["PriorityCode"].ToString() != "" ? int.Parse(sdr["PriorityCode"].ToString()) : enquiryFollowup.PriorityCode);
                                     enquiryFollowup.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : enquiryFollowup.Subject);
                                     enquiryFollowup.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : enquiryFollowup.ContactName);
@@ -202,6 +205,7 @@ namespace PilotSmithApp.RepositoryService.Service
 
             return enquiryFollowup;
         }
+        #endregion Get Enquiry Followup
         #region Delete EnquiryFollowup
         public object DeleteEnquiryFollowup(Guid id)
         {

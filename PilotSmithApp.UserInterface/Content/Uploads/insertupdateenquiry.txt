@@ -1,0 +1,160 @@
+USE [PilotSmithApp]
+GO
+/****** Object:  StoredProcedure [Office].[InsertEnquiry]    Script Date: 4/12/2018 8:38:21 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+-- =============================================
+-- Author:		Thomson
+-- Create date: 12-Apr-2018
+-- Description:	To insert or update an enquiry
+-- Last Modified: 12-Apr-2018
+-- =============================================
+CREATE PROCEDURE [PSA].[InsertUpdateEnquiry]           
+           @IsUpdate bit,
+		   @ID UNIQUEIDENTIFIER,
+           @EnquiryNo VARCHAR(20),
+           @EnquiryDate DATETIME,
+           @RequirementSpec NVARCHAR(MAX),
+           @CustomerID UNIQUEIDENTIFIER,
+		   @GradeCode INT,
+           @DocumentStatusCode INT,
+           @ReferredByCode INT,
+           @ResponsiblePersonID UNIQUEIDENTIFIER,
+           @AttendedByID UNIQUEIDENTIFIER,
+		   @DetailXML xml=null,
+		   @GeneralNotes NVARCHAR(MAX),
+		   @DocumentOwnerID UNIQUEIDENTIFIER,
+		   @BranchCode INT,
+		   @CreatedBy NVARCHAR(250),
+		   @CreatedDate DATETIME,
+		   @UpdatedBy NVARCHAR(250),
+		   @UpdatedDate DATETIME,
+		   @IDOut UNIQUEIDENTIFIER OUTPUT,
+		   @StatusOut  INT OUTPUT,
+		   @EnquiryNoOut VARCHAR(20) OUTPUT
+AS
+BEGIN
+	SET NOCOUNT ON;	 
+
+    EXECUTE @EnquiryNo=[PSA].[GetDocumentNumber]'ENQ',@EnquiryDate
+
+   
+	BEGIN TRANSACTION[Tran1]
+    BEGIN TRY
+	IF(@IsUpdate='0')
+	BEGIN
+	SET @ID=NEWID();
+    INSERT INTO [PSA].[Enquiry]
+           ([ID]
+           ,[EnquiryNo]
+           ,[EnquiryDate]
+           ,[RequirementSpec]
+           ,[CustomerID]
+           ,[GradeCode]
+           ,[DocumentStatusCode]
+           ,[ReferredByCode]
+           ,[ResponsiblePersonID]
+           ,[AttendedByID]
+           ,[GeneralNotes]
+           ,[DocumentOwnerID]
+           ,[BranchCode]
+           ,[CreatedBy]
+           ,[CreatedDate]
+           ,[UpdatedBy]
+           ,[UpdatedDate])
+     VALUES
+           (@ID
+           ,@EnquiryNo
+           ,@EnquiryDate
+           ,@RequirementSpec
+           ,@CustomerID
+           ,@GradeCode
+           ,@DocumentStatusCode
+           ,@ReferredByCode
+           ,@ResponsiblePersonID
+           ,@AttendedByID
+           ,@GeneralNotes
+           ,@DocumentOwnerID
+           ,@BranchCode
+           ,@CreatedBy
+           ,@CreatedDate
+           ,@UpdatedBy
+           ,@UpdatedDate)
+	  SET @StatusOut=CASE WHEN @@ROWCOUNT=0 THEN 0 ELSE 1 END
+	declare @EnquiryID uniqueidentifier
+	SET @EnquiryID=@ID
+
+
+	 	------------ details-----------
+			declare @temp table(
+			ID nvarchar(40),
+			ProductDesc nvarchar(max),
+			ProductCode nvarchar(200),
+			OldProductCode nvarchar(200),
+			ProductID uniqueidentifier,
+			Rate decimal(18,2),
+			TaxPerc decimal(6,2),
+			isProcessed bit,
+			tmpID uniqueidentifier
+			);
+
+			------------parse from xml to temptable ----
+			insert into @temp(ID,ProductDesc,ProductCode,OldProductCode,
+			ProductID,Rate,TaxPerc,isProcessed,tmpID)
+			select [xmlData].[Col].value('./@ID', 'nvarchar(40)') as ID,
+			[xmlData].[Col].value('./@ProductDescription', 'nvarchar(max)') as ProductDesc,
+			[xmlData].[Col].value('./@ProductCode', 'nvarchar(200)') as ProductCode,
+			[xmlData].[Col].value('./@OldProductCode', 'nvarchar(200)') as OldProductCode,
+			[xmlData].[Col].value('./@ProductID', 'uniqueidentifier') as ProductID,
+			[xmlData].[Col].value('./@Rate','decimal(18,2)')as Rate,
+			[xmlData].[Col].value('./@TaxPerc','decimal(6,2)')as TaxPerc,0,newid()
+			from @DetailXML.nodes('/Details/item') as [xmlData]([Col]);
+
+
+
+			---- loop temp and insert each detail row ---------
+			declare @loopID uniqueidentifier
+			declare @count int
+			declare @itemNo int
+			
+			
+			
+
+			select @count=count(*) from @temp where isProcessed=0
+			set @itemNo=1
+
+			while(@count>0)
+			begin
+				--1------------------------------------
+				select top 1 @loopID=tmpid from @temp where isProcessed=0
+
+				   INSERT INTO [Office].[EnquiryDetails]([ID],[EnquiryID],[ProductDescription],
+				[ProductCode],[OldCode],[ProductID],[Rate],[TaxPerc],[CreatedBy],[CreatedDate])
+                   SELECT @loopID,@EnquiryID,ProductDesc,
+				 ProductCode, OldProductCode,
+				  ProductID,Rate,TaxPerc,@CreatedBy,@CreatedDate
+				   FROM  @temp where tmpID=@loopID
+				
+				update @temp set isProcessed=1  where tmpID=@loopID
+				select @count=count(*) from @temp where isProcessed=0
+				set @itemNo=@itemNo+1
+				
+			end
+		END
+	   COMMIT TRANSACTION [Tran1]
+		END TRY
+		BEGIN CATCH
+					ROLLBACK TRANSACTION [Tran1]
+					DECLARE @ErrorMessage NVARCHAR(4000); 
+					select @ErrorMessage=ERROR_MESSAGE()
+					RAISERROR( @ErrorMessage,16,1) 
+		END CATCH
+END
+
+

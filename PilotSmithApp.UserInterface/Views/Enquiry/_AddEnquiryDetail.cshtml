@@ -1,5 +1,5 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EnquiryDetailViewModel
-@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEnquiryDetail" }))
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEnquiryDetail" }))
 {
 @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "" })
 @Html.HiddenFor(model=>model.IsUpdate, htmlAttributes: new { @class = "" })

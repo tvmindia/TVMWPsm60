@@ -1,0 +1,211 @@
+﻿
+@model PilotSmithApp.UserInterface.Models.QuotationViewModel
+<style>
+    .todo-list > li{
+        background:#ffffff;
+        border-left:none;
+    }
+</style>
+@using (Ajax.BeginForm("InsertUpdateQuotation", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotation", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "QuotationForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">General Details</div>
+            <div class="form-group col-md-6">
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.QuoteNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.QuoteNo, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true, @readonly = "readonly", @placeholder ="Autogenerared filed"} })
+                        @Html.ValidationMessageFor(model => model.QuoteNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.QuoteDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker"} })
+                        @Html.ValidationMessageFor(model => model.QuoteDateFormatted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divCustomerSelectList">
+                            @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                        </div>
+                    </div>
+                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
+                </div>
+                <div id="divCustomerBasicInfo">
+                    @Html.Action("CustomerBasicInfo","Customer",Model.Customer)
+                </div>                
+                    @*<div class="col-md-12 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.RequirementSpec, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.RequirementSpec, 5, 0, new { @class = "form-control newinput" })
+                            @Html.ValidationMessageFor(model => model.RequirementSpec, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+                </div>
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+    </div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Quotation Details<a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
+            
+            @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+            <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
+                <table id="tblQuotationDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                    <thead>
+                        <tr class="text-center TableHead">
+                            <th style="width:15%">Product Code</th>
+                            <th style="width:10%">Product Name</th>
+                            <th style="width:15%">Model</th>
+                            <th style="width:35%">Specification</th>
+                            <th style="width:10%">Quantity</th>
+                            <th style="width:10%">Rate</th>
+                            <th style="width:5%">...</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Status & Other details</div>
+            <div class="form-group col-md-12">
+                
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divBranchSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                        </div>
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divReferredByCodeSelectList">
+                            @Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "required" })
+                        </div>
+                        @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divAttendedByIDSelectList">
+                            @Html.Action("AttendedBySelectList", "Employee", new { required = "required", postingParams = "ResponsiblePersonID" })
+                        </div>
+                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDocumentStatusSelectList">
+                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required" ,code="ENQ"})
+                        </div>
+                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                    </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Quotation Attachment</div>
+            @Html.Partial("_Fileupload")
+        </div>
+    </div>
+        <div class="" hidden="hidden">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnInsertUpdateQuotation" type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+}
+<script>
+    $(document).ready(function () {
+        try {
+            $.validator.unobtrusive.parse("#QuotationForm");
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('input.datepicker').datepicker({
+                format: "dd-M-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            //Fileupload 
+            $('#btnUpload').click(function () {
+                debugger;
+                //Pass the controller name
+                var FileObject = new Object;
+                if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
+                    FileObject.ParentID = (($('#ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#ID').val()) : $('#hdnFileDupID').val());
+                }
+                else {
+                    FileObject.ParentID = ($('#ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#ID').val();
+                }
+
+
+                FileObject.ParentType = "Quotation";
+                FileObject.Controller = "FileUpload";
+                UploadFile(FileObject);
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('#QuotationGradeCode').select2({});
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    });
+</script>

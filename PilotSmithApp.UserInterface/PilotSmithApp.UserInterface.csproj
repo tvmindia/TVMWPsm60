@@ -668,6 +668,7 @@
     <Content Include="Scripts\UserJS\ProductCategory.js" />
     <Content Include="Scripts\UserJS\ProductModel.js" />
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
+    <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
     <Content Include="Scripts\UserJS\State.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
@@ -707,6 +708,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductModelController.cs" />
     <Compile Include="Controllers\ProductSpecificationController.cs" />
+    <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\ReferencePersonController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
@@ -742,6 +744,7 @@
     <Compile Include="Models\DynamicUIViewModel.cs" />
     <Compile Include="Models\ManageAccessViewModel.cs" />
     <Compile Include="Models\PrivilegesViewModel.cs" />
+    <Compile Include="Models\QuotationViewModel.cs" />
     <Compile Include="Models\ReferencePersonViewModel.cs" />
     <Compile Include="Models\ReferenceTypeViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
@@ -836,6 +839,9 @@
     <Content Include="Views\Unit\_AddUnit.cshtml" />
     <Content Include="Views\Unit\_UnitSelectList.cshtml" />
     <Content Include="Views\EnquiryFollowup\_AddEnquiryFollowup.cshtml" />
+    <Content Include="Views\Enquiry\_EnquirySelectList.cshtml" />
+    <Content Include="Views\Quotation\Index.cshtml" />
+    <Content Include="Views\Quotation\_QuotationForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

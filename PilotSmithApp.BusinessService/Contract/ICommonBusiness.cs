@@ -7,6 +7,7 @@ namespace PilotSmithApp.BusinessService.Contract
     {
         string ConvertCurrency(decimal value, int DecimalPoints = 0, bool Symbol = true);
         string GetXMLfromEnquiryObject(List<EnquiryDetail> enquiryDetailList, string mandatoryProperties);
+        string GetXMLfromQuotationObject(List<QuotationDetail> quotationDetailList, string mandatoryProperties);
         string SendMessage(string message, string mobileNo,string provider,string type);
     }
 }
