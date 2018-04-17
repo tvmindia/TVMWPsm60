@@ -724,6 +724,7 @@
     <Compile Include="Models\BankViewModel.cs" />
     <Compile Include="Models\BranchViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\DocumentStatusViewModel.cs" />
     <Compile Include="Models\DocumentTypeViewModel.cs" />
@@ -751,6 +752,7 @@
     <Compile Include="Models\ReferencePersonViewModel.cs" />
     <Compile Include="Models\ReferenceTypeViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
+    <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
     <Compile Include="Models\UnitViewModel.cs" />
