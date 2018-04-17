@@ -61,6 +61,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<EnquiryGradeViewModel, EnquiryGrade>().ReverseMap();
                 config.CreateMap<ReferencePersonViewModel, ReferencePerson>().ReverseMap();
                 config.CreateMap<DocumentStatusViewModel, DocumentStatus>().ReverseMap();
+                config.CreateMap<EstimateViewModel, Estimate>().ReverseMap();
+                config.CreateMap<EstimateDetailViewModel, EstimateDetail>().ReverseMap();
+                config.CreateMap<EstimateAdvanceSearchViewModel, EstimateAdvanceSearch>().ReverseMap();
             });
         }
     }
