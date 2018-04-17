@@ -1,7 +1,6 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EnquiryFollowupViewModel
-@using (Ajax.BeginForm("InsertUpdateEnquiryFollowup", "EnquiryFollowup", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEnquiryFollowup", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEnquiryFollowup123" }))
+@using (Ajax.BeginForm("InsertUpdateEnquiryFollowup", "EnquiryFollowup", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEnquiryFollowup", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEnquiryFollowup" }))
 {
-    @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "" })
@@ -21,7 +20,7 @@
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.FollowupTimeFormatted, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.FollowupDateFormatted, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.FollowupTimeFormatted, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-md-12 no-padding">
@@ -75,7 +74,7 @@
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.RemindPriorTo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.RemindPriorTo, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-md-6 no-padding">
@@ -84,7 +83,7 @@
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.ReminderType,"", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-md-12 no-padding">
@@ -99,12 +98,12 @@
     </div>
 
         <div class="modal-footer d-flex justify-content-center">
-            <button class="btn btn-default" type="submit" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            <button class="btn btn-default" id="btnAddEnquiryFollowup" type="submit" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
         </div>
 }
 <script>
     $(document).ready(function () {
-        $.validator.unobtrusive.parse("#FormEnquiryFollowup123");
+        $.validator.unobtrusive.parse("#FormEnquiryFollowup");
         try {
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",
@@ -118,5 +117,7 @@
         catch (e) {
             console.log(e.message);
         }
+        //-- Initialising TimePicker plugin in FollowUp Modal--//   
+        
     });
 </script>

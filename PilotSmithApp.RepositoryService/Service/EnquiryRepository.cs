@@ -23,133 +23,6 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
-        //#region GetAllTitles
-        //public List<Titles> GetAllTitles()
-        //{
-        //    List<Titles> titlesList = null;
-        //    try
-        //    {
-        //        using (SqlConnection con = _databaseFactory.GetDBConnection())
-        //        {
-        //            using (SqlCommand cmd = new SqlCommand())
-        //            {
-        //                if (con.State == ConnectionState.Closed)
-        //                {
-        //                    con.Open();
-        //                }
-        //                cmd.Connection = con;
-        //                cmd.CommandText = "[PSA].[GetAllTitle]";
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                using (SqlDataReader sdr = cmd.ExecuteReader())
-        //                {
-        //                    if ((sdr != null) && (sdr.HasRows))
-        //                    {
-        //                        titlesList = new List<Titles>();
-        //                        while (sdr.Read())
-        //                        {
-        //                            Titles _titlesObj = new Titles();
-        //                            {
-        //                                _titlesObj.Title = (sdr["Title"].ToString() != "" ? sdr["Title"].ToString() : _titlesObj.Title);
-
-        //                            }
-        //                            titlesList.Add(_titlesObj);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-
-        //    return titlesList;
-        //}
-        //#endregion GetAllTitles
-        //#region InsertUpdateEnquiry
-        //public object InsertUpdateEnquiry(Enquiry enquiry)
-        //{
-        //    SqlParameter outputStatus, outputID = null;
-        //    try
-        //    {
-        //        using (SqlConnection con = _databaseFactory.GetDBConnection())
-        //        {
-        //            using (SqlCommand cmd = new SqlCommand())
-        //            {
-        //                if (con.State == ConnectionState.Closed)
-        //                {
-        //                    con.Open();
-        //                }
-        //                cmd.Connection = con;
-        //                cmd.CommandText = "[PSA].[InsertUpdateEnquiry]";
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = enquiry.IsUpdate;
-        //                if (enquiry.ID == Guid.Empty)
-        //                {
-        //                    cmd.Parameters.AddWithValue("@ID", DBNull.Value);
-        //                }
-        //                else
-        //                {
-        //                    cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = enquiry.ID;
-        //                }
-        //                cmd.Parameters.Add("@CompanyName", SqlDbType.VarChar, 150).Value = enquiry.CompanyName;
-        //                cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar, 100).Value = enquiry.ContactPerson;
-        //                cmd.Parameters.Add("@ContactEmail", SqlDbType.VarChar, 150).Value = enquiry.ContactEmail;
-        //                cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = enquiry.ContactTitle;
-        //                cmd.Parameters.Add("@Website", SqlDbType.NVarChar, 500).Value = enquiry.Website;
-        //                cmd.Parameters.Add("@LandLine", SqlDbType.VarChar, 50).Value = enquiry.LandLine;
-        //                cmd.Parameters.Add("@Mobile", SqlDbType.VarChar, 50).Value = enquiry.Mobile;
-        //                cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = enquiry.Fax;
-        //                cmd.Parameters.Add("@OtherPhoneNos", SqlDbType.VarChar, 250).Value = enquiry.OtherPhoneNos;
-        //                cmd.Parameters.Add("@BillingAddress", SqlDbType.NVarChar, -1).Value = enquiry.BillingAddress;
-        //                cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = enquiry.ShippingAddress;
-        //                cmd.Parameters.Add("@PaymentTermCode", SqlDbType.VarChar, 10).Value = enquiry.PaymentTermCode;
-        //                cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = enquiry.TaxRegNo;
-        //                cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = enquiry.PANNO;
-        //                cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = enquiry.GeneralNotes;
-        //                cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = enquiry.common.CreatedBy;
-        //                cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = enquiry.common.CreatedDate;
-        //                cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = enquiry.common.UpdatedBy;
-        //                cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = enquiry.common.UpdatedDate;
-        //                outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
-        //                outputStatus.Direction = ParameterDirection.Output;
-        //                outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
-        //                outputID.Direction = ParameterDirection.Output;
-        //                cmd.ExecuteNonQuery();
-        //            }
-        //        }
-
-        //        switch (outputStatus.Value.ToString())
-        //        {
-        //            case "0":
-        //                throw new Exception(_appConstant.InsertFailure);
-        //            case "1":
-        //                enquiry.ID = Guid.Parse(outputID.Value.ToString());
-        //                return new
-        //                {
-        //                    ID = enquiry.ID,
-        //                    Status = outputStatus.Value.ToString(),
-        //                    Message = enquiry.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
-        //                };
-        //            default:
-        //                break;
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //    return new
-        //    {
-        //        ID = enquiry.ID,
-        //        Status = outputStatus.Value.ToString(),
-        //        Message = enquiry.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
-        //    };
-        //}
-        //#endregion InsertUpdateEnquiry
         #region Get All Enquiry
         public List<Enquiry> GetAllEnquiry(EnquiryAdvanceSearch enquiryAdvanceSearch)
         {
@@ -289,56 +162,6 @@ namespace PilotSmithApp.RepositoryService.Service
             return enquiry;
         }
         #endregion Get Enquiry
-        //#region DeleteEnquiry
-        //public object DeleteEnquiry(Guid id)
-        //{
-        //    SqlParameter outputStatus = null;
-        //    try
-        //    {
-
-        //        using (SqlConnection con = _databaseFactory.GetDBConnection())
-        //        {
-        //            using (SqlCommand cmd = new SqlCommand())
-        //            {
-        //                if (con.State == ConnectionState.Closed)
-        //                {
-        //                    con.Open();
-        //                }
-        //                cmd.Connection = con;
-        //                cmd.CommandText = "[PSA].[DeleteCustomer]";
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
-        //                outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
-        //                outputStatus.Direction = ParameterDirection.Output;
-        //                cmd.ExecuteNonQuery();
-
-
-        //            }
-        //        }
-
-        //        switch (outputStatus.Value.ToString())
-        //        {
-        //            case "0":
-
-        //                throw new Exception(_appConstant.DeleteFailure);
-
-        //            default:
-        //                break;
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //    return new
-        //    {
-        //        Status = outputStatus.Value.ToString(),
-        //        Message = _appConstant.DeleteSuccess
-        //    };
-        //}
-        //#endregion DeleteEnquiry
         #region GetAllEnquiryItems
         public List<EnquiryDetail> GetEnquiryDetailListByEnquiryID(Guid enquiryID)
         {
@@ -432,6 +255,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@ResponsiblePersonID", SqlDbType.UniqueIdentifier).Value = enquiry.ResponsiblePersonID;
                         cmd.Parameters.Add("@AttendedByID", SqlDbType.UniqueIdentifier).Value = enquiry.AttendedByID;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = enquiry.DetailXML;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = enquiry.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = enquiry.GeneralNotes;
                         cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiry.DocumentOwnerID;
                         cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = enquiry.BranchCode;

@@ -22,6 +22,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid? DocumentOwnerID { get; set; }
         public int? BranchCode { get; set; }
         public string DetailXML { get; set; }
+        public Guid hdnFileID { get; set; }
         //Additional properties
         public string EnquiryDateFormatted { get; set;}
         public int TotalCount { get; set; }

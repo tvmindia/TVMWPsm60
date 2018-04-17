@@ -12,6 +12,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid EnquiryID { get; set; }
         public DateTime FollowupDate { get; set; }
         public DateTime FollowupTime { get; set; }
+        [Required(ErrorMessage ="Priority is missing")]
         public int PriorityCode { get; set; }
         [Required(ErrorMessage = "Subject is missing")]
         public string Subject { get; set; }
@@ -28,6 +29,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string FollowupDateFormatted { get; set; }
         [Display(Name ="Followup Time")]
         [Required(ErrorMessage = "Followup Time is missing")]
+        [RegularExpression("^(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)$")]
         public string FollowupTimeFormatted { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }

@@ -65,6 +65,7 @@
     <Compile Include="DTO\PSASysMenu.cs" />
     <Compile Include="DTO\PSASysCommon.cs" />
     <Compile Include="DTO\DataTablePaging.cs" />
+    <Compile Include="DTO\Quotation.cs" />
     <Compile Include="DTO\ReferencePerson.cs" />
     <Compile Include="DTO\ReferenceType.cs" />
     <Compile Include="DTO\State.cs" />

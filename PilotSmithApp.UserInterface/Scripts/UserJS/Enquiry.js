@@ -160,6 +160,8 @@ function EditEnquiry(this_Obj) {
         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
         BindEnquiryDetailList(Enquiry.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+        clearUploadControl();
+        PaintImages(Enquiry.ID);
         OnServerCallComplete();
         setTimeout(function () {
             //resides in customjs for sliding
@@ -170,6 +172,8 @@ function EditEnquiry(this_Obj) {
 function ResetEnquiry() {
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + $('#EnquiryForm #ID').val(), function () {
         BindEnquiryDetailList($('#ID').val());
+        clearUploadControl();
+        PaintImages($('#EnquiryForm #ID').val());
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
     });
 }
@@ -197,6 +201,8 @@ function SaveSuccessEnquiry(data, status) {
                 $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
                     BindEnquiryDetailList(_result.ID);
+                    clearUploadControl();
+                    PaintImages(_result.ID);
                 });
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
                 BindOrReloadEnquiryTable('Init');
@@ -338,11 +344,14 @@ function AddEnquiryDetailToList() {
                 enquiryDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                 enquiryDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
+                Unit = new Object;
                 ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 enquiryDetailList[_datatablerowindex].ProductModel = ProductModel;
                 enquiryDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
                 enquiryDetailList[_datatablerowindex].Qty = $('#Qty').val();
                 enquiryDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
+                Unit.Description=$("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                enquiryDetailList[_datatablerowindex].Unit = Unit;
                 enquiryDetailList[_datatablerowindex].Rate = $('#Rate').val();
                 _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
                 $('#divModelPopEnquiry').modal('hide');
@@ -477,7 +486,9 @@ function AddEnquiryFollowUp()
     debugger;
     $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
         $('#lblModelPopEnquiry').text('Add Enquiry Followup')
+        $('#btnresetEnquiryFollowup').trigger('click');
         $('#divModelPopEnquiry').modal('show');
+
     });
 }
 function EnquiryFollowUpPaging(start)
@@ -527,7 +538,7 @@ function SaveSuccessEnquiryFollowup(data, status) {
 function ConfirmDeleteEnquiryFollowup(ID) {
     if (ID != _emptyGuid)
     {
-        notyConfirm('Are you sure to delete?', 'DeleteEnquiryDetail("' + ID + '")');
+        notyConfirm('Are you sure to delete?', 'DeleteEnquiryFollowup("' + ID + '")');
     }
 }
 function DeleteEnquiryFollowup(ID) {
