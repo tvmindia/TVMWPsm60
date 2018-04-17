@@ -57,6 +57,7 @@
     <Compile Include="Contract\IEnquiryBusiness.cs" />
     <Compile Include="Contract\IEnquiryFollowupBusiness.cs" />
     <Compile Include="Contract\IEnquiryGradeBusiness.cs" />
+    <Compile Include="Contract\IEstimateBusiness.cs" />
     <Compile Include="Contract\IFileUploadBusiness.cs" />
     <Compile Include="Contract\IProductBusiness.cs" />
     <Compile Include="Contract\IProductCategoryBusiness.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Service\EnquiryBusiness.cs" />
     <Compile Include="Service\EnquiryFollowupBusiness.cs" />
     <Compile Include="Service\EnquiryGradeBusiness.cs" />
+    <Compile Include="Service\EstimateBusiness.cs" />
     <Compile Include="Service\FileUploadBusiness.cs" />
     <Compile Include="Service\ProductBusiness.cs" />
     <Compile Include="Service\ProductCategoryBusiness.cs" />

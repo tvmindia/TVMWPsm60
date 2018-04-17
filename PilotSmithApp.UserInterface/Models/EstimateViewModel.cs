@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.UserInterface.Models
 {
@@ -36,14 +37,24 @@ namespace PilotSmithApp.UserInterface.Models
         public string DetailJSON { get; set; }
         [Display(Name = "Estimate Date")]
         [Required(ErrorMessage = "Estimate Date is missing")]
+        [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
         public string EstimateDateFormatted { get; set; }
+        [Display(Name ="Valid Upto")]
+        [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
         public string ValidUpToDateFormatted { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public Guid hdnFileID { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
-
+        public EnquiryViewModel Enquiry { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        public BranchViewModel Branch { get; set; }
+        public string UserName { get; set; }
+        public List<EstimateDetailViewModel> EstimateDetailList { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        public List<SelectListItem> EstimateSelectList { get; set; }
     }
 
     public class EstimateAdvanceSearchViewModel
@@ -73,5 +84,9 @@ namespace PilotSmithApp.UserInterface.Models
         
         //Additional Fields
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public ProductViewModel Product { get; set; }
+        public ProductModelViewModel ProductModel { get; set; }
+        public UnitViewModel Unit { get; set; }
+        public bool IsUpdate { get; set; }
     }
 }

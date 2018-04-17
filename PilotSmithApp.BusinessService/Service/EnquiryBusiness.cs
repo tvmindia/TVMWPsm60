@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -45,6 +46,22 @@ namespace PilotSmithApp.BusinessService.Service
         public object DeleteEnquiryDetail(Guid id)
         {
             return _enquiryRepository.DeleteEnquiryDetail(id);
+        }
+        public List<SelectListItem> GetEnquiryForSelectList()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<Enquiry> enquiryList = _enquiryRepository.GetEnquiryForSelectList();
+            if (enquiryList != null)
+                foreach (Enquiry enquiry in enquiryList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = enquiry.EnquiryNo,
+                        Value = enquiry.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
     }
 }

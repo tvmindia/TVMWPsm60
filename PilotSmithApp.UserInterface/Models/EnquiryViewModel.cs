@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.UserInterface.Models
 {
@@ -50,6 +51,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ReferencePersonViewModel ReferencePerson { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<EnquiryDetailViewModel> EnquiryDetailList { get; set; }
+        public List<SelectListItem> EnquirySelectList { get; set; }
     }
     public class EnquiryAdvanceSearchViewModel
     {

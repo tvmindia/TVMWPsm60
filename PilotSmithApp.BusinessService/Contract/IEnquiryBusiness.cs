@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -15,6 +16,6 @@ namespace PilotSmithApp.BusinessService.Contract
         object InsertUpdateEnquiry(Enquiry enquiry);
         object DeleteEnquiry(Guid id);
         object DeleteEnquiryDetail(Guid id);
-
+        List<SelectListItem> GetEnquiryForSelectList();
     }
 }

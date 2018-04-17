@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,13 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public Guid hdnFileID { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public Enquiry Enquiry { get; set; }
+        public Customer Customer { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Branch Branch { get; set; }
+        public string UserName { get; set; }
+        public List<EstimateDetail> EstimateDetailList { get; set; }
+        public Employee Employee { get; set; }
     }
 
     public class EstimateAdvanceSearch
@@ -53,6 +61,10 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? CostRate { get; set; }
         public decimal? SellingRate { get; set; }
         public string DrawingNo { get; set; }
+
         public PSASysCommon PSASysCommon { get; set; }
+        public Product Product { get; set; }
+        public ProductModel ProductModel { get; set; }
+        public Unit Unit { get; set; }
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="Contract\IEnquiryFollowupRepository.cs" />
     <Compile Include="Contract\IEnquiryGradeRepository.cs" />
     <Compile Include="Contract\IEnquiryRepository.cs" />
+    <Compile Include="Contract\IEstimateRepository.cs" />
     <Compile Include="Contract\IFileUploadRepository.cs" />
     <Compile Include="Contract\IProductCategoryRepository.cs" />
     <Compile Include="Contract\IProductModelRepository.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Service\EnquiryFollowupRepository.cs" />
     <Compile Include="Service\EnquiryGradeRepository.cs" />
     <Compile Include="Service\EnquiryRepository.cs" />
+    <Compile Include="Service\EstimateRepository.cs" />
     <Compile Include="Service\FileUploadRepository.cs" />
     <Compile Include="Service\ProductCategoryRepository.cs" />
     <Compile Include="Service\ProductModelRepository.cs" />

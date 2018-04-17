@@ -94,11 +94,10 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormEstimateDetail");
-        $('#ProductID').select2({
+        $('#ProductID,#UnitCode').select2({
             dropdownParent: $("#divModelPopEstimate")
         });
         $('.select2').addClass('form-control newinput');
-
         $('#ProductID').change(function () {
             if ($('#divProductBasicInfo') != undefined)
             {

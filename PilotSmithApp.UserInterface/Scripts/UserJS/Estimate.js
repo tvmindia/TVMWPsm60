@@ -70,21 +70,21 @@ function BindOrReloadEstimateTable(action) {
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
-            //serverSide: true,
-            //ajax: {
-            //    url: "Estimate/GetAllEstimate/",
-            //    data: { "EnquiryAdvanceSearchVM": EnquiryAdvanceSearchViewModel },
-            //    type: 'POST'
-            //},
+            serverSide: true,
+            ajax: {
+                url: "Estimate/GetAllEstimate/",
+                data: { "EstimateAdvanceSearchVM": EstimateAdvanceSearchViewModel },
+                type: 'POST'
+            },
             pageLength: 13,
             columns: [
                { "data": "EstimateNo", "defaultContent": "<i>-</i>" },
                { "data": "EstimateRefNo", "defaultContent": "<i>-</i>" },
                { "data": "EstimateDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "EnquiryID", "defaultContent": "<i>-</i>" },
-               { "data": "CustomerID", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatusCode", "defaultContent": "<i>-</i>" },
-               { "data": "ValidUpToDateFormatted", "defaultContent": "<i>-</i>" },
+               { "data": "Enquiry.EnquiryNo", "defaultContent": "<i>-</i>" },
+               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               { "data": "Branch.Description ", "defaultContent": "<i>-</i>" },
+               { "data": "UserName", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimate(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [{ className: "text-right", "targets": [5] },
@@ -256,29 +256,27 @@ function BindEstimateDetailList(id) {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
              },
-             columns: [ //----Dummy names just for information.---//
-             { "data": "Product", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },        
-             { "data": "Model", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Spec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },             
+             columns: [ 
+             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data + " " + row.UnitCode
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Unit", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "CostPrice", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "SellingPrice", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "CostRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "SellingRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
-                 //{ "targets": [0, 4], "width": "10%" },
-                 //{ "targets": [1, 2], "width": "15%" },
-                 //{ "targets": [3], "width": "35%" },
-                 //{ "targets": [5], "width": "10%" },
-                 //{ "targets": [6], "width": "5%" },
-                 //{ className: "text-right", "targets": [4, 5] },
-                 //{ className: "text-left", "targets": [1, 2, 3] },
-                 { className: "text-center", "targets": [0, 6] }
+                 { "targets": [0, 1], "width": "10%" },
+                 { "targets": [3], "width": "30%" },
+                 { "targets": [6,7], "width": "10%" },
+
+                 { className: "text-right", "targets": [6,7] }
              ]
          });
 }
@@ -288,7 +286,7 @@ function GetEstimateDetailListByEstimateID(id) {
         debugger;
         var data = { "estimateID": id };
         var estimateDetailList = [];
-      //  _jsonData = GetDataFromServer("Estimate/GetEstimateDetailListByEstimateID/", data);
+        _jsonData = GetDataFromServer("Estimate/GetEstimateDetailListByEstimateID/", data);
         if (_jsonData != '') {
             _jsonData = JSON.parse(_jsonData);
             _message = _jsonData.Message;
@@ -319,43 +317,74 @@ function AddEstimateDetailList() {
 function AddEstimateDetailToList() {
     debugger;
     $("#FormEstimateDetail").submit(function () {
-        if ($('#ProductID').val() != "")
-            if (_dataTable.EstimateDetailList.rows().data().length === 0) {
-                _dataTable.EstimateDetailList.clear().rows.add(GetEstimateDetailListByEstimateID(_emptyGuid)).draw(false);
+        debugger;
+        if ($('#FormEstimateDetail #IsUpdate').val() == 'True') {
+            debugger;
+            if ($('#ProductID').val() != "") {
                 debugger;
                 var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
-                estimateDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                estimateDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                estimateDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                estimateDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                estimateDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                estimateDetailList[0].ProductSpec = $('#ProductSpec').val();
-                estimateDetailList[0].Qty = $('#Qty').val();
-                estimateDetailList[0].UnitCode = $('#UnitCode').val()!=""?$('#UnitCode option:selected').text():"";
-                estimateDetailList[0].CostRate = $('#CostRate').val();
-                estimateDetailList[0].SellingRate = $('#SellingRate').val();
+                estimateDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                estimateDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                estimateDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                estimateDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                ProductModel = new Object;
+                ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                estimateDetailList[_datatablerowindex].ProductModel = ProductModel;
+                estimateDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
+                estimateDetailList[_datatablerowindex].Qty = $('#Qty').val();
+                estimateDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
+                estimateDetailList[_datatablerowindex].CostRate = $('#CostRate').val();
+                estimateDetailList[_datatablerowindex].SellingRate = $('#SellingRate').val();
                 _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
                 $('#divModelPopEstimate').modal('hide');
+                _datatablerowindex = -1;
             }
-            else {
-                var EstimateDetailVM = new Object();
-                var Product = new Object;
-                var ProductModel = new Object()
-                EstimateDetailVM.ID = _emptyGuid;
-                EstimateDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                EstimateDetailVM.Product = Product;
-                EstimateDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                EstimateDetailVM.ProductModel = ProductModel;
-                EstimateDetailVM.ProductSpec = $('#ProductSpec').val();
-                EstimateDetailVM.Qty = $('#Qty').val();
-                EstimateDetailVM.UnitCode = $('#UnitCode').val();
-                EstimateDetailVM.CostRate = $('#CostRate').val();
-                EstimateDetailVM.SellingRate = $('#SellingRate').val();
-                _dataTable.EstimateDetailList.row.add(EstimateDetailVM).draw(true);
-                $('#divModelPopEstimate').modal('hide');
-            }
+        }
+        else {
+            if ($('#ProductID').val() != "")
+                if (_dataTable.EstimateDetailList.rows().data().length === 0) {
+                    _dataTable.EstimateDetailList.clear().rows.add(GetEstimateDetailListByEstimateID(_emptyGuid)).draw(false);
+                    debugger;
+                    var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
+                    estimateDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                    estimateDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    estimateDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                    estimateDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                    estimateDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                    estimateDetailList[0].ProductSpec = $('#ProductSpec').val();
+                    estimateDetailList[0].Qty = $('#Qty').val();
+                    estimateDetailList[0].UnitCode = $('#UnitCode').val();
+                    estimateDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                    estimateDetailList[0].CostRate = $('#CostRate').val();
+                    estimateDetailList[0].SellingRate = $('#SellingRate').val();
+                    _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
+                    $('#divModelPopEstimate').modal('hide');
+                }
+                else {
+                    debugger;
+                    var EstimateDetailVM = new Object();
+                    var Product = new Object;
+                    var ProductModel = new Object()
+                    var Unit = new Object();
+                    EstimateDetailVM.ID = _emptyGuid;
+                    EstimateDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                    Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                    Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    EstimateDetailVM.Product = Product;
+                    EstimateDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                    ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                    EstimateDetailVM.ProductModel = ProductModel;
+                    EstimateDetailVM.ProductSpec = $('#ProductSpec').val();
+                    EstimateDetailVM.Qty = $('#Qty').val();
+                    Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                    EstimateDetailVM.Unit = Unit;
+                    EstimateDetailVM.UnitCode = $('#UnitCode').val();
+                    EstimateDetailVM.CostRate = $('#CostRate').val();
+                    EstimateDetailVM.SellingRate = $('#SellingRate').val();
+                    _dataTable.EstimateDetailList.row.add(EstimateDetailVM).draw(true);
+                    $('#divModelPopEstimate').modal('hide');
+                }
+        }
+
     });
 }

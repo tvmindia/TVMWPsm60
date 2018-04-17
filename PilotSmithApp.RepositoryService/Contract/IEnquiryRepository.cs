@@ -15,5 +15,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateEnquiry(Enquiry enquiry);
         object DeleteEnquiry(Guid id);
         object DeleteEnquiryDetail(Guid id);
+        List<Enquiry> GetEnquiryForSelectList();
     }
 }

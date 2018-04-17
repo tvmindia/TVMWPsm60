@@ -246,6 +246,17 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion InsertUpdateEnquiry
+
+        #region EnquirySelectList
+        public ActionResult EnquirySelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            EnquiryViewModel enquiryVM = new EnquiryViewModel();
+            enquiryVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList();
+            return PartialView("_EnquirySelectList", enquiryVM);
+        }
+        #endregion EnquirySelectList
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
