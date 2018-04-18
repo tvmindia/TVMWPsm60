@@ -9,7 +9,7 @@
             @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label" })
         </div>
         <div class="col-md-12">
-            <div class="divProductIDSelectList">
+            <div class="divProductSelectList">
                 @Html.Action("ProductSelectList", "Product", new { required = "required" })
             </div>
             @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })

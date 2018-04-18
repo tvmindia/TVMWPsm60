@@ -8,7 +8,7 @@
                 @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label" })
             </div>
             <div class="col-md-12">
-                <div class="divProductIDSelectList">
+                <div class="divProductSelectList">
                     @Html.Action("ProductSelectList", "Product", new { required = "required" })
                 </div>
                 @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
@@ -20,7 +20,7 @@
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
             </div>
             <div class="col-md-12">
-                <div class="divProductModelIDSelectList">
+                <div class="divProductModelSelectList">
                     <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "" })*@
                 </div>
@@ -105,16 +105,16 @@
                     $('#ProductSpec').val($('#spnProductName').text());
                 });
             }
-            if ($('.divProductModelIDSelectList') != undefined) {
+            if ($('.divProductModelSelectList') != undefined) {
                 $('#dropLoad').addClass('fa fa-spinner fa-spin');
                 if (this.value != "")
                 {
-                    $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
                 }
                 else
                 {
-                    $('.divProductModelIDSelectList').empty();
-                    $('.divProductModelIDSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                    $('.divProductModelSelectList').empty();
+                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
                 }
             }
         });

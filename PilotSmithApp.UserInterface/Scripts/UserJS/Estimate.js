@@ -403,11 +403,11 @@ function EditEstimateDetail(this_Obj) {
         });
 
         if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
         }
         else {
-            $('.divProductModelIDSelectList').empty();
-            $('.divProductModelIDSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            $('.divProductModelSelectList').empty();
+            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
         }
         $("#FormEstimateDetail #ProductModelID").val(estimateDetail.ProductModelID);
         $("#FormEstimateDetail #hdnProductModelID").val(estimateDetail.ProductModelID);
