@@ -74,16 +74,25 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid QuoteID { get; set; }
+        [Display(Name ="Product")]
         public Guid? ProductID { get; set; }
+        [Display(Name = "Model")]
         public Guid? ProductModelID { get; set; }
+        [Display(Name = "Product Specification")]
         public string ProductSpec { get; set; }
+        [Display(Name = "Quantity")]
         public decimal? Qty { get; set; }
+        [Display(Name = "Unit")]
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
+        [Display(Name = "Tax Type")]
         public int? TaxTypeCode { get; set; }
+        [Display(Name = "CGST Amount")]
         public decimal? CGSTAmt { get; set; }
+        [Display(Name = "SGST Amount")]
         public decimal? SGSTAmt { get; set; }
+        [Display(Name = "IGST Amount")]
         public decimal? IGSTAmt { get; set; }
         public bool IsUpdate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }

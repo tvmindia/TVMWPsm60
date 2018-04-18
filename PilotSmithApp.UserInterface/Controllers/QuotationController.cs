@@ -242,6 +242,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion InsertUpdateQuotation
+        #region Calculate GST
+        public ActionResult GSTCalculatedFields(QuotationDetailViewModel quotationDetailVM)
+        {
+            quotationDetailVM = Mapper.Map<QuotationDetail, QuotationDetailViewModel>(_quotationBusiness.CalculateGST(Mapper.Map<QuotationDetailViewModel, QuotationDetail>(quotationDetailVM)));
+            return PartialView("_GSTCalculatedFields", quotationDetailVM);
+        }
+        #endregion Calculate GST
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]

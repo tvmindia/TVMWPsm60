@@ -716,6 +716,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\StateController.cs" />
+    <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -755,6 +756,7 @@
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
+    <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
     <Compile Include="Models\UnitViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
@@ -856,6 +858,9 @@
     <Content Include="Views\Employee\_EmployeeForm.cshtml" />
     <Content Include="Views\DynamicUI\PopUpUnderConstruction.cshtml" />
     <Content Include="Views\DocumentOwner\_DocumentOwnerSelectList.cshtml" />
+    <Content Include="Views\Quotation\_AddQuotationDetail.cshtml" />
+    <Content Include="Views\Quotation\_GSTCalculatedFields.cshtml" />
+    <Content Include="Views\TaxType\_TaxTypeSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
