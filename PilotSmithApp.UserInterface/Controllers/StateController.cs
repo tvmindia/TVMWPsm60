@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
         // GET: State
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]
         public ActionResult Index(string code)
         {
             ViewBag.SysModuleCode = code;
@@ -31,6 +33,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #region InsertUpdateState
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "W")]
         public string InsertUpdateState(StateViewModel stateVM)
         {
             try
@@ -56,6 +61,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region CheckStateNameExist
         [AcceptVerbs("Get", "Post")]
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]
         public ActionResult CheckStateNameExist(StateViewModel stateVM)
         {
             bool exists = stateVM.IsUpdate ? false : _stateBusiness.CheckStateNameExist(Mapper.Map<StateViewModel,State>(stateVM));
@@ -70,6 +76,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             StateViewModel stateVM = masterCode==0 ? new StateViewModel() : Mapper.Map<State, StateViewModel>(_stateBusiness.GetState(masterCode));
@@ -79,6 +86,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region GetAllState
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]
         public JsonResult GetAllState(DataTableAjaxPostModel model, StateAdvanceSearchViewModel stateAdvanceSearchVM)
         {
             stateAdvanceSearchVM.DataTablePaging.Start = model.start;
@@ -102,6 +111,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region DeleteState
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "D")]
         public string DeleteState(int code)
         {
             try
@@ -118,6 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region State SelectList
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]
         public ActionResult StateSelectList(string required)
         {
             ViewBag.IsRequired = required;
@@ -129,7 +141,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();

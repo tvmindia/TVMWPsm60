@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Constructor_Injection
         // GET: ProductModel
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult Index(string code)
         {
             ViewBag.SysModuleCode = code;
@@ -35,7 +37,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region InsertUpdateProductModel
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "W")]
         public string InsertUpdateProductModel(ProductModelViewModel productModelVM)
         {
             object result = null;
@@ -59,8 +61,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion InsertUpdateProductModel
 
-        #region CheckProductModelNameExist
+        #region CheckProductModelNameExist        
         [AcceptVerbs("Get", "Post")]
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult CheckProductModelNameExist(ProductModelViewModel productModelVM)
         {
             bool exists = _productModelBusiness.CheckProductModelNameExist(Mapper.Map<ProductModelViewModel, ProductModel>(productModelVM));
@@ -75,6 +78,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult MasterPartial(Guid masterCode)
         {
             ProductModelViewModel productModelVM = masterCode == Guid.Empty ? new ProductModelViewModel() : Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(masterCode));
@@ -84,6 +88,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion MasterPartial
 
         #region ProductModelSelectList
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult ProductModelSelectList(string required,Guid productID)
         {
             ViewBag.IsRequired = required;
@@ -93,6 +98,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion ProductModelSelectList
         #region ProductModel Basic Information
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult ProductModelBasicInfo(Guid ID)
         {
             ProductModelViewModel productModelVM = new ProductModelViewModel();
@@ -104,6 +110,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion ProductModel Basic Information
         #region GetAllProductModel
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public JsonResult GetAllProductModel(DataTableAjaxPostModel model, ProductModelAdvanceSearchViewModel productModelAdvanceSearchVM)
         {
             productModelAdvanceSearchVM.DataTablePaging.Start = model.start;
@@ -127,6 +135,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllProduct
 
         #region DeleteProductModel
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "D")]
         public string DeleteProductModel(Guid id)
         {
             try
@@ -144,7 +154,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();

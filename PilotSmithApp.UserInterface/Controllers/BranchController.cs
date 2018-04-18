@@ -1,5 +1,7 @@
 ﻿using PilotSmithApp.BusinessService.Contract;
+using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +23,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View();
         }
         #region Branch SelectList
+        [AuthSecurityFilter(ProjectObject = "Branch", Mode = "R")]
         public ActionResult BranchSelectList(string required)
         {
+            AppUA appUA = Session["AppUA"] as AppUA;
             ViewBag.IsRequired = required;
             BranchViewModel branchVM = new BranchViewModel();
-            branchVM.BranchList = _branchBusiness.GetBranchForSelectList();
+            branchVM.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
             return PartialView("_BranchSelectList", branchVM);
         }
         #endregion Branch SelectList

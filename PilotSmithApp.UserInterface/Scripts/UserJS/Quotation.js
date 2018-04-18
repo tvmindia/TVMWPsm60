@@ -78,14 +78,25 @@ function BindOrReloadQuotationTable(action) {
             },
             pageLength: 13,
             columns: [
-               { "data": "QuotationNo", "defaultContent": "<i>-</i>" },
-               { "data": "QuotationDateFormatted", "defaultContent": "<i>-</i>" },
+               { "data": "QuoteNo", "defaultContent": "<i>-</i>" },
+               { "data": "QuoteDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
                { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
                { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+                {
+                    "data": "IsFinalApproved", render: function (data, type, row) {
+                        if (data) {
+                            return "Approved ✔";// <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
+                        }
+                        else {
+                            return 'Pending';
+                        }
+
+                    }, "defaultContent": "<i>-</i>"
+                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotation(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
@@ -158,7 +169,7 @@ function EditQuotation(this_Obj) {
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
-        BindQuotationDetailList(Quotation.ID);
+        //BindQuotationDetailList(Quotation.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
         PaintImages(Quotation.ID);
@@ -416,11 +427,11 @@ function EditQuotationDetail(this_Obj) {
         });
 
         if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
         }
         else {
-            $('.divProductModelIDSelectList').empty();
-            $('.divProductModelIDSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            $('.divProductModelSelectList').empty();
+            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
         }
         $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
         $("#FormQuotationDetail #hdnProductModelID").val(quotationDetail.ProductModelID);

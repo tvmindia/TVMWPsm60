@@ -21,6 +21,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int? PositionCode { get; set; }
         public bool IsActive { get; set; }
         public string GeneralNotes { get; set; }
+        public bool IsUpdate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> EmployeeSelectList { get; set; }
     }

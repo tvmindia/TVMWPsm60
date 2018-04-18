@@ -69,6 +69,7 @@
     <Compile Include="Contract\ISalesInvoiceRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
     <Compile Include="Contract\IPaymentTermRepository.cs" />
+    <Compile Include="Contract\ITaxTypeRepository.cs" />
     <Compile Include="Contract\IUnitRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AreaRepository.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Service\SalesInvoiceRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
     <Compile Include="Service\PaymentTermRepository.cs" />
+    <Compile Include="Service\TaxTypeRepository.cs" />
     <Compile Include="Service\UnitRepository.cs" />
   </ItemGroup>
   <ItemGroup>

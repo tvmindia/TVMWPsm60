@@ -15,5 +15,7 @@ namespace PilotSmithApp.BusinessService.Contract
         List<EstimateDetail> GetEstimateDetailListByEstimateID(Guid estimateID);
         List<SelectListItem> GetEstimateForSelectList();
         object InsertUpdateEstimate(Estimate estimate);
+        object DeleteEstimate(Guid id);
+        object DeleteEstimateDetail(Guid id);
     }
 }

@@ -295,9 +295,51 @@ function SaveSuccessProductModel(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
-
-
-
+//=========================================================================================================
+//Add Employee master
+function AddEmployeeMaster(flag) {
+    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
+        $('#lblModelMasterContextLabel').text('Add Employee Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
+    //$("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function () {
+    //    $('#lblModelMasterContextLabel').text('Add Employee Information')
+    //    $('#divModelMasterPopUp').modal('show');
+    //    $('#hdnMasterCall').val(flag);
+    //});
+}
+//=========================================================================================================
+function AddBranchMaster(flag) {
+    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
+        $('#lblModelMasterContextLabel').text('Add Branch Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
+    //$("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function () {
+    //    $('#lblModelMasterContextLabel').text('Add Employee Information')
+    //    $('#divModelMasterPopUp').modal('show');
+    //    $('#hdnMasterCall').val(flag);
+    //});
+}
+//========================================================================================================
+function AddReferredByMaster()
+{
+    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
+        $('#lblModelMasterContextLabel').text('Add Reference Person Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
+}
+//================================================================================================
+function AddDocumentStatusMaster()
+{
+    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
+        $('#lblModelMasterContextLabel').text('Add Document Status Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
+}
 //==========================================================================================================
 //Add Customer master
 function AddCustomerMaster(flag) {

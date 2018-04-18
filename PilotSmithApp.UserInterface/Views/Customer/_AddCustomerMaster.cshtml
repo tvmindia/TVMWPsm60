@@ -2,7 +2,7 @@
 
     @using (Ajax.BeginForm("InsertUpdateCustomerMaster", "Customer", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessCustomerMaster", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormCustomerMaster" }))
     {
-        @Html.AntiForgeryToken()
+        @*@Html.AntiForgeryToken()*@
         @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })

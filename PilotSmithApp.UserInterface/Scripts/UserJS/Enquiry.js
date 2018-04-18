@@ -421,11 +421,11 @@ function EditEnquiryDetail(this_Obj)
         });
         
         if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
         }
         else {
-            $('.divProductModelIDSelectList').empty();
-            $('.divProductModelIDSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            $('.divProductModelSelectList').empty();
+            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
         }
         $("#FormEnquiryDetail #ProductModelID").val(enquiryDetail.ProductModelID);
         $("#FormEnquiryDetail #hdnProductModelID").val(enquiryDetail.ProductModelID);
@@ -484,7 +484,7 @@ function DeleteEnquiryDetail(ID) {
 function AddEnquiryFollowUp()
 {
     debugger;
-    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?Customer.ID=" + $('#EnquiryForm #hdnCustomerID').val() + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
         $('#lblModelPopEnquiry').text('Add Enquiry Followup')
         $('#btnresetEnquiryFollowup').trigger('click');
         $('#divModelPopEnquiry').modal('show');

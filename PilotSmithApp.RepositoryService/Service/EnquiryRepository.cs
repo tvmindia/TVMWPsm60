@@ -434,6 +434,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         enquiry.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiry.ID);
                                         enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : enquiry.EnquiryNo);
+                                        enquiry.Customer = new Customer();
+                                        enquiry.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.Customer.CompanyName);
                                     }
                                     enquiryList.Add(enquiry);
                                 }

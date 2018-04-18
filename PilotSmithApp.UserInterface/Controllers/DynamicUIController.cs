@@ -35,5 +35,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult UnderConstruction() {
             return View();
         }
+        public ActionResult PopUpUnderConstruction()
+        {
+            return PartialView("PopUpUnderConstruction");
+        }
+
     }
 }

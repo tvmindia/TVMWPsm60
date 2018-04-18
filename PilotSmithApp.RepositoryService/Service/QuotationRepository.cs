@@ -87,7 +87,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotation.ReferencePerson.Name = (sdr["ReferredByCode"].ToString() != "" ? (sdr["ReferencePersonName"].ToString()) : quotation.ReferencePerson.Name);
                                         //quotation.ResponsiblePersonID = (sdr["ReferencePersonName"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : quotation.ResponsiblePersonID);
                                         quotation.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : quotation.PreparedBy);
-                                        quotation.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotation.GeneralNotes);
+                                        //quotation.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotation.GeneralNotes);
                                         quotation.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : quotation.DocumentOwnerID);
                                         quotation.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.BranchCode);
                                         quotation.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : quotation.FilteredCount);
@@ -135,7 +135,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : quotation.QuoteNo);
                                     quotation.QuoteRefNo = (sdr["QuoteRefNo"].ToString() != "" ? sdr["QuoteRefNo"].ToString() : quotation.QuoteRefNo);
                                     quotation.QuoteDate = (sdr["QuoteDate"].ToString() != "" ? DateTime.Parse(sdr["QuoteDate"].ToString()) : quotation.QuoteDate);
-                                    quotation.QuoteDateFormatted = (sdr["QuoteDateFormatted"].ToString() != "" ? DateTime.Parse(sdr["QuoteDateFormatted"].ToString()).ToString("dd-MMM-yyyy") : quotation.QuoteDateFormatted);
+                                    quotation.QuoteDateFormatted = (sdr["QuoteDate"].ToString() != "" ? DateTime.Parse(sdr["QuoteDate"].ToString()).ToString("dd-MMM-yyyy") : quotation.QuoteDateFormatted);
                                     quotation.EstimateID = (sdr["EstimateID"].ToString() != "" ? Guid.Parse(sdr["EstimateID"].ToString()) : quotation.EstimateID);
                                     quotation.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : quotation.CustomerID);
                                     quotation.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : quotation.MailingAddress);

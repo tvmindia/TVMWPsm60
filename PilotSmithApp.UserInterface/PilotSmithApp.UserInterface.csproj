@@ -697,6 +697,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
+    <Compile Include="Controllers\DocumentOwnerController.cs" />
     <Compile Include="Controllers\DocumentStatusController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -716,6 +717,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\StateController.cs" />
+    <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -755,6 +757,7 @@
     <Compile Include="Models\RolesViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
+    <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
     <Compile Include="Models\UnitViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
@@ -848,11 +851,17 @@
     <Content Include="Views\Estimate\_EstimateForm.cshtml" />
     <Content Include="Views\Estimate\_AddEstimateDetail.cshtml" />
     <Content Include="Views\EnquiryFollowup\_AddEnquiryFollowup.cshtml" />
-    <Content Include="Views\Enquiry\_EnquirySelectList.cshtml" />
     <Content Include="Views\Quotation\Index.cshtml" />
     <Content Include="Views\Quotation\_QuotationForm.cshtml" />
     <Content Include="Views\Estimate\_EstimateSelectList.cshtml" />
     <Content Include="Views\Enquiry\_EnquirySelectList.cshtml" />
+    <Content Include="Views\Employee\_PreparedBySelectList.cshtml" />
+    <Content Include="Views\Employee\_EmployeeForm.cshtml" />
+    <Content Include="Views\DynamicUI\PopUpUnderConstruction.cshtml" />
+    <Content Include="Views\DocumentOwner\_DocumentOwnerSelectList.cshtml" />
+    <Content Include="Views\Quotation\_AddQuotationDetail.cshtml" />
+    <Content Include="Views\Quotation\_GSTCalculatedFields.cshtml" />
+    <Content Include="Views\TaxType\_TaxTypeSelectList.cshtml" />
     <Content Include="Views\DashBoard\_SalesSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

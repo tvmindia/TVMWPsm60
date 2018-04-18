@@ -13,10 +13,12 @@ namespace PilotSmithApp.BusinessService.Service
     {
         IQuotationRepository _quotationRepository;
         ICommonBusiness _commonBusiness;
-        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness)
+        ITaxTypeBusiness _taxTypeBusiness;
+        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness, ITaxTypeBusiness taxTypeBusiness)
         {
             _quotationRepository = quotationRepository;
             _commonBusiness = commonBusiness;
+            _taxTypeBusiness = taxTypeBusiness;
         }
         public List<Quotation> GetAllQuotation(QuotationAdvanceSearch quotationAdvanceSearch)
         {
@@ -45,6 +47,14 @@ namespace PilotSmithApp.BusinessService.Service
         public object DeleteQuotationDetail(Guid id)
         {
             return _quotationRepository.DeleteQuotationDetail(id);
+        }
+        public QuotationDetail CalculateGST(QuotationDetail quotationDetail)
+        {
+            TaxType taxType = _taxTypeBusiness.GetTaxType((int)quotationDetail.TaxTypeCode);
+            quotationDetail.CGSTAmt = ((quotationDetail.Rate*quotationDetail.Qty-quotationDetail.Discount)*(taxType.CGSTPercentage))/100;
+            quotationDetail.SGSTAmt = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.SGSTPercentage)) / 100;
+            quotationDetail.IGSTAmt = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.IGSTPercentage)) / 100;
+            return quotationDetail;
         }
     }
 }

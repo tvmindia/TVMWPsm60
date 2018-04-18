@@ -1,0 +1,23 @@
+﻿@model PilotSmithApp.UserInterface.Models.UserViewModel
+@if (@ViewBag.IsRequired == "required")
+{
+        @Html.DropDownList("DocumentOwnerID", Model.userList, "--Select owner--", new { @class = "form-control newinput", @required = "", @title = "The owner is missing", @style = "width:100%!important", @onchange = "$('#hdnDocumentOwnerID').val(this.value)" })
+        
+}
+else
+{
+        @Html.DropDownList("DocumentOwnerID", Model.userList, "--Select owner--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnDocumentOwnerID').val(this.value)" })
+       
+}
+
+@Html.ValidationMessage("DocumentOwnerID", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $('#DocumentOwnerID').val($('#hdnDocumentOwnerID').val());
+        $('#DocumentOwnerID').select2({});
+        $('.select2').addClass('form-control newinput');
+    });
+</script>
+
+

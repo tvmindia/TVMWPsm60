@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _stateBusiness = stateBusiness;
         }
         #endregion
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
         public ActionResult Index(string code)
         {
             ViewBag.SysModuleCode = code;
@@ -33,6 +35,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #region InsertUpdateDistrict
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "W")]
         public string InsertUpdateDistrict(DistrictViewModel stateVM)
         {
             try
@@ -56,8 +61,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region CheckDistrictNameExist
+        #region CheckDistrictNameExist        
         [AcceptVerbs("Get", "Post")]
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
         public ActionResult CheckDistrictNameExist(DistrictViewModel districtVM)
         {
             bool exists = districtVM.IsUpdate ? false : _districtBusiness.CheckDistrictNameExist(Mapper.Map<DistrictViewModel,District>(districtVM));
@@ -72,6 +78,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             DistrictViewModel districtVM = masterCode==0 ? new DistrictViewModel() : Mapper.Map<District, DistrictViewModel>(_districtBusiness.GetDistrict(masterCode));
@@ -81,6 +88,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region GetAllDistrict
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
         public JsonResult GetAllDistrict(DataTableAjaxPostModel model, DistrictAdvanceSearchViewModel districtAdvanceSearchVM)
         {
             districtAdvanceSearchVM.DataTablePaging.Start = model.start;
@@ -104,6 +113,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region DeleteDistrict
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "D")]
         public string DeleteDistrict(int code)
         {
             try
@@ -120,6 +131,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region District SelectList
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
         public ActionResult DistrictSelectList(string required)
         {
             ViewBag.IsRequired = required;
@@ -131,7 +143,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();

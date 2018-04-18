@@ -1,109 +1,250 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EnquiryFollowupViewModel
+@{
+    List<SelectListItem> PrioritySelectList = new List<SelectListItem>();
+    PrioritySelectList.Add(new SelectListItem
+    { Text = "Low", Value = "3", Selected = false });
+    PrioritySelectList.Add(new SelectListItem
+    { Text = "Medium", Value = "2", Selected = false });
+    PrioritySelectList.Add(new SelectListItem
+    { Text = "High", Value = "1", Selected = false });
+    List<SelectListItem> FollowUpStatusSelectList = new List<SelectListItem>();
+    FollowUpStatusSelectList.Add(new SelectListItem
+    { Text = "Open", Value = "Open", Selected = false });
+    FollowUpStatusSelectList.Add(new SelectListItem
+    { Text = "Closed", Value = "Closed", Selected = false });
+    List<SelectListItem> TimeSelectList = new List<SelectListItem>();
+    DateTime now = DateTime.Now;
+    DateTime startTime = new DateTime(now.Year, now.Month, now.Day, 9, 0, 0);
+    DateTime endTime = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0);
+    while (startTime <= endTime)
+    {
+        TimeSelectList.Add(new SelectListItem
+        { Text = startTime.ToShortTimeString(), Value = startTime.ToShortTimeString(), Selected = false });
+        startTime = startTime.AddMinutes(15);
+    }
+}
 @using (Ajax.BeginForm("InsertUpdateEnquiryFollowup", "EnquiryFollowup", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEnquiryFollowup", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEnquiryFollowup" }))
 {
-    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "" })
-    <div class="form-group col-md-12 no-padding">
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label " })
+    if (Model.Status == "Closed")
+    {
+        @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+        @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+        @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "" })
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.FollowupDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @readonly = "" } })
+                    
+                </div>
             </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.FollowupDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
-                @Html.ValidationMessageFor(model => model.FollowupDateFormatted, "", new { @class = "text-danger" })
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.FollowupTimeFormatted, TimeSelectList, "--select time--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnFollowupTimeFormatted').val(this.value)",@disabled= "disabled" })
+                    @Html.HiddenFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "", @id = "hdnFollowupTimeFormatted" })
+                    
+                </div>
+            </div>
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
+                    
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
+                    
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ContactName, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
+                    
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
+                   
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.Status, FollowUpStatusSelectList, "--select status--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnStatus').val(this.value)" })
+                    @Html.HiddenFor(model => model.Status, htmlAttributes: new { @class = "", @id = "hdnStatus" })
+                    
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.RemindPriorTo, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
+                    
+                </div>
+            </div>
+
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)",@disabled= "disabled" })
+                    @Html.HiddenFor(model => model.PriorityCode, htmlAttributes: new { @class = "", @id = "hdnPriorityCode" })
+                    
+                </div>
+            </div>
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" ,@readonly=""})
+                    
+                </div>
             </div>
         </div>
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.FollowupTimeFormatted, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.FollowupTimeFormatted, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-12 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.PriorityCode, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.PriorityCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.ContactName, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.RemindPriorTo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.RemindPriorTo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.ReminderType,"", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-12 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
-            </div>
-            <div class="col-md-12">
-                @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
-                @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
 
         <div class="modal-footer d-flex justify-content-center">
             <button class="btn btn-default" id="btnAddEnquiryFollowup" type="submit" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
         </div>
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+        @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+        @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "" })
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.FollowupDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                    @Html.ValidationMessageFor(model => model.FollowupDateFormatted, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.FollowupTimeFormatted, TimeSelectList, "--select time--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnFollowupTimeFormatted').val(this.value)" })
+                    @Html.HiddenFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "", @id = "hdnFollowupTimeFormatted" })
+                    @Html.ValidationMessageFor(model => model.FollowupTimeFormatted, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.ReminderType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ContactName, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ContactNo, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ContactNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.ContactNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.Status, FollowUpStatusSelectList, "--select status--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnStatus').val(this.value)" })
+                    @Html.HiddenFor(model => model.Status, htmlAttributes: new { @class = "", @id = "hdnStatus" })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.RemindPriorTo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.RemindPriorTo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)" })
+                    @Html.HiddenFor(model => model.PriorityCode, htmlAttributes: new { @class = "", @id = "hdnPriorityCode" })
+                    @Html.ValidationMessageFor(model => model.PriorityCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                    @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default" id="btnAddEnquiryFollowup" type="submit" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        </div>
+    }
 }
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormEnquiryFollowup");
+        $('#Status,#PriorityCode,#FollowupTimeFormatted').select2({
+            dropdownParent: $("#divModelPopEnquiry")
+        });
+        $('.select2').addClass('form-control newinput');
         try {
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",

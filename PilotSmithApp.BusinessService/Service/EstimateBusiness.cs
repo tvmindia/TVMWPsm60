@@ -39,6 +39,14 @@ namespace PilotSmithApp.BusinessService.Service
             }
             return _estimateRepository.InsertUpdateEstimate(estimate);
         }
+        public object DeleteEstimate(Guid id)
+        {
+            return _estimateRepository.DeleteEstimate(id);
+        }
+        public object DeleteEstimateDetail(Guid id)
+        {
+            return _estimateRepository.DeleteEstimateDetail(id);
+        }
         public List<SelectListItem> GetEstimateForSelectList()
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();

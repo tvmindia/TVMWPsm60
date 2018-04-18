@@ -9,6 +9,6 @@ namespace PilotSmithApp.BusinessService.Contract
 {
     public interface IBranchBusiness
     {
-        List<SelectListItem> GetBranchForSelectList();
+        List<SelectListItem> GetBranchForSelectList(string loginName);
     }
 }

@@ -147,6 +147,9 @@
          .select2-container--default .select2-results__option--highlighted[aria-selected]{
              background-color:#00BFA5!important;
          }
+         .select2-container--disabled{
+             background:#eee!important;
+         }
          .select2-selection__rendered{
              font-size:12px;
          }

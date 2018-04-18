@@ -1,0 +1,98 @@
+﻿@model PilotSmithApp.UserInterface.Models.EmployeeViewModel
+@{
+    List<SelectListItem> DepartmentSelectList = new List<SelectListItem>();
+    DepartmentSelectList.Add(new SelectListItem
+    { Text = "Production", Value = "PRD", Selected = false });
+    DepartmentSelectList.Add(new SelectListItem
+    { Text = "Office", Value = "OFF", Selected = false });
+    DepartmentSelectList.Add(new SelectListItem
+    { Text = "HR", Value = "HR", Selected = false });
+    DepartmentSelectList.Add(new SelectListItem
+    { Text = "High", Value = "1", Selected = false });
+    List<SelectListItem> PositionSelectList = new List<SelectListItem>();
+    PositionSelectList.Add(new SelectListItem
+    { Text = "HOD", Value = "HOD", Selected = false });
+    PositionSelectList.Add(new SelectListItem
+    { Text = "Manager", Value = "Manage", Selected = false });
+    PositionSelectList.Add(new SelectListItem
+    { Text = "Staff", Value = "Staff", Selected = false });
+}
+
+@using (Ajax.BeginForm("InsertUpdateEmployee", "Employee", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessCustomerMaster", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEmployeeMaster" }))
+{
+    @*@Html.AntiForgeryToken()*@
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-8 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control newinput"} })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                @Html.TextAreaFor(model => model.Address, 5, 0, new { @class = "form-control newinput" })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.DepartmentCode, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.DepartmentCode, DepartmentSelectList, "-- select department --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100%" })
+                    @Html.ValidationMessageFor(model => model.DepartmentCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.PositionCode, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.PositionCode, PositionSelectList, "-- select position --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100%" })
+                    @Html.ValidationMessageFor(model => model.PositionCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormEmployeeMaster");
+        $('#DepartmentCode,#PositionCode').select2({
+            dropdownParent: $("#divModelMasterPopUp")
+        });
+        $('.select2').addClass('form-control newinput');
+    });
+</script>

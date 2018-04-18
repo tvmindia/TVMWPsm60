@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _districtBusiness = districtBusiness;
         }
         #endregion
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
         public ActionResult Index(string code)
         {
             ViewBag.SysModuleCode = code;
@@ -35,6 +37,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #region InsertUpdateArea
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "W")]
         public string InsertUpdateArea(AreaViewModel areaVM)
         {
             try
@@ -58,8 +63,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region CheckAreaNameExist
+        #region CheckAreaNameExist        
         [AcceptVerbs("Get", "Post")]
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
         public ActionResult CheckAreaNameExist(AreaViewModel areaVM)
         {
             bool exists = areaVM.IsUpdate ? false : _areaBusiness.CheckAreaNameExist(Mapper.Map<AreaViewModel,Area>(areaVM));
@@ -74,6 +80,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             AreaViewModel areaVM = masterCode==0? new AreaViewModel() : Mapper.Map<Area, AreaViewModel>(_areaBusiness.GetArea(masterCode));
@@ -83,6 +90,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region GetAllArea
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
         public JsonResult GetAllArea(DataTableAjaxPostModel model, AreaAdvanceSearchViewModel areaAdvanceSearchVM)
         {
             areaAdvanceSearchVM.DataTablePaging.Start = model.start;
@@ -106,6 +115,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region DeleteArea
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "D")]
         public string DeleteArea(int code)
         {
             try
@@ -122,6 +133,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region Area SelectList
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
         public ActionResult AreaSelectList(string required)
         {
             ViewBag.IsRequired = required;
@@ -133,7 +145,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();

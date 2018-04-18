@@ -51,6 +51,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM = new EnquiryViewModel();
                     enquiryVM.IsUpdate = false;
                     enquiryVM.ID = Guid.Empty;
+                    enquiryVM.DocumentStatusCode = 1;
                 }
                 enquiryVM.Customer = new CustomerViewModel {
                     Titles=new TitlesViewModel() {
