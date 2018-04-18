@@ -671,6 +671,7 @@
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
+    <Content Include="Scripts\UserJS\SalesSummary.js" />
     <Content Include="Scripts\UserJS\State.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
@@ -852,6 +853,7 @@
     <Content Include="Views\Quotation\_QuotationForm.cshtml" />
     <Content Include="Views\Estimate\_EstimateSelectList.cshtml" />
     <Content Include="Views\Enquiry\_EnquirySelectList.cshtml" />
+    <Content Include="Views\DashBoard\_SalesSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

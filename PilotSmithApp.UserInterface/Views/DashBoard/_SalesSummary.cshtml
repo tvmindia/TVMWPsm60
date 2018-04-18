@@ -1,0 +1,27 @@
+﻿@model PilotSmithApp.UserInterface.Models.SalesSummaryList
+@using PilotSmithApp.UserInterface.Models
+@{
+
+    List<SalesSummaryViewModel> salesList = Model.SalesSummaryVMList;
+}
+<div class="col-md-12 GraphCaption"> Sales Summary </div>
+<div class="col-md-12" >
+
+    <div class="col-md-12 Summary box" style="padding-top:15px;text-align:left">
+        <div class="col-md-11">
+            <canvas id="saleschart" style="width:95%;height:220px"></canvas>
+        </div>
+        <div class="col-md-1">
+            <span class="chartLegend"> Figures are in Lakhs</span>
+        </div>
+
+    </div>
+</div>
+<script>
+    var lbls=@Html.Raw(Json.Encode( salesList.Select(s => (s.Month )).ToList()));
+    var dta=@Html.Raw(Json.Encode( salesList.Select(s => s.Sales).ToList()));
+    var lblsLastYear=@Html.Raw(Json.Encode( salesList.Select(s => (s.Month + s.LastYear)).ToList()));
+    var dtaLastYear=@Html.Raw(Json.Encode( salesList.Select(s => s.LastYearSales).ToList()));
+
+
+</script>

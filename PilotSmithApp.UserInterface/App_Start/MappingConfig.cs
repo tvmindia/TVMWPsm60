@@ -64,6 +64,8 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<EstimateViewModel, Estimate>().ReverseMap();
                 config.CreateMap<EstimateDetailViewModel, EstimateDetail>().ReverseMap();
                 config.CreateMap<EstimateAdvanceSearchViewModel, EstimateAdvanceSearch>().ReverseMap();
+
+                config.CreateMap<SalesSummaryViewModel, SalesSummary>().ReverseMap();
             });
         }
     }
