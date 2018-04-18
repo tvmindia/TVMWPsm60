@@ -44,7 +44,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value= enquiryFollowup.ID;
                         cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = enquiryFollowup.EnquiryID;
                         cmd.Parameters.Add("@FollowupDate", SqlDbType.DateTime).Value = enquiryFollowup.FollowupDateFormatted;
-                        cmd.Parameters.Add("@FollowupTime", SqlDbType.Time).Value = enquiryFollowup.FollowupTimeFormatted;
+                        cmd.Parameters.Add("@FollowupTime", SqlDbType.DateTime).Value = enquiryFollowup.FollowupTimeFormatted;
                         cmd.Parameters.Add("@PriorityCode", SqlDbType.Int).Value = enquiryFollowup.PriorityCode;
                         cmd.Parameters.Add("@Subject", SqlDbType.VarChar).Value = enquiryFollowup.Subject;
                         cmd.Parameters.Add("@ContactName", SqlDbType.VarChar).Value = enquiryFollowup.ContactName;
@@ -182,7 +182,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiryFollowup.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : enquiryFollowup.EnquiryID);
                                     enquiryFollowup.FollowupDate = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()) : enquiryFollowup.FollowupDate);
                                     enquiryFollowup.FollowupDateFormatted = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()).ToString(_settings.DateFormat) : enquiryFollowup.FollowupDateFormatted);
-                                    enquiryFollowup.FollowupTimeFormatted = (sdr["FollowupTime"].ToString() != "" ? DateTime.Parse(sdr["FollowUpTime"].ToString()).ToString("hh:mm tt") : enquiryFollowup.FollowupTimeFormatted);
+                                    enquiryFollowup.FollowupTimeFormatted = (sdr["FollowupTime"].ToString() != "" ? DateTime.Parse(sdr["FollowUpTime"].ToString()).ToString("h:mm tt") : enquiryFollowup.FollowupTimeFormatted);
                                     enquiryFollowup.PriorityCode = (sdr["PriorityCode"].ToString() != "" ? int.Parse(sdr["PriorityCode"].ToString()) : enquiryFollowup.PriorityCode);
                                     enquiryFollowup.Subject = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : enquiryFollowup.Subject);
                                     enquiryFollowup.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : enquiryFollowup.ContactName);

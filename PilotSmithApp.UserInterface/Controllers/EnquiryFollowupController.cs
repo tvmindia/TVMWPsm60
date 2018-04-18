@@ -17,9 +17,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IEnquiryFollowupBusiness _enquiryFollowupBusiness;
-        public EnquiryFollowupController(IEnquiryFollowupBusiness enquiryFollowupBusiness)
+        ICustomerBusiness _customerBusiness;
+        public EnquiryFollowupController(IEnquiryFollowupBusiness enquiryFollowupBusiness, ICustomerBusiness customerBusiness)
         {
             _enquiryFollowupBusiness = enquiryFollowupBusiness;
+            _customerBusiness = customerBusiness;
         }
         // GET: EnquiryFollowup
         public ActionResult Index()
@@ -54,15 +56,23 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
             enquiryFollowupVM.EnquiryFollowupList = Mapper.Map<List<EnquiryFollowup>, List<EnquiryFollowupViewModel>>(_enquiryFollowupBusiness.GetAllEnquiryFollowup(Mapper.Map<EnquiryFollowupViewModel, EnquiryFollowup>(enquiryFollowupVM)));
             enquiryFollowupVM.TotalCount = enquiryFollowupVM.EnquiryFollowupList.Count > 0 ? enquiryFollowupVM.EnquiryFollowupList[0].TotalCount : 0;
+            ViewBag.ButtonDisable = enquiryFollowupVM.EnquiryFollowupList.Count > 0 ? enquiryFollowupVM.EnquiryFollowupList.Where(x => x.Status == "Open").ToList().Count > 0 : false;
             return PartialView("_EnquiryFollowupList", enquiryFollowupVM);
         }
         public ActionResult AddEnquiryFollowup(EnquiryFollowupViewModel enquiryFollowupVM)
         {
             enquiryFollowupVM.IsUpdate = false;
+            
             if (enquiryFollowupVM.ID!=Guid.Empty)
             {
                 enquiryFollowupVM = Mapper.Map<EnquiryFollowup, EnquiryFollowupViewModel>(_enquiryFollowupBusiness.GetEnquiryFollowup(enquiryFollowupVM.ID));
                 enquiryFollowupVM.IsUpdate = true;
+            }
+            if(!enquiryFollowupVM.IsUpdate)
+            {
+                enquiryFollowupVM.Customer = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomer(enquiryFollowupVM.Customer.ID));
+                enquiryFollowupVM.ContactName = enquiryFollowupVM.Customer.ContactPerson;
+                enquiryFollowupVM.ContactNo = enquiryFollowupVM.Customer.Mobile;
             }
             return PartialView("_AddEnquiryFollowup", enquiryFollowupVM);
         }
