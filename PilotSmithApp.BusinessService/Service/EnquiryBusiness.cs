@@ -56,7 +56,7 @@ namespace PilotSmithApp.BusinessService.Service
                 {
                     selectListItem.Add(new SelectListItem
                     {
-                        Text = enquiry.EnquiryNo,
+                        Text = enquiry.EnquiryNo+"-"+enquiry.Customer.CompanyName,
                         Value = enquiry.ID.ToString(),
                         Selected = false
                     });

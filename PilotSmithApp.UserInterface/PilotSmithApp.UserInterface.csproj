@@ -845,7 +845,6 @@
     <Content Include="Views\Estimate\_EstimateForm.cshtml" />
     <Content Include="Views\Estimate\_AddEstimateDetail.cshtml" />
     <Content Include="Views\EnquiryFollowup\_AddEnquiryFollowup.cshtml" />
-    <Content Include="Views\Enquiry\_EnquirySelectList.cshtml" />
     <Content Include="Views\Quotation\Index.cshtml" />
     <Content Include="Views\Quotation\_QuotationForm.cshtml" />
     <Content Include="Views\Estimate\_EstimateSelectList.cshtml" />

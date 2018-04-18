@@ -73,7 +73,7 @@ function BindOrReloadEstimateTable(action) {
             serverSide: true,
             ajax: {
                 url: "Estimate/GetAllEstimate/",
-                data: { "EstimateAdvanceSearchVM": EstimateAdvanceSearchViewModel },
+                data: { "estimateAdvanceSearchVM": EstimateAdvanceSearchViewModel },
                 type: 'POST'
             },
             pageLength: 13,
@@ -83,7 +83,7 @@ function BindOrReloadEstimateTable(action) {
                { "data": "EstimateDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Enquiry.EnquiryNo", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Branch.Description ", "defaultContent": "<i>-</i>" },
+               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "UserName", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimate(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
@@ -269,7 +269,7 @@ function BindEstimateDetailList(id) {
              { "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "CostRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "SellingRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="ProductEdit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
+            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
                  { "targets": [0, 1], "width": "10%" },
@@ -386,5 +386,41 @@ function AddEstimateDetailToList() {
                 }
         }
 
+    });
+}
+
+function EditEstimateDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).index();
+    var estimateDetail = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).data();
+    $("#divModelEstimatePopBody").load("Estimate/AddEstimateDetail", function () {
+        $('#lblModelPopEstimate').text('Estimate Detail')
+        $('#FormEstimateDetail #IsUpdate').val('True');
+        $('#FormEstimateDetail #ID').val(estimateDetail.ID);
+        $("#FormEstimateDetail #ProductID").val(estimateDetail.ProductID)
+        $("#FormEstimateDetail #hdnProductID").val(estimateDetail.ProductID)
+        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
+        });
+
+        if ($('#hdnProductID').val() != _emptyGuid) {
+            $('.divProductModelIDSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+        }
+        else {
+            $('.divProductModelIDSelectList').empty();
+            $('.divProductModelIDSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        }
+        $("#FormEstimateDetail #ProductModelID").val(estimateDetail.ProductModelID);
+        $("#FormEstimateDetail #hdnProductModelID").val(estimateDetail.ProductModelID);
+        if ($('#hdnProductModelID').val() != _emptyGuid) {
+            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
+            });
+        }
+        $('#FormEstimateDetail #ProductSpec').val(estimateDetail.ProductSpec);
+        $('#FormEstimateDetail #Qty').val(estimateDetail.Qty);
+        $('#FormEstimateDetail #UnitCode').val(estimateDetail.UnitCode);
+        $('#FormEstimateDetail #hdnUnitCode').val(estimateDetail.UnitCode);
+        $('#FormEstimateDetail #CostRate').val(estimateDetail.CostRate);
+        $('#FormEstimateDetail #SellingRate').val(estimateDetail.SellingRate);
+        $('#divModelPopEstimate').modal('show');
     });
 }

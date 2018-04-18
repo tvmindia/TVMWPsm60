@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using PilotSmithApp.UserInterface.Models;
 using AutoMapper;
 using Newtonsoft.Json;
+using PilotSmithApp.UserInterface.SecurityFilter;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -23,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _productCategoryBusiness = productCategoryBusiness;
         }
         #endregion
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
         public ActionResult Index(string code)
         {
             ViewBag.SysModuleCode = code;
@@ -30,8 +32,9 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View(productCategoryAvanceSearchVM);
         }
 
-        #region CheckProductCategoryExist
+        #region CheckProductCategoryExist        
         [AcceptVerbs("Get", "Post")]
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
         public ActionResult CheckProductCategoryExist(ProductCategoryViewModel productCategoryVM)
         {
             bool exists = productCategoryVM.IsUpdate ? false : _productCategoryBusiness.CheckProductCategoryExist(Mapper.Map<ProductCategoryViewModel,ProductCategory>(productCategoryVM));
@@ -45,6 +48,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region InsertUpdateProductCategory
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "W")]
         public string InsertUpdateProductCategory(ProductCategoryViewModel productCategoryVM)
         {
             try
@@ -70,6 +76,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             ProductCategoryViewModel productCategoryVM = masterCode==0 ? new ProductCategoryViewModel() : Mapper.Map<ProductCategory, ProductCategoryViewModel>(_productCategoryBusiness.GetProductCategory(masterCode));
@@ -79,6 +86,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region GetAllProductCategory
+        [HttpPost]      
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
         public JsonResult GetAllProductCategory(DataTableAjaxPostModel model,ProductCategoryAdvanceSearchViewModel productCategoryAdvanceSearchVM)
         {
             productCategoryAdvanceSearchVM.DataTablePaging.Start = model.start;
@@ -102,6 +111,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region DeleteProductCategory
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "D")]
         public string DeleteProductCategory(int code)
         {
             try
@@ -118,6 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         # region ProductCategorySelectList
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
         public ActionResult ProductCategorySelectList(string required)
         {
             ViewBag.IsRequired = required;
@@ -151,7 +163,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();

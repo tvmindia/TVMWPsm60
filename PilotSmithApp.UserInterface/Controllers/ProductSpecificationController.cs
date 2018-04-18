@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _productSpecificationBusiness = productSpecificationBusiness;
         }
         #endregion
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "R")]
         public ActionResult Index(string code)
         {
             ViewBag.SysModuleCode = code;
@@ -32,6 +34,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region CheckProductSpecificationExist
         [AcceptVerbs("Get", "Post")]
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "R")]
         public ActionResult CheckProductSpecificationExist(ProductSpecificationViewModel productSpecificationVM)
         {
             bool exists = productSpecificationVM.IsUpdate ? false : _productSpecificationBusiness.CheckProductSpecificationExist(Mapper.Map<ProductSpecificationViewModel, ProductSpecification>(productSpecificationVM));
@@ -45,6 +48,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region InsertUpdateProductSpecification
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "W")]
         public string InsertUpdateProductSpecification(ProductSpecificationViewModel productSpecificationVM)
         {
             try
@@ -70,6 +76,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             ProductSpecificationViewModel productSpecificationVM = masterCode==0 ? new ProductSpecificationViewModel() : Mapper.Map<ProductSpecification, ProductSpecificationViewModel>(_productSpecificationBusiness.GetProductSpecification(masterCode));
@@ -79,6 +86,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region GetAllProductSpecification
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "R")]
         public JsonResult GetAllProductSpecification(DataTableAjaxPostModel model, ProductSpecificationAdvanceSearchViewModel productSpecificationAdvanceSearchVM)
         {
             productSpecificationAdvanceSearchVM.DataTablePaging.Start = model.start;
@@ -102,6 +111,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region DeleteProductSpecification
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "D")]
         public string DeleteProductSpecification(int code)
         {
             try
@@ -118,6 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region ProductSpecificationSelectList
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "R")]
         public ActionResult ProductSpecificationSelectList(string required)
         {
             ViewBag.IsRequired = required;
@@ -129,7 +141,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
