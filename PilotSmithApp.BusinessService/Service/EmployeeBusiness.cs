@@ -26,7 +26,7 @@ namespace PilotSmithApp.BusinessService.Service
                 {
                     selectListItem.Add(new SelectListItem
                     {
-                        Text = employee.Code+" | "+employee.Name,
+                        Text = employee.Name,
                         Value = employee.ID.ToString(),
                         Selected = false
                     });

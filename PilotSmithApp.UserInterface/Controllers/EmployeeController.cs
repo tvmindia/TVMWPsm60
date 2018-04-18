@@ -1,5 +1,6 @@
 ﻿using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
+        #region MasterPartial
+        [HttpGet]
+        public ActionResult MasterPartial(Guid masterCode)
+        {
+            EmployeeViewModel employeeVM = new EmployeeViewModel();
+            employeeVM.IsUpdate = masterCode == Guid.Empty ? false : true;
+
+            return PartialView("_EmployeeForm", employeeVM);
+        }
+        #endregion MasterPartial
         #region Employee SelectList
         public ActionResult EmployeeSelectList(string required)
         {
@@ -47,5 +58,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AttendedBySelectList", employeeVM);
         }
         #endregion AttendedBy SelectList
+        #region PreparedBy SelectList
+        public ActionResult PreparedBySelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            EmployeeViewModel employeeVM = new EmployeeViewModel();
+            employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            return PartialView("_PreparedBySelectList", employeeVM);
+        }
+        #endregion PreparedBy SelectList
     }
 }

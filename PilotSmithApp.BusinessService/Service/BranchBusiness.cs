@@ -17,10 +17,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _branchRepository = branchRepository;
         }
-        public List<SelectListItem> GetBranchForSelectList()
+        public List<SelectListItem> GetBranchForSelectList(string loginName)
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<Branch> branchList = _branchRepository.GetBranchForSelectList();
+            List<Branch> branchList = _branchRepository.GetBranchForSelectList(loginName);
             if (branchList != null)
                 foreach (Branch branch in branchList)
                 {

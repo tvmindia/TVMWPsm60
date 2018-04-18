@@ -9,6 +9,6 @@ namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IBranchRepository
     {
-        List<Branch> GetBranchForSelectList();
+        List<Branch> GetBranchForSelectList(string loginName);
     }
 }

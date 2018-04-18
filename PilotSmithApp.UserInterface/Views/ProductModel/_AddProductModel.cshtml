@@ -126,9 +126,9 @@
 }
 <script>
     $(document).ready(function () {
-        $('#ProductModelID').val($('#hdnProductModelID').val());
+        $('#divModelMasterPopUp #ProductModelID').val($('#divModelMasterPopUp #hdnProductModelID').val());
         try {
-            $('#ProductID,#UnitCode').select2({
+            $('#divModelMasterPopUp #ProductID,#divModelMasterPopUp #UnitCode').select2({
                 dropdownParent: $("#divModelMasterPopUp")
             });
             $('.select2').addClass('form-control newinput');

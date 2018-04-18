@@ -24,7 +24,7 @@ namespace PilotSmithApp.RepositoryService.Service
             _databaseFactory = databaseFactory;
         }
         #region Get Branch SelectList
-        public List<Branch> GetBranchForSelectList()
+        public List<Branch> GetBranchForSelectList(string loginName)
         {
             List<Branch> branchList = null;
             try
@@ -40,6 +40,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetBranchForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@LoginName", SqlDbType.VarChar, 250).Value = loginName;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
