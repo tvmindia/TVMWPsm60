@@ -1,5 +1,6 @@
 ﻿var _dataTable = {};
 var _emptyGuid = "00000000-0000-0000-0000-000000000000";
+var _datatablerowindex = -1;
 var _jsonData = {};
 var _message = "";
 var _status = "";
@@ -51,7 +52,7 @@ function BindOrReloadEstimateTable(action) {
         EstimateAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         EstimateAdvanceSearchViewModel.FromDate = $('#FromDate').val();
         EstimateAdvanceSearchViewModel.ToDate = $('#ToDate').val();
-        //apply datatable plugin on Enquiry table
+        //apply datatable plugin on Estimate table
         _dataTable.EstimateList = $('#tblEstimate').DataTable(
         {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
@@ -87,9 +88,9 @@ function BindOrReloadEstimateTable(action) {
                { "data": "UserName", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimate(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
-            columnDefs: [{ className: "text-right", "targets": [5] },
-                  { className: "text-left", "targets": [0, 1] },
-            { className: "text-center", "targets": [2, 3, 4] }
+            columnDefs: [
+                    { className: "text-left", "targets": [0, 1] },
+                    { className: "text-center", "targets": [2] }
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -137,30 +138,44 @@ function ExportEstimateData() {
 function AddEstimate() {
     debugger;
     //this will return form body(html)
+    OnServerCallBegin();
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
         BindEstimateDetailList(_emptyGuid);
+        OnServerCallComplete();
         //resides in customjs for sliding
-        openNav();
+        setTimeout(function () {
+            openNav();
+        }, 100);
     });
 }
 
 function EditEstimate(this_Obj) {
+    OnServerCallBegin();
     var Estimate = _dataTable.EstimateList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
+        clearUploadControl();
+        PaintImages(Estimate.ID);
         BindEstimateDetailList(Estimate.ID);
-
+        OnServerCallComplete();
         //resides in customjs for sliding
-        openNav();
+        setTimeout(function () {
+            openNav();
+        }, 100);
     });
 }
 
 function ResetEstimate() {
     //this will return form body(html)
-    $('#divEstimateForm').load("Estimate/EstimateForm?id=" + $('#ID').val());
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val(), function () {
+        BindEstimateDetailList($('#ID').val());
+        clearUploadControl();
+        PaintImages($('#EstimateForm #ID').val());
+       
+    });
 }
 function SaveEstimate() {
     var estimateDetailList = _dataTable.EstimateDetailList.rows().data().toArray();
@@ -187,6 +202,8 @@ function SaveSuccessEstimate(data, status) {
                 $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
                     BindEstimateDetailList(_result.ID);
+                    clearUploadControl();
+                    PaintImages(_result.ID);
                 });
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
                 BindOrReloadEstimateTable('Init');
@@ -206,9 +223,11 @@ function SaveSuccessEstimate(data, status) {
 }
 
 function DeleteEstimate() {
-    notyConfirm('Are you sure to delete?', 'DeleteItem("' + $('#ID').val() + '")');
+    debugger;
+    notyConfirm('Are you sure to delete?', 'DeleteEstimateItem("' + $('#EstimateForm #ID').val() + '")');
 }
-function DeleteItem(id) {
+function DeleteEstimateItem(id) {
+    debugger;
     try {
         if (id) {
             var data = { "id": id };
@@ -269,7 +288,7 @@ function BindEstimateDetailList(id) {
              { "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "CostRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "SellingRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="DeleteClick(this)" ><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a> | <a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' },
+            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
                  { "targets": [0, 1], "width": "10%" },
@@ -308,6 +327,7 @@ function GetEstimateDetailListByEstimateID(id) {
 }
 
 function AddEstimateDetailList() {
+    debugger;
     $("#divModelEstimatePopBody").load("Estimate/AddEstimateDetail", function () {
         $('#lblModelPopEstimate').text('Estimate Detail')
         $('#divModelPopEstimate').modal('show');
@@ -328,11 +348,14 @@ function AddEstimateDetailToList() {
                 estimateDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                 estimateDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
+                Unit = new Object;
                 ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 estimateDetailList[_datatablerowindex].ProductModel = ProductModel;
                 estimateDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
                 estimateDetailList[_datatablerowindex].Qty = $('#Qty').val();
                 estimateDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
+                Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                estimateDetailList[_datatablerowindex].Unit = Unit;
                 estimateDetailList[_datatablerowindex].CostRate = $('#CostRate').val();
                 estimateDetailList[_datatablerowindex].SellingRate = $('#SellingRate').val();
                 _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
@@ -423,4 +446,43 @@ function EditEstimateDetail(this_Obj) {
         $('#FormEstimateDetail #SellingRate').val(estimateDetail.SellingRate);
         $('#divModelPopEstimate').modal('show');
     });
+}
+
+function ConfirmDeleteEstimateDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).index();
+    var estimateDetail = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).data();
+    if (estimateDetail.ID === _emptyGuid) {
+        var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
+        estimateDetailList.splice(_datatablerowindex, 1);
+        _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
+        notyAlert('success', 'Detail Row deleted successfully');
+    }
+    else {
+        notyConfirm('Are you sure to delete?', 'DeleteEstimateDetail("' + estimateDetail.ID + '")');
+
+    }
+}
+function DeleteEstimateDetail(ID) {
+    debugger;
+    if (ID != _emptyGuid && ID != null && ID != '') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("Estimate/DeleteEstimateDetail/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
+            estimateDetailList.splice(_datatablerowindex, 1);
+            _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
 }

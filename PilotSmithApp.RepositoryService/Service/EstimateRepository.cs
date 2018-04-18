@@ -70,6 +70,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimate.Branch = new Branch();
                                         estimate.Branch.Description = (sdr["BranchCode"].ToString() != "" ? sdr["BranchCode"].ToString() : estimate.Branch.Description);
                                         estimate.UserName = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : estimate.UserName);
+                                        estimate.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : estimate.TotalCount);
+                                        estimate.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : estimate.FilteredCount);
                                     }
                                     estimateList.Add(estimate);
                                 }
@@ -173,6 +175,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     EstimateDetail estimateDetail = new EstimateDetail();
                                     {
+                                        estimateDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : estimateDetail.ID);
                                         estimateDetail.EstimateID = (sdr["EstimateID"].ToString() != "" ? Guid.Parse(sdr["EstimateID"].ToString()) : estimateDetail.EstimateID);
                                         estimateDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : estimateDetail.Qty);
                                         estimateDetail.CostRate = (sdr["CostRate"].ToString() != "" ? decimal.Parse(sdr["CostRate"].ToString()) : estimateDetail.CostRate);
@@ -235,6 +238,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = estimate.DocumentStatusCode;
                         cmd.Parameters.Add("@ValidUpToDate", SqlDbType.DateTime).Value = estimate.ValidUpToDateFormatted;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = estimate.DetailXML;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = estimate.hdnFileID;
                         cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = estimate.PreparedBy;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar,-1).Value = estimate.GeneralNotes;
                         cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = estimate.DocumentOwnerID;
@@ -329,5 +333,107 @@ namespace PilotSmithApp.RepositoryService.Service
             return estimateList;
         }
         #endregion GetEstimateForSelectList
+
+        #region DeleteEstimate
+        public object DeleteEstimate(Guid id)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[DeleteEstimate]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(_appConstant.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.DeleteSuccess
+            };
+        }
+        #endregion DeleteEstimate
+
+        #region DeleteEstimateDetail
+        public object DeleteEstimateDetail(Guid id)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[DeleteEstimateDetail]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(_appConstant.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.DeleteSuccess
+            };
+        }
+        #endregion DeleteEstimateDetail
     }
 }

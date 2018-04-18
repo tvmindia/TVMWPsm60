@@ -209,6 +209,45 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get Estimate DetailList By EstimateID
 
+        #region DeleteEstimate
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "D")]
+        public string DeleteEstimate(Guid id)
+        {
+            try
+            {
+                object result = _estimateBusiness.DeleteEstimate(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion DeleteEstimate
+
+        #region DeleteEstimateDetail
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "D")]
+        public string DeleteEstimateDetail(Guid id)
+        {
+            try
+            {
+                object result = _estimateBusiness.DeleteEstimateDetail(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+        #endregion DeleteEstimateDetail
+
         #region ButtonStyling
         [HttpGet]
         //[AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
