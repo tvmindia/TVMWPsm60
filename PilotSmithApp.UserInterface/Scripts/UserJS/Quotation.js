@@ -78,8 +78,8 @@ function BindOrReloadQuotationTable(action) {
             },
             pageLength: 13,
             columns: [
-               { "data": "QuotationNo", "defaultContent": "<i>-</i>" },
-               { "data": "QuotationDateFormatted", "defaultContent": "<i>-</i>" },
+               { "data": "QuoteNo", "defaultContent": "<i>-</i>" },
+               { "data": "QuoteDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
                { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
@@ -158,7 +158,7 @@ function EditQuotation(this_Obj) {
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
-        BindQuotationDetailList(Quotation.ID);
+        //BindQuotationDetailList(Quotation.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
         PaintImages(Quotation.ID);

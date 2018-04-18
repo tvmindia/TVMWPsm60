@@ -484,7 +484,7 @@ function DeleteEnquiryDetail(ID) {
 function AddEnquiryFollowUp()
 {
     debugger;
-    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?Customer.ID=" + $('#EnquiryForm #hdnCustomerID').val() + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
         $('#lblModelPopEnquiry').text('Add Enquiry Followup')
         $('#btnresetEnquiryFollowup').trigger('click');
         $('#divModelPopEnquiry').modal('show');

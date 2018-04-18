@@ -67,6 +67,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<BranchViewModel, Branch>().ReverseMap();
                 config.CreateMap<EmployeeViewModel, Employee>().ReverseMap();
 
+                config.CreateMap<QuotationViewModel, Quotation>().ReverseMap();
+                config.CreateMap<QuotationAdvanceSearchViewModel, QuotationAdvanceSearch>().ReverseMap();
+                config.CreateMap<QuotationDetailViewModel, QuotationDetail>().ReverseMap();
             });
         }
     }
