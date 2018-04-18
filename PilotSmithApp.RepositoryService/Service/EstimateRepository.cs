@@ -58,6 +58,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         estimate.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : estimate.ID);
                                         estimate.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : estimate.EstimateNo);
+                                        estimate.EstimateRefNo = (sdr["EstimateRefNo"].ToString() != "" ? sdr["EstimateRefNo"].ToString() : estimate.EstimateRefNo);
                                         estimate.EstimateDate = (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()) : estimate.EstimateDate);
                                         estimate.EstimateDateFormatted = (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()).ToString(_settings.DateFormat) : estimate.EstimateDateFormatted);
                                         estimate.Enquiry = new Enquiry();
@@ -108,6 +109,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             if ((sdr != null) && (sdr.HasRows))
                                 if (sdr.Read())
                                 {
+                                    estimate.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : estimate.EnquiryID);
                                     estimate.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : estimate.EstimateNo);
                                     estimate.EstimateRefNo = (sdr["EstimateRefNo"].ToString() != "" ? sdr["EstimateRefNo"].ToString() : estimate.EstimateRefNo);
                                     estimate.EstimateDate = (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()) : estimate.EstimateDate);
@@ -119,12 +121,16 @@ namespace PilotSmithApp.RepositoryService.Service
                                     estimate.Enquiry.EnquiryNo= (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : estimate.Enquiry.EnquiryNo);
                                     estimate.Customer = new Customer();
                                     estimate.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : estimate.Customer.CompanyName);
+                                    estimate.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : estimate.CustomerID);
                                     estimate.DocumentStatus = new DocumentStatus();
                                     estimate.DocumentStatus.Description = (sdr["DocumentStatus"].ToString() != "" ? sdr["DocumentStatus"].ToString() : estimate.DocumentStatus.Description);
+                                    estimate.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : estimate.DocumentStatusCode);
                                     estimate.Employee = new Employee();
-                                    estimate.Employee.Name = (sdr["PreparedBy"].ToString() != "" ? sdr["PreparedBy"].ToString() : estimate.Employee.Name);
+                                    estimate.Employee.Name = (sdr["PreparedByName"].ToString() != "" ? sdr["PreparedByName"].ToString() : estimate.Employee.Name);
+                                    estimate.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : estimate.PreparedBy);
                                     estimate.Branch = new Branch();
-                                    estimate.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : estimate.Branch.Description);
+                                    estimate.Branch.Description = (sdr["BranchCode"].ToString() != "" ? sdr["BranchCode"].ToString() : estimate.Branch.Description);
+                                    estimate.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : estimate.BranchCode);
                                     estimate.UserName = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : estimate.UserName);
                                 }
                         }
@@ -158,7 +164,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetEstimateDetailListByEstimateID]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@EstimateID", SqlDbType.UniqueIdentifier).Value = estimateID;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = estimateID;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
@@ -173,7 +179,11 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateDetail.SellingRate = (sdr["SellingRate"].ToString() != "" ? decimal.Parse(sdr["SellingRate"].ToString()) : estimateDetail.SellingRate);
                                         estimateDetail.DrawingNo = (sdr["DrawingNo"].ToString() != "" ? sdr["DrawingNo"].ToString() : estimateDetail.DrawingNo);
                                         estimateDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : estimateDetail.ProductSpec);
+                                        estimateDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : estimateDetail.ProductID);
+                                        estimateDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : estimateDetail.ProductModelID);
+                                        estimateDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : estimateDetail.UnitCode);
                                         estimateDetail.Product = new Product();
+                                        estimateDetail.Product.Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : estimateDetail.Product.Code);
                                         estimateDetail.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : estimateDetail.Product.Name);
                                         estimateDetail.ProductModel = new ProductModel();
                                         estimateDetail.ProductModel.Name = (sdr["ModelName"].ToString() != "" ? sdr["ModelName"].ToString() : estimateDetail.ProductModel.Name);

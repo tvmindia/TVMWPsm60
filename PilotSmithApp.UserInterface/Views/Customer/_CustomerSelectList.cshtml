@@ -9,7 +9,7 @@
 else
 {
     <div class="input-group">
-        @Html.DropDownList("CustomerID", Model.CustomerSelectList, "--Select customer--", new { @class = "form-control newinput", @onchange = "$('#hdnCustomerID').val(this.value)" })
+        @Html.DropDownList("CustomerID", Model.CustomerSelectList, "--Select customer--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnCustomerID').val(this.value)" })
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCustomerMaster('OTR')"><i class="fa fa-plus-square"></i></span>
     </div>
 }

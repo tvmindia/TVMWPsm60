@@ -15,21 +15,23 @@
 
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator"> General Details</div>          
+            <div class="col-md-12 headSeperator"> General Details</div>
 
             <div class="form-group col-md-12 no-padding">
-
-                <div class="col-md-12 no-padding">
+                <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EnquiryID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         <div class="divEnquirySelectList">
-                            @Html.Action("EnquirySelectList", "Enquiry", new { required = "required" })
+                            @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
                         </div>
                     </div>
-                    @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
+                    @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
                 </div>
+            </div>
+
+            <div class="form-group col-md-12 no-padding">
 
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
@@ -81,7 +83,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "ENQ" })
+                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "", code = "ENQ" })
                         </div>
                         @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
@@ -110,7 +112,7 @@
             <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
                 <table id="tblEstimateDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                     <thead>
-                        <tr class="text-center TableHead">                            
+                        <tr class="text-center TableHead">
                             <th>Product Code</th>
                             <th>Product Name</th>
                             <th>Model</th>
@@ -138,7 +140,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocOwnerSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                            @*@Html.Action("BranchSelectList", "Branch", new { required = "" })*@
                         </div>
                         @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })
                     </div>
@@ -238,7 +240,7 @@
             console.log(e.message);
         }
         try {
-            $('#EstimateGradeCode').select2({});
+            $('#CustomerID,#BranchCode').select2({});
             $('.select2').addClass('form-control newinput');
         }
         catch (e) {

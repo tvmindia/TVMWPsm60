@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Contructor Injection
         // GET: Company
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
         public ActionResult Index(string code)
         {
             ViewBag.SysModeuleCode = code;
@@ -31,6 +33,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #region InsertUpdateCompany
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "W")]
         public string InsertUpdateCompany(CompanyViewModel companyVM)
         {
             try
@@ -55,6 +60,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion InsertUpdateCompany
 
         #region CheckCompanyNameExist
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckCompanyNameExist(CompanyViewModel companyVM)
         {
@@ -70,6 +76,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
         public ActionResult MasterPartial(Guid masterCode)
         {
             CompanyViewModel companyVM = masterCode == Guid.Empty? new CompanyViewModel() : Mapper.Map<Company, CompanyViewModel>(_companyBusiness.GetCompany(masterCode));
@@ -80,6 +87,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion MasterPartial
 
         #region CompanySelectList
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
         public ActionResult CompanySelectList(string required)
         {
             ViewBag.IsRequired = required;
@@ -90,6 +98,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion CompanySelectList
 
         #region GetAllCompany
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
         public JsonResult GetAllCompany(DataTableAjaxPostModel model, CompanyAdvanceSearchViewModel companyAdvanceSearchVM)
         {
             companyAdvanceSearchVM.DataTablePaging.Start = model.start;
@@ -113,6 +123,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllCompany
 
         #region DeleteCompany
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "D")]
         public string DeleteCompany(Guid id)
         {
             try
@@ -130,7 +142,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
