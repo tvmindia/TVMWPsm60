@@ -696,6 +696,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
+    <Compile Include="Controllers\DocumentOwnerController.cs" />
     <Compile Include="Controllers\DocumentStatusController.cs" />
     <Compile Include="Controllers\DynamicUIController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -854,6 +855,7 @@
     <Content Include="Views\Employee\_PreparedBySelectList.cshtml" />
     <Content Include="Views\Employee\_EmployeeForm.cshtml" />
     <Content Include="Views\DynamicUI\PopUpUnderConstruction.cshtml" />
+    <Content Include="Views\DocumentOwner\_DocumentOwnerSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
