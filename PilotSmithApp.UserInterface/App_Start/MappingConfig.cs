@@ -72,6 +72,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<QuotationDetailViewModel, QuotationDetail>().ReverseMap();
 
                 config.CreateMap<SalesSummaryViewModel, SalesSummary>().ReverseMap();
+                config.CreateMap<EnquiryValueFolloupSummaryViewModel, EnquiryValueFolloupSummary>().ReverseMap();
             });
         }
     }

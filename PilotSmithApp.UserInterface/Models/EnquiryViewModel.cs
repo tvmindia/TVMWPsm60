@@ -86,4 +86,11 @@ namespace PilotSmithApp.UserInterface.Models
         public UnitViewModel Unit { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
     }
+
+    public class EnquiryValueFolloupSummaryViewModel
+    {
+        public string Enquiry { get; set; }
+        public decimal EnquiryValue { get; set; }
+        public int FollowupCount { get; set; }
+    }
 }
