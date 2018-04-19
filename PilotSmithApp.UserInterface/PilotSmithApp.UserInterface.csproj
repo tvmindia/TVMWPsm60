@@ -657,6 +657,7 @@
     <Content Include="Scripts\UserJS\Area.js" />
     <Content Include="Scripts\UserJS\Company.js" />
     <Content Include="Scripts\UserJS\CustomerJS\Customer.js" />
+    <Content Include="Scripts\UserJS\EnquiryFollowupSummary.js" />
     <Content Include="Scripts\UserJS\District.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
     <Content Include="Scripts\UserJS\Estimate.js" />
@@ -671,6 +672,7 @@
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
+    <Content Include="Scripts\UserJS\SalesSummary.js" />
     <Content Include="Scripts\UserJS\State.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
@@ -861,6 +863,8 @@
     <Content Include="Views\Quotation\_AddQuotationDetail.cshtml" />
     <Content Include="Views\Quotation\_GSTCalculatedFields.cshtml" />
     <Content Include="Views\TaxType\_TaxTypeSelectList.cshtml" />
+    <Content Include="Views\DashBoard\_SalesSummary.cshtml" />
+    <Content Include="Views\DashBoard\_EnquiryFollowupSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

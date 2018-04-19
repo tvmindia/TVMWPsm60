@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PilotSmithApp.RepositoryService.Service
 {
-    public class EnquiryRepository:IEnquiryRepository
+    public class EnquiryRepository : IEnquiryRepository
     {
         private IDatabaseFactory _databaseFactory;
         AppConst _appConstant = new AppConst();
@@ -67,7 +67,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiry.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiry.ID);
                                         enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : enquiry.EnquiryNo);
                                         enquiry.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()) : enquiry.EnquiryDate);
-                                        enquiry.EnquiryDateFormatted= (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiry.EnquiryDateFormatted);
+                                        enquiry.EnquiryDateFormatted = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiry.EnquiryDateFormatted);
                                         enquiry.RequirementSpec = (sdr["RequirementSpec"].ToString() != "" ? sdr["RequirementSpec"].ToString() : enquiry.RequirementSpec);
                                         enquiry.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.CustomerID);
                                         enquiry.Customer = new Customer();
@@ -81,12 +81,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiry.EnquiryGrade.Description = (sdr["EnquiryGradeDescription"].ToString() != "" ? sdr["EnquiryGradeDescription"].ToString() : enquiry.EnquiryGrade.Description);
                                         enquiry.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatusCode);
                                         enquiry.DocumentStatus = new DocumentStatus();
-                                        enquiry.DocumentStatus.Code= (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatus.Code);
-                                        enquiry.DocumentStatus.Description= (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
+                                        enquiry.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatus.Code);
+                                        enquiry.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
                                         enquiry.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferredByCode);
                                         enquiry.ReferencePerson = new ReferencePerson();
-                                        enquiry.ReferencePerson.Code= (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferencePerson.Code);
-                                        enquiry.ReferencePerson.Name= (sdr["ReferredByCode"].ToString() != "" ? (sdr["ReferencePersonName"].ToString()) : enquiry.ReferencePerson.Name);
+                                        enquiry.ReferencePerson.Code = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferencePerson.Code);
+                                        enquiry.ReferencePerson.Name = (sdr["ReferredByCode"].ToString() != "" ? (sdr["ReferencePersonName"].ToString()) : enquiry.ReferencePerson.Name);
                                         enquiry.ResponsiblePersonID = (sdr["ReferencePersonName"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
                                         enquiry.AttendedByID = (sdr["AttendedByID"].ToString() != "" ? Guid.Parse(sdr["AttendedByID"].ToString()) : enquiry.AttendedByID);
                                         enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
@@ -147,7 +147,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
                                     enquiry.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : enquiry.DocumentOwnerID);
                                     enquiry.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : enquiry.BranchCode);
-                                    
+
                                 }
                         }
                     }
@@ -200,14 +200,14 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         enquiryDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         enquiryDetail.ProductModel = new ProductModel();
-                                        enquiryDetail.ProductModel.ID= (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
-                                        enquiryDetail.ProductModel.Name= (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : enquiryDetail.ProductModel.Name);
+                                        enquiryDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
+                                        enquiryDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : enquiryDetail.ProductModel.Name);
                                         enquiryDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : enquiryDetail.Qty);
                                         enquiryDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : enquiryDetail.Rate);
                                         enquiryDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetail.UnitCode);
                                         enquiryDetail.Unit = new Unit();
-                                        enquiryDetail.Unit.Code= (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetail.Unit.Code);
-                                        enquiryDetail.Unit.Description= (sdr["UnitDescription"].ToString() != "" ? (sdr["UnitDescription"].ToString()) : enquiryDetail.Unit.Description);
+                                        enquiryDetail.Unit.Code = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetail.Unit.Code);
+                                        enquiryDetail.Unit.Description = (sdr["UnitDescription"].ToString() != "" ? (sdr["UnitDescription"].ToString()) : enquiryDetail.Unit.Description);
                                     }
                                     enquiryDetailList.Add(enquiryDetail);
                                 }
@@ -249,7 +249,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@EnquiryDate", SqlDbType.DateTime).Value = enquiry.EnquiryDateFormatted;
                         cmd.Parameters.Add("@RequirementSpec", SqlDbType.NVarChar, -1).Value = enquiry.RequirementSpec;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = enquiry.CustomerID;
-                        cmd.Parameters.Add("@GradeCode", SqlDbType.Int).Value = enquiry.EnquiryGradeCode;                        
+                        cmd.Parameters.Add("@GradeCode", SqlDbType.Int).Value = enquiry.EnquiryGradeCode;
                         cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = enquiry.DocumentStatusCode;
                         cmd.Parameters.Add("@ReferredByCode", SqlDbType.Int).Value = enquiry.ReferredByCode;
                         cmd.Parameters.Add("@ResponsiblePersonID", SqlDbType.UniqueIdentifier).Value = enquiry.ResponsiblePersonID;
@@ -283,7 +283,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         return new
                         {
                             ID = enquiry.ID,
-                            EnquiryNo= enquiry.EnquiryNo,
+                            EnquiryNo = enquiry.EnquiryNo,
                             Status = outputStatus.Value.ToString(),
                             Message = enquiry.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
                         };
@@ -451,5 +451,50 @@ namespace PilotSmithApp.RepositoryService.Service
             return enquiryList;
         }
         #endregion GetEnquiryForSelectList
+
+        #region GetEnquiryValueVsFollowupCountSummary
+        public List<EnquiryValueFolloupSummary> GetEnquiryValueVsFollowupCountSummary() {
+            List<EnquiryValueFolloupSummary> EnquiryValueList = new List<EnquiryValueFolloupSummary>();
+            EnquiryValueFolloupSummary EnquiryValue = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnquiryValueVsFollowupCountSummary]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    EnquiryValue = new EnquiryValueFolloupSummary();
+                                    EnquiryValue.Enquiry = (sdr["Enquiry"].ToString() != "" ? sdr["Enquiry"].ToString() : EnquiryValue.Enquiry);
+                                    EnquiryValue.EnquiryValue = (sdr["EnqValue"].ToString() != "" ? decimal.Parse(sdr["EnqValue"].ToString()) : EnquiryValue.EnquiryValue);
+                                    EnquiryValue.FollowupCount = (sdr["FollowupCount"].ToString() != "" ? int.Parse(sdr["FollowupCount"].ToString()) : EnquiryValue.FollowupCount);
+
+                                    EnquiryValueList.Add(EnquiryValue);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return EnquiryValueList;
+
+        }
+        #endregion GetEnquiryValueVsFollowupCountSummary
+
     }
 }

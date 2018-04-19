@@ -1143,9 +1143,9 @@ background-position: 0% 50%;
      text-shadow: 0 1px 0 #545454;
 }
 .GraphCaption {
-    color: #49bade;
-      font-size:22px;
-     text-shadow: 0 1px 0 rgba(148, 78, 132, 0.16);
+    color: #03a18c;
+      font-size:18px;
+     text-shadow: 0 1px 0 rgba(148, 78, 132, 0.21);
 }
 .Summary {
 
@@ -1153,7 +1153,7 @@ background-position: 0% 50%;
     text-align:center;
     font-size:medium;
     vertical-align:middle;
-    background-color: white;
+    background-color: rgb(248, 248, 248);
 }
 
 .DashboardContainer {
@@ -1174,8 +1174,8 @@ background-position: 0% 50%;
 
 
 .box {
-    box-shadow: 0 8px 6px -6px #868282;
-    border:1px solid #efefef;
+    /*box-shadow: 0 8px 6px -6px #d2d6de;*/
+    border:1px solid #e3f6e0;
 }
 .navbar,.logo{
     background-image: -webkit-gradient(linear, left 0%, left 100%, from(#00BFA5), to(#068a78))

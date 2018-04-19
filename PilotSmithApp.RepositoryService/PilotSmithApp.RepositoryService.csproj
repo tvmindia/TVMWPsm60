@@ -66,6 +66,7 @@
     <Compile Include="Contract\IQuotationRepository.cs" />
     <Compile Include="Contract\IReferencePersonRepository.cs" />
     <Compile Include="Contract\IReferenceTypeRepository.cs" />
+    <Compile Include="Contract\ISalesInvoiceRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
     <Compile Include="Contract\IPaymentTermRepository.cs" />
     <Compile Include="Contract\ITaxTypeRepository.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Service\QuotationRepository.cs" />
     <Compile Include="Service\ReferencePersonRepository.cs" />
     <Compile Include="Service\ReferenceTypeRepository.cs" />
+    <Compile Include="Service\SalesInvoiceRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
     <Compile Include="Service\PaymentTermRepository.cs" />
     <Compile Include="Service\TaxTypeRepository.cs" />
