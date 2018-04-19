@@ -51,7 +51,7 @@ function BindOrReloadAreaTable(action) {
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [0, 1, 2, 3, 4]
+                                     columns: [ 1, 2, 3, 4]
                                  }
                 }],
                 ordering: false,
@@ -81,7 +81,7 @@ function BindOrReloadAreaTable(action) {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditAreaMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteAreaMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
+                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [4] },
                 { "targets": [0], "width": "10%" },
                 { "targets": [1], "width": "10%" },

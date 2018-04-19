@@ -27,6 +27,8 @@ else
                 $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
                     $('#ProductSpec').val($('#spnProductName').text());
                     $('#Rate').val($('#spnSellingPrice').text().replace('₹ ', '').trim());
+                    $('#CostRate').val($('#spnCostPrice').text().replace('₹ ', ' ').trim());
+                    $('#SellingRate').val($('#spnSellingPrice').text().replace('₹ ',' ').trim());
                 });
             }
         });

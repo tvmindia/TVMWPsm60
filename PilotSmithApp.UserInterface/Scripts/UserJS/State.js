@@ -50,7 +50,7 @@ function BindOrReloadStateTable(action) {
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [0, 1, 2]
+                                     columns: [ 1, 2]
                                  }
                 }],
                 ordering: false,
@@ -78,7 +78,7 @@ function BindOrReloadStateTable(action) {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditStateMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteStateMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
+                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [2] },
                 { "targets": [0], "width": "10%" },
                 { "targets": [1], "width": "50%" },

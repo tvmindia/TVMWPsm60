@@ -61,6 +61,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetEstimateForm
 
         #region Estimate Detail Add
+        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult AddEstimateDetail()
          {
             EstimateDetailViewModel estimateDetailVM = new EstimateDetailViewModel();
@@ -106,7 +107,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateEstimate
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "W")]
         public string InsertUpdateEstimate(EstimateViewModel estimateVM)
         {
             //object resultFromBusiness = null;
@@ -147,6 +148,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion InsertUpdateEstimate
 
         # region EstimateSelectList
+        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult EstimateSelectList(string required)
         {
             ViewBag.IsRequired = required;
@@ -250,7 +252,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        //[AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
