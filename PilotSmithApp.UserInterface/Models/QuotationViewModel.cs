@@ -99,5 +99,6 @@ namespace PilotSmithApp.UserInterface.Models
         public ProductViewModel Product { get; set; }
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
+        public TaxTypeViewModel TaxType { get; set; }
     }
 }

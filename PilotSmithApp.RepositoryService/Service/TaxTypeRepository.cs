@@ -89,7 +89,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     TaxType taxType = new TaxType();
                                     {
-                                        taxType.Text = (sdr["Text"].ToString() != "" ? (sdr["Text"].ToString()) : taxType.Text);
+                                        taxType.ValueText = (sdr["Text"].ToString() != "" ? (sdr["Text"].ToString()) : taxType.ValueText);
                                         taxType.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : taxType.Description);
                                     }
                                     taxTypeList.Add(taxType);

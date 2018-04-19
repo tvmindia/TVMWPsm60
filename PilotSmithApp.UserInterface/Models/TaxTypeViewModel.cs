@@ -13,6 +13,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal CGSTPercentage { get; set; }
         public decimal SGSTPercentage { get; set; }
         public decimal IGSTPercentage { get; set; }
+        public string ValueText { get; set; }
         public List<SelectListItem> TaxTypeSelectList { get; set; }
     }
 }

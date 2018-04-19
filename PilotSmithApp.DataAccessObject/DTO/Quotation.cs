@@ -75,6 +75,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set; }
         public Unit Unit { get; set; }
-
+        public TaxType TaxType { get; set; }
     }
 }

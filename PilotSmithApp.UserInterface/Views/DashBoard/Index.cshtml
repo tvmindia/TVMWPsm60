@@ -13,6 +13,15 @@
         }
 
 </div>
+<div class="col-md-12 DashboardContainer" id="enqsummaryDiv">
+
+    @{
+
+        @Html.Action("EnquiryValueVsFollowupCountSummary", "DashBoard");
+
+    }
+
+</div>
     @section scripts{
         @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/DashBoard")
 

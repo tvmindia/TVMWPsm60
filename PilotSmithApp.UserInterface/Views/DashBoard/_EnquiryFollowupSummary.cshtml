@@ -1,0 +1,27 @@
+﻿@model PilotSmithApp.UserInterface.Models.EnquiryFollowupSummaryList
+
+@using PilotSmithApp.UserInterface.Models
+@{
+
+    List<EnquiryValueFolloupSummaryViewModel> salesList = Model.EnquiryFollowupSummaryVMList;
+}
+<div class="col-md-12 GraphCaption"> Enquiry Vs Value </div>
+<div class="col-md-12" style="margin-bottom:15px">
+
+    <div class="col-md-12 Summary box" style="padding-top:15px;text-align:left;max-width:100%;overflow-x:scroll">
+        <div class="col-md-12">
+            <canvas id="enquiryChart" style="width:95%;height:220px"></canvas>
+        </div>
+        
+
+    </div>
+</div>
+ 
+<script>
+    var enqLbl=@Html.Raw(Json.Encode( salesList.Select(s => (s.Enquiry + " : " + s.FollowupCount + " Followups" )).ToList()));
+    var enqData=@Html.Raw(Json.Encode( salesList.Select(s => s.EnquiryValue).ToList()));
+    var enqFlw=@Html.Raw(Json.Encode( salesList.Select(s => s.FollowupCount).ToList()));
+
+
+
+</script>

@@ -15,10 +15,12 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
 
         ISalesInvoieBusiness _salesInvoiceBusiness;
+        IEnquiryBusiness _enquiryBusiness;
         ICommonBusiness _commonBusiness;
-        public DashBoardController(ISalesInvoieBusiness salesInvoiceBusiness, ICommonBusiness commonBusiness) {
+        public DashBoardController(ISalesInvoieBusiness salesInvoiceBusiness, ICommonBusiness commonBusiness, IEnquiryBusiness enquiryBusiness) {
             _salesInvoiceBusiness = salesInvoiceBusiness;
             _commonBusiness = commonBusiness;
+            _enquiryBusiness = enquiryBusiness;
         }
 
 
@@ -36,6 +38,15 @@ namespace PilotSmithApp.UserInterface.Controllers
             SalesSummaryList salesList = new SalesSummaryList();
             salesList.SalesSummaryVMList = Mapper.Map<List<SalesSummary>, List<SalesSummaryViewModel>>(_salesInvoiceBusiness.GetSalesSummary());
             return PartialView("_SalesSummary", salesList);
+        }
+
+        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
+        public ActionResult EnquiryValueVsFollowupCountSummary()
+        {
+
+            EnquiryFollowupSummaryList enqFollowupSummary = new EnquiryFollowupSummaryList();
+            enqFollowupSummary.EnquiryFollowupSummaryVMList = Mapper.Map<List<EnquiryValueFolloupSummary>, List<EnquiryValueFolloupSummaryViewModel>>(_enquiryBusiness.GetEnquiryValueVsFollowupCountSummary());
+            return PartialView("_EnquiryFollowupSummary", enqFollowupSummary);
         }
 
     }

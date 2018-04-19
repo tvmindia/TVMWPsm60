@@ -31,7 +31,7 @@ namespace PilotSmithApp.BusinessService.Service
                     selectListItem.Add(new SelectListItem
                     {
                         Text = taxType.Description,
-                        Value = taxType.Text.ToString(),
+                        Value = taxType.ValueText.ToString(),
                         Selected = false
                     });
                 }

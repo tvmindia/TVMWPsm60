@@ -108,6 +108,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         {
                             Description = null,
                         },
+                        TaxType=new TaxTypeViewModel()
+                        {
+                            ValueText = "",
+                        }
                     };
                     quotationItemViewModelList.Add(quotationDetailVM);
                 }

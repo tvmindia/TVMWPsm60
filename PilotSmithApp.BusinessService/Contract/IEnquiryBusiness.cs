@@ -17,5 +17,6 @@ namespace PilotSmithApp.BusinessService.Contract
         object DeleteEnquiry(Guid id);
         object DeleteEnquiryDetail(Guid id);
         List<SelectListItem> GetEnquiryForSelectList();
+        List<EnquiryValueFolloupSummary> GetEnquiryValueVsFollowupCountSummary();
     }
 }

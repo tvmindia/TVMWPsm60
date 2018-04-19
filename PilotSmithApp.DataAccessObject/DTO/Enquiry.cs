@@ -58,4 +58,10 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
         public Unit Unit { get; set; }
     }
+
+    public class EnquiryValueFolloupSummary {
+        public string Enquiry { get; set; }
+        public decimal EnquiryValue { get; set; }
+        public int FollowupCount { get; set; }
+    }
 }

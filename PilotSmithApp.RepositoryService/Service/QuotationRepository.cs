@@ -219,6 +219,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationDetail.Unit.Description = (sdr["UnitDescription"].ToString() != "" ? (sdr["UnitDescription"].ToString()) : quotationDetail.Unit.Description);
                                         quotationDetail.Discount= (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : quotationDetail.Discount);
                                         quotationDetail.TaxTypeCode= (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationDetail.TaxTypeCode);
+                                        quotationDetail.TaxType = new TaxType();
+                                        quotationDetail.TaxType.ValueText= (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : quotationDetail.TaxType.ValueText);
                                         quotationDetail.CGSTAmt = (sdr["CGSTAmt"].ToString() != "" ? decimal.Parse(sdr["CGSTAmt"].ToString()) : quotationDetail.CGSTAmt);
                                         quotationDetail.SGSTAmt = (sdr["SGSTAmt"].ToString() != "" ? decimal.Parse(sdr["SGSTAmt"].ToString()) : quotationDetail.SGSTAmt);
                                         quotationDetail.IGSTAmt = (sdr["IGSTAmt"].ToString() != "" ? decimal.Parse(sdr["IGSTAmt"].ToString()) : quotationDetail.IGSTAmt);
