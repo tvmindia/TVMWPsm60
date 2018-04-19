@@ -40,12 +40,22 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetAllEstimate]";
-                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(estimateAdvanceSearch.SearchTerm) ? "" : estimateAdvanceSearch.SearchTerm;
+                        if (string.IsNullOrEmpty(estimateAdvanceSearch.SearchTerm))
+                        {
+                            cmd.Parameters.AddWithValue("@SearchTerm", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = estimateAdvanceSearch.SearchTerm;
+
+                        }
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = estimateAdvanceSearch.DataTablePaging.Start;
                         if (estimateAdvanceSearch.DataTablePaging.Length == -1)
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = estimateAdvanceSearch.DataTablePaging.Length;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = estimateAdvanceSearch.FromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = estimateAdvanceSearch.ToDate;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -133,7 +143,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     estimate.Branch = new Branch();
                                     estimate.Branch.Description = (sdr["BranchCode"].ToString() != "" ? sdr["BranchCode"].ToString() : estimate.Branch.Description);
                                     estimate.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : estimate.BranchCode);
-                                    estimate.UserName = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : estimate.UserName);
+                                    estimate.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : estimate.DocumentOwnerID);
                                 }
                         }
                     }

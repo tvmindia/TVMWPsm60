@@ -54,7 +54,7 @@ function BindOrReloadDistrictTable(action) {
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [0, 1, 2, 3]
+                                     columns: [ 1, 2, 3]
                                  }
                 }],
                 ordering: false,
@@ -83,7 +83,7 @@ function BindOrReloadDistrictTable(action) {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditDistrictMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteDistrictMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
+                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [3] },
                 { "targets": [0], "width": "10%" },
                 {"targets":[1],"width":"10%"},

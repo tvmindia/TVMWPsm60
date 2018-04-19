@@ -282,10 +282,10 @@ function BindEstimateDetailList(id) {
              { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Qty", render: function (data, type, row) {
-                     return data + " " + row.UnitCode
+                     return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "CostRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "SellingRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
@@ -293,9 +293,9 @@ function BindEstimateDetailList(id) {
              columnDefs: [
                  { "targets": [0, 1], "width": "10%" },
                  { "targets": [3], "width": "30%" },
-                 { "targets": [6,7], "width": "10%" },
-
-                 { className: "text-right", "targets": [6,7] }
+                 { "targets": [,5,6], "width": "10%" },
+                 { className: "text-left", "targets": [0,1,2,3,4] },
+                 { className: "text-right", "targets": [5,6] }
              ]
          });
 }
