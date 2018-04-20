@@ -17,7 +17,7 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator"> General Details</div>
 
-            <div class="form-group col-md-12 no-padding">
+            <div class="form-group col-md-12 ">
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EnquiryID, htmlAttributes: new { @class = "control-label" })
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-12 no-padding">
+            <div class="form-group col-md-12 ">
 
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-12 no-padding">
+            <div class="form-group col-md-12 ">
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
@@ -118,7 +118,7 @@
                             <th>Model</th>
                             <th>Spec.</th>
                             <th>Qty</th>
-                            <th>Unit</th>
+                            @*<th>Unit</th>*@
                             <th>Cost Price</th>
                             <th>Selling Price</th>
                             <th>...</th>
@@ -132,15 +132,15 @@
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">Status & Other details</div>
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-12 ">
 
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divDocOwnerSelectList">
-                            @*@Html.Action("BranchSelectList", "Branch", new { required = "" })*@
+                        <div class="divDocumentOwnerSelectList">
+                            @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "" })
                         </div>
                         @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })
                     </div>

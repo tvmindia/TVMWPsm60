@@ -49,5 +49,15 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_EnquiryFollowupSummary", enqFollowupSummary);
         }
 
+
+
+        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
+        public ActionResult DocumentSummary()
+        {
+
+           
+            return PartialView("_DocumentSummary");
+        }
+
     }
 }

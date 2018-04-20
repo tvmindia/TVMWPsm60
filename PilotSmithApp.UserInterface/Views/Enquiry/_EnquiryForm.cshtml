@@ -162,7 +162,7 @@
                         @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
+                        <div class="divDocumentOwnerSelectList">
                             @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "required" })
                         </div>
                         @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerCode" })

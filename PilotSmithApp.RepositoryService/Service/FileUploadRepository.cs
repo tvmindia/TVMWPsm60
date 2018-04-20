@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.Http;
 using System.Web;
 
 namespace PilotSmithApp.RepositoryService.Service
@@ -159,7 +160,7 @@ namespace PilotSmithApp.RepositoryService.Service
                     case "1":
                         if (OutparameterURL.Value.ToString() != "")
                         {
-                            //System.IO.File.Delete(HttpContent.Current.Server.MapPath(OutparameterURL.Value.ToString()));
+                            System.IO.File.Delete(HttpContext.Current.Server.MapPath(OutparameterURL.Value.ToString()));
                         }
                         break;
                     case "0":

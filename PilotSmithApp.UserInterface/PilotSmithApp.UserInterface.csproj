@@ -257,9 +257,16 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
     <Content Include="Content\images\envelope.png" />
+    <Content Include="Content\images\document.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\patternPop.png" />
+    <Content Include="Content\images\production.png" />
     <Content Include="Content\images\rupee.png" />
+    <Content Include="Content\images\saleorder.png" />
+    <Content Include="Content\images\SuppPord.png" />
+    <Content Include="Content\MailTemplate\DocumentApproved.html" />
+    <Content Include="Content\MailTemplate\DocumentRejected.html" />
+    <Content Include="Content\MailTemplate\SendForApproval.html" />
     <Content Include="Content\PSAForms.css" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -869,6 +876,7 @@
     <Content Include="Views\DashBoard\_SalesSummary.cshtml" />
     <Content Include="Views\DashBoard\_EnquiryFollowupSummary.cshtml" />
     <Content Include="Views\Quotation\_EmailQuotation.cshtml" />
+    <Content Include="Views\DashBoard\_DocumentSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

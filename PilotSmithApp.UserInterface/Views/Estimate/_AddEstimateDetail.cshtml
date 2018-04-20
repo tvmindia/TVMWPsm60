@@ -102,15 +102,18 @@
         $('#ProductID').change(function () {
             if ($('#divProductBasicInfo') != undefined)
             {
+                debugger;
                 $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#ProductSpec').val($('#spnProductName').text());
+                    $('#ProductSpec').val($('#spnProductName').text());                    
                 });
             }
             if ($('.divProductModelSelectList') != undefined) {
+                debugger;
                 $('#dropLoad').addClass('fa fa-spinner fa-spin');
                 if (this.value != "")
                 {
                     $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+
                 }
                 else
                 {
