@@ -138,6 +138,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.QuoteDateFormatted = (sdr["QuoteDate"].ToString() != "" ? DateTime.Parse(sdr["QuoteDate"].ToString()).ToString("dd-MMM-yyyy") : quotation.QuoteDateFormatted);
                                     quotation.EstimateID = (sdr["EstimateID"].ToString() != "" ? Guid.Parse(sdr["EstimateID"].ToString()) : quotation.EstimateID);
                                     quotation.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : quotation.CustomerID);
+                                    quotation.Customer = new Customer();
+                                    quotation.Customer.CompanyName= (sdr["CustomerCompanyName"].ToString() != "" ? (sdr["CustomerCompanyName"].ToString()) : quotation.Customer.CompanyName);
                                     quotation.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : quotation.MailingAddress);
                                     quotation.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : quotation.ShippingAddress);
                                     quotation.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : quotation.DocumentStatusCode);
@@ -274,7 +276,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = quotation.PreparedBy;
                         cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = quotation.MailBodyHeader;
                         cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = quotation.MailBodyFooter;
-                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit, -1).Value = quotation.EmailSentYN;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quotation.EmailSentYN;
                         cmd.Parameters.Add("@LatestApprovalID", SqlDbType.UniqueIdentifier).Value = quotation.LatestApprovalID;
                         cmd.Parameters.Add("@IsFinalApproved", SqlDbType.Bit).Value = quotation.IsFinalApproved;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar,-1).Value = quotation.EmailSentTo;
@@ -288,8 +290,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         //-----------------------//
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = quotation.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.CreatedDate;
-                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quotation.PSASysCommon.CreatedBy;
-                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.CreatedDate;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quotation.PSASysCommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
@@ -331,6 +333,61 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Insert Update Quotation
+        #region Update Quotation Email Info
+        public object UpdateQuotationEmailInfo(Quotation quotation)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[UpdateQuotationEmailInfo]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = quotation.ID;
+                        cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = quotation.MailBodyHeader;
+                        cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = quotation.MailBodyFooter;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quotation.EmailSentYN;
+                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = quotation.EmailSentTo;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quotation.PSASysCommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(_appConstant.InsertFailure);
+                    case "1":
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = quotation.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = quotation.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+            };
+        }
+        #endregion Update Quotation Email Info
         #region Delete Quotation
         public object DeleteQuotation(Guid id)
         {

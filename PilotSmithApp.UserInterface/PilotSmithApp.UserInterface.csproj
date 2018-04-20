@@ -256,6 +256,7 @@
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
+    <Content Include="Content\images\envelope.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\patternPop.png" />
     <Content Include="Content\images\rupee.png" />
@@ -708,6 +709,7 @@
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ManageAccessController.cs" />
     <Compile Include="Controllers\PaymentTermController.cs" />
+    <Compile Include="Controllers\PDFGeneratorController.cs" />
     <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -737,6 +739,7 @@
     <Compile Include="Models\EnquiryGradeViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\EstimateViewModel.cs" />
+    <Compile Include="Models\PDFGeneratorViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductModelViewModel.cs" />
     <Compile Include="Models\ProductSpecificationViewModel.cs" />
@@ -865,6 +868,7 @@
     <Content Include="Views\TaxType\_TaxTypeSelectList.cshtml" />
     <Content Include="Views\DashBoard\_SalesSummary.cshtml" />
     <Content Include="Views\DashBoard\_EnquiryFollowupSummary.cshtml" />
+    <Content Include="Views\Quotation\_EmailQuotation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

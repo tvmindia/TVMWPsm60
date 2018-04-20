@@ -56,6 +56,7 @@
     <Compile Include="DTO\EnquiryFollowup.cs" />
     <Compile Include="DTO\EnquiryGrade.cs" />
     <Compile Include="DTO\Estimate.cs" />
+    <Compile Include="DTO\Mail.cs" />
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\ProductCategory.cs" />
     <Compile Include="DTO\ProductModel.cs" />

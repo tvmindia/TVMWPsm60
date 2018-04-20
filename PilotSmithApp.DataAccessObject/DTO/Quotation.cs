@@ -36,6 +36,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         //Additional fields
+        public string MailContant { get; set; }
         public string QuoteDateFormatted { get; set; }
         public string ValidUpToDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
