@@ -29,7 +29,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ToolBoxStructure AssignBtn;
         public ToolBoxStructure HistoryBtn;
         public ToolBoxStructure ListBtn;
-
+        public ToolBoxStructure EmailBtn;
         public ToolboxViewModel()
         {
             backbtn.SecurityObject = "ButtonBack";
@@ -51,7 +51,7 @@ namespace PilotSmithApp.UserInterface.Models
             downloadBtn.SecurityObject = "ButtonDownload";
             AssignBtn.SecurityObject = "ButtonAssign";
             HistoryBtn.SecurityObject = "ButtonHistory";
-
+            EmailBtn.SecurityObject = "ButtonEmail";
             ClearOutBtn.SecurityObject = "ButtonClear";
 
             backbtn.HasAccess = true;
@@ -75,6 +75,7 @@ namespace PilotSmithApp.UserInterface.Models
             downloadBtn.HasAccess = true;
             AssignBtn.HasAccess = true;
             HistoryBtn.HasAccess = true;
+            EmailBtn.HasAccess = true;
         }
 
     }

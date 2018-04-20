@@ -155,6 +155,7 @@ function AddQuotation() {
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
         BindQuotationDetailList(_emptyGuid);
+        //BindQuotationOtherChargesDetailList(_emptyGuid)
         OnServerCallComplete();
         setTimeout(function () {
             //resides in customjs for sliding
@@ -174,7 +175,7 @@ function EditQuotation(this_Obj) {
         clearUploadControl();
         PaintImages(Quotation.ID);
         OnServerCallComplete();
-        setTimeout(function () {
+        setTimeout(function () {            
             //resides in customjs for sliding
             openNav();
         }, 100);
@@ -267,6 +268,61 @@ function DeleteQuotationItem(id) {
         console.log(e.message);
     }
 }
+//
+function BindQuotationOtherChargesDetailList(id) {
+    debugger;
+    _dataTable.QuotationOtherChargesDetailList = $('#tblQuotationOtherChargesDetailList').DataTable(
+         {
+             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             order: [],
+             searching: false,
+             paging: false,
+             ordering: false,
+             bInfo: false,
+             data: id == _emptyGuid ? null : GetQuotationOtherChargesDetailListByQuotationID(id),
+             language: {
+                 search: "_INPUT_",
+                 searchPlaceholder: "Search"
+             },
+             columns: [
+             { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Charge Amount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "CGSTAmt", render: function (data, type, row) {
+                     debugger;
+                     return ""
+                     //var CGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[0].split('-')[1] : 0);
+                     //var SGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[1].split('-')[1] : 0);
+                     //var IGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[2].split('-')[1] : 0);
+                     //var GSTAmt = roundoff(parseFloat(data) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
+                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(row.SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(data)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(row.IGSTAmt)) + '</p>"/>' + GSTAmt
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "Charge Amount", render: function (data, type, row) {
+                     return ""
+                     //var TaxableAmt = roundoff((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0))
+                     //var GSTAmt = roundoff(parseFloat(row.CGSTAmt) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
+                     //var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt) + parseFloat(row.CGSTAmt))
+                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             ],
+             columnDefs: [
+                 { "targets": [0], "width": "20%" },
+                 { "targets": [1, 2], "width": "20%" },
+                 { "targets": [3], "width": "20%" },
+                 { className: "text-left", "targets": [3] },
+                 { className: "text-center", "targets": [0, 1, 2] }
+             ]
+         });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'left'
+    });
+}
 function BindQuotationDetailList(id) {
     debugger;
     _dataTable.QuotationDetailList = $('#tblQuotationDetails').DataTable(
@@ -330,7 +386,26 @@ function BindQuotationDetailList(id) {
                  { className: "text-right", "targets": [4, 5, 6, 7, 8, 9] },
                  { className: "text-left", "targets": [ 3] },
                  { className: "text-center", "targets": [0, 1, 2, 10] }
-             ]
+             ],
+             rowCallback: function (row, data, index) {
+                 debugger;
+                 var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
+                 var GSTAmt = parseFloat(data.CGSTAmt) + parseFloat(data.SGSTAmt) + parseFloat(data.IGSTAmt)
+                 var GrossTotalAmt = TaxableAmt + GSTAmt
+
+                 var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
+                 var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
+                 var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
+                 var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + GrossTotalAmt)
+                 
+                 $('#lblTaxTotal').text(TaxTotal);
+                 $('#lblItemTotal').text(TaxableTotal);
+                 $('#lblGrossAmount').text(GrossAmount);
+                 $('#lblGrandTotal').text(GrandTotal);
+             },
+             initComplete: function (settings, json) {
+                 $('#QuotationForm #Discount').trigger('change');
+             }
          });
     $('[data-toggle="popover"]').popover({
         html: true,
@@ -547,30 +622,43 @@ function DeleteQuotationDetail(ID) {
         }
     }
 }
-//================================================================================================
-//QuotationFollowup Section
-function AddQuotationFollowUp() {
-    debugger;
-    $("#divModelQuotationPopBody").load("QuotationFollowup/AddQuotationFollowup?ID=" + _emptyGuid + "&QuotationID=" + $('#QuotationForm input[type="hidden"]#ID').val(), function () {
-        $('#lblModelPopQuotation').text('Add Quotation Followup')
-        $('#btnresetQuotationFollowup').trigger('click');
-        $('#divModelPopQuotation').modal('show');
+function CalculateGrandTotal(value)
+{
+    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) - parseFloat(value))
+    $('#lblGrandTotal').text(GrandTotal);
+}
+//=========================================================================================================================
+//Email Quotation
+//
+function EmailQuotation()
+{
+    $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=True", function () {
+        $('#lblModelEmailQuotation').text('Email Quotation')
+        $('#divModelEmailQuotation').modal('show');
+    });
+}
+function SendQuotationEmail()
+{
+    $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
+    $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
+}
+function UpdateQuotationEmailInfo()
+{
+    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+    $('#FormUpdateQuotationEmailInfo #ID').val($('#QuotationForm #ID').val());
+}
+function DownloadQuotation()
+{
+    var bodyContent = $('#divQuotationEmailcontainer').html();
+    var headerContent = $('#hdnHeadContent').html();
+    $('#hdnContent').val(bodyContent);
+    $('#hdnHeadContent').val(headerContent);
+    var customerName = $("#QuotationForm #CustomerID option:selected").text();
+    $('#hdnCustomerName').val(customerName);
+}
 
-    });
-}
-function QuotationFollowUpPaging(start) {
-    $("#divQuotationFollowupboxbody").load("QuotationFollowup/GetQuotationFollowupList?ID=" + _emptyGuid + "&QuotationID=" + $('#QuotationForm input[type="hidden"]#ID').val() + "&DataTablePaging.Start=" + start, function () {
-
-    });
-}
-function EditQuotationFollowup(id) {
-    debugger;
-    $("#divModelQuotationPopBody").load("QuotationFollowup/AddQuotationFollowup?ID=" + id + "&QuotationID=" + $('#QuotationForm input[type="hidden"]#ID').val(), function () {
-        $('#lblModelPopQuotation').text('Edit Quotation Followup')
-        $('#divModelPopQuotation').modal('show');
-    });
-}
-function SaveSuccessQuotationFollowup(data, status) {
+function SaveSuccessUpdateQuotationEmailInfo(data, status) {
     try {
         debugger;
         var _jsonData = JSON.parse(data)
@@ -581,17 +669,15 @@ function SaveSuccessQuotationFollowup(data, status) {
         switch (_status) {
             case "OK":
                 MasterAlert("success", _result.Message)
-                $("#divModelQuotationPopBody").load("QuotationFollowup/AddQuotationFollowup?ID=" + _result.ID + "&QuotationID=" + $('#QuotationForm input[type="hidden"]#ID').val(), function () {
-                    $('#lblModelPopQuotation').text('Edit Quotation Followup')
-                });
-                $("#divFollowupList").load("QuotationFollowup/GetQuotationFollowupList?ID=" + _emptyGuid + "&QuotationID=" + $('#QuotationForm input[type="hidden"]#ID').val(), function () {
+                $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val()+"&EmailFlag=False", function () {                    
+                    $('#lblModelEmailQuotation').text('Send Email Quotation')
                 });
                 break;
             case "ERROR":
-                MasterAlert("danger", _message)
+                MasterAlert("success", _message)
+                $('#divModelEmailQuotation').modal('hide');
                 break;
             default:
-                console.log(_message);
                 break;
         }
     }
@@ -600,29 +686,29 @@ function SaveSuccessQuotationFollowup(data, status) {
         console.log(e.message);
     }
 }
-function ConfirmDeleteQuotationFollowup(ID) {
-    if (ID != _emptyGuid) {
-        notyConfirm('Are you sure to delete?', 'DeleteQuotationFollowup("' + ID + '")');
+function SaveSuccessQuotationEmailSend(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                MasterAlert("success", _message)
+                $('#divModelEmailQuotation').modal('hide');
+                break;
+            case "ERROR":
+                MasterAlert("success", _message)
+                $('#divModelEmailQuotation').modal('hide');
+                break;
+            default:
+                break;
+        }
     }
-}
-function DeleteQuotationFollowup(ID) {
-    if (ID != _emptyGuid && ID != null && ID != '') {
-        var data = { "id": ID };
-        var ds = {};
-        _jsonData = GetDataFromServer("QuotationFollowup/DeleteQuotationFollowup/", data);
-        if (_jsonData != '') {
-            _jsonData = JSON.parse(_jsonData);
-            _message = _jsonData.Message;
-            _status = _jsonData.Status;
-            _result = _jsonData.Record;
-        }
-        if (_status == "OK") {
-            notyAlert('success', _result.Message);
-            $("#divFollowupList").load("QuotationFollowup/GetQuotationFollowupList?ID=" + _emptyGuid + "&QuotationID=" + $('#QuotationForm input[type="hidden"]#ID').val(), function () {
-            });
-        }
-        if (_status == "ERROR") {
-            notyAlert('error', _message);
-        }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }

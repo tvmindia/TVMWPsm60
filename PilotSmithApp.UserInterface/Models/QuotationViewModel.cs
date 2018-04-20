@@ -29,12 +29,15 @@ namespace PilotSmithApp.UserInterface.Models
         public int? ReferredByCode { get; set; }
         [Display(Name = "Prepared By")]
         public Guid? PreparedBy { get; set; }
+        [Display(Name ="Mail Body Header")]
         public string MailBodyHeader { get; set; }
+        [Display(Name = "Mail Footer Header")]
         public string MailBodyFooter { get; set; }
         public bool? EmailSentYN { get; set; }
         public Guid? LatestApprovalID { get; set; }
         public int? LatestApprovalStatus { get; set; }
         public bool? IsFinalApproved { get; set; }
+        [Required(ErrorMessage = "Please specify at least one recipient.")]
         public string EmailSentTo { get; set; }
         public string TermReferenceNo { get; set; }
         [Display(Name = "General Notes")]
@@ -46,6 +49,9 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? Discount { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional fields
+        
+        public string MailContant { get; set; }
+        public bool EmailFlag { get; set; }
         public string DetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
         [Required(ErrorMessage = "Quotation Date is missing")]
@@ -61,6 +67,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ReferencePersonViewModel ReferencePerson { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<QuotationDetailViewModel> QuotationDetailList { get; set; }
+        public PDFTools PDFTools { get; set; }
     }
     public class QuotationAdvanceSearchViewModel
     {

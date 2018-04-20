@@ -14,11 +14,13 @@ namespace PilotSmithApp.BusinessService.Service
         IQuotationRepository _quotationRepository;
         ICommonBusiness _commonBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
-        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness, ITaxTypeBusiness taxTypeBusiness)
+        IMailBusiness _mailBusiness;
+        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness, ITaxTypeBusiness taxTypeBusiness, IMailBusiness mailBusiness)
         {
             _quotationRepository = quotationRepository;
             _commonBusiness = commonBusiness;
             _taxTypeBusiness = taxTypeBusiness;
+            _mailBusiness = mailBusiness;
         }
         public List<Quotation> GetAllQuotation(QuotationAdvanceSearch quotationAdvanceSearch)
         {
@@ -55,6 +57,38 @@ namespace PilotSmithApp.BusinessService.Service
             quotationDetail.SGSTAmt = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.SGSTPercentage)) / 100;
             quotationDetail.IGSTAmt = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.IGSTPercentage)) / 100;
             return quotationDetail;
+        }
+        public object UpdateQuotationEmailInfo(Quotation quotation)
+        {
+            return _quotationRepository.UpdateQuotationEmailInfo(quotation);
+        }
+        public async Task<bool> QuoteEmailPush(Quotation quotation)
+        {
+
+            bool sendsuccess = false;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(quotation.EmailSentTo))
+                {
+                    string[] EmailList = quotation.EmailSentTo.Split(',');
+                    foreach (string email in EmailList)
+                    {
+                        Mail _mail = new Mail();
+                        _mail.Body = quotation.MailContant;
+                        _mail.Subject = "Quotation";
+                        _mail.To = email;
+                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sendsuccess;
         }
     }
 }

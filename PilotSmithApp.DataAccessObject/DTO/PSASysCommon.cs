@@ -58,7 +58,10 @@ namespace PilotSmithApp.DataAccessObject.DTO
         {
             get { return "Insertion Not Successfull! "; }
         }
-
+        public string MailSuccess
+        {
+            get { return "Successfully send to recepients!"; }
+        }
         public string InsertSuccess
         {
             get { return "Values Saved Successfully ! "; }

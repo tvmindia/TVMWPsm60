@@ -7,6 +7,7 @@ using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -246,6 +247,40 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion InsertUpdateQuotation
+        #region UpdateQuotationEmailInfo
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public string UpdateQuotationEmailInfo(QuotationViewModel quotationVM)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                quotationVM.PSASysCommon = new PSASysCommonViewModel();
+                quotationVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                quotationVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                object result = _quotationBusiness.UpdateQuotationEmailInfo(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
+
+                if (quotationVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+
+        #endregion UpdateQuotationEmailInfo
         #region Calculate GST
         public ActionResult GSTCalculatedFields(QuotationDetailViewModel quotationDetailVM)
         {
@@ -253,6 +288,56 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_GSTCalculatedFields", quotationDetailVM);
         }
         #endregion Calculate GST
+        #region Email Quotation
+        public ActionResult EmailQuotation(QuotationViewModel quotationVM)
+        {
+            bool emailFlag = quotationVM.EmailFlag;
+            //QuotationViewModel quotationVM = new QuotationViewModel();
+            quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>,List <QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
+            quotationVM.EmailFlag = emailFlag;
+            @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
+            quotationVM.PDFTools = new PDFTools();
+            return PartialView("_EmailQuotation",quotationVM);
+        }
+        #endregion Email Quotation
+        #region EmailSent
+        [HttpPost, ValidateInput(false)]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public async Task<string> SendQuotationEmail(QuotationViewModel quotationVM)
+        {
+            try
+            {
+                object result = null;
+                if (!string.IsNullOrEmpty(quotationVM.ID.ToString()))
+                {
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    quotationVM.PSASysCommon = new PSASysCommonViewModel();
+                    quotationVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                    quotationVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+
+                    bool sendsuccess = await _quotationBusiness.QuoteEmailPush(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
+                    if (sendsuccess)
+                    {
+                        //1 is meant for mail sent successfully
+                        quotationVM.EmailSentYN = sendsuccess;
+                        result = _quotationBusiness.UpdateQuotationEmailInfo(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
+                    }
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, MailResult = sendsuccess, Message = _appConstant.MailSuccess });
+                }
+                else
+                {
+
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = "ID is Missing" });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR",Record="", Message = cm.Message });
+            }
+        }
+        #endregion EmailSent
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
@@ -304,6 +389,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Title = "Delete";
                     toolboxVM.deletebtn.Event = "DeleteQuotation();";
 
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Event = "EmailQuotation();";
                     break;
                 case "Add":
 

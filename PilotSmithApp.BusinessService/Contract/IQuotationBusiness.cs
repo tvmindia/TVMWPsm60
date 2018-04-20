@@ -16,5 +16,7 @@ namespace PilotSmithApp.BusinessService.Contract
         object InsertUpdateQuotation(Quotation quotation);
         object DeleteQuotation(Guid id);
         object DeleteQuotationDetail(Guid id);
+        object UpdateQuotationEmailInfo(Quotation quotation);
+        Task<bool> QuoteEmailPush(Quotation quotation);
     }
 }

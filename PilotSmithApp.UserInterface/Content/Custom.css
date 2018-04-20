@@ -665,7 +665,12 @@ input.ApplyCurrency {
     background-Repeat: no-repeat;
     background-size: 12px;
 }
-
+td.ApplyCurrency {
+    background-image: url('../Content/images/rupee.png');
+    background-Position: 1% center;
+    background-Repeat: no-repeat;
+    background-size: 12px;
+}
 /*----------------overlay-----------------*/
 .overlay {
     min-height: 100%;
