@@ -152,7 +152,7 @@ function ExportQuotationData() {
 function AddQuotation() {
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid, function () {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + _emptyGuid, function () {
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
         BindQuotationDetailList(_emptyGuid);
         //BindQuotationOtherChargesDetailList(_emptyGuid)
@@ -167,7 +167,7 @@ function EditQuotation(this_Obj) {
     OnServerCallBegin();
     var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID, function () {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + _emptyGuid, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
         BindQuotationDetailList(Quotation.ID);
@@ -175,14 +175,15 @@ function EditQuotation(this_Obj) {
         clearUploadControl();
         PaintImages(Quotation.ID);
         OnServerCallComplete();
-        setTimeout(function () {            
+        setTimeout(function () {
+            $("#divQuotationForm #EstimateID").prop('disabled', true);
             //resides in customjs for sliding
             openNav();
         }, 100);
     });
 }
 function ResetQuotation() {
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val(), function () {
+    $("#divQuotationForm").load("Quotation/QuotationForm?ID=" + $('#QuotationForm #ID').val(), function () {
         BindQuotationDetailList($('#ID').val());
         clearUploadControl();
         PaintImages($('#QuotationForm #ID').val());
@@ -323,7 +324,7 @@ function BindQuotationOtherChargesDetailList(id) {
         'placement': 'left'
     });
 }
-function BindQuotationDetailList(id) {
+function BindQuotationDetailList(id, IsEstimated) {
     debugger;
     _dataTable.QuotationDetailList = $('#tblQuotationDetails').DataTable(
          {
@@ -333,7 +334,7 @@ function BindQuotationDetailList(id) {
              paging: false,
              ordering: false,
              bInfo: false,
-             data: id == _emptyGuid ? null : GetQuotationDetailListByQuotationID(id),
+             data: !IsEstimated ? id == _emptyGuid ? null : GetQuotationDetailListByQuotationID(id, false) : GetQuotationDetailListByQuotationID(id, true),
              language: {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
@@ -352,7 +353,7 @@ function BindQuotationDetailList(id) {
              { "data": "Discount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Rate", render: function (data, type, row) {
-                     var Total=roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
+                     var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
@@ -372,7 +373,7 @@ function BindQuotationDetailList(id) {
                  "data": "Rate", render: function (data, type, row) {
                      var TaxableAmt = roundoff((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0))
                      var GSTAmt = roundoff(parseFloat(row.CGSTAmt) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
-                     var GrandTotal=roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt) + parseFloat(row.CGSTAmt))
+                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt) + parseFloat(row.CGSTAmt))
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
@@ -382,9 +383,9 @@ function BindQuotationDetailList(id) {
                  { "targets": [0], "width": "15%" },
                  { "targets": [1, 2], "width": "10%" },
                  { "targets": [3], "width": "30%" },
-                 { "targets": [4,5,6,7,8,9,10], "width": "5%" },
+                 { "targets": [4, 5, 6, 7, 8, 9, 10], "width": "5%" },
                  { className: "text-right", "targets": [4, 5, 6, 7, 8, 9] },
-                 { className: "text-left", "targets": [ 3] },
+                 { className: "text-left", "targets": [3] },
                  { className: "text-center", "targets": [0, 1, 2, 10] }
              ],
              rowCallback: function (row, data, index) {
@@ -397,7 +398,7 @@ function BindQuotationDetailList(id) {
                  var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
                  var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
                  var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + GrossTotalAmt)
-                 
+
                  $('#lblTaxTotal').text(TaxTotal);
                  $('#lblItemTotal').text(TaxableTotal);
                  $('#lblGrossAmount').text(GrossAmount);
@@ -413,12 +414,20 @@ function BindQuotationDetailList(id) {
         'placement': 'left'
     });
 }
-function GetQuotationDetailListByQuotationID(id) {
+function GetQuotationDetailListByQuotationID(id, IsEstimated) {
     try {
         debugger;
-        var data = { "quotationID": id };
+        
         var quotationDetailList = [];
-        _jsonData = GetDataFromServer("Quotation/GetQuotationDetailListByQuotationID/", data);
+        if (IsEstimated) {
+            var data = { "estimateID": $('#QuotationForm #hdnEstimateID').val() };
+            _jsonData = GetDataFromServer("Quotation/GetQuotationDetailListByQuotationIDWithEstimate/", data);
+        }
+        else {
+            var data = { "quotationID": id };
+            _jsonData = GetDataFromServer("Quotation/GetQuotationDetailListByQuotationID/", data);
+        }
+
         if (_jsonData != '') {
             _jsonData = JSON.parse(_jsonData);
             _message = _jsonData.Message;
@@ -543,7 +552,7 @@ function AddQuotationDetailToList() {
             'placement': 'left'
         });
     });
-    
+
 }
 function EditQuotationDetail(this_Obj) {
     debugger;
@@ -622,34 +631,29 @@ function DeleteQuotationDetail(ID) {
         }
     }
 }
-function CalculateGrandTotal(value)
-{
-    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) - parseFloat(value))
+function CalculateGrandTotal(value) {
+    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) - parseFloat(value!=""?value:0))
     $('#lblGrandTotal').text(GrandTotal);
 }
 //=========================================================================================================================
 //Email Quotation
 //
-function EmailQuotation()
-{
+function EmailQuotation() {
     $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=True", function () {
         $('#lblModelEmailQuotation').text('Email Quotation')
         $('#divModelEmailQuotation').modal('show');
     });
 }
-function SendQuotationEmail()
-{
+function SendQuotationEmail() {
     $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
     $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
 }
-function UpdateQuotationEmailInfo()
-{
+function UpdateQuotationEmailInfo() {
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
     $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
     $('#FormUpdateQuotationEmailInfo #ID').val($('#QuotationForm #ID').val());
 }
-function DownloadQuotation()
-{
+function DownloadQuotation() {
     var bodyContent = $('#divQuotationEmailcontainer').html();
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
@@ -669,7 +673,7 @@ function SaveSuccessUpdateQuotationEmailInfo(data, status) {
         switch (_status) {
             case "OK":
                 MasterAlert("success", _result.Message)
-                $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val()+"&EmailFlag=False", function () {                    
+                $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=False", function () {
                     $('#lblModelEmailQuotation').text('Send Email Quotation')
                 });
                 break;

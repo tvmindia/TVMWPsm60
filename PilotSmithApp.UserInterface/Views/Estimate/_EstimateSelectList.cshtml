@@ -1,8 +1,7 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EstimateViewModel
 @if (ViewBag.IsRequired == "required")
 {
-        @Html.DropDownList("EstimateID", Model.EstimateSelectList, "--Select Estimate--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Estimate is missing", @onchange = "$('#hdnEstimateID').val(this.value)" })
-       
+        @Html.DropDownList("EstimateID", Model.EstimateSelectList, "--Select Estimate--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Estimate is missing", @onchange = "$('#hdnEstimateID').val(this.value)" })      
 
 }
 else

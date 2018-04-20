@@ -871,7 +871,6 @@
     <Content Include="Views\DynamicUI\PopUpUnderConstruction.cshtml" />
     <Content Include="Views\DocumentOwner\_DocumentOwnerSelectList.cshtml" />
     <Content Include="Views\Quotation\_AddQuotationDetail.cshtml" />
-    <Content Include="Views\Quotation\_GSTCalculatedFields.cshtml" />
     <Content Include="Views\TaxType\_TaxTypeSelectList.cshtml" />
     <Content Include="Views\DashBoard\_SalesSummary.cshtml" />
     <Content Include="Views\DashBoard\_EnquiryFollowupSummary.cshtml" />

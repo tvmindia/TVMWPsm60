@@ -321,5 +321,19 @@
         catch (e) {
             console.log(e.message);
         }
+        try{
+            $('#QuotationForm #EstimateID').change(function () {
+                OnServerCallBegin();
+                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid+"&estimateID="+this.value, function () {
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
+                    BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
+                    OnServerCallComplete();
+                });
+            });
+        }
+        catch(e)
+        {
+            console.log(e.message);
+        }
     });
 </script>
