@@ -7,7 +7,7 @@
 </style>
 @using (Ajax.BeginForm("InsertUpdateEstimate", "Estimate", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEstimate", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "EstimateForm" }))
 {
-    @Html.AntiForgeryToken()
+    @*@Html.AntiForgeryToken()*@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
@@ -246,6 +246,19 @@
         catch (e) {
             console.log(e.message);
         }
+        try{
+            $('#EstimateForm #EnquiryID').change(function () {
+                debugger;
+                OnServerCallBegin();                                 
+                $('#divEstimateForm').load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
+                    BindEstimateDetailList("00000000-0000-0000-0000-000000000000", true);
+                    OnServerCallComplete();
+                });
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }       
     });
 </script>
 

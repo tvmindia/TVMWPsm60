@@ -19,22 +19,24 @@ namespace PilotSmithApp.UserInterface.Controllers
         IEstimateBusiness _estimateBusiness;
         ICustomerBusiness _customerBusiness;
         IBranchBusiness _branchBusiness;
-        public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness)
+        IEnquiryBusiness _enquiryBusiness;
+        public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness)
         {
             _estimateBusiness = estimateBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
+            _enquiryBusiness = enquiryBusiness;
         }
         // GET: Estimate
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult Index()
         {
             return View();
-        }
+        } 
 
         #region GetEstimateForm
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public ActionResult EstimateForm(Guid id)
+        public ActionResult EstimateForm(Guid id,Guid enquiryID)
         {
             EstimateViewModel estimateVM = null;
            try
@@ -44,11 +46,20 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate(id));
                     estimateVM.IsUpdate = true;
                 }
-                else
+                else if(id==Guid.Empty && enquiryID==Guid.Empty)
                 {
                     estimateVM = new EstimateViewModel();
                     estimateVM.IsUpdate = false;
                     estimateVM.ID = Guid.Empty;
+                }
+                else if(id==Guid.Empty && enquiryID!=Guid.Empty)
+                {
+                    EnquiryViewModel enquiryVM = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.GetEnquiry(enquiryID));
+                    estimateVM = new EstimateViewModel();
+                    estimateVM.IsUpdate = false;
+                    estimateVM.ID = Guid.Empty;
+                    estimateVM.CustomerID = enquiryVM.CustomerID;
+                    estimateVM.BranchCode = enquiryVM.BranchCode;
                 }
                 
             }
@@ -58,7 +69,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
             return PartialView("_EstimateForm", estimateVM);
         }
-        #endregion GetEstimateForm
+        #endregion GetEstimateForm      
 
         #region Estimate Detail Add
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
@@ -210,6 +221,59 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get Estimate DetailList By EstimateID
+
+        #region Get Estimate DetailList By EstimateID with Enquiry
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
+        public string GetEstimateDetailListByEstimateIDWithEnquiry(Guid enquiryID)
+        {
+            try
+            {
+                List<EstimateDetailViewModel> estimateItemViewModelList = new List<EstimateDetailViewModel>();
+                if (enquiryID != Guid.Empty)
+                {
+                    List<EnquiryDetailViewModel> enquiryDetailVMList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));
+                    foreach (EnquiryDetailViewModel enquiryDetailVM in enquiryDetailVMList)
+                    {
+                        EstimateDetailViewModel estimateDetailVM = new EstimateDetailViewModel()
+                        {
+                            ID = Guid.Empty,
+                            EstimateID = Guid.Empty,
+                            ProductID = enquiryDetailVM.ProductID,
+                            ProductModelID = enquiryDetailVM.ProductModelID,
+                            ProductSpec = enquiryDetailVM.ProductSpec,
+                            Qty = enquiryDetailVM.Qty,
+                            UnitCode = enquiryDetailVM.UnitCode,
+                            CostRate = 0,
+                            SellingRate = 0,
+                            Product = new ProductViewModel()
+                            {
+                                ID = (Guid)enquiryDetailVM.ProductID,
+                                Code = enquiryDetailVM.Product.Code,
+                                Name = enquiryDetailVM.Product.Name,
+                            },
+                            ProductModel = new ProductModelViewModel()
+                            {
+                                ID = (Guid)enquiryDetailVM.ProductModelID,
+                                Name = enquiryDetailVM.ProductModel.Name
+                            },
+                            Unit = new UnitViewModel()
+                            {
+                                Description = enquiryDetailVM.Unit.Description
+                            },
+                        };
+                        estimateItemViewModelList.Add(estimateDetailVM);
+                    }
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = estimateItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get Estimate DetailList By EstimateID with Enquiry
 
         #region DeleteEstimate
         [HttpGet]
