@@ -1,0 +1,27 @@
+﻿@model PilotSmithApp.UserInterface.Models.CustomerCategoryViewModel
+@if (ViewBag.IsRequired == "required")
+{
+    <div class="input-group">
+        @Html.DropDownList("CustomerCategoryCode", Model.CustomerCategorySelectList, "--Select Category--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Category is missing", @onchange = "$('#hdnCustomerCategoryCode').val(this.value)" })
+        @*<span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCustomerCategoryMaster('OTR')"><i class="fa fa-plus-square"></i></span>*@
+    </div>
+
+}
+else
+{
+    <div class="input-group">
+        @Html.DropDownList("CustomerCategoryCode", Model.CustomerCategorySelectList, "--Select Category--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnCustomerCategoryCode').val(this.value)" })
+        @*<span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCustomerCategoryMaster('OTR')"><i class="fa fa-plus-square"></i></span>*@
+    </div>
+
+}
+@Html.ValidationMessage("CustomerCategoryCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $('#CustomerCategoryCode').val($('#hdnCustomerCategoryCode').val());
+        $('#CustomerCategoryCode').select2({});
+        $('.select2').addClass('form-control newinput');
+    });
+</script>
+

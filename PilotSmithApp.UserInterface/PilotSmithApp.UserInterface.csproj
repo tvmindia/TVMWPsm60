@@ -709,6 +709,7 @@
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\CustomerCategoryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
@@ -747,6 +748,7 @@
     <Compile Include="Models\BankViewModel.cs" />
     <Compile Include="Models\BranchViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
+    <Compile Include="Models\CustomerCategoryViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\DocumentApprovalViewModel.cs" />
@@ -899,6 +901,9 @@
     <Content Include="Views\Account\DbDown.cshtml" />
     <Content Include="Views\Account\NotAuthorized.cshtml" />
     <Content Include="Views\Account\PageNotFound.cshtml" />
+    <Content Include="Views\CustomerCategory\Index.cshtml" />
+    <Content Include="Views\CustomerCategory\_CustomerCategorySelectList.cshtml" />
+    <Content Include="Views\CustomerCategory\_AddCustomerCategory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,37 @@
+﻿using PilotSmithApp.BusinessService.Contract;
+using PilotSmithApp.DataAccessObject.DTO;
+using PilotSmithApp.RepositoryService.Contract;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+
+namespace PilotSmithApp.BusinessService.Service
+{
+    public class CustomerCategoryBusiness:ICustomerCategoryBusiness
+    {
+        private ICustomerCategoryRepository _customerCategoryRepository;
+        public CustomerCategoryBusiness(ICustomerCategoryRepository customerCategoryRepository)
+        {
+            _customerCategoryRepository = customerCategoryRepository;
+        }
+        public List<SelectListItem> GetCustomerCategoryForSelectList()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<CustomerCategory> customerCategoryList = _customerCategoryRepository.GetCustomerCategoryForSelectList();
+            if(customerCategoryList!=null)
+            foreach(CustomerCategory customerCategory in customerCategoryList)
+            {
+                selectListItem.Add(new SelectListItem
+                {
+                    Text=customerCategory.Name,
+                    Value=customerCategory.Code.ToString(),
+                    Selected=false
+                });
+            }
+            return selectListItem;
+        }
+    }
+}

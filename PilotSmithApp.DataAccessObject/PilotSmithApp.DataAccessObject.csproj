@@ -50,6 +50,7 @@
     <Compile Include="DTO\Bank.cs" />
     <Compile Include="DTO\Branch.cs" />
     <Compile Include="DTO\Company.cs" />
+    <Compile Include="DTO\CustomerCategory.cs" />
     <Compile Include="DTO\District.cs" />
     <Compile Include="DTO\DocumentApproval.cs" />
     <Compile Include="DTO\DocumentStatus.cs" />
