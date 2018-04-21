@@ -90,7 +90,7 @@ namespace PilotSmithApp.BusinessService.Service
                 Settings settings = new Settings();
                 docAprovalMailDetail = _documentApprovalRepository.GetApprovalMailDetails(documentID, documentType);
                 if (docAprovalMailDetail != null) {
-                    link= WebConfigurationManager.AppSettings["AppURL"]  + "/DocumentApproval/ApproveDocument?code=APR&ID="+ docAprovalMailDetail.ApprovalID + "&DocType="+ documentType +"&DocID="+ documentID ;
+                    link= WebConfigurationManager.AppSettings["AppURL"]  + "/DocumentApproval/ApproveDocument?ID="+ docAprovalMailDetail.ApprovalID + "&DocType="+ documentType +"&DocID="+ documentID ;
                     if (docAprovalMailDetail.Status == "PENDING") {
 
                         string mailBody= File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/SendForApproval.html"));

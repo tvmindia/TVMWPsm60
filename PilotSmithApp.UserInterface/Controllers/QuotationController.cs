@@ -58,6 +58,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM = new QuotationViewModel();
                     quotationVM.IsUpdate = false;
                     quotationVM.ID = Guid.Empty;
+                    quotationVM.EstimateID = null;
                     quotationVM.CustomerID = estimateVM.CustomerID;
                 }
                 quotationVM.Customer = new CustomerViewModel

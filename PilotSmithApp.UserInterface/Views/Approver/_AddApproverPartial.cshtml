@@ -37,7 +37,7 @@
                     @Html.LabelFor(model => model.UserID, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.UserID, Model.User.userList, "--- Select user ---", new { @class = "form-control newinput", @style = "width:100%" })
+                        @Html.DropDownListFor(model => model.UserID, Model.PSAUser.UserSelectList, "--- Select user ---", new { @class = "form-control newinput", @style = "width:100%" })
                         @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
                     </div>
                 </div>

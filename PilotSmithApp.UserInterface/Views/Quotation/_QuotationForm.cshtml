@@ -82,29 +82,62 @@
                         @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-            </div>
-
-            <div class="form-group col-md-12">
-                <div class="col-md-6 no-padding">
+                <div class="col-md-4 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.MailingAddress, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.MailingAddress, 5, 0, new { @class = "form-control newinput" })
-                        @Html.ValidationMessageFor(model => model.MailingAddress, "", new { @class = "text-danger" })
+                        <div class="divBranchSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                        </div>
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
                 </div>
-                <div class="col-md-6 no-padding">
+                <div class="col-md-4 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 0, new { @class = "form-control newinput" })
-                        @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
+                        <div class="divReferredByCodeSelectList">
+                            @Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "required" })
+                        </div>
+                        @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divAttendedByIDSelectList">
+                            @Html.Action("AttendedBySelectList", "Employee", new { required = "required", postingParams = "ResponsiblePersonID" })
+                        </div>
+                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDocumentStatusSelectList">
+                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "QUO" })
+                        </div>
+                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                    </div>
+                </div>
+                <div class="col-md-3 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
+
+            
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -199,53 +232,30 @@
     </div>
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Status & Other details</div>
+            <div class="col-md-12 headSeperator">Other details</div>
+            <div class="form-group col-md-12">
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.MailingAddress, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.MailingAddress, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.MailingAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
             <div class="form-group col-md-12">
 
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
-                        </div>
-                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                    </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divReferredByCodeSelectList">
-                            @Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "required" })
-                        </div>
-                        @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
-                    </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divAttendedByIDSelectList">
-                            @Html.Action("AttendedBySelectList", "Employee", new { required = "required", postingParams = "ResponsiblePersonID" })
-                        </div>
-                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
-                    </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
-                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "QUO" })
-                        </div>
-                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                    </div>
-                </div>
+                
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })

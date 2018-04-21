@@ -183,8 +183,8 @@ function EditQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
-    $("#divQuotationForm").load("Quotation/QuotationForm?ID=" + $('#QuotationForm #ID').val(), function () {
-        BindQuotationDetailList($('#ID').val());
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + _emptyGuid, function () {
+        BindQuotationDetailList($('#ID').val(),false);
         clearUploadControl();
         PaintImages($('#QuotationForm #ID').val());
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
@@ -309,23 +309,20 @@ function BindQuotationOtherChargesDetailList(id) {
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
-             ],
+             ],             
              columnDefs: [
                  { "targets": [0], "width": "20%" },
                  { "targets": [1, 2], "width": "20%" },
                  { "targets": [3], "width": "20%" },
                  { className: "text-left", "targets": [3] },
                  { className: "text-center", "targets": [0, 1, 2] }
-             ]
+             ],
+             destroy: true,
          });
-    $('[data-toggle="popover"]').popover({
-        html: true,
-        'trigger': 'hover',
-        'placement': 'left'
-    });
 }
 function BindQuotationDetailList(id, IsEstimated) {
     debugger;
+
     _dataTable.QuotationDetailList = $('#tblQuotationDetails').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -406,7 +403,8 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              initComplete: function (settings, json) {
                  $('#QuotationForm #Discount').trigger('change');
-             }
+             },
+             destroy:true
          });
     $('[data-toggle="popover"]').popover({
         html: true,

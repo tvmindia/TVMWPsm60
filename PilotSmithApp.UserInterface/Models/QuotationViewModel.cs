@@ -39,6 +39,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool? IsFinalApproved { get; set; }
         [Required(ErrorMessage = "Please specify at least one recipient.")]
         public string EmailSentTo { get; set; }
+        [Display(Name = "Term Ref. No")]
         public string TermReferenceNo { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }

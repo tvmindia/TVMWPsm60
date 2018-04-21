@@ -60,9 +60,88 @@
             @if (Model.IsUpdate)
             {
                 <div class="form-group col-md-6 no-right-padding" id="divFollowupList">
-                    @Html.Action("GetEnquiryFollowupList","EnquiryFollowup",new { EnquiryID = Model.ID })
+                    @Html.Action("GetEnquiryFollowupList", "EnquiryFollowup", new { EnquiryID = Model.ID })
                 </div>
             }
+            <div class="form-group col-md-12">
+                <div class="col-md-3 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AttendedByID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divAttendedByIDSelectList">
+                            @Html.Action("AttendedBySelectList", "Employee", new { required = "required", postingParams = "ResponsiblePersonID" })
+                        </div>
+                        @Html.HiddenFor(model => model.AttendedByID, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
+                    </div>
+                </div>
+                <div class="col-md-3 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.EnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "--Select grade--", new { @class = "form-control newinput", @onchange = "$('#hdnGradeCode').val(this.value)" })
+                        @Html.HiddenFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "", @id = "hdnGradeCode" })
+                    </div>
+                </div>
+                <div class="col-md-3 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDocumentStatusSelectList">
+                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "ENQ" })
+                        </div>
+                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                    </div>
+                </div>
+                <div class="col-md-3 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDocumentOwnerSelectList">
+                            @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "required" })
+                        </div>
+                        @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerCode" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divBranchSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                        </div>
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divReferredByCodeSelectList">
+                            @Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "required" })
+                        </div>
+                        @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divResponsiblePersonIDSelectList">
+                            @Html.Action("ResponsiblePersonSelectList", "Employee", new { required = "required", postingParams = "ResponsiblePersonID" })
+                        </div>
+                        @Html.HiddenFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "", @id = "hdnResponsiblePersonID" })
+                    </div>
+                </div>
+                
+            </div>
+            
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -92,82 +171,6 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">Status & Other details</div>
             <div class="form-group col-md-12">
-                
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
-                        </div>
-                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                    </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divReferredByCodeSelectList">
-                            @Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "required" })
-                        </div>
-                        @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
-                    </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divResponsiblePersonIDSelectList">
-                            @Html.Action("ResponsiblePersonSelectList", "Employee", new { required = "required",postingParams= "ResponsiblePersonID" })
-                        </div>
-                        @Html.HiddenFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "", @id = "hdnResponsiblePersonID" })
-                    </div>
-                </div>
-                <div class="col-md-3 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.AttendedByID, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divAttendedByIDSelectList">
-                            @Html.Action("AttendedBySelectList", "Employee", new { required = "required", postingParams = "ResponsiblePersonID" })
-                        </div>
-                        @Html.HiddenFor(model => model.AttendedByID, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
-                    </div>
-                </div>
-                <div class="col-md-3 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.EnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "--Select grade--", new { @class = "form-control newinput", @onchange = "$('#hdnGradeCode').val(this.value)" })
-                        @Html.HiddenFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "", @id = "hdnGradeCode" })
-                    </div>
-                </div>
-                <div class="col-md-3 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
-                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required" ,code="ENQ"})
-                        </div>
-                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                    </div>
-                </div>
-                <div class="col-md-3 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentOwnerSelectList">
-                            @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "required" })
-                        </div>
-                        @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerCode" })
-                    </div>
-                </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })

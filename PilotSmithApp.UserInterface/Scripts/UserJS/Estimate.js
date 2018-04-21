@@ -172,7 +172,7 @@ function EditEstimate(this_Obj) {
 
 function ResetEstimate() {
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val(), function () {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=" + _emptyGuid, function () {
         BindEstimateDetailList($('#ID').val());
         clearUploadControl();
         PaintImages($('#EstimateForm #ID').val());
@@ -298,7 +298,8 @@ function BindEstimateDetailList(id,IsEnquiry) {
                  { "targets": [,5,6], "width": "10%" },
                  { className: "text-left", "targets": [0,1,2,3,4] },
                  { className: "text-right", "targets": [5,6] }
-             ]
+             ],
+             destroy:true
          });
 }
 
