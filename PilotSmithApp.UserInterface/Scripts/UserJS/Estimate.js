@@ -53,6 +53,7 @@ function BindOrReloadEstimateTable(action) {
         EstimateAdvanceSearchViewModel.FromDate = $('#FromDate').val();
         EstimateAdvanceSearchViewModel.ToDate = $('#ToDate').val();
         //apply datatable plugin on Estimate table
+        debugger;
         _dataTable.EstimateList = $('#tblEstimate').DataTable(
         {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
@@ -139,7 +140,7 @@ function AddEstimate() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid, function () {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid+"&enquiryID="+_emptyGuid, function () {
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
         BindEstimateDetailList(_emptyGuid);
         OnServerCallComplete();
@@ -154,15 +155,16 @@ function EditEstimate(this_Obj) {
     OnServerCallBegin();
     var Estimate = _dataTable.EstimateList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID, function () {
-        //$('#CustomerID').trigger('change');
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID+"&enquiryID="+_emptyGuid, function () {
+        
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
-        clearUploadControl();
-        PaintImages(Estimate.ID);
         BindEstimateDetailList(Estimate.ID);
+        clearUploadControl();       
+        PaintImages(Estimate.ID);        
         OnServerCallComplete();
         //resides in customjs for sliding
         setTimeout(function () {
+           $("#divEstimateForm #EnquiryID").prop('disabled', true);
             openNav();
         }, 100);
     });
@@ -260,7 +262,7 @@ function DeleteEstimateItem(id) {
     }
 }
 
-function BindEstimateDetailList(id) {
+function BindEstimateDetailList(id,IsEnquiry) {
     debugger;
     _dataTable.EstimateDetailList = $('#tblEstimateDetails').DataTable(
          {
@@ -270,7 +272,7 @@ function BindEstimateDetailList(id) {
              paging: false,
              ordering: false,
              bInfo: false,
-             data: id == _emptyGuid ? null : GetEstimateDetailListByEstimateID(id),
+             data: !IsEnquiry ? id == _emptyGuid ? null : GetEstimateDetailListByEstimateID(id,false) : GetEstimateDetailListByEstimateID(id,true),
              language: {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
@@ -300,12 +302,21 @@ function BindEstimateDetailList(id) {
          });
 }
 
-function GetEstimateDetailListByEstimateID(id) {
+function GetEstimateDetailListByEstimateID(id,IsEnquiry) {
     try {
         debugger;
-        var data = { "estimateID": id };
+       
         var estimateDetailList = [];
-        _jsonData = GetDataFromServer("Estimate/GetEstimateDetailListByEstimateID/", data);
+        if (IsEnquiry)
+        {
+            var data = { "enquiryID": $('#EstimateForm #hdnEnquiryID').val() };
+            _jsonData = GetDataFromServer("Estimate/GetEstimateDetailListByEstimateIDWithEnquiry/", data);
+        }
+        else {
+            var data = { "estimateID": id };
+            _jsonData = GetDataFromServer("Estimate/GetEstimateDetailListByEstimateID/", data);
+        }
+       
         if (_jsonData != '') {
             _jsonData = JSON.parse(_jsonData);
             _message = _jsonData.Message;
