@@ -95,10 +95,10 @@ function BindOrReloadApproverTable(action) {
             { "data": "DocumentType.Description", "defaultContent": "<i>-</i>", "width": "10%" },
             { "data": "Level", "defaultContent": "<i>-</i>", "width": "10%" },
             //{ "data": "UserID", "defaultContent": "<i>-<i>", "width": "10%" },
-            { "data": "User.LoginName", "defaultContent": "<i>-<i>", "width": "10%" },
+            { "data": "PSAUser.LoginName", "defaultContent": "<i>-<i>", "width": "10%" },
             { "data": "IsDefault", "defaultContent": "<i>-<i>", "width": "10%" },
             { "data": "IsActive", "defaultContent": "<i>-<i>", "width": "10%" },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="DeleteApproverMaster(this)"<i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a>  <a href="#" onclick="EditApproverMaster(this)"<i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a>', "width": "4%" }
+            { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="DeleteApproverMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>  <a href="#" onclick="EditApproverMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>', "width": "4%" }
             ],
             columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                 { className: "text-right", "targets": [ ] },
@@ -143,22 +143,20 @@ function ImportApproverData() {
     BindOrReloadApproverTable('Export');
 }
 
-//-- add Approver--//
-function AddApproverMaster(flag) {
-    GetMasterPartial("Approver", "");
-    $('#h3ModelMasterContextLabel').text('Add Approver')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val(flag);
-}
-
 //--edit Approver--//
 function EditApproverMaster(this_obj) {
     debugger;
-    rowData = DataTables.approverList.row($(this_obj).parents('tr')).data();
-    GetMasterPartial("Approver", rowData.ID);
-    $('#h3ModelMasterContextLabel').text('Edit Approver')
-    $('#divModelMasterPopUp').modal('show');
-    $('#hdnMasterCall').val('MSTR');
+    approverVM = DataTables.approverList.row($(this_obj).parents('tr')).data();
+    //GetMasterPartial("Approver", rowData.ID);
+    //$('#h3ModelMasterContextLabel').text('Edit Approver')
+    //$('#divModelMasterPopUp').modal('show');
+    //$('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("Approver/MasterPartial?masterCode=" + approverVM.ID, function () {
+        $('#hdnMasterCall').val('MSTR');
+        $('#lblModelMasterContextLabel').text('Edit Approval Information')
+        $('#divModelMasterPopUp').modal('show');
+    });
+    
     if ($('#IsDefault').is(":checked")) {
         $('#IsDefault').prop("disabled",true);
     }
