@@ -716,3 +716,38 @@ function SaveSuccessQuotationEmailSend(data, status) {
         console.log(e.message);
     }
 }
+function ShowSendForApproval(documentTypeCode) {
+    debugger;
+    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
+    if ($('#LatestApprovalStatus').val() == 3) {
+        var documentID = $('#QuotationForm #ID').val();
+        var latestApprovalID = $('QuotationForm #LatestApprovalID').val();
+        ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID);
+        SendForApproval('QUO')
+        //BindPurchaseOrder($('#ID').val());
+
+    }
+    else {
+        $('#SendApprovalModal').modal('show');
+    }
+    });
+}
+
+function SendForApproval(documentTypeCode) {
+    debugger;
+    
+    var documentID = $('#QuotationForm #ID').val();
+        var approversCSV;
+        var count = $('#ApproversCount').val();
+
+        for (i = 0; i < count; i++) {
+            if (i == 0)
+                approversCSV = $('#ApproverLevel' + i).val();
+            else
+                approversCSV = approversCSV + ',' + $('#ApproverLevel' + i).val();
+        }
+        SendDocForApproval(documentID, documentTypeCode, approversCSV);
+        $('#SendApprovalModal').modal('hide');
+        //BindPurchaseOrder($('#ID').val());
+        
+}

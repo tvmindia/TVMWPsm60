@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\IApproverRepository.cs" />
     <Compile Include="Contract\IAreaRepository.cs" />
     <Compile Include="Contract\IBankRepository.cs" />
     <Compile Include="Contract\IBranchRepository.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IDatabaseFactory.cs" />
     <Compile Include="Contract\IDistrictRepository.cs" />
+    <Compile Include="Contract\IDocumentApprovalRepository.cs" />
     <Compile Include="Contract\IDocumentStatusRepository.cs" />
     <Compile Include="Contract\IDocumentTypeRepository.cs" />
     <Compile Include="Contract\IDynamicUIRepository.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Contract\ITaxTypeRepository.cs" />
     <Compile Include="Contract\IUnitRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ApproverRepository.cs" />
     <Compile Include="Service\AreaRepository.cs" />
     <Compile Include="Service\BankRepository.cs" />
     <Compile Include="Service\BranchRepository.cs" />
@@ -80,6 +83,7 @@
     <Compile Include="Service\CustomerRepository.cs" />
     <Compile Include="Service\DatabaseFactory.cs" />
     <Compile Include="Service\DistrictRepository.cs" />
+    <Compile Include="Service\DocumentApprovalRepository.cs" />
     <Compile Include="Service\DocumentStatusRepository.cs" />
     <Compile Include="Service\DocumentTypeRepository.cs" />
     <Compile Include="Service\DynamicUIRepository.cs" />

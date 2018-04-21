@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\IApproverBusiness.cs" />
     <Compile Include="Contract\IAreaBusiness.cs" />
     <Compile Include="Contract\IBankBusiness.cs" />
     <Compile Include="Contract\IBranchBusiness.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Contract\ICompanyBusiness.cs" />
     <Compile Include="Contract\IDistrictBusiness.cs" />
     <Compile Include="Contract\ICustomerBusiness.cs" />
+    <Compile Include="Contract\IDocumentApprovalBusiness.cs" />
     <Compile Include="Contract\IDocumentStatusBusiness.cs" />
     <Compile Include="Contract\IDocumentTypeBusiness.cs" />
     <Compile Include="Contract\IDynamicUIBusiness.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="Contract\ITaxTypeBusiness.cs" />
     <Compile Include="Contract\IUnitBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ApproverBusiness.cs" />
     <Compile Include="Service\AreaBusiness.cs" />
     <Compile Include="Service\BankBusiness.cs" />
     <Compile Include="Service\BranchBusiness.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="Service\CompanyBusiness.cs" />
     <Compile Include="Service\DistrictBusiness.cs" />
     <Compile Include="Service\CustomerBusiness.cs" />
+    <Compile Include="Service\DocumentApprovalBusiness.cs" />
     <Compile Include="Service\DocumentStatusBusiness.cs" />
     <Compile Include="Service\DocumentTypeBusiness.cs" />
     <Compile Include="Service\DynamicUIBusiness.cs" />

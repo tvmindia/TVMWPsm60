@@ -26,13 +26,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult DocumentOwnerSelectList(string required)
         {
             ViewBag.IsRequired = required;
-            UserViewModel userVM = new UserViewModel();
-            userVM.userList = new List<SelectListItem>();
+            PSAUserViewModel userVM = new PSAUserViewModel();
+            userVM.UserSelectList = new List<SelectListItem>();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<UserViewModel> UserVMList= Mapper.Map<List<User>, List<UserViewModel>>(_userBusiness.GetAllUsers());
+            List<PSAUserViewModel> UserVMList= Mapper.Map<List<User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
            
             if (UserVMList != null)
-                foreach (UserViewModel uVM in UserVMList)
+                foreach (PSAUserViewModel uVM in UserVMList)
                 {
                     selectListItem.Add(new SelectListItem
                     {
@@ -41,7 +41,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Selected = false
                     });
                 }
-            userVM.userList = selectListItem;
+            userVM.UserSelectList = selectListItem;
             return PartialView("_DocumentOwnerSelectList", userVM);
         }
         #endregion Document Owner SelectList

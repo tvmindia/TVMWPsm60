@@ -71,7 +71,13 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Company").Include("~/Scripts/UserJS/Company.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/ProductModel").Include("~/Scripts/UserJS/ProductModel.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Estimate").Include("~/Scripts/UserJS/Estimate.js"));
-            bundles.Add(new ScriptBundle("~/bundles/UserJs/DashBoard").Include("~/Scripts/UserJS/SalesSummary.js", "~/Scripts/UserJS/EnquiryFollowupSummary.js"));//
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/DashBoard").Include("~/Scripts/UserJS/SalesSummary.js", "~/Scripts/UserJS/EnquiryFollowupSummary.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/DocumentApproval/ApprovalHistory").Include("~/Scripts/UserJS/DocumentApproval/ApprovalHistory.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/DocumentApproval/ApproveDocument").Include("~/Scripts/UserJS/DocumentApproval/ApproveDocument.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/DocumentApproval/DocumentSummary").Include("~/Scripts/UserJS/DocumentApproval/DocumentSummary.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/DocumentApproval/ViewPendingDocuments").Include("~/Scripts/UserJS/DocumentApproval/ViewPendingDocuments.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Approver").Include("~/Scripts/UserJS/Approver.js"));
+
         }
     }
 }

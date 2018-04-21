@@ -461,6 +461,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Text = "Email";
                     toolboxVM.EmailBtn.Title = "Email";
                     toolboxVM.EmailBtn.Event = "EmailQuotation();";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
                     break;
                 case "Add":
 

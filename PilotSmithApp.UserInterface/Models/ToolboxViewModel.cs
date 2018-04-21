@@ -30,6 +30,8 @@ namespace PilotSmithApp.UserInterface.Models
         public ToolBoxStructure HistoryBtn;
         public ToolBoxStructure ListBtn;
         public ToolBoxStructure EmailBtn;
+        public ToolBoxStructure PrintBtn;
+        public ToolBoxStructure SendForApprovalBtn;
         public ToolboxViewModel()
         {
             backbtn.SecurityObject = "ButtonBack";
@@ -53,6 +55,8 @@ namespace PilotSmithApp.UserInterface.Models
             HistoryBtn.SecurityObject = "ButtonHistory";
             EmailBtn.SecurityObject = "ButtonEmail";
             ClearOutBtn.SecurityObject = "ButtonClear";
+            PrintBtn.SecurityObject = "ButtonPrint";
+            SendForApprovalBtn.SecurityObject = "ButtonSendForApproval";
 
             backbtn.HasAccess = true;
             addbtn.HasAccess = true;
@@ -76,6 +80,8 @@ namespace PilotSmithApp.UserInterface.Models
             AssignBtn.HasAccess = true;
             HistoryBtn.HasAccess = true;
             EmailBtn.HasAccess = true;
+            PrintBtn.HasAccess = true;
+            SendForApprovalBtn.HasAccess = true;
         }
 
     }

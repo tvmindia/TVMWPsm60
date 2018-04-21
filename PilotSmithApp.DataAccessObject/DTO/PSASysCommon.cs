@@ -54,14 +54,37 @@ namespace PilotSmithApp.DataAccessObject.DTO
         {
             get { return "Login or Email Exist! "; }
         }
+
+        public string ApprovalSuccess
+        {
+            get { return "Document Approved! "; }
+        }
+        public string ApprovalFailure
+        {
+            get { return "Approval Failed! "; }
+        }
+        public string SendForApproval
+        {
+            get { return "Document Sent For Approval! "; }
+        }
+        public string SendForApprovalFailure
+        {
+            get { return "Sending For Approval Failed! "; }
+        }
+
+        public string RejectSuccess
+        {
+            get { return "Document Rejected! "; }
+        }
+        public string RejectFailure
+        {
+            get { return "Rejection Failed! "; }
+        }
         public string InsertFailure
         {
             get { return "Insertion Not Successfull! "; }
         }
-        public string MailSuccess
-        {
-            get { return "Successfully send to recepients!"; }
-        }
+
         public string InsertSuccess
         {
             get { return "Values Saved Successfully ! "; }
@@ -99,15 +122,24 @@ namespace PilotSmithApp.DataAccessObject.DTO
         {
             get { return "Already Exist.."; }
         }
-        
+
         public string NoItems
         {
             get { return "No items"; }
         }
-        
+
         public string PasswordError
         {
             get { return "Password is wrong"; }
+        }
+        public string MailFailure
+        {
+            get { return "Mail Sending Failed! "; }
+        }
+
+        public string MailSuccess
+        {
+            get { return "Mail Send Successfully ! "; }
         }
         public AppConstMessage GetMessage(string messageCode)
         {

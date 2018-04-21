@@ -70,10 +70,16 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<QuotationViewModel, Quotation>().ReverseMap();
                 config.CreateMap<QuotationAdvanceSearchViewModel, QuotationAdvanceSearch>().ReverseMap();
                 config.CreateMap<QuotationDetailViewModel, QuotationDetail>().ReverseMap();
-
+                config.CreateMap<PSAUserViewModel, PSAUser>().ReverseMap();
                 config.CreateMap<SalesSummaryViewModel, SalesSummary>().ReverseMap();
                 config.CreateMap<EnquiryValueFolloupSummaryViewModel, EnquiryValueFolloupSummary>().ReverseMap();
                 config.CreateMap<TaxTypeViewModel, TaxType>().ReverseMap();
+                config.CreateMap<DocumentApprovalViewModel, DocumentApproval>().ReverseMap();
+                config.CreateMap<DocumentApprovalAdvanceSearchViewModel, DocumentApprovalAdvanceSearch>().ReverseMap();
+                config.CreateMap<ApproverViewModel, Approver>().ReverseMap();
+                config.CreateMap<ApproverAdvanceSearchViewModel, ApproverAdvanceSearch>().ReverseMap();
+                config.CreateMap<DocumentTypeViewModel, DocumentType>().ReverseMap();
+                config.CreateMap<DocumentApproverViewModel, DocumentApprover>().ReverseMap();
             });
         }
     }

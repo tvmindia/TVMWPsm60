@@ -44,11 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\ApprovalLog.cs" />
+    <Compile Include="DTO\Approver.cs" />
     <Compile Include="DTO\Area.cs" />
     <Compile Include="DTO\Bank.cs" />
     <Compile Include="DTO\Branch.cs" />
     <Compile Include="DTO\Company.cs" />
     <Compile Include="DTO\District.cs" />
+    <Compile Include="DTO\DocumentApproval.cs" />
     <Compile Include="DTO\DocumentStatus.cs" />
     <Compile Include="DTO\DocumentType.cs" />
     <Compile Include="DTO\Employee.cs" />
@@ -73,6 +76,7 @@
     <Compile Include="DTO\State.cs" />
     <Compile Include="DTO\TaxType.cs" />
     <Compile Include="DTO\Unit.cs" />
+    <Compile Include="DTO\PSAUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
