@@ -244,8 +244,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                             ProductSpec = enquiryDetailVM.ProductSpec,
                             Qty = enquiryDetailVM.Qty,
                             UnitCode = enquiryDetailVM.UnitCode,
-                            CostRate = 0,
-                            SellingRate = 0,
+                            CostRate=enquiryDetailVM.ProductModel.CostPrice,
+                            SellingRate=enquiryDetailVM.ProductModel.SellingPrice,
+                            //CostRate = 0,
+                            //SellingRate = 0,
                             Product = new ProductViewModel()
                             {
                                 ID = (Guid)enquiryDetailVM.ProductID,

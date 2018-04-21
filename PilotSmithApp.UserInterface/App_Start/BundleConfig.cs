@@ -77,6 +77,7 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJs/DocumentApproval/DocumentSummary").Include("~/Scripts/UserJS/DocumentApproval/DocumentSummary.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/DocumentApproval/ViewPendingDocuments").Include("~/Scripts/UserJS/DocumentApproval/ViewPendingDocuments.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Approver").Include("~/Scripts/UserJS/Approver.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/CustomerCategory").Include("~/Scripts/UserJS/CustomerCategory.js"));
 
         }
     }

@@ -80,6 +80,8 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ApproverAdvanceSearchViewModel, ApproverAdvanceSearch>().ReverseMap();
                 config.CreateMap<DocumentTypeViewModel, DocumentType>().ReverseMap();
                 config.CreateMap<DocumentApproverViewModel, DocumentApprover>().ReverseMap();
+                config.CreateMap<CustomerCategoryViewModel, CustomerCategory>().ReverseMap();
+
             });
         }
     }

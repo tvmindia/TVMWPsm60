@@ -29,8 +29,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             PSAUserViewModel userVM = new PSAUserViewModel();
             userVM.UserSelectList = new List<SelectListItem>();
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<PSAUserViewModel> UserVMList= Mapper.Map<List<User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-           
+            List<PSAUserViewModel> UserVMList = Mapper.Map<List<User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+
             if (UserVMList != null)
                 foreach (PSAUserViewModel uVM in UserVMList)
                 {
