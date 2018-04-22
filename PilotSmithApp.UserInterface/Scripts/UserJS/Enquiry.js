@@ -335,7 +335,7 @@ function AddEnquiryDetailToList() {
         if ($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
             debugger;
-            if ($('#ProductID').val() != "")
+            if ($('#ProductID').val() != "" & $('#Rate').val() != "" & $('#Qty').val() != "" & $('#UnitCode').val() != "")
             {
                 debugger;
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
@@ -360,7 +360,7 @@ function AddEnquiryDetailToList() {
         }
         else
         {
-            if ($('#ProductID').val() != "")
+            if ($('#ProductID').val() != "" & $('#Rate').val() != "" & $('#Qty').val() != "" & $('#UnitCode').val() != "")
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
                     debugger;
@@ -484,7 +484,7 @@ function DeleteEnquiryDetail(ID) {
 function AddEnquiryFollowUp()
 {
     debugger;
-    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?Customer.ID=" + $('#EnquiryForm #hdnCustomerID').val() + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?id="+_emptyGuid+ "&enquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val()+"&customerID=" + ($('#EnquiryForm #hdnCustomerID').val()!=""?$('#EnquiryForm #hdnCustomerID').val():_emptyGuid), function () {
         $('#lblModelPopEnquiry').text('Add Enquiry Followup')
         $('#btnresetEnquiryFollowup').trigger('click');
         $('#divModelPopEnquiry').modal('show');
@@ -500,7 +500,7 @@ function EnquiryFollowUpPaging(start)
 function EditEnquiryFollowup(id)
 {
     debugger;
-    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + id + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+    $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?id=" + id + "&enquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val()+"&customerID="+_emptyGuid , function () {
         $('#lblModelPopEnquiry').text('Edit Enquiry Followup')
         $('#divModelPopEnquiry').modal('show');
     });
@@ -516,8 +516,9 @@ function SaveSuccessEnquiryFollowup(data, status) {
         switch (_status) {
             case "OK":
                 MasterAlert("success", _result.Message)
-                $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + _result.ID + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
+                $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?ID=" + _result.ID + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(),"&customerID="+_emptyGuid, function () {
                     $('#lblModelPopEnquiry').text('Edit Enquiry Followup')
+                    
                 });
                 $("#divFollowupList").load("EnquiryFollowup/GetEnquiryFollowupList?ID=" + _emptyGuid + "&EnquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val(), function () {
                 });

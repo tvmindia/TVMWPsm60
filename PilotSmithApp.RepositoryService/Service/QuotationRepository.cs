@@ -90,6 +90,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         //quotation.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotation.GeneralNotes);
                                         quotation.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : quotation.DocumentOwnerID);
                                         quotation.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.BranchCode);
+                                        quotation.EstimateID= (sdr["EstimateID"].ToString() != "" ? Guid.Parse(sdr["EstimateID"].ToString()) : quotation.EstimateID);
                                         quotation.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : quotation.FilteredCount);
                                         quotation.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : quotation.FilteredCount);
                                     }
@@ -312,6 +313,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         {
                             ID = quotation.ID,
                             QuotationNo = quotation.QuoteNo,
+                            EstimateID=quotation.EstimateID,
                             Status = outputStatus.Value.ToString(),
                             Message = quotation.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
                         };
@@ -328,6 +330,7 @@ namespace PilotSmithApp.RepositoryService.Service
             {
                 ID = quotation.ID,
                 QuotationNo = quotation.QuoteNo,
+                EstimateID = quotation.EstimateID,
                 Status = outputStatus.Value.ToString(),
                 Message = quotation.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
             };

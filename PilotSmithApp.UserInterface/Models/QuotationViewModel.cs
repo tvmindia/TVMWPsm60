@@ -43,6 +43,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string TermReferenceNo { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
+        [Display(Name = "Owner")]
         public Guid? DocumentOwnerID { get; set; }
         [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
@@ -59,6 +60,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Quotation Date")]
         public string QuoteDateFormatted { get; set; }
         [Display(Name = "Valid Till Date")]
+        [Required(ErrorMessage = "Valid Till Date is missing")]
         public string ValidUpToDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }

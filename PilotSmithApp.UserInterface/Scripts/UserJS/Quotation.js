@@ -152,7 +152,7 @@ function ExportQuotationData() {
 function AddQuotation() {
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + _emptyGuid, function () {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=", function () {
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
         BindQuotationDetailList(_emptyGuid);
         //BindQuotationOtherChargesDetailList(_emptyGuid)
@@ -167,7 +167,7 @@ function EditQuotation(this_Obj) {
     OnServerCallBegin();
     var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + _emptyGuid, function () {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + Quotation.EstimateID, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
         BindQuotationDetailList(Quotation.ID);
@@ -183,7 +183,7 @@ function EditQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + _emptyGuid, function () {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=", function () {
         BindQuotationDetailList($('#ID').val(),false);
         clearUploadControl();
         PaintImages($('#QuotationForm #ID').val());
@@ -211,7 +211,7 @@ function SaveSuccessQuotation(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _result.ID, function () {
+                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _result.ID + "&estimateID="+ result.EstimateID, function () {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
                     BindQuotationDetailList(_result.ID);
                     clearUploadControl();

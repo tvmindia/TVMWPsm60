@@ -33,7 +33,7 @@
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.FollowupDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @readonly = "" } })
@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownListFor(model => model.FollowupTimeFormatted, TimeSelectList, "--select time--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnFollowupTimeFormatted').val(this.value)",@disabled= "disabled" })
@@ -52,7 +52,7 @@
             </div>
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
@@ -88,7 +88,7 @@
             </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownListFor(model => model.Status, FollowUpStatusSelectList, "--select status--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnStatus').val(this.value)" })
@@ -108,7 +108,7 @@
 
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)",@disabled= "disabled" })
@@ -139,7 +139,7 @@
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.FollowupDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
@@ -148,7 +148,7 @@
             </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.FollowupTimeFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownListFor(model => model.FollowupTimeFormatted, TimeSelectList, "--select time--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnFollowupTimeFormatted').val(this.value)" })
@@ -158,7 +158,7 @@
             </div>
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control newinput" } })
@@ -194,7 +194,7 @@
             </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownListFor(model => model.Status, FollowUpStatusSelectList, "--select status--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnStatus').val(this.value)" })
@@ -214,7 +214,7 @@
 
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)" })
@@ -241,7 +241,7 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormEnquiryFollowup");
-        $('#Status,#PriorityCode,#FollowupTimeFormatted').select2({
+        $('#FormEnquiryFollowup #Status,#FormEnquiryFollowup #PriorityCode,#FormEnquiryFollowup #FollowupTimeFormatted').select2({
             dropdownParent: $("#divModelPopEnquiry")
         });
         $('.select2').addClass('form-control newinput');

@@ -36,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #region Quotation Form
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public ActionResult QuotationForm(Guid id,Guid estimateID)
+        public ActionResult QuotationForm(Guid id,Guid? estimateID)
         {
             QuotationViewModel quotationVM = null;
             try
@@ -46,27 +46,27 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(id));
                     quotationVM.IsUpdate = true;
                 }
-                else if(id==Guid.Empty&&estimateID==Guid.Empty)
+                else if(id==Guid.Empty&&estimateID==null)
                 {
-                    quotationVM = new QuotationViewModel();
-                    quotationVM.IsUpdate = false;
-                    quotationVM.ID = Guid.Empty;
-                }
-                else if(id == Guid.Empty && estimateID != Guid.Empty)
-                {
-                    EstimateViewModel estimateVM = Mapper.Map<Estimate,EstimateViewModel>(_estimateBusiness.GetEstimate(estimateID));
                     quotationVM = new QuotationViewModel();
                     quotationVM.IsUpdate = false;
                     quotationVM.ID = Guid.Empty;
                     quotationVM.EstimateID = null;
+                }
+                else if(id == Guid.Empty && estimateID != null)
+                {
+                    EstimateViewModel estimateVM = Mapper.Map<Estimate,EstimateViewModel>(_estimateBusiness.GetEstimate((Guid)estimateID));
+                    quotationVM = new QuotationViewModel();
+                    quotationVM.IsUpdate = false;
+                    quotationVM.ID = Guid.Empty;
                     quotationVM.CustomerID = estimateVM.CustomerID;
                 }
                 quotationVM.Customer = new CustomerViewModel
                 {
-                    Titles = new TitlesViewModel()
-                    {
-                        TitlesSelectList = _customerBusiness.GetTitleSelectList(),
-                    },
+                    //Titles = new TitlesViewModel()
+                    //{
+                    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                    //},
                 };
             }
             catch (Exception ex)

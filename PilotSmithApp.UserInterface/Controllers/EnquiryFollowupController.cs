@@ -41,6 +41,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult GetEnquiryFollowupList(EnquiryFollowupViewModel enquiryFollowupVM)
         {
             ViewBag.Ispager = false;
+
             if(enquiryFollowupVM.DataTablePaging==null)
             {
                 enquiryFollowupVM.DataTablePaging = new DataTablePagingViewModel()
@@ -59,18 +60,19 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.ButtonDisable = enquiryFollowupVM.EnquiryFollowupList.Count > 0 ? enquiryFollowupVM.EnquiryFollowupList.Where(x => x.Status == "Open").ToList().Count > 0 : false;
             return PartialView("_EnquiryFollowupList", enquiryFollowupVM);
         }
-        public ActionResult AddEnquiryFollowup(EnquiryFollowupViewModel enquiryFollowupVM)
+        public ActionResult AddEnquiryFollowup(Guid id, Guid enquiryID,Guid customerID)
         {
+            EnquiryFollowupViewModel enquiryFollowupVM = new EnquiryFollowupViewModel();
             enquiryFollowupVM.IsUpdate = false;
-            
-            if (enquiryFollowupVM.ID!=Guid.Empty)
+            enquiryFollowupVM.Status = "Open";
+            if (id != Guid.Empty)
             {
-                enquiryFollowupVM = Mapper.Map<EnquiryFollowup, EnquiryFollowupViewModel>(_enquiryFollowupBusiness.GetEnquiryFollowup(enquiryFollowupVM.ID));
+                enquiryFollowupVM = Mapper.Map<EnquiryFollowup, EnquiryFollowupViewModel>(_enquiryFollowupBusiness.GetEnquiryFollowup(id));
                 enquiryFollowupVM.IsUpdate = true;
             }
             if(!enquiryFollowupVM.IsUpdate)
             {
-                enquiryFollowupVM.Customer = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomer(enquiryFollowupVM.Customer.ID));
+                enquiryFollowupVM.Customer = Mapper.Map<Customer, CustomerViewModel>(_customerBusiness.GetCustomer(customerID));
                 enquiryFollowupVM.ContactName = enquiryFollowupVM.Customer.ContactPerson;
                 enquiryFollowupVM.ContactNo = enquiryFollowupVM.Customer.Mobile;
             }

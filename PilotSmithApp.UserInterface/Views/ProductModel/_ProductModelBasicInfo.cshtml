@@ -19,5 +19,7 @@
                 <span id="spnProductName">@Model.Specification</span>
             </li>
         </ul>
+        @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "",@id="hdnProductModelUnitCode" })
+        @Html.HiddenFor(model => model.StockQty, htmlAttributes: new { @class = "",@id="hdnProductModelStockQty" })
     </div>
 </div>

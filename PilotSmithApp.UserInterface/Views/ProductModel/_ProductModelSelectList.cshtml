@@ -28,7 +28,10 @@ else
                     $('#ProductSpec').val($('#spnProductName').text());
                     $('#Rate').val($('#spnSellingPrice').text().replace('₹ ', '').trim());
                     $('#CostRate').val($('#spnCostPrice').text().replace('₹ ', ' ').trim());
-                    $('#SellingRate').val($('#spnSellingPrice').text().replace('₹ ',' ').trim());
+                    $('#SellingRate').val($('#spnSellingPrice').text().replace('₹ ', ' ').trim());
+                        $('#UnitCode').val($('#hdnProductModelUnitCode').val());
+                        $('#hdnUnitCode').val($('#hdnProductModelUnitCode').val());
+                        $('#UnitCode').trigger('change');
                 });
             }
         });
