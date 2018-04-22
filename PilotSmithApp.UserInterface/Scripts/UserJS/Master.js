@@ -366,3 +366,45 @@ function SaveSuccessCustomerMaster(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+
+
+//-- add Approver--//
+function AddApproverMaster(flag) {
+    debugger;
+
+    $("#divMasterBody").load("Approver/MasterPartial?masterCode=" + EmptyGuid, function () {
+        $('#hdnMasterCall').val(flag);
+        $('#lblModelMasterContextLabel').text('Add Approver')
+        $('#divModelMasterPopUp').modal('show');
+    });
+
+    //GetMasterPartial("Approver", "");
+    //$('#h3ModelMasterContextLabel').text('Add Approver')
+    //$('#divModelMasterPopUp').modal('show');
+    //$('#hdnMasterCall').val(flag);
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessApprover(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadApproverTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divApproverSelectList').load('/Approver/ApproverSelectList?required=');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}

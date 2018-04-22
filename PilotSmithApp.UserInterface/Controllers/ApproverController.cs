@@ -87,11 +87,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region MasterPartial
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Approver", Mode = "R")]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(Guid masterCode)
         {
-            ApproverViewModel approverVM = string.IsNullOrEmpty(masterCode) ? new ApproverViewModel { Level=1 } : Mapper.Map<Approver, ApproverViewModel>(_approverBusiness.GetApprover(Guid.Parse(masterCode)));
-            approverVM.IsUpdate = string.IsNullOrEmpty(masterCode) ? false : true;
-            if (string.IsNullOrEmpty(masterCode))
+            ApproverViewModel approverVM =masterCode==Guid.Empty ? new ApproverViewModel { Level=1 } : Mapper.Map<Approver, ApproverViewModel>(_approverBusiness.GetApprover(masterCode));
+            approverVM.IsUpdate = masterCode == Guid.Empty ? false : true;
+            if (masterCode==Guid.Empty)
             {
                 approverVM.IsActive = true;
                 approverVM.IsDefault = true;
@@ -145,12 +145,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
 
                     var result = _approverBusiness.InsertUpdateApprover(Mapper.Map<ApproverViewModel, Approver>(approverVM));
-                    return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
                 }
                 catch (Exception ex)
                 {
                     AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                    return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
                 }
             }
             else
@@ -206,10 +206,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset All";
                     toolboxVM.resetbtn.Event = "ResetApproverList();";
                     //----added for export button--------------
-                    toolboxVM.PrintBtn.Visible = true;
-                    toolboxVM.PrintBtn.Text = "Export";
-                    toolboxVM.PrintBtn.Title = "Export";
-                    toolboxVM.PrintBtn.Event = "ImportApproverData();";
+                    toolboxVM.ExportBtn.Visible = true;
+                    toolboxVM.ExportBtn.Text = "Export";
+                    toolboxVM.ExportBtn.Title = "Export";
+                    toolboxVM.ExportBtn.Event = "ImportApproverData();";
                     //---------------------------------------
                     break;
 
