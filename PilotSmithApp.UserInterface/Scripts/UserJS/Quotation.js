@@ -456,8 +456,7 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () {
         debugger;
         if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
-            debugger;
-            if ($('#divModelPopQuotation #ProductID').val() != "") {
+            if ($('#divModelPopQuotation #ProductID').val() != "" & $('#divModelPopQuotation #Rate').val() != "" & $('#divModelPopQuotation #Qty').val() != "" & $('#divModelPopQuotation #UnitCode').val() != "") {
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 quotationDetailList[_datatablerowindex].Product.Code = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -488,7 +487,7 @@ function AddQuotationDetailToList() {
             }
         }
         else {
-            if ($('#divModelPopQuotation #ProductID').val() != "")
+            if ($('#divModelPopQuotation #ProductID').val() != "" & $('#divModelPopQuotation #Rate').val() != "" & $('#divModelPopQuotation #Qty').val() != "" & $('#divModelPopQuotation #UnitCode').val() != "")
                 if (_dataTable.QuotationDetailList.rows().data().length === 0) {
                     _dataTable.QuotationDetailList.clear().rows.add(GetQuotationDetailListByQuotationID(_emptyGuid)).draw(false);
                     debugger;
