@@ -153,6 +153,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : quotation.EmailSentYN);
                                     quotation.LatestApprovalID = (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : quotation.LatestApprovalID);
                                     quotation.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : quotation.LatestApprovalStatus);
+                                    quotation.LatestApprovalStatusDescription= (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : quotation.LatestApprovalStatusDescription);
                                     quotation.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : quotation.IsFinalApproved);
                                     quotation.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? (sdr["EmailSentTo"].ToString()) : quotation.EmailSentTo);
                                     quotation.TermReferenceNo = (sdr["TermReferenceNo"].ToString() != "" ? (sdr["TermReferenceNo"].ToString()) : quotation.TermReferenceNo);

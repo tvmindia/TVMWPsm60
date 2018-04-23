@@ -42,6 +42,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
+        public string LatestApprovalStatusDescription { get; set; }
         public Customer Customer { get; set; }
         public Branch Branch { get; set; }
         public ReferencePerson ReferencePerson { get; set; }

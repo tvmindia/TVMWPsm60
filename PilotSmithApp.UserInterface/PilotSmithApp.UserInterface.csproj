@@ -256,9 +256,14 @@
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
+    <Content Include="Content\images\frame1.png" />
+    <Content Include="Content\images\divframe.png" />
     <Content Include="Content\images\envelope.png" />
     <Content Include="Content\images\document.png" />
     <Content Include="Content\images\excel_export.png" />
+    <Content Include="Content\images\frame-orange.png" />
+    <Content Include="Content\images\frame.png" />
+    <Content Include="Content\images\infopattern.png" />
     <Content Include="Content\images\patternPop.png" />
     <Content Include="Content\images\production.png" />
     <Content Include="Content\images\rupee.png" />
@@ -640,6 +645,9 @@
     <Content Include="Scripts\i18n\vi.js" />
     <Content Include="Scripts\i18n\zh-CN.js" />
     <Content Include="Scripts\i18n\zh-TW.js" />
+    <Content Include="fonts\Certificate-Regular.ttf" />
+    <Content Include="fonts\Liquidrom-Italic.ttf" />
+    <Content Include="fonts\Liquidrom.ttf" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
