@@ -17,8 +17,8 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
 
-            <div class="form-group col-md-12 ">
-                <div class="col-md-4 no-padding">
+            <div class="form-group col-md-6 ">
+                <div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EnquiryID, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -29,11 +29,9 @@
                     </div>
                     @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
                 </div>
-            </div>
 
-            <div class="form-group col-md-12 ">
 
-                <div class="col-md-4 no-padding">
+                <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EstimateNo, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -43,17 +41,17 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 no-padding">
+                <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EstimateRefNo, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.EstimateRefNo, new { htmlAttributes = new { @class = "form-control newinput"} })
+                        @Html.EditorFor(model => model.EstimateRefNo, new { htmlAttributes = new { @class = "form-control newinput" } })
                         @Html.ValidationMessageFor(model => model.EstimateRefNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="col-md-4 no-padding">
+                <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label " })
                     </div>
@@ -62,22 +60,11 @@
                         @Html.ValidationMessageFor(model => model.EstimateDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group col-md-12 ">
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
-                        </div>
-                    </div>
-                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
-                </div>
 
-                <div class="col-md-4 no-padding">
+                @*<div class="form-group col-md-12 ">*@
+
+                <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -89,6 +76,31 @@
                     </div>
                 </div>
 
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divCustomerSelectList">
+                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                        </div>
+                    </div>
+                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
+                </div>
+                <div id="divCustomerBasicInfo">
+                    @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
+                </div>
+            </div>
+
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+    </div>
+
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Other details</div>
+            <div class="form-group col-md-12 ">
+
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label " })
@@ -98,8 +110,47 @@
                         @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            </div>
 
+
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divBranchSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                        </div>
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divBranchSelectList">
+                            @Html.Action("EmployeeSelectList", "Employee", new { required = "" })
+                        </div>
+                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnEmployeeID" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group col-md-12 ">
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDocumentOwnerSelectList">
+                            @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "" })
+                        </div>
+                        @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -131,46 +182,11 @@
 
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Other details</div>
-            <div class="form-group col-md-12 ">
+            <div class="col-md-12 headSeperator">GeneralNotes</div>
 
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentOwnerSelectList">
-                            @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "" })
-                        </div>
-                        @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })
-                    </div>
-                </div>
+            <div class="form-group col-md-12">
 
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
-                        </div>
-                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                    </div>
-                </div>
-
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("EmployeeSelectList", "Employee", new { required = "" })
-                        </div>
-                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnEmployeeID" })
-                    </div>
-                </div>
-
-                <div class="col-md-12 no-padding">
+                <div class="col-md-12 no-padding ">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -179,8 +195,9 @@
                         @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="col-md-12">&nbsp;</div>
             </div>
-            <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
 
@@ -246,11 +263,12 @@
         catch (e) {
             console.log(e.message);
         }
-        try{
+        try {
             $('#EstimateForm #EnquiryID').change(function () {
                 debugger;
-                OnServerCallBegin();                                 
+                OnServerCallBegin();
                 $('#divEstimateForm').load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
                     BindEstimateDetailList("00000000-0000-0000-0000-000000000000", true);
                     OnServerCallComplete();
                 });
@@ -258,7 +276,7 @@
         }
         catch (e) {
             console.log(e.message);
-        }       
+        }
     });
 </script>
 

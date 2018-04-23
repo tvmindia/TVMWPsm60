@@ -36,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region GetEstimateForm
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public ActionResult EstimateForm(Guid id,Guid enquiryID)
+        public ActionResult EstimateForm(Guid id,Guid? enquiryID)
         {
             EstimateViewModel estimateVM = null;
            try
@@ -46,15 +46,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate(id));
                     estimateVM.IsUpdate = true;
                 }
-                else if(id==Guid.Empty && enquiryID==Guid.Empty)
+                else if(id==Guid.Empty && enquiryID==null)
                 {
                     estimateVM = new EstimateViewModel();
                     estimateVM.IsUpdate = false;
                     estimateVM.ID = Guid.Empty;
                 }
-                else if(id==Guid.Empty && enquiryID!=Guid.Empty)
+                else if(id==Guid.Empty && enquiryID!=null)
                 {
-                    EnquiryViewModel enquiryVM = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.GetEnquiry(enquiryID));
+                    EnquiryViewModel enquiryVM = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.GetEnquiry((Guid)enquiryID));
                     estimateVM = new EstimateViewModel();
                     estimateVM.IsUpdate = false;
                     estimateVM.ID = Guid.Empty;
@@ -244,10 +244,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             ProductSpec = enquiryDetailVM.ProductSpec,
                             Qty = enquiryDetailVM.Qty,
                             UnitCode = enquiryDetailVM.UnitCode,
-                            CostRate=enquiryDetailVM.ProductModel.CostPrice,
-                            SellingRate=enquiryDetailVM.ProductModel.SellingPrice,
-                            //CostRate = 0,
-                            //SellingRate = 0,
+                            CostRate = 0,
+                            SellingRate = 0,
                             Product = new ProductViewModel()
                             {
                                 ID = (Guid)enquiryDetailVM.ProductID,

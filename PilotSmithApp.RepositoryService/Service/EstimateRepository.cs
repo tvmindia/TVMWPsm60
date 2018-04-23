@@ -67,6 +67,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     Estimate estimate = new Estimate();
                                     {
                                         estimate.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : estimate.ID);
+                                        estimate.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : estimate.EnquiryID);
                                         estimate.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : estimate.EstimateNo);
                                         estimate.EstimateRefNo = (sdr["EstimateRefNo"].ToString() != "" ? sdr["EstimateRefNo"].ToString() : estimate.EstimateRefNo);
                                         estimate.EstimateDate = (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()) : estimate.EstimateDate);
