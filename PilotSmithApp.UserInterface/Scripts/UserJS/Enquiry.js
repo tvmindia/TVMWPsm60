@@ -330,12 +330,11 @@ function AddEnquiryDetailList()
 }
 function AddEnquiryDetailToList() {
     debugger;
-    $("#FormEnquiryDetail").submit(function () {
+    $("#FormEnquiryDetail").submit(function () { });
         debugger;
         if ($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
-            debugger;
-            if ($('#ProductID').val() != "" & $('#Rate').val() != "" & $('#Qty').val() != "" & $('#UnitCode').val() != "")
+            if (($('#ProductID').val() != "" )&& ($('#Rate').val() != "" )&& ($('#Qty').val() != "" )&& ($('#UnitCode').val() != ""))
             {
                 debugger;
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
@@ -360,7 +359,8 @@ function AddEnquiryDetailToList() {
         }
         else
         {
-            if ($('#ProductID').val() != "" & $('#Rate').val() != "" & $('#Qty').val() != "" & $('#UnitCode').val() != "")
+            if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
+            {
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
                     debugger;
@@ -401,10 +401,9 @@ function AddEnquiryDetailToList() {
                     _dataTable.EnquiryDetailList.row.add(EnquiryDetailVM).draw(true);
                     $('#divModelPopEnquiry').modal('hide');
                 }
+            }
+                
         }
-        
-    });
-   
 }
 function EditEnquiryDetail(this_Obj)
 {
