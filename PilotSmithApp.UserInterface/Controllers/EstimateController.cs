@@ -51,6 +51,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM = new EstimateViewModel();
                     estimateVM.IsUpdate = false;
                     estimateVM.ID = Guid.Empty;
+                    estimateVM.DocumentStatusCode = 3;
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {

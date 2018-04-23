@@ -61,7 +61,7 @@ function BindOrReloadEstimateTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [1, 2, 3, 4, 5, 6]
+                                 columns: [0 ,1, 2, 3, 4, 5, 6]
                              }
             }],
             ordering: false,
@@ -140,7 +140,7 @@ function AddEstimate() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid+"&enquiryID=", function () {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid +"&enquiryID=", function () {
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
         BindEstimateDetailList(_emptyGuid);
         OnServerCallComplete();
@@ -174,8 +174,16 @@ function EditEstimate(this_Obj) {
 
 function ResetEstimate() {
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=", function () {
-        BindEstimateDetailList($('#ID').val(),false);
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID="+$('#hdnEnquiryID').val(), function () {
+        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null)
+        {
+            //resides in customjs for sliding
+            setTimeout(function () {
+                $("#divEstimateForm #EnquiryID").prop('disabled', true);
+                openNav();
+            }, 100);
+        }
+        BindEstimateDetailList($('#ID').val(), false);
         clearUploadControl();
         PaintImages($('#EstimateForm #ID').val());
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
@@ -354,7 +362,7 @@ function AddEstimateDetailToList() {
         debugger;
         if ($('#FormEstimateDetail #IsUpdate').val() == 'True') {
             debugger;
-            if ($('#ProductID').val() != "") {
+            if (($('#ProductID').val() != "") && ($('#Qty').val()!="") && ($('#UnitCode').val()!="")){
                 debugger;
                 var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
                 estimateDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -378,7 +386,8 @@ function AddEstimateDetailToList() {
             }
         }
         else {
-            if ($('#ProductID').val() != "")
+            if (($('#ProductID').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
+            {
                 if (_dataTable.EstimateDetailList.rows().data().length === 0) {
                     _dataTable.EstimateDetailList.clear().rows.add(GetEstimateDetailListByEstimateID(_emptyGuid)).draw(false);
                     debugger;
@@ -421,6 +430,7 @@ function AddEstimateDetailToList() {
                     _dataTable.EstimateDetailList.row.add(EstimateDetailVM).draw(true);
                     $('#divModelPopEstimate').modal('hide');
                 }
+            }               
         }
 
     

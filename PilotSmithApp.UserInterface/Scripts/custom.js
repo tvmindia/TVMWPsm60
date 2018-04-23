@@ -343,7 +343,7 @@ function GetMasterPartial(Controller, MasterCode) {
         var ds = {};
         ds = GetDataFromServer(Controller + "/MasterPartial/", data);
         if (ds == "Nochange") {
-            return; 0
+           // return; 0
         }
         $("#divMasterBody").empty();
         $("#divMasterBody").html(ds);
@@ -941,3 +941,10 @@ function ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID) {
 
 
 //-----------------------------------------------------------------------------//
+
+function RedirectSearchClick(e,this_obj){
+    var unicode = e.charCode ? e.charCode : e.keyCode
+    if (unicode == 13) {
+        $(this_obj).closest('.input-group').find('button').trigger('click')
+    }
+}

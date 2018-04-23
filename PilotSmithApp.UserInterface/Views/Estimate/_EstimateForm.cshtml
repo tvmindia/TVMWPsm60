@@ -53,7 +53,7 @@
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.EstimateDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
@@ -103,7 +103,7 @@
 
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
@@ -145,7 +145,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentOwnerSelectList">
-                            @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "" })
+                            @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "",code="EST" })
                         </div>
                         @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })
                     </div>
