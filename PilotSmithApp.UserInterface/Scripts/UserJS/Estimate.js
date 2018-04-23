@@ -140,7 +140,7 @@ function AddEstimate() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid+"&enquiryID="+_emptyGuid, function () {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid+"&enquiryID=", function () {
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
         BindEstimateDetailList(_emptyGuid);
         OnServerCallComplete();
@@ -152,14 +152,16 @@ function AddEstimate() {
 }
 
 function EditEstimate(this_Obj) {
+    debugger;
     OnServerCallBegin();
     var Estimate = _dataTable.EstimateList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID+"&enquiryID="+_emptyGuid, function () {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID+ "&enquiryID=" +Estimate.EnquiryID, function () {
         
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
         BindEstimateDetailList(Estimate.ID);
-        clearUploadControl();       
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+        clearUploadControl();
         PaintImages(Estimate.ID);        
         OnServerCallComplete();
         //resides in customjs for sliding
@@ -172,11 +174,11 @@ function EditEstimate(this_Obj) {
 
 function ResetEstimate() {
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=" + _emptyGuid, function () {
-        BindEstimateDetailList($('#ID').val());
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=", function () {
+        BindEstimateDetailList($('#ID').val(),false);
         clearUploadControl();
         PaintImages($('#EstimateForm #ID').val());
-       
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
     });
 }
 function SaveEstimate() {
@@ -201,7 +203,7 @@ function SaveSuccessEstimate(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _result.ID, function () {
+                $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _result.ID+"&enquiryID="+_result.EnquiryID, function () {
                     ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
                     BindEstimateDetailList(_result.ID);
                     clearUploadControl();
@@ -348,7 +350,7 @@ function AddEstimateDetailList() {
 
 function AddEstimateDetailToList() {
     debugger;
-    $("#FormEstimateDetail").submit(function () {
+    $("#FormEstimateDetail").submit(function () { });
         debugger;
         if ($('#FormEstimateDetail #IsUpdate').val() == 'True') {
             debugger;
@@ -421,7 +423,7 @@ function AddEstimateDetailToList() {
                 }
         }
 
-    });
+    
 }
 
 function EditEstimateDetail(this_Obj) {
