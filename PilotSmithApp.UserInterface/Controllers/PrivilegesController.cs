@@ -11,7 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using PilotSmithApp.UserInterface.Models;
 
-namespace UserInterface.Controllers
+namespace PilotSmithApp.UserInterface.Controllers
 {
     public class PrivilegesController : Controller
     {

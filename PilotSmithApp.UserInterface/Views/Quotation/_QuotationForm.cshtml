@@ -16,6 +16,17 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.EstimateID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+
+                        @Html.Action("EstimateSelectList", "Estimate", new { required = "" })
+                        @Html.HiddenFor(model => model.EstimateID, htmlAttributes: new { @class = "", @id = "hdnEstimateID" })
+                    </div>
+
+                </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.QuoteNo, htmlAttributes: new { @class = "control-label" })
@@ -54,17 +65,7 @@
                         @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
                 </div>
-                <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.EstimateID, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                       
-                        @Html.Action("EstimateSelectList", "Estimate", new { required = "" })
-                        @Html.HiddenFor(model => model.EstimateID, htmlAttributes: new { @class = "", @id = "hdnEstimateID" })
-                    </div>
-                   
-                </div>
+                
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })

@@ -164,6 +164,7 @@ function AddQuotation() {
     });
 }
 function EditQuotation(this_Obj) {
+    debugger;
     OnServerCallBegin();
     var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
@@ -211,7 +212,7 @@ function SaveSuccessQuotation(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _result.ID + "&estimateID="+ result.EstimateID, function () {
+                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _result.ID + "&estimateID="+ _result.EstimateID, function () {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
                     BindQuotationDetailList(_result.ID);
                     clearUploadControl();
@@ -453,61 +454,63 @@ function AddQuotationDetailList() {
 }
 function AddQuotationDetailToList() {
     debugger;
-    $("#FormQuotationDetail").submit(function () {
+    $("#FormQuotationDetail").submit(function () { });
         debugger;
         if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
-            if ($('#divModelPopQuotation #ProductID').val() != "" & $('#divModelPopQuotation #Rate').val() != "" & $('#divModelPopQuotation #Qty').val() != "" & $('#divModelPopQuotation #UnitCode').val() != "") {
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "" )&& ($('#divModelQuotationPopBody #Qty').val() != "" )&& ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
-                quotationDetailList[_datatablerowindex].Product.Code = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID option:selected").text().split("-")[0].trim() : "";
-                quotationDetailList[_datatablerowindex].Product.Name = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID option:selected").text().split("-")[1].trim() : "";
+                quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
+                quotationDetailList[_datatablerowindex].Product.Name = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
                 quotationDetailList[_datatablerowindex].ProductID = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID").val() : _emptyGuid;
-                quotationDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                quotationDetailList[_datatablerowindex].ProductModelID = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
                 Unit = new Object;
                 TaxType = new Object;
-                ProductModel.Name = $("#divModelPopQuotation #ProductModelID").val() != "" ? $("#divModelPopQuotation #ProductModelID option:selected").text() : "";
+                ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[_datatablerowindex].ProductModel = ProductModel;
-                quotationDetailList[_datatablerowindex].ProductSpec = $('#divModelPopQuotation #ProductSpec').val();
-                quotationDetailList[_datatablerowindex].Qty = $('#divModelPopQuotation #Qty').val();
-                quotationDetailList[_datatablerowindex].UnitCode = $('#divModelPopQuotation #UnitCode').val();
-                Unit.Description = $("#divModelPopQuotation #UnitCode").val() != "" ? $("#divModelPopQuotation #UnitCode option:selected").text().trim() : "";
+                quotationDetailList[_datatablerowindex].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
+                quotationDetailList[_datatablerowindex].Qty = $('#divModelQuotationPopBody #Qty').val();
+                quotationDetailList[_datatablerowindex].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
+                Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
                 quotationDetailList[_datatablerowindex].Unit = Unit;
-                quotationDetailList[_datatablerowindex].Rate = $('#divModelPopQuotation #Rate').val();
-                quotationDetailList[_datatablerowindex].Discount = $('#Discount').val() != "" ? $('#divModelPopQuotation #Discount').val() : 0;
-                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelPopQuotation #TaxTypeCode').val().split('|')[0];
-                TaxType.ValueText = $('#divModelPopQuotation #TaxTypeCode').val();
+                quotationDetailList[_datatablerowindex].Rate = $('#divModelQuotationPopBody #Rate').val();
+                quotationDetailList[_datatablerowindex].Discount = $('#Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
+                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                 quotationDetailList[_datatablerowindex].TaxType = TaxType;
-                quotationDetailList[_datatablerowindex].CGSTAmt = $('#divModelPopQuotation #CGSTAmt').val();
-                quotationDetailList[_datatablerowindex].SGSTAmt = $('#divModelPopQuotation #SGSTAmt').val();
-                quotationDetailList[_datatablerowindex].IGSTAmt = $('#divModelPopQuotation #IGSTAmt').val();
+                quotationDetailList[_datatablerowindex].CGSTAmt = $('#divModelQuotationPopBody #CGSTAmt').val();
+                quotationDetailList[_datatablerowindex].SGSTAmt = $('#divModelQuotationPopBody #SGSTAmt').val();
+                quotationDetailList[_datatablerowindex].IGSTAmt = $('#divModelQuotationPopBody #IGSTAmt').val();
                 _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
                 $('#divModelPopQuotation').modal('hide');
                 _datatablerowindex = -1;
             }
         }
         else {
-            if ($('#divModelPopQuotation #ProductID').val() != "" & $('#divModelPopQuotation #Rate').val() != "" & $('#divModelPopQuotation #Qty').val() != "" & $('#divModelPopQuotation #UnitCode').val() != "")
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
+            {
+                debugger;
                 if (_dataTable.QuotationDetailList.rows().data().length === 0) {
-                    _dataTable.QuotationDetailList.clear().rows.add(GetQuotationDetailListByQuotationID(_emptyGuid)).draw(false);
+                    _dataTable.QuotationDetailList.clear().rows.add(GetQuotationDetailListByQuotationID(_emptyGuid,false)).draw(false);
                     debugger;
                     var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
-                    quotationDetailList[0].Product.Code = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID option:selected").text().split("-")[0].trim() : "";
-                    quotationDetailList[0].Product.Name = $("#divModelPopQuotation #ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                    quotationDetailList[0].ProductID = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID").val() : _emptyGuid;
-                    quotationDetailList[0].ProductModelID = $("#divModelPopQuotation #ProductModelID").val() != "" ? $("#divModelPopQuotation #ProductModelID").val() : _emptyGuid;
-                    quotationDetailList[0].ProductModel.Name = $("#divModelPopQuotation #ProductModelID").val() != "" ? $("#divModelPopQuotation #ProductModelID option:selected").text() : "";
-                    quotationDetailList[0].ProductSpec = $('#divModelPopQuotation #ProductSpec').val();
-                    quotationDetailList[0].Qty = $('#divModelPopQuotation #Qty').val();
-                    quotationDetailList[0].UnitCode = $('#UnitCode').val();
-                    quotationDetailList[0].Unit.Description = $("#divModelPopQuotation #UnitCode").val() != "" ? $("#divModelPopQuotation #UnitCode option:selected").text().trim() : "";
-                    quotationDetailList[0].Rate = $('#divModelPopQuotation #Rate').val();
-                    quotationDetailList[0].Discount = $('#divModelPopQuotation #Discount').val() != "" ? $('#divModelPopQuotation #Discount').val() : 0;
-                    quotationDetailList[0].TaxTypeCode = $('#divModelPopQuotation #TaxTypeCode').val().split('|')[0];
-                    quotationDetailList[0].TaxType.ValueText = $('#divModelPopQuotation #TaxTypeCode').val();
-                    quotationDetailList[0].CGSTAmt = $('#divModelPopQuotation #CGSTAmt').val();
-                    quotationDetailList[0].SGSTAmt = $('#divModelPopQuotation #SGSTAmt').val();
-                    quotationDetailList[0].IGSTAmt = $('#divModelPopQuotation #IGSTAmt').val();
+                    quotationDetailList[0].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
+                    quotationDetailList[0].Product.Name = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                    quotationDetailList[0].ProductID = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID").val() : _emptyGuid;
+                    quotationDetailList[0].ProductModelID = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid;
+                    quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
+                    quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
+                    quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val();
+                    quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
+                    quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
+                    quotationDetailList[0].Rate = $('#divModelQuotationPopBody #Rate').val();
+                    quotationDetailList[0].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
+                    quotationDetailList[0].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                    quotationDetailList[0].TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
+                    quotationDetailList[0].CGSTAmt = $('#divModelQuotationPopBody #CGSTAmt').val();
+                    quotationDetailList[0].SGSTAmt = $('#divModelQuotationPopBody #SGSTAmt').val();
+                    quotationDetailList[0].IGSTAmt = $('#divModelQuotationPopBody #IGSTAmt').val();
                     _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
                     $('#divModelPopQuotation').modal('hide');
                 }
@@ -515,41 +518,40 @@ function AddQuotationDetailToList() {
                     debugger;
                     var QuotationDetailVM = new Object();
                     QuotationDetailVM.ID = _emptyGuid;
-                    QuotationDetailVM.ProductID = ($("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID").val() : _emptyGuid);
+                    QuotationDetailVM.ProductID = ($("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID").val() : _emptyGuid);
                     var Product = new Object;
-                    Product.Code = ($("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID option:selected").text().split("-")[0].trim() : "");
-                    Product.Name = ($("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID option:selected").text().split("-")[1].trim() : "");
+                    Product.Code = ($("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "");
+                    Product.Name = ($("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "");
                     QuotationDetailVM.Product = Product;
-                    QuotationDetailVM.ProductModelID = ($("#divModelPopQuotation #ProductModelID").val() != "" ? $("#divModelPopQuotation #ProductModelID").val() : _emptyGuid);
+                    QuotationDetailVM.ProductModelID = ($("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid);
                     var ProductModel = new Object()
                     ProductModel.Name = ($("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "");
                     QuotationDetailVM.ProductModel = ProductModel;
-                    QuotationDetailVM.ProductSpec = $('#divModelPopQuotation #ProductSpec').val();
-                    QuotationDetailVM.Qty = $('#divModelPopQuotation #Qty').val();
+                    QuotationDetailVM.ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
+                    QuotationDetailVM.Qty = $('#divModelQuotationPopBody #Qty').val();
                     var Unit = new Object();
-                    Unit.Description = $("#divModelPopQuotation #UnitCode").val() != "" ? $("#divModelPopQuotation #UnitCode option:selected").text().trim() : "";
+                    Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
                     QuotationDetailVM.Unit = Unit;
-                    QuotationDetailVM.UnitCode = $('#divModelPopQuotation #UnitCode').val();
-                    QuotationDetailVM.Rate = $('#divModelPopQuotation #Rate').val();
-                    QuotationDetailVM.Discount = $('#divModelPopQuotation #Discount').val() != "" ? $('#divModelPopQuotation #Discount').val() : 0;
-                    QuotationDetailVM.TaxTypeCode = $('#divModelPopQuotation #TaxTypeCode').val().split('|')[0];
+                    QuotationDetailVM.UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
+                    QuotationDetailVM.Rate = $('#divModelQuotationPopBody #Rate').val();
+                    QuotationDetailVM.Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
+                    QuotationDetailVM.TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
                     var TaxType = new Object();
-                    TaxType.ValueText = $('#divModelPopQuotation #TaxTypeCode').val();
+                    TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                     QuotationDetailVM.TaxType = TaxType;
-                    QuotationDetailVM.CGSTAmt = $('#divModelPopQuotation #CGSTAmt').val();
-                    QuotationDetailVM.SGSTAmt = $('#divModelPopQuotation #SGSTAmt').val();
-                    QuotationDetailVM.IGSTAmt = $('#divModelPopQuotation #IGSTAmt').val();
+                    QuotationDetailVM.CGSTAmt = $('#divModelQuotationPopBody #CGSTAmt').val();
+                    QuotationDetailVM.SGSTAmt = $('#divModelQuotationPopBody #SGSTAmt').val();
+                    QuotationDetailVM.IGSTAmt = $('#divModelQuotationPopBody #IGSTAmt').val();
                     _dataTable.QuotationDetailList.row.add(QuotationDetailVM).draw(true);
                     $('#divModelPopQuotation').modal('hide');
                 }
+            }
         }
         $('[data-toggle="popover"]').popover({
             html: true,
             'trigger': 'hover',
             'placement': 'left'
         });
-    });
-
 }
 function EditQuotationDetail(this_Obj) {
     debugger;
