@@ -184,7 +184,15 @@ function EditQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=", function () {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function () {
+        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null)
+        {
+            setTimeout(function () {
+                $("#divQuotationForm #EstimateID").prop('disabled', true);
+                //resides in customjs for sliding
+                openNav();
+            }, 100);
+        }
         BindQuotationDetailList($('#ID').val(),false);
         clearUploadControl();
         PaintImages($('#QuotationForm #ID').val());

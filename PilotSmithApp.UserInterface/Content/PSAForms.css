@@ -238,7 +238,9 @@ span[role="combobox"] {
 .infospan {
     font-size:18px;
     font-weight:500!important;
-    color:black;
+    padding-bottom:0px!important;
+    padding-top:0px!important;
+    color:#233e26;
     font-family:"Liquidrom-italic";
 }
 @font-face {
@@ -255,7 +257,7 @@ font-family: "Liquidrom";
 src: url(/fonts/Liquidrom.ttf);
 }
 
-@media only screen and (max-width: 1300px) {
+@media only screen and (max-width: 1200px) {
     .divsummerybox{
         display:none!important;
     }
