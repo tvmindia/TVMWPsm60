@@ -33,9 +33,12 @@ namespace PilotSmithApp.UserInterface.Models
         public string MailBodyHeader { get; set; }
         [Display(Name = "Mail Footer Header")]
         public string MailBodyFooter { get; set; }
+        [Display(Name = "Email Sent")]
         public bool? EmailSentYN { get; set; }
         public Guid? LatestApprovalID { get; set; }
+        [Display(Name = "Approval Status")]
         public int? LatestApprovalStatus { get; set; }
+        [Display(Name = "Final Approval")]
         public bool? IsFinalApproved { get; set; }
         [Required(ErrorMessage = "Please specify at least one recipient.")]
         public string EmailSentTo { get; set; }
@@ -65,6 +68,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
+        public string LatestApprovalStatusDescription { get; set; }
         public CustomerViewModel Customer { get; set; }
         public BranchViewModel Branch { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }

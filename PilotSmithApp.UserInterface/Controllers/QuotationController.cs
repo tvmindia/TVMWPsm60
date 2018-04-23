@@ -52,6 +52,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.IsUpdate = false;
                     quotationVM.ID = Guid.Empty;
                     quotationVM.EstimateID = null;
+                    quotationVM.DocumentStatusCode = 5;
                 }
                 else if(id == Guid.Empty && estimateID != null)
                 {
