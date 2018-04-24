@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PilotSmithApp.RepositoryService.Service
 {
-    public class CustomerCategoryRepository
+    public class CustomerCategoryRepository:ICustomerCategoryRepository
     {
         private IDatabaseFactory _databaseFactory;
         AppConst _appConst = new AppConst();

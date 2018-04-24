@@ -199,6 +199,14 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = customer.TaxRegNo;
                         cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = customer.PANNO;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customer.GeneralNotes;
+                        if(customer.CustomerCategoryList.Count()>0)
+                        {
+                            cmd.Parameters.Add("@CustomerCategoryList", SqlDbType.VarChar).Value = string.Join(",", customer.CustomerCategoryList);
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@CustomerCategoryList", DBNull.Value);
+                        }
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = customer.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = customer.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = customer.PSASysCommon.UpdatedBy;
@@ -365,6 +373,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     customer.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : customer.TaxRegNo);
                                     customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);
                                     customer.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : customer.GeneralNotes);
+                                    customer.CustomerCategoryList = (sdr["CustomerCategoryList"].ToString() != "" ? (sdr["CustomerCategoryList"].ToString()).Split(',') : customer.CustomerCategoryList);
                                     customer.PSASysCommon = new PSASysCommon();
                                     customer.PSASysCommon.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.PSASysCommon.CreatedBy);
                                     customer.PSASysCommon.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.CreatedDateString);

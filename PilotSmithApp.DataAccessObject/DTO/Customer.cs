@@ -32,6 +32,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        public string[] CustomerCategoryList { get; set; }
+        public CustomerCategory CustomerCategory { get; set; }
+        // public int CustomerCategoryCode { get; set; }
     }
     public class CustomerAdvanceSearch
     {

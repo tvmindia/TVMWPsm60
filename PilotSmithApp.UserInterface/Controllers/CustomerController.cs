@@ -20,10 +20,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         ICustomerBusiness _customerBusiness;
         IPaymentTermBusiness _paymentTermBusiness;
-        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness)
+        ICustomerCategoryBusiness _customerCategoryBusiness;
+        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness, ICustomerCategoryBusiness customerCategoryBusiness)
         {
             _customerBusiness = customerBusiness;
             _paymentTermBusiness = paymentTermBusiness;
+            _customerCategoryBusiness = customerCategoryBusiness;
         }
         #endregion Constructor_Injection
         // GET: Customer
@@ -98,6 +100,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                 customerVM.PaymentTerm = new PaymentTermViewModel()
                 {
                     PaymentTermSelectList = _paymentTermBusiness.GetPaymentTermForSelectList()
+                };
+                customerVM.CustomerCategory = new CustomerCategoryViewModel()
+                {
+                    CustomerCategorySelectList = _customerCategoryBusiness.GetCustomerCategoryForSelectList()
                 };
             }
             catch (Exception ex)
