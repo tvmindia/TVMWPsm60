@@ -106,7 +106,7 @@
                         @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
