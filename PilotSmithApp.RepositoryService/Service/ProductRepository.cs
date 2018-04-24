@@ -50,8 +50,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         {
                             cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = product.ID;
                         }
-                        cmd.Parameters.Add("@Code", SqlDbType.VarChar).Value = product.Code;
-                        cmd.Parameters.Add("@Name", SqlDbType.VarChar).Value = product.Name;
+                        cmd.Parameters.Add("@Code", SqlDbType.VarChar).Value = product.Code.Replace("-", "_ ");
+                        cmd.Parameters.Add("@Name", SqlDbType.VarChar).Value = product.Name.Replace("-","_ ");
                         cmd.Parameters.Add("@ProductCategoryCode", SqlDbType.Int).Value = product.ProductCategoryCode;
                         cmd.Parameters.Add("@IntroducedDate", SqlDbType.DateTime).Value = product.IntroducedDateFormatted;
                         cmd.Parameters.Add("@CompanyID", SqlDbType.UniqueIdentifier).Value = product.CompanyID;
