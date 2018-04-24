@@ -938,10 +938,9 @@ function ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID) {
 
 
 
-
-
 //-----------------------------------------------------------------------------//
 
+//----------for advance search hit Enter-----------//
 function RedirectSearchClick(e,this_obj){
     var unicode = e.charCode ? e.charCode : e.keyCode
     if (unicode == 13) {

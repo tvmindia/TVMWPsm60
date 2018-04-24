@@ -300,13 +300,14 @@ function BindEstimateDetailList(id,IsEnquiry) {
              //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "CostRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "SellingRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
                  { "targets": [0, 1], "width": "10%" },
                  { "targets": [3], "width": "30%" },
                  { "targets": [,5,6], "width": "10%" },
-                 { className: "text-left", "targets": [0,1,2,3,4] },
+                 { className: "text-left", "targets": [0,1,2,3,4,7] },
                  { className: "text-right", "targets": [5,6] }
              ],
              destroy:true
@@ -380,6 +381,7 @@ function AddEstimateDetailToList() {
                 estimateDetailList[_datatablerowindex].Unit = Unit;
                 estimateDetailList[_datatablerowindex].CostRate = $('#CostRate').val();
                 estimateDetailList[_datatablerowindex].SellingRate = $('#SellingRate').val();
+                estimateDetailList[_datatablerowindex].DrawingNo = $('#DrawingNo').val();
                 _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
                 $('#divModelPopEstimate').modal('hide');
                 _datatablerowindex = -1;
@@ -403,6 +405,7 @@ function AddEstimateDetailToList() {
                     estimateDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                     estimateDetailList[0].CostRate = $('#CostRate').val();
                     estimateDetailList[0].SellingRate = $('#SellingRate').val();
+                    estimateDetailList[0].DrawingNo = $('#DrawingNo').val();
                     _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
                     $('#divModelPopEstimate').modal('hide');
                 }
@@ -427,6 +430,7 @@ function AddEstimateDetailToList() {
                     EstimateDetailVM.UnitCode = $('#UnitCode').val();
                     EstimateDetailVM.CostRate = $('#CostRate').val();
                     EstimateDetailVM.SellingRate = $('#SellingRate').val();
+                    EstimateDetailVM.DrawingNo = $('#DrawingNo').val();
                     _dataTable.EstimateDetailList.row.add(EstimateDetailVM).draw(true);
                     $('#divModelPopEstimate').modal('hide');
                 }
@@ -468,6 +472,7 @@ function EditEstimateDetail(this_Obj) {
         $('#FormEstimateDetail #hdnUnitCode').val(estimateDetail.UnitCode);
         $('#FormEstimateDetail #CostRate').val(estimateDetail.CostRate);
         $('#FormEstimateDetail #SellingRate').val(estimateDetail.SellingRate);
+        $('#FormEstimateDetail #DrawingNo').val(estimateDetail.DrawingNo);
         $('#divModelPopEstimate').modal('show');
     });
 }
