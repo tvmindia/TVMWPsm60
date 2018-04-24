@@ -29,7 +29,7 @@
                         @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autofocus = true } })
+                        @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>

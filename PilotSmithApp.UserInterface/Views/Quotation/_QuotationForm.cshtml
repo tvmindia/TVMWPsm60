@@ -41,7 +41,7 @@
                         @Html.LabelFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.QuoteDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker" }, @autofocus = true })
+                        @Html.EditorFor(model => model.QuoteDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker" , @autocomplete = "off"} })
                         @Html.ValidationMessageFor(model => model.QuoteDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -154,7 +154,7 @@
                         @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
