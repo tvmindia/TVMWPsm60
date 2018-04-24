@@ -29,6 +29,7 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<EstimateDetail> GetEstimateDetailListByEstimateID(Guid estimateID)
         {
+
             return _estimateRepository.GetEstimateDetailListByEstimateID(estimateID);
         }
         public object InsertUpdateEstimate(Estimate estimate)
