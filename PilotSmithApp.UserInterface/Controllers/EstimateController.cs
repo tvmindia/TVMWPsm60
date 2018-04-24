@@ -61,6 +61,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.ID = Guid.Empty;
                     estimateVM.CustomerID = enquiryVM.CustomerID;
                     estimateVM.BranchCode = enquiryVM.BranchCode;
+                    estimateVM.DocumentStatusCode = 3;
                 }
                 
             }

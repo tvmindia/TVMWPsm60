@@ -280,6 +280,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         {
                             ID = estimate.ID,
                             EstimateNo = estimate.EstimateNo,
+                            EnquiryID=estimate.EnquiryID,
                             Status = outputStatus.Value.ToString(),
                             Message = estimate.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
                         };
@@ -295,6 +296,7 @@ namespace PilotSmithApp.RepositoryService.Service
             {
                 ID = estimate.ID,
                 EstimatNo = estimate.EstimateNo,
+                EnquiryID=estimate.EnquiryID,
                 Status = outputStatus.Value.ToString(),
                 Message = estimate.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
             };
