@@ -203,6 +203,7 @@ function SaveSuccessEnquiry(data, status) {
                     BindEnquiryDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
                 BindOrReloadEnquiryTable('Init');

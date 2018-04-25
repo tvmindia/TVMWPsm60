@@ -225,6 +225,7 @@ function SaveSuccessQuotation(data, status) {
                     BindQuotationDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
                 BindOrReloadQuotationTable('Init');
