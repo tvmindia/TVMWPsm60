@@ -264,3 +264,11 @@ src: url(/fonts/Liquidrom.ttf);
         display:none!important;
     }
 }
+.select2-selection__choice__remove
+{
+    color:white!important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice
+{
+    background-color:#02aa93!important;
+}
