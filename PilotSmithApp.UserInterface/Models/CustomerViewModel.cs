@@ -72,7 +72,8 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public string[] CustomerCategoryList { get; set; }
+        [Display(Name ="Category")]
+        public int[] CustomerCategoryList { get; set; }
         public CustomerCategoryViewModel CustomerCategory { get; set; }
         //public int CustomerCategoryCode { get; set; }
     }

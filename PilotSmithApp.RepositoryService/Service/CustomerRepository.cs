@@ -373,7 +373,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     customer.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : customer.TaxRegNo);
                                     customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);
                                     customer.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : customer.GeneralNotes);
-                                    customer.CustomerCategoryList = (sdr["CustomerCategoryList"].ToString() != "" ? (sdr["CustomerCategoryList"].ToString()).Split(',') : customer.CustomerCategoryList);
+                                    customer.CustomerCategoryList = (sdr["CustomerCategoryList"].ToString() != "" ? (sdr["CustomerCategoryList"].ToString()).Split(',').Select(h => int.Parse(h)).ToArray() : customer.CustomerCategoryList);
                                     customer.PSASysCommon = new PSASysCommon();
                                     customer.PSASysCommon.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.PSASysCommon.CreatedBy);
                                     customer.PSASysCommon.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.CreatedDateString);
