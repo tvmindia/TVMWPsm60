@@ -42,6 +42,7 @@
     margin-top: 1.5%;
     margin-left: 4%;
     border-radius: 2%;
+    box-shadow:0 1px 5px rgba(0,0,0,0.2);
 }
 
 .divbox2 {
