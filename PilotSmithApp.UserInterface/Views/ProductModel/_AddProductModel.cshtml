@@ -11,11 +11,11 @@
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divProductCategorySelectList">
-                    @Html.Action("ProductSelectList", "Product", new { required = "" })
+                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
                 </div>
                 @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
             </div>
@@ -25,7 +25,7 @@
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control newinput" } })
@@ -37,10 +37,10 @@
     <div class="form-group col-md-12 no-padding">
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12 divUnitSelectList">
-                    @Html.Action("UnitSelectList", "Unit", new { required = "" })
+                    @Html.Action("UnitSelectList", "Unit", new { required = "required" })
                 </div>
                 @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
             </div>
