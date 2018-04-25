@@ -26,7 +26,7 @@
                         @Html.LabelFor(model => model.CustomerCategoryList, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model=>model.CustomerCategoryList, Model.CustomerCategory.CustomerCategorySelectList,"", new { @class = "form-control newinput", @style = "padding:4px 12px;" ,@multiple= "multiple" })
+                        @Html.DropDownListFor(model=>model.CustomerCategoryList, Model.CustomerCategory.CustomerCategorySelectList, new { @class = "form-control newinput", @style = "padding:4px 12px;" ,@multiple= "multiple" })
                     </div>
                 </div>
             </div>
@@ -206,6 +206,7 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#CustomerForm");
         $('#CustomerCategoryList').select2();
+        $('.select2').addClass('form-control newinput');
     });
 
 </script>

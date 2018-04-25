@@ -4,7 +4,8 @@
     /* box-shadow: white 1px 6px 1px; */
     height: 30px;
     border-bottom: 1px solid #4bd24b;
-    background-color: #fffdf9;
+    background-color:rgba(2, 166, 143, 0.06);
+    /*background-color: #fffdf9;*/
 }
 
 .searchicon {
@@ -41,6 +42,7 @@
     margin-top: 1.5%;
     margin-left: 4%;
     border-radius: 2%;
+    box-shadow:0 1px 5px rgba(0,0,0,0.2);
 }
 
 .divbox2 {
@@ -261,4 +263,12 @@ src: url(/fonts/Liquidrom.ttf);
     .divsummerybox{
         display:none!important;
     }
+}
+.select2-selection__choice__remove
+{
+    color:white!important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice
+{
+    background-color:#02aa93!important;
 }
