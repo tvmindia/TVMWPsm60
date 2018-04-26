@@ -73,6 +73,7 @@
     <Compile Include="DTO\Quotation.cs" />
     <Compile Include="DTO\ReferencePerson.cs" />
     <Compile Include="DTO\ReferenceType.cs" />
+    <Compile Include="DTO\SaleOrder.cs" />
     <Compile Include="DTO\SalesInvoice.cs" />
     <Compile Include="DTO\State.cs" />
     <Compile Include="DTO\TaxType.cs" />
