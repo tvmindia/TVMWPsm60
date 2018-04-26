@@ -61,13 +61,15 @@
             </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
-                    
+                    @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)", @disabled = "disabled" })
+                    @Html.HiddenFor(model => model.PriorityCode, htmlAttributes: new { @class = "", @id = "hdnPriorityCode" })
+
                 </div>
             </div>
+            
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label " })
@@ -96,6 +98,15 @@
                     
                 </div>
             </div>
+            @*<div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
+
+                </div>
+            </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
@@ -104,18 +115,9 @@
                     @Html.EditorFor(model => model.RemindPriorTo, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "" } })
                     
                 </div>
-            </div>
+            </div>*@
 
-            <div class="col-md-6 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                </div>
-                <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)",@disabled= "disabled" })
-                    @Html.HiddenFor(model => model.PriorityCode, htmlAttributes: new { @class = "", @id = "hdnPriorityCode" })
-                    
-                </div>
-            </div>
+            
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
@@ -142,7 +144,7 @@
                     @Html.LabelFor(model => model.FollowupDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.FollowupDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                    @Html.EditorFor(model => model.FollowupDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
                     @Html.ValidationMessageFor(model => model.FollowupDateFormatted, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -167,13 +169,15 @@
             </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput" } })
-                    @Html.ValidationMessageFor(model => model.ReminderType, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)" })
+                    @Html.HiddenFor(model => model.PriorityCode, htmlAttributes: new { @class = "", @id = "hdnPriorityCode" })
+                    @Html.ValidationMessageFor(model => model.PriorityCode, "", new { @class = "text-danger" })
                 </div>
             </div>
+            
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.ContactName, htmlAttributes: new { @class = "control-label " })
@@ -202,26 +206,26 @@
                     @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                 </div>
             </div>
+            @*<div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ReminderType, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ReminderType, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.ReminderType, "", new { @class = "text-danger" })
+                </div>
+            </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.RemindPriorTo, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.RemindPriorTo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.EditorFor(model => model.RemindPriorTo, new { htmlAttributes = new { @class = "form-control newinput", min = 1, @placeholder = "minutes" } })
                     @Html.ValidationMessageFor(model => model.RemindPriorTo, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
-            <div class="col-md-6 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.PriorityCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                </div>
-                <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.PriorityCode, PrioritySelectList, "--select priority--", new { @class = "form-control newinput", @style = "width:100%", @onchange = "$('#hdnPriorityCode').val(this.value)" })
-                    @Html.HiddenFor(model => model.PriorityCode, htmlAttributes: new { @class = "", @id = "hdnPriorityCode" })
-                    @Html.ValidationMessageFor(model => model.PriorityCode, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
