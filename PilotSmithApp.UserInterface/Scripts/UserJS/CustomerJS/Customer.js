@@ -104,7 +104,7 @@ function BindOrReloadCustomerTable(action) {
             initComplete: function (settings, json) {
                 debugger;
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                $('#tblCustomer').fadeIn('slow');
+                $('#tblCustomer').fadeIn(100);
                 if (action == undefined)
                 {
                     $('.excelExport').hide();

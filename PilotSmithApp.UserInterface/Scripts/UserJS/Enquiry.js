@@ -102,7 +102,7 @@ function BindOrReloadEnquiryTable(action) {
             initComplete: function (settings, json) {
                 debugger;
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                $('#tblEnquiry').fadeIn('slow');
+                $('#tblEnquiry').fadeIn(100);
                 if (action == undefined) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
@@ -145,10 +145,10 @@ function AddEnquiry() {
         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
         BindEnquiryDetailList(_emptyGuid);
         OnServerCallComplete();
-        setTimeout(function () {
+        //setTimeout(function () {
             //resides in customjs for sliding
             openNav();
-        }, 100);
+        //}, 100);
     });
 }
 function EditEnquiry(this_Obj) {

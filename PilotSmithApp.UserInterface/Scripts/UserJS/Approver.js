@@ -108,7 +108,7 @@ function BindOrReloadApproverTable(action) {
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                $('#tblApprover').fadeIn('slow');
+                $('#tblApprover').fadeIn(100);
                 if (action == undefined) {
                     $('.excelExport').hide();
                     OnServerCallComplete();

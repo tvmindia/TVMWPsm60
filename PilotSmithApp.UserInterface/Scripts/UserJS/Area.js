@@ -93,7 +93,7 @@ function BindOrReloadAreaTable(action) {
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblArea').fadeIn('slow');
+                    $('#tblArea').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();

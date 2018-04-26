@@ -90,7 +90,7 @@ function BindOrReloadProductCategoryTable(action)
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblProductCategory').fadeIn('slow');
+                    $('#tblProductCategory').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();

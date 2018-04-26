@@ -82,7 +82,7 @@ function BindOrReloadCompanyTable(action) {
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblCompany').fadeIn('slow');
+                    $('#tblCompany').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();

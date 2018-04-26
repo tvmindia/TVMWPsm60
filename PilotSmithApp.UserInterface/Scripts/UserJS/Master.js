@@ -354,7 +354,7 @@ function SaveSuccessCustomerMaster(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=required');
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val());
             MasterAlert("success", JsonResult.Record.Message)
             break;
         case "ERROR":

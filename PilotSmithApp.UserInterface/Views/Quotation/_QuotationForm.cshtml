@@ -75,6 +75,10 @@
                             @Html.Action("CustomerSelectList", "Customer", new { required = "" })
                         </div>
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnCustomerRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnCustomerdisabled", false)
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
                 </div>
                 <div id="divCustomerBasicInfo">
