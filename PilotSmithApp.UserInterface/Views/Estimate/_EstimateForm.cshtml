@@ -75,7 +75,6 @@
                         @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
                 </div>
-
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
@@ -85,8 +84,13 @@
                             @Html.Action("CustomerSelectList", "Customer", new { required = "" })
                         </div>
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnCustomerRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnCustomerdisabled", false)
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
                 </div>
+                
                 <div id="divCustomerBasicInfo">
                     @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
                 </div>

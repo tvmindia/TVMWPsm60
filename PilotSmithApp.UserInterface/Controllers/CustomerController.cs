@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,9 +125,20 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Customer Basic Information
         #region Customer SelectList
-        public ActionResult CustomerSelectList(string required)
+        public ActionResult CustomerSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled==null?false:disabled;
+            Permission _permission = Session["UserRights"] as Permission;
+            if (_permission.SubPermissionList != null)
+            {
+                if (_permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             CustomerViewModel customerVM = new CustomerViewModel();
             customerVM.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
             return PartialView("_CustomerSelectList", customerVM);

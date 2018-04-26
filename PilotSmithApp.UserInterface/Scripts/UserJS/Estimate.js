@@ -98,7 +98,7 @@ function BindOrReloadEstimateTable(action) {
             initComplete: function (settings, json) {
                 debugger;
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                $('#tblEstimate').fadeIn('slow');
+                $('#tblEstimate').fadeIn(100);
                 if (action == undefined) {
                     $('.excelExport').hide();
                     OnServerCallComplete();

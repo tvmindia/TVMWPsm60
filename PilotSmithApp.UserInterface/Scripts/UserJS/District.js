@@ -94,7 +94,7 @@ function BindOrReloadDistrictTable(action) {
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblDistrict').fadeIn('slow');
+                    $('#tblDistrict').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();

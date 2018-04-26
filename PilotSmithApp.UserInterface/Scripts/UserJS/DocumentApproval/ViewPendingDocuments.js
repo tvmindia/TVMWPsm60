@@ -94,7 +94,7 @@ function BindOrReloadDocumentApprovals(action) {
                 //for performing the import operation after the data loaded
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblPendingDocuments').fadeIn('slow');
+                    $('#tblPendingDocuments').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();

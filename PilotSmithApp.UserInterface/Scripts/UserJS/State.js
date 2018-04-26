@@ -88,7 +88,7 @@ function BindOrReloadStateTable(action) {
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblState').fadeIn('slow');
+                    $('#tblState').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();

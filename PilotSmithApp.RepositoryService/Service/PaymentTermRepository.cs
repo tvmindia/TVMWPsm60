@@ -80,7 +80,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[GetAllPaymentTerm]";
+                        cmd.CommandText = "[PSA].[GetPaymentTermForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

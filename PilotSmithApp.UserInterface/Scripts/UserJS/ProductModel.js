@@ -93,7 +93,7 @@ function BindOrReloadProductModelTable(action) {
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblProductModel').fadeIn('slow');
+                    $('#tblProductModel').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();
