@@ -88,7 +88,14 @@ function BindOrReloadProductModelTable(action) {
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [7] },
                 { className: "text-right", "targets": [5, 6] },                
-                {"targets":[9],"width":"7%"}
+                 { "targets": [1], "width": "10%" },
+                { "targets": [2], "width": "10%" },
+                { "targets": [3], "width": "5%" },
+               { "targets": [4], "width": "25%" },
+                { "targets": [5, 6], "width": "10%" },
+                { "targets": [7], "width": "10%" },
+                { "targets": [8], "width": "10%" },
+                { "targets": [9], "width": "10%" }
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

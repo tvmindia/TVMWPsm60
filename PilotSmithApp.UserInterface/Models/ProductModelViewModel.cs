@@ -11,10 +11,13 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         [Display(Name ="Product")]
+        [Required(ErrorMessage ="Product is missing")]
         public Guid? ProductID { get; set; }
         [Remote(action: "CheckProductModelNameExist", controller: "ProductModel", AdditionalFields = "IsUpdate,ID")]
+        [Required(ErrorMessage = "Product name is missing")]
         public string Name { get; set; }
-        [Display(Name="Unit Code")]
+        [Display(Name="Unit")]
+        [Required(ErrorMessage = "Unit is missing")]
         public int? UnitCode { get; set; }
         public string Specification { get; set; }
         [Display(Name = "Cost Price")]
