@@ -19,7 +19,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int PriorityCode { get; set; }
         [Required(ErrorMessage = "Subject is required")]
         public string Subject { get; set; }
+        [Display(Name = "Contact Name")]
         public string ContactName { get; set; }
+        [Display(Name = "Contact No")]
         public string ContactNo { get; set; }
         [Display(Name = "Remind Prior To")]
         public int? RemindPriorTo { get; set; }
