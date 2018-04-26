@@ -19,6 +19,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Enquiry")]
         public Guid? EnquiryID { get; set; }
         [Display(Name = "Customer")]
+        [Required(ErrorMessage ="Customer is missing")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Mailing Address")]
         public string MailingAddress { get; set; }
