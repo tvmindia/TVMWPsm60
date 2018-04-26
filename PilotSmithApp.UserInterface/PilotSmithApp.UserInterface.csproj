@@ -691,6 +691,7 @@
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
+    <Content Include="Scripts\UserJS\SaleOrder.js" />
     <Content Include="Scripts\UserJS\SalesSummary.js" />
     <Content Include="Scripts\UserJS\State.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
@@ -740,6 +741,7 @@
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\ReferencePersonController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SaleOrderController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
@@ -786,6 +788,7 @@
     <Compile Include="Models\ReferencePersonViewModel.cs" />
     <Compile Include="Models\ReferenceTypeViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
+    <Compile Include="Models\SaleOrderViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
@@ -910,6 +913,9 @@
     <Content Include="Views\CustomerCategory\Index.cshtml" />
     <Content Include="Views\CustomerCategory\_CustomerCategorySelectList.cshtml" />
     <Content Include="Views\CustomerCategory\_AddCustomerCategory.cshtml" />
+    <Content Include="Views\SaleOrder\Index.cshtml" />
+    <Content Include="Views\SaleOrder\_AddSaleOrderDetail.cshtml" />
+    <Content Include="Views\SaleOrder\_SaleOrderForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
