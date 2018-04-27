@@ -79,7 +79,7 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Approver").Include("~/Scripts/UserJS/Approver.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/CustomerCategory").Include("~/Scripts/UserJS/CustomerCategory.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/SaleOrder").Include("~/Scripts/UserJS/SaleOrder.js"));
-
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/ProductionOrder").Include("~/Scripts/UserJS/ProductionOrder.js"));
         }
     }
 }

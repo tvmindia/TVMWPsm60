@@ -63,6 +63,7 @@
     <Compile Include="DTO\Mail.cs" />
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\ProductCategory.cs" />
+    <Compile Include="DTO\ProductionOrder.cs" />
     <Compile Include="DTO\ProductModel.cs" />
     <Compile Include="DTO\ProductSpecification.cs" />
     <Compile Include="DTO\Customer.cs" />

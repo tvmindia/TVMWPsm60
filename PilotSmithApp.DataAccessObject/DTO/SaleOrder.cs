@@ -64,5 +64,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? CessPerc { get; set; }
         public decimal? CessAmt { get; set; }
 
+        public PSASysCommon PSASysCommon { get; set; }
+        public Product Product { get; set; }
+        public ProductModel ProductModel { get; set; }
+        public Unit Unit { get; set; }
     }
 }
