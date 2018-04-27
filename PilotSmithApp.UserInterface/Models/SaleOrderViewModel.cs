@@ -25,7 +25,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string MailingAddress { get; set; }
         [Display(Name = "Shipping Address")]
         public string ShippingAddress { get; set; }
-        [Display(Name = "Doc. Status")]
+        [Display(Name = "Status")]
         public int? DocumentStatusCode { get; set; }
         public DateTime ExpectedDelvDate { get; set; }
         [Display(Name = "Reffered By")]
@@ -71,9 +71,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Sale Order Date")]
         [Required(ErrorMessage = "SaleOrder Date is missing")]
         public string SaleOrderDateFormatted { get; set; }
-        [Display(Name = "Expt.Del Date")]
+        [Display(Name = "Expected Delivery Date")]
         public string ExpectedDelvDateFormatted { get; set; }
-        [Display(Name = "Purchase Ord. Date")]
+        [Display(Name = "Purchase Order Date")]
         public string PurchaseOrdDateFormatted { get; set; }
         public CustomerViewModel Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }

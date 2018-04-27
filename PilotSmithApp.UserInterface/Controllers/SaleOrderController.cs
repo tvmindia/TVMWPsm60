@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
+using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
@@ -14,8 +16,16 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
+        ISaleOrderBusiness _saleOrderBusiness;
 
+        #region Constructor Injection
+        public SaleOrderController(ISaleOrderBusiness saleOrderBusiness)
+        {
+            _saleOrderBusiness = saleOrderBusiness;
+        }
+        #endregion Constructor Injection
         // GET: SaleOrder
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -37,6 +47,38 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddSaleOrderDetail", saleOrderDetailVM);
         }
         #endregion SaleOrder Detail Add
+
+        #region GetAllSaleOrder
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public JsonResult GetAllSaleOrder(DataTableAjaxPostModel model, SaleOrderAdvanceSearchViewModel saleOrderAdvanceSearchVM)
+        {
+            //setting options to our model
+            saleOrderAdvanceSearchVM.DataTablePaging.Start = model.start;
+            saleOrderAdvanceSearchVM.DataTablePaging.Length = (saleOrderAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : saleOrderAdvanceSearchVM.DataTablePaging.Length;
+
+            List<SaleOrderViewModel> saleOrderVMList = new List<SaleOrderViewModel>();//Mapper.Map<List<SaleOrder>, List<SaleOrderViewModel>>(_saleOrderBusiness.(Mapper.Map<SaleOrderAdvanceSearchViewModel, SaleOrderAdvanceSearch>(saleOrderAdvanceSearchVM)));
+            if (saleOrderAdvanceSearchVM.DataTablePaging.Length == -1)
+            {
+                int totalResult = saleOrderVMList.Count != 0 ? saleOrderVMList[0].TotalCount : 0;
+                int filteredResult = saleOrderVMList.Count != 0 ? saleOrderVMList[0].FilteredCount : 0;
+                saleOrderVMList = saleOrderVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
+            }
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+            return Json(new
+            {
+                // this is what datatables wants sending back
+                draw = model.draw,
+                recordsTotal = saleOrderVMList.Count != 0 ? saleOrderVMList[0].TotalCount : 0,
+                recordsFiltered = saleOrderVMList.Count != 0 ? saleOrderVMList[0].FilteredCount : 0,
+                data = saleOrderVMList
+            });
+        }
+        #endregion GetAllSaleOrder
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]

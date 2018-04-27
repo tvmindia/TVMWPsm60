@@ -21,6 +21,7 @@ $(document).ready(function () {
 //function bind the SaleOrder list checking search and filter
 function BindOrReloadSaleOrderTable(action) {
     try {
+        debugger;
         //creating advancesearch object
         SaleOrderAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
@@ -60,7 +61,7 @@ function BindOrReloadSaleOrderTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5, 6]
+                                 columns: [0, 1, 2, 3, 4, 5]
                              }
             }],
             ordering: false,
@@ -72,11 +73,11 @@ function BindOrReloadSaleOrderTable(action) {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
             serverSide: true,
-            //ajax: {
-            //    url: "SaleOrder/GetAllSaleOrder/",
-            //    data: { "SaleOrderAdvanceSearchVM": SaleOrderAdvanceSearchViewModel },
-            //    type: 'POST'
-            //},
+            ajax: {
+                url: "SaleOrder/GetAllSaleOrder/",
+                data: { "saleOrderAdvanceSearchVM": SaleOrderAdvanceSearchViewModel },
+                type: 'POST'
+            },
             pageLength: 13,
             columns: [
                { "data": "SaleOrderNo", "defaultContent": "<i>-</i>" },
@@ -99,13 +100,14 @@ function BindOrReloadSaleOrderTable(action) {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [2, 3, 5, 6] },
-                          { className: "text-center", "targets": [0, 1, 4, 7] },
-                            { "targets": [0, 1, 4], "width": "10%" },
-                            { "targets": [2, 3], "width": "10%" },
-                            { "targets": [5], "width": "30%" },
-                            { "targets": [6], "width": "10%" },
-                            { "targets": [7], "width": "5%" },
+                          { className: "text-left", "targets": [0, 2, 3, 4, 5, 6] },
+                          { className: "text-center", "targets": [1] },
+                            { "targets": [0], "width": "10%" },
+                            { "targets": [2], "width": "20%" },
+                            { "targets": [1,3,4], "width": "10%" },
+                            { "targets": [5], "width": "7%" },
+                            { "targets": [6], "width": "7%" },
+                           
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -144,8 +146,9 @@ function ResetSaleOrderList() {
 }
 //function export data to excel
 function ExportSaleOrderData() {
+    debugger;
     $('.excelExport').show();
-   // OnServerCallBegin();
+    OnServerCallBegin();
     BindOrReloadSaleOrderTable('Export');
 }
 // add SaleOrder section
