@@ -28,7 +28,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion ProductionOrderForm Form
 
         #region ProductionOrder Detail Add
-        public ActionResult AddSaleOrderDetail()
+        public ActionResult AddProductionOrderDetail()
         {
             ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();
             productionOrderDetailVM.IsUpdate = false;

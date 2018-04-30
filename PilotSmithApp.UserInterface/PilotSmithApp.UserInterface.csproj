@@ -927,6 +927,7 @@
     <Content Include="Views\ProductionOrder\_AddProductionOrderDetail.cshtml" />
     <Content Include="Views\ProductionQC\_ProductionQCForm.cshtml" />
     <Content Include="Views\ProductionQC\Index.cshtml" />
+    <Content Include="Views\Quotation\_QuotationSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

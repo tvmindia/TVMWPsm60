@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -89,6 +90,23 @@ namespace PilotSmithApp.BusinessService.Service
                 throw ex;
             }
             return sendsuccess;
+        }
+
+        public List<SelectListItem> GetQuotationForSelectList()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<Quotation> quotationList = _quotationRepository.GetQuotationForSelectList();
+            if (quotationList != null)
+                foreach (Quotation quotation in quotationList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = quotation.QuoteNo,
+                        Value = quotation.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -18,5 +19,6 @@ namespace PilotSmithApp.BusinessService.Contract
         object DeleteQuotationDetail(Guid id);
         object UpdateQuotationEmailInfo(Quotation quotation);
         Task<bool> QuoteEmailPush(Quotation quotation);
+        List<SelectListItem> GetQuotationForSelectList();
     }
 }

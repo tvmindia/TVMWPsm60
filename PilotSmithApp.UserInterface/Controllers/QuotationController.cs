@@ -408,6 +408,18 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion EmailSent
+
+        # region QuotationSelectList
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public ActionResult QuotationSelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            QuotationViewModel quotationVM = new QuotationViewModel();
+            quotationVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList();
+            return PartialView("__QuotationSelectList", quotationVM);
+        }
+        #endregion QuotationSelectList
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
