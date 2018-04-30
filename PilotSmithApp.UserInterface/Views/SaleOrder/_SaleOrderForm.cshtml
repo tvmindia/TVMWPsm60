@@ -20,7 +20,7 @@
                 <div class="col-md-12" style="font-size:14px">
                     @Html.Label("Create Document From: ")
                     <span style="margin-left:10px">
-                        @Html.RadioButtonFor(model => model.QuoteID, "QuoteID", new { @checked= true}) @Html.Label("Quotation")
+                        @Html.RadioButtonFor(model => model.QuoteID, "QuoteID", new { @checked = true }) @Html.Label("Quotation")
                     </span>
                     <span style="margin-left:10px">
                         @Html.RadioButtonFor(model => model.QuoteID, "EnquiryID") @Html.Label("Enquiry")
@@ -32,15 +32,11 @@
                         @Html.Label("Select Quotation", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divProductModelSelectList">
-                            <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
-                            @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
-                        </div>
-                        @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
-                        @*@Html.Action("EstimateSelectList", "Estimate", new { required = "" })*@
-                        @*@Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnEstimateID" })*@
+                        <div class="divQuotationSelectList">
+                            @Html.Action("QuotationSelectList", "Quotation", new { required = "" })
+                        </div>                       
                     </div>
-
+                    @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuotationID" })
                 </div>
 
                 <div class="col-md-12 no-padding">
@@ -48,9 +44,11 @@
                         @Html.Label("Select Enquiry", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
-                        @*@Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnEstimateID" })*@
-                    </div>
+                        <div class="divEnquirySelectList">
+                            @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
+                            </div>
+                        </div>
+                    @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
                 </div>
 
                 <div class="col-md-6 no-padding">
@@ -495,8 +493,10 @@
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&estimateID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
                     BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true);
+
                     OnServerCallComplete();
                 });
+
             });
         }
         catch (e) {

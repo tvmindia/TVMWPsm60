@@ -492,5 +492,49 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Delete Quotation Detail
+
+        #region GetQuotationForSelectList
+        public List<Quotation> GetQuotationForSelectList()
+        {
+            List<Quotation> quotationList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetSelectListForQuotation]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                quotationList = new List<Quotation>();
+                                while (sdr.Read())
+                                {
+                                    Quotation quotation = new Quotation();
+                                    {
+                                        quotation.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotation.ID);
+                                        quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : quotation.QuoteNo);
+                                    }
+                                    quotationList.Add(quotation);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return quotationList;
+        }
+        #endregion GetQuotationForSelectList
     }
 }

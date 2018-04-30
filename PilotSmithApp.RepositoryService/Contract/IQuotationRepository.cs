@@ -16,5 +16,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object DeleteQuotation(Guid id);
         object DeleteQuotationDetail(Guid id);
         object UpdateQuotationEmailInfo(Quotation quotation);
+        List<Quotation> GetQuotationForSelectList();
     }
 }

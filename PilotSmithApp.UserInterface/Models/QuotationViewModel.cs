@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.UserInterface.Models
 {
@@ -75,6 +76,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<QuotationDetailViewModel> QuotationDetailList { get; set; }
         public PDFTools PDFTools { get; set; }
+        public List<SelectListItem> QuotationSelectList { get; set; }
     }
     public class QuotationAdvanceSearchViewModel
     {
