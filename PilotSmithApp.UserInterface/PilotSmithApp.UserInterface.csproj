@@ -688,6 +688,7 @@
     <Content Include="Scripts\UserJS\Product.js" />
     <Content Include="Scripts\UserJS\ProductCategory.js" />
     <Content Include="Scripts\UserJS\ProductionOrder.js" />
+    <Content Include="Scripts\UserJS\ProductionQC.js" />
     <Content Include="Scripts\UserJS\ProductModel.js" />
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
@@ -737,6 +738,7 @@
     <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductionQCController.cs" />
     <Compile Include="Controllers\ProductModelController.cs" />
     <Compile Include="Controllers\ProductionOrderController.cs" />
     <Compile Include="Controllers\ProductSpecificationController.cs" />
@@ -772,6 +774,7 @@
     <Compile Include="Models\PDFGeneratorViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductionOrderViewModel.cs" />
+    <Compile Include="Models\ProductionQCViewModel.cs" />
     <Compile Include="Models\ProductModelViewModel.cs" />
     <Compile Include="Models\ProductSpecificationViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
@@ -922,6 +925,8 @@
     <Content Include="Views\ProductionOrder\Index.cshtml" />
     <Content Include="Views\ProductionOrder\_ProductionOrderForm.cshtml" />
     <Content Include="Views\ProductionOrder\_AddProductionOrderDetail.cshtml" />
+    <Content Include="Views\ProductionQC\_ProductionQCForm.cshtml" />
+    <Content Include="Views\ProductionQC\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
