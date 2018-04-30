@@ -262,7 +262,7 @@
     <Content Include="Content\images\email.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
-    <Content Include="Content\images\patternPop.png" />
+    <Content Include="Content\images\patternpop.png" />
     <Content Include="Content\images\production.png" />
     <Content Include="Content\images\rupee.png" />
     <Content Include="Content\images\saleorder.png" />

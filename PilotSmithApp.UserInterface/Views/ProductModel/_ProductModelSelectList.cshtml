@@ -20,7 +20,9 @@ else
 <script>
     $(document).ready(function () {
         $('#ProductModelID').val($('#hdnProductModelID').val());
-        $('#ProductModelID').select2({});
+        $('#ProductModelID').select2({
+            dropdownParent: $('.divProductModelSelectList')
+        });
         $('.select2').addClass('form-control newinput');
         $('#ProductModelID').change(function () {
             if ($('#divProductBasicInfo') != undefined) {
