@@ -61,6 +61,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? AdvanceAmount { get; set; }
 
         //Aditional Fields
+        public string DocumentType { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SaleOrderDetailViewModel> SaleOrderDetailList { get; set; }
         public string DetailJSON { get; set; }

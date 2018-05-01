@@ -20,34 +20,34 @@
                 <div class="col-md-12" style="font-size:14px">
                     @Html.Label("Create Document From: ")
                     <span style="margin-left:10px">
-                        @Html.RadioButtonFor(model => model.QuoteID, "QuoteID", new { @checked = true }) @Html.Label("Quotation")
+                        @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true }) @Html.Label("Quotation")
                     </span>
                     <span style="margin-left:10px">
-                        @Html.RadioButtonFor(model => model.QuoteID, "EnquiryID") @Html.Label("Enquiry")
+                        @Html.RadioButtonFor(model => model.DocumentType, "Enquiry") @Html.Label("Enquiry")
                     </span>
                 </div>
 
-                <div class="col-md-12 no-padding">
+                <div class="col-md-12 no-padding" id="divQuotationSelectList">
                     <div class="col-md-12">
                         @Html.Label("Select Quotation", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         <div class="divQuotationSelectList">
                             @Html.Action("QuotationSelectList", "Quotation", new { required = "" })
-                        </div>                       
+                        </div>
                     </div>
                     @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuotationID" })
                 </div>
 
-                <div class="col-md-12 no-padding">
+                <div class="col-md-12 no-padding" id="divEnquirySelectList" style="display:none;">
                     <div class="col-md-12">
                         @Html.Label("Select Enquiry", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         <div class="divEnquirySelectList">
                             @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
-                            </div>
                         </div>
+                    </div>
                     @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
                 </div>
 
@@ -497,6 +497,25 @@
                     OnServerCallComplete();
                 });
 
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('[name="DocumentType"]').change(function () {
+                if (this.value == "Quotation") {
+                    $('#divEnquirySelectList').hide();
+                    $('#divQuotationSelectList').show();
+                    $('#QuoteID').prop('disabled', false);
+                    $('#EnquiryID').prop('disabled', true);
+                }
+                else if (this.value == "Enquiry") {
+                    $('#divEnquirySelectList').show();
+                    $('#divQuotationSelectList').hide();
+                    $('#QuoteID').prop('disabled', true);
+                    $('#EnquiryID').prop('disabled', false);
+                }
             });
         }
         catch (e) {
