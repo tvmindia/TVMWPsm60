@@ -224,19 +224,7 @@
         $('#divModelPopProductionOrder #ProductID,#divModelPopProductionOrder #UnitCode').select2({
             dropdownParent: $("#divModelPopProductionOrder")
         });
-        try {
-            $('input.datepicker').datepicker({
-                format: "dd-M-yyyy",
-                maxViewMode: 0,
-                todayBtn: "linked",
-                clearBtn: true,
-                autoclose: true,
-                todayHighlight: true
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
+        
         $('.select2').addClass('form-control newinput');
         $('#divModelPopProductionOrder #ProductID').change(function () {
             if ($('#divProductBasicInfo') != undefined) {
@@ -255,6 +243,19 @@
                 }
             }
         });
+        try {
+            $('input.datepicker').datepicker({
+                format: "dd-M-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
     });
 </script>
 
