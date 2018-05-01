@@ -125,32 +125,33 @@
                     @Html.ValidationMessageFor(model => model.PlantCode, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-12">&nbsp;</div>
+            @*<div class="col-md-12">&nbsp;</div>*@
         </div>
-        <div class="col-md-8 no-padding rcorners2" >
+        <div class="no-padding" style="font-size:14px;margin-left:300px;">
+            @Html.Label("Milestone")
+            @*<div class="col-md-12">&nbsp;</div>*@
+        </div>
+        <div class="col-md-8 no-padding rcorners2" style="top:18px;">
             
             <div class="col-md-12">&nbsp;</div>
             @*<div class="col-md-12 no-padding" style="border-left:1px solid #c2dee0;">*@
-                <div class="col-md-12 no-padding " style="font-size:14px;margin-left:270px;">                   
-                    @Html.Label("Milestone")
-                    <div class="col-md-12">&nbsp;</div>
-                </div>
+                
 
                 <table style="margin-left:10px;">
                     <tr>
                         <th></th>
-                        <th style="text-align:center">
-                            ForeCast
+                        <th style="text-align:center;font-size:12px;">
+                            Forecast Date
                             <div class="col-md-12">&nbsp;</div>
                         </th>
-                        <th style="text-align:center">
-                            Actual
+                        <th style="text-align:center;font-size:12px;">
+                            Actual Date
                             <div class="col-md-12">&nbsp;</div>
                         </th>
                     </tr>
                     <tr >
                         <td>
-                            MileStone 1
+                            MileStone 1 (25%)
                             <div class="col-md-12">&nbsp;</div>
                         </td>
                         <td>
@@ -175,7 +176,7 @@
                     </tr>
                     <tr >
                         <td>
-                            MileStone 2
+                            MileStone 2 (50%)
                             <div class="col-md-12">&nbsp;</div>
                         </td>
                         <td>
@@ -199,7 +200,7 @@
                     </tr>
                     <tr >
                         <td>
-                            MileStone 3
+                            MileStone 3 (75%)
                             <div class="col-md-12">&nbsp;</div>
                         </td>
                         <td>
@@ -223,7 +224,7 @@
                     </tr>
                     <tr >
                         <td>
-                            MileStone 4
+                            MileStone 4 (100%)
                             <div class="col-md-12">&nbsp;</div>
                         </td>
                         <td>
@@ -298,9 +299,9 @@
     .rcorners2 {
     border-radius: 25px;
     border: 1px solid #068a78;
-    padding: 20px;
-    width: 550px;
-    height: 295px;
+    /*padding: 20px;*/
+    width: 500px;
+    height: 243px;
 }
 </style>
 
