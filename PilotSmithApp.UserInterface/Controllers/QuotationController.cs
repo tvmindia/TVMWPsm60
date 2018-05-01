@@ -416,7 +416,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.IsRequired = required;
             QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList();
-            return PartialView("__QuotationSelectList", quotationVM);
+            return PartialView("_QuotationSelectList", quotationVM);
         }
         #endregion QuotationSelectList
 
