@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
 using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICustomerBusiness _customerBusiness;
         IPaymentTermBusiness _paymentTermBusiness;
         ICustomerCategoryBusiness _customerCategoryBusiness;
-        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness, ICustomerCategoryBusiness customerCategoryBusiness)
+        IUserBusiness _userBusiness;
+        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness, ICustomerCategoryBusiness customerCategoryBusiness, IUserBusiness userBusiness)
         {
             _customerBusiness = customerBusiness;
             _paymentTermBusiness = paymentTermBusiness;
             _customerCategoryBusiness = customerCategoryBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
         // GET: Customer
@@ -131,10 +134,12 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.IsDisabled = disabled;
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled==null?false:disabled;
-            Permission _permission = Session["UserRights"] as Permission;
-            if (_permission.SubPermissionList != null)
+            //Permission _permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Customer");
+            if (permission.SubPermissionList != null)
             {
-                if (_permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }
