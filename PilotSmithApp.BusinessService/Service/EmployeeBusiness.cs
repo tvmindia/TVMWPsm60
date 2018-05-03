@@ -17,6 +17,22 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _employeeRepository = employeeRepository;
         }
+        public object InsertUpdateEmployee(Employee employee)
+        {
+            return _employeeRepository.InsertUpdateEmployee(employee);
+        }
+        public Employee GetEmployee(Guid id)
+        {
+            return _employeeRepository.GetEmployee(id);
+        }
+        public List<Employee> GetAllEmployee(EmployeeAdvanceSearch employeeAdvanceSearch)
+        {
+            return _employeeRepository.GetAllEmployee(employeeAdvanceSearch);
+        }
+        public object DeleteEmployee(Guid id)
+        {
+            return _employeeRepository.DeleteEmployee(id);
+        }
         public List<SelectListItem> GetEmployeeSelectList()
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();

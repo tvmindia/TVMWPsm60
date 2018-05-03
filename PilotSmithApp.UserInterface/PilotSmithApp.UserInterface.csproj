@@ -676,6 +676,7 @@
     <Content Include="Scripts\UserJS\DocumentApproval\ApproveDocument.js" />
     <Content Include="Scripts\UserJS\DocumentApproval\DocumentSummary.js" />
     <Content Include="Scripts\UserJS\DocumentApproval\ViewPendingDocuments.js" />
+    <Content Include="Scripts\UserJS\Employee.js" />
     <Content Include="Scripts\UserJS\EnquiryFollowupSummary.js" />
     <Content Include="Scripts\UserJS\District.js" />
     <Content Include="Scripts\UserJS\Enquiry.js" />
@@ -928,6 +929,7 @@
     <Content Include="Views\ProductionQC\_ProductionQCForm.cshtml" />
     <Content Include="Views\ProductionQC\Index.cshtml" />
     <Content Include="Views\Quotation\_QuotationSelectList.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

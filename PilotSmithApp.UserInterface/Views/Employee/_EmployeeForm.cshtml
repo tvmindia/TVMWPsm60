@@ -2,23 +2,23 @@
 @{
     List<SelectListItem> DepartmentSelectList = new List<SelectListItem>();
     DepartmentSelectList.Add(new SelectListItem
-    { Text = "Production", Value = "PRD", Selected = false });
+    { Text = "Production", Value = "1", Selected = false });
     DepartmentSelectList.Add(new SelectListItem
-    { Text = "Office", Value = "OFF", Selected = false });
+    { Text = "Office", Value = "2", Selected = false });
     DepartmentSelectList.Add(new SelectListItem
-    { Text = "HR", Value = "HR", Selected = false });
+    { Text = "HR", Value = "3", Selected = false });
     DepartmentSelectList.Add(new SelectListItem
-    { Text = "High", Value = "1", Selected = false });
+    { Text = "High", Value = "4", Selected = false });
     List<SelectListItem> PositionSelectList = new List<SelectListItem>();
     PositionSelectList.Add(new SelectListItem
-    { Text = "HOD", Value = "HOD", Selected = false });
+    { Text = "HOD", Value = "1", Selected = false });
     PositionSelectList.Add(new SelectListItem
-    { Text = "Manager", Value = "Manage", Selected = false });
+    { Text = "Manager", Value = "2", Selected = false });
     PositionSelectList.Add(new SelectListItem
-    { Text = "Staff", Value = "Staff", Selected = false });
+    { Text = "Staff", Value = "3", Selected = false });
 }
 
-@using (Ajax.BeginForm("InsertUpdateEmployee", "Employee", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessCustomerMaster", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEmployeeMaster" }))
+@using (Ajax.BeginForm("InsertUpdateEmployee", "Employee", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEmployeeMaster", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormEmployeeMaster" }))
 {
     @*@Html.AntiForgeryToken()*@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })

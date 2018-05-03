@@ -9,6 +9,10 @@ namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IEmployeeRepository
     {
+        object InsertUpdateEmployee(Employee employee);
+        Employee GetEmployee(Guid id);
+        List<Employee> GetAllEmployee(EmployeeAdvanceSearch employeeAdvanceSearch);
+        object DeleteEmployee(Guid id);
         List<Employee> GetEmployeeSelectList();
     }
 }

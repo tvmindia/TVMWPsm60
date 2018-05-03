@@ -298,16 +298,16 @@ function SaveSuccessProductModel(data, status) {
 //=========================================================================================================
 //Add Employee master
 function AddEmployeeMaster(flag) {
-    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
-        $('#lblModelMasterContextLabel').text('Add Employee Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
-    });
-    //$("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function () {
+    //$("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
     //    $('#lblModelMasterContextLabel').text('Add Employee Information')
     //    $('#divModelMasterPopUp').modal('show');
     //    $('#hdnMasterCall').val(flag);
     //});
+    $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function () {
+        $('#lblModelMasterContextLabel').text('Add Employee Information')
+        $('#divModelMasterPopUp').modal('show');
+        $('#hdnMasterCall').val(flag);
+    });
 }
 //=========================================================================================================
 function AddBranchMaster(flag) {

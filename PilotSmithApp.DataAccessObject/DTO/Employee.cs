@@ -18,7 +18,19 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? PositionCode { get; set; }
         public bool IsActive { get; set; }
         public string GeneralNotes { get; set; }
-        public PSASysCommon PSASysCommon { get; set; }
 
+        //Additiona Fields
+        public PSASysCommon PSASysCommon { get; set; }
+        public bool IsUpdate { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+    }
+
+    public class EmployeeAdvanceSearch
+    {
+        public string SearchTerm { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
     }
 }
