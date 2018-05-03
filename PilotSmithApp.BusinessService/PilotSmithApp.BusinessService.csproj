@@ -66,6 +66,8 @@
     <Compile Include="Contract\IMailBusiness.cs" />
     <Compile Include="Contract\IProductBusiness.cs" />
     <Compile Include="Contract\IProductCategoryBusiness.cs" />
+    <Compile Include="Contract\IProductionOrderBusiness.cs" />
+    <Compile Include="Contract\IProductionQCBusiness.cs" />
     <Compile Include="Contract\IProductModelBusiness.cs" />
     <Compile Include="Contract\IProductSpecificationBusiness.cs" />
     <Compile Include="Contract\IQuotationBusiness.cs" />
@@ -100,6 +102,8 @@
     <Compile Include="Service\MailBusiness.cs" />
     <Compile Include="Service\ProductBusiness.cs" />
     <Compile Include="Service\ProductCategoryBusiness.cs" />
+    <Compile Include="Service\ProductionOrderBusiness.cs" />
+    <Compile Include="Service\ProductionQCBusiness.cs" />
     <Compile Include="Service\ProductModelBusiness.cs" />
     <Compile Include="Service\ProductSpecificationBusiness.cs" />
     <Compile Include="Service\QuotationBusiness.cs" />

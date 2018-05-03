@@ -536,5 +536,57 @@ namespace PilotSmithApp.RepositoryService.Service
             return quotationList;
         }
         #endregion GetQuotationForSelectList
+        #region GetQuotationForSelectListOnDemand
+        public List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm)
+        {
+            List<Quotation> quotationList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetQuotationForSelectListOnDemand]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if(string.IsNullOrEmpty(searchTerm))
+                        {
+                            cmd.Parameters.AddWithValue("@SearchTerm", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@SearchTerm", SqlDbType.VarChar, 250).Value = searchTerm;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                quotationList = new List<Quotation>();
+                                while (sdr.Read())
+                                {
+                                    Quotation quotation = new Quotation();
+                                    {
+                                        quotation.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotation.ID);
+                                        quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : quotation.QuoteNo);
+                                    }
+                                    quotationList.Add(quotation);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return quotationList;
+        }
+        #endregion GetQuotationForSelectListOnDemand
+
     }
 }

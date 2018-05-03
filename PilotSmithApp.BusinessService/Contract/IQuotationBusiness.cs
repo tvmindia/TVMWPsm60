@@ -20,5 +20,6 @@ namespace PilotSmithApp.BusinessService.Contract
         object UpdateQuotationEmailInfo(Quotation quotation);
         Task<bool> QuoteEmailPush(Quotation quotation);
         List<SelectListItem> GetQuotationForSelectList();
+        List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm);
     }
 }

@@ -333,7 +333,7 @@ function AddEnquiryDetailToList() {
     debugger;
     $("#FormEnquiryDetail").submit(function () { });
         debugger;
-        if ($('#FormEnquiryDetail #IsUpdate').val()=='True')
+        if($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
             if (($('#ProductID').val() != "" )&& ($('#Rate').val() != "" )&& ($('#Qty').val() != "" )&& ($('#UnitCode').val() != ""))
             {

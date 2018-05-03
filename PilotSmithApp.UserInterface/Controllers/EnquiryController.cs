@@ -247,7 +247,25 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion InsertUpdateEnquiry
-
+        #region Get Enquiry SelectList On Demand
+        public ActionResult GetEnquirySelectListOnDemand(string searchTerm)
+        {
+            List<Enquiry> enquiryList = string.IsNullOrEmpty(searchTerm) ? null : _enquiryBusiness.GetEnquiryForSelectListOnDemand(searchTerm);
+            var list = new List<Select2Model>();
+            if (enquiryList != null)
+            {
+                foreach (Enquiry enquiry in enquiryList)
+                {
+                    list.Add(new Select2Model()
+                    {
+                        text = enquiry.EnquiryNo,
+                        id = enquiry.ID.ToString()
+                    });
+                }
+            }
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get Quotation SelectList On Demand
         #region EnquirySelectList
         public ActionResult EnquirySelectList(string required)
         {

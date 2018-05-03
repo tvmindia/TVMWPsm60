@@ -34,7 +34,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
         public ActionResult SaleOrderForm()
         {
-            SaleOrderViewModel saleOrderVM = new SaleOrderViewModel();        
+            SaleOrderViewModel saleOrderVM = new SaleOrderViewModel();
+            saleOrderVM.QuotationSelectList = new List<SelectListItem>();
+            saleOrderVM.EnquirySelectList = new List<SelectListItem>();      
             return PartialView("_SaleOrderForm", saleOrderVM);
         }
         #endregion SaleOrderForm Form

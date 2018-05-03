@@ -29,24 +29,20 @@
 
                 <div class="col-md-12 no-padding" id="divQuotationSelectList">
                     <div class="col-md-12">
-                        @Html.Label("Select Quotation", htmlAttributes: new { @class = "control-label" })
+                        @Html.Label("Search and select a Quotation", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divQuotationSelectList">
-                            @Html.Action("QuotationSelectList", "Quotation", new { required = "" })
-                        </div>
+                       @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput",@style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)" })
                     </div>
-                    @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuotationID" })
+                    @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                 </div>
 
                 <div class="col-md-12 no-padding" id="divEnquirySelectList" style="display:none;">
                     <div class="col-md-12">
-                        @Html.Label("Select Enquiry", htmlAttributes: new { @class = "control-label" })
+                        @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divEnquirySelectList">
-                            @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
-                        </div>
+                        @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
                     </div>
                     @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
                 </div>
@@ -482,6 +478,54 @@
         }
         try {
             $('#SaleOrderGradeCode').select2({});
+            $('#QuoteID').val($('#hdnQuoteID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnQuoteID').val());
+            $('#QuoteID').select2({
+                language: {
+                    noResults: function (params) {
+                        return "Search result will shows here";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "Quotation/GetQuotationSelectListOnDemand/",
+                    delay: 250,
+                    data: function (term) {
+                        return {
+                            'searchTerm': term.term //search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    },
+                }
+            });
+            $('#EnquiryID').val($('#hdnEnquiryID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEnquiryID').val());
+            $('#EnquiryID').select2({
+                language: {
+                    noResults: function (params) {
+                        return "Search result will shows here";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "Enquiry/GetEnquirySelectListOnDemand/",
+                    delay: 250,
+                    data: function (term) {
+                        return {
+                            'searchTerm': term.term //search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    },
+                }
+            });
             $('.select2').addClass('form-control newinput');
         }
         catch (e) {

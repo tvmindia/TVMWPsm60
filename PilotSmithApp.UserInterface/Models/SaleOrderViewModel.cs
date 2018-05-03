@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.UserInterface.Models
 {
@@ -19,7 +20,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Enquiry")]
         public Guid? EnquiryID { get; set; }
         [Display(Name = "Customer")]
-        [Required(ErrorMessage ="Customer is missing")]
+        [Required(ErrorMessage = "Customer is missing")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Mailing Address")]
         public string MailingAddress { get; set; }
@@ -82,6 +83,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string LatestApprovalStatusDescription { get; set; }
         public BranchViewModel Branch { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
+        public List<SelectListItem> QuotationSelectList{ get; set; }
+        public List<SelectListItem> EnquirySelectList { get; set; }
     }
 
     public class SaleOrderAdvanceSearchViewModel
