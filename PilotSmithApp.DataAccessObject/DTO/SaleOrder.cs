@@ -69,4 +69,19 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ProductModel ProductModel { get; set; }
         public Unit Unit { get; set; }
     }
+    public class SaleOrderOtherCharge
+    {
+        public Guid ID { get; set; }
+        public Guid SaleOrderID { get; set; }
+        public int OtherChargeCode { get; set; }
+        public decimal ChargeAmount { get; set; }
+        public int TaxTypeCode { get; set; }
+        public decimal CGSTAmt { get; set; }
+        public decimal SGSTAmt { get; set; }
+        public decimal IGSTAmt { get; set; }
+        public decimal AddlTaxPec { get; set; }
+        public decimal AddlTaxAmt { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
+
+    }
 }

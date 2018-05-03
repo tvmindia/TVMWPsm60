@@ -120,4 +120,16 @@ namespace PilotSmithApp.UserInterface.Models
         public UnitViewModel Unit { get; set; }
         public TaxTypeViewModel TaxType { get; set; }
     }
+    public class QuotationOtherChargeViewModel
+    {
+        public Guid ID { get; set; }
+        public Guid QuoteID { get; set; }
+        public int OtherChargeCode { get; set; }
+        public decimal ChargeAmount { get; set; }
+        public int TaxTypeCode { get; set; }
+        public decimal CGSTAmt { get; set; }
+        public decimal SGSTAmt { get; set; }
+        public decimal IGSTAmt { get; set; }
+
+    }
 }
