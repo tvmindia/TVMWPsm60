@@ -230,6 +230,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@ProdQCRefNo", SqlDbType.VarChar, 20).Value = productionQC.ProdQCRefNo;
                         cmd.Parameters.Add("@ProdQCDate", SqlDbType.DateTime).Value = productionQC.ProdQCDateFormatted;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = productionQC.CustomerID;
+                        cmd.Parameters.Add("@PlantCode", SqlDbType.Int).Value = productionQC.PlantCode;
+                        cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = productionQC.PreparedBy;
                         cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionQC.DocumentStatusCode;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = productionQC.DetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = productionQC.hdnFileID;

@@ -43,6 +43,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
+        public string ExpectedDelvDateFormatted { get; set; }
+        public string PurchaseOrdDateFormatted { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
