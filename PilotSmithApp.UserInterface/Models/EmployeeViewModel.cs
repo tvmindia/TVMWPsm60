@@ -21,11 +21,13 @@ namespace PilotSmithApp.UserInterface.Models
         public int? PositionCode { get; set; }
         public bool IsActive { get; set; }
         public string GeneralNotes { get; set; }
-        public bool IsUpdate { get; set; }
-        public PSASysCommonViewModel PSASysCommon { get; set; }
+        public bool IsUpdate { get; set; }        
         public List<SelectListItem> EmployeeSelectList { get; set; }
-       
+
         //Additional Fields
+        public DepartmentViewModel Department { get; set; }
+        public PositionViewModel Position { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
     }

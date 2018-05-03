@@ -28,8 +28,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #region InsertUpdateEmployee
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [AuthSecurityFilter(ProjectObject = "Company", Mode = "W")]
+        //[ValidateAntiForgeryToken]
+        [AuthSecurityFilter(ProjectObject = "Employee", Mode = "W")]
         public string InsertUpdateEmployee(EmployeeViewModel employeeVM)
         {
             try
@@ -54,7 +54,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion InsertUpdateEmployee
         #region GetAllEmployee
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Employee", Mode = "R")]
         public JsonResult GetAllEmployee(DataTableAjaxPostModel model, EmployeeAdvanceSearchViewModel employeeAdvanceSearchVM)
         {
             //setting options to our model
@@ -136,7 +136,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region DeleteEmployee
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Company", Mode = "D")]
+        [AuthSecurityFilter(ProjectObject = "Employee", Mode = "D")]
         public string DeleteEmployee(Guid id)
         {
             try
@@ -153,7 +153,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion DeleteEmployee
         #region ButtonStyling
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Employee", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();

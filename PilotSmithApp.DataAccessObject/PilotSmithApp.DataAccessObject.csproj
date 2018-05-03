@@ -51,6 +51,7 @@
     <Compile Include="DTO\Branch.cs" />
     <Compile Include="DTO\Company.cs" />
     <Compile Include="DTO\CustomerCategory.cs" />
+    <Compile Include="DTO\Department.cs" />
     <Compile Include="DTO\District.cs" />
     <Compile Include="DTO\DocumentApproval.cs" />
     <Compile Include="DTO\DocumentStatus.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="DTO\EnquiryGrade.cs" />
     <Compile Include="DTO\Estimate.cs" />
     <Compile Include="DTO\Mail.cs" />
+    <Compile Include="DTO\Position.cs" />
     <Compile Include="DTO\Product.cs" />
     <Compile Include="DTO\ProductCategory.cs" />
     <Compile Include="DTO\ProductionOrder.cs" />

@@ -763,6 +763,7 @@
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\CustomerCategoryViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
+    <Compile Include="Models\DepartmentViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\DocumentApprovalViewModel.cs" />
     <Compile Include="Models\DocumentStatusViewModel.cs" />
@@ -773,6 +774,7 @@
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\EstimateViewModel.cs" />
     <Compile Include="Models\PDFGeneratorViewModel.cs" />
+    <Compile Include="Models\PositionViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductionOrderViewModel.cs" />
     <Compile Include="Models\ProductionQCViewModel.cs" />

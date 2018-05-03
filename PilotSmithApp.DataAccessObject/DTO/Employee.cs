@@ -24,6 +24,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
+        public Department Department { get; set; }
+        public Position Position { get; set; }
     }
 
     public class EmployeeAdvanceSearch

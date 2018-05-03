@@ -7,6 +7,7 @@ var _result = "";
 
 $(document).ready(function () {
     try {
+        debugger;
         BindOrReloadEmployeeTable('Init');
         $('#tblEmployee tbody').on('dblclick', 'td', function () {
             EditEmployee(this);
@@ -78,18 +79,19 @@ function BindOrReloadEmployeeTable(action) {
                 type: 'POST'
             },
             pageLength: 13,
-            columns: [               
+            columns: [
+                {"data":"ID","defaultContent": "<i>-</i>"},
                { "data": "Code", "defaultContent": "<i>-</i>" },
                { "data": "Name", "defaultContent": "<i>-</i>" },
                { "data": "MobileNo", "defaultContent": "<i>-</i>" },
-               { "data": "DepartmentCode", "defaultContent": "<i>-</i>" },
-               { "data": "PositionCode", "defaultContent": "<i>-</i>" },
+               { "data": "Department.Description", "defaultContent": "<i>-</i>" },
+               { "data": "Position.Description", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditEmployeeMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteEmployeeMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
             ],
-            //columnDefs: [
-            //      { className: "text-left", "targets": [0, 1] },
-            //{ className: "text-center", "targets": [2, 3, 4] }
-            //],
+            columnDefs: [
+                  { "targets": [0] ,"visible": false, "searchable": false }
+         
+            ],
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
@@ -133,25 +135,26 @@ function ExportEmployeeData() {
 }
 
 function EditEmployeeMaster(this_Obj) {
+    debugger;
     var Employee = _dataTable.EmployeeList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divEmployeeForm").load("Employee/EmployeeForm?id=" + Employee.ID, function () {
-        ChangeButtonPatchView("Employee", "btnPatchEmployeeNew", "Edit");
-        //resides in customjs for sliding
-        openNav();
+    $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + Employee.ID, function () {
+        $('#hdnMasterCall').val('MSTR');
+        $('#lblModelMasterContextLabel').text('Edit Product Information')
+        $('#divModelMasterPopUp').modal('show');
     });
 }
 function DeleteEmployeeMaster(thisObj) {
     debugger;
-    EmployeeVM = _dataTables.EmployeeList.row($(thisObj).parents('tr')).data();
-    notyConfirm('Are you sure to delete?', 'DeleteEmployee("' + EmployeeVM.Code + '")');
+  var  EmployeeVM = _dataTable.EmployeeList.row($(thisObj).parents('tr')).data();
+    notyConfirm('Are you sure to delete?', 'DeleteEmployee("' + EmployeeVM.ID + '")');
 }
 
-function DeleteEmployee(code) {
+function DeleteEmployee(id) {
     debugger;
     try {
-        if (code) {
-            var data = { "code": code };
+        if (id) {
+            var data = { "ID": id };
             _jsonData = GetDataFromServer("Employee/DeleteEmployee/", data);
             if (_jsonData != '') {
                 _jsonData = JSON.parse(_jsonData);
