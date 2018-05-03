@@ -303,11 +303,37 @@ function AddEmployeeMaster(flag) {
     //    $('#divModelMasterPopUp').modal('show');
     //    $('#hdnMasterCall').val(flag);
     //});
+    debugger;
     $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function () {
         $('#lblModelMasterContextLabel').text('Add Employee Information')
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val(flag);
     });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessEmployeeMaster(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadEmployeeTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required=');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
 }
 //=========================================================================================================
 function AddBranchMaster(flag) {

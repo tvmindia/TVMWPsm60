@@ -193,8 +193,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         employee.MobileNo = (sdr["MobileNo"].ToString() != "" ? sdr["MobileNo"].ToString() : employee.MobileNo);
                                         employee.Address = (sdr["Address"].ToString() != "" ? sdr["Address"].ToString() : employee.Address);
                                         employee.ImageURL = (sdr["ImageURL"].ToString() != "" ? sdr["ImageURL"].ToString() : employee.ImageURL);
-                                        employee.DepartmentCode = (sdr["DepartmentCode"].ToString() != "" ? int.Parse(sdr["DepartmentCode"].ToString()) : employee.DepartmentCode);
-                                        employee.PositionCode = (sdr["PositionCode"].ToString() != "" ? int.Parse(sdr["PositionCode"].ToString()) : employee.PositionCode);
+                                        employee.Department = new Department();
+                                        employee.Department.Description = (sdr["Department"].ToString() != "" ? (sdr["Department"].ToString()) : employee.Department.Description);
+                                        employee.Position = new Position();
+                                        employee.Position.Description = (sdr["Position"].ToString() != "" ? (sdr["Position"].ToString()) : employee.Position.Description);
                                         employee.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : employee.GeneralNotes);
                                         employee.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : employee.FilteredCount);
                                         employee.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : employee.FilteredCount);
