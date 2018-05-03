@@ -108,5 +108,9 @@ namespace PilotSmithApp.BusinessService.Service
                 }
             return selectListItem;
         }
+        public List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm)
+        {
+            return _quotationRepository.GetQuotationForSelectListOnDemand(searchTerm);
+        }
     }
 }

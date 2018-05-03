@@ -27,7 +27,23 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int BranchCode { get; set; }
         public PSASysCommon  PSASysCommon { get; set; }
         //additional fields
+        public string DetailXML { get; set; }
+        public string ProdQCDateFormatted { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
+        public Guid hdnFileID { get; set; }
         public List<ProductionQCDetail> ProductionQCDetailList { get; set; }
+        public Customer Customer { get; set; }
+        public DocumentStatus DocumentStatus { get; set;}
+    }
+    public class ProductionQCAdvanceSearch
+    {
+        public string QCDate { get; set; }
+        public string SearchTerm { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
     }
     public class ProductionQCDetail 
     {
@@ -39,7 +55,10 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal QCQty { get; set; }
         public DateTime QCDate { get; set; }
         public Guid QCBy { get; set; }
-        public PSASysCommon  PSASysCommon { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
+        public Product Product { get; set; }
+        public ProductModel ProductModel { get; set; }
+        public Unit Unit { get; set; }
 
     }
 }

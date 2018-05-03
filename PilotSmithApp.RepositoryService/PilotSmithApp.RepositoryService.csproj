@@ -63,6 +63,8 @@
     <Compile Include="Contract\IEstimateRepository.cs" />
     <Compile Include="Contract\IFileUploadRepository.cs" />
     <Compile Include="Contract\IProductCategoryRepository.cs" />
+    <Compile Include="Contract\IProductionOrderRepository.cs" />
+    <Compile Include="Contract\IProductionQCRepository.cs" />
     <Compile Include="Contract\IProductModelRepository.cs" />
     <Compile Include="Contract\IProductRepository.cs" />
     <Compile Include="Contract\IProductSpecificationRepository.cs" />
@@ -97,6 +99,8 @@
     <Compile Include="Service\EstimateRepository.cs" />
     <Compile Include="Service\FileUploadRepository.cs" />
     <Compile Include="Service\ProductCategoryRepository.cs" />
+    <Compile Include="Service\ProductionOrderRepository.cs" />
+    <Compile Include="Service\ProductionQCRepository.cs" />
     <Compile Include="Service\ProductModelRepository.cs" />
     <Compile Include="Service\ProductRepository.cs" />
     <Compile Include="Service\ProductSpecificationRepository.cs" />

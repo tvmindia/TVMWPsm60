@@ -15,4 +15,9 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime? UpdatedDate { get; set; }
         public string UpdatedDateString { get; set; }
     }
+    public class Select2Model
+    {
+        public string id { get; set; }
+        public string text { get; set; }
+    }
 }

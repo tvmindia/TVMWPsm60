@@ -496,5 +496,57 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetEnquiryValueVsFollowupCountSummary
 
+        #region GetEnquiryForSelectListOnDemand
+        public List<Enquiry> GetEnquiryForSelectListOnDemand(string searchTerm)
+        {
+            List<Enquiry> enquiryList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnquiryForSelectListOnDemand]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (string.IsNullOrEmpty(searchTerm))
+                        {
+                            cmd.Parameters.AddWithValue("@SearchTerm", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@SearchTerm", SqlDbType.VarChar, 250).Value = searchTerm;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                enquiryList = new List<Enquiry>();
+                                while (sdr.Read())
+                                {
+                                    Enquiry enquiry = new Enquiry();
+                                    {
+                                        enquiry.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiry.ID);
+                                        enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : enquiry.EnquiryNo);
+                                    }
+                                    enquiryList.Add(enquiry);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return enquiryList;
+        }
+        #endregion GetEnquiryForSelectListOnDemand
+
     }
 }

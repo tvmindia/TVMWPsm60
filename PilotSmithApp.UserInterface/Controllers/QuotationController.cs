@@ -408,18 +408,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion EmailSent
-
-        # region QuotationSelectList
-        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public ActionResult QuotationSelectList(string required)
+        #region Get QUotation SelectList On Demand
+        public ActionResult GetQuotationSelectListOnDemand(string searchTerm)
         {
-            ViewBag.IsRequired = required;
-            QuotationViewModel quotationVM = new QuotationViewModel();
-            quotationVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList();
-            return PartialView("_QuotationSelectList", quotationVM);
+            List<Quotation> quotationList = string.IsNullOrEmpty(searchTerm)?null:_quotationBusiness.GetQuotationForSelectListOnDemand(searchTerm);
+            var list = new List<Select2Model>();
+            if (quotationList!=null)
+            {
+                foreach (Quotation quotation in quotationList)
+            {
+                list.Add(new Select2Model()
+                {
+                    text = quotation.QuoteNo,
+                    id = quotation.ID.ToString()
+                });
+            }
+            }
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         }
-        #endregion QuotationSelectList
-
+        #endregion Get Quotation SelectList On Demand
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
