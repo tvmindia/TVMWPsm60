@@ -88,7 +88,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ProductionOrderViewModel, ProductionOrder>().ReverseMap();
                 config.CreateMap<ProductionOrderAdvanceSearchViewModel, ProductionOrderAdvanceSearch>().ReverseMap();
                 config.CreateMap<ProductionOrderDetailViewModel, ProductionOrderDetail>().ReverseMap();
-
+                config.CreateMap<ServiceCallViewModel, ServiceCall>().ReverseMap();
+                config.CreateMap<ServiceCallAdvanceSearchViewModel, ServiceCallAdvanceSearch>().ReverseMap();
+                config.CreateMap<ServiceCallDetailViewModel, ServiceCallDetail>().ReverseMap();
             });
         }
     }

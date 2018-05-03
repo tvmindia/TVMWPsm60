@@ -1,0 +1,136 @@
+﻿@model PilotSmithApp.UserInterface.Models.ServiceCallAdvanceSearchViewModel
+@using PilotSmithApp.UserInterface.App_Start
+@{
+    ViewBag.Title = "ServiceCall";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+@section styles {
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
+}
+<section class="content" id="main">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <div class="col-md-12">&nbsp;</div>
+            <div class="col-md-12">
+                <div class="input-group">
+                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    <label class="searchicon" for="textbox">
+                        <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
+                    </label>
+                    <div class="input-group-btn">
+                        <button class="btn searchbtn" type="submit" onclick="BindOrReloadServiceCallTable('Search')"><i class="fa fa-search" style="font-size:18px;"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" id="btnPatchServiceCallList" style="min-height:25px">
+
+            @{
+                @Html.Action("ChangeButtonStyle", "ServiceCall", new { actionType = "List" });
+            }
+        </div>
+    </div>
+    <div class="divboxASearch">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Advance search<button type="button" class="close" onclick="CloseAdvanceSearch()"><span aria-hidden="true">×</span></button></div>
+            <div class="form-group col-md-12">
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.FromDate, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ToDate, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                    </div>
+                </div>
+                <div class="col-md-12">&nbsp;</div>
+                <div class="col-md-12 no-left-padding">
+                    <div class="col-md-12">
+                        <button class="btn searchbtn" type="submit" onclick="ApplyFilterThenSearch()" style="width: 60px;"><i class="fa fa-search" style="font-size:18px;"></i></button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+    </div>
+    <div class="row tableContainer">
+        <div class="excelExport" style="display:none;"></div>
+        <div class="col-md-12">
+            <table id="tblServiceCall" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;display:none;">
+                <thead>
+                    <tr class="text-center TableHead">
+                        <th>Service Call No.</th>
+                        <th>Service Call Date</th>
+                        <th>Customer</th>
+                        <th>Attented By</th>
+                        <th>Status</th>
+                        <th>...</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+<section>
+    <div id="myNav" class="overlay">
+        <div class="overlay-content">
+            <div class="row" id="OverlayHeader">
+                <div class="col-md-6" style="text-align:left;left:4%;">
+                    <span id="lblServiceCallInfo" class="SCHeader">ServiceCall Information</span>
+                </div>
+                <div class="col-md-6" id="btnPatchServiceCallNew" style="min-height:25px; padding-right:25px;">
+
+                </div>
+            </div>
+            <div class="EntryForms" id="divServiceCallForm" style="height:550px">
+
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="divModelPopServiceCall" tabindex="-1" role="dialog" aria-labelledby="ServiceCall" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width:50%;">
+        <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
+            <div class="col-md-10 no-right-padding" style="background-color:white">
+                <div class="modal-header text-center">
+                    <label style="font-size:16px;" id="lblModelPopServiceCall"></label>
+                </div>
+                <div class="no-padding" id="divModelServiceCallPopBody">
+
+                </div>
+            </div>
+            <div class="col-md-2" style="font-size: 90px;color: white;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: white;font-size: 2em;">&times;</span>
+                </button>
+                <label style="transform: rotate(20deg)"><i id="iconModelServiceCallPop" class=""></i></label>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jsZip")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableButtons")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/ServiceCall")
+}
+
+
+
+
