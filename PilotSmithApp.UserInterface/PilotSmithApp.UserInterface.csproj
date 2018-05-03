@@ -797,6 +797,7 @@
     <Compile Include="Models\ReferencePersonViewModel.cs" />
     <Compile Include="Models\ReferenceTypeViewModel.cs" />
     <Compile Include="Models\RolesViewModel.cs" />
+    <Compile Include="Models\SaleInvoiceViewModel.cs" />
     <Compile Include="Models\SaleOrderViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />

@@ -73,6 +73,7 @@
     <Compile Include="Contract\IQuotationBusiness.cs" />
     <Compile Include="Contract\IReferencePersonBusiness.cs" />
     <Compile Include="Contract\IReferenceTypeBusiness.cs" />
+    <Compile Include="Contract\ISaleInvoiceBusiness.cs" />
     <Compile Include="Contract\ISaleOrderBusiness.cs" />
     <Compile Include="Contract\ISalesInvoieBusiness.cs" />
     <Compile Include="Contract\IStateBusiness.cs" />

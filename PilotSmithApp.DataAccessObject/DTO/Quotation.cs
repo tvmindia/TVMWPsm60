@@ -79,4 +79,16 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Unit Unit { get; set; }
         public TaxType TaxType { get; set; }
     }
+    public class QuotationOtherCharge
+    {
+        public Guid ID { get; set; }
+        public Guid QuoteID { get; set; }
+        public int OtherChargeCode { get; set; }
+        public decimal ChargeAmount { get; set; }
+        public int TaxTypeCode { get; set; }
+        public decimal CGSTAmt { get; set; }
+        public decimal SGSTAmt { get; set; }
+        public decimal IGSTAmt { get; set; }
+
+    }
 }

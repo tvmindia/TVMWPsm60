@@ -133,5 +133,20 @@ namespace PilotSmithApp.UserInterface.Models
         public UnitViewModel Unit { get; set; }
         public TaxTypeViewModel TaxType { get; set; }
     }
+    public class SaleOrderOtherChargeViewModel
+    {
+        public Guid ID { get; set; }
+        public Guid SaleOrderID { get; set; }
+        public int OtherChargeCode { get; set; }
+        public decimal ChargeAmount { get; set; }
+        public int TaxTypeCode { get; set; }
+        public decimal CGSTAmt { get; set; }
+        public decimal SGSTAmt { get; set; }
+        public decimal IGSTAmt { get; set; }
+        public decimal AddlTaxPec { get; set; }
+        public decimal AddlTaxAmt { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
+
+    }
 
 }
