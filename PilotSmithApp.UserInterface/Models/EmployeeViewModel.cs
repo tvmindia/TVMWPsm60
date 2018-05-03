@@ -24,5 +24,17 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsUpdate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> EmployeeSelectList { get; set; }
+       
+        //Additional Fields
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+    }
+
+    public class EmployeeAdvanceSearchViewModel
+    {
+        public string SearchTerm { get; set; }
+        public string FromDate { get; set; }
+        public string ToDate { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
     }
 }
