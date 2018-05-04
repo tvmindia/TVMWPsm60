@@ -11,6 +11,7 @@ namespace PilotSmithApp.BusinessService.Contract
         string GetXMLfromEstimateObject(List<EstimateDetail> estimateDetailList, string mandatoryProperties);
         string GetXMLfromProductionOrderObject(List<ProductionOrderDetail> productionOrderDetailList, string mandatoryProperties);
         string GetXMLfromProductionQCObject(List<ProductionQCDetail> productionQCDetailList, string mandatoryProperties);
+        string GetXMLfromSaleInvoiceObject(List<SaleInvoiceDetail> saleInvoiceDetailList, string mandatoryProperties);
         string SendMessage(string message, string mobileNo,string provider,string type);
     }
 }

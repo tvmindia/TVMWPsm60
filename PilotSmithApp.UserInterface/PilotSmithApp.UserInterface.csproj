@@ -694,6 +694,7 @@
     <Content Include="Scripts\UserJS\ProductSpecification.js" />
     <Content Include="Scripts\UserJS\Quotation.js" />
     <Content Include="Scripts\UserJS\Roles.js" />
+    <Content Include="Scripts\UserJS\SaleInvoice.js" />
     <Content Include="Scripts\UserJS\SaleOrder.js" />
     <Content Include="Scripts\UserJS\SalesSummary.js" />
     <Content Include="Scripts\UserJS\State.js" />
@@ -746,6 +747,7 @@
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\ReferencePersonController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SaleInvoiceController.cs" />
     <Compile Include="Controllers\SaleOrderController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\StateController.cs" />
@@ -933,6 +935,9 @@
     <Content Include="Views\ProductionQC\Index.cshtml" />
     <Content Include="Views\Quotation\_QuotationSelectList.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\SaleInvoice\Index.cshtml" />
+    <Content Include="Views\SaleInvoice\_SaleInvoiceForm.cshtml" />
+    <Content Include="Views\SaleInvoice\_AddSaleInvoiceDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

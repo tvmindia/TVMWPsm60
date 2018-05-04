@@ -146,7 +146,7 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionQC;
         }
         #endregion Get ProductionQC
-        #region GetAllProductionQCItems
+        #region GetAllProductionQC Details
         public List<ProductionQCDetail> GetProductionQCDetailListByProductionQCID(Guid productionQCID)
         {
             List<ProductionQCDetail> productionQCDetailList = new List<ProductionQCDetail>();
@@ -206,7 +206,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
 
 
-        #endregion GetQuotationDetails
+        #endregion GetAllProductionQC Details
         #region Insert Update ProductionQC
         public object InsertUpdateProductionQC(ProductionQC productionQC)
         {

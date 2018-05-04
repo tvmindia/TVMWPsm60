@@ -48,7 +48,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
-
+        public List<SaleInvoiceDetail> SaleInvoiceDetailList { get; set; }
     }
     public class SaleInvoiceAdvanceSearch
     {
@@ -77,7 +77,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set;}
-
         public Unit Unit { get; set; }
     }
     public class SaleInvoiceOtherCharge

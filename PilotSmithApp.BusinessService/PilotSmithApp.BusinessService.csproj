@@ -110,6 +110,7 @@
     <Compile Include="Service\QuotationBusiness.cs" />
     <Compile Include="Service\ReferencePersonBusiness.cs" />
     <Compile Include="Service\ReferenceTypeBusiness.cs" />
+    <Compile Include="Service\SaleInvoiceBusiness.cs" />
     <Compile Include="Service\SaleOrderBusiness.cs" />
     <Compile Include="Service\SalesInvoieBusiness.cs" />
     <Compile Include="Service\StateBusiness.cs" />
