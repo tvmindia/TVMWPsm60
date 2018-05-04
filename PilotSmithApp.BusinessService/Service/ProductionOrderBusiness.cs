@@ -46,5 +46,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _productionOrderRepository.DeleteProductionOrderDetail(id);
         }
+        public List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm)
+        {
+            return _productionOrderRepository.GetProductionOrderForSelectListOnDemand(searchTerm);
+        }
     }
 }

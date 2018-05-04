@@ -738,6 +738,7 @@
     <Compile Include="Controllers\ManageAccessController.cs" />
     <Compile Include="Controllers\PaymentTermController.cs" />
     <Compile Include="Controllers\PDFGeneratorController.cs" />
+    <Compile Include="Controllers\PlantController.cs" />
     <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -778,6 +779,7 @@
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\EstimateViewModel.cs" />
     <Compile Include="Models\PDFGeneratorViewModel.cs" />
+    <Compile Include="Models\PlantViewModel.cs" />
     <Compile Include="Models\PositionViewModel.cs" />
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductionOrderViewModel.cs" />
@@ -944,6 +946,9 @@
     <Content Include="Views\SaleInvoice\Index.cshtml" />
     <Content Include="Views\SaleInvoice\_SaleInvoiceForm.cshtml" />
     <Content Include="Views\SaleInvoice\_AddSaleInvoiceDetail.cshtml" />
+    <Content Include="Views\Plant\_PlantSelectList.cshtml" />
+    <Content Include="Views\ProductionQC\_AddProductionQCDetail.cshtml" />
+    <Content Include="Views\Employee\_QCBySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

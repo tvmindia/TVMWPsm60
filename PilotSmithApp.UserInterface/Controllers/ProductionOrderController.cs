@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Newtonsoft.Json;
+using PilotSmithApp.BusinessService.Contract;
+using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
@@ -11,6 +14,13 @@ namespace PilotSmithApp.UserInterface.Controllers
 {
     public class ProductionOrderController : Controller
     {
+        AppConst _appConstant = new AppConst();
+        PSASysCommon _pSASysCommon = new PSASysCommon();
+        IProductionOrderBusiness _productionOrderBusiness;
+        public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness)
+        {
+            _productionOrderBusiness = productionOrderBusiness;
+        }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductOrder", Mode = "R")]
         public ActionResult Index()
@@ -67,6 +77,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetAllProductionOrder
+        #region Get QUotation SelectList On Demand
+        public ActionResult GetProductionOrderSelectListOnDemand(string searchTerm)
+        {
+            List<ProductionOrderViewModel> productionOrderVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<ProductionOrder>,List<ProductionOrderViewModel>>(_productionOrderBusiness.GetProductionOrderForSelectListOnDemand(searchTerm));
+            var list = new List<Select2Model>();
+            if (productionOrderVMList != null)
+            {
+                foreach (ProductionOrderViewModel productionOrderVM in productionOrderVMList)
+                {
+                    list.Add(new Select2Model()
+                    {
+                        text = productionOrderVM.ProdOrderNo,
+                        id = productionOrderVM.ID.ToString()
+                    });
+                }
+            }
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get ProductionOrder SelectList On Demand
 
         #region ButtonStyling
         [HttpGet]

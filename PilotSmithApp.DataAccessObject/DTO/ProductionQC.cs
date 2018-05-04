@@ -12,19 +12,19 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ProdQCNo { get; set; }
         public string ProdQCRefNo { get; set; }
         public DateTime ProdQCDate { get; set; }
-        public Guid ProdOrderID { get; set; }
-        public Guid CustomerID { get; set; }
-        public int PlantCode { get; set; }
-        public Guid PreparedBy { get; set; }
-        public int DocumentStatusCode { get; set; }
+        public Guid? ProdOrderID { get; set; }
+        public Guid? CustomerID { get; set; }
+        public int? PlantCode { get; set; }
+        public Guid? PreparedBy { get; set; }
+        public int? DocumentStatusCode { get; set; }
         public string GeneralNotes { get; set; }
-        public Guid DocumentOwnerID { get; set; }
-        public bool EmailSentYN { get; set; }
-        public Guid LatestApprovalID { get; set; }
+        public Guid? DocumentOwnerID { get; set; }
+        public bool? EmailSentYN { get; set; }
+        public Guid? LatestApprovalID { get; set; }
         public int LatestApprovalStatus { get; set; }
-        public bool IsFinalApproved { get; set; }
+        public bool? IsFinalApproved { get; set; }
         public string EmailSentTo { get; set; }
-        public int BranchCode { get; set; }
+        public int? BranchCode { get; set; }
         public PSASysCommon  PSASysCommon { get; set; }
         //additional fields
         public string DetailXML { get; set; }
@@ -36,6 +36,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public List<ProductionQCDetail> ProductionQCDetailList { get; set; }
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set;}
+        public Plant Plant { get; set; }
+        public Employee Employee { get; set; }
     }
     public class ProductionQCAdvanceSearch
     {

@@ -384,5 +384,56 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Delete ProductionOrder Detail
+        #region GetProductionOrderForSelectListOnDemand
+        public List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm)
+        {
+            List<ProductionOrder> productionOrderList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProductionOrderForSelectListOnDemand]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (string.IsNullOrEmpty(searchTerm))
+                        {
+                            cmd.Parameters.AddWithValue("@SearchTerm", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@SearchTerm", SqlDbType.VarChar, 250).Value = searchTerm;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                productionOrderList = new List<ProductionOrder>();
+                                while (sdr.Read())
+                                {
+                                    ProductionOrder productionOrder = new ProductionOrder();
+                                    {
+                                        productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
+                                        productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
+                                    }
+                                    productionOrderList.Add(productionOrder);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return productionOrderList;
+        }
+        #endregion GetProductionOrderForSelectListOnDemand
     }
 }

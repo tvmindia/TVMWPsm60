@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
@@ -15,8 +16,10 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
-        public ProductionQCController()
+        IProductionQCBusiness _productionQCBusiness;
+        public ProductionQCController(IProductionQCBusiness productionQCBusiness)
         {
+            _productionQCBusiness = productionQCBusiness;
         }
         // GET: ProductionQ
         public ActionResult Index()
@@ -34,8 +37,9 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                 if (id != Guid.Empty)
                 {
-                    productionQCVM = new ProductionQCViewModel();// Mapper.Map<ProductionQC, ProductionQCViewModel>(_productionQCBusiness.GetProductionQC(id));
+                    productionQCVM =Mapper.Map<ProductionQC, ProductionQCViewModel>(_productionQCBusiness.GetProductionQC(id));
                     productionQCVM.IsUpdate = true;
+                    productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
                 }
                 else
                 {
@@ -43,6 +47,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionQCVM.IsUpdate = false;
                     productionQCVM.ID = Guid.Empty;
                     productionQCVM.DocumentStatusCode = 1;
+                    productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
                 }
             }
             catch (Exception ex)
@@ -166,7 +171,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             //ProductionQCAdvanceSearchVM.OrderDir = model.order[0].dir;
 
             // action inside a standard controller
-            List<ProductionQCViewModel> ProductionQCVMList = new List<ProductionQCViewModel>();// Mapper.Map<List<ProductionQC>, List<ProductionQCViewModel>>(_productionQCBusiness.GetAllProductionQC(Mapper.Map<ProductionQCAdvanceSearchViewModel, ProductionQCAdvanceSearch>(ProductionQCAdvanceSearchVM)));
+            List<ProductionQCViewModel> ProductionQCVMList =Mapper.Map<List<ProductionQC>, List<ProductionQCViewModel>>(_productionQCBusiness.GetAllProductionQC(Mapper.Map<ProductionQCAdvanceSearchViewModel, ProductionQCAdvanceSearch>(ProductionQCAdvanceSearchVM)));
             if (ProductionQCAdvanceSearchVM.DataTablePaging.Length == -1)
             {
                 int totalResult = ProductionQCVMList.Count != 0 ? ProductionQCVMList[0].TotalCount : 0;
@@ -206,7 +211,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 object ResultFromJS = JsonConvert.DeserializeObject(productionQCVM.DetailJSON);
                 string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 productionQCVM.ProductionQCDetailList = JsonConvert.DeserializeObject<List<ProductionQCDetailViewModel>>(ReadableFormat);
-                object result = null;// _productionQCBusiness.InsertUpdateProductionQC(Mapper.Map<ProductionQCViewModel, ProductionQC>(productionQCVM));
+                object result =_productionQCBusiness.InsertUpdateProductionQC(Mapper.Map<ProductionQCViewModel, ProductionQC>(productionQCVM));
 
                 if (productionQCVM.ID == Guid.Empty)
                 {

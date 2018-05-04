@@ -78,14 +78,15 @@ function BindOrReloadProductionQCTable(action) {
             },
             pageLength: 13,
             columns: [
-               { "data": "ProductionQCNo", "defaultContent": "<i>-</i>" },
-               { "data": "ProductionQCDateFormatted", "defaultContent": "<i>-</i>" },
+               { "data": "ProdQCNo", "defaultContent": "<i>-</i>" },
+               { "data": "ProdQCDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
                { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
-               { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
-               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               { "data": "PreparedBy", "defaultContent": "<i>-</i>" },
+               { "data": "Plant", "defaultContent": "<i>-</i>" },
+               { "data": "LatestApprovalStatus", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionQC(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
@@ -286,14 +287,13 @@ function BindProductionQCDetailList(id) {
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionQCDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
-                 { "targets": [0, 4], "width": "10%" },
+                 { "targets": [0], "width": "35%" },
                  { "targets": [1, 2], "width": "15%" },
-                 { "targets": [3], "width": "35%" },
+                 { "targets": [3, 4], "width": "10%" },
                  { "targets": [5], "width": "10%" },
                  { "targets": [6], "width": "5%" },
-                 { className: "text-right", "targets": [4, 5] },
-                 { className: "text-left", "targets": [1, 2, 3] },
-                 { className: "text-center", "targets": [0, 6] }
+                 { className: "text-left", "targets": [0, 1, 2, 3,4,5] },
+                 { className: "text-center", "targets": [ 6] }
              ]
          });
 }

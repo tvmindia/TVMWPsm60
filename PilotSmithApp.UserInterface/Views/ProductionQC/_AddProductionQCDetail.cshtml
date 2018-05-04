@@ -1,0 +1,126 @@
+﻿
+@model PilotSmithApp.UserInterface.Models.ProductionQCDetailViewModel
+
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormProductionQCDetail" }))
+{
+    @Html.HiddenFor(model => model.ProdQCID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                <div class="divProductSelectList">
+                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
+                </div>
+                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+            </div>
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                <div class="divProductModelSelectList">
+                    <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                    @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
+                </div>
+                @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
+            </div>
+        </div>
+        <div id="divProductBasicInfo">
+            @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
+                @Html.ValidationMessageFor(model => model.ProductSpec, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-8 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.QCDateFormatted, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.QCDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                @Html.ValidationMessageFor(model => model.QCDateFormatted, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.QCQty, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.QCQty, new { htmlAttributes = new { @class = "form-control newinput", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.QCQty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+       
+        <div class="col-md-8 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.QCBy, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                <div class="divCustomerSelectList">
+                    @Html.Action("QCBySelectList", "Employee", new { required = "" })
+                </div>
+            </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnQCByRequired", "")
+            <!-- This hidden field will keep the information whether the field is disabled or not -->
+            @Html.Hidden("hdnQCBydisabled", false)
+            @Html.HiddenFor(model => model.QCBy, htmlAttributes: new { @class = "", @id = "hdnQCBy" })
+        </div>
+        </div>
+
+
+
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default" id="btnAddProductionQCDetail" onclick="AddProductionQCDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        </div>
+        }
+        <script>
+            $(document).ready(function () {
+                $.validator.unobtrusive.parse("#FormProductionQCDetail");
+                try {
+                    $('input.datepicker').datepicker({
+                        format: "dd-M-yyyy",
+                        maxViewMode: 0,
+                        todayBtn: "linked",
+                        clearBtn: true,
+                        autoclose: true,
+                        todayHighlight: true
+                    });
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+                $('#divModelPopProductionQC #ProductID,#divModelPopProductionQC #QCBy').select2({
+                    dropdownParent: $("#divModelPopProductionQC")
+                });
+                $('.select2').addClass('form-control newinput');
+                $('#divModelPopProductionQC #ProductID').change(function () {
+                    if ($('#divProductBasicInfo') != undefined) {
+                        $('#divModelPopProductionQC #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                            $('#divModelPopProductionQC #ProductSpec').val($('#divModelPopProductionQC #spnProductName').text());
+                        });
+                    }
+                    if ($('.divProductModelSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                        }
+                        else {
+                            $('.divProductModelSelectList').empty();
+                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                        }
+                    }
+                });
+            });
+        </script>

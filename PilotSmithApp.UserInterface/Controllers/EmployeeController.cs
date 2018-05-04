@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,12 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConstant = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
+        IUserBusiness _userBusiness;
         IEmployeeBusiness _employeeBusiness;
-        public EmployeeController(IEmployeeBusiness employeeBusiness)
+        public EmployeeController(IEmployeeBusiness employeeBusiness, IUserBusiness userBusiness)
         {
             _employeeBusiness = employeeBusiness;
+            _userBusiness = userBusiness;
         }
         // GET: Employee
         public ActionResult Index()
@@ -133,7 +137,27 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_PreparedBySelectList", employeeVM);
         }
         #endregion PreparedBy SelectList
-
+        #region QCBy SelectList
+        public ActionResult QCBySelectList(string required,bool? disabled)
+        {
+            ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
+            EmployeeViewModel employeeVM = new EmployeeViewModel();
+            employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            return PartialView("_QCBySelectList", employeeVM);
+        }
+        #endregion QCBy SelectList
         #region DeleteEmployee
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Employee", Mode = "D")]
