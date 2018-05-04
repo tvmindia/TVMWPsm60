@@ -107,7 +107,67 @@
                     </div>
                 </div>
             </div>
+            @if (Model.IsUpdate)
+            {
+                <div class="col-md-6 clearfix divsummerybox" style="min-height:200px;margin-top:-4.6%">
+                    <div class="col-md-2 no-padding">
 
+                    </div>
+                    <div class="col-md-10 no-padding" style="background-color:transparent;min-height:350px;background-image:url(/Content/images/frame.png);background-repeat:no-repeat;background-size:63%">
+                        <ul class="todo-list ui-sortable" style="margin-top:25%;width:59%;">
+                            <li class="pull-left" style="width: 92%;margin-left: 8%;background-color:transparent;padding: 0px">
+                                <span class="control-label pull-left" style="text-decoration:underline">@Html.DisplayNameFor(Model => Model.EmailSentYN):</span><br />
+                                <!-- todo text -->
+                                <div class="col-md-12"></div>
+                                @if (Model.EmailSentYN == null)
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">EMAIL NOT SEND</span>
+                                }
+                                else if (Model.EmailSentYN == true)
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">✔ EMAIL SEND</span>
+                                }
+                                else
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">EMAIL NOT SEND</span>
+                                }
+                            </li>
+
+                            <li class="pull-left" style="width: 92%;margin-left: 8%;background-color:transparent;padding: 0px">
+                                <span class="control-label pull-left" style="text-decoration:underline">@Html.DisplayNameFor(Model => Model.IsFinalApproved):</span><br />
+                                <!-- todo text -->
+                                <div class="col-md-12"></div>
+                                @if (Model.IsFinalApproved == null)
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">PENDING FOR FINAL APPROVAL</span>
+                                }
+                                else if (Model.IsFinalApproved == true)
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">✔ FINALY APPROVED</span>
+                                }
+                                else
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">✗ FINAL APPROVER REJECTED</span>
+                                }
+
+                            </li>
+                            <li class="pull-left" style="width: 92%;margin-left: 8%;background-color:transparent;padding: 0px">
+                                <span class="control-label pull-left" style="text-decoration:underline;">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus):</span><br />
+                                <!-- todo text -->
+                                <div class="col-md-12"></div>
+                                @if (Model.LatestApprovalStatus == null)
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">DRAFTED DOCUMENT</span>
+                                }
+                                else
+                                {
+                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">@Model.LatestApprovalStatusDescription</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>

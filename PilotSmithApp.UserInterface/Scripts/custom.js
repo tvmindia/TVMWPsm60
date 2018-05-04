@@ -134,6 +134,11 @@ $(document).ready(function () {
    
    
 });
+function ChangeNavPosition()
+{
+    $('.main-sidebar').css('position', 'absolute');
+    $('.wrapper').css('background-color', 'rgb(238, 245, 249)');
+}
 //function will hide the advance searchbox
 function CloseAdvanceSearch()
 {

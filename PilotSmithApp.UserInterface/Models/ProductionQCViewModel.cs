@@ -46,6 +46,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public Guid hdnFileID { get; set; }
+        public string LatestApprovalStatusDescription { get; set; }
         public List<ProductionQCDetailViewModel> ProductionQCDetailList { get; set; }
         public CustomerViewModel Customer { get; set; }
         public List<SelectListItem> ProdOrderSelectList { get; set; }
