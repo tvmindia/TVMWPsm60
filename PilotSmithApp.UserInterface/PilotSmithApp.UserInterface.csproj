@@ -662,6 +662,7 @@
     <Content Include="Scripts\PDF.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\ServiceCall.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
@@ -750,6 +751,7 @@
     <Compile Include="Controllers\SaleInvoiceController.cs" />
     <Compile Include="Controllers\SaleOrderController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
+    <Compile Include="Controllers\ServiceCallController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
@@ -802,6 +804,7 @@
     <Compile Include="Models\SaleInvoiceViewModel.cs" />
     <Compile Include="Models\SaleOrderViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
+    <Compile Include="Models\ServiceCallViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
@@ -935,6 +938,9 @@
     <Content Include="Views\ProductionQC\Index.cshtml" />
     <Content Include="Views\Quotation\_QuotationSelectList.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\ServiceCall\Index.cshtml" />
+    <Content Include="Views\ServiceCall\_AddServiceCallDetail.cshtml" />
+    <Content Include="Views\ServiceCall\_ServiceCallForm.cshtml" />
     <Content Include="Views\SaleInvoice\Index.cshtml" />
     <Content Include="Views\SaleInvoice\_SaleInvoiceForm.cshtml" />
     <Content Include="Views\SaleInvoice\_AddSaleInvoiceDetail.cshtml" />

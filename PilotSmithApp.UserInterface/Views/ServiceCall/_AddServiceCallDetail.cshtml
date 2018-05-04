@@ -1,0 +1,131 @@
+﻿@model PilotSmithApp.UserInterface.Models.ServiceCallDetailViewModel
+
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormServiceCallDetail" }))
+{
+    @Html.HiddenFor(model => model.ServiceCallID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
+            </div>
+            <div class="col-md-12">
+                <div class="divProductSelectList">
+                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
+                </div>
+                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+            </div>
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                <div class="divProductModelSelectList">
+                    <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                    @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
+                </div>
+                @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
+            </div>
+        </div>
+        <div id="divProductBasicInfo">
+            @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
+                @Html.ValidationMessageFor(model => model.ProductSpec, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    <div class="divUnitSelectList">
+                        @Html.Action("UnitSelectList", "Unit", new { required = "" })
+                    </div>
+                    @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
+                </div>
+            </div>
+
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                    @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ProducedQty, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ProducedQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                    @Html.ValidationMessageFor(model => model.ProducedQty, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+    </div>       
+        @*</div>*@
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default" id="btnAddServiceCallDetail" onclick="AddServiceCallDetailList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormServiceCallDetail");
+        $('#divModelPopServiceCall #ProductID,#divModelPopServiceCall #UnitCode').select2({
+            dropdownParent: $("#divModelPopServiceCall")
+        });
+
+        $('.select2').addClass('form-control newinput');
+        $('#divModelPopServiceCall #ProductID').change(function () {
+            if ($('#divProductBasicInfo') != undefined) {
+                $('#divModelPopServiceCall #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                    $('#divModelPopServiceCall #ProductSpec').val($('#divModelPopServiceCall #spnProductName').text());
+                });
+            }
+            if ($('.divProductModelSelectList') != undefined) {
+                $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                if (this.value != "") {
+                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                }
+                else {
+                    $('.divProductModelSelectList').empty();
+                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                }
+            }
+        });
+        try {
+            $('input.datepicker').datepicker({
+                format: "dd-M-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    });
+</script>
+
+@*<style>
+    .rcorners2 {
+        border-radius: 25px;
+        border: 1px solid #068a78;
+        /*padding: 20px;*/
+        width: 500px;
+        height: 243px;
+    }
+</style>*@
+
