@@ -300,7 +300,7 @@ namespace PilotSmithApp.RepositoryService.Service
         public object DeleteProductionQC(Guid id)
         {
             SqlParameter outputStatus = null;
-            try
+            try 
             {
 
                 using (SqlConnection con = _databaseFactory.GetDBConnection())

@@ -250,22 +250,22 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Get Enquiry SelectList On Demand
         public ActionResult GetEnquirySelectListOnDemand(string searchTerm)
         {
-            List<Enquiry> enquiryList = string.IsNullOrEmpty(searchTerm) ? null : _enquiryBusiness.GetEnquiryForSelectListOnDemand(searchTerm);
+            List<EnquiryViewModel> enquiryVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetEnquiryForSelectListOnDemand(searchTerm));
             var list = new List<Select2Model>();
-            if (enquiryList != null)
+            if (enquiryVMList != null)
             {
-                foreach (Enquiry enquiry in enquiryList)
+                foreach (EnquiryViewModel enquiryVM in enquiryVMList)
                 {
                     list.Add(new Select2Model()
                     {
-                        text = enquiry.EnquiryNo,
-                        id = enquiry.ID.ToString()
+                        text = enquiryVM.EnquiryNo,
+                        id = enquiryVM.ID.ToString()
                     });
                 }
             }
             return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         }
-        #endregion Get Quotation SelectList On Demand
+        #endregion Get Enquiry SelectList On Demand
         #region EnquirySelectList
         public ActionResult EnquirySelectList(string required)
         {

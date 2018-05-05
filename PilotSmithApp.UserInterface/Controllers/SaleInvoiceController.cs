@@ -52,6 +52,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.ID = Guid.Empty;
                     //saleInvoiceVM.EstimateID = null;
                     saleInvoiceVM.DocumentStatusCode = 5;
+                    saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
                 }
                 else if (id == Guid.Empty && estimateID != null)
                 {
@@ -59,6 +61,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM = new SaleInvoiceViewModel();
                     saleInvoiceVM.IsUpdate = false;
                     saleInvoiceVM.ID = Guid.Empty;
+                    saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
                     //saleInvoiceVM.CustomerID = estimateVM.CustomerID;
                 }
                 saleInvoiceVM.Customer = new CustomerViewModel

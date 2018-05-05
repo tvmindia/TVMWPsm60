@@ -22,10 +22,9 @@
                         @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true }) @Html.Label("Quotation")
                     </span>
                     <span style="margin-left:10px">
-                        @Html.RadioButtonFor(model => model.DocumentType, "Enquiry") @Html.Label("Enquiry")
+                        @Html.RadioButtonFor(model => model.DocumentType, "SaleOrder") @Html.Label("Sale Order")
                     </span>
                 </div>
-
                 <div class="col-md-12 no-padding" id="divQuotationSelectList">
                     <div class="col-md-12">
                         @Html.Label("Search and select a Quotation", htmlAttributes: new { @class = "control-label" })
@@ -36,14 +35,14 @@
                     @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                 </div>
 
-                <div class="col-md-12 no-padding" id="divEnquirySelectList" style="display:none;">
+                <div class="col-md-12 no-padding" id="divSaleOrderSelectList" style="display:none;">
                     <div class="col-md-12">
-                        @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
+                        @Html.Label("Search and select a Sale Order", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
+                        @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search sale order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
                     </div>
-                    @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
+                    @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -403,7 +402,54 @@
                         console.log(e.message);
                     }
                     try {
-                        $('#SaleInvoiceGradeCode').select2({});
+                        $('#QuoteID').val($('#hdnQuoteID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnQuoteID').val());
+                        $('#QuoteID').select2({
+                            language: {
+                                noResults: function (params) {
+                                    return "Search result will shows here";
+                                }
+                            },
+                            ajax: {
+                                type: 'POST',
+                                dataType: 'json',
+                                url: "Quotation/GetQuotationSelectListOnDemand/",
+                                delay: 250,
+                                data: function (term) {
+                                    return {
+                                        'searchTerm': term.term //search term
+                                    };
+                                },
+                                processResults: function (data) {
+                                    return {
+                                        results: data.items
+                                    };
+                                },
+                            }
+                        });
+                        $('#SaleOrderID').val($('#hdnSaleOrderID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnSaleOrderID').val());
+                        $('#SaleOrderID').select2({
+                            language: {
+                                noResults: function (params) {
+                                    return "Search result will shows here";
+                                }
+                            },
+                            ajax: {
+                                type: 'POST',
+                                dataType: 'json',
+                                url: "SaleOrder/GetSaleOrderSelectListOnDemand/",
+                                delay: 250,
+                                data: function (term) {
+                                    return {
+                                        'searchTerm': term.term //search term
+                                    };
+                                },
+                                processResults: function (data) {
+                                    return {
+                                        results: data.items
+                                    };
+                                },
+                            }
+                        });
                         $('.select2').addClass('form-control newinput');
                     }
                     catch (e) {
@@ -417,6 +463,25 @@
                                 BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true);
                                 OnServerCallComplete();
                             });
+                        });
+                    }
+                    catch (e) {
+                        console.log(e.message);
+                    }
+                    try {
+                        $('[name="DocumentType"]').change(function () {
+                            if (this.value == "Quotation") {
+                                $('#divSaleOrderSelectList').hide();
+                                $('#divQuotationSelectList').show();
+                                $('#QuoteID').prop('disabled', false);
+                                $('#SaleOrderID').prop('disabled', true);
+                            }
+                            else if (this.value == "SaleOrder") {
+                                $('#divSaleOrderSelectList').show();
+                                $('#divQuotationSelectList').hide();
+                                $('#QuoteID').prop('disabled', true);
+                                $('#SaleOrderID').prop('disabled', false);
+                            }
                         });
                     }
                     catch (e) {

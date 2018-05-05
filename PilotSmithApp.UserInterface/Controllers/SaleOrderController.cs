@@ -40,7 +40,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_SaleOrderForm", saleOrderVM);
         }
         #endregion SaleOrderForm Form
-
+        #region Get SaleOrder SelectList On Demand
+        public ActionResult GetSaleOrderSelectListOnDemand(string searchTerm)
+        {
+            List<SaleOrderViewModel> saleOrderVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<SaleOrder>, List<SaleOrderViewModel>>(_saleOrderBusiness.GetSaleOrderForSelectListOnDemand(searchTerm));
+            var list = new List<Select2Model>();
+            if (saleOrderVMList != null)
+            {
+                foreach (SaleOrderViewModel saleOrderVM in saleOrderVMList)
+                {
+                    list.Add(new Select2Model()
+                    {
+                        text = saleOrderVM.SaleOrderNo,
+                        id = saleOrderVM.ID.ToString()
+                    });
+                }
+            }
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get SaleOrder SelectList On Demand
         #region SaleOrder Detail Add
         public ActionResult AddSaleOrderDetail()
         {

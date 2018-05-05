@@ -11,7 +11,15 @@ namespace PilotSmithApp.BusinessService.Service
 {
     public class SaleOrderBusiness:ISaleOrderBusiness
     {
-        
-        
+        ISaleOrderRepository _saleOrderRepository;
+        public SaleOrderBusiness(ISaleOrderRepository saleOrderRepository)
+        {
+            _saleOrderRepository = saleOrderRepository;
+        }
+        public List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm)
+        {
+            return _saleOrderRepository.GetSaleOrderForSelectListOnDemand(searchTerm);
+        }
+
     }
 }

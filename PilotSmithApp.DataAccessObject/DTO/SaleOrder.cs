@@ -9,6 +9,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
     public class SaleOrder
     {
         public Guid ID { get; set; }
+        public string SaleOrderNo { get; set; }
         public Guid SaleOrderID { get; set; }
         public Guid? ProductID { get; set; }
         public Guid? ProductModelID { get; set; }
