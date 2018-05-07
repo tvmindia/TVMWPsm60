@@ -46,6 +46,48 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion ProductionOrder Detail Add
 
+        #region InsertUpdateProductionOrder
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "W")]
+        public string InsertUpdateProductionOrder(ProductionOrderViewModel productionOrderVM)
+        {
+            //object resultFromBusiness = null;
+
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                productionOrderVM.PSASysCommon = new PSASysCommonViewModel();
+                productionOrderVM.PSASysCommon.CreatedBy = appUA.UserName;
+                productionOrderVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
+                productionOrderVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                productionOrderVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                object ResultFromJS = JsonConvert.DeserializeObject(productionOrderVM.DetailJSON);
+                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                productionOrderVM.ProductionOrderDetailList = JsonConvert.DeserializeObject<List<ProductionOrderDetailViewModel>>(ReadableFormat);
+                object result = _productionOrderBusiness.InsertUpdateProductionOrder(Mapper.Map<ProductionOrderViewModel, ProductionOrder>(productionOrderVM));
+
+                if (productionOrderVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+
+        #endregion InsertUpdateProductionOrder
+
         #region GetAllProductionOrder
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]

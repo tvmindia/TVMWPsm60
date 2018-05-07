@@ -41,36 +41,38 @@
             </div>
         </div>
 
-        @*<div class="col-md-4 no-padding">
+        <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    <div class="divUnitSelectList">
-                        @Html.Action("UnitSelectList", "Unit", new { required = "" })
-                    </div>
-                    @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
+                    @Html.EditorFor(model => model.GuaranteeYN, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.HiddenFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "" })
                 </div>
             </div>
 
-            <div class="col-md-4 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
-                    @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
-                </div>
+            
+        <div class="col-md-6 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.InstalledDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
-            <div class="col-md-4 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.ProducedQty, htmlAttributes: new { @class = "control-label " })
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                @Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-6 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                <div class="divDocumentStatusSelectList">
+                    @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "", code = "EST" })
                 </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.ProducedQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
-                    @Html.ValidationMessageFor(model => model.ProducedQty, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+                @Html.HiddenFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+            </div>
+        </div>
 
     </div>       
         @*</div>*@

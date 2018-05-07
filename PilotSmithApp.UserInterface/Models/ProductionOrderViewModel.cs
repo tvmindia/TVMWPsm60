@@ -10,7 +10,7 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID{get;set;}
         [Display(Name ="Production Order No.")]
-        [Required(ErrorMessage ="Production Order No. is missing")]
+        //[Required(ErrorMessage ="Production Order No. is missing")]
         public string ProdOrderNo{get;set;}
         [Display(Name = "Production Order Ref.No.")]
         public string ProdOrderRefNo{get;set;}
@@ -55,6 +55,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string LatestApprovalStatusDescription { get; set; }
         public BranchViewModel Branch { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
+        public List<ProductionOrderDetailViewModel> ProductionOrderDetailList { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel

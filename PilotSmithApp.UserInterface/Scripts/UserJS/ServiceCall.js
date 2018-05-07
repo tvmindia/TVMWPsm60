@@ -8,6 +8,7 @@ var _result = "";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
+        debugger;
         BindOrReloadServiceCallTable('Init');
         $('#tblServiceCall tbody').on('dblclick', 'td', function () {
             //EditServiceCall(this);
@@ -59,7 +60,7 @@ function BindOrReloadServiceCallTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4]
+                                 columns: [0, 1, 2, 3]
                              }
             }],
             ordering: false,
@@ -73,7 +74,7 @@ function BindOrReloadServiceCallTable(action) {
             serverSide: true,
             ajax: {
                 url: "ServiceCall/GetAllServiceCall/",
-                data: { "ServiceCallAdvanceSearchVM": ServiceCallAdvanceSearchViewModel },
+                data: { "serviceCallAdvanceSearchVM": ServiceCallAdvanceSearchViewModel },
                 type: 'POST'
             },
             pageLength: 13,
@@ -137,7 +138,7 @@ function AddServiceCall() {
     debugger;
     //this will return form body(html)
     //OnServerCallBegin();
-    $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid + "&quotationID=", function () {
+    $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
         // BindProductionOrderDetailList(_emptyGuid);
         //BindProductionOrderOtherChargesDetailList(_emptyGuid)

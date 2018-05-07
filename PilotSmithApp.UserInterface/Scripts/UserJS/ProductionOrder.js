@@ -10,7 +10,7 @@ $(document).ready(function () {
     try {
         BindOrReloadProductionOrderTable('Init');
         $('#tblProductionOrder tbody').on('dblclick', 'td', function () {
-            //EditProductionOrder(this);
+            EditProductionOrder(this);
         });
     }
     catch (e) {
@@ -156,16 +156,141 @@ function AddProductionOrder() {
     debugger;
     //this will return form body(html)
     //OnServerCallBegin();
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid + "&quotationID=", function () {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid ,function () {
         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
-        // BindProductionOrderDetailList(_emptyGuid);
+       // BindProductionOrderDetailList(_emptyGuid);
         //BindProductionOrderOtherChargesDetailList(_emptyGuid)
-        // OnServerCallComplete();
+         OnServerCallComplete();
         setTimeout(function () {
             //resides in customjs for sliding
             openNav();
         }, 100);
     });
+}
+
+function EditProductionOrder(this_Obj) {
+    debugger;
+    OnServerCallBegin();
+    var productionOrder = _dataTable.ProductionOrderList.row($(this_Obj).parents('tr')).data();
+    //this will return form body(html)
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID , function () {
+
+        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+       // BindProductionOrderDetailList(productionOrder.ID);
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+        clearUploadControl();
+        PaintImages(productionOrder.ID);
+        OnServerCallComplete();
+        //resides in customjs for sliding
+      
+            //$("#divEstimateForm #EnquiryID").prop('disabled', true);
+            openNav();
+      
+    });
+}
+
+function ResetProductionOrder() {
+    //this will return form body(html)
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() , function () {
+        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+            //resides in customjs for sliding
+            setTimeout(function () {
+                //$("#divEstimateForm #EnquiryID").prop('disabled', true);
+                openNav();
+            }, 100);
+        }
+       // BindProductionOrderDetailList($('#ID').val(), false);
+        clearUploadControl();
+        PaintImages($('#ProductionOrderForm #ID').val());
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
+    });
+}
+
+function SaveProductionOrder() {
+    var productionOrderDetailList = _dataTable.ProductionOrderList.rows().data().toArray();
+    $('#DetailJSON').val(JSON.stringify(productionOrderDetailList));
+    $('#btnInsertUpdateProductionOrder').trigger('click');
+}
+
+function ApplyFilterThenSearch() {
+    $(".searchicon").addClass('filterApplied');
+    CloseAdvanceSearch();
+    BindOrReloadProductionOrderTable('Search');
+}
+
+function SaveSuccessProductionOrder(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                $('#IsUpdate').val('True');
+                $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID , function () {
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+                   // BindProductionOrderDetailList(_result.ID);
+                   // clearUploadControl();
+                   // PaintImages(_result.ID);
+                });
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+                BindOrReloadProductionOrderTable('Init');
+                notyAlert('success', _result.Message);
+                break;
+            case "ERROR":
+                notyAlert('error', _message);
+                break;
+            default:
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+
+function BindProductionOrderDetailList(id) {
+    debugger;
+    _dataTable.EnquiryDetailList = $('#tblEnquiryDetails').DataTable(
+         {
+             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             order: [],
+             searching: false,
+             paging: false,
+             ordering: false,
+             bInfo: false,
+             data: id == _emptyGuid ? null : GetEnquiryDetailListByEnquiryID(id),
+             language: {
+                 search: "_INPUT_",
+                 searchPlaceholder: "Search"
+             },
+             columns: [
+             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Qty", render: function (data, type, row) {
+                     return data + " " + row.Unit.Description
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             ],
+             columnDefs: [
+                 { "targets": [0, 4], "width": "10%" },
+                 { "targets": [1, 2], "width": "15%" },
+                 { "targets": [3], "width": "35%" },
+                 { "targets": [5], "width": "10%" },
+                 { "targets": [6], "width": "5%" },
+                 { className: "text-right", "targets": [4, 5] },
+                 { className: "text-left", "targets": [1, 2, 3] },
+                 { className: "text-center", "targets": [0, 6] }
+             ]
+         });
 }
 
 function AddProductionOrderDetailList() {
