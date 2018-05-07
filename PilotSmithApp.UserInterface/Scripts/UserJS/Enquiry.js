@@ -163,10 +163,10 @@ function EditEnquiry(this_Obj) {
         clearUploadControl();
         PaintImages(Enquiry.ID);
         OnServerCallComplete();
-        setTimeout(function () {
+        //setTimeout(function () {
             //resides in customjs for sliding
             openNav();
-        }, 100);
+        //}, 100);
     });
 }
 function ResetEnquiry() {

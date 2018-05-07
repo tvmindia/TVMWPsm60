@@ -25,7 +25,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
 
         // GET: DashBoard
-        [AuthSecurityFilter(ProjectObject = "DashBoard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
         public ActionResult Index()
         {
             return View();

@@ -153,14 +153,14 @@ function OnMasterBegin() {
 }
 function OnMasterComplete() {
     $('#btnSaveMaster').prop('disabled', false);
-    $('#icnMasterLoading').fadeOut(1000)
+    $('#icnMasterLoading').fadeOut(100)
     
 }
 function OnServerCallBegin(){
     $('#divLoader').show();    
 }
 function OnServerCallComplete() {
-    $('#divLoader').fadeOut(1000);
+    $('#divLoader').fadeOut(100);
 }
 //---------------------------------------------
 //function to notify messages for the user

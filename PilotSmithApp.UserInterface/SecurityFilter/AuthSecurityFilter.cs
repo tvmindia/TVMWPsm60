@@ -118,12 +118,15 @@ namespace PilotSmithApp.UserInterface.SecurityFilter
 
         public void OnAuthorization(AuthorizationContext filterContext)
         {
-             Permission _permission =null;
-            _permission = _userBusiness.GetSecurityCode(LoggedUserName, ProjectObject);
-            if (_permission.AccessCode.Contains(Mode))
+            Permission permission = (Permission)filterContext.HttpContext.Session["UserRights"]==null?new Permission(): (Permission)filterContext.HttpContext.Session["UserRights"];
+            if(permission.Name!=ProjectObject)
+            {
+                permission = _userBusiness.GetSecurityCode(LoggedUserName, ProjectObject);
+            }
+            if (permission.AccessCode.Contains(Mode))
             {
                 //Allows Permission
-                filterContext.HttpContext.Session.Add("UserRights", _permission);
+                filterContext.HttpContext.Session.Add("UserRights", permission);
             }
             else
             {
