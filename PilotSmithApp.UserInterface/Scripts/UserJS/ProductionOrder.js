@@ -268,27 +268,42 @@ function BindProductionOrderDetailList(id) {
                  searchPlaceholder: "Search"
              },
              columns: [
-             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
-                 "data": "Qty", render: function (data, type, row) {
+                 "data": "", render: function (data, type, row) {
+                     return data + "/t" + row.Product.Code
+                     data+ "/t" + row.Product.Name
+                     data+ "/t" + row.ProductModel.Name
+                    data + "/t" + row.ProductSpec
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "OrderQty", render: function (data, type, row) {
+                     return data + " " + row.Unit.Description
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "PrevProducedQty", render: function (data, type, row) {
+                     return data + " " + row.Unit.Description
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "OrderQty", render: function (data, type, row) {
+                     return data + " " + row.Unit.Description
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "ProducedQty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             { "data": "", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "PlantCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": null, "orderable": false, "defaultContent":'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
-             columnDefs: [
-                 { "targets": [0, 4], "width": "10%" },
-                 { "targets": [1, 2], "width": "15%" },
-                 { "targets": [3], "width": "35%" },
-                 { "targets": [5], "width": "10%" },
-                 { "targets": [6], "width": "5%" },
-                 { className: "text-right", "targets": [4, 5] },
-                 { className: "text-left", "targets": [1, 2, 3] },
-                 { className: "text-center", "targets": [0, 6] }
+             columnDefs: [                 
+                 { className: "text-right", "targets": [0] },          
              ]
          });
 }
@@ -299,4 +314,12 @@ function AddProductionOrderDetailList() {
         $('#lblModelPopProductionOrder').text('ProductionOrder Detail')
         $('#divModelPopProductionOrder').modal('show');
     });
+}
+
+function AddProductionOrderDetailToList() {
+
+    if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True')
+    {
+
+    }
 }
