@@ -5,6 +5,7 @@ using System.Reflection;
 using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.RepositoryService.Contract;
+using System.Linq;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -36,21 +37,21 @@ namespace PilotSmithApp.BusinessService.Service
         }
 
 
-        private int getMAndatoryIndex(object myObj, string mandatoryProperties)
+        private int[] getMAndatoryIndex(object myObj, string mandatoryProperties)
         {
 
-            int mandIndx = -1;
-
+            int[] mandIndx = new int[mandatoryProperties.Split(',').Count()];
+            string[] mandatoryList = mandatoryProperties.Split(',');
             object tmp = myObj;
             var ppty = GetProperties(tmp);
             int i;
+            int j = 0;
             for (i = 0; i < ppty.Length; i++)
             {
-
-                if (ppty[i].Name == mandatoryProperties)
+                if(mandatoryList.Where(x=>x== ppty[i].Name).Count()>0)
                 {
-                    mandIndx = i;
-                    break;
+                    mandIndx[j] = i;
+                    j = j + 1;
                 }
 
             }
@@ -60,13 +61,18 @@ namespace PilotSmithApp.BusinessService.Service
 
         }
 
-        private void XML(object some_object, int mandIndx, ref string result, ref int totalRows)
+        private void XML(object some_object, int[] mandIndx, ref string result, ref int totalRows)
         {
 
             var properties = GetProperties(some_object);
-            var mand = properties[mandIndx].GetValue(some_object, null);
-
-            if ((mand != null) && (!string.IsNullOrEmpty(mand.ToString())))
+            object[] mand = new object[mandIndx.Count()];
+            int j = 0;
+            foreach(int i in mandIndx)
+            {
+                mand[j] = properties[i].GetValue(some_object, null)==(object)Guid.Empty?null: properties[i].GetValue(some_object, null);
+                j = j + 1;
+            }
+            if (mand.Where(x=>x==null||x==(object)Guid.Empty).Count()==0)
             {
 
                 result = result + "<item ";
@@ -84,6 +90,10 @@ namespace PilotSmithApp.BusinessService.Service
                 result = result + "></item>";
                 totalRows = totalRows + 1;
             }
+            else
+            {
+                throw new Exception("Mandatory fields in Detail is missing");
+            }
         }
 
         private static PropertyInfo[] GetProperties(object obj)
@@ -97,7 +107,7 @@ namespace PilotSmithApp.BusinessService.Service
             try
             {
                 //-------------------------//
-                int mandIndx = getMAndatoryIndex(enquiryDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+                int[] mandIndx = getMAndatoryIndex(enquiryDetailList[0], mandatoryProperties); //int mandIndx = 0;                
 
                 foreach (object some_object in enquiryDetailList)
                 {
@@ -130,7 +140,7 @@ namespace PilotSmithApp.BusinessService.Service
             try
             {
                 //-------------------------//
-                int mandIndx = getMAndatoryIndex(quotationDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+                int[] mandIndx = getMAndatoryIndex(quotationDetailList[0], mandatoryProperties); //int mandIndx = 0;                
 
                 foreach (object some_object in quotationDetailList)
                 {
@@ -164,7 +174,7 @@ namespace PilotSmithApp.BusinessService.Service
             try
             {
                 //-------------------------//
-                int mandIndx = getMAndatoryIndex(estimateDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+                int[] mandIndx = getMAndatoryIndex(estimateDetailList[0], mandatoryProperties); //int mandIndx = 0;                
 
                 foreach (object some_object in estimateDetailList)
                 {
@@ -197,7 +207,7 @@ namespace PilotSmithApp.BusinessService.Service
             try
             {
                 //-------------------------//
-                int mandIndx = getMAndatoryIndex(productionOrderDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+                int[] mandIndx = getMAndatoryIndex(productionOrderDetailList[0], mandatoryProperties); //int mandIndx = 0;                
 
                 foreach (object some_object in productionOrderDetailList)
                 {
@@ -230,7 +240,7 @@ namespace PilotSmithApp.BusinessService.Service
             try
             {
                 //-------------------------//
-                int mandIndx = getMAndatoryIndex(productionQCDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+                int[] mandIndx = getMAndatoryIndex(productionQCDetailList[0], mandatoryProperties); //int mandIndx = 0;                
 
                 foreach (object some_object in productionQCDetailList)
                 {
@@ -263,7 +273,7 @@ namespace PilotSmithApp.BusinessService.Service
             try
             {
                 //-------------------------//
-                int mandIndx = getMAndatoryIndex(saleInvoiceDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+                int[] mandIndx = getMAndatoryIndex(saleInvoiceDetailList[0], mandatoryProperties); //int mandIndx = 0;                
 
                 foreach (object some_object in saleInvoiceDetailList)
                 {

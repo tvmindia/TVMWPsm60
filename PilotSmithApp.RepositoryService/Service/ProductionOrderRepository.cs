@@ -191,6 +191,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         productionOrderDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : productionOrderDetail.ProductModel.Name);
                                         productionOrderDetail.OrderQty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionOrderDetail.OrderQty);
+                                        productionOrderDetail.ProducedQty = (sdr["ProducedQty"].ToString() != "" ? decimal.Parse(sdr["ProducedQty"].ToString()) : productionOrderDetail.ProducedQty);
                                         productionOrderDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : productionOrderDetail.Rate);
                                         productionOrderDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : productionOrderDetail.UnitCode);
                                         productionOrderDetail.Unit = new Unit();

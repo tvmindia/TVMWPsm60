@@ -175,7 +175,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetProductionQCDetailListByProductionQCID]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@ProductionQCID", SqlDbType.UniqueIdentifier).Value = productionQCID;
+                        cmd.Parameters.Add("@ProdQCID", SqlDbType.UniqueIdentifier).Value = productionQCID;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
@@ -201,6 +201,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQCDetail.QCQty = (sdr["QCQty"].ToString() != "" ? decimal.Parse(sdr["QCQty"].ToString()) : productionQCDetail.QCQty);
                                         productionQCDetail.QCBy = (sdr["QCBy"].ToString() != "" ? Guid.Parse(sdr["QCBy"].ToString()) : productionQCDetail.QCBy);
                                         productionQCDetail.QCDate = (sdr["QCDate"].ToString() != "" ? DateTime.Parse(sdr["QCDate"].ToString()) : productionQCDetail.QCDate);
+                                        productionQCDetail.QCDateFormatted = (sdr["QCDate"].ToString() != "" ? DateTime.Parse(sdr["QCDate"].ToString()).ToString("dd-MMM-yyyy") : productionQCDetail.QCDateFormatted);
+                                        productionQCDetail.ProducedQty = (sdr["ProducedQty"].ToString() != "" ? decimal.Parse(sdr["ProducedQty"].ToString()) : productionQCDetail.ProducedQty);
+                                        productionQCDetail.QCQtyPrevious = (sdr["QCQtyPrevious"].ToString() != "" ? decimal.Parse(sdr["QCQtyPrevious"].ToString()) : productionQCDetail.QCQtyPrevious);
+                                        productionQCDetail.Employee = new Employee();
+                                        productionQCDetail.Employee.Name= (sdr["EmployeeName"].ToString() != "" ? (sdr["EmployeeName"].ToString()) : productionQCDetail.Employee.Name);
+                                        productionQCDetail.Unit = new Unit();
+                                        productionQCDetail.Unit.Description = (sdr["UnitDescription"].ToString() != "" ? (sdr["UnitDescription"].ToString()) : productionQCDetail.Unit.Description);
                                     }
                                     productionQCDetailList.Add(productionQCDetail);
                                 }
@@ -238,6 +245,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = productionQC.IsUpdate;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = productionQC.ID;
+                        cmd.Parameters.Add("@ProdOrderID",SqlDbType.UniqueIdentifier).Value = productionQC.ProdOrderID;
                         cmd.Parameters.Add("@ProdQCNo", SqlDbType.VarChar, 20).Value = productionQC.ProdQCNo;
                         cmd.Parameters.Add("@ProdQCRefNo", SqlDbType.VarChar, 20).Value = productionQC.ProdQCRefNo;
                         cmd.Parameters.Add("@ProdQCDate", SqlDbType.DateTime).Value = productionQC.ProdQCDateFormatted;

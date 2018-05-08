@@ -30,7 +30,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (productionQC.ProductionQCDetailList.Count > 0)
             {
-                productionQC.DetailXML = _commonBusiness.GetXMLfromProductionQCObject(productionQC.ProductionQCDetailList, "ProductID");
+                productionQC.DetailXML = _commonBusiness.GetXMLfromProductionQCObject(productionQC.ProductionQCDetailList, "ProductID,QCBy,QCDateFormatted");
             }
             return _productionQCRepository.InsertUpdateProductionQC(productionQC);
         }

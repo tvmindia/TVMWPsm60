@@ -19,6 +19,17 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string FaxNos { get; set; }
         public string GeneralNotes { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        //Additional fields
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
+        public ReferenceType ReferenceType { get;set;}
+        public Area Area { get; set; }
 
+    }
+    public class ReferencePersonAdvanceSearch
+    {
+        public string SearchTerm { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
     }
 }

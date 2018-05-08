@@ -9,6 +9,11 @@ namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IReferencePersonRepository
     {
+        object InsertUpdateReferencePerson(ReferencePerson referencePerson);
+        List<ReferencePerson> GetAllReferencePerson(ReferencePersonAdvanceSearch referencePersonAdvanceSearch);
+        ReferencePerson GetReferencePerson(int code);
+        bool CheckReferencePersonNameExist(ReferencePerson referencePerson);
+        object DeleteReferencePerson(int code);
         List<ReferencePerson> GetReferencePersonSelectList();
     }
 }
