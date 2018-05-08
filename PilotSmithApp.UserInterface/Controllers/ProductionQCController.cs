@@ -17,11 +17,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IProductionQCBusiness _productionQCBusiness;
-        public ProductionQCController(IProductionQCBusiness productionQCBusiness)
+        IProductionOrderBusiness _productionOrderBusiness;
+        public ProductionQCController(IProductionQCBusiness productionQCBusiness, IProductionOrderBusiness productionOrderBusiness)
         {
             _productionQCBusiness = productionQCBusiness;
+            _productionOrderBusiness = productionOrderBusiness;
         }
         // GET: ProductionQ
+        [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
         public ActionResult Index()
         {
             ProductionQCAdvanceSearchViewModel productionQCVM = new ProductionQCAdvanceSearchViewModel();
@@ -29,26 +32,37 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #region ProductionQC Form
         [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
-        public ActionResult ProductionQCForm(Guid id)
+        public ActionResult ProductionQCForm(Guid id,Guid? productionOrderID)
         {
-            ProductionQCViewModel productionQCVM = null;
-            try
-            {
-
-                if (id != Guid.Empty)
+                ProductionQCViewModel productionQCVM = null;
+                try
                 {
-                    productionQCVM =Mapper.Map<ProductionQC, ProductionQCViewModel>(_productionQCBusiness.GetProductionQC(id));
-                    productionQCVM.IsUpdate = true;
-                    productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
-                }
-                else
-                {
-                    productionQCVM = new ProductionQCViewModel();
-                    productionQCVM.IsUpdate = false;
-                    productionQCVM.ID = Guid.Empty;
-                    productionQCVM.DocumentStatusCode = 1;
-                    productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
-                }
+                    if (id != Guid.Empty)
+                    {
+                        productionQCVM = Mapper.Map<ProductionQC, ProductionQCViewModel>(_productionQCBusiness.GetProductionQC(id));
+                        productionQCVM.IsUpdate = true;
+                        productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
+                    }
+                    else if (id == Guid.Empty && productionOrderID == null)
+                    {
+                        productionQCVM = new ProductionQCViewModel();
+                        productionQCVM.IsUpdate = false;
+                        productionQCVM.ID = Guid.Empty;
+                        productionQCVM.ProdOrderID = null;
+                        productionQCVM.DocumentStatusCode = 9;
+                        productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
+                    }
+                    else if (id == Guid.Empty && productionOrderID != null)
+                    {
+                        ProductionOrderViewModel productioOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder((Guid)productionOrderID));
+                        productionQCVM = new ProductionQCViewModel();
+                        productionQCVM.IsUpdate = false;
+                        productionQCVM.ID = Guid.Empty;
+                        productionQCVM.DocumentStatusCode = 9;
+                        productionQCVM.ProdOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(productionOrderID);
+                        productionQCVM.ProdOrderID = productionOrderID;
+                        productionQCVM.CustomerID = productioOrderVM.CustomerID;
+                    }
             }
             catch (Exception ex)
             {
@@ -77,35 +91,31 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     ProductionQCDetailViewModel productionQCDetailVM = new ProductionQCDetailViewModel()
                     {
-                        //ID = Guid.Empty,
-                        //ProductionQCID = Guid.Empty,
-                        //ProductID = Guid.Empty,
-                        //ProductModelID = Guid.Empty,
-                        //ProductSpec = string.Empty,
-                        //Qty = 0,
-                        //UnitCode = null,
-                        //Rate = 0,
-                        //Product = new ProductViewModel()
-                        //{
-                        //    ID = Guid.Empty,
-                        //    Code = string.Empty,
-                        //    Name = string.Empty,
-                        //},
-                        //ProductModel = new ProductModelViewModel()
-                        //{
-                        //    ID = Guid.Empty,
-                        //    Name = string.Empty
-                        //},
-                        //Unit = new UnitViewModel()
-                        //{
-                        //    Description = null,
-                        //},
+                        ID = Guid.Empty,
+                        ProdQCID = Guid.Empty,
+                        ProductID = Guid.Empty,
+                        ProductModelID = Guid.Empty,
+                        ProductSpec = string.Empty,
+                        QCQty = 0,
+                        QCDate = _pSASysCommon.GetCurrentDateTime(),
+                        QCDateFormatted = _pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),
+                        Product = new ProductViewModel()
+                        {
+                            ID = Guid.Empty,
+                            Code = string.Empty,
+                            Name = string.Empty,
+                        },
+                        ProductModel = new ProductModelViewModel()
+                        {
+                            ID = Guid.Empty,
+                            Name = string.Empty
+                        },
                     };
                     productionQCItemViewModelList.Add(productionQCDetailVM);
                 }
                 else
                 {
-                    productionQCItemViewModelList = null;// Mapper.Map<List<ProductionQCDetail>, List<ProductionQCDetailViewModel>>(_productionQCBusiness.GetProductionQCDetailListByProductionQCID(productionQCID));
+                    productionQCItemViewModelList = Mapper.Map<List<ProductionQCDetail>, List<ProductionQCDetailViewModel>>(_productionQCBusiness.GetProductionQCDetailListByProductionQCID(productionQCID));
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = productionQCItemViewModelList, Message = "Success" });
             }
@@ -234,7 +244,41 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion InsertUpdateProductionQC
-
+        #region Get ProductionQC DetailList By ProductionOrderID with ProductionOrder
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
+        public string GetProductionQCDetailListByProductionOrderIDWithProductionOrder(Guid productionOrderID)
+        {
+            try
+            {
+                List<ProductionQCDetailViewModel> productionQCDetailVMList = new List<ProductionQCDetailViewModel>();
+                if (productionOrderID != Guid.Empty)
+                {
+                    List<ProductionOrderDetailViewModel> productionOrderVMList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderID));
+                    productionQCDetailVMList = (from prodOrderVM in productionOrderVMList select new ProductionQCDetailViewModel {
+                        ID = Guid.Empty,
+                        ProdQCID = Guid.Empty ,
+                        ProductID =prodOrderVM.ProductID,
+                        Product =prodOrderVM.Product,
+                        ProductModelID =prodOrderVM.ProductModelID,
+                        ProductModel =prodOrderVM.ProductModel,
+                        ProductSpec =prodOrderVM.ProductSpec,
+                        ProdOrderQty=prodOrderVM.OrderQty,
+                        QCQtyPrevious=prodOrderVM.QCCompletedQty,
+                        QCQty= (prodOrderVM.QCCompletedQty - prodOrderVM.OrderQty),
+                        QCDate=_pSASysCommon.GetCurrentDateTime(),
+                        QCDateFormatted=_pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),                        
+                    }).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = productionQCDetailVMList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get ProductionQC DetailList By ProductionOrderID with ProductionOrder
         //#region ProductionQCSelectList
         //public ActionResult ProductionQCSelectList(string required)
         //{

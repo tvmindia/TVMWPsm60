@@ -21,8 +21,9 @@
                     </div>
                     <div class="col-md-12">
                         @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                        @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
                     </div>
-                    @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
+                    @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -101,7 +102,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "ENQ" })
+                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "PQC" })
                         </div>
                         @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
@@ -291,6 +292,19 @@
                             }
                         });
                         $('.select2').addClass('form-control newinput');
+                    }
+                    catch (e) {
+                        console.log(e.message);
+                    }
+                    try {
+                        $('#ProductionQCForm #ProdOrderID').change(function () {
+                            OnServerCallBegin();
+                            $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid + "&productionOrderID=" + this.value, function () {
+                                $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionQCForm #hdnCustomerID').val());
+                                BindProductionQCDetailList("00000000-0000-0000-0000-000000000000", true);
+                                OnServerCallComplete();
+                            });
+                        });
                     }
                     catch (e) {
                         console.log(e.message);

@@ -122,6 +122,7 @@ namespace PilotSmithApp.UserInterface.Models
 
         //Additional Fields        
         public bool IsUpdate { get; set; }
+        public decimal QCCompletedQty { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }
         public ProductModelViewModel ProductModel { get; set; }

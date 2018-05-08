@@ -70,10 +70,12 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime? MileStone4FcFinishDt { get; set; }
         public DateTime? MileStone4AcTFinishDt { get; set; }
         public int? PlantCode { get; set; }
-
+        //Additional fields
+        public decimal QCCompletedQty { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set; }
         public Unit Unit { get; set; }
+        public Plant Plant { get; set; }
     }
 }
