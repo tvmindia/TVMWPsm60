@@ -272,17 +272,29 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
                  searchPlaceholder: "Search"
              },
              columns: [
-             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
-                 "data": "Qty", render: function (data, type, row) {
+                 "data": "Product.Code", render: function (data, type, row) {
+                     return data + "<br/>" + row.Product.Name + "<br/>" + row.ProductSpec
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "ProducedQty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionQCDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             {
+                 "data": "QCQtyPrevious", render: function (data, type, row) {
+                     return data + " " + row.Unit.Description
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "QCQty", render: function (data, type, row) {
+                     return data + " " + row.Unit.Description
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": "QCDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i>__</i>" },
+             { "data": "Employee.Name", render: function (data, type, row) { return data }, "defaultContent": "<i>__</i>" },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
                  { "targets": [0], "width": "35%" },
@@ -325,83 +337,28 @@ function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {
 
     }
 }
-function AddProductionQCDetailList() {
-    $("#divModelProductionQCPopBody").load("ProductionQC/AddProductionQCDetail", function () {
-        $('#lblModelPopProductionQC').text('ProductionQC Detail')
-        $('#divModelPopProductionQC').modal('show');
-    });
-}
+//function AddProductionQCDetailList() {
+//    $("#divModelProductionQCPopBody").load("ProductionQC/AddProductionQCDetail", function () {
+//        $('#lblModelPopProductionQC').text('ProductionQC Detail')
+//        $('#divModelPopProductionQC').modal('show');
+//    });
+//}
 function AddProductionQCDetailToList() {
-    debugger;
     $("#FormProductionQCDetail").submit(function () { });
-    debugger;
     if ($('#FormProductionQCDetail #IsUpdate').val() == 'True') {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#QCDateFormatted').val() != "") && ($('#QCBy').val() != "")) {
             debugger;
             var productionQCDetailList = _dataTable.ProductionQCDetailList.rows().data();
-            productionQCDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-            productionQCDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-            productionQCDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-            productionQCDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-            ProductModel = new Object;
-            Unit = new Object;
-            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-            productionQCDetailList[_datatablerowindex].ProductModel = ProductModel;
-            productionQCDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
-            productionQCDetailList[_datatablerowindex].Qty = $('#Qty').val();
-            productionQCDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
-            Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-            productionQCDetailList[_datatablerowindex].Unit = Unit;
-            productionQCDetailList[_datatablerowindex].Rate = $('#Rate').val();
+            productionQCDetailList[_datatablerowindex].QCQty = $('#FormProductionQCDetail #QCQty').val();
+            productionQCDetailList[_datatablerowindex].QCDateFormatted = $('#FormProductionQCDetail #QCDateFormatted').val();
+            productionQCDetailList[_datatablerowindex].QCBy = $('#FormProductionQCDetail #QCBy').val();
+            var Employee = new Object();
+            Employee.Name = $("#FormProductionQCDetail #QCBy option:selected").text()
+            productionQCDetailList[_datatablerowindex].Employee = Employee;
             _dataTable.ProductionQCDetailList.clear().rows.add(productionQCDetailList).draw(false);
             $('#divModelPopProductionQC').modal('hide');
             _datatablerowindex = -1;
         }
-    }
-    else {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
-            if (_dataTable.ProductionQCDetailList.rows().data().length === 0) {
-                _dataTable.ProductionQCDetailList.clear().rows.add(GetProductionQCDetailListByProductionQCID(_emptyGuid)).draw(false);
-                debugger;
-                var productionQCDetailList = _dataTable.ProductionQCDetailList.rows().data();
-                productionQCDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                productionQCDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                productionQCDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                productionQCDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                productionQCDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                productionQCDetailList[0].ProductSpec = $('#ProductSpec').val();
-                productionQCDetailList[0].Qty = $('#Qty').val();
-                productionQCDetailList[0].UnitCode = $('#UnitCode').val();
-                productionQCDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                productionQCDetailList[0].Rate = $('#Rate').val();
-                _dataTable.ProductionQCDetailList.clear().rows.add(productionQCDetailList).draw(false);
-                $('#divModelPopProductionQC').modal('hide');
-            }
-            else {
-                debugger;
-                var ProductionQCDetailVM = new Object();
-                var Product = new Object;
-                var ProductModel = new Object()
-                var Unit = new Object();
-                ProductionQCDetailVM.ID = _emptyGuid;
-                ProductionQCDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                ProductionQCDetailVM.Product = Product;
-                ProductionQCDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                ProductionQCDetailVM.ProductModel = ProductModel;
-                ProductionQCDetailVM.ProductSpec = $('#ProductSpec').val();
-                ProductionQCDetailVM.Qty = $('#Qty').val();
-                Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                ProductionQCDetailVM.Unit = Unit;
-                ProductionQCDetailVM.UnitCode = $('#UnitCode').val();
-                ProductionQCDetailVM.Rate = $('#Rate').val();
-                _dataTable.ProductionQCDetailList.row.add(ProductionQCDetailVM).draw(true);
-                $('#divModelPopProductionQC').modal('hide');
-            }
-        }
-
     }
 }
 function EditProductionQCDetail(this_Obj) {
@@ -431,10 +388,9 @@ function EditProductionQCDetail(this_Obj) {
             });
         }
         $('#FormProductionQCDetail #ProductSpec').val(productionQCDetail.ProductSpec);
-        $('#FormProductionQCDetail #Qty').val(productionQCDetail.Qty);
-        $('#FormProductionQCDetail #UnitCode').val(productionQCDetail.UnitCode);
-        $('#FormProductionQCDetail #hdnUnitCode').val(productionQCDetail.UnitCode);
-        $('#FormProductionQCDetail #Rate').val(productionQCDetail.Rate);
+        $('#FormProductionQCDetail #QCQty').val(productionQCDetail.QCQty);
+        $('#FormProductionQCDetail #QCDateFormatted').val(productionQCDetail.QCDateFormatted);
+        $('#FormProductionQCDetail #QCBy').val(productionQCDetail.QCBy);
         $('#divModelPopProductionQC').modal('show');
     });
 }

@@ -263,11 +263,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ProductModelID =prodOrderVM.ProductModelID,
                         ProductModel =prodOrderVM.ProductModel,
                         ProductSpec =prodOrderVM.ProductSpec,
-                        ProdOrderQty=prodOrderVM.OrderQty,
+                        ProducedQty=prodOrderVM.ProducedQty!=null? prodOrderVM.ProducedQty:0,
                         QCQtyPrevious=prodOrderVM.QCCompletedQty,
-                        QCQty= (prodOrderVM.QCCompletedQty - prodOrderVM.OrderQty),
+                        QCQty= (prodOrderVM.ProducedQty - prodOrderVM.QCCompletedQty)>0? (prodOrderVM.ProducedQty - prodOrderVM.QCCompletedQty) :0,
+                        Unit=prodOrderVM.Unit,
                         QCDate=_pSASysCommon.GetCurrentDateTime(),
-                        QCDateFormatted=_pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),                        
+                        QCDateFormatted=_pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),
+                        Employee=new EmployeeViewModel() { Name=""}                        
                     }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = productionQCDetailVMList, Message = "Success" });
