@@ -71,6 +71,14 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime? MileStone4AcTFinishDt { get; set; }
         public int? PlantCode { get; set; }
         //Additional fields
+        public string MileStone1FcFinishDtFormatted { get; set; }
+        public string MileStone1AcTFinishDtFormatted { get; set; }
+        public string MileStone2FcFinishDtFormatted { get; set; }
+        public string MileStone2AcTFinishDtFormatted { get; set; }
+        public string MileStone3FcFinishDtFormatted { get; set; }
+        public string MileStone3AcTFinishDtFormatted { get; set; }
+        public string MileStone4FcFinishDtFormatted { get; set; }
+        public string MileStone4AcTFinishDtFormatted { get; set; }
         public decimal QCCompletedQty { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }

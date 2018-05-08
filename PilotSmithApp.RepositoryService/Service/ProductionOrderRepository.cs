@@ -41,11 +41,11 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[GetAllProductionOrder]";
                         if (string.IsNullOrEmpty(productionOrderAdvanceSearch.SearchTerm))
                         {
-                            cmd.Parameters.AddWithValue("@SearchTerm", DBNull.Value);
+                            cmd.Parameters.AddWithValue("@SearchValue", DBNull.Value);
                         }
                         else
                         {
-                            cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = productionOrderAdvanceSearch.SearchTerm;
+                            cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = productionOrderAdvanceSearch.SearchTerm;
                         }
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = productionOrderAdvanceSearch.DataTablePaging.Start;
                         if (productionOrderAdvanceSearch.DataTablePaging.Length == -1)
@@ -67,18 +67,18 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
                                         productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
                                         productionOrder.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrder.ProdOrderDate);
-                                        productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDateFormatted"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDateFormatted"].ToString()).ToString(_settings.DateFormat) : productionOrder.ProdOrderDateFormatted);
+                                        productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString(_settings.DateFormat) : productionOrder.ProdOrderDateFormatted);
                                         productionOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionOrder.CustomerID);
                                         productionOrder.Customer = new Customer();
                                         productionOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionOrder.Customer.ID);
-                                        productionOrder.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : productionOrder.Customer.CompanyName);
-                                        productionOrder.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : productionOrder.Customer.ContactPerson);
-                                        productionOrder.Customer.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : productionOrder.Customer.Mobile);
+                                        productionOrder.Customer.CompanyName = (sdr["CustomerCompanyName"].ToString() != "" ? sdr["CustomerCompanyName"].ToString() : productionOrder.Customer.CompanyName);
+                                        productionOrder.Customer.ContactPerson = (sdr["CustomerContactPerson"].ToString() != "" ? sdr["CustomerContactPerson"].ToString() : productionOrder.Customer.ContactPerson);
+                                        productionOrder.Customer.Mobile = (sdr["CustomerMobile"].ToString() != "" ? sdr["CustomerMobile"].ToString() : productionOrder.Customer.Mobile);
                                         productionOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionOrder.DocumentStatusCode);
                                         productionOrder.DocumentStatus = new DocumentStatus();
                                         productionOrder.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionOrder.DocumentStatus.Code);
                                         productionOrder.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : productionOrder.DocumentStatus.Description);
-                                        productionOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrder.GeneralNotes);
+                                       // productionOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrder.GeneralNotes);
                                         productionOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : productionOrder.DocumentOwnerID);
                                         productionOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionOrder.BranchCode);
                                         productionOrder.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionOrder.FilteredCount);
@@ -124,8 +124,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
                                     productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
+                                    productionOrder.ProdOrderRefNo = (sdr["ProdOrderRefNo"].ToString() != "" ? sdr["ProdOrderRefNo"].ToString() : productionOrder.ProdOrderRefNo);
                                     productionOrder.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrder.ProdOrderDate);
-                                    productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString("dd-MMM-yyyy") : productionOrder.ProdOrderDateFormatted);
+                                    productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString(_settings.DateFormat) : productionOrder.ProdOrderDateFormatted);
+                                    productionOrder.ExpectedDelvDate= (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : productionOrder.ExpectedDelvDate);
+                                    productionOrder.ExpectedDelvDateFormatted= (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : productionOrder.ExpectedDelvDateFormatted);
+                                    productionOrder.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : productionOrder.PreparedBy);                            
                                     productionOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionOrder.CustomerID);
                                     productionOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionOrder.DocumentStatusCode);
                                     productionOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrder.GeneralNotes);
@@ -197,6 +201,22 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.Plant.Code = (sdr["PlantCode"].ToString() != "" ? int.Parse(sdr["PlantCode"].ToString()) : productionOrderDetail.Plant.Code);
                                         productionOrderDetail.Plant.Description = (sdr["PlantDescription"].ToString() != "" ? (sdr["PlantDescription"].ToString()) : productionOrderDetail.Plant.Description);
                                         productionOrderDetail.QCCompletedQty= (sdr["QCCompletedQty"].ToString() != "" ? decimal.Parse(sdr["QCCompletedQty"].ToString()) : productionOrderDetail.QCCompletedQty);
+                                        productionOrderDetail.MileStone1FcFinishDt= (sdr["MileStone1FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1FcFinishDt"].ToString()) : productionOrderDetail.MileStone1FcFinishDt);
+                                        productionOrderDetail.MileStone1FcFinishDtFormatted= (sdr["MileStone1FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone1FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone1AcTFinishDt = (sdr["MileStone1AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1AcTFinishDt"].ToString()) : productionOrderDetail.MileStone1AcTFinishDt);
+                                        productionOrderDetail.MileStone1AcTFinishDtFormatted = (sdr["MileStone1AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone1AcTFinishDtFormatted);
+                                        productionOrderDetail.MileStone2FcFinishDt = (sdr["MileStone2FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2FcFinishDt"].ToString()) : productionOrderDetail.MileStone2FcFinishDt);
+                                        productionOrderDetail.MileStone2FcFinishDtFormatted = (sdr["MileStone2FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone2FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone2AcTFinishDt = (sdr["MileStone2AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2AcTFinishDt"].ToString()) : productionOrderDetail.MileStone2AcTFinishDt);
+                                        productionOrderDetail.MileStone2AcTFinishDtFormatted = (sdr["MileStone2AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone2AcTFinishDtFormatted);
+                                        productionOrderDetail.MileStone3FcFinishDt = (sdr["MileStone3FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3FcFinishDt"].ToString()) : productionOrderDetail.MileStone3FcFinishDt);
+                                        productionOrderDetail.MileStone3FcFinishDtFormatted = (sdr["MileStone3FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone3FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone3AcTFinishDt = (sdr["MileStone3AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3AcTFinishDt"].ToString()) : productionOrderDetail.MileStone3AcTFinishDt);
+                                        productionOrderDetail.MileStone3AcTFinishDtFormatted = (sdr["MileStone3AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone3AcTFinishDtFormatted);
+                                        productionOrderDetail.MileStone4FcFinishDt = (sdr["MileStone4FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4FcFinishDt"].ToString()) : productionOrderDetail.MileStone4FcFinishDt);
+                                        productionOrderDetail.MileStone4FcFinishDtFormatted = (sdr["MileStone4FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone4AcTFinishDt = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()) : productionOrderDetail.MileStone4AcTFinishDt);
+                                        productionOrderDetail.MileStone4AcTFinishDtFormatted = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4AcTFinishDtFormatted);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
                                 }

@@ -30,9 +30,28 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ProductionOrderForm Form
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
-        public ActionResult ProductionOrderForm()
+        public ActionResult ProductionOrderForm(Guid id)
         {
-            ProductionOrderViewModel productionOrderVM = new ProductionOrderViewModel();
+            ProductionOrderViewModel productionOrderVM = null;
+            try
+            {
+                if (id != Guid.Empty)
+                {
+                    productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(id));
+                    productionOrderVM.IsUpdate = true;
+                }
+                else if (id == Guid.Empty)
+                {
+                    productionOrderVM = new ProductionOrderViewModel();
+                    productionOrderVM.IsUpdate = false;
+                    productionOrderVM.ID = Guid.Empty;
+                    productionOrderVM.DocumentStatusCode = 7;
+                }                
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
             return PartialView("_ProductionOrderForm", productionOrderVM);
         }
         #endregion ProductionOrderForm Form
@@ -97,7 +116,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderAdvanceSearchVM.DataTablePaging.Start = model.start;
             productionOrderAdvanceSearchVM.DataTablePaging.Length = (productionOrderAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : productionOrderAdvanceSearchVM.DataTablePaging.Length;
 
-            List<ProductionOrderViewModel> productionOrderVMList = new List<ProductionOrderViewModel>();//Mapper.Map<List<SaleOrder>, List<SaleOrderViewModel>>(_saleOrderBusiness.(Mapper.Map<SaleOrderAdvanceSearchViewModel, SaleOrderAdvanceSearch>(saleOrderAdvanceSearchVM)));
+            List<ProductionOrderViewModel> productionOrderVMList =Mapper.Map<List<ProductionOrder>, List<ProductionOrderViewModel>>(_productionOrderBusiness.GetAllProductionOrder(Mapper.Map<ProductionOrderAdvanceSearchViewModel, ProductionOrderAdvanceSearch>(productionOrderAdvanceSearchVM)));
             if (productionOrderAdvanceSearchVM.DataTablePaging.Length == -1)
             {
                 int totalResult = productionOrderVMList.Count != 0 ? productionOrderVMList[0].TotalCount : 0;
@@ -138,6 +157,61 @@ namespace PilotSmithApp.UserInterface.Controllers
             return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         }
         #endregion Get ProductionOrder SelectList On Demand
+
+        #region GetProductionOrderDetailListByProductionOrderID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
+        public string GetProductionOrderDetailListByProductionOrderID(Guid productionOrderID)
+        {
+            try
+            {
+                List<ProductionOrderDetailViewModel> productionOrderItemViewModelList = new List<ProductionOrderDetailViewModel>();
+                if (productionOrderID == Guid.Empty)
+                {
+                    ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel()
+                    {
+                        ID = Guid.Empty,
+                        ProdOrderID = Guid.Empty,
+                        ProductID = Guid.Empty,
+                        ProductModelID = Guid.Empty,
+                        ProductSpec = string.Empty,
+                        OrderQty = 0,
+                        ProducedQty=0,
+                        Unit=new UnitViewModel()
+                        {
+                            Code=0,
+                            Description=string.Empty,
+                        },
+                        Rate=0,
+                        MileStone1FcFinishDt= _pSASysCommon.GetCurrentDateTime(),
+                        MileStone1FcFinishDtFormatted = _pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),
+                        Product = new ProductViewModel()
+                        {
+                            ID = Guid.Empty,
+                            Code = string.Empty,
+                            Name = string.Empty,
+                        },
+                        ProductModel = new ProductModelViewModel()
+                        {
+                            ID = Guid.Empty,
+                            Name = string.Empty
+                        },
+                    };
+                    productionOrderItemViewModelList.Add(productionOrderDetailVM);
+                }
+                else
+                {
+                    productionOrderItemViewModelList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderID));
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = productionOrderItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion GetProductionOrderDetailListByProductionOrderID
 
         #region ButtonStyling
         [HttpGet]

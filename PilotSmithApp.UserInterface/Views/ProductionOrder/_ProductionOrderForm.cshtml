@@ -7,7 +7,7 @@
 </style>
 @using (Ajax.BeginForm("InsertUpdateProductionOrder", "ProductionOrder", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessProductionOrder", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "ProductionOrderForm" }))
 {
-    @*@Html.AntiForgeryToken()*@
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
@@ -248,7 +248,7 @@
             $('#ProductionOrderForm #EnquiryID').change(function () {
                 debugger;
                 OnServerCallBegin();
-                $('#divProductionOrderForm').load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
+                $('#divProductionOrderForm').load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid + "&saleOrderID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionOrderForm #hdnCustomerID').val());
                     BindProductionOrderDetailList("00000000-0000-0000-0000-000000000000", true);
                     OnServerCallComplete();

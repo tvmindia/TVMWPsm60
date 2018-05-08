@@ -127,5 +127,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
         public decimal? PrevProducedQty { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? CurProducedQty { get; set; }
     }
 }
