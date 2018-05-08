@@ -125,7 +125,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
                                     productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
                                     productionOrder.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrder.ProdOrderDate);
-                                    productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDateFormatted"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDateFormatted"].ToString()).ToString("dd-MMM-yyyy") : productionOrder.ProdOrderDateFormatted);
+                                    productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString("dd-MMM-yyyy") : productionOrder.ProdOrderDateFormatted);
                                     productionOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionOrder.CustomerID);
                                     productionOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionOrder.DocumentStatusCode);
                                     productionOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrder.GeneralNotes);
@@ -146,7 +146,7 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionOrder;
         }
         #endregion Get ProductionOrder
-        #region GetAllProductionOrderItems
+        #region GetAllProductionOrder Details
         public List<ProductionOrderDetail> GetProductionOrderDetailListByProductionOrderID(Guid productionOrderID)
         {
             List<ProductionOrderDetail> productionOrderDetailList = new List<ProductionOrderDetail>();
@@ -163,7 +163,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetProductionOrderDetailListByProductionOrderID]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@ProductionOrderID", SqlDbType.UniqueIdentifier).Value = productionOrderID;
+                        cmd.Parameters.Add("@ProdOrderID", SqlDbType.UniqueIdentifier).Value = productionOrderID;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
@@ -192,6 +192,11 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.Unit = new Unit();
                                         productionOrderDetail.Unit.Code = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : productionOrderDetail.Unit.Code);
                                         productionOrderDetail.Unit.Description = (sdr["UnitDescription"].ToString() != "" ? (sdr["UnitDescription"].ToString()) : productionOrderDetail.Unit.Description);
+                                        productionOrderDetail.PlantCode= (sdr["PlantCode"].ToString() != "" ? int.Parse(sdr["PlantCode"].ToString()) : productionOrderDetail.PlantCode);
+                                        productionOrderDetail.Plant = new Plant();
+                                        productionOrderDetail.Plant.Code = (sdr["PlantCode"].ToString() != "" ? int.Parse(sdr["PlantCode"].ToString()) : productionOrderDetail.Plant.Code);
+                                        productionOrderDetail.Plant.Description = (sdr["PlantDescription"].ToString() != "" ? (sdr["PlantDescription"].ToString()) : productionOrderDetail.Plant.Description);
+                                        productionOrderDetail.QCCompletedQty= (sdr["QCCompletedQty"].ToString() != "" ? decimal.Parse(sdr["QCCompletedQty"].ToString()) : productionOrderDetail.QCCompletedQty);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
                                 }
@@ -207,9 +212,7 @@ namespace PilotSmithApp.RepositoryService.Service
 
             return productionOrderDetailList;
         }
-
-
-        #endregion GetQuotationDetails
+        #endregion GetAllProductionOrder Details
         #region Insert Update ProductionOrder
         public object InsertUpdateProductionOrder(ProductionOrder productionOrder)
         {
@@ -438,5 +441,56 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionOrderList;
         }
         #endregion GetProductionOrderForSelectListOnDemand
+        #region GetProductionOrderForSelectList
+        public List<ProductionOrder> GetProductionOrderForSelectList(Guid? id)
+        {
+            List<ProductionOrder> productionOrderList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProductionOrderForSelectList]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (id==null)
+                        {
+                            cmd.Parameters.AddWithValue("@ID", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                productionOrderList = new List<ProductionOrder>();
+                                while (sdr.Read())
+                                {
+                                    ProductionOrder productionOrder = new ProductionOrder();
+                                    {
+                                        productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
+                                        productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
+                                    }
+                                    productionOrderList.Add(productionOrder);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return productionOrderList;
+        }
+        #endregion GetProductionOrderForSelectList
     }
 }

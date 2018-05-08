@@ -15,8 +15,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Quality Control Ref.No")]
         public string ProdQCRefNo { get; set; }
         public DateTime ProdQCDate { get; set; }
+        [Required(ErrorMessage ="Product order is missing")]
         public Guid? ProdOrderID { get; set; }
         [Display(Name = "Select Customer")]
+        [Required(ErrorMessage = "Customer is missing")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Select Plant")]
         public int? PlantCode { get; set; }
@@ -85,7 +87,11 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        public decimal? ProdOrderQty { get; set; }
+        public decimal? QCQtyPrevious { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public ProductViewModel Product { get; set; }
+        public ProductModelViewModel ProductModel { get; set; }
 
     }
 }

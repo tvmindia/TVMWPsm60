@@ -121,6 +121,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string MileStone4AcTFinishDtFormatted { get; set; }
               
         public bool IsUpdate { get; set; }
+        public decimal QCCompletedQty { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }
         public ProductModelViewModel ProductModel { get; set; }

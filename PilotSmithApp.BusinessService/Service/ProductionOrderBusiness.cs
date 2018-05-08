@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -49,6 +50,22 @@ namespace PilotSmithApp.BusinessService.Service
         public List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm)
         {
             return _productionOrderRepository.GetProductionOrderForSelectListOnDemand(searchTerm);
+        }
+        public List<SelectListItem> GetProductionOrderForSelectList(Guid? id)
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<ProductionOrder> productionOrderList = _productionOrderRepository.GetProductionOrderForSelectList(id);
+            if (productionOrderList != null)
+                foreach (ProductionOrder productionOrder in productionOrderList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = productionOrder.ProdOrderNo,
+                        Value = productionOrder.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            return selectListItem;
         }
     }
 }

@@ -138,11 +138,12 @@ function ExportProductionQCData() {
     OnServerCallBegin();
     BindOrReloadProductionQCTable('Export');
 }
+
 // add ProductionQC section
 function AddProductionQC() {
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid, function () {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid + "&productionOrderID=", function () {
         ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Add");
         BindProductionQCDetailList(_emptyGuid);
         OnServerCallComplete();
@@ -156,7 +157,7 @@ function EditProductionQC(this_Obj) {
     OnServerCallBegin();
     var ProductionQC = _dataTable.ProductionQCList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID, function () {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID + "&productionOrderID=" + ProductionQC.ProdOrderID, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
         BindProductionQCDetailList(ProductionQC.ID);
@@ -164,14 +165,11 @@ function EditProductionQC(this_Obj) {
         clearUploadControl();
         PaintImages(ProductionQC.ID);
         OnServerCallComplete();
-        setTimeout(function () {
-            //resides in customjs for sliding
             openNav();
-        }, 100);
     });
 }
 function ResetProductionQC() {
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val(), function () {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() + "&productionOrderID=" + $('#hdnProdOrderID').val(), function () {
         BindProductionQCDetailList($('#ID').val());
         clearUploadControl();
         PaintImages($('#ProductionQCForm #ID').val());
@@ -258,7 +256,7 @@ function DeleteProductionQCItem(id) {
         console.log(e.message);
     }
 }
-function BindProductionQCDetailList(id) {
+function BindProductionQCDetailList(id, IsProductioOrder) {
     debugger;
     _dataTable.ProductionQCDetailList = $('#tblProductionQCDetails').DataTable(
          {
@@ -268,7 +266,7 @@ function BindProductionQCDetailList(id) {
              paging: false,
              ordering: false,
              bInfo: false,
-             data: id == _emptyGuid ? null : GetProductionQCDetailListByProductionQCID(id),
+             data: !IsProductioOrder ? id == _emptyGuid ? null : GetProductionQCDetailListByProductionQCID(id, false) : GetProductionQCDetailListByProductionQCID(id, true),
              language: {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
@@ -297,12 +295,17 @@ function BindProductionQCDetailList(id) {
              ]
          });
 }
-function GetProductionQCDetailListByProductionQCID(id) {
+function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {
     try {
-        debugger;
-        var data = { "productionQCID": id };
         var productionQCDetailList = [];
-        _jsonData = GetDataFromServer("ProductionQC/GetProductionQCDetailListByProductionQCID/", data);
+        if (IsProductioOrder) {
+            var data = { "productionOrderID": $('#ProductionQCForm #hdnProdOrderID').val() };
+            _jsonData = GetDataFromServer("ProductionQC/GetProductionQCDetailListByProductionOrderIDWithProductionOrder/", data);
+        }
+        else {
+            var data = { "productionQCID": id };
+            _jsonData = GetDataFromServer("ProductionQC/GetProductionQCDetailListByProductionQCID/", data);
+        }
         if (_jsonData != '') {
             _jsonData = JSON.parse(_jsonData);
             _message = _jsonData.Message;
@@ -466,86 +469,6 @@ function DeleteProductionQCDetail(ID) {
             var productionQCDetailList = _dataTable.ProductionQCDetailList.rows().data();
             productionQCDetailList.splice(_datatablerowindex, 1);
             _dataTable.ProductionQCDetailList.clear().rows.add(productionQCDetailList).draw(false);
-        }
-        if (_status == "ERROR") {
-            notyAlert('error', _message);
-        }
-    }
-}
-//================================================================================================
-//ProductionQCFollowup Section
-function AddProductionQCFollowUp() {
-    debugger;
-    $("#divModelProductionQCPopBody").load("ProductionQCFollowup/AddProductionQCFollowup?id=" + _emptyGuid + "&productionQCID=" + $('#ProductionQCForm input[type="hidden"]#ID').val() + "&customerID=" + ($('#ProductionQCForm #hdnCustomerID').val() != "" ? $('#ProductionQCForm #hdnCustomerID').val() : _emptyGuid), function () {
-        $('#lblModelPopProductionQC').text('Add ProductionQC Followup')
-        $('#btnresetProductionQCFollowup').trigger('click');
-        $('#divModelPopProductionQC').modal('show');
-
-    });
-}
-function ProductionQCFollowUpPaging(start) {
-    $("#divProductionQCFollowupboxbody").load("ProductionQCFollowup/GetProductionQCFollowupList?ID=" + _emptyGuid + "&ProductionQCID=" + $('#ProductionQCForm input[type="hidden"]#ID').val() + "&DataTablePaging.Start=" + start, function () {
-
-    });
-}
-function EditProductionQCFollowup(id) {
-    debugger;
-    $("#divModelProductionQCPopBody").load("ProductionQCFollowup/AddProductionQCFollowup?id=" + id + "&productionQCID=" + $('#ProductionQCForm input[type="hidden"]#ID').val() + "&customerID=" + _emptyGuid, function () {
-        $('#lblModelPopProductionQC').text('Edit ProductionQC Followup')
-        $('#divModelPopProductionQC').modal('show');
-    });
-}
-function SaveSuccessProductionQCFollowup(data, status) {
-    try {
-        debugger;
-        var _jsonData = JSON.parse(data)
-        //message field will return error msg only
-        _message = _jsonData.Message;
-        _status = _jsonData.Status;
-        _result = _jsonData.Record;
-        switch (_status) {
-            case "OK":
-                MasterAlert("success", _result.Message)
-                $("#divModelProductionQCPopBody").load("ProductionQCFollowup/AddProductionQCFollowup?ID=" + _result.ID + "&ProductionQCID=" + $('#ProductionQCForm input[type="hidden"]#ID').val(), "&customerID=" + _emptyGuid, function () {
-                    $('#lblModelPopProductionQC').text('Edit ProductionQC Followup')
-
-                });
-                $("#divFollowupList").load("ProductionQCFollowup/GetProductionQCFollowupList?ID=" + _emptyGuid + "&ProductionQCID=" + $('#ProductionQCForm input[type="hidden"]#ID').val(), function () {
-                });
-                break;
-            case "ERROR":
-                MasterAlert("danger", _message)
-                break;
-            default:
-                console.log(_message);
-                break;
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-    }
-}
-function ConfirmDeleteProductionQCFollowup(ID) {
-    if (ID != _emptyGuid) {
-        notyConfirm('Are you sure to delete?', 'DeleteProductionQCFollowup("' + ID + '")');
-    }
-}
-function DeleteProductionQCFollowup(ID) {
-    if (ID != _emptyGuid && ID != null && ID != '') {
-        var data = { "id": ID };
-        var ds = {};
-        _jsonData = GetDataFromServer("ProductionQCFollowup/DeleteProductionQCFollowup/", data);
-        if (_jsonData != '') {
-            _jsonData = JSON.parse(_jsonData);
-            _message = _jsonData.Message;
-            _status = _jsonData.Status;
-            _result = _jsonData.Record;
-        }
-        if (_status == "OK") {
-            notyAlert('success', _result.Message);
-            $("#divFollowupList").load("ProductionQCFollowup/GetProductionQCFollowupList?ID=" + _emptyGuid + "&ProductionQCID=" + $('#ProductionQCForm input[type="hidden"]#ID').val(), function () {
-            });
         }
         if (_status == "ERROR") {
             notyAlert('error', _message);

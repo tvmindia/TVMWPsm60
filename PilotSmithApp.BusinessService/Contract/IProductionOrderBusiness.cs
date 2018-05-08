@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -16,5 +17,7 @@ namespace PilotSmithApp.BusinessService.Contract
         object DeleteProductionOrder(Guid id);
         object DeleteProductionOrderDetail(Guid id);
         List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm);
+        List<SelectListItem> GetProductionOrderForSelectList(Guid? id);
+        
     }
 }
