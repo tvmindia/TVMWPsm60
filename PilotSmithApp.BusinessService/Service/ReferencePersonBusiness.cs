@@ -17,6 +17,26 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _referencePersonRepository = referencePersonRepository;
         }
+        public object InsertUpdateReferencePerson(ReferencePerson referencePerson)
+        {
+            return _referencePersonRepository.InsertUpdateReferencePerson(referencePerson);
+        }
+        public List<ReferencePerson> GetAllReferencePerson(ReferencePersonAdvanceSearch referencePersonAdvanceSearch)
+        {
+            return _referencePersonRepository.GetAllReferencePerson(referencePersonAdvanceSearch);
+        }
+        public ReferencePerson GetReferencePerson(int code)
+        {
+            return _referencePersonRepository.GetReferencePerson(code);
+        }
+        public bool CheckReferencePersonNameExist(ReferencePerson referencePerson)
+        {
+            return _referencePersonRepository.CheckReferencePersonNameExist(referencePerson);
+        }
+        public object DeleteReferencePerson(int code)
+        {
+            return _referencePersonRepository.DeleteReferencePerson(code);
+        }
         public List<SelectListItem> GetReferencePersonSelectList()
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();

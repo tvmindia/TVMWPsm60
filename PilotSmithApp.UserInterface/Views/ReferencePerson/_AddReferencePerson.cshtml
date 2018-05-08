@@ -1,0 +1,127 @@
+﻿@model PilotSmithApp.UserInterface.Models.ReferencePersonViewModel
+
+@using (Ajax.BeginForm("InsertUpdateReferencePerson", "ReferencePerson", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessReferencePerson", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormReferencePerson" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.Code, htmlAttributes: new { @class = "" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label lblrequired" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Organization, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Organization, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.ValidationMessageFor(model => model.Organization, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.ReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList, "-- Select Reference Type --", new { @class = "form-control",@style="width:100%!important" })
+                    @Html.HiddenFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "", @id = "hdnReferenceTypeCode" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.AreaCode, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    <div class="divAreaSelectList">
+                        @Html.Action("AreaSelectList", "Area", new { required = "" })
+                    </div>
+                    @Html.HiddenFor(model => model.AreaCode, htmlAttributes: new { @class = "", @id = "hdnAreaCode" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.PhoneNos, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.PhoneNos, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.ValidationMessageFor(model => model.PhoneNos, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.FaxNos, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.FaxNos, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.ValidationMessageFor(model => model.FaxNos, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+     
+        <div class="form-group col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.Address, 5, 0, new { @class = "form-control newinput" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                    @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormReferencePerson");
+        $('#ReferencePersonCode').val($('#hdnReferencePersonCode').val());
+        $('#AreaCode').val($('#hdnAreaCode').val());
+        $('#ReferenceTypeCode').val($('#hdnReferenceTypeCode').val());
+        try {
+            $('#ReferenceTypeCode,#AreaCode').select2({
+                dropdownParent: $("#divModelMasterPopUp")
+            });
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+    });
+</script>
+
+
+
+
