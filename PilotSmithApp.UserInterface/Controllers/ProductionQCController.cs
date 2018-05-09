@@ -254,7 +254,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<ProductionQCDetailViewModel> productionQCDetailVMList = new List<ProductionQCDetailViewModel>();
                 if (productionOrderID != Guid.Empty)
                 {
-                    List<ProductionOrderDetailViewModel> productionOrderVMList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderID));
+                    List<ProductionOrderDetailViewModel> productionOrderVMList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderID).Where(x=>x.ProducedQty!=x.QCCompletedQty).ToList());
                     productionQCDetailVMList = (from prodOrderVM in productionOrderVMList select new ProductionQCDetailViewModel {
                         ID = Guid.Empty,
                         ProdQCID = Guid.Empty ,
