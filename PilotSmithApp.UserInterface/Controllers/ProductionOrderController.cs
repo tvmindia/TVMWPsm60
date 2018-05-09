@@ -138,6 +138,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetAllProductionOrder
+
         #region Get QUotation SelectList On Demand
         public ActionResult GetProductionOrderSelectListOnDemand(string searchTerm)
         {
@@ -212,6 +213,49 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion GetProductionOrderDetailListByProductionOrderID
+
+        #region DeleteProductionOrder       
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "D")]
+        public string DeleteProductionOrder(Guid id)
+        {
+
+            try
+            {
+                object result = _productionOrderBusiness.DeleteProductionOrder(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion DeleteProductionOrder
+
+        #region DeleteProductionOrderDetail
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "D")]
+        public string DeleteProductionOrderDetail(Guid id)
+        {
+
+            try
+            {
+                object result = _productionOrderBusiness.DeleteProductionOrderDetail(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion DeleteProductionOrderDetail
 
         #region ButtonStyling
         [HttpGet]
