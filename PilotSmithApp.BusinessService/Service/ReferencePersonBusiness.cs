@@ -39,15 +39,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetReferencePersonSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<ReferencePerson> referencePersonStatusList = _referencePersonRepository.GetReferencePersonSelectList();
-            return selectListItem = (from referencePerson in referencePersonStatusList
+            return selectListItem = referencePersonStatusList!=null?(from referencePerson in referencePersonStatusList
                               select new SelectListItem
                               {
                                   Text = referencePerson.Name,
                                   Value = referencePerson.Code.ToString(),
                                   Selected = false
-                              }).ToList();
+                              }).ToList():new List<SelectListItem>();
         }
     }
 }

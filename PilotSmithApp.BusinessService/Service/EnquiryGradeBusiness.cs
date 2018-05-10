@@ -19,15 +19,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetEnquiryGradeSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<EnquiryGrade> enquiryGradeList = _enquiryGradeRepository.GetEnquiryGradeSelectList();
-            return selectListItem = (from enquiryGrade in enquiryGradeList
+            List<SelectListItem> selectListItem = null;
+            List<EnquiryGrade> enquiryGradeList = _enquiryGradeRepository.GetEnquiryGradeSelectList();            
+            return selectListItem = enquiryGradeList != null?(from enquiryGrade in enquiryGradeList
                                      select new SelectListItem
                                      {
                                          Text = enquiryGrade.Description,
                                          Value = enquiryGrade.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList(): new List<SelectListItem>();
         }
     }
 }

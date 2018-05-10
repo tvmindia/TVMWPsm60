@@ -60,19 +60,16 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetCustomerSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<Customer> customerList =_customerRepository.GetCustomerSelectList();
-            if (customerList != null)
-                foreach (Customer customer in customerList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = customer.CompanyName,
-                        Value = customer.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = customerList != null ? (from customer in customerList
+                                                            select new SelectListItem
+                                                            {
+                                                                Text = customer.CompanyName,
+                                                                Value = customer.ID.ToString(),
+                                                                Selected = false
+                                                            }).ToList():new List<SelectListItem>();
+                
         }
     }
 }

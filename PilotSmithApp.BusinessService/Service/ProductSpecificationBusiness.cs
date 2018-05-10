@@ -39,15 +39,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetProductSpecificationForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<ProductSpecification> productSpecificationList = _productSpecificationRepository.GetProductSpecificationForSelectList();
-            return selectListItem = (from productSpecification in productSpecificationList
+            return selectListItem = productSpecificationList!=null?(from productSpecification in productSpecificationList
                                      select new SelectListItem
                                      {
                                          Text = productSpecification.Description,
                                          Value = productSpecification.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

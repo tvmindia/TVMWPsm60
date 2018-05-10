@@ -39,15 +39,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetAreaForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<Area> areaList = _areaRepository.GetAreaForSelectList();
-            return selectListItem = (from area in areaList
+            return selectListItem = areaList!=null?(from area in areaList
                               select new SelectListItem
                               {
                                   Text = area.Description,
                                   Value = area.Code.ToString(),
                                   Selected = false
-                              }).ToList();
+                              }).ToList():new List<SelectListItem>();
         }
     }
 }

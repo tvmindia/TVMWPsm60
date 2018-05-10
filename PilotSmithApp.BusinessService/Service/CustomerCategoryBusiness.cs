@@ -19,15 +19,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetCustomerCategoryForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<CustomerCategory> customerCategoryList = _customerCategoryRepository.GetCustomerCategoryForSelectList();
-            return selectListItem = (from customerCategory in customerCategoryList
+            return selectListItem = customerCategoryList!=null?(from customerCategory in customerCategoryList
                                      select new SelectListItem
                                      {
                                          Text = customerCategory.Name,
                                          Value = customerCategory.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

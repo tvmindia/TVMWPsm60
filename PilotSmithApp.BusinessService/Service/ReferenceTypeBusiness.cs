@@ -19,15 +19,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetReferenceTypeSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem =null;
             List<ReferenceType> referenceTypeList = _referenceTypeRepository.GetReferenceTypeSelectList();
-            return selectListItem = (from referenceType in referenceTypeList
+            return selectListItem = referenceTypeList!=null?(from referenceType in referenceTypeList
                                      select new SelectListItem
                                      {
                                          Text = referenceType.Description,
                                          Value = referenceType.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

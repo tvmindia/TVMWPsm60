@@ -50,15 +50,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetEstimateForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem =null;
             List<Estimate> estimateList = _estimateRepository.GetEstimateForSelectList();
-            return selectListItem = (from estimate in estimateList
+            return selectListItem = estimateList!=null?(from estimate in estimateList
                                      select new SelectListItem
                                      {
                                          Text = estimate.EstimateNo,
                                          Value = estimate.ID.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }  
 }

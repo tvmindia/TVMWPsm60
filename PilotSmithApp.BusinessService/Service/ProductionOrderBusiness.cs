@@ -53,15 +53,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetProductionOrderForSelectList(Guid? id)
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<ProductionOrder> productionOrderList = _productionOrderRepository.GetProductionOrderForSelectList(id);
-            return selectListItem = (from productionOrder in productionOrderList
+            return selectListItem = productionOrderList!=null?(from productionOrder in productionOrderList
                                      select new SelectListItem
                                      {
                                          Text = productionOrder.ProdOrderNo,
                                          Value = productionOrder.ID.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }
