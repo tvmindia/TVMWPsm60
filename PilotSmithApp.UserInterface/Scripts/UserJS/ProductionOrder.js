@@ -343,8 +343,36 @@ function BindProductionOrderDetailList(id) {
              },
              { "data": "PlantCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
-                 "data": "OrderQty", render: function (data, type, row) {
-                     return data //'<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                 "data": "", render: function (data, type, row) {
+                     debugger;
+                     var result = "";
+                     if ((((row.MileStone1FcFinishDtFormatted != null) && (row.MileStone1FcFinishDtFormatted!="")) && ((row.MileStone1AcTFinishDtFormatted != null) && (row.MileStone1AcTFinishDtFormatted!=""))))
+                     {
+                         var M1 = '25%'
+                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left> Milestone Reach : ' + M1 + '" data-content="1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M1
+                     }
+                     if (((row.MileStone2FcFinishDtFormatted != null && (row.MileStone2FcFinishDtFormatted)) && (row.MileStone2AcTFinishDtFormatted != null && (row.MileStone2AcTFinishDtFormatted))))
+                     {
+                         var M2 = '50%'
+                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M2 + '" data-content="2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M2
+                     }
+                     if (((row.MileStone3FcFinishDtFormatted != null && (row.MileStone3FcFinishDtFormatted)) && (row.MileStone3AcTFinishDtFormatted != null && (row.MileStone3AcTFinishDtFormatted))))
+                     {
+                         var M3 = '75%'
+                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M3 + '" data-content="3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M3
+                     }
+                     if (((row.MileStone4FcFinishDtFormatted != null && (row.MileStone4FcFinishDtFormatted)) && (row.MileStone4AcTFinishDtFormatted != null && (row.MileStone4AcTFinishDtFormatted))))
+                     {
+                         var M4 = '100%'
+                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M4 + '" data-content="4) ⌚ Forecast :  ' + row.MileStone4FcFinishDtFormatted + '<br/>⌚ Actual :  ' + row.MileStone4AcTFinishDtFormatted + '<br/>3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M4
+                     }
+                     //else
+                     //{
+                     //    result= '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone : % ' + 0 + '" data-content="Forecast Date :  ' + 0 + '<br/>Actual Date :  ' + 0;
+                     //}
+                     
+                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                     return result;
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
@@ -357,11 +385,13 @@ function BindProductionOrderDetailList(id) {
                  { "targets": [9], "width": "7%" }
              ]
          });
-    //$('[data-toggle="popover"]').popover({
-    //    html: true,
-    //    'trigger': 'hover',
-    //    'placement': 'left'
-    //});
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'left',
+        'max-width':'300px'
+    });
+   
 }
 
 function GetProductionOrderDetailListByProductionOrderID(id) {
@@ -429,14 +459,14 @@ function AddProductionOrderDetailToList() {
             productionOrderDetailList[_datatablerowindex].Unit = Unit;
             productionOrderDetailList[_datatablerowindex].Rate = $('#Rate').val();
             productionOrderDetailList[_datatablerowindex].PlantCode = $('#PlantCode').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone1FcFinishDt = $('#MileStone1FcFinishDt').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone1AcTFinishDt = $('#MileStone1AcTFinishDt').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone2FcFinishDt = $('#MileStone2FcFinishDt').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone2AcTFinishDt = $('#MileStone2AcTFinishDt').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone3FcFinishDt = $('#MileStone3FcFinishDt').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone3AcTFinishDt = $('#MileStone3AcTFinishDt').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone4FcFinishDt = $('#MileStone4FcFinishDt').val();
-            //productionOrderDetailList[_datatablerowindex].MileStone4AcTFinishDt = $('#MileStone4AcTFinishDt').val();
+            productionOrderDetailList[_datatablerowindex].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
+            productionOrderDetailList[_datatablerowindex].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
+            productionOrderDetailList[_datatablerowindex].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
+            productionOrderDetailList[_datatablerowindex].MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
+            productionOrderDetailList[_datatablerowindex].MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
+            productionOrderDetailList[_datatablerowindex].MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
+            productionOrderDetailList[_datatablerowindex].MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
+            productionOrderDetailList[_datatablerowindex].MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
             _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
             $('#divModelPopProductionOrder').modal('hide');
             _datatablerowindex = -1;
@@ -466,14 +496,14 @@ function AddProductionOrderDetailToList() {
                 productionOrderDetailList[0].Unit = Unit;
                 productionOrderDetailList[0].Rate = $('#Rate').val();
                 productionOrderDetailList[0].PlantCode = $('#PlantCode').val();
-                //productionOrderDetailList[0].MileStone1FcFinishDt = $('#MileStone1FcFinishDt').val();
-                //productionOrderDetailList[0].MileStone1AcTFinishDt = $('#MileStone1AcTFinishDt').val();
-                //productionOrderDetailList[0].MileStone2FcFinishDt = $('#MileStone2FcFinishDt').val();
-                //productionOrderDetailList[0].MileStone2AcTFinishDt = $('#MileStone2AcTFinishDt').val();
-                //productionOrderDetailList[0].MileStone3FcFinishDt = $('#MileStone3FcFinishDt').val();
-                //productionOrderDetailList[0].MileStone3AcTFinishDt = $('#MileStone3AcTFinishDt').val();
-                //productionOrderDetailList[0].MileStone4FcFinishDt = $('#MileStone4FcFinishDt').val();
-                //productionOrderDetailList[0].MileStone4AcTFinishDt = $('#MileStone4AcTFinishDt').val();
+                productionOrderDetailList[0].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
+                productionOrderDetailList[0].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
+                productionOrderDetailList[0].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
+                productionOrderDetailList[0].MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
+                productionOrderDetailList[0].MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
+                productionOrderDetailList[0].MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
+                productionOrderDetailList[0].MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
+                productionOrderDetailList[0].MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
                 _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
                 $('#divModelPopProductionOrder').modal('hide');
             }
@@ -517,6 +547,14 @@ function AddProductionOrderDetailToList() {
                             ProductionOrderDetailVM.UnitCode = $('#UnitCode').val();
                             ProductionOrderDetailVM.Rate = $('#Rate').val();
                             ProductionOrderDetailVM.PlantCode = $('#PlantCode').val();
+                            ProductionOrderDetailVM.MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
                             _dataTable.ProductionOrderDetailList.row.add(ProductionOrderDetailVM).draw(false);
                             $('#divModelPopProductionOrder').modal('hide');
                         }
@@ -526,6 +564,13 @@ function AddProductionOrderDetailToList() {
             }
         }
     }
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'left',
+       
+    });
+    $('#popover').css('width', '400px');
 }
 
 
@@ -562,14 +607,14 @@ function EditProductionOrderDetail(this_Obj) {
         $('#FormProductionOrderDetail #hdnUnitCode').val(productionOrderDetail.UnitCode);
         $('#FormProductionOrderDetail #Rate').val(productionOrderDetail.Rate);
         $('#FormProductionOrderDetail #PlantCode').val(productionOrderDetail.PlantCode);
-        $('#FormProductionOrderDetail #MileStone1FcFinishDt').val(productionOrderDetail.MileStone1FcFinishDt);
-        $('#FormProductionOrderDetail #MileStone1AcTFinishDt').val(productionOrderDetail.MileStone1AcTFinishDt);
-        $('#FormProductionOrderDetail #MileStone2FcFinishDt').val(productionOrderDetail.MileStone2FcFinishDt);
-        $('#FormProductionOrderDetail #MileStone2AcTFinishDt').val(productionOrderDetail.MileStone2AcTFinishDt);
-        $('#FormProductionOrderDetail #MileStone3FcFinishDt').val(productionOrderDetail.MileStone3FcFinishDt);
-        $('#FormProductionOrderDetail #MileStone3AcTFinishDt').val(productionOrderDetail.MileStone3AcTFinishDt);
-        $('#FormProductionOrderDetail #MileStone4FcFinishDt').val(productionOrderDetail.MileStone4FcFinishDt);
-        $('#FormProductionOrderDetail #MileStone4AcTFinishDt').val(productionOrderDetail.MileStone4AcTFinishDt);
+        $('#FormProductionOrderDetail #MileStone1FcFinishDtFormatted').val(productionOrderDetail.MileStone1FcFinishDtFormatted);
+        $('#FormProductionOrderDetail #MileStone1AcTFinishDtFormatted').val(productionOrderDetail.MileStone1AcTFinishDtFormatted);
+        $('#FormProductionOrderDetail #MileStone2FcFinishDtFormatted').val(productionOrderDetail.MileStone2FcFinishDtFormatted);
+        $('#FormProductionOrderDetail #MileStone2AcTFinishDtFormatted').val(productionOrderDetail.MileStone2AcTFinishDtFormatted);
+        $('#FormProductionOrderDetail #MileStone3FcFinishDtFormatted').val(productionOrderDetail.MileStone3FcFinishDtFormatted);
+        $('#FormProductionOrderDetail #MileStone3AcTFinishDtFormatted').val(productionOrderDetail.MileStone3AcTFinishDtFormatted);
+        $('#FormProductionOrderDetail #MileStone4FcFinishDtFormatted').val(productionOrderDetail.MileStone4FcFinishDtFormatted);
+        $('#FormProductionOrderDetail #MileStone4AcTFinishDtFormatted').val(productionOrderDetail.MileStone4AcTFinishDtFormatted);
         $('#divModelPopProductionOrder').modal('show');
     });
 }
