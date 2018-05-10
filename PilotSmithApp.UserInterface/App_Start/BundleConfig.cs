@@ -87,7 +87,8 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJS/ReferencePerson").Include("~/Scripts/UserJS/ReferencePerson.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/PaymentTerm").Include("~/Scripts/UserJS/PaymentTerm.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/TaxType").Include("~/Scripts/UserJS/TaxType.js"));
-
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/CustomerCategory").Include("~/Scripts/UserJS/CustomerCategory.js"));
+            
             bundles.Add(new ScriptBundle("~/bundles/UserJS/SaleInvoice").Include("~/Scripts/UserJS/SaleInvoice.js"));
         }
     }

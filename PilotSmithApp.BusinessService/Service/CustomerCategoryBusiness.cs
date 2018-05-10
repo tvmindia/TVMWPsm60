@@ -17,6 +17,26 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _customerCategoryRepository = customerCategoryRepository;
         }
+        public object InsertUpdateCustomerCategory(CustomerCategory customerCategory)
+        {
+            return _customerCategoryRepository.InsertUpdateCustomerCategory(customerCategory);
+        }
+        public List<CustomerCategory> GetAllCustomerCategory(CustomerCategoryAdvanceSearch customerCategoryAdvanceSearch)
+        {
+            return _customerCategoryRepository.GetAllCustomerCategory(customerCategoryAdvanceSearch);
+        }
+        public CustomerCategory GetCustomerCategory(int code)
+        {
+            return _customerCategoryRepository.GetCustomerCategory(code);
+        }
+        public bool CheckCustomerCategoryNameExist(CustomerCategory customerCategory)
+        {
+            return _customerCategoryRepository.CheckCustomerCategoryNameExist(customerCategory);
+        }
+        public object DeleteCustomerCategory(int code)
+        {
+            return _customerCategoryRepository.DeleteCustomerCategory(code);
+        }
         public List<SelectListItem> GetCustomerCategoryForSelectList()
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();

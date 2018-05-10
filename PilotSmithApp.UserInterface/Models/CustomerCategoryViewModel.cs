@@ -10,8 +10,8 @@ namespace PilotSmithApp.UserInterface.Models
     public class CustomerCategoryViewModel
     {
         public int Code { get; set; }
-        [Required(ErrorMessage = "Name is missing")]
         [Remote(action: "CheckCustomerCategoryExist", controller: "CustomerCategory", AdditionalFields = "IsUpdate,Code")]
+        [Required(ErrorMessage = "Name is missing")]
         public string Name { get; set; }
 
         //additional fields

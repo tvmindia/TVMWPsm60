@@ -662,6 +662,7 @@
     <Content Include="Scripts\PDF.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
