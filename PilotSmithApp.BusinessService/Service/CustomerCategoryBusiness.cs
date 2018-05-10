@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
-    public class CustomerCategoryBusiness:ICustomerCategoryBusiness
+    public class CustomerCategoryBusiness : ICustomerCategoryBusiness
     {
         private ICustomerCategoryRepository _customerCategoryRepository;
         public CustomerCategoryBusiness(ICustomerCategoryRepository customerCategoryRepository)
@@ -21,17 +21,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<CustomerCategory> customerCategoryList = _customerCategoryRepository.GetCustomerCategoryForSelectList();
-            if(customerCategoryList!=null)
-            foreach(CustomerCategory customerCategory in customerCategoryList)
-            {
-                selectListItem.Add(new SelectListItem
-                {
-                    Text=customerCategory.Name,
-                    Value=customerCategory.Code.ToString(),
-                    Selected=false
-                });
-            }
-            return selectListItem;
+            return selectListItem = (from customerCategory in customerCategoryList
+                                     select new SelectListItem
+                                     {
+                                         Text = customerCategory.Name,
+                                         Value = customerCategory.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

@@ -290,7 +290,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion
 
-        #region Get ReferencePerson Dropdown
+        #region Get ReferencePerson SelectList
         public List<ReferencePerson> GetReferencePersonSelectList()
         {
             List<ReferencePerson> referencePersonList = null;
@@ -332,6 +332,6 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return referencePersonList;
         }
-        #endregion Get ReferencePerson Dropdown
+        #endregion Get ReferencePerson SelectList
     }
 }

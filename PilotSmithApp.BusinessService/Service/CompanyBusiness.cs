@@ -42,17 +42,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Company> companyList = _companyRepository.GetCompanyForSelectList();
-            if (companyList != null)
-                foreach (Company company in companyList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = company.Name,
-                        Value = company.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from company in companyList
+                                     select new SelectListItem
+                                     {
+                                         Text = company.Name,
+                                         Value = company.ID.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

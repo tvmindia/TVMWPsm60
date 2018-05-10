@@ -23,7 +23,7 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
-        #region Get ReferenceType Dropdown
+        #region Get ReferenceType SelectList
         public List<ReferenceType> GetReferenceTypeSelectList()
         {
             List<ReferenceType> referenceTypeList = null;
@@ -65,6 +65,6 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return referenceTypeList;
         }
-        #endregion Get ReferenceType Dropdown
+        #endregion Get ReferenceType SelectList
     }
 }

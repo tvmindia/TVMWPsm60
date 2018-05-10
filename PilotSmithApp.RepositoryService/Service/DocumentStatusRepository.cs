@@ -23,7 +23,7 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
-        #region Get DocumentStatus Dropdown
+        #region Get DocumentStatus SelectList
         public List<DocumentStatus> GetDocumentStatusSelectList(string code)
         {
             List<DocumentStatus> documentStatusList = null;
@@ -66,6 +66,6 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return documentStatusList;
         }
-        #endregion Get DocumentStatus Dropdown
+        #endregion Get DocumentStatus SelectList
     }
 }

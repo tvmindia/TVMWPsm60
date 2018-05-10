@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -16,9 +17,17 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _bankRepository = bankRepository;
         }
-        public List<Bank> GetBankForSelectList()
+        public List<SelectListItem> GetBankForSelectList()
         {
-            return _bankRepository.GetBankForSelectList();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<Bank> bankList= _bankRepository.GetBankForSelectList();
+            return selectListItem = (from bank in bankList
+                                     select new SelectListItem
+                                     {
+                                         Text=bank.Name,
+                                         Value=bank.Code,
+                                         Selected=false,
+                                     }).ToList();
         }
         public List<Bank> GetAllBank(BankAdvanceSearch bankAdvanceSearch)
         {

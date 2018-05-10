@@ -41,17 +41,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Area> areaList = _areaRepository.GetAreaForSelectList();
-            if (areaList != null)
-                foreach (Area area in areaList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = area.Description,
-                        Value = area.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from area in areaList
+                              select new SelectListItem
+                              {
+                                  Text = area.Description,
+                                  Value = area.Code.ToString(),
+                                  Selected = false
+                              }).ToList();
         }
     }
 }

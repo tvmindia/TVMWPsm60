@@ -21,17 +21,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<EnquiryGrade> enquiryGradeList = _enquiryGradeRepository.GetEnquiryGradeSelectList();
-            if (enquiryGradeList != null)
-                foreach (EnquiryGrade enquiryGrade in enquiryGradeList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = enquiryGrade.Description,
-                        Value = enquiryGrade.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from enquiryGrade in enquiryGradeList
+                                     select new SelectListItem
+                                     {
+                                         Text = enquiryGrade.Description,
+                                         Value = enquiryGrade.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

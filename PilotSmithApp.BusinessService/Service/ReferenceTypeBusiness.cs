@@ -20,18 +20,14 @@ namespace PilotSmithApp.BusinessService.Service
         public List<SelectListItem> GetReferenceTypeSelectList()
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<ReferenceType> referencePersonStatusList = _referenceTypeRepository.GetReferenceTypeSelectList();
-            if (referencePersonStatusList != null)
-                foreach (ReferenceType referencePerson in referencePersonStatusList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = referencePerson.Description,
-                        Value = referencePerson.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            List<ReferenceType> referenceTypeList = _referenceTypeRepository.GetReferenceTypeSelectList();
+            return selectListItem = (from referenceType in referenceTypeList
+                                     select new SelectListItem
+                                     {
+                                         Text = referenceType.Description,
+                                         Value = referenceType.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

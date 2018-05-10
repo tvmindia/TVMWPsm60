@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
     public interface IBankBusiness
     {
-        List<Bank> GetBankForSelectList();
+        List<SelectListItem> GetBankForSelectList();
         List<Bank> GetAllBank(BankAdvanceSearch bankAdvanceSearch);
         Bank GetBank(string code);
         bool CheckCodeExist(string code);

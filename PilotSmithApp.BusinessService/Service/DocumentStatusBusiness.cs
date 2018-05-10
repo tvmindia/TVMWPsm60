@@ -21,17 +21,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<DocumentStatus> documentStatusList = _documentStatusRepository.GetDocumentStatusSelectList(code);
-            if (documentStatusList != null)
-                foreach (DocumentStatus documentStatus in documentStatusList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = documentStatus.Description,
-                        Value = documentStatus.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from documentStatus in documentStatusList
+                                     select new SelectListItem
+                                     {
+                                         Text = documentStatus.Description,
+                                         Value = documentStatus.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

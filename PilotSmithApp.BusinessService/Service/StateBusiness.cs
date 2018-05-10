@@ -41,17 +41,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<State> stateList = _stateRepository.GetStateForSelectList();
-            if (stateList != null)
-                foreach (State state in stateList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = state.Description,
-                        Value = state.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from state in stateList
+                                     select new SelectListItem
+                                     {
+                                         Text = state.Description,
+                                         Value = state.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
 
     }

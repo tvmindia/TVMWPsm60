@@ -52,17 +52,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Estimate> estimateList = _estimateRepository.GetEstimateForSelectList();
-            if (estimateList != null)
-                foreach (Estimate estimate in estimateList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = estimate.EstimateNo,
-                        Value = estimate.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from estimate in estimateList
+                                     select new SelectListItem
+                                     {
+                                         Text = estimate.EstimateNo,
+                                         Value = estimate.ID.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }  
 }

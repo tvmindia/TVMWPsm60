@@ -128,27 +128,16 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion DeleteBank
-        #region BankDropdown
-        public ActionResult BankDropdown(BankViewModel bankVM)
+        #region BankSelctList
+        public ActionResult BankSelectList(BankViewModel bankVM)
         {
             bankVM.BankCode = bankVM.Code;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             bankVM.SelectList = new List<SelectListItem>();
-            List<BankViewModel> bankList = Mapper.Map<List<Bank>, List<BankViewModel>>(_bankBusiness.GetBankForSelectList());
-            if (bankList != null)
-                foreach (BankViewModel bank in bankList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = bank.Name,
-                        Value = bank.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            bankVM.SelectList = selectListItem;
-            return PartialView("_BankDropdown", bankVM);
+            bankVM.SelectList = _bankBusiness.GetBankForSelectList();
+            return PartialView("_BankSelectList", bankVM);
         }
-        #endregion BankDropdown
+        #endregion BankSelectList
         #region MasterPartial
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]

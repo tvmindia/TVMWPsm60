@@ -42,17 +42,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<PaymentTerm> PayTermList = _paymentTermRepository.GetPaymentTermForSelectList();
-            if(PayTermList!=null)
-            foreach (PaymentTerm PayT in PayTermList)
-            {
-                selectListItem.Add(new SelectListItem
-                {
-                    Text = PayT.Description,
-                    Value = PayT.Code,
-                    Selected = false
-                });
-            }
-            return selectListItem;
+            return selectListItem = (from paymentTerm in PayTermList
+                                     select new SelectListItem
+                                     {
+                                         Text = paymentTerm.Description,
+                                         Value = paymentTerm.Code,
+                                         Selected = false
+                                     }).ToList();
         }
         
     }

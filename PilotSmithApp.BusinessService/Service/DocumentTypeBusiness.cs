@@ -21,17 +21,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<DocumentType> documentTypeList = _documentTypeRepository.GetDocumentTypeSelectList();
-            if (documentTypeList != null)
-                foreach (DocumentType documentType in documentTypeList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = documentType.Description,
-                        Value = documentType.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from documentType in documentTypeList
+                                     select new SelectListItem
+                                     {
+                                         Text = documentType.Description,
+                                         Value = documentType.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

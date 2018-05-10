@@ -21,17 +21,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Branch> branchList = _branchRepository.GetBranchForSelectList(loginName);
-            if (branchList != null)
-                foreach (Branch branch in branchList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = branch.Description,
-                        Value = branch.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from branch in branchList
+                                     select new SelectListItem
+                                     {
+                                         Text = branch.Description,
+                                         Value = branch.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

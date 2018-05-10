@@ -51,17 +51,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Enquiry> enquiryList = _enquiryRepository.GetEnquiryForSelectList();
-            if (enquiryList != null)
-                foreach (Enquiry enquiry in enquiryList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = enquiry.EnquiryNo+"-"+enquiry.Customer.CompanyName,
-                        Value = enquiry.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from enquiry in enquiryList
+                                     select new SelectListItem
+                                     {
+                                         Text = enquiry.EnquiryNo + "-" + enquiry.Customer.CompanyName,
+                                         Value = enquiry.ID.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
         public List<Enquiry> GetEnquiryForSelectListOnDemand(string searchTerm)
         {

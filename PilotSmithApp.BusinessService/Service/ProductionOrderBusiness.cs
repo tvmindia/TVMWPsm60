@@ -55,17 +55,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<ProductionOrder> productionOrderList = _productionOrderRepository.GetProductionOrderForSelectList(id);
-            if (productionOrderList != null)
-                foreach (ProductionOrder productionOrder in productionOrderList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = productionOrder.ProdOrderNo,
-                        Value = productionOrder.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from productionOrder in productionOrderList
+                                     select new SelectListItem
+                                     {
+                                         Text = productionOrder.ProdOrderNo,
+                                         Value = productionOrder.ID.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

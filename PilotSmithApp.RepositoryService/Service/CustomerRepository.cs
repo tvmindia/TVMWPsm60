@@ -446,7 +446,7 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion DeleteCustomer
-        #region Get Customer Dropdown
+        #region Get Customer SelectList
         public List<Customer> GetCustomerSelectList()
         {
             List<Customer> customerList = null;
@@ -488,6 +488,6 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return customerList;
         }
-        #endregion Get Customer Dropdown
+        #endregion Get Customer SelectList
     }
 }

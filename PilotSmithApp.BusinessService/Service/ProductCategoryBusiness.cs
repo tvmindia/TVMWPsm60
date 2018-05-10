@@ -47,17 +47,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();           
             List<ProductCategory> productCategoryList = _productCategoryRepository.GetProductCategoryForSelectList();
-            if (productCategoryList != null)
-                foreach (ProductCategory productCategory in productCategoryList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = productCategory.Description,
-                        Value = productCategory.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from productCategory in productCategoryList
+                                     select new SelectListItem
+                                     {
+                                         Text = productCategory.Description,
+                                         Value = productCategory.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

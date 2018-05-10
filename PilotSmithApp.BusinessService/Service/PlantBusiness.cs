@@ -21,17 +21,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Plant> plantList = _plantRepository.GetPlantForSelectList();
-            if (plantList != null)
-                foreach (Plant plant in plantList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = plant.Description,
-                        Value = plant.Code.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from plant in plantList
+                                     select new SelectListItem
+                                     {
+                                         Text = plant.Description,
+                                         Value = plant.Code.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

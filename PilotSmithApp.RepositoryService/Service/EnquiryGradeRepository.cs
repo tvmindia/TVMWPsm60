@@ -23,7 +23,7 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
-        #region Get EnquiryGrade Dropdown
+        #region Get EnquiryGrade SelectList
         public List<EnquiryGrade> GetEnquiryGradeSelectList()
         {
             List<EnquiryGrade> enquiryGradeList = null;
@@ -65,6 +65,6 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return enquiryGradeList;
         }
-        #endregion Get EnquiryGrade Dropdown
+        #endregion Get EnquiryGrade SelectList
     }
 }

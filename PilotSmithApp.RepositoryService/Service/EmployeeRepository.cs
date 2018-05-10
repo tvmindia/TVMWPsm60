@@ -265,7 +265,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion DeleteEmployee
 
-        #region Get Employee Dropdown
+        #region Get Employee SelectList
         public List<Employee> GetEmployeeSelectList()
         {
             List<Employee> employeeList = null;
@@ -308,6 +308,6 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return employeeList;
         }
-        #endregion Get Employee Dropdown
+        #endregion Get Employee SelectList
     }
 }

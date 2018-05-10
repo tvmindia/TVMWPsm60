@@ -37,17 +37,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Employee> employeeList = _employeeRepository.GetEmployeeSelectList();
-            if (employeeList != null)
-                foreach (Employee employee in employeeList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = employee.Name,
-                        Value = employee.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from employee in employeeList
+                                     select new SelectListItem
+                                     {
+                                         Text = employee.Name,
+                                         Value = employee.ID.ToString(),
+                                         Selected = false
+                                     }).ToList();
         }
     }
 }

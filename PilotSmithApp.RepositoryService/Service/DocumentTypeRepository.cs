@@ -23,7 +23,7 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
-        #region Get DocumentType Dropdown
+        #region Get DocumentType SelectList
         public List<DocumentType> GetDocumentTypeSelectList()
         {
             List<DocumentType> documentTypeList = null;
@@ -65,6 +65,6 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return documentTypeList;
         }
-        #endregion Get DocumentType Dropdown
+        #endregion Get DocumentType SelectList
     }
 }
