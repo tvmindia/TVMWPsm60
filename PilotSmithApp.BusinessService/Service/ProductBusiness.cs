@@ -41,17 +41,12 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Product> productList = _productRepository.GetProductForSelectList();
-            if (productList != null)
-                foreach (Product product in productList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = product.Code+" - "+product.Name,
-                        Value = product.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;         
+            return selectListItem = (from product in productList select new SelectListItem
+                              {
+                                  Text = product.Code + " - " + product.Name,
+                                  Value = product.ID.ToString(),
+                                  Selected = false
+                              }).ToList();       
         }
     }
 }

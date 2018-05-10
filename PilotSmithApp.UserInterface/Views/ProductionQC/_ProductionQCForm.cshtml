@@ -20,7 +20,14 @@
                         @Html.Label("Search and select a Production Order", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                        @if (Model.IsUpdate)
+                        {
+                            @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @disabled="",@onchange = "$('#hdnProdOrderID').val(this.value)" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                        }
                         @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
                     </div>
                     @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })

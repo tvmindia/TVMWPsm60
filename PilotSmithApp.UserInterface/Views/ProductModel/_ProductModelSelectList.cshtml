@@ -1,19 +1,29 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ProductModelViewModel
-@if (ViewBag.IsRequired == "required")
-{
-    <div class="input-group">
-        @Html.DropDownList("ProductModelID", Model.ProductModelSelectList, "--Select model--", new { @class = "form-control newinput", @style = "width:100%!important", @required = "", @title = "The model is missing", @onchange = "$('#hdnProductModelID').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductModelMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
 
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
+@if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "ProductModel is missing", @onchange = "$('#hdnProductModelID).val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "ProductModel is missing", @onchange = "$('#hdnProductModelID').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddProductModelMaster('OTR')";
 }
 else
 {
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProductModelID').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProductModelID').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddProductModelMaster('OTR')";
+}
+@if (@ViewBag.HasAddPermission)
+{
     <div class="input-group">
-        @Html.DropDownList("ProductModelID", Model.ProductModelSelectList, "--Select model--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProductModelID').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductModelMaster('OTR')"><i class="fa fa-plus-square"></i></span>
+        @Html.DropDownList("ProductModelID", Model.ProductModelSelectList, "--Select product model--", SelectListattributes)
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick=@onclickevent><i class="fa fa-plus-square"></i></span>
     </div>
-
+}
+else
+{
+    @Html.DropDownList("ProductModelID", Model.ProductModelSelectList, "--Select product model--", SelectListattributes)
 }
 @Html.ValidationMessage("ProductModelID", "", new { @class = "text-danger" })
 

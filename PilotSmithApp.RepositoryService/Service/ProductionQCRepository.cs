@@ -133,6 +133,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 if (sdr.Read())
                                 {
                                     productionQC.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionQC.ID);
+                                    productionQC.ProdOrderID= (sdr["ProdOrderID"].ToString() != "" ? Guid.Parse(sdr["ProdOrderID"].ToString()) : productionQC.ID);
                                     productionQC.ProdQCNo = (sdr["ProdQCNo"].ToString() != "" ? sdr["ProdQCNo"].ToString() : productionQC.ProdQCNo);
                                     productionQC.ProdQCDate = (sdr["ProdQCDate"].ToString() != "" ? DateTime.Parse(sdr["ProdQCDate"].ToString()) : productionQC.ProdQCDate);
                                     productionQC.ProdQCDateFormatted = (sdr["ProdQCDate"].ToString() != "" ? DateTime.Parse(sdr["ProdQCDate"].ToString()).ToString("dd-MMM-yyyy") : productionQC.ProdQCDateFormatted);

@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         IProductCategoryBusiness _productCategoryBusiness;
         IProductBusiness _productBusiness;
         ICompanyBusiness _companyBusiness;
-        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness,ICompanyBusiness companyBusiness)
+        IUserBusiness _userBusiness;
+        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness,ICompanyBusiness companyBusiness, IUserBusiness userBusiness)
         {
             _productCategoryBusiness = productCategoryBusiness;
             _productBusiness = productBusiness;
             _companyBusiness = companyBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
         // GET: Product
@@ -98,12 +102,23 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddProduct", productVM);
         }
         #endregion MasterPartial
-
         # region ProductSelectList
         [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
-        public ActionResult ProductSelectList(string required)
+        public ActionResult ProductSelectList(string required, bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Product");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             ProductViewModel productVM = new ProductViewModel();
             productVM.ProductSelectList = _productBusiness.GetProductForSelectList();
             return PartialView("_ProductSelectList", productVM);
