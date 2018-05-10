@@ -184,8 +184,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Description=string.Empty,
                         },
                         Rate=0,
-                        MileStone1FcFinishDt= _pSASysCommon.GetCurrentDateTime(),
-                        MileStone1FcFinishDtFormatted = _pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),
+                        //MileStone1FcFinishDt= _pSASysCommon.GetCurrentDateTime(),
+                        //MileStone1FcFinishDtFormatted = _pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),
                         Product = new ProductViewModel()
                         {
                             ID = Guid.Empty,
