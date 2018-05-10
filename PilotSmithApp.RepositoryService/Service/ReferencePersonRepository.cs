@@ -64,7 +64,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = referencePerson.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
-                        outputCode = cmd.Parameters.Add("@CodeOut", SqlDbType.VarChar, 5);
+                        outputCode = cmd.Parameters.Add("@CodeOut", SqlDbType.Int);
                         outputCode.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }

@@ -17,25 +17,38 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _taxTypeRepository = taxTypeRepository;
         }
+        public object InsertUpdateTaxType(TaxType taxType)
+        {
+            return _taxTypeRepository.InsertUpdateTaxType(taxType);
+        }
+        public List<TaxType> GetAllTaxType(TaxTypeAdvanceSearch taxTypeAdvanceSearch)
+        {
+            return _taxTypeRepository.GetAllTaxType(taxTypeAdvanceSearch);
+        }
         public TaxType GetTaxType(int code)
         {
             return _taxTypeRepository.GetTaxType(code);
+        }
+        public bool CheckTaxTypeNameExist(TaxType taxType)
+        {
+            return _taxTypeRepository.CheckTaxTypeNameExist(taxType);
+        }
+        public object DeleteTaxType(int code)
+        {
+            return _taxTypeRepository.DeleteTaxType(code);
         }
         public List<SelectListItem> GetTaxTypeForSelectList()
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<TaxType> taxTypeList = _taxTypeRepository.GetTaxTypeForSelectList();
-            if (taxTypeList != null)
-                foreach (TaxType taxType in taxTypeList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = taxType.Description,
-                        Value = taxType.ValueText.ToString(),
-                        Selected = false
-                    });
-                }
-            return selectListItem;
+            return selectListItem = (from taxType in taxTypeList
+                                     select new SelectListItem
+                                     {
+                                         Text = taxType.Description,
+                                         Value = taxType.ValueText.ToString(),
+                                         Selected = false
+                                     }).ToList();
+
 
         }
     }
