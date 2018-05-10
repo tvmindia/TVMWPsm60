@@ -14,5 +14,15 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal SGSTPercentage { get; set; }
         public decimal IGSTPercentage { get; set; }
         public string ValueText { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
+        //Additional fields
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public bool IsUpdate { get; set; }
+    }
+    public class TaxTypeAdvanceSearch
+    {
+        public string SearchTerm { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
     }
 }

@@ -62,7 +62,6 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ReferencePersonViewModel, ReferencePerson>().ReverseMap();
                 config.CreateMap<ReferencePersonAdvanceSearchViewModel, ReferencePersonAdvanceSearch>().ReverseMap();
                 config.CreateMap<ReferenceTypeViewModel, ReferenceType>().ReverseMap();
-                config.CreateMap<ReferenceTypeAdvanceSearchViewModel, ReferenceTypeAdvanceSearch>().ReverseMap();
                 config.CreateMap<DocumentStatusViewModel, DocumentStatus>().ReverseMap();
                 config.CreateMap<EstimateViewModel, Estimate>().ReverseMap();
                 config.CreateMap<EstimateDetailViewModel, EstimateDetail>().ReverseMap();
@@ -78,7 +77,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<SalesSummaryViewModel, SalesSummary>().ReverseMap();
                 config.CreateMap<EnquiryValueFolloupSummaryViewModel, EnquiryValueFolloupSummary>().ReverseMap();
                 config.CreateMap<TaxTypeViewModel, TaxType>().ReverseMap();
-                config.CreateMap<DocumentApprovalViewModel, DocumentApproval>().ReverseMap();
+                config.CreateMap<TaxTypeAdvanceSearchViewModel, TaxTypeAdvanceSearch>().ReverseMap(); config.CreateMap<DocumentApprovalViewModel, DocumentApproval>().ReverseMap();
                 config.CreateMap<DocumentApprovalAdvanceSearchViewModel, DocumentApprovalAdvanceSearch>().ReverseMap();
                 config.CreateMap<ApproverViewModel, Approver>().ReverseMap();
                 config.CreateMap<ApproverAdvanceSearchViewModel, ApproverAdvanceSearch>().ReverseMap();
