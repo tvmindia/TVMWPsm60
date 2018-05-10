@@ -41,7 +41,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         productionQCVM = Mapper.Map<ProductionQC, ProductionQCViewModel>(_productionQCBusiness.GetProductionQC(id));
                         productionQCVM.IsUpdate = true;
-                        productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
+                        productionQCVM.ProdOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(productionOrderID);
                     }
                     else if (id == Guid.Empty && productionOrderID == null)
                     {

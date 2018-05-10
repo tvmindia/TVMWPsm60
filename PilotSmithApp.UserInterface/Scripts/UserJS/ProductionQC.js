@@ -375,7 +375,7 @@ function EditProductionQCDetail(this_Obj) {
         });
 
         if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&disabled=true&productID=" + $('#hdnProductID').val())
         }
         else {
             $('.divProductModelSelectList').empty();
@@ -391,6 +391,7 @@ function EditProductionQCDetail(this_Obj) {
         $('#FormProductionQCDetail #QCQty').val(productionQCDetail.QCQty);
         $('#FormProductionQCDetail #QCDateFormatted').val(productionQCDetail.QCDateFormatted);
         $('#FormProductionQCDetail #QCBy').val(productionQCDetail.QCBy);
+        $('#FormProductionQCDetail #hdnQCBy').val(productionQCDetail.QCBy);
         $('#divModelPopProductionQC').modal('show');
     });
 }

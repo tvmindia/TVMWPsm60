@@ -12,7 +12,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
-                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
+                    @Html.Action("ProductSelectList", "Product", new { required = "required", disabled=true })
                 </div>
                 @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
             </div>
@@ -37,7 +37,7 @@
                 @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
             </div>
             <div class="col-md-12">
-                @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
+                @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput",@readonly="" })
                 @Html.ValidationMessageFor(model => model.ProductSpec, "", new { @class = "text-danger" })
             </div>
         </div>
