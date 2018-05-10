@@ -9,7 +9,11 @@ namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IPaymentTermRepository
     {
-        List<PaymentTerm> GetAllPayTerm();
+        object InsertUpdatePaymentTerm(PaymentTerm paymentTerm);
+        List<PaymentTerm> GetAllPayTerm(PaymentTermAdvanceSearch paymentTermAdvanceSearch);
+        PaymentTerm GetPaymentTerm(string code);
+        bool CheckPaymentTermNameExist(PaymentTerm paymentTerm);
+        object DeletePaymentTerm(string code);
         List<PaymentTerm> GetPaymentTermForSelectList();
 
     }

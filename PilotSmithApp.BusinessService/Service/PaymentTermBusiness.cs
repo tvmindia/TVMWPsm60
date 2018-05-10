@@ -18,9 +18,25 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _paymentTermRepository = paymentTermRepository;
         }
-        public List<PaymentTerm> GetAllPayTerm()
+        public object InsertUpdatePaymentTerm(PaymentTerm paymentTerm)
         {
-            return _paymentTermRepository.GetAllPayTerm();
+            return _paymentTermRepository.InsertUpdatePaymentTerm(paymentTerm);
+        }
+        public List<PaymentTerm> GetAllPayTerm(PaymentTermAdvanceSearch paymentTermAdvanceSearch)
+        {
+            return _paymentTermRepository.GetAllPayTerm(paymentTermAdvanceSearch);
+        }
+        public PaymentTerm GetPaymentTerm(string code)
+        {
+            return _paymentTermRepository.GetPaymentTerm(code);
+        }
+        public bool CheckPaymentTermNameExist(PaymentTerm paymentTerm)
+        {
+            return _paymentTermRepository.CheckPaymentTermNameExist(paymentTerm);
+        }
+        public object DeletePaymentTerm(string code)
+        {
+            return _paymentTermRepository.DeletePaymentTerm(code);
         }
         public List<SelectListItem> GetPaymentTermForSelectList()
         {

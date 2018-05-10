@@ -10,7 +10,11 @@ namespace PilotSmithApp.BusinessService.Contract
 {
     public interface IPaymentTermBusiness
     {
-        List<PaymentTerm> GetAllPayTerm();
+        object InsertUpdatePaymentTerm(PaymentTerm paymentTerm);
+        List<PaymentTerm> GetAllPayTerm(PaymentTermAdvanceSearch paymentTermAdvanceSearch);
+        PaymentTerm GetPaymentTerm(string code);
+        bool CheckPaymentTermNameExist(PaymentTerm paymentTerm);
+        object DeletePaymentTerm(string code);
         List<SelectListItem> GetPaymentTermForSelectList();
     }
 }

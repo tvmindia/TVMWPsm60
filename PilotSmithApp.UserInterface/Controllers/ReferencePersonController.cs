@@ -16,18 +16,24 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
-        IReferencePersonBusiness _referencePersonBusiness;
+        private IReferencePersonBusiness _referencePersonBusiness;
         private IReferenceTypeBusiness _referenceTypeBusiness;
-        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness, IReferenceTypeBusiness referenceTypeBusiness)
+        private IAreaBusiness _areaBusiness;
+        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness, IReferenceTypeBusiness referenceTypeBusiness, IAreaBusiness areaBusiness)
         {
             _referencePersonBusiness = referencePersonBusiness;
             _referenceTypeBusiness = referenceTypeBusiness;
+            _areaBusiness = areaBusiness;
         }
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]
         public ActionResult Index()
         {
             ReferencePersonAdvanceSearchViewModel referencePersonAdvanceSearchVM = new ReferencePersonAdvanceSearchViewModel();
-            return View();
+            referencePersonAdvanceSearchVM.Area = new AreaViewModel();
+            referencePersonAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            referencePersonAdvanceSearchVM.ReferenceType = new ReferenceTypeViewModel();
+            referencePersonAdvanceSearchVM.ReferenceType.ReferenceTypeSelectList = _referenceTypeBusiness.GetReferenceTypeSelectList();
+            return View(referencePersonAdvanceSearchVM);
         }
 
         #region InsertUpdateReferencePerson

@@ -662,6 +662,7 @@
     <Content Include="Scripts\PDF.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\UserJS\PaymentTerm.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
     <Content Include="Scripts\sweetalert.min.js" />
@@ -953,6 +954,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\ReferencePerson\_AddReferencePerson.cshtml" />
     <Content Include="Views\ReferencePerson\Index.cshtml" />
+    <Content Include="Views\PaymentTerm\Index.cshtml" />
+    <Content Include="Views\PaymentTerm\_AddPaymentTerm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -966,7 +969,6 @@
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\Bank\" />
     <Folder Include="Views\FileUpload\" />
-    <Folder Include="Views\PaymentTerm\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.BusinessService\PilotSmithApp.BusinessService.csproj">

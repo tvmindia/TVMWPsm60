@@ -31,5 +31,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public string SearchTerm { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public int? ReferenceTypeCode { get; set; }
+        public ReferenceType ReferenceType { get; set; }
+        public int? AreaCode { get; set; }
+        public Area Area { get; set; }
     }
 }

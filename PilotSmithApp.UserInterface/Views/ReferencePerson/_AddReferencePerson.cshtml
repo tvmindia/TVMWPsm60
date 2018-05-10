@@ -13,7 +13,7 @@
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control newinput" } })
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -22,7 +22,7 @@
                     @Html.LabelFor(model => model.Organization, htmlAttributes: new { @class = "control-label" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.Organization, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.EditorFor(model => model.Organization, new { htmlAttributes = new { @class = "form-control newinput"} })
                     @Html.ValidationMessageFor(model => model.Organization, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     @Html.LabelFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.ReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList, "-- Select Reference Type --", new { @class = "form-control",@style="width:100%!important" })
+                    @Html.DropDownListFor(model => model.ReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList, "-- Select reference type --", new { @class = "form-control",@style="width:100%!important" })
                     @Html.HiddenFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "", @id = "hdnReferenceTypeCode" })
                 </div>
             </div>
@@ -56,7 +56,7 @@
                     @Html.LabelFor(model => model.PhoneNos, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.PhoneNos, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.EditorFor(model => model.PhoneNos, new { htmlAttributes = new { @class = "form-control newinput" } })
                     @Html.ValidationMessageFor(model => model.PhoneNos, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control newinput" } })
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     @Html.LabelFor(model => model.FaxNos, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.FaxNos, new { htmlAttributes = new { @class = "form-control newinput", @autofocus = true } })
+                    @Html.EditorFor(model => model.FaxNos, new { htmlAttributes = new { @class = "form-control newinput" } })
                     @Html.ValidationMessageFor(model => model.FaxNos, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -107,11 +107,11 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormReferencePerson");
-        $('#ReferencePersonCode').val($('#hdnReferencePersonCode').val());
-        $('#AreaCode').val($('#hdnAreaCode').val());
-        $('#ReferenceTypeCode').val($('#hdnReferenceTypeCode').val());
+        $('#FormReferencePerson #ReferencePersonCode').val($('#FormReferencePerson #hdnReferencePersonCode').val());
+        $('#FormReferencePerson #AreaCode').val($('#FormReferencePerson #hdnAreaCode').val());
+        $('#FormReferencePerson #ReferenceTypeCode').val($('#FormReferencePerson #hdnReferenceTypeCode').val());
         try {
-            $('#ReferenceTypeCode,#AreaCode').select2({
+            $('#FormReferencePerson #ReferenceTypeCode,#FormReferencePerson #AreaCode').select2({
                 dropdownParent: $("#divModelMasterPopUp")
             });
             $('.select2').addClass('form-control newinput');

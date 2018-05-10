@@ -440,6 +440,7 @@ function AddReferencePersonMaster(flag) {
     debugger;
     $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function () {
         $('#lblModelMasterContextLabel').text('Add Reference Person Information')
+        $('.modal-dialog').attr('style', 'min-width:60%')
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val(flag);
     });
@@ -469,3 +470,41 @@ function SaveSuccessReferencePerson(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+
+
+//Add PaymentTerm
+function AddPaymentTermMaster(flag) {
+    debugger;
+    $("#divMasterBody").load("PaymentTerm/MasterPartial?masterCode=", function () {
+        $('#lblModelMasterContextLabel').text('Add Payment Term Information')
+        $('#divModelMasterPopUp').modal('show');
+
+        $('#hdnMasterCall').val(flag);
+    });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessPaymentTerm(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadPaymentTermTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divPaymentTermSelectList').load('/PaymentTerm/PaymentTermSelectList?required=');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+

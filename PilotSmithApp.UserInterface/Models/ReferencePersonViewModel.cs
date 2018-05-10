@@ -21,10 +21,10 @@ namespace PilotSmithApp.UserInterface.Models
         public string Address { get; set; }
         [RegularExpression(@"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*[;,.]{0,1}\s*)+$", ErrorMessage = "Please enter a valid e-mail adress")]
         public string Email { get; set; }
-        [Display(Name = "Phone Nos")]
+        [Display(Name = "Phone")]
         [RegularExpression(@"^((\+91-?)|0)?[0-9]{10}$", ErrorMessage = "Entered phone format is not valid.")]
         public string PhoneNos { get; set; }
-        [Display(Name = "Fax Nos")]
+        [Display(Name = "Fax")]
         public string FaxNos { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
@@ -42,5 +42,12 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Search")]
         public string SearchTerm { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Reference Type")]
+        public int? ReferenceTypeCode { get; set; }
+        public ReferenceTypeViewModel ReferenceType { get; set; }
+        [Display(Name = "Area")]
+        public int? AreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+
     }
 }

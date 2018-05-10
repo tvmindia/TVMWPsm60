@@ -17,6 +17,11 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+    $("#AreaCode,#ReferenceTypeCode").select2({
+        dropdownParent: $(".divboxASearch")
+    });
+   
+    $('.select2').addClass('form-control newinput');
 });
 
 //function bind the ReferencePerson list checking search and filter
@@ -31,11 +36,14 @@ function BindOrReloadReferencePersonTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
+                $('#AreaCode').val('').trigger('change');
+                $('#ReferenceTypeCode').val('').trigger('change');
                 break;
             case 'Init':
                 break;
             case 'Search':
-                if ($('#SearchTerm').val() == '') {
+                if (($('#SearchTerm').val() == "") && ($('#AreaCode').val() == "") && ($('#ReferenceTypeCode').val() == ""))
+                {
                     return true;
                 }
                 break;
@@ -47,6 +55,8 @@ function BindOrReloadReferencePersonTable(action) {
         }
         ReferencePersonAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         ReferencePersonAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
+        ReferencePersonAdvanceSearchViewModel.AreaCode = $('#AreaCode').val();
+        ReferencePersonAdvanceSearchViewModel.ReferenceTypeCode = $('#ReferenceTypeCode').val();
         //apply datatable plugin on ReferencePerson table
         _dataTables.ReferencePersonList = $('#tblReferencePerson').DataTable(
             {
@@ -56,7 +66,7 @@ function BindOrReloadReferencePersonTable(action) {
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [ 1, 2, 3, 4,5,6,7,8,9]
+                                     columns: [0, 1, 2, 3, 4,5,6]
                                  }
                 }],
                 ordering: false,
@@ -77,7 +87,6 @@ function BindOrReloadReferencePersonTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Name", "defaultContent": "<i>-</i>" },
                 { "data": "ReferenceType.Description", "defaultContent": "<i>-</i>" },
                 { "data": "Area.Description", "defaultContent": "<i>-</i>" },
@@ -85,25 +94,24 @@ function BindOrReloadReferencePersonTable(action) {
                 { "data": "Address", "defaultContent": "<i>-</i>" },
                 { "data": "Email", "defaultContent": "<i>-</i>" },
                 { "data": "PhoneNos", "defaultContent": "<i>-</i>" },
-                { "data": "FaxNos", "defaultContent": "<i>-</i>" },
-                { "data": "GeneralNotes", "defaultContent": "<i>-</i>" },
+               // { "data": "FaxNos", "defaultContent": "<i>-</i>" },
+               // { "data": "GeneralNotes", "defaultContent": "<i>-</i>" },
                 {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditReferencePersonMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteReferencePersonMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [4] },
+                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
+                { className: "text-center", "targets": [6,7] },
                 { "targets": [0], "width": "10%" },
-                { "targets": [1], "width": "10%" },
-                { "targets": [2], "width": "10%" },
+                { "targets": [1], "width": "15%" },
+                { "targets": [2], "width": "15%" },
                 { "targets": [3], "width": "10%" },
-                { "targets": [4], "width": "10%" },
+                { "targets": [4], "width": "20%" },
                 { "targets": [5], "width": "10%" },
                 { "targets": [6], "width": "10%" },
                 { "targets": [7], "width": "10%" },
-                { "targets": [8], "width": "10%" },
-                { "targets": [9], "width": "10%" },
-                { "targets": [10], "width": "10%" },
+               // { "targets": [8], "width": "10%" },
+               // { "targets": [9], "width": "10%" },
                 ],
                 destroy: true,
                 //for performing the import operation after the data loaded
@@ -134,6 +142,7 @@ function BindOrReloadReferencePersonTable(action) {
 
 //function reset the list to initial
 function ResetReferencePersonList() {
+    $(".searchicon").removeClass('filterApplied');
     BindOrReloadReferencePersonTable('Reset');
 }
 
@@ -144,22 +153,33 @@ function ExportReferencePersonData() {
     BindOrReloadReferencePersonTable('Export');
 }
 
+//Advance filter//
+function ApplyFilterThenSearch() {
+    debugger;
+    $(".searchicon").addClass('filterApplied');
+    CloseAdvanceSearch();
+    BindOrReloadReferencePersonTable('Search');
+}
+
+//Edit Reference Person
 function EditReferencePersonMaster(thisObj) {
     debugger;
     ReferencePersonVM = _dataTables.ReferencePersonList.row($(thisObj).parents('tr')).data();
     //this will return form body(html)
     $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=" + ReferencePersonVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit ReferencePerson Information')
+        $('#lblModelMasterContextLabel').text('Edit Reference Person Information')
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val('MSTR');
     });
 }
+// Delete Reference Person Confirmation
 function DeleteReferencePersonMaster(thisObj) {
     debugger;
     ReferencePersonVM = _dataTables.ReferencePersonList.row($(thisObj).parents('tr')).data();
     notyConfirm('Are you sure to delete?', 'DeleteReferencePerson("' + ReferencePersonVM.Code + '")');
 }
 
+// Delete Reference Person 
 function DeleteReferencePerson(code) {
     debugger;
     try {

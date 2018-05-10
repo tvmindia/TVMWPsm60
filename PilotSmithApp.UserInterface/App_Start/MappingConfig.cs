@@ -60,7 +60,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<EnquiryFollowupViewModel, EnquiryFollowup>().ReverseMap();
                 config.CreateMap<EnquiryGradeViewModel, EnquiryGrade>().ReverseMap();
                 config.CreateMap<ReferencePersonViewModel, ReferencePerson>().ReverseMap();
+                config.CreateMap<ReferencePersonAdvanceSearchViewModel, ReferencePersonAdvanceSearch>().ReverseMap();
                 config.CreateMap<ReferenceTypeViewModel, ReferenceType>().ReverseMap();
+                config.CreateMap<ReferenceTypeAdvanceSearchViewModel, ReferenceTypeAdvanceSearch>().ReverseMap();
                 config.CreateMap<DocumentStatusViewModel, DocumentStatus>().ReverseMap();
                 config.CreateMap<EstimateViewModel, Estimate>().ReverseMap();
                 config.CreateMap<EstimateDetailViewModel, EstimateDetail>().ReverseMap();
