@@ -10,9 +10,13 @@ namespace PilotSmithApp.UserInterface.Models
     public class TaxTypeViewModel
     {
         public int Code { get; set; }
+        [Remote(action: "CheckTaxTypeNameExist", controller: "TaxType", AdditionalFields = "IsUpdate,Code")]
         public string Description { get; set; }
+        [Display(Name = "CGST Percentage")]
         public decimal CGSTPercentage { get; set; }
+        [Display(Name = "SGST Percentage")]
         public decimal SGSTPercentage { get; set; }
+        [Display(Name = "IGST Percentage")]
         public decimal IGSTPercentage { get; set; }
         public string ValueText { get; set; }
         public List<SelectListItem> TaxTypeSelectList { get; set; }

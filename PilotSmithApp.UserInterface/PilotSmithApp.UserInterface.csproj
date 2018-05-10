@@ -701,6 +701,7 @@
     <Content Include="Scripts\UserJS\SaleOrder.js" />
     <Content Include="Scripts\UserJS\SalesSummary.js" />
     <Content Include="Scripts\UserJS\State.js" />
+    <Content Include="Scripts\UserJS\TaxType.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
     <Content Include="Web.config">
@@ -956,6 +957,8 @@
     <Content Include="Views\ReferencePerson\Index.cshtml" />
     <Content Include="Views\PaymentTerm\Index.cshtml" />
     <Content Include="Views\PaymentTerm\_AddPaymentTerm.cshtml" />
+    <Content Include="Views\TaxType\Index.cshtml" />
+    <Content Include="Views\TaxType\_AddTaxType.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
