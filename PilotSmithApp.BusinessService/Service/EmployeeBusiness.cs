@@ -35,15 +35,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetEmployeeSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<Employee> employeeList = _employeeRepository.GetEmployeeSelectList();
-            return selectListItem = (from employee in employeeList
+            return selectListItem = employeeList!=null?(from employee in employeeList
                                      select new SelectListItem
                                      {
                                          Text = employee.Name,
                                          Value = employee.ID.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

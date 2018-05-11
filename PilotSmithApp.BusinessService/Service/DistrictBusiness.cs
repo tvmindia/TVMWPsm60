@@ -39,15 +39,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetDistrictForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<District> districtList = _districtRepository.GetDistrictForSelectList();
-            return selectListItem = (from district in districtList
+            return selectListItem = districtList!=null?(from district in districtList
                                      select new SelectListItem
                                      {
                                          Text = district.Description,
                                          Value = district.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

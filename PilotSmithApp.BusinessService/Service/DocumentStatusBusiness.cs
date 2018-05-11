@@ -19,15 +19,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetSelectListForDocumentStatus(string code)
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<DocumentStatus> documentStatusList = _documentStatusRepository.GetDocumentStatusSelectList(code);
-            return selectListItem = (from documentStatus in documentStatusList
+            return selectListItem = documentStatusList!=null?(from documentStatus in documentStatusList
                                      select new SelectListItem
                                      {
                                          Text = documentStatus.Description,
                                          Value = documentStatus.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

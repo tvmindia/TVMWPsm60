@@ -19,15 +19,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetUnitForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<Unit> unitList = _unitRepository.GetUnitForSelectList();
-            return selectListItem = (from unit in unitList
+            return selectListItem = unitList!=null?(from unit in unitList
                                      select new SelectListItem
                                      {
                                          Text = unit.Description,
                                          Value = unit.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

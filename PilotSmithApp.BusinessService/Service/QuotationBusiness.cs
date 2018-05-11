@@ -94,15 +94,15 @@ namespace PilotSmithApp.BusinessService.Service
 
         public List<SelectListItem> GetQuotationForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<Quotation> quotationList = _quotationRepository.GetQuotationForSelectList();
-            return selectListItem = (from quotation in quotationList
+            return selectListItem = quotationList!=null?(from quotation in quotationList
                                      select new SelectListItem
                                      {
                                          Text = quotation.QuoteNo,
                                          Value = quotation.ID.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
         public List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm)
         {

@@ -39,15 +39,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetTaxTypeForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<TaxType> taxTypeList = _taxTypeRepository.GetTaxTypeForSelectList();
-            return selectListItem = (from taxType in taxTypeList
+            return selectListItem = taxTypeList!=null?(from taxType in taxTypeList
                                      select new SelectListItem
                                      {
                                          Text = taxType.Description,
                                          Value = taxType.ValueText.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
 
 
         }

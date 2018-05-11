@@ -39,15 +39,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetProductModelForSelectList(Guid productID)
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<ProductModel> productModelList = _prductModelRepository.GetProductModelForSelectList(productID);
-            return selectListItem = (from productModel in productModelList
+            return selectListItem = productModelList!=null?(from productModel in productModelList
                                      select new SelectListItem
                                      {
                                          Text = productModel.Name,
                                          Value = productModel.ID.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

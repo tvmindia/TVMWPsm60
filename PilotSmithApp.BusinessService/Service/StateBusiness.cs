@@ -39,15 +39,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetStateForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<State> stateList = _stateRepository.GetStateForSelectList();
-            return selectListItem = (from state in stateList
+            return selectListItem = stateList!=null?(from state in stateList
                                      select new SelectListItem
                                      {
                                          Text = state.Description,
                                          Value = state.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
 
     }

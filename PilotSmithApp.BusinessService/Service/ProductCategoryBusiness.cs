@@ -45,15 +45,15 @@ namespace PilotSmithApp.BusinessService.Service
 
         public List<SelectListItem> GetProductCategoryForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();           
+            List<SelectListItem> selectListItem = null;           
             List<ProductCategory> productCategoryList = _productCategoryRepository.GetProductCategoryForSelectList();
-            return selectListItem = (from productCategory in productCategoryList
+            return selectListItem = productCategoryList!=null?(from productCategory in productCategoryList
                                      select new SelectListItem
                                      {
                                          Text = productCategory.Description,
                                          Value = productCategory.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

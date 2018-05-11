@@ -40,15 +40,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetCompanyForSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<Company> companyList = _companyRepository.GetCompanyForSelectList();
-            return selectListItem = (from company in companyList
+            return selectListItem = companyList!=null?(from company in companyList
                                      select new SelectListItem
                                      {
                                          Text = company.Name,
                                          Value = company.ID.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }

@@ -19,15 +19,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         public List<SelectListItem> GetDocumentTypeSelectList()
         {
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<SelectListItem> selectListItem = null;
             List<DocumentType> documentTypeList = _documentTypeRepository.GetDocumentTypeSelectList();
-            return selectListItem = (from documentType in documentTypeList
+            return selectListItem = documentTypeList!=null?(from documentType in documentTypeList
                                      select new SelectListItem
                                      {
                                          Text = documentType.Description,
                                          Value = documentType.Code.ToString(),
                                          Selected = false
-                                     }).ToList();
+                                     }).ToList():new List<SelectListItem>();
         }
     }
 }
