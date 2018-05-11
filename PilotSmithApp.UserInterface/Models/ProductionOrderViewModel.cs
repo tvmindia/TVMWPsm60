@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.UserInterface.Models
 {
@@ -17,8 +18,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime ProdOrderDate{get;set;}
         [Display(Name ="Select Sale Order")]
         public Guid? SaleOrderID{get;set;}
-        [Display(Name = "Select Customer")]
-        [Required(ErrorMessage = "Customer is missing")]
+        [Display(Name = "Select Customer")]       
         public Guid? CustomerID{get;set;}
         public DateTime? ExpectedDelvDate{get;set;}
         [Display(Name = "Prepared By")]
@@ -41,8 +41,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage ="Production Date is missing")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
         public string ProdOrderDateFormatted { get; set; }
-        [Display(Name = "Expected Delivery Date")]
-        [Required(ErrorMessage = "Delivery Date is missing")]
+        [Display(Name = "Expected Delivery Date")]       
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
         public string ExpectedDelvDateFormatted { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
@@ -56,6 +55,7 @@ namespace PilotSmithApp.UserInterface.Models
         public BranchViewModel Branch { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<ProductionOrderDetailViewModel> ProductionOrderDetailList { get; set; }
+        public List<SelectListItem> SaleOrderSelectList { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel
@@ -75,6 +75,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Product Model")]
         public Guid? ProductModelID{get;set;}
         [Display(Name = "Product Specification")]
+        [Required(ErrorMessage = "Product Specfication is missing")]
         public string ProductSpec{get;set;}
         [Display(Name ="Order Qty")]
         public decimal? OrderQty{get;set;}
@@ -129,5 +130,6 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? PrevProducedQty { get; set; }
         public decimal? Amount { get; set; }
         public decimal? CurProducedQty { get; set; }
+        public PlantViewModel Plant { get; set; }
     }
 }

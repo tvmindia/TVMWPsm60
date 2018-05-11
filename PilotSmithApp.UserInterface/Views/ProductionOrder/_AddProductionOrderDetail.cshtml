@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divProductModelSelectList">
@@ -33,7 +33,7 @@
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
@@ -78,11 +78,11 @@
 
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     <div class="divUnitSelectList">
-                        @Html.Action("UnitSelectList", "Unit", new { required = "" })
+                        @Html.Action("UnitSelectList", "Unit", new { required = "required" })
                     </div>
                     @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
                 </div>
@@ -121,9 +121,15 @@
                     @Html.LabelFor(model => model.PlantCode, htmlAttributes: new { @class = "control-label" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.PlantCode, new { htmlAttributes = new { @class = "form-control newinput" } })
-                    @Html.ValidationMessageFor(model => model.PlantCode, "", new { @class = "text-danger" })
+                    <div class="divPlantSelectList">
+                        @Html.Action("PlantSelectList", "Plant", new { required = "" })
+                    </div>
                 </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnPlantRequired", "")
+                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                @Html.Hidden("hdnPlantdisabled", false)
+                @Html.HiddenFor(model => model.PlantCode, htmlAttributes: new { @class = "", @id = "hdnPlantCode" })
             </div>
             @*<div class="col-md-12">&nbsp;</div>*@
         </div>
@@ -257,7 +263,7 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProductionOrderDetail");
-        $('#divModelPopProductionOrder #ProductID,#divModelPopProductionOrder #UnitCode').select2({
+        $('#divModelPopProductionOrder #ProductID,#divModelPopProductionOrder #UnitCode', '#divModelPopProductionOrder #PlantCode').select2({
             dropdownParent: $("#divModelPopProductionOrder")
         });
 

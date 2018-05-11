@@ -157,11 +157,11 @@ function AddProductionOrder() {
     //this will return form body(html)
     OnServerCallBegin();
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid, function () {
+        $('#lblProductionOrderInfo').text('<<ProductionOrder No.>>');
         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
         BindProductionOrderDetailList(_emptyGuid);
         //BindProductionOrderOtherChargesDetailList(_emptyGuid)
-        OnServerCallComplete();
-
+        OnServerCallComplete();      
         //resides in customjs for sliding
         openNav();
 
@@ -170,8 +170,9 @@ function AddProductionOrder() {
 
 function EditProductionOrder(this_Obj) {
     debugger;
-    OnServerCallBegin();
+    OnServerCallBegin();  
     var productionOrder = _dataTable.ProductionOrderList.row($(this_Obj).parents('tr')).data();
+    $('#lblProductionOrderInfo').text(productionOrder.ProdOrderNo);
     //this will return form body(html)
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID, function () {
 
@@ -232,9 +233,10 @@ function SaveSuccessProductionOrder(data, status) {
                 $('#IsUpdate').val('True');
                 $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
-                    BindProductionOrderDetailList(_result.ID);
+                    BindProductionOrderDetailList(_result.ID);                   
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#lblProductionOrderInfo').text(_result.ProdOrderNo);
                 });
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
                 BindOrReloadProductionOrderTable('Init');
@@ -308,8 +310,8 @@ function BindProductionOrderDetailList(id) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
-                     return row.Product.Code + "<br/>" + row.Product.Name + "<br/>" + row.ProductModel.Name + "<br/>" + row.ProductSpec
+                     debugger;                    
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -341,7 +343,7 @@ function BindProductionOrderDetailList(id) {
                      return Amount
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "PlantCode", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Plant.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "", render: function (data, type, row) {
                      debugger;
@@ -364,7 +366,7 @@ function BindProductionOrderDetailList(id) {
                      if (((row.MileStone4FcFinishDtFormatted != null && (row.MileStone4FcFinishDtFormatted)) && (row.MileStone4AcTFinishDtFormatted != null && (row.MileStone4AcTFinishDtFormatted))))
                      {
                          var M4 = '100%'
-                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M4 + '" data-content="4) ⌚ Forecast :  ' + row.MileStone4FcFinishDtFormatted + '<br/>⌚ Actual :  ' + row.MileStone4AcTFinishDtFormatted + '<br/>3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M4
+                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M4 + '" data-content="4) ⌚ Forecast :  ' + row.MileStone4FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone4AcTFinishDtFormatted + '<br/>3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M4
                      }
                      //else
                      //{
@@ -379,17 +381,18 @@ function BindProductionOrderDetailList(id) {
              ],
              columnDefs: [
                  { className: "text-right", "targets": [1, 2, 3, 4, 5, 6] },
-                 { className: "targets-left", "targets": [0] },
+                 { className: "text-left", "targets": [0] },
+                 {className:"text-center","targets":[8]},
                  { "targets": [0], "width": "20%" },
-                 { "targets": [1, 2, 3, 4, 5, 6, 7, 8], "width": "10%" },
-                 { "targets": [9], "width": "7%" }
+                 { "targets": [1, 2, 3, 4, 5, 6, 7, 8,9], "width": "10%" },
+                 //{ "targets": [9], "width": "7%" }
              ]
          });
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'left',
-        'max-width':'300px'
+        'placement': 'top',
+        
     });
    
 }
@@ -440,7 +443,7 @@ function AddProductionOrderDetailToList() {
     debugger;
     //$("#FormProductionOrderDetail").submit(function () { });
     if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True') {
-        if ($('#ProductID').val() != "") {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val()!="")) {
             debugger;
             var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
             productionOrderDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -449,6 +452,7 @@ function AddProductionOrderDetailToList() {
             productionOrderDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
             ProductModel = new Object;
             Unit = new Object;
+            Plant = new Object;
             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
             productionOrderDetailList[_datatablerowindex].ProductModel = ProductModel;
             productionOrderDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
@@ -459,6 +463,8 @@ function AddProductionOrderDetailToList() {
             productionOrderDetailList[_datatablerowindex].Unit = Unit;
             productionOrderDetailList[_datatablerowindex].Rate = $('#Rate').val();
             productionOrderDetailList[_datatablerowindex].PlantCode = $('#PlantCode').val();
+            Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
+            productionOrderDetailList[_datatablerowindex].Plant = Plant;
             productionOrderDetailList[_datatablerowindex].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
             productionOrderDetailList[_datatablerowindex].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
             productionOrderDetailList[_datatablerowindex].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
@@ -473,7 +479,7 @@ function AddProductionOrderDetailToList() {
         }
     }
     else {
-        if ($('#ProductID').val() != "") {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "")) {
             debugger;
             if (_dataTable.ProductionOrderDetailList.rows().data().length === 0)
             {
@@ -486,6 +492,7 @@ function AddProductionOrderDetailToList() {
                 productionOrderDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
                 Unit = new Object;
+                Plant = new Object;
                 ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 productionOrderDetailList[0].ProductModel = ProductModel;
                 productionOrderDetailList[0].ProductSpec = $('#ProductSpec').val();
@@ -496,6 +503,8 @@ function AddProductionOrderDetailToList() {
                 productionOrderDetailList[0].Unit = Unit;
                 productionOrderDetailList[0].Rate = $('#Rate').val();
                 productionOrderDetailList[0].PlantCode = $('#PlantCode').val();
+                Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
+                productionOrderDetailList[0].Plant = Plant;
                 productionOrderDetailList[0].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
                 productionOrderDetailList[0].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
                 productionOrderDetailList[0].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
@@ -515,7 +524,8 @@ function AddProductionOrderDetailToList() {
                     if (productionOrderDetailList.length > 0) {
                         var checkpoint = 0;
                         for (var i = 0; i < productionOrderDetailList.length; i++) {
-                            if (productionOrderDetailList[i].ProductID == $('#ProductID').val()) {
+                            if ((productionOrderDetailList[i].ProductID == $('#ProductID').val()) && (productionOrderDetailList[i].ProductModelID == $('#ProductModelID').val()
+                                && (productionOrderDetailList[i].ProductSpec == $('#ProductSpec').val() && (productionOrderDetailList[i].OrderQty == $('#OrderQty').val())))) {
                                 productionOrderDetailList[i].ProducedQty = parseFloat(productionOrderDetailList[i].ProducedQty)+parseFloat($('#ProducedQty').val());
                                 checkpoint = 1;
                                 break;
@@ -531,6 +541,7 @@ function AddProductionOrderDetailToList() {
                             var Product = new Object;
                             var ProductModel = new Object()
                             var Unit = new Object();
+                            var Plant = new Plant();
                             ProductionOrderDetailVM.ID = _emptyGuid;
                             ProductionOrderDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                             Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -546,6 +557,8 @@ function AddProductionOrderDetailToList() {
                             ProductionOrderDetailVM.Unit = Unit;
                             ProductionOrderDetailVM.UnitCode = $('#UnitCode').val();
                             ProductionOrderDetailVM.Rate = $('#Rate').val();
+                            Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
+                            ProductionOrderDetailVM.Plant = Plant;
                             ProductionOrderDetailVM.PlantCode = $('#PlantCode').val();
                             ProductionOrderDetailVM.MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
                             ProductionOrderDetailVM.MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
@@ -567,10 +580,10 @@ function AddProductionOrderDetailToList() {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'left',
+        'placement': 'top',
        
     });
-    $('#popover').css('width', '400px');
+   
 }
 
 
@@ -607,6 +620,7 @@ function EditProductionOrderDetail(this_Obj) {
         $('#FormProductionOrderDetail #hdnUnitCode').val(productionOrderDetail.UnitCode);
         $('#FormProductionOrderDetail #Rate').val(productionOrderDetail.Rate);
         $('#FormProductionOrderDetail #PlantCode').val(productionOrderDetail.PlantCode);
+        $('#FormProductionOrderDetail #hdnPlantCode').val(productionOrderDetail.PlantCode);
         $('#FormProductionOrderDetail #MileStone1FcFinishDtFormatted').val(productionOrderDetail.MileStone1FcFinishDtFormatted);
         $('#FormProductionOrderDetail #MileStone1AcTFinishDtFormatted').val(productionOrderDetail.MileStone1AcTFinishDtFormatted);
         $('#FormProductionOrderDetail #MileStone2FcFinishDtFormatted').val(productionOrderDetail.MileStone2FcFinishDtFormatted);
