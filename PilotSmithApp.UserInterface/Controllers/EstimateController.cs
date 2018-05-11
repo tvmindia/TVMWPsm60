@@ -45,6 +45,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate(id));
                     estimateVM.IsUpdate = true;
+                    estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
                 }
                 else if(id==Guid.Empty && enquiryID==null)
                 {
@@ -52,6 +53,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.IsUpdate = false;
                     estimateVM.ID = Guid.Empty;
                     estimateVM.DocumentStatusCode = 3;
+                    estimateVM.EnquiryID = null;
+                    estimateVM.EnquirySelectList = new List<SelectListItem>();
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {
@@ -62,6 +65,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.CustomerID = enquiryVM.CustomerID;
                     estimateVM.BranchCode = enquiryVM.BranchCode;
                     estimateVM.DocumentStatusCode = 3;
+                    estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
+                    estimateVM.EnquiryID = enquiryID;
                 }
                 
             }
@@ -162,14 +167,35 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         # region EstimateSelectList
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public ActionResult EstimateSelectList(string required)
+        public ActionResult EstimateSelectList(string required, Guid? id)
         {
             ViewBag.IsRequired = required;
             EstimateViewModel estimateVM = new EstimateViewModel();
-            estimateVM.EstimateSelectList= _estimateBusiness.GetEstimateForSelectList();
+            estimateVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(id==Guid.Empty?null:id);
             return PartialView("_EstimateSelectList", estimateVM);
         }
         #endregion EstimateSelectList
+
+        #region GetEstimateForSelectListOnDemand
+        public ActionResult GetEstimateForSelectListOnDemand(string searchTerm)
+        {
+            List<EstimateViewModel> estimateVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<Estimate>, List<EstimateViewModel>>(_estimateBusiness.GetEstimateForSelectListOnDemand(searchTerm));
+            var list = new List<Select2Model>();
+            if(estimateVMList!=null)
+            {
+                foreach(EstimateViewModel estimateVM in estimateVMList)
+                {
+                    list.Add(new Select2Model()
+                    {
+                        text=estimateVM.EstimateNo,
+                        id=estimateVM.ID.ToString()
+                    });
+
+                }
+            }
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion GetEstimateForSelectListOnDemand
 
         #region Get Estimate DetailList By EstimateID
         [HttpGet]

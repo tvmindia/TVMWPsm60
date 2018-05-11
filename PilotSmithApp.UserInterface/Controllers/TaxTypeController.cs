@@ -61,7 +61,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "TaxType", Mode = "R")]
         public ActionResult CheckTaxTypeNameExist(TaxTypeViewModel taxTypeVM)
         {
-            bool exists = taxTypeVM.IsUpdate ? false : _taxTypeBusiness.CheckTaxTypeNameExist(Mapper.Map<TaxTypeViewModel, TaxType>(taxTypeVM));
+            bool exists =  _taxTypeBusiness.CheckTaxTypeNameExist(Mapper.Map<TaxTypeViewModel, TaxType>(taxTypeVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>TaxType already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);

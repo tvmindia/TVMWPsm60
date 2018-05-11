@@ -407,7 +407,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion Delete Enquiry Detail
 
         #region GetEnquiryForSelectList
-        public List<Enquiry> GetEnquiryForSelectList()
+        public List<Enquiry> GetEnquiryForSelectList(Guid? id)
         {
             List<Enquiry> enquiryList = null;
             try
@@ -423,6 +423,14 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetSelectListForEnquiry]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        if (id == null)
+                        {
+                            cmd.Parameters.AddWithValue("@ID", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        }
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))

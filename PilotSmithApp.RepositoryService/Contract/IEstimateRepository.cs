@@ -12,7 +12,8 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<Estimate> GetAllEstimate(EstimateAdvanceSearch estimateAdvanceSearch);
         Estimate GetEstimate(Guid id);
         List<EstimateDetail> GetEstimateDetailListByEstimateID(Guid estimateID);
-        List<Estimate> GetEstimateForSelectList();
+        List<Estimate> GetEstimateForSelectList(Guid? id);
+        List<Estimate> GetEstimateForSelectListOnDemand(string searchTerm);
         object InsertUpdateEstimate(Estimate estimate);
         object DeleteEstimate(Guid id);
         object DeleteEstimateDetail(Guid id);

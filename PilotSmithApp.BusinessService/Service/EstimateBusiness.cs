@@ -48,10 +48,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _estimateRepository.DeleteEstimateDetail(id);
         }
-        public List<SelectListItem> GetEstimateForSelectList()
+        public List<SelectListItem> GetEstimateForSelectList(Guid? id)
         {
             List<SelectListItem> selectListItem =null;
-            List<Estimate> estimateList = _estimateRepository.GetEstimateForSelectList();
+            List<Estimate> estimateList = _estimateRepository.GetEstimateForSelectList(id);
             return selectListItem = estimateList!=null?(from estimate in estimateList
                                      select new SelectListItem
                                      {
@@ -59,6 +59,10 @@ namespace PilotSmithApp.BusinessService.Service
                                          Value = estimate.ID.ToString(),
                                          Selected = false
                                      }).ToList():new List<SelectListItem>();
+        }
+        public List<Estimate> GetEstimateForSelectListOnDemand(string searchTerm)
+        {
+            return _estimateRepository.GetEstimateForSelectListOnDemand(searchTerm);
         }
     }  
 }

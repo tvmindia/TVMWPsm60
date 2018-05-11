@@ -65,7 +65,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Plant", Mode = "R")]
         public ActionResult CheckPlantExist(PlantViewModel plantVM)
         {
-            bool exists = plantVM.IsUpdate ? false : _plantBusiness.CheckPlantNameExist(Mapper.Map<PlantViewModel, Plant>(plantVM));
+            bool exists =_plantBusiness.CheckPlantNameExist(Mapper.Map<PlantViewModel, Plant>(plantVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>Plant already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);

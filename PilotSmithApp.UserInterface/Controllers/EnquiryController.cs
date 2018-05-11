@@ -248,7 +248,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #endregion InsertUpdateEnquiry
         #region Get Enquiry SelectList On Demand
-        public ActionResult GetEnquirySelectListOnDemand(string searchTerm)
+        public ActionResult GetEnquiryForSelectListOnDemand(string searchTerm)
         {
             List<EnquiryViewModel> enquiryVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetEnquiryForSelectListOnDemand(searchTerm));
             var list = new List<Select2Model>();
@@ -267,11 +267,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get Enquiry SelectList On Demand
         #region EnquirySelectList
-        public ActionResult EnquirySelectList(string required)
+        public ActionResult EnquirySelectList(string required,Guid? id)
         {
             ViewBag.IsRequired = required;
             EnquiryViewModel enquiryVM = new EnquiryViewModel();
-            enquiryVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList();
+            enquiryVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(id);
             return PartialView("_EnquirySelectList", enquiryVM);
         }
         #endregion EnquirySelectList
