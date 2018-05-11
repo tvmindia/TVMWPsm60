@@ -60,7 +60,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "PaymentTerm", Mode = "R")]
         public ActionResult CheckPaymentTermCodeExist(PaymentTermViewModel paymentTermVM)
         {
-            bool exists = paymentTermVM.IsUpdate ? false : _paymentTermBusiness.CheckPaymentTermNameExist(Mapper.Map<PaymentTermViewModel, PaymentTerm>(paymentTermVM));
+            bool exists = _paymentTermBusiness.CheckPaymentTermNameExist(Mapper.Map<PaymentTermViewModel, PaymentTerm>(paymentTermVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>Code already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);

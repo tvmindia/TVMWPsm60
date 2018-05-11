@@ -61,7 +61,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "CustomerCategory", Mode = "R")]
         public ActionResult CheckCustomerCategoryExist(CustomerCategoryViewModel customerCategoryVM)
         {
-            bool exists = customerCategoryVM.IsUpdate ? false : _customerCategoryBusiness.CheckCustomerCategoryNameExist(Mapper.Map<CustomerCategoryViewModel, CustomerCategory>(customerCategoryVM));
+            bool exists = _customerCategoryBusiness.CheckCustomerCategoryNameExist(Mapper.Map<CustomerCategoryViewModel, CustomerCategory>(customerCategoryVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>CustomerCategory already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);

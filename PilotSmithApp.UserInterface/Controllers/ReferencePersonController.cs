@@ -68,7 +68,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]
         public ActionResult CheckReferencePersonNameExist(ReferencePersonViewModel referencePersonVM)
         {
-            bool exists = referencePersonVM.IsUpdate ? false : _referencePersonBusiness.CheckReferencePersonNameExist(Mapper.Map<ReferencePersonViewModel, ReferencePerson>(referencePersonVM));
+            bool exists =  _referencePersonBusiness.CheckReferencePersonNameExist(Mapper.Map<ReferencePersonViewModel, ReferencePerson>(referencePersonVM));
             if (exists)
             {
                 return Json("<p><span style='vertical-align: 2px'>ReferencePerson already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
