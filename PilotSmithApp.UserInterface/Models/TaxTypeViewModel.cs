@@ -10,6 +10,7 @@ namespace PilotSmithApp.UserInterface.Models
     public class TaxTypeViewModel
     {
         public int Code { get; set; }
+        [Required(ErrorMessage = "Description is missing")]
         [Remote(action: "CheckTaxTypeNameExist", controller: "TaxType", AdditionalFields = "IsUpdate,Code")]
         public string Description { get; set; }
         [Display(Name = "CGST Percentage")]

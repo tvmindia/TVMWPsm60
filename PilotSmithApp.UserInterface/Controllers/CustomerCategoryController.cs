@@ -137,7 +137,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ButtonStyling
         [HttpGet]
-        // [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
+         [AuthSecurityFilter(ProjectObject = "CustomerCategory", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();

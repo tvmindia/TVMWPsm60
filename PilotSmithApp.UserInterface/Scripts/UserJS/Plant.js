@@ -9,9 +9,9 @@ var _result = "";
 
 $(document).ready(function () {
     try {
-        BindOrReloadTaxTypeTable('Init');
-        $('#tblTaxType tbody').on('dblclick', 'td', function () {
-            EditTaxTypeMaster(this);
+        BindOrReloadPlantTable('Init');
+        $('#tblPlant tbody').on('dblclick', 'td', function () {
+            EditPlantMaster(this);
         });
     }
     catch (e) {
@@ -19,12 +19,12 @@ $(document).ready(function () {
     }
 });
 
-//function bind the TaxType list checking search and filter
-function BindOrReloadTaxTypeTable(action) {
+//function bind the Plant list checking search and filter
+function BindOrReloadPlantTable(action) {
     try {
         debugger;
         //creating advancesearch object
-        TaxTypeAdvanceSearchViewModel = new Object();
+        PlantAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
         //switch case to check the operation
@@ -45,17 +45,17 @@ function BindOrReloadTaxTypeTable(action) {
             default:
                 break;
         }
-        TaxTypeAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        TaxTypeAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        //apply datatable plugin on TaxType table
-        _dataTables.TaxTypeList = $('#tblTaxType').DataTable(
+        PlantAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+        PlantAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
+        //apply datatable plugin on Plant table
+        _dataTables.PlantList = $('#tblPlant').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [0, 1, 2,3]
+                                     columns: [0]
                                  }
                 }],
                 ordering: false,
@@ -70,35 +70,27 @@ function BindOrReloadTaxTypeTable(action) {
                 serverSide: true,
                 ajax: {
 
-                    url: "TaxType/GetAllTaxType",
-                    data: { "TaxTypeAdvanceSearchVM": TaxTypeAdvanceSearchViewModel },
+                    url: "Plant/GetAllPlant",
+                    data: { "PlantAdvanceSearchVM": PlantAdvanceSearchViewModel },
                     type: 'POST'
                 },
                 pageLength: 10,
                 columns: [
-                //{ "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Description", "defaultContent": "<i>-</i>" },
-                { "data": "CGSTPercentage", "defaultContent": "<i>-</i>" },
-                { "data": "SGSTPercentage", "defaultContent": "<i>-</i>" },
-                { "data": "IGSTPercentage", "defaultContent": "<i>-</i>" },
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditTaxTypeMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteTaxTypeMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditPlantMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeletePlantMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [1,2, 3,4] },
+                { className: "text-center", "targets": [1] },
                 { className: "text-right", "targets": [] },
-                { "targets": [0], "width": "30%" },
-                { "targets": [1], "width": "20%" },
-                { "targets": [2], "width": "20%" },
-                { "targets": [3], "width": "20%" },
-                { "targets": [4], "width": "10%" },
-                //{ "targets": [5], "width": "10%" },
+                { "targets": [0], "width": "70%" },
+                { "targets": [1], "width": "30%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblTaxType').fadeIn(100);
+                    $('#tblPlant').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();
@@ -110,7 +102,7 @@ function BindOrReloadTaxTypeTable(action) {
                             }
                         }
                         $('.buttons-excel').trigger('click');
-                        BindOrReloadTaxTypeTable();
+                        BindOrReloadPlantTable();
                     }
                 }
             });
@@ -122,38 +114,38 @@ function BindOrReloadTaxTypeTable(action) {
 }
 
 //function reset the list to initial
-function ResetTaxTypeList() {
-    BindOrReloadTaxTypeTable('Reset');
+function ResetPlantList() {
+    BindOrReloadPlantTable('Reset');
 }
 
 //function export data to excel
-function ExportTaxTypeData() {
+function ExportPlantData() {
     $('.excelExport').show();
     OnServerCallBegin();
-    BindOrReloadTaxTypeTable('Export');
+    BindOrReloadPlantTable('Export');
 }
 
-function EditTaxTypeMaster(thisObj) {
+function EditPlantMaster(thisObj) {
     debugger;
-    TaxTypeVM = _dataTables.TaxTypeList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("TaxType/MasterPartial?masterCode=" + TaxTypeVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit Tax Type Information')
+    PlantVM = _dataTables.PlantList.row($(thisObj).parents('tr')).data();
+    $("#divMasterBody").load("Plant/MasterPartial?masterCode=" + PlantVM.Code, function () {
+        $('#lblModelMasterContextLabel').text('Edit Plant Information')
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val('MSTR');
     });
 }
-function DeleteTaxTypeMaster(thisObj) {
+function DeletePlantMaster(thisObj) {
     debugger;
-    TaxTypeVM = _dataTables.TaxTypeList.row($(thisObj).parents('tr')).data();
-    notyConfirm('Are you sure to delete?', 'DeleteTaxType("' + TaxTypeVM.Code + '")');
+    PlantVM = _dataTables.PlantList.row($(thisObj).parents('tr')).data();
+    notyConfirm('Are you sure to delete?', 'DeletePlant("' + PlantVM.Code + '")');
 }
 
-function DeleteTaxType(code) {
+function DeletePlant(code) {
     debugger;
     try {
         if (code) {
             var data = { "code": code };
-            _jsonData = GetDataFromServer("TaxType/DeleteTaxType/", data);
+            _jsonData = GetDataFromServer("Plant/DeletePlant/", data);
             if (_jsonData != '') {
                 _jsonData = JSON.parse(_jsonData);
                 _message = _jsonData.Message;
@@ -163,7 +155,7 @@ function DeleteTaxType(code) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _result.Message);
-                    BindOrReloadTaxTypeTable('Reset');
+                    BindOrReloadPlantTable('Reset');
                     break;
                 case "ERROR":
                     notyAlert('error', _message);

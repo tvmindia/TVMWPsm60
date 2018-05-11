@@ -128,7 +128,7 @@ function ExportCustomerCategoryData() {
 function EditCustomerCategoryMaster(thisObj) {
     debugger;
     CustomerCategoryVM = _dataTables.CustomerCategoryList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("CustomerCategory/MasterPartial?masterCode=0" + CustomerCategoryVM.Code, function () {
+    $("#divMasterBody").load("CustomerCategory/MasterPartial?masterCode=" + CustomerCategoryVM.Code, function () {
         $('#lblModelMasterContextLabel').text('Edit Customer Category Information')
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val('MSTR');

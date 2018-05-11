@@ -664,6 +664,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
+    <Content Include="Scripts\UserJS\Plant.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
     <Content Include="Scripts\sweetalert.min.js" />
@@ -960,6 +961,8 @@
     <Content Include="Views\PaymentTerm\_AddPaymentTerm.cshtml" />
     <Content Include="Views\TaxType\Index.cshtml" />
     <Content Include="Views\TaxType\_AddTaxType.cshtml" />
+    <Content Include="Views\Plant\Index.cshtml" />
+    <Content Include="Views\Plant\_AddPlant.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
