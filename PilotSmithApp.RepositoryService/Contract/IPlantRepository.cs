@@ -9,6 +9,11 @@ namespace PilotSmithApp.RepositoryService.Contract
 {
     public interface IPlantRepository
     {
+        object InsertUpdatePlant(Plant plant);
+        List<Plant> GetAllPlant(PlantAdvanceSearch plantAdvanceSearch);
+        Plant GetPlant(int code);
+        bool CheckPlantNameExist(Plant plant);
+        object DeletePlant(int code);
         List<Plant> GetPlantForSelectList();
     }
 }

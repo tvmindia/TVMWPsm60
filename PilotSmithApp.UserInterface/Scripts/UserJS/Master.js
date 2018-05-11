@@ -457,7 +457,7 @@ function SaveSuccessReferencePerson(data, status) {
                 BindOrReloadReferencePersonTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divAreaSelectList').load('/Area/ReferencePersonSelectList?required=');
+                $('.divReferencePersonSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -567,6 +567,42 @@ function SaveSuccessCustomerCategory(data, status) {
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('.divCustomerCategorySelectList').load('/CustomerCategory/CustomerCategorySelectList?required=');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+
+//Add Plant
+function AddPlantMaster(flag) {
+    debugger;
+    $("#divMasterBody").load("Plant/MasterPartial?masterCode=0", function () {
+        $('#lblModelMasterContextLabel').text('Add Plant Information')
+        $('#divModelMasterPopUp').modal('show');
+
+        $('#hdnMasterCall').val(flag);
+    });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessPlant(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadPlantTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divPlantSelectList').load('/Plant/PlantSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

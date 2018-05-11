@@ -17,6 +17,26 @@ namespace PilotSmithApp.BusinessService.Service
         {
             _plantRepository = plantRepository;
         }
+        public object InsertUpdatePlant(Plant plant)
+        {
+            return _plantRepository.InsertUpdatePlant(plant);
+        }
+        public List<Plant> GetAllPlant(PlantAdvanceSearch plantAdvanceSearch)
+        {
+            return _plantRepository.GetAllPlant(plantAdvanceSearch);
+        }
+        public Plant GetPlant(int code)
+        {
+            return _plantRepository.GetPlant(code);
+        }
+        public bool CheckPlantNameExist(Plant plant)
+        {
+            return _plantRepository.CheckPlantNameExist(plant);
+        }
+        public object DeletePlant(int code)
+        {
+            return _plantRepository.DeletePlant(code);
+        }
         public List<SelectListItem> GetPlantForSelectList()
         {
             List<SelectListItem> selectListItem = null;
