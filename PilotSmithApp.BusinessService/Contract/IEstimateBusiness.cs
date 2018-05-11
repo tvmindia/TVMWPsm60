@@ -13,7 +13,8 @@ namespace PilotSmithApp.BusinessService.Contract
         List<Estimate> GetAllEstimate(EstimateAdvanceSearch estimateAdvanceSearch);
         Estimate GetEstimate(Guid id);
         List<EstimateDetail> GetEstimateDetailListByEstimateID(Guid estimateID);
-        List<SelectListItem> GetEstimateForSelectList();
+        List<SelectListItem> GetEstimateForSelectList(Guid? id);
+        List<Estimate> GetEstimateForSelectListOnDemand(string searchTerm);
         object InsertUpdateEstimate(Estimate estimate);
         object DeleteEstimate(Guid id);
         object DeleteEstimateDetail(Guid id);

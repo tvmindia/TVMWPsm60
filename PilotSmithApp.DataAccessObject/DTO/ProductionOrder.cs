@@ -79,6 +79,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string MileStone3AcTFinishDtFormatted { get; set; }
         public string MileStone4FcFinishDtFormatted { get; set; }
         public string MileStone4AcTFinishDtFormatted { get; set; }
+        public Guid SpecTag { get; set; }
         public decimal QCCompletedQty { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }

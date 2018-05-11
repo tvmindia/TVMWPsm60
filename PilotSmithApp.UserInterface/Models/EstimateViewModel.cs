@@ -55,6 +55,7 @@ namespace PilotSmithApp.UserInterface.Models
         public List<EstimateDetailViewModel> EstimateDetailList { get; set; }
         public EmployeeViewModel Employee { get; set; }
         public List<SelectListItem> EstimateSelectList { get; set; }
+        public List<SelectListItem> EnquirySelectList { get; set; }
     }
 
     public class EstimateAdvanceSearchViewModel
@@ -86,7 +87,8 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Selling Rate")]
         public decimal? SellingRate { get; set; }
         public string DrawingNo { get; set; }
-        
+        public Guid SpecTag { get; set; }
+
         //Additional Fields
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }

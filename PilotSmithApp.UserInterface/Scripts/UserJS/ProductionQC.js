@@ -156,6 +156,7 @@ function AddProductionQC() {
 function EditProductionQC(this_Obj) {
     OnServerCallBegin();
     var ProductionQC = _dataTable.ProductionQCList.row($(this_Obj).parents('tr')).data();
+    $('#lblProductionQCInfo').text(ProductionQC.ProdQCNo);
     //this will return form body(html)
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID + "&productionOrderID=" + ProductionQC.ProdOrderID, function () {
         //$('#CustomerID').trigger('change');
@@ -202,6 +203,7 @@ function SaveSuccessProductionQC(data, status) {
                     BindProductionQCDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#lblProductionQCInfo').text(_result.ProdQCNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionQCForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
