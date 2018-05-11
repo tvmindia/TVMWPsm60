@@ -57,6 +57,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal QCQty { get; set; }
         public DateTime QCDate { get; set; }
         public Guid? QCBy { get; set; }
+        public Guid SpecTag { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set; }

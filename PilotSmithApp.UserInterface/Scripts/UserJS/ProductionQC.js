@@ -276,7 +276,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return data + "<br/>" + row.Product.Name + "<br/>" + row.ProductSpec
+                     return row.Product.Name + "<br/>" +'<div style="width:50%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>'+ row.ProductModel.Name 
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -299,15 +299,20 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "35%" },
+                 { "targets": [0], "width": "30%" },
                  { "targets": [1, 2], "width": "15%" },
                  { "targets": [3, 4], "width": "10%" },
                  { "targets": [5], "width": "10%" },
-                 { "targets": [6], "width": "5%" },
+                 { "targets": [6], "width": "10%" },
                  { className: "text-left", "targets": [0, 1, 2, 3,4,5] },
                  { className: "text-center", "targets": [ 6] }
              ]
          });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'right'
+    });
 }
 function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {
     try {

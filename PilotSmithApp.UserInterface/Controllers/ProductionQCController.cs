@@ -267,6 +267,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         QCQtyPrevious=prodOrderVM.QCCompletedQty,
                         QCQty= (prodOrderVM.ProducedQty - prodOrderVM.QCCompletedQty)>0? (prodOrderVM.ProducedQty - prodOrderVM.QCCompletedQty) :0,
                         Unit=prodOrderVM.Unit,
+                        SpecTag=prodOrderVM.SpecTag,
                         QCDate=_pSASysCommon.GetCurrentDateTime(),
                         QCDateFormatted=_pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),
                         Employee=new EmployeeViewModel() { Name=""}                        

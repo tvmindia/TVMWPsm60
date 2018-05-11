@@ -81,6 +81,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "QC By is missing")]
         [Display(Name ="Select QC By")]
         public Guid? QCBy { get; set; }
+        public Guid SpecTag { get; set; }
         //additional fields
         [Required(ErrorMessage ="QC Date is missing")]
         [Display(Name = "QC Date")]

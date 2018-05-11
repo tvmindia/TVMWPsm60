@@ -220,6 +220,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.MileStone4FcFinishDtFormatted = (sdr["MileStone4FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4FcFinishDtFormatted);
                                         productionOrderDetail.MileStone4AcTFinishDt = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()) : productionOrderDetail.MileStone4AcTFinishDt);
                                         productionOrderDetail.MileStone4AcTFinishDtFormatted = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4AcTFinishDtFormatted);
+                                        productionOrderDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : Guid.Empty);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
                                 }
