@@ -61,6 +61,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? CostRate { get; set; }
         public decimal? SellingRate { get; set; }
         public string DrawingNo { get; set; }
+        public Guid SpecTag { get; set; }
 
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }

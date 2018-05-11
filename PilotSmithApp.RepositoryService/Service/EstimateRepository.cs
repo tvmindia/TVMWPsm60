@@ -304,7 +304,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion InsertUpdateEstimate
 
         #region GetEstimateForSelectList
-        public List<Estimate> GetEstimateForSelectList()
+        public List<Estimate> GetEstimateForSelectList(Guid? id)
         {
             List<Estimate> estimateList = null;
             try
@@ -320,6 +320,14 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetSelectListForEstimate]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        if(id==null)
+                        {
+                            cmd.Parameters.AddWithValue("@ID", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        }
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
@@ -346,6 +354,58 @@ namespace PilotSmithApp.RepositoryService.Service
             return estimateList;
         }
         #endregion GetEstimateForSelectList
+
+        #region GetEstimateForSelectListOnDemand
+        public List<Estimate> GetEstimateForSelectListOnDemand(string searchTerm)
+        {
+            List<Estimate> estimateList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEstimateForSelectListOnDemand]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (string.IsNullOrEmpty(searchTerm))
+                        {
+                            cmd.Parameters.AddWithValue("@SearchTerm", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@SearchTerm", SqlDbType.VarChar,250).Value = searchTerm;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                estimateList = new List<Estimate>();
+                                while (sdr.Read())
+                                {
+                                    Estimate estimate = new Estimate();
+                                    {
+                                        estimate.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : estimate.ID);
+                                        estimate.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : estimate.EstimateNo);
+                                    }
+                                    estimateList.Add(estimate);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return estimateList;
+        }
+        #endregion GetEstimateForSelectListOnDemand
 
         #region DeleteEstimate
         public object DeleteEstimate(Guid id)

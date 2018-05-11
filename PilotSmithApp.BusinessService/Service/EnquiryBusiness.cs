@@ -47,10 +47,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _enquiryRepository.DeleteEnquiryDetail(id);
         }
-        public List<SelectListItem> GetEnquiryForSelectList()
+        public List<SelectListItem> GetEnquiryForSelectList(Guid? id)
         {
             List<SelectListItem> selectListItem = null;
-            List<Enquiry> enquiryList = _enquiryRepository.GetEnquiryForSelectList();
+            List<Enquiry> enquiryList = _enquiryRepository.GetEnquiryForSelectList(id);
             return selectListItem = enquiryList!=null?(from enquiry in enquiryList
                                      select new SelectListItem
                                      {

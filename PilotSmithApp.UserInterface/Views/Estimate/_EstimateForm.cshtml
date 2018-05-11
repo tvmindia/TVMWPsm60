@@ -7,7 +7,7 @@
 </style>
 @using (Ajax.BeginForm("InsertUpdateEstimate", "Estimate", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEstimate", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "EstimateForm" }))
 {
-    @*@Html.AntiForgeryToken()*@
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
@@ -18,7 +18,7 @@
             <div class="col-md-12 headSeperator">General Details</div>
 
             <div class="form-group col-md-6 ">
-                <div class="col-md-12 no-padding">
+                @*<div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.EnquiryID, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -26,6 +26,25 @@
                         <div class="divEnquirySelectList">
                             @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
                         </div>
+                    </div>
+                    @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
+                </div>*@
+
+
+                <div class="col-md-12 no-padding" id="divEnquirySelectList">
+                    <div class="col-md-12">
+                        @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @if (Model.IsUpdate)
+                        {
+                            @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnEnquiryID').val(this.value)" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
+                        }
+                        @Html.ValidationMessageFor(model => model.EnquiryID, "", new { @class = "text-danger" })
                     </div>
                     @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
                 </div>
@@ -278,6 +297,36 @@
                     OnServerCallComplete();
                 });
             });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('#EnquiryID').val($('#hdnEnquiryID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEnquiryID').val());
+            $('#EnquiryID').select2({
+                language: {
+                    noResults: function (params) {
+                        return "Search result will shows here";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "Enquiry/GetEnquiryForSelectListOnDemand/",
+                    delay: 250,
+                    data: function (term) {
+                        return {
+                            'searchTerm': term.term //search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    },
+                }
+            });
+            $('.select2').addClass('form-control newinput');
         }
         catch (e) {
             console.log(e.message);
