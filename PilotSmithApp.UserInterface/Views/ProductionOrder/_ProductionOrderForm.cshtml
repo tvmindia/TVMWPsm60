@@ -18,18 +18,36 @@
             <div class="col-md-12 headSeperator">General Details</div>
 
             <div class="form-group col-md-6 ">
-                <div class="col-md-12 no-padding">
+                @*<div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.SaleOrderID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         <div class="divEnquirySelectList">
-                            @*@Html.Action("EnquirySelectList", "Enquiry", new { required = "" })*@
+                            @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
                         </div>
                     </div>
                     @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
-                </div>
+                </div>*@
 
+
+                <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
+                    <div class="col-md-12">
+                        @Html.Label("Search and select a SaleOrder", htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @if (Model.IsUpdate)
+                        {
+                            @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
+                        }
+                        @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })
+                    </div>
+                    @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
+                </div>
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -62,7 +80,7 @@
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.ExpectedDelvDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                        @Html.LabelFor(model => model.ExpectedDelvDateFormatted, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.ExpectedDelvDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
@@ -97,7 +115,7 @@
 
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
@@ -132,7 +150,7 @@
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
-
+   
 
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
@@ -254,6 +272,36 @@
                     OnServerCallComplete();
                 });
             });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('#SaleOrderID').val($('#hdnSaleOrderID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnSaleOrderID').val());
+            $('#SaleOrderID').select2({
+                language: {
+                    noResults: function (params) {
+                        return "Search result will shows here";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "SaleOrder/GetSaleOrderSelectListOnDemand/",
+                    delay: 250,
+                    data: function (term) {
+                        return {
+                            'searchTerm': term.term //search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    },
+                }
+            });
+            $('.select2').addClass('form-control newinput');
         }
         catch (e) {
             console.log(e.message);

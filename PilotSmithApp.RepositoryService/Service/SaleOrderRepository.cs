@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PilotSmithApp.RepositoryService.Service
 {
-    public class SaleOrderRepository:ISaleOrderRepository
+    public class SaleOrderRepository : ISaleOrderRepository
     {
         private IDatabaseFactory _databaseFactory;
         AppConst _appConstant = new AppConst();
@@ -74,5 +74,57 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionOrderList;
         }
         #endregion GetSaleOrderForSelectListOnDemand
+
+        #region GetSaleOrderForSelectList
+        public List<SaleOrder> GetSaleOrderForSelectList(Guid? id)
+        {
+            List<SaleOrder> productionOrderList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetSaleOrderForSelectList]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (id==null)
+                        {
+                            cmd.Parameters.AddWithValue("@ID", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                productionOrderList = new List<SaleOrder>();
+                                while (sdr.Read())
+                                {
+                                    SaleOrder productionOrder = new SaleOrder();
+                                    {
+                                        productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
+                                        productionOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : productionOrder.SaleOrderNo);
+                                    }
+                                    productionOrderList.Add(productionOrder);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return productionOrderList;            
+        }
+        #endregion GetSaleOrderForSelectList
     }
 }

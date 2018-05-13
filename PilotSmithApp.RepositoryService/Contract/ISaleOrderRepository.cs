@@ -10,5 +10,6 @@ namespace PilotSmithApp.RepositoryService.Contract
     public interface ISaleOrderRepository
     {
         List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm);
+        List<SaleOrder> GetSaleOrderForSelectList(Guid? id);
     }
 }

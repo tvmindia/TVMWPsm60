@@ -17,9 +17,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IProductionOrderBusiness _productionOrderBusiness;
-        public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness)
+        ISaleOrderBusiness _saleOrderBusiness;
+        public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness,ISaleOrderBusiness saleOrderBusiness)
         {
             _productionOrderBusiness = productionOrderBusiness;
+            _saleOrderBusiness = saleOrderBusiness;
         }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductOrder", Mode = "R")]
@@ -30,7 +32,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ProductionOrderForm Form
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
-        public ActionResult ProductionOrderForm(Guid id)
+        public ActionResult ProductionOrderForm(Guid id,Guid? saleOrderID)
         {
             ProductionOrderViewModel productionOrderVM = null;
             try
@@ -39,14 +41,28 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(id));
                     productionOrderVM.IsUpdate = true;
+                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                 }
-                else if (id == Guid.Empty)
+                else if (id == Guid.Empty && saleOrderID==null)
                 {
                     productionOrderVM = new ProductionOrderViewModel();
                     productionOrderVM.IsUpdate = false;
                     productionOrderVM.ID = Guid.Empty;
                     productionOrderVM.DocumentStatusCode = 7;
-                }                
+                    productionOrderVM.SaleOrderID = null;
+                    productionOrderVM.SaleOrderSelectList = new List<SelectListItem>();
+                }     
+                else if(id==Guid.Empty && saleOrderID!=null)
+                {
+                    SaleOrderViewModel saleOrderVM = null;//Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.(id));
+                    productionOrderVM = new ProductionOrderViewModel();
+                    productionOrderVM.IsUpdate = false;
+                    productionOrderVM.ID = Guid.Empty;
+                    productionOrderVM.DocumentStatusCode = 7;
+                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
+                    productionOrderVM.SaleOrderID = saleOrderID;
+                    productionOrderVM.CustomerID = saleOrderVM.CustomerID;
+                }           
             }
             catch(Exception ex)
             {
@@ -61,6 +77,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();
             productionOrderDetailVM.IsUpdate = false;
+            productionOrderDetailVM.OrderQty = 0;
+            productionOrderDetailVM.ProducedQty = 0;
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -139,7 +157,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion GetAllProductionOrder
 
-        #region Get QUotation SelectList On Demand
+        #region Get ProductionOrder SelectList On Demand
         public ActionResult GetProductionOrderSelectListOnDemand(string searchTerm)
         {
             List<ProductionOrderViewModel> productionOrderVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<ProductionOrder>,List<ProductionOrderViewModel>>(_productionOrderBusiness.GetProductionOrderForSelectListOnDemand(searchTerm));
