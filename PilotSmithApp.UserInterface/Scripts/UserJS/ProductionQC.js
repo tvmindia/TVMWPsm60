@@ -143,6 +143,7 @@ function ExportProductionQCData() {
 function AddProductionQC() {
     //this will return form body(html)
     OnServerCallBegin();
+    $('#lblProductionQCInfo').text("<<ProductionQC No.>>");
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid + "&productionOrderID=", function () {
         ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Add");
         BindProductionQCDetailList(_emptyGuid);
@@ -276,7 +277,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" +'<div style="width:50%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>'+ row.ProductModel.Name 
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +row.Product.Name + "<br/>" + row.ProductModel.Name 
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -311,7 +312,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'right'
+        'placement': 'top'
     });
 }
 function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {

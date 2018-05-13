@@ -30,9 +30,11 @@ namespace PilotSmithApp.UserInterface.Models
         public string GeneralNotes { get; set; }
         [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
+        [Display(Name ="Email")]
         public bool? EmailSentYN { get; set; }
         public Guid? LatestApprovalID { get; set; }
         public int? LatestApprovalStatus { get; set; }
+        [Display (Name ="Final Approval")]
         public bool? IsFinalApproved { get; set; }
         public string EmailSentTo { get; set; }
         [Display(Name = "Select Branch")]
