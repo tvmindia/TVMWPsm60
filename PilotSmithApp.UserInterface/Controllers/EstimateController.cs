@@ -55,6 +55,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatusCode = 3;
                     estimateVM.EnquiryID = null;
                     estimateVM.EnquirySelectList = new List<SelectListItem>();
+                    estimateVM.DocumentStatus = new DocumentStatusViewModel();
+                    estimateVM.DocumentStatus.Description = "OPEN";
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {
@@ -274,6 +276,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             UnitCode = enquiryDetailVM.UnitCode,
                             CostRate = 0,
                             SellingRate = 0,
+                            
                             Product = new ProductViewModel()
                             {
                                 ID = (Guid)enquiryDetailVM.ProductID,

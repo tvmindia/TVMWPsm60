@@ -147,6 +147,67 @@
 
             </div>
 
+            <div class="form-group col-md-6 stausCombined">
+                <div class="boxstatus boxstatus2 shadow2">
+                    <div class="Shadow2data clearfix">
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.EmailSentYN)</div>
+                        </div>
+                        <div class="form-group col-md-12">
+
+                            @if (Model.EmailSentYN == null)
+                            {
+                                <div class="lblStatusDisplay">EMAIL NOT SEND</div>
+                            }
+                            else if (Model.EmailSentYN == true)
+                            {
+                                <div class="lblStatusDisplay">✔ EMAIL SEND</div>
+                            }
+                            else
+                            {
+                                <div class="lblStatusDisplay">EMAIL NOT SEND</div>
+                            }
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.IsFinalApproved)</div>
+                        </div>
+                        <div class="form-group col-md-12">
+
+                            @if (Model.IsFinalApproved == null)
+                            {
+                                <div class="lblStatusDisplay">PENDING FOR FINAL APPROVAL</div>
+                            }
+                            else if (Model.IsFinalApproved == true)
+                            {
+                                <div class="lblStatusDisplay">✔ FINALY APPROVED</div>
+                            }
+                            else
+                            {
+                                <div class="lblStatusDisplay">✗ FINAL APPROVER REJECTED</div>
+                            }
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus)</div>
+                        </div>
+                        <div class="form-group col-md-12">
+
+                            @if (Model.LatestApprovalStatus == null)
+                            {
+                                <div class="lblStatusDisplay">DRAFTED DOCUMENT</div>
+                            }
+                            else
+                            {
+                                <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
