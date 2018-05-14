@@ -46,6 +46,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public Guid hdnFileID { get; set; }
+        [Display(Name = "Document Locked")]
+        public bool IsDocLocked { get; set; }
+        public string[] DocumentOwners { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public EnquiryViewModel Enquiry { get; set; }
         public CustomerViewModel Customer { get; set; }

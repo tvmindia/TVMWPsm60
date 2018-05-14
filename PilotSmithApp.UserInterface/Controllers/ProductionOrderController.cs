@@ -51,6 +51,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.DocumentStatusCode = 7;
                     productionOrderVM.SaleOrderID = null;
                     productionOrderVM.SaleOrderSelectList = new List<SelectListItem>();
+                    productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
+                    productionOrderVM.DocumentStatus.Description = "OPEN";
                 }     
                 else if(id==Guid.Empty && saleOrderID!=null)
                 {
@@ -62,6 +64,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     productionOrderVM.SaleOrderID = saleOrderID;
                     productionOrderVM.CustomerID = saleOrderVM.CustomerID;
+                    productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
+                    productionOrderVM.DocumentStatus.Description = "OPEN";
                 }           
             }
             catch(Exception ex)

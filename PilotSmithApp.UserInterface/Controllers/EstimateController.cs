@@ -69,6 +69,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatusCode = 3;
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
                     estimateVM.EnquiryID = enquiryID;
+                    estimateVM.DocumentStatus = new DocumentStatusViewModel();
+                    estimateVM.DocumentStatus.Description = "OPEN";
                 }
                 
             }

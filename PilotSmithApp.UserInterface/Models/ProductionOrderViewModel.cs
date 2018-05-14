@@ -50,6 +50,9 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
+        [Display(Name = "Document Locked")]
+        public bool IsDocLocked { get; set; }
+        public string[] DocumentOwners { get; set; }
         public CustomerViewModel Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
         public BranchViewModel Branch { get; set; }
