@@ -278,26 +278,27 @@ function BindEnquiryDetailList(id) {
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data +" "+ row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             {
+                 "data": "Rate", render: function (data, type, row) {
+
+                     return parseFloat(data)*parseFloat(row.Qty)
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' },
              ],
              columnDefs: [
-                 { "targets": [0, 4], "width": "10%" },
-                 { "targets": [1, 2], "width": "15%" },
-                 { "targets": [3], "width": "35%" },
-                 { "targets": [5], "width": "10%" },
-                 { "targets": [6], "width": "5%" },
-                 { className: "text-right", "targets": [4,5] },
-                 { className: "text-left", "targets": [0,1,2, 3] },
-                 { className: "text-center", "targets": [ 6] }
+                 { "targets": [1,4], "width": "10%" },
+                 { "targets": [3, 2], "width": "20%" },
+                 { "targets": [0], "width": "40%" },
+                 { className: "text-right", "targets": [2,3] },
+                 { className: "text-left", "targets": [0, 1] },
+                 { className: "text-center", "targets": [4] }
              ]
          });
     $('[data-toggle="popover"]').popover({
