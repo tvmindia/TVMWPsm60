@@ -140,7 +140,8 @@ function AddEstimate() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid +"&enquiryID=", function () {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=", function () {
+        $('#lblEstimateInfo').text('<<Estimate No.>>');
         ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
         BindEstimateDetailList(_emptyGuid);
         OnServerCallComplete();
@@ -155,6 +156,7 @@ function EditEstimate(this_Obj) {
     debugger;
     OnServerCallBegin();
     var Estimate = _dataTable.EstimateList.row($(this_Obj).parents('tr')).data();
+    $('#lblEstimateInfo').text(Estimate.EstimateNo);
     //this will return form body(html)
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID+ "&enquiryID=" +Estimate.EnquiryID, function () {
         
@@ -216,6 +218,8 @@ function SaveSuccessEstimate(data, status) {
                     BindEstimateDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#lblEstimateInfo').text(_result.EstimateNo);
+
                 });
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
                 BindOrReloadEstimateTable('Init');

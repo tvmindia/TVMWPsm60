@@ -189,8 +189,11 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : estimateDetail.ID);
                                         estimateDetail.EstimateID = (sdr["EstimateID"].ToString() != "" ? Guid.Parse(sdr["EstimateID"].ToString()) : estimateDetail.EstimateID);
                                         estimateDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : estimateDetail.Qty);
-                                        estimateDetail.CostRate = (sdr["CostRate"].ToString() != "" ? decimal.Parse(sdr["CostRate"].ToString()) : estimateDetail.CostRate);
-                                        estimateDetail.SellingRate = (sdr["SellingRate"].ToString() != "" ? decimal.Parse(sdr["SellingRate"].ToString()) : estimateDetail.SellingRate);
+                                        estimateDetail.ProductModel = new ProductModel();
+                                        estimateDetail.ProductModel.CostPrice = (sdr["CostRate"].ToString() != "" ? decimal.Parse(sdr["CostRate"].ToString()) : estimateDetail.ProductModel.CostPrice);
+                                        estimateDetail.ProductModel.SellingPrice = (sdr["SellingRate"].ToString() != "" ? decimal.Parse(sdr["SellingRate"].ToString()) : estimateDetail.ProductModel.SellingPrice);
+                                        estimateDetail.CostRate = (sdr["CostRate"].ToString() != "" ? decimal.Parse(sdr["CostRate"].ToString()) : estimateDetail.ProductModel.CostPrice);
+                                        estimateDetail.SellingRate= (sdr["SellingRate"].ToString() != "" ? decimal.Parse(sdr["SellingRate"].ToString()) : estimateDetail.SellingRate);
                                         estimateDetail.DrawingNo = (sdr["DrawingNo"].ToString() != "" ? sdr["DrawingNo"].ToString() : estimateDetail.DrawingNo);
                                         estimateDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : estimateDetail.ProductSpec);
                                         estimateDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : estimateDetail.ProductID);
