@@ -11,8 +11,8 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
-    <div class="col-md-11 divbox1">
-        <div class="col-md-12 divbox2">
+    <div class="col-md-11 divbox1 stausCombined">
+        <div class="col-md-12 divbox2 stausCombined">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
                 <div class="col-md-6 no-padding">
@@ -81,6 +81,22 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group col-md-6">
+                <div class="boxstatus boxstatus2 shadow2">
+                    <div class="Shadow2data clearfix">
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.DocumentStatusCode)</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                                <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                        </div>
+                       
+
+                    </div>
+
+                </div>
+            </div>
+
             @if (Model.IsUpdate)
             {
                 <div class="form-group col-md-6 no-right-padding" id="divFollowupList">

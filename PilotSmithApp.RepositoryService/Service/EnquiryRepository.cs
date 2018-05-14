@@ -147,7 +147,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
                                     enquiry.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : enquiry.DocumentOwnerID);
                                     enquiry.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : enquiry.BranchCode);
-
+                                    enquiry.DocumentStatus = new DocumentStatus();
+                                    enquiry.DocumentStatus.Code= (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatus.Code);
+                                    enquiry.DocumentStatus.Description= (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
                                 }
                         }
                     }

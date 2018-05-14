@@ -1199,7 +1199,7 @@ select{
 
 .boxstatus{
   width:100%;
-  min-height:132px;
+  min-height:72px;
   float:left;
   background-color:white; 
   margin:25px 15px;

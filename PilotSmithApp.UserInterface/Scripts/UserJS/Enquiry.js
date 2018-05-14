@@ -273,7 +273,11 @@ function BindEnquiryDetailList(id) {
                  searchPlaceholder: "Search"
              },
              columns: [
-             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Product.Code", render: function (data, type, row) {
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +row.Product.Name + "<br/>" + row.ProductModel.Name
+                 }, "defaultContent": "<i></i>"
+             },
              { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
@@ -292,10 +296,15 @@ function BindEnquiryDetailList(id) {
                  { "targets": [5], "width": "10%" },
                  { "targets": [6], "width": "5%" },
                  { className: "text-right", "targets": [4,5] },
-                 { className: "text-left", "targets": [1,2, 3] },
-                 { className: "text-center", "targets": [0, 6] }
+                 { className: "text-left", "targets": [0,1,2, 3] },
+                 { className: "text-center", "targets": [ 6] }
              ]
          });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'top'
+    });
 }
 function GetEnquiryDetailListByEnquiryID(id) {
     try {
