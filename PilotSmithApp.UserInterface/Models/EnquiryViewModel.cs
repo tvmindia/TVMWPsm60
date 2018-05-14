@@ -44,6 +44,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public Guid hdnFileID { get; set; }
+        [Display(Name ="Document Locked")]
+        public bool IsDocLocked { get; set; }
+        public string[] DocumentOwners { get; set; }
         public CustomerViewModel Customer { get; set; }
         public BranchViewModel Branch { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
@@ -84,6 +87,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Rate is missing")]
         public decimal? Rate { get; set; }
         public bool IsUpdate { get; set; }
+        public Guid SpecTag { get; set; }
         public ProductViewModel Product { get; set; }     
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }

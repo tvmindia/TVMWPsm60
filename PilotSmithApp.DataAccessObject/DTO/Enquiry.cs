@@ -28,6 +28,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        public string[] DocumentOwners { get; set; }
         public Customer Customer { get; set; }
         public ReferencePerson ReferencePerson { get; set; }
         public EnquiryGrade EnquiryGrade { get; set; }
@@ -53,6 +54,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? Qty { get; set; }
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }
+        public Guid SpecTag { get; set; }
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set; }
         public PSASysCommon PSASysCommon { get; set; }

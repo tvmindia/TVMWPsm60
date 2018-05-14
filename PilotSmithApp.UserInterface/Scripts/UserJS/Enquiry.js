@@ -140,6 +140,7 @@ function ExportEnquiryData() {
 // add Enquiry section
 function AddEnquiry() {
     //this will return form body(html)
+    $('#lblEnquiryInfo').text("<<ProductionQC No.>>");
     OnServerCallBegin();
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
@@ -154,10 +155,16 @@ function AddEnquiry() {
 function EditEnquiry(this_Obj) {
     OnServerCallBegin();
     var Enquiry = _dataTable.EnquiryList.row($(this_Obj).parents('tr')).data();
+    $('#lblEnquiryInfo').text(Enquiry.EnquiryNo);
     //this will return form body(html)
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + Enquiry.ID, function () {
         //$('#CustomerID').trigger('change');
-        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+        if ($('#IsDocLocked').val()=="True") {
+            ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+        }
+        else {
+            ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+        }
         BindEnquiryDetailList(Enquiry.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
@@ -171,6 +178,7 @@ function EditEnquiry(this_Obj) {
 }
 function ResetEnquiry() {
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + $('#EnquiryForm #ID').val(), function () {
+        $('#lblEnquiryInfo').text($('#EnquiryNo').val());
         BindEnquiryDetailList($('#ID').val());
         clearUploadControl();
         PaintImages($('#EnquiryForm #ID').val());
@@ -198,8 +206,17 @@ function SaveSuccessEnquiry(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
+                $('#lblEnquiryInfo').text(_result.EnquiryNo);
                 $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _result.ID, function () {
-                    ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+                    if ($('#IsDocLocked').val() == "True")
+                    {
+                        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+                    }
+                    else
+                    {
+                        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+                    }
+                    
                     BindEnquiryDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
@@ -275,6 +292,7 @@ function BindEnquiryDetailList(id) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
+                     debugger;
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
@@ -390,31 +408,55 @@ function AddEnquiryDetailToList() {
                     $('#divModelPopEnquiry').modal('hide');
                 }
                 else {
-                    debugger;
-                    var EnquiryDetailVM = new Object();
-                    var Product = new Object;
-                    var ProductModel = new Object()
-                    var Unit = new Object();
-                    EnquiryDetailVM.ID = _emptyGuid;
-                    EnquiryDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                    Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                    Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                    EnquiryDetailVM.Product = Product;
-                    EnquiryDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                    ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                    EnquiryDetailVM.ProductModel = ProductModel;
-                    EnquiryDetailVM.ProductSpec = $('#ProductSpec').val();
-                    EnquiryDetailVM.Qty = $('#Qty').val();
-                    Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                    EnquiryDetailVM.Unit = Unit;
-                    EnquiryDetailVM.UnitCode = $('#UnitCode').val();
-                    EnquiryDetailVM.Rate = $('#Rate').val();
-                    _dataTable.EnquiryDetailList.row.add(EnquiryDetailVM).draw(true);
-                    $('#divModelPopEnquiry').modal('hide');
+                    var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
+                    if (enquiryDetailList.length > 0) {
+                        debugger;
+                        var checkpoint = 0;
+                        for (var i = 0; i < enquiryDetailList.length; i++) {
+                            if ((enquiryDetailList[i].ProductID == $('#ProductID').val()) && (enquiryDetailList[i].ProductModelID == $('#ProductModelID').val()
+                                && (enquiryDetailList[i].ProductSpec == $('#ProductSpec').val()))) {
+                                enquiryDetailList[i].Qty = parseFloat(enquiryDetailList[i].Qty)+parseFloat($('#Qty').val());
+                                checkpoint = 1;
+                                break;
+                            }
+                        }
+                        if (checkpoint == 1) {
+                            _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
+                            $('#divModelPopEnquiry').modal('hide');
+                        }
+                        else if (checkpoint == 0) {
+                            debugger;
+                            var EnquiryDetailVM = new Object();
+                            var Product = new Object;
+                            var ProductModel = new Object()
+                            var Unit = new Object();
+                            EnquiryDetailVM.ID = _emptyGuid;
+                            EnquiryDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                            Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                            Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                            EnquiryDetailVM.Product = Product;
+                            EnquiryDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                            EnquiryDetailVM.ProductModel = ProductModel;
+                            EnquiryDetailVM.ProductSpec = $('#ProductSpec').val();
+                            EnquiryDetailVM.Qty = $('#Qty').val();
+                            Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                            EnquiryDetailVM.Unit = Unit;
+                            EnquiryDetailVM.UnitCode = $('#UnitCode').val();
+                            EnquiryDetailVM.Rate = $('#Rate').val();
+                            _dataTable.EnquiryDetailList.row.add(EnquiryDetailVM).draw(true);
+                            $('#divModelPopEnquiry').modal('hide');
+                        }
                 }
             }
                 
-        }
+            }
+            }
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            'trigger': 'hover',
+            'placement': 'top'
+        });
 }
 function EditEnquiryDetail(this_Obj)
 {

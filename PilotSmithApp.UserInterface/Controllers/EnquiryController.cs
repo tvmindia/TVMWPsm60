@@ -45,6 +45,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     enquiryVM = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.GetEnquiry(id));
                     enquiryVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    enquiryVM.IsDocLocked = enquiryVM.DocumentOwners.Contains(appUA.UserName);
                 }
                 else
                 {
@@ -329,6 +331,40 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Title = "Delete";
                     toolboxVM.deletebtn.Event = "DeleteEnquiry();";
 
+                    break;
+                case "LockDocument":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Disable = true;
+                    toolboxVM.addbtn.DisableReason = "Document Locked";
+                    toolboxVM.addbtn.Event = "";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
                     break;
                 case "Add":
 

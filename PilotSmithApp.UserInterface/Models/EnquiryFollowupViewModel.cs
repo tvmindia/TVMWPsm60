@@ -41,6 +41,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        public bool IsDocLocked { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public CustomerViewModel Customer { get; set; }
         public List<EnquiryFollowupViewModel> EnquiryFollowupList { get; set;}

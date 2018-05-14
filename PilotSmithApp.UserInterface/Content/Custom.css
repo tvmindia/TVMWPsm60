@@ -1206,7 +1206,7 @@ select{
   border-radius:5px;
 }
 .boxstatus2{
-  background-color: #05d6b9;
+  background-color: #fafcfc;
 }
 .shadow2{
   position:relative;
@@ -1217,7 +1217,7 @@ select{
 .Shadow2data{
   width:90%; 
   margin-left:6%;
-  border-right:12px dashed #fff;
+  border-right:12px dashed #119564;
   border-radius:50%;
   padding:7px;
 }
