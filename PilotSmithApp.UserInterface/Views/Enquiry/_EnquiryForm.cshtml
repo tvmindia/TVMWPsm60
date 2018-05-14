@@ -144,16 +144,13 @@
                         @if (Model.IsUpdate)
                         {
                             <div class="form-group col-md-12">
-                                <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.IsDocLocked)</div>
-                            </div>
-                            <div class="form-group col-md-12">
                                 @if (!Model.IsDocLocked)
                                 {
-                                    <div class="lblStatusDisplay">Locked Document</div>
+                                    <div class="lblStatusDisplay">🔒</div>
                                 }
                                 else
                                 {
-                                    <div class="lblStatusDisplay">Unlocked Document</div>
+                                    <div class="lblStatusDisplay">🔓</div>
                                 }
                             </div>
                         }
