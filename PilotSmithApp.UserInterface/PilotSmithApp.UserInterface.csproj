@@ -663,6 +663,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
+    <Content Include="Scripts\UserJS\OtherCharge.js" />
     <Content Include="Scripts\UserJS\DeliveryChallan.js" />
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
     <Content Include="Scripts\UserJS\Plant.js" />
@@ -743,6 +744,7 @@
     <Compile Include="Controllers\EstimateController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ManageAccessController.cs" />
+    <Compile Include="Controllers\OtherChargeController.cs" />
     <Compile Include="Controllers\PaymentTermController.cs" />
     <Compile Include="Controllers\PDFGeneratorController.cs" />
     <Compile Include="Controllers\PlantController.cs" />
@@ -786,6 +788,7 @@
     <Compile Include="Models\EnquiryGradeViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\EstimateViewModel.cs" />
+    <Compile Include="Models\OtherChargeViewModel.cs" />
     <Compile Include="Models\PDFGeneratorViewModel.cs" />
     <Compile Include="Models\PlantViewModel.cs" />
     <Compile Include="Models\PositionViewModel.cs" />
@@ -966,6 +969,9 @@
     <Content Include="Views\TaxType\_AddTaxType.cshtml" />
     <Content Include="Views\Plant\Index.cshtml" />
     <Content Include="Views\Plant\_AddPlant.cshtml" />
+    <Content Include="Views\OtherCharge\Index.cshtml" />
+    <Content Include="Views\OtherCharge\_OtherChargeSelectList.cshtml" />
+    <Content Include="Views\OtherCharge\_AddOtherCharge.cshtml" />
     <Content Include="Views\DeliveryChallan\Index.cshtml" />
     <Content Include="Views\DeliveryChallan\_DeliveryChallanForm.cshtml" />
     <Content Include="Views\DeliveryChallan\_AddDeliveryChallanDetail.cshtml" />
