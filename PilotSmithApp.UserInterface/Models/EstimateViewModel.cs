@@ -89,6 +89,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? CostRate { get; set; }
         [Display(Name = "Selling Rate")]
         public decimal? SellingRate { get; set; }
+        [Display(Name ="Drawing No.")]
         public string DrawingNo { get; set; }
         public Guid SpecTag { get; set; }
 

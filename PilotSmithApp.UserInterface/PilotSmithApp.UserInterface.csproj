@@ -664,6 +664,7 @@
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\OtherCharge.js" />
+    <Content Include="Scripts\UserJS\DeliveryChallan.js" />
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
     <Content Include="Scripts\UserJS\Plant.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
@@ -730,6 +731,7 @@
     <Compile Include="Controllers\CustomerCategoryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
+    <Compile Include="Controllers\DeliveryChallanController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\DocumentApprovalController.cs" />
     <Compile Include="Controllers\DocumentOwnerController.cs" />
@@ -775,6 +777,7 @@
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\CustomerCategoryViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
+    <Compile Include="Models\DeliveryChallanViewModel.cs" />
     <Compile Include="Models\DepartmentViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\DocumentApprovalViewModel.cs" />
@@ -969,6 +972,9 @@
     <Content Include="Views\OtherCharge\Index.cshtml" />
     <Content Include="Views\OtherCharge\_OtherChargeSelectList.cshtml" />
     <Content Include="Views\OtherCharge\_AddOtherCharge.cshtml" />
+    <Content Include="Views\DeliveryChallan\Index.cshtml" />
+    <Content Include="Views\DeliveryChallan\_DeliveryChallanForm.cshtml" />
+    <Content Include="Views\DeliveryChallan\_AddDeliveryChallanDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

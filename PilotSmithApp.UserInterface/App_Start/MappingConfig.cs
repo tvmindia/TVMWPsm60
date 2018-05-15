@@ -101,6 +101,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<PlantAdvanceSearchViewModel, PlantAdvanceSearch>().ReverseMap();
                 config.CreateMap<OtherChargeViewModel, OtherCharge>().ReverseMap();
                 config.CreateMap<OtherChargeAdvanceSearchViewModel, OtherChargeAdvanceSearch>().ReverseMap();
+                config.CreateMap<DeliveryChallanViewModel, DeliveryChallan>().ReverseMap();
+                config.CreateMap<DeliveryChallanAdvanceSearchViewModel, DeliveryChallanAdvanceSearch>().ReverseMap();
+                config.CreateMap<DeliveryChallanDetailViewModel, DeliveryChallanDetail>().ReverseMap();
             });
         }
     }
