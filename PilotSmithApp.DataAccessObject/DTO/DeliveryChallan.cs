@@ -44,6 +44,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DocumentStatus DocumentStatus { get; set; }
         public Branch Branch { get; set; }
         public Employee Employee { get; set; }
+        public string DocumentType { get; set; }
+        public string LatestApprovalStatusDescription { get; set; }
     }
 
     public class DeliveryChallanAdvanceSearch

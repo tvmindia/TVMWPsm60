@@ -60,6 +60,9 @@ namespace PilotSmithApp.UserInterface.Models
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public BranchViewModel Branch { get; set; }
         public EmployeeViewModel Employee { get; set; }
+        public string DocumentType { get; set; }
+        public string LatestApprovalStatusDescription { get; set; }
+        //public List<SelectList>
     }
 
     public class DeliveryChallanAdvanceSearchViewModel

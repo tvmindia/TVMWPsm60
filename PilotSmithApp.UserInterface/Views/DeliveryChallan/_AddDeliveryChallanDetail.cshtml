@@ -1,1 +1,109 @@
-﻿                                                                                                
+﻿@model PilotSmithApp.UserInterface.Models.DeliveryChallanDetailViewModel
+
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormDeliveryCahallanDetail" }))
+{
+    @Html.HiddenFor(model => model.DelvChallanID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
+            </div>
+            <div class="col-md-12">
+                <div class="divProductSelectList">
+                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
+                </div>
+                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+            </div>
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-md-12">
+                <div class="divProductModelSelectList">
+                    <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                    @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
+                </div>
+                @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
+            </div>
+        </div>
+        <div id="divProductBasicInfo">
+            @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
+                @Html.ValidationMessageFor(model => model.ProductSpec, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount ", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.DelvQty, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.DelvQty, new { htmlAttributes = new { @class = "form-control newinput Amount ", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.DelvQty, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                <div class="divUnitSelectList">
+                    @Html.Action("UnitSelectList", "Unit", new { required = "" })
+                </div>
+                @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
+            </div>
+        </div>
+    </div>
+   
+    <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-default" id="btnAddDeliveryChallanDetail" onclick="AddDeliveryChallanDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormDeliveryChallanDetail");
+        $('#divModelPopDeliveryChallan #ProductID,#divModelPopDeliveryChallan #UnitCode,#divModelPopDeliveryChallan #ProductModelID').select2({
+            dropdownParent: $("#divModelPopDeliveryChallan")
+        });
+        $('.select2').addClass('form-control newinput');
+        $('#divModelPopDeliveryChallan #ProductID').change(function () {
+            if ($('#divProductBasicInfo') != undefined)
+            {
+                $('#divModelPopDeliveryChallan #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                    $('#divModelPopDeliveryChallan #ProductSpec').val($('#divModelPopDeliveryChallan #spnProductName').text());
+                });
+            }
+            if ($('.divProductModelSelectList') != undefined) {
+                $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                if (this.value != "")
+                {
+                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                }
+                else
+                {
+                    $('.divProductModelSelectList').empty();
+                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                }
+            }
+        });
+              
+    });
+</script>
+
+                                                                                                
