@@ -374,6 +374,14 @@ function AddCustomerMaster(flag) {
         $('#divModelMasterPopUp').modal('show');
     });    
 }
+//==========================================================================================================
+//Add OtherCharge master
+function AddOtherChargeMaster(flag) {
+    $("#divMasterBody").load("OtherCharge/AddOtherChargePartial", function () {
+        $('#lblModelMasterContextLabel').text('Add Other Charge Information')
+        $('#divModelMasterPopUp').modal('show');
+    });
+}
 
 //onsuccess function for formsubmitt customer master
 function SaveSuccessCustomerMaster(data, status) {
@@ -603,6 +611,43 @@ function SaveSuccessPlant(data, status) {
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('.divPlantSelectList').load('/Plant/PlantSelectList?required=');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+
+
+//Add OtherCharge
+function AddOtherChargeMaster(flag) {
+    debugger;
+    $("#divMasterBody").load("OtherCharge/MasterPartial?masterCode=0", function () {
+        $('#lblModelMasterContextLabel').text('Add Other Charge Information')
+        $('#divModelMasterPopUp').modal('show');
+
+        $('#hdnMasterCall').val(flag);
+    });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessOtherCharge(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadOtherChargeTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

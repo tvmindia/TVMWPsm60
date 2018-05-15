@@ -62,6 +62,7 @@
     <Compile Include="DTO\EnquiryGrade.cs" />
     <Compile Include="DTO\Estimate.cs" />
     <Compile Include="DTO\Mail.cs" />
+    <Compile Include="DTO\OtherCharge.cs" />
     <Compile Include="DTO\Plant.cs" />
     <Compile Include="DTO\Position.cs" />
     <Compile Include="DTO\Product.cs" />

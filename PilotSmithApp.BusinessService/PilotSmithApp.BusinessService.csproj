@@ -64,6 +64,7 @@
     <Compile Include="Contract\IEstimateBusiness.cs" />
     <Compile Include="Contract\IFileUploadBusiness.cs" />
     <Compile Include="Contract\IMailBusiness.cs" />
+    <Compile Include="Contract\IOtherChargeBusiness.cs" />
     <Compile Include="Contract\IPlantBusiness.cs" />
     <Compile Include="Contract\IProductBusiness.cs" />
     <Compile Include="Contract\IProductCategoryBusiness.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Service\EstimateBusiness.cs" />
     <Compile Include="Service\FileUploadBusiness.cs" />
     <Compile Include="Service\MailBusiness.cs" />
+    <Compile Include="Service\OtherChargeBusiness.cs" />
     <Compile Include="Service\PlantBusiness.cs" />
     <Compile Include="Service\ProductBusiness.cs" />
     <Compile Include="Service\ProductCategoryBusiness.cs" />
