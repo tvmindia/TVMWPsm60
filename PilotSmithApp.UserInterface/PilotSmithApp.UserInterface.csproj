@@ -757,6 +757,7 @@
     <Compile Include="Controllers\ProductSpecificationController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\ReferencePersonController.cs" />
+    <Compile Include="Controllers\ReferenceTypeController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SaleInvoiceController.cs" />
     <Compile Include="Controllers\SaleOrderController.cs" />
@@ -975,6 +976,7 @@
     <Content Include="Views\DeliveryChallan\Index.cshtml" />
     <Content Include="Views\DeliveryChallan\_DeliveryChallanForm.cshtml" />
     <Content Include="Views\DeliveryChallan\_AddDeliveryChallanDetail.cshtml" />
+    <Content Include="Views\ReferenceType\_ReferenceTypeSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
