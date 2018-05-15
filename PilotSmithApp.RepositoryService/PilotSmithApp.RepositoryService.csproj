@@ -51,6 +51,7 @@
     <Compile Include="Contract\ICustomerCategoryRepository.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IDatabaseFactory.cs" />
+    <Compile Include="Contract\IDeliveryChallanRepository.cs" />
     <Compile Include="Contract\IDistrictRepository.cs" />
     <Compile Include="Contract\IDocumentApprovalRepository.cs" />
     <Compile Include="Contract\IDocumentStatusRepository.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Service\CustomerCategoryRepository.cs" />
     <Compile Include="Service\CustomerRepository.cs" />
     <Compile Include="Service\DatabaseFactory.cs" />
+    <Compile Include="Service\DeliveryChallanRepository.cs" />
     <Compile Include="Service\DistrictRepository.cs" />
     <Compile Include="Service\DocumentApprovalRepository.cs" />
     <Compile Include="Service\DocumentStatusRepository.cs" />

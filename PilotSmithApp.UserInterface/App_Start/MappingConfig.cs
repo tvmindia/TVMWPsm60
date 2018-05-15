@@ -99,6 +99,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ProductionQCDetailViewModel, ProductionQCDetail>().ReverseMap();
                 config.CreateMap<PlantViewModel, Plant>().ReverseMap();
                 config.CreateMap<PlantAdvanceSearchViewModel, PlantAdvanceSearch>().ReverseMap();
+                config.CreateMap<DeliveryChallanViewModel, DeliveryChallan>().ReverseMap();
+                config.CreateMap<DeliveryChallanAdvanceSearchViewModel, DeliveryChallanAdvanceSearch>().ReverseMap();
+                config.CreateMap<DeliveryChallanDetailViewModel, DeliveryChallanDetail>().ReverseMap();
             });
         }
     }

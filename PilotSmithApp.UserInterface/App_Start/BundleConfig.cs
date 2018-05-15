@@ -91,6 +91,7 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Plant").Include("~/Scripts/UserJS/Plant.js"));
             
             bundles.Add(new ScriptBundle("~/bundles/UserJS/SaleInvoice").Include("~/Scripts/UserJS/SaleInvoice.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/DeliveryChallan").Include("~/Scripts/UserJS/DeliveryChallan.js"));
         }
     }
 }
