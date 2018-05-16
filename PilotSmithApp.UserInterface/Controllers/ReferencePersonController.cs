@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +21,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         private IReferencePersonBusiness _referencePersonBusiness;
         private IReferenceTypeBusiness _referenceTypeBusiness;
         private IAreaBusiness _areaBusiness;
-        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness, IReferenceTypeBusiness referenceTypeBusiness, IAreaBusiness areaBusiness)
+        IUserBusiness _userBusiness;
+
+        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness, IReferenceTypeBusiness referenceTypeBusiness, IAreaBusiness areaBusiness, IUserBusiness userBusiness)
         {
             _referencePersonBusiness = referencePersonBusiness;
             _referenceTypeBusiness = referenceTypeBusiness;
             _areaBusiness = areaBusiness;
+            _userBusiness = userBusiness;
         }
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]
         public ActionResult Index()
@@ -133,11 +138,23 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion
-        
+
         #region ReferencePerson SelectList
-        public ActionResult ReferencePersonSelectList(string required)
+        public ActionResult ReferencePersonSelectList(string required, bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "ReferencePerson");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             ReferencePersonViewModel referencePersonVM = new ReferencePersonViewModel();
             referencePersonVM.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
             return PartialView("_ReferencePersonSelectList", referencePersonVM);
