@@ -349,9 +349,9 @@ function AddBranchMaster(flag) {
     //});
 }
 //========================================================================================================
-function AddReferredByMaster()
+function AddReferredByMaster(flag)
 {
-    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
+    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function () {
         $('#lblModelMasterContextLabel').text('Add Reference Person Information')
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val(flag);
@@ -465,7 +465,7 @@ function SaveSuccessReferencePerson(data, status) {
                 BindOrReloadReferencePersonTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divReferencePersonSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=');
+                $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
