@@ -31,7 +31,7 @@
                         @Html.Label("Search and select a SaleOrder", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @*@Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })*@
+                        @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
                     </div>
                     @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                 </div>
@@ -41,7 +41,7 @@
                         @Html.Label("Search and select a ProductionOrder", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @*@Html.DropDownListFor(model => model.ProdOrderID, Model.ProductionOrderSelectList, "Search ProductionOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })*@
+                        @Html.DropDownListFor(model => model.ProdOrderID, Model.ProductionOrderSelectList, "Search ProductionOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
                     </div>
                     @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
                 </div>
@@ -85,9 +85,9 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-6">
+              
                     <div class="col-md-12 no-padding">
-                        <div class="col-md-12">
+                        <div class="col-md-12 ">
                             @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
                         <div class="col-md-12">
@@ -100,7 +100,7 @@
                     <div id="divCustomerBasicInfo">
                         @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
                     </div>
-                </div>
+             
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -184,7 +184,7 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">
                 DeliveryChallan Details
-                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                @*<a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>*@
                 <a class="btn btn-openid pull-right" onclick="AddDeliveryChallanDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
 
             </div>
@@ -198,6 +198,7 @@
                             <th>Ord. Qty</th>
                             <th>Prev.Deliv.Qty</th>
                             <th>Curr.Deliv.Qty</th>
+                            <th>...</th>
                         </tr>
                     </thead>
                 </table>
@@ -264,6 +265,7 @@
 }
 <script>
     $(document).ready(function () {
+        debugger;
         try {
             $.validator.unobtrusive.parse("#DeliveryChallanForm");
         }
@@ -331,7 +333,7 @@
                     },
                 }
             });
-            $('#ProdOrderID').val($('#hdnEnquiryID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnProdOrderID').val());
+            $('#ProdOrderID').val($('#hdnProdOrderID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnProdOrderID').val());
             $('#ProdOrderID').select2({
                 language: {
                     noResults: function (params) {
@@ -361,9 +363,9 @@
             console.log(e.message);
         }
         try {
-            $('#DeliveryChallanForm #SaleOrderID ProdOrderID').change(function () {
+            $('#DeliveryChallanForm #SaleOrderID #ProdOrderID').change(function () {
                 OnServerCallBegin();
-                $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&saleOrderID=" + this.value + "&productionOrder=" + this.value, function () {
+                $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&saleOrderID=" + this.value + "&prodOrderID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
                     BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true);
 
@@ -378,14 +380,14 @@
         try {
             $('[name="DocumentType"]').change(function () {
                 if (this.value == "SaleOrder") {
-                    $('#divSaleOrderSelectList').hide();
-                    $('#divProductionOrderSelectList').show();
+                    $('#divSaleOrderSelectList').show();
+                    $('#divProductionOrderSelectList').hide();
                     $('#SaleOrderID').prop('disabled', false);
                     $('#ProdOrderID').prop('disabled', true);
                 }
                 else if (this.value == "ProductionOrder") {
-                    $('#divSaleOrderSelectList').show();
-                    $('#divProductionOrderSelectList').hide();
+                    $('#divSaleOrderSelectList').hide();
+                    $('#divProductionOrderSelectList').show();
                     $('#SaleOrderID').prop('disabled', true);
                     $('#ProdOrderID').prop('disabled', false);
                 }

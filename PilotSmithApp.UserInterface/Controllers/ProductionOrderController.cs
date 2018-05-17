@@ -163,7 +163,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region Get ProductionOrder SelectList On Demand
         public ActionResult GetProductionOrderSelectListOnDemand(string searchTerm)
-        {
+       {
             List<ProductionOrderViewModel> productionOrderVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<ProductionOrder>,List<ProductionOrderViewModel>>(_productionOrderBusiness.GetProductionOrderForSelectListOnDemand(searchTerm));
             var list = new List<Select2Model>();
             if (productionOrderVMList != null)

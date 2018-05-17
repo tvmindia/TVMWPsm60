@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divProductModelSelectList">
@@ -33,7 +33,7 @@
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
@@ -60,7 +60,7 @@
         </div>
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divUnitSelectList">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.UserInterface.Models
 {
@@ -62,7 +63,9 @@ namespace PilotSmithApp.UserInterface.Models
         public EmployeeViewModel Employee { get; set; }
         public string DocumentType { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
-        //public List<SelectList>
+        public List<SelectListItem> SaleOrderSelectList { get; set; }
+        public List<SelectListItem> ProductionOrderSelectList { get; set; }
+        public PlantViewModel Plant { get; set; }
     }
 
     public class DeliveryChallanAdvanceSearchViewModel
