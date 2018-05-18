@@ -1,6 +1,6 @@
 ﻿@model PilotSmithApp.UserInterface.Models.DeliveryChallanDetailViewModel
 
-@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormDeliveryCahallanDetail" }))
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormDeliveryChallanDetail" }))
 {
     @Html.HiddenFor(model => model.DelvChallanID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
@@ -64,7 +64,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divUnitSelectList">
-                    @Html.Action("UnitSelectList", "Unit", new { required = "" })
+                    @Html.Action("UnitSelectList", "Unit", new { required = "required" })
                 </div>
                 @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
             </div>

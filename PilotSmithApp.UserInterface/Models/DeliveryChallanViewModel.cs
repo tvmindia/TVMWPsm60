@@ -21,7 +21,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? ProdOrderID { get; set; }
         [Display(Name ="Select Customer")]
         public Guid? CustomerID { get; set; }
-        [Display(Name ="Plant Code")]
+        [Display(Name ="Plant")]
         public int? PlantCode { get; set; }
         [Display(Name ="Prepared By")]
         public Guid? PreparedBy { get; set; }

@@ -327,7 +327,11 @@ function BindProductionOrderDetailList(id) {
              {
                  "data": "OrderQty", render: function (data, type, row) {
                      var CurProducedQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.OrderQty));
-                     return CurProducedQty
+                     if (CurProducedQty >= 0) {
+                         return CurProducedQty
+                     }
+                     else
+                         return 0;
                      //return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },

@@ -188,13 +188,11 @@ function EditDeliveryChallan(this_Obj) {
 
 function ResetDeliveryChallan() {
     //this will return form body(html)
-    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val() + "&saleOrderID=" + $('#hdnSaleOrderID').val()+"$prodOrderID="+$('#hdnProdOrderID'), function () {
+    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val() , function () {
         if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
             //resides in customjs for sliding
-            setTimeout(function () {
-                $("#divDeliveryChallanForm #SaleOrderID #ProdOrderID").prop('disabled', true);
-                openNav();
-            }, 100);
+
+            openNav();
         }
         BindDeliveryChallanDetailList($('#ID').val(), false);
         clearUploadControl();
@@ -323,7 +321,13 @@ function BindDeliveryChallanDetailList(id) {
             },
              {
                  "data": "DelvQty", render: function (data, type, row) {
-                     return  data + " " + row.Unit.Description
+                     var curDelQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.DelvQty));
+                     if (curDelQty >= 0)
+                     { return curDelQty; }
+                     else
+                         return 0;
+                     
+                     //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
@@ -466,7 +470,7 @@ function AddDeliveryChallanDetailToList() {
                         var Product = new Object;
                         var ProductModel = new Object()
                         var Unit = new Object();
-                        var Plant = new Plant();
+                     
                         DeliveryChallanDetailVM.ID = _emptyGuid;
                         DeliveryChallanDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                         Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -530,6 +534,45 @@ function EditDeliveryChallanDetail(this_Obj) {
         $('#FormDeliveryChallanDetail #DelvQty').val(deliveryChallanDetail.DelvQty);
         $('#FormDeliveryChallanDetail #UnitCode').val(deliveryChallanDetail.UnitCode);
         $('#FormDeliveryChallanDetail #hdnUnitCode').val(deliveryChallanDetail.UnitCode);
-        $('#divModelPopProductionOrder').modal('show');
+        $('#divModelPopDeliveryChallan').modal('show');
     });
+}
+
+function ConfirmDeleteDeliveryChallanDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).index();
+    var deliveryChallanDetail = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).data();
+    if (deliveryChallanDetail.ID === _emptyGuid) {
+        var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
+        deliveryChallanDetailList.splice(_datatablerowindex, 1);
+        _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
+        notyAlert('success', 'Detail Row deleted successfully');
+    }
+    else {
+        notyConfirm('Are you sure to delete?', 'DeleteDeliveryChallanDetail("' + deliveryChallanDetail.ID + '")');
+
+    }
+}
+
+function DeleteDeliveryChallanDetail(ID) {
+    if (ID != _emptyGuid && ID != null && ID != '') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("DeliveryChallan/DeleteDeliveryChallanDetail/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
+            deliveryChallanDetailList.splice(_datatablerowindex, 1);
+            _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
 }

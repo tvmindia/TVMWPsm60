@@ -93,11 +93,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
         public ActionResult AddDeliveryChallanDetail()
         {
-            DeliveryChallanDetailViewModel deliverChallanDetailVM = new DeliveryChallanDetailViewModel();
-            deliverChallanDetailVM.IsUpdate = false;
-            deliverChallanDetailVM.OrderQty = 0;
-            deliverChallanDetailVM.DelvQty = 0;
-            return PartialView("_AddDeliveryChallanDetail", deliverChallanDetailVM);
+            DeliveryChallanDetailViewModel deliveryChallanDetailVM = new DeliveryChallanDetailViewModel();
+            deliveryChallanDetailVM.IsUpdate = false;
+            deliveryChallanDetailVM.OrderQty = 0;
+            deliveryChallanDetailVM.DelvQty = 0;
+            return PartialView("_AddDeliveryChallanDetail", deliveryChallanDetailVM);
         }
         #endregion DeliveryChallan Detail Add
 
@@ -249,12 +249,116 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion GetDeliveryChallanDetailListByDeliveryChallanID
 
+        #region Get DeliveryChallan DetailList By DEliveryChallanID with ProductionOrder
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
+        public string GetDeliveryChallanDetailListByDeliveryChallanIDWithProductionOrder(Guid prodOrderID)
+        {
+            try
+            {
+                List<DeliveryChallanDetailViewModel> deliveryChallanItemViewModelList = new List<DeliveryChallanDetailViewModel>();
+                if (prodOrderID != Guid.Empty)
+                {
+                    List<ProductionOrderDetailViewModel> productionOrderDetailVMList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(prodOrderID));
+                    foreach (ProductionOrderDetailViewModel productionOrderDetailVM in productionOrderDetailVMList)
+                    {
+                        DeliveryChallanDetailViewModel deliveryChallanDetailVM = new DeliveryChallanDetailViewModel()
+                        {
+                            ID = Guid.Empty,
+                            DelvChallanID = Guid.Empty,
+                            ProductID = productionOrderDetailVM.ProductID,
+                            ProductModelID = productionOrderDetailVM.ProductModelID,
+                            ProductSpec = productionOrderDetailVM.ProductSpec,
+                            OrderQty = productionOrderDetailVM.OrderQty,
+                            UnitCode = productionOrderDetailVM.UnitCode,
+                            DelvQty=0,
 
+                            Product = new ProductViewModel()
+                            {
+                                ID = (Guid)productionOrderDetailVM.ProductID,
+                                Code = productionOrderDetailVM.Product.Code,
+                                Name = productionOrderDetailVM.Product.Name,
+                            },
+                            ProductModel = new ProductModelViewModel()
+                            {
+                                ID = (Guid)productionOrderDetailVM.ProductModelID,
+                                Name = productionOrderDetailVM.ProductModel.Name
+                            },
+                            Unit = new UnitViewModel()
+                            {
+                                Description = productionOrderDetailVM.Unit.Description
+                            },
+                        };
+                        deliveryChallanItemViewModelList.Add(deliveryChallanDetailVM);
+                    }
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = deliveryChallanItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get DeliveryChallan DetailList By DEliveryChallanID with ProductionOrder
+
+        #region Get DeliveryChallan DetailList By DeliveryChallanID with SaleOrder
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
+        public string GetDeliveryChallanDetailListByDeliveryChallanIDWithSaleOrder(Guid saleOrderID)
+        {
+            try
+            {
+                List<DeliveryChallanDetailViewModel> deliveryChallanItemViewModelList = new List<DeliveryChallanDetailViewModel>();
+                if (saleOrderID != Guid.Empty)
+                {
+                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = null; //Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.(saleOrderID));
+                    foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderDetailVMList)
+                    {
+                        DeliveryChallanDetailViewModel deliveryChallanDetailVM = new DeliveryChallanDetailViewModel()
+                        {
+                            ID = Guid.Empty,
+                            DelvChallanID = Guid.Empty,
+                            ProductID = saleOrderDetailVM.ProductID,
+                            ProductModelID = saleOrderDetailVM.ProductModelID,
+                            ProductSpec = saleOrderDetailVM.ProductSpec,
+                            OrderQty = saleOrderDetailVM.Qty,
+                            UnitCode = saleOrderDetailVM.UnitCode,
+                            DelvQty = 0,
+
+                            Product = new ProductViewModel()
+                            {
+                                ID = (Guid)saleOrderDetailVM.ProductID,
+                                Code = saleOrderDetailVM.Product.Code,
+                                Name = saleOrderDetailVM.Product.Name,
+                            },
+                            ProductModel = new ProductModelViewModel()
+                            {
+                                ID = (Guid)saleOrderDetailVM.ProductModelID,
+                                Name = saleOrderDetailVM.ProductModel.Name
+                            },
+                            Unit = new UnitViewModel()
+                            {
+                                Description = saleOrderDetailVM.Unit.Description
+                            },
+                        };
+                        deliveryChallanItemViewModelList.Add(deliveryChallanDetailVM);
+                    }
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = deliveryChallanItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get DeliveryChallan DetailList By DeliveryChallanID with SaleOrder
 
         #region DeleteDelievryChallan  
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "D")]
-        public string DeleteDelievryChallan(Guid id)
+        public string DeleteDeliveryChallan(Guid id)
         {
 
             try

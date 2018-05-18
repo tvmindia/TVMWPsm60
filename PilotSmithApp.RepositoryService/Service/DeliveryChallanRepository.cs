@@ -193,7 +193,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallanDetail.OrderQty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : deliveryChallanDetail.OrderQty);
                                         deliveryChallanDetail.DelvQty= (sdr["DelvQty"].ToString() != "" ? decimal.Parse(sdr["DelvQty"].ToString()) : deliveryChallanDetail.DelvQty);
                                         deliveryChallanDetail.Unit = new Unit();
-                                        deliveryChallanDetail.Unit.Code = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : deliveryChallanDetail.Unit.Code);
+                                        deliveryChallanDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : deliveryChallanDetail.UnitCode);
                                         deliveryChallanDetail.Unit.Description = (sdr["Unit"].ToString() != "" ? (sdr["Unit"].ToString()) : deliveryChallanDetail.Unit.Description);
 
                                     }
@@ -216,7 +216,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #region Insert Update DeliveryChallan
         public object InsertUpdateDeliveryChallan(DeliveryChallan deliveryChallan)
         {
-            SqlParameter outputStatus, outputID, outputProdOrderNo = null;
+            SqlParameter outputStatus, outputID, outputDelvChallanNo = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -256,8 +256,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
                         outputID.Direction = ParameterDirection.Output;
-                        outputProdOrderNo = cmd.Parameters.Add("@DeliveryChallanNoOut", SqlDbType.VarChar, 20);
-                        outputProdOrderNo.Direction = ParameterDirection.Output;
+                        outputDelvChallanNo = cmd.Parameters.Add("@DeliveryChallanNoOut", SqlDbType.VarChar, 20);
+                        outputDelvChallanNo.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -267,7 +267,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         throw new Exception(_appConstant.InsertFailure);
                     case "1":
                         deliveryChallan.ID = Guid.Parse(outputID.Value.ToString());
-                        deliveryChallan.DelvChallanNo = outputProdOrderNo.Value.ToString();
+                        deliveryChallan.DelvChallanNo = outputDelvChallanNo.Value.ToString();
                         return new
                         {
                             ID = deliveryChallan.ID,
