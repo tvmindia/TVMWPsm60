@@ -70,7 +70,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else if(id==Guid.Empty && saleOrderID==null && prodOrderID!=null)
                 {
-                    ProductionOrderViewModel productionOrderVM = null; //Mapper.Map<ProductionOrder,ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder((Guid)prodOrderID));
+                    ProductionOrderViewModel productionOrderVM = Mapper.Map<ProductionOrder,ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder((Guid)prodOrderID));
                     deliveryChallanVM = new DeliveryChallanViewModel();
                     deliveryChallanVM.IsUpdate = false;
                     deliveryChallanVM.ID = Guid.Empty;

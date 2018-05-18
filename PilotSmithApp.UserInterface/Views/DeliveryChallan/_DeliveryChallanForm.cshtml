@@ -370,9 +370,9 @@
                         console.log(e.message);
                     }
                     try {
-                        $('#DeliveryChallanForm #SaleOrderID #ProdOrderID').change(function () {
+                        $('#DeliveryChallanForm #ProdOrderID').change(function () {
                             OnServerCallBegin();
-                            $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&saleOrderID=" + this.value + "&prodOrderID=" + this.value, function () {
+                            $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&prodOrderID=" + this.value, function () {
                                 $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
                                 BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true);
 
