@@ -315,7 +315,7 @@
                         console.log(e.message);
                     }
                     try {
-                        $('#DeliveryChallanGradeCode').select2({});
+                       // $('#DeliveryChallanGradeCode').select2({});
                         $('#SaleOrderID').val($('#hdnSaleOrderID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnSaleOrderID').val());
                         $('#SaleOrderID').select2({
                             language: {
@@ -369,12 +369,29 @@
                     catch (e) {
                         console.log(e.message);
                     }
-                    try {
+                    try   {
                         $('#DeliveryChallanForm #ProdOrderID').change(function () {
+                            debugger;
                             OnServerCallBegin();
-                            $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&prodOrderID=" + this.value, function () {
+                            $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid +"&prodOrderID="+this.value, function () {
                                 $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
-                                BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true);
+                                BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true,false);
+
+                                OnServerCallComplete();
+                            });
+
+                        });
+                    }
+                    catch (e) {
+                        console.log(e.message);
+                    }
+                    try {
+                        $('#DeliveryChallanForm #SaleOrderID').change(function () {
+                            debugger;
+                            OnServerCallBegin();
+                            $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&saleOrderID=" + this.value, function () {
+                                $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
+                                BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", false,true);
 
                                 OnServerCallComplete();
                             });

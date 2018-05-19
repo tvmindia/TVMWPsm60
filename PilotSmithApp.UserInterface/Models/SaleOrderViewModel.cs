@@ -114,11 +114,11 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Tax Type")]
         public int? TaxTypeCode { get; set; }
         [Display(Name = "CGST")]
-        public decimal? CGSTAmt { get; set; }
+        public decimal? CGSTPerc { get; set; }
         [Display(Name = "SGST")]
-        public decimal? SGSTAmt { get; set; }
+        public decimal? SGSTPerc { get; set; }
         [Display(Name = "IGST")]
-        public decimal? IGSTAmt { get; set; }
+        public decimal? IGSTPerc { get; set; }
         [Display(Name = "Cess Percentage")]
         public decimal? CessPerc { get; set; }
         [Display(Name = "Cess Amount")]
@@ -140,9 +140,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int OtherChargeCode { get; set; }
         public decimal ChargeAmount { get; set; }
         public int TaxTypeCode { get; set; }
-        public decimal CGSTAmt { get; set; }
-        public decimal SGSTAmt { get; set; }
-        public decimal IGSTAmt { get; set; }
+        public decimal CGSTPerc { get; set; }
+        public decimal SGSTPerc { get; set; }
+        public decimal IGSTPerc { get; set; }
         public decimal AddlTaxPec { get; set; }
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }

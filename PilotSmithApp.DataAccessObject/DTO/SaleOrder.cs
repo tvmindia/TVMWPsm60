@@ -75,9 +75,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
         public int? TaxTypeCode { get; set; }
-        public decimal? CGSTAmt { get; set; }
-        public decimal? SGSTAmt { get; set; }
-        public decimal? IGSTAmt { get; set; }
+        public decimal? CGSTPerc { get; set; }
+        public decimal? SGSTPerc { get; set; }
+        public decimal? IGSTPerc { get; set; }
         public decimal? CessPerc { get; set; }
         public decimal? CessAmt { get; set; }
 
@@ -93,9 +93,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int OtherChargeCode { get; set; }
         public decimal ChargeAmount { get; set; }
         public int TaxTypeCode { get; set; }
-        public decimal CGSTAmt { get; set; }
-        public decimal SGSTAmt { get; set; }
-        public decimal IGSTAmt { get; set; }
+        public decimal CGSTPerc { get; set; }
+        public decimal SGSTPerc { get; set; }
+        public decimal IGSTPerc { get; set; }
         public decimal AddlTaxPec { get; set; }
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommon PSASysCommon { get; set; }

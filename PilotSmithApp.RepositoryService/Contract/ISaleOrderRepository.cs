@@ -11,5 +11,7 @@ namespace PilotSmithApp.RepositoryService.Contract
     {
         List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm);
         List<SaleOrder> GetSaleOrderForSelectList(Guid? id);
+        SaleOrder GetSaleOrder(Guid id);
+        List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID);
     }
 }

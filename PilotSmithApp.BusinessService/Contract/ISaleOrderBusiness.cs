@@ -12,5 +12,7 @@ namespace PilotSmithApp.BusinessService.Contract
     {
         List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm);
         List<SelectListItem> GetSaleOrderForSelectList(Guid? id);
+        SaleOrder GetSaleOrder(Guid id);
+        List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID);
     }
 }
