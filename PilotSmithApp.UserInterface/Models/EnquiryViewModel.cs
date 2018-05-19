@@ -15,7 +15,8 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime EnquiryDate { get; set; }
         [Display(Name = "Requirement Specification")]
         public string RequirementSpec { get; set; }
-        [Display(Name = "Customer")]
+        [Required(ErrorMessage ="Customer is missing")]
+        [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Grade")]
         public int? EnquiryGradeCode { get; set; }
@@ -47,7 +48,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Document Locked")]
         public bool IsDocLocked { get; set; }
         public string[] DocumentOwners { get; set; }
-        public string DocumentOwner { get; set; }
+        public string DocumentOwner { get; set; }        
         public CustomerViewModel Customer { get; set; }
         public BranchViewModel Branch { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }

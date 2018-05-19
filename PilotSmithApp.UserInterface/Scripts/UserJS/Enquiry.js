@@ -10,6 +10,7 @@ $(document).ready(function () {
     try {
         BindOrReloadEnquiryTable('Init');
         $('#tblEnquiry tbody').on('dblclick', 'td', function () {
+            if (this.textContent !== "No data available in table")
             EditEnquiry(this);
         });
     }

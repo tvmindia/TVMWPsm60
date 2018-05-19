@@ -47,6 +47,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsUpdate = true;
                     AppUA appUA = Session["AppUA"] as AppUA;
                     enquiryVM.IsDocLocked = enquiryVM.DocumentOwners.Contains(appUA.UserName);
+                    enquiryVM.Customer = new CustomerViewModel
+                    {
+                        CustomerDisabled = true,
+                        Titles = new TitlesViewModel()
+                        {
+                            TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                        },
+                    };
                 }
                 else
                 {
@@ -56,12 +64,16 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.DocumentStatusCode = 1;
                     enquiryVM.DocumentStatus = new DocumentStatusViewModel();
                     enquiryVM.DocumentStatus.Description = "Open";
+                    enquiryVM.Customer = new CustomerViewModel
+                    {
+                        CustomerDisabled = false,
+                        Titles = new TitlesViewModel()
+                        {
+                            TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                        },
+                    };
                 }
-                enquiryVM.Customer = new CustomerViewModel {
-                    Titles=new TitlesViewModel() {
-                        TitlesSelectList=_customerBusiness.GetTitleSelectList(),
-                    }, 
-                };
+               
                 enquiryVM.EnquiryGrade = new EnquiryGradeViewModel()
                 {
                     EnquiryGradeSelectList = _enquiryGradeBusiness.GetEnquiryGradeSelectList()
