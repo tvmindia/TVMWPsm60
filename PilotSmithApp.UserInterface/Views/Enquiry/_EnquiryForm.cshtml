@@ -36,11 +36,18 @@
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                            @if (Model.IsUpdate)
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required",disabled=true })
+                            }
+                            else
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                            }
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -84,18 +91,18 @@
                     </div>
                 </div>
                 <div class="form-group col-md-12 no-right-padding">
-                    <div class="col-md-6 no-padding">
+                    <div class="col-md-12 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 no-right-padding">
                             <div class="divReferredByCodeSelectList">
                                 @Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "" })
                             </div>
                             @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
                         </div>
                     </div>
-                    <div class="col-md-6 no-padding">
+                    <div class="col-md-12 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "control-label" })
                         </div>
