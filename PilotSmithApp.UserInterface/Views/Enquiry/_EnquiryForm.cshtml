@@ -107,7 +107,7 @@
                             @Html.LabelFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12 no-right-padding">
-                            <div class="divResponsiblePersonIDSelectList">
+                            <div class="divResponsiblePersonSelectList">
                                 @Html.Action("ResponsiblePersonSelectList", "Employee", new { required = "" })
                             </div>
                             @Html.HiddenFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "", @id = "hdnResponsiblePersonID" })
@@ -131,7 +131,7 @@
                             @Html.LabelFor(model => model.AttendedByID, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12 no-right-padding">
-                            <div class="divAttendedByIDSelectList">
+                            <div class="divAttendedBySelectList">
                                 @Html.Action("AttendedBySelectList", "Employee", new { required = "" })
                             </div>
                             @Html.HiddenFor(model => model.AttendedByID, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })

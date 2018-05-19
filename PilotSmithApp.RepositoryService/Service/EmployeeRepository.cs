@@ -126,6 +126,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     employee.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : employee.Code);
                                     employee.Name= (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : employee.Name);
                                     employee.MobileNo= (sdr["MobileNo"].ToString() != "" ? sdr["MobileNo"].ToString() : employee.MobileNo);
+                                    employee.IsActive= (sdr["IsActive"].ToString() != "" ? bool.Parse(sdr["IsActive"].ToString()) : employee.IsActive);
                                     employee.Address= (sdr["Address"].ToString() != "" ? sdr["Address"].ToString() : employee.Address);
                                     employee.ImageURL= (sdr["ImageURL"].ToString() != "" ? sdr["ImageURL"].ToString() : employee.ImageURL);
                                     employee.DepartmentCode= (sdr["DepartmentCode"].ToString() != "" ? int.Parse(sdr["DepartmentCode"].ToString()): employee.DepartmentCode);
