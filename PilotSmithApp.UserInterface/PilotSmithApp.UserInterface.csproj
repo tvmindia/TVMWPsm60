@@ -262,6 +262,8 @@
     <Content Include="Content\images\email.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
+    <Content Include="Content\images\ownerlock.png" />
+    <Content Include="Content\images\ownerunlock.png" />
     <Content Include="Content\images\patternpop.png" />
     <Content Include="Content\images\production.png" />
     <Content Include="Content\images\rupee.png" />

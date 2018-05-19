@@ -122,10 +122,10 @@ else
                     @if (Model.TotalCount > 3)
                     {
                         <ul class="pagination pagination-sm inline">
-                            @{var pager = Math.Round((decimal)Model.TotalCount / 3);
+                            @{var pager = Math.Ceiling(Model.TotalCount / 3.0);
                                 for (int i = 1; i <= pager; i++)
                                 {
-                                    int count = i==1?0:i+2;
+                                    int count = i==1?0:i+1;
                                     <li onclick="EnquiryFollowUpPaging(@count)"><a href="#">@i</a></li>
                                 }
                             }

@@ -282,6 +282,6 @@ src: url(/fonts/Liquidrom.ttf);
     margin-right: 45%;
 }
 .lblStatusDisplay {
-    font-weight: bold;
+    font-weight: 300;
     font-size: 20px;
 }
