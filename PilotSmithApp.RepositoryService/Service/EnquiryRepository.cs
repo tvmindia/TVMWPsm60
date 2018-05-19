@@ -86,8 +86,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiry.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferredByCode);
                                         enquiry.ReferencePerson = new ReferencePerson();
                                         enquiry.ReferencePerson.Code = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : enquiry.ReferencePerson.Code);
-                                        enquiry.ReferencePerson.Name = (sdr["ReferredByCode"].ToString() != "" ? (sdr["ReferencePersonName"].ToString()) : enquiry.ReferencePerson.Name);
-                                        enquiry.ResponsiblePersonID = (sdr["ReferencePersonName"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
+                                        enquiry.ReferencePerson.Name = (sdr["ReferencePersonName"].ToString() != "" ? (sdr["ReferencePersonName"].ToString()) : enquiry.ReferencePerson.Name);
+                                        enquiry.ResponsiblePersonID = (sdr["ResponsiblePersonID"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : enquiry.ResponsiblePersonID);
                                         enquiry.AttendedByID = (sdr["AttendedByID"].ToString() != "" ? Guid.Parse(sdr["AttendedByID"].ToString()) : enquiry.AttendedByID);
                                         enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
                                         enquiry.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : enquiry.DocumentOwnerID);
