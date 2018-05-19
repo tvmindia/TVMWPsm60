@@ -97,7 +97,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             EmployeeViewModel employeeVM = masterCode == Guid.Empty ? new EmployeeViewModel() : Mapper.Map<Employee, EmployeeViewModel>(_employeeBusiness.GetEmployee(masterCode));
             employeeVM.IsUpdate = masterCode == Guid.Empty ? false : true;
-
+            if (masterCode == Guid.Empty)
+            {
+                employeeVM.IsActive = true;
+            }
             return PartialView("_EmployeeForm", employeeVM);
         }
         #endregion MasterPartial

@@ -10,6 +10,7 @@ $(document).ready(function () {
     try {
         BindOrReloadEnquiryTable('Init');
         $('#tblEnquiry tbody').on('dblclick', 'td', function () {
+            if (this.textContent !== "No data available in table")
             EditEnquiry(this);
         });
     }
@@ -140,7 +141,7 @@ function ExportEnquiryData() {
 // add Enquiry section
 function AddEnquiry() {
     //this will return form body(html)
-    $('#lblEnquiryInfo').text("<<ProductionQC No.>>");
+    $('#lblEnquiryInfo').text("<<Enquiry No.>>");
     OnServerCallBegin();
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");

@@ -67,8 +67,9 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> CustomerSelectList { get; set; }
         public TitlesViewModel Titles { get; set; }
         public PaymentTermViewModel PaymentTerm { get; set; }
-        
+
         //Additional properties
+        public bool CustomerDisabled { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }

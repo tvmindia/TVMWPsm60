@@ -36,11 +36,18 @@
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                            @if (Model.IsUpdate)
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required",disabled=true })
+                            }
+                            else
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                            }
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -84,23 +91,23 @@
                     </div>
                 </div>
                 <div class="form-group col-md-12 no-right-padding">
-                    <div class="col-md-6 no-padding">
+                    <div class="col-md-12 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 no-right-padding">
                             <div class="divReferredByCodeSelectList">
                                 @Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "" })
                             </div>
                             @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
                         </div>
                     </div>
-                    <div class="col-md-6 no-padding">
+                    <div class="col-md-12 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12 no-right-padding">
-                            <div class="divResponsiblePersonIDSelectList">
+                            <div class="divResponsiblePersonSelectList">
                                 @Html.Action("ResponsiblePersonSelectList", "Employee", new { required = "" })
                             </div>
                             @Html.HiddenFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "", @id = "hdnResponsiblePersonID" })
@@ -124,7 +131,7 @@
                             @Html.LabelFor(model => model.AttendedByID, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12 no-right-padding">
-                            <div class="divAttendedByIDSelectList">
+                            <div class="divAttendedBySelectList">
                                 @Html.Action("AttendedBySelectList", "Employee", new { required = "" })
                             </div>
                             @Html.HiddenFor(model => model.AttendedByID, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
@@ -147,13 +154,12 @@
                             <div class="form-group col-md-12">
                                 @if (!Model.IsDocLocked)
                                 {
-                                    <div class="col-md-12" style="background-color:gray;"></div>
                                     <div class="col-md-12 no-padding">
                                         <div class="col-md-2 no-padding">
                                             <img src="~/Content/images/ownerlock.png" title="Document Locked"/>
                                         </div>
                                         <div class="col-md-10 no-padding">
-                                            <span style="font-size:24px;">Current owner: Suvaneeth</span><br />
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
                                             <a href="#"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
@@ -165,7 +171,7 @@
                                             <img src="~/Content/images/ownerunlock.png" />
                                         </div>
                                         <div class="col-md-10 no-padding">
-                                            <span style="font-size:24px;">Current owner: Suvaneeth</span><br />
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
                                             <a href="#"><span style="font-size:18px;">Deny ownership</span></a>
                                         </div>
                                     </div>

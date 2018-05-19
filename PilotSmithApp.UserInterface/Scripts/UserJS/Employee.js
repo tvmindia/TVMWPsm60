@@ -140,7 +140,7 @@ function EditEmployeeMaster(this_Obj) {
     //this will return form body(html)
     $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + Employee.ID, function () {
         $('#hdnMasterCall').val('MSTR');
-        $('#lblModelMasterContextLabel').text('Edit Product Information')
+        $('#lblModelMasterContextLabel').text('Edit Employee Information')
         $('#divModelMasterPopUp').modal('show');
     });
 }

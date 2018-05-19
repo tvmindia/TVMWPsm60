@@ -323,6 +323,10 @@ function SaveSuccessEmployeeMaster(data, status) {
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required=');
+                $('.divResponsiblePersonSelectList').load('/Employee/EmployeeSelectList?required=');
+                $('.divAttendedBySelectList').load('/Employee/EmployeeSelectList?required=');
+                $('.divPreparedBySelectList').load('/Employee/EmployeeSelectList?required=');
+                $('.divQCBySelectList').load('/Employee/EmployeeSelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
