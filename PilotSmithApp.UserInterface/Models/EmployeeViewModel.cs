@@ -14,10 +14,15 @@ namespace PilotSmithApp.UserInterface.Models
         public string Code { get; set; }
         [Required(ErrorMessage = "Employee Name is missing")]
         public string Name { get; set; }
+        [Display(Name = "Mobile")]
+        [StringLength(50, MinimumLength = 5)]
+        [RegularExpression(@"^((\+91-?)|0)?[0-9]{10}$", ErrorMessage = "Entered phone format is not valid.")]
         public string MobileNo { get; set; }
         public string Address { get; set; }
         public string ImageURL { get; set; }
+        [Display(Name = "Department")]
         public int? DepartmentCode { get; set; }
+        [Display(Name = "Position")]
         public int? PositionCode { get; set; }
         public bool IsActive { get; set; }
         public string GeneralNotes { get; set; }
