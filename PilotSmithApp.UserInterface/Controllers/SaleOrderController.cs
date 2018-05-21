@@ -100,6 +100,59 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion GetAllSaleOrder
 
+        #region GetSaleOrderDetailListBySaleOrderID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public string GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
+        {
+            try
+            {
+                List<SaleOrderDetailViewModel> saleOrderItemViewModelList = new List<SaleOrderDetailViewModel>();
+                if (saleOrderID == Guid.Empty)
+                {
+                    SaleOrderDetailViewModel saleOrderDetailVM = new SaleOrderDetailViewModel()
+                    {
+                        ID = Guid.Empty,
+                        SaleOrderID = Guid.Empty,
+                        ProductID = Guid.Empty,
+                        ProductModelID = Guid.Empty,
+                        ProductSpec = string.Empty,
+                        Qty = 0,
+                        Rate=0,
+                        CessAmt=0,
+                        UnitCode = null,                      
+                        Product = new ProductViewModel()
+                        {
+                            ID = Guid.Empty,
+                            Code = string.Empty,
+                            Name = string.Empty,
+                        },
+                        ProductModel = new ProductModelViewModel()
+                        {
+                            ID = Guid.Empty,
+                            Name = string.Empty
+                        },
+                        Unit = new UnitViewModel()
+                        {
+                            Description = null,
+                        },
+                    };
+                    saleOrderItemViewModelList.Add(saleOrderDetailVM);
+                }
+                else
+                {
+                    saleOrderItemViewModelList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion GetSaleOrderDetailListBySaleOrderID
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]

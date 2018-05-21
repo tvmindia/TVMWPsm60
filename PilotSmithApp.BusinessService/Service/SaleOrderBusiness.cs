@@ -33,6 +33,14 @@ namespace PilotSmithApp.BusinessService.Service
                                                                  Selected = false
                                                              }).ToList() : new List<SelectListItem>();
         }
+        public SaleOrder GetSaleOrder(Guid id)
+        {
+            return _saleOrderRepository.GetSaleOrder(id);
+        }
+        public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
+        {
+            return _saleOrderRepository.GetSaleOrderDetailListBySaleOrderID(saleOrderID);
+        }
 
     }
 }

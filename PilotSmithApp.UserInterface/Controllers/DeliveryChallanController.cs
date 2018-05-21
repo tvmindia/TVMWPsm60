@@ -58,14 +58,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else if(id==Guid.Empty && saleOrderID!=null && prodOrderID==null)
                 {
-                    SaleOrderViewModel saleOrderVM = null;
+                    SaleOrderViewModel saleOrderVM = Mapper.Map<SaleOrder,SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleOrderID));
                     deliveryChallanVM = new DeliveryChallanViewModel();
                     deliveryChallanVM.IsUpdate = false;
                     deliveryChallanVM.ID = Guid.Empty;
                     deliveryChallanVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     deliveryChallanVM.SaleOrderID = saleOrderID;
                     deliveryChallanVM.CustomerID = saleOrderVM.CustomerID;
-                    deliveryChallanVM.ProdOrderID = null;
+                    deliveryChallanVM.ProdOrderID = prodOrderID;
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
                 }
                 else if(id==Guid.Empty && saleOrderID==null && prodOrderID!=null)
@@ -312,7 +312,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<DeliveryChallanDetailViewModel> deliveryChallanItemViewModelList = new List<DeliveryChallanDetailViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = null; //Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.(saleOrderID));
+                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
                     foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderDetailVMList)
                     {
                         DeliveryChallanDetailViewModel deliveryChallanDetailVM = new DeliveryChallanDetailViewModel()
