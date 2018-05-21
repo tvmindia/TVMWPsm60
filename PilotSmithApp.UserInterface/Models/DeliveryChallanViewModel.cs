@@ -53,6 +53,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Document Locked")]
         public bool IsDocLocked { get; set; }
         public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public List<DeliveryChallanDetailViewModel> DeliveryChallanDetailList { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public SaleOrderViewModel SaleOrder { get; set; }
@@ -66,6 +67,8 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> SaleOrderSelectList { get; set; }
         public List<SelectListItem> ProductionOrderSelectList { get; set; }
         public PlantViewModel Plant { get; set; }
+        public bool SaleOrderValue { get; set; } //for radio button 
+        public bool ProdOrderValue { get; set; }
     }
 
     public class DeliveryChallanAdvanceSearchViewModel

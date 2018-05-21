@@ -43,6 +43,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     deliveryChallanVM = Mapper.Map<DeliveryChallan, DeliveryChallanViewModel>(_deliveryChallanBusiness.GetDeliveryChallan(id));
                     deliveryChallanVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    deliveryChallanVM.IsDocLocked = deliveryChallanVM.DocumentOwners.Contains(appUA.UserName);
                     deliveryChallanVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     deliveryChallanVM.ProductionOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(prodOrderID);
                 }
@@ -66,6 +68,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.SaleOrderID = saleOrderID;
                     deliveryChallanVM.CustomerID = saleOrderVM.CustomerID;
                     deliveryChallanVM.ProdOrderID = prodOrderID;
+                    deliveryChallanVM.SaleOrderValue = true;
+                    deliveryChallanVM.ProdOrderValue = false;
+                    deliveryChallanVM.DocumentType = "SaleOrder";      
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
                 }
                 else if(id==Guid.Empty && saleOrderID==null && prodOrderID!=null)
@@ -78,6 +83,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.ProdOrderID = prodOrderID;
                     deliveryChallanVM.CustomerID = productionOrderVM.CustomerID;
                     deliveryChallanVM.SaleOrderID = null;
+                    deliveryChallanVM.SaleOrderValue = false;
+                    deliveryChallanVM.ProdOrderValue = true;
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
                 }
             }
@@ -271,7 +278,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             ProductSpec = productionOrderDetailVM.ProductSpec,
                             OrderQty = productionOrderDetailVM.OrderQty,
                             UnitCode = productionOrderDetailVM.UnitCode,
-                            DelvQty=0,
+                            DelvQty=0,                            
 
                             Product = new ProductViewModel()
                             {
