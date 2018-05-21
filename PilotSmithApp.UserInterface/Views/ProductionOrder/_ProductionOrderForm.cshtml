@@ -19,16 +19,16 @@
 
             <div class="form-group col-md-6 ">
                 @*<div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.SaleOrderID, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divEnquirySelectList">
-                            @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.SaleOrderID, htmlAttributes: new { @class = "control-label" })
                         </div>
-                    </div>
-                    @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
-                </div>*@
+                        <div class="col-md-12">
+                            <div class="divEnquirySelectList">
+                                @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
+                            </div>
+                        </div>
+                        @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
+                    </div>*@
 
 
                 <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
@@ -119,7 +119,14 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                            @if (Model.IsUpdate)
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" ,disabled=true})
+                            }
+                            else
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                            }
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -191,34 +198,51 @@
                             }
                         </div>
                         @*<div class="form-group col-md-12">
-                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.IsFinalApproved)</div>
-                        </div>
-                        <div class="form-group col-md-12">
-
-                            @if (Model.IsFinalApproved == null)
-                            {
-                                <div class="lblStatusDisplay">PENDING FOR FINAL APPROVAL</div>
-                            }
-                            else if (Model.IsFinalApproved == true)
-                            {
-                                <div class="lblStatusDisplay">✔ FINALY APPROVED</div>
-                            }
-                            else
-                            {
-                                <div class="lblStatusDisplay">✗ FINAL APPROVER REJECTED</div>
-                            }
-                        </div>*@                       
-
-                        @if (Model.IsUpdate)
-                        {
+                                <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.IsFinalApproved)</div>
+                            </div>
                             <div class="form-group col-md-12">
-                                @if (!Model.IsDocLocked)
+
+                                @if (Model.IsFinalApproved == null)
                                 {
-                                    <div class="lblStatusDisplay">🔒</div>
+                                    <div class="lblStatusDisplay">PENDING FOR FINAL APPROVAL</div>
+                                }
+                                else if (Model.IsFinalApproved == true)
+                                {
+                                    <div class="lblStatusDisplay">✔ FINALY APPROVED</div>
                                 }
                                 else
                                 {
-                                    <div class="lblStatusDisplay">🔓</div>
+                                    <div class="lblStatusDisplay">✗ FINAL APPROVER REJECTED</div>
+                                }
+                            </div>*@
+
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="col-md-12"></div>
+                            <div class="form-group col-md-12">
+                                @if (!Model.IsDocLocked)
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerlock.png" title="Document Locked" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerunlock.png" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <a href="#"><span style="font-size:18px;">Deny ownership</span></a>
+                                        </div>
+                                    </div>
                                 }
                             </div>
                         }
@@ -233,7 +257,7 @@
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
-   
+
 
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
@@ -248,7 +272,7 @@
                             <th>Sale Order.Qty</th>
                             <th>Prev Prod Order Qty</th>
                             <th>Curr Prod Order Qty</th>
-                            <th>Produced Qty</th>                                                      
+                            <th>Produced Qty</th>
                             <th>Rate</th>
                             <th>Amount</th>
                             <th>Supplier/Plant</th>
@@ -283,12 +307,12 @@
         </div>
     </div>
 
-        <div class="col-md-11 divbox1">
-            <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">Attachment</div>
-                @Html.Partial("_Fileupload")
-            </div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Attachment</div>
+            @Html.Partial("_Fileupload")
         </div>
+    </div>
         <div class="" hidden="hidden">
             <div class="col-md-offset-2 col-md-10">
                 <input id="btnInsertUpdateProductionOrder" type="submit" value="Create" class="btn btn-default" />

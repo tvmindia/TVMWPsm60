@@ -140,6 +140,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.DocumentStatus = new DocumentStatus();
                                     productionOrder.DocumentStatus.Description = (sdr["DocumentStatus"].ToString() != "" ? sdr["DocumentStatus"].ToString() : productionOrder.DocumentStatus.Description);
                                     productionOrder.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : productionOrder.DocumentOwners);
+                                    productionOrder.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : productionOrder.DocumentOwner);
                                 }
                         }
                     }
