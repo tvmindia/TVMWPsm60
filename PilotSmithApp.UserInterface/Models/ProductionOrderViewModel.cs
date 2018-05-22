@@ -53,6 +53,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Document Locked")]
         public bool IsDocLocked { get; set; }
         public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public CustomerViewModel Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
         public BranchViewModel Branch { get; set; }

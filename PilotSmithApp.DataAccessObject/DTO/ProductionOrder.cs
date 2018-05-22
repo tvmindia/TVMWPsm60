@@ -37,6 +37,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public Customer Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
         public DocumentStatus DocumentStatus { get; set; }

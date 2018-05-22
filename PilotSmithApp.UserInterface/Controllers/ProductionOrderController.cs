@@ -41,6 +41,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(id));
                     productionOrderVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    productionOrderVM.IsDocLocked = productionOrderVM.DocumentOwners.Contains(appUA.UserName);
                     productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                 }
                 else if (id == Guid.Empty && saleOrderID==null)
@@ -56,7 +58,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }     
                 else if(id==Guid.Empty && saleOrderID!=null)
                 {
-                    SaleOrderViewModel saleOrderVM = null;//Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.(id));
+                    SaleOrderViewModel saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleOrderID));
                     productionOrderVM = new ProductionOrderViewModel();
                     productionOrderVM.IsUpdate = false;
                     productionOrderVM.ID = Guid.Empty;
@@ -235,6 +237,59 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion GetProductionOrderDetailListByProductionOrderID
+
+        #region Get ProductionOrder DetailList By ProductionOrderID with SaleOrder
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
+        public string GetProductionOrderDetailListByProductionOrderIDWithSaleOrder(Guid saleOrderID)
+        {
+            try
+            {
+                List<ProductionOrderDetailViewModel> productionOrderItemViewModelList = new List<ProductionOrderDetailViewModel>();
+                if (saleOrderID != Guid.Empty)
+                {
+                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
+                    foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderDetailVMList)
+                    {
+                        ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel()
+                        {
+                            ID = Guid.Empty,
+                            ProdOrderID = Guid.Empty,
+                            ProductID = saleOrderDetailVM.ProductID,
+                            ProductModelID = saleOrderDetailVM.ProductModelID,
+                            ProductSpec = saleOrderDetailVM.ProductSpec,
+                            OrderQty = saleOrderDetailVM.Qty,
+                            UnitCode = saleOrderDetailVM.UnitCode,
+                            ProducedQty = 0,
+
+                            Product = new ProductViewModel()
+                            {
+                                ID = (Guid)saleOrderDetailVM.ProductID,
+                                Code = saleOrderDetailVM.Product.Code,
+                                Name = saleOrderDetailVM.Product.Name,
+                            },
+                            ProductModel = new ProductModelViewModel()
+                            {
+                                ID = (Guid)saleOrderDetailVM.ProductModelID,
+                                Name = saleOrderDetailVM.ProductModel.Name
+                            },
+                            Unit = new UnitViewModel()
+                            {
+                                Description = saleOrderDetailVM.Unit.Description
+                            },
+                        };
+                        productionOrderItemViewModelList.Add(productionOrderDetailVM);
+                    }
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = productionOrderItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get ProductionOrder DetailList By ProductionOrderID with SaleOrder
 
         #region DeleteProductionOrder       
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "D")]

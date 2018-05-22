@@ -67,8 +67,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallan.DelvChallanDate = (sdr["DelvChallanDate"].ToString() != "" ? DateTime.Parse(sdr["DelvChallanDate"].ToString()) : deliveryChallan.DelvChallanDate);
                                         deliveryChallan.DelvChallanDateFormatted = (sdr["DelvChallanDate"].ToString() != "" ? DateTime.Parse(sdr["DelvChallanDate"].ToString()).ToString(_settings.DateFormat) : deliveryChallan.DelvChallanDateFormatted);
                                         deliveryChallan.SaleOrder = new SaleOrder();
+                                        deliveryChallan.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : deliveryChallan.SaleOrderID);
                                         deliveryChallan.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : deliveryChallan.SaleOrder.SaleOrderNo);
                                         deliveryChallan.ProductionOrder = new ProductionOrder();
+                                        deliveryChallan.ProdOrderID = (sdr["ProdOrderID"].ToString() != "" ? Guid.Parse(sdr["ProdOrderID"].ToString()) : deliveryChallan.ProdOrderID);
                                         deliveryChallan.ProductionOrder.ProdOrderNo= (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : deliveryChallan.ProductionOrder.ProdOrderNo);
                                         deliveryChallan.Customer = new Customer();
                                         deliveryChallan.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : deliveryChallan.Customer.CompanyName);
@@ -131,10 +133,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                     deliveryChallan.PlantCode = (sdr["PlantCode"].ToString() != "" ? int.Parse(sdr["PlantCode"].ToString()) : deliveryChallan.PlantCode);
                                     deliveryChallan.PreparedBy= (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : deliveryChallan.PreparedBy);
                                     deliveryChallan.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? (sdr["GeneralNotes"]).ToString() : deliveryChallan.GeneralNotes);
-                                    deliveryChallan.DocumentOwnerID = deliveryChallan.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : deliveryChallan.DocumentOwnerID);
+                                    deliveryChallan.DocumentOwnerID  = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : deliveryChallan.DocumentOwnerID);
                                     deliveryChallan.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : deliveryChallan.BranchCode);
                                     deliveryChallan.VehiclePlateNo = (sdr["VehiclePlateNo"].ToString() != "" ? sdr["VehiclePlateNo"].ToString() : deliveryChallan.VehiclePlateNo);
                                     deliveryChallan.DriverName = (sdr["DriverName"].ToString() != "" ? sdr["DriverName"].ToString() : deliveryChallan.DriverName);
+                                    deliveryChallan.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? sdr["DocumentOwners"].ToString().Split(',') : deliveryChallan.DocumentOwners);
+                                    deliveryChallan.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : deliveryChallan.DocumentOwner);
                                 }
                         }
                     }
