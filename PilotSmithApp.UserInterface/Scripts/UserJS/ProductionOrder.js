@@ -156,7 +156,7 @@ function AddProductionOrder() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid, function () {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid+"&saleOrderID=", function () {
         $('#lblProductionOrderInfo').text('<<ProductionOrder No.>>');
         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
         BindProductionOrderDetailList(_emptyGuid);
@@ -209,7 +209,7 @@ function ResetProductionOrder() {
         BindProductionOrderDetailList($('#ID').val(), false);
         clearUploadControl();
         PaintImages($('#ProductionOrderForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionOrderForm #hdnCustomerID').val());
     });
 }
 
@@ -309,7 +309,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              ordering: false,
              bInfo: false,
              data: //id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id),
-                    !IsSaleOrder?id==_emptyGuid?null: GetProductionOrderDetailListByProductionOrderID(id,false):GetProductionOrderDetailListByProductionOrderID(id,true),
+                    !IsSaleOrder ? id==_emptyGuid?null: GetProductionOrderDetailListByProductionOrderID(id,false) : GetProductionOrderDetailListByProductionOrderID(id,true),
 
              language: {
                  search: "_INPUT_",
@@ -363,8 +363,8 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                      if ((((row.MileStone1FcFinishDtFormatted != null) && (row.MileStone1FcFinishDtFormatted!="")) && ((row.MileStone1AcTFinishDtFormatted != null) && (row.MileStone1AcTFinishDtFormatted!=""))))
                      {
                          var M1 = '25%'
-                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left> Milestone Reach : ' + M1 + '" data-content="1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M1
-                     }
+                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left> Milestone Reach : ' + M1 + '" data-content="1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted+ ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M1
+                     }                    
                      if (((row.MileStone2FcFinishDtFormatted != null && (row.MileStone2FcFinishDtFormatted)) && (row.MileStone2AcTFinishDtFormatted != null && (row.MileStone2AcTFinishDtFormatted))))
                      {
                          var M2 = '50%'
@@ -415,8 +415,8 @@ function GetProductionOrderDetailListByProductionOrderID(id,IsSaleOrder) {
 
         var productionOrderDetailList = [];
         if (IsSaleOrder) {
-            var data = { "saleOrderID": $('#SaleOrderForm #hdnSaleOrderID').val() };
-            _jsonData = GetDataFromServer("Estimate/GetDeliveryChallanDetailListByDeliveryChallanIDWithSaleOrder/", data);
+            var data = { "saleOrderID": $('#ProductionOrderForm #hdnSaleOrderID').val() };
+            _jsonData = GetDataFromServer("ProductionOrder/GetProductionOrderDetailListByProductionOrderIDWithSaleOrder/", data);
         }
         else {
         var data = { "productionOrderID": id };
@@ -681,5 +681,86 @@ function DeleteProductionOrderDetail(ID) {
         if (_status == "ERROR") {
             notyAlert('error', _message);
         }
+    }
+}
+
+//=======================Email=======================================================================
+
+function EmailProductionOrder() {
+    debugger;
+    $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=True", function () {
+        $('#lblModelEmailProductionOrder').text('Email ProductionOrder')
+        $('#divModelEmailProductionOrder').modal('show');
+    });
+}
+function SendProductionOrderEmail() {
+    $('#hdnProductionOrderEMailContent').val($('#divProductionOrderEmailcontainer').html());
+    $('#FormProductionOrderEmailSend #ID').val($('#ProductionOrderForm #ID').val());
+}
+function UpdateProductionOrderEmailInfo() {
+    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+    $('#FormUpdateProductionOrderEmailInfo #ID').val($('#ProductionOrderForm #ID').val());
+}
+function DownloadProductionOrder() {
+    var bodyContent = $('#divProductionOrderEmailcontainer').html();
+    var headerContent = $('#hdnHeadContent').html();
+    $('#hdnContent').val(bodyContent);
+    $('#hdnHeadContent').val(headerContent);
+    var customerName = $("#ProductionOrderForm #CustomerID option:selected").text();
+    $('#hdnCustomerName').val(customerName);
+}
+function SaveSuccessUpdateProductionOrderEmailInfo(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                MasterAlert("success", _result.Message)
+                $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=False", function () {
+                    $('#lblModelEmailProductionOrder').text('Send Email ProductionOrder')
+                });
+                break;
+            case "ERROR":
+                MasterAlert("success", _message)
+                $('#divModelEmailProductionOrder').modal('hide');
+                break;
+            default:
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function SaveSuccessProductionOrderEmailSend(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                MasterAlert("success", _message)
+                $('#divModelEmailProductionOrder').modal('hide');
+                break;
+            case "ERROR":
+                MasterAlert("success", _message)
+                $('#divModelEmailProductionOrder').modal('hide');
+                break;
+            default:
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }

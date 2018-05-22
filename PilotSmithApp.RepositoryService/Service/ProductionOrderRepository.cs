@@ -65,6 +65,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     ProductionOrder productionOrder = new ProductionOrder();
                                     {
                                         productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
+                                        productionOrder.SaleOrderID= (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : productionOrder.SaleOrderID);
                                         productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
                                         productionOrder.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrder.ProdOrderDate);
                                         productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString(_settings.DateFormat) : productionOrder.ProdOrderDateFormatted);
@@ -125,13 +126,16 @@ namespace PilotSmithApp.RepositoryService.Service
                                 if (sdr.Read())
                                 {
                                     productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
+                                    productionOrder.SaleOrderID= (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : productionOrder.SaleOrderID);
                                     productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
                                     productionOrder.ProdOrderRefNo = (sdr["ProdOrderRefNo"].ToString() != "" ? sdr["ProdOrderRefNo"].ToString() : productionOrder.ProdOrderRefNo);
                                     productionOrder.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrder.ProdOrderDate);
                                     productionOrder.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString(_settings.DateFormat) : productionOrder.ProdOrderDateFormatted);
                                     productionOrder.ExpectedDelvDate= (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : productionOrder.ExpectedDelvDate);
                                     productionOrder.ExpectedDelvDateFormatted= (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : productionOrder.ExpectedDelvDateFormatted);
-                                    productionOrder.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : productionOrder.PreparedBy);                            
+                                    productionOrder.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : productionOrder.PreparedBy);
+                                    productionOrder.Customer = new Customer();
+                                    productionOrder.Customer.CompanyName = (sdr["Customer"].ToString() != "" ? sdr["Customer"].ToString() : productionOrder.Customer.CompanyName);
                                     productionOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionOrder.CustomerID);
                                     productionOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionOrder.DocumentStatusCode);
                                     productionOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrder.GeneralNotes);
@@ -208,21 +212,21 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.Plant.Description = (sdr["PlantDescription"].ToString() != "" ? (sdr["PlantDescription"].ToString()) : productionOrderDetail.Plant.Description);
                                         productionOrderDetail.QCCompletedQty= (sdr["QCCompletedQty"].ToString() != "" ? decimal.Parse(sdr["QCCompletedQty"].ToString()) : productionOrderDetail.QCCompletedQty);
                                         productionOrderDetail.MileStone1FcFinishDt= (sdr["MileStone1FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1FcFinishDt"].ToString()) : productionOrderDetail.MileStone1FcFinishDt);
-                                        productionOrderDetail.MileStone1FcFinishDtFormatted= (sdr["MileStone1FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone1FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone1FcFinishDtFormatted= (sdr["MileStone1FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone1FcFinishDtFormatted==null?"-": productionOrderDetail.MileStone1FcFinishDtFormatted);
                                         productionOrderDetail.MileStone1AcTFinishDt = (sdr["MileStone1AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1AcTFinishDt"].ToString()) : productionOrderDetail.MileStone1AcTFinishDt);
-                                        productionOrderDetail.MileStone1AcTFinishDtFormatted = (sdr["MileStone1AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone1AcTFinishDtFormatted);
+                                        productionOrderDetail.MileStone1AcTFinishDtFormatted = (sdr["MileStone1AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone1AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone1AcTFinishDtFormatted==null?"-": productionOrderDetail.MileStone1AcTFinishDtFormatted);
                                         productionOrderDetail.MileStone2FcFinishDt = (sdr["MileStone2FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2FcFinishDt"].ToString()) : productionOrderDetail.MileStone2FcFinishDt);
-                                        productionOrderDetail.MileStone2FcFinishDtFormatted = (sdr["MileStone2FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone2FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone2FcFinishDtFormatted = (sdr["MileStone2FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone2FcFinishDtFormatted==null?"-" : productionOrderDetail.MileStone2FcFinishDtFormatted);
                                         productionOrderDetail.MileStone2AcTFinishDt = (sdr["MileStone2AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2AcTFinishDt"].ToString()) : productionOrderDetail.MileStone2AcTFinishDt);
-                                        productionOrderDetail.MileStone2AcTFinishDtFormatted = (sdr["MileStone2AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone2AcTFinishDtFormatted);
+                                        productionOrderDetail.MileStone2AcTFinishDtFormatted = (sdr["MileStone2AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone2AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone2AcTFinishDtFormatted==null?"-": productionOrderDetail.MileStone2AcTFinishDtFormatted);
                                         productionOrderDetail.MileStone3FcFinishDt = (sdr["MileStone3FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3FcFinishDt"].ToString()) : productionOrderDetail.MileStone3FcFinishDt);
-                                        productionOrderDetail.MileStone3FcFinishDtFormatted = (sdr["MileStone3FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone3FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone3FcFinishDtFormatted = (sdr["MileStone3FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone3FcFinishDtFormatted==null?"-": productionOrderDetail.MileStone3FcFinishDtFormatted);
                                         productionOrderDetail.MileStone3AcTFinishDt = (sdr["MileStone3AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3AcTFinishDt"].ToString()) : productionOrderDetail.MileStone3AcTFinishDt);
-                                        productionOrderDetail.MileStone3AcTFinishDtFormatted = (sdr["MileStone3AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone3AcTFinishDtFormatted);
+                                        productionOrderDetail.MileStone3AcTFinishDtFormatted = (sdr["MileStone3AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone3AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone3AcTFinishDtFormatted==null?"-": productionOrderDetail.MileStone3AcTFinishDtFormatted);
                                         productionOrderDetail.MileStone4FcFinishDt = (sdr["MileStone4FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4FcFinishDt"].ToString()) : productionOrderDetail.MileStone4FcFinishDt);
-                                        productionOrderDetail.MileStone4FcFinishDtFormatted = (sdr["MileStone4FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4FcFinishDtFormatted);
+                                        productionOrderDetail.MileStone4FcFinishDtFormatted = (sdr["MileStone4FcFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4FcFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4FcFinishDtFormatted==null?"-": productionOrderDetail.MileStone4FcFinishDtFormatted);
                                         productionOrderDetail.MileStone4AcTFinishDt = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()) : productionOrderDetail.MileStone4AcTFinishDt);
-                                        productionOrderDetail.MileStone4AcTFinishDtFormatted = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4AcTFinishDtFormatted);
+                                        productionOrderDetail.MileStone4AcTFinishDtFormatted = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4AcTFinishDtFormatted==null?"-": productionOrderDetail.MileStone4AcTFinishDtFormatted);
                                         productionOrderDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : Guid.Empty);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
@@ -259,6 +263,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = productionOrder.IsUpdate;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = productionOrder.ID;
+                        cmd.Parameters.Add("@SaleOrderID", SqlDbType.UniqueIdentifier).Value = productionOrder.SaleOrderID;
                         cmd.Parameters.Add("@ProdOrderNo", SqlDbType.VarChar, 20).Value = productionOrder.ProdOrderNo;
                         cmd.Parameters.Add("@ProdOrderRefNo", SqlDbType.VarChar, 20).Value = productionOrder.ProdOrderRefNo;
                         cmd.Parameters.Add("@ProdOrderDate", SqlDbType.DateTime).Value = productionOrder.ProdOrderDateFormatted;
@@ -519,5 +524,57 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionOrderList;
         }
         #endregion GetProductionOrderForSelectList
+        #region UpdateProductionOrderEmailInfo
+        public object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[UpdateProductionOrderEmailInfo]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = productionOrder.ID;                      
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = productionOrder.EmailSentYN;
+                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = productionOrder.EmailSentTo;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = productionOrder.PSASysCommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = productionOrder.PSASysCommon.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(_appConstant.InsertFailure);
+                    case "1":
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = productionOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+                        };
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = productionOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+            };
+        }
+        #endregion UpdateProductionOrderEmailInfo
     }
 }

@@ -14,10 +14,12 @@ namespace PilotSmithApp.BusinessService.Service
     {
         IProductionOrderRepository _productionOrderRepository;
         ICommonBusiness _commonBusiness;
-        public ProductionOrderBusiness(IProductionOrderRepository productionOrderRepository, ICommonBusiness commonBusiness)
+        IMailBusiness _mailBusiness;
+        public ProductionOrderBusiness(IProductionOrderRepository productionOrderRepository, ICommonBusiness commonBusiness,IMailBusiness mailBusiness)
         {
             _productionOrderRepository = productionOrderRepository;
             _commonBusiness = commonBusiness;
+            _mailBusiness = mailBusiness;
         }
         public List<ProductionOrder> GetAllProductionOrder(ProductionOrderAdvanceSearch productionOrderAdvanceSearch)
         {
@@ -63,5 +65,38 @@ namespace PilotSmithApp.BusinessService.Service
                                          Selected = false
                                      }).ToList():new List<SelectListItem>();
         }
+        public object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder)
+        {
+            return _productionOrderRepository.UpdateProductionOrderEmailInfo(productionOrder);
+        }
+        public async Task<bool> ProductionOrderEmailPush(ProductionOrder productionOrder)
+        {
+
+            bool sendsuccess = false;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(productionOrder.EmailSentTo))
+                {
+                    string[] EmailList = productionOrder.EmailSentTo.Split(',');
+                    foreach (string email in EmailList)
+                    {
+                        Mail _mail = new Mail();
+                        _mail.Body = productionOrder.MailContant;
+                        _mail.Subject = "ProductionOrder";
+                        _mail.To = email;
+                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sendsuccess;
+        }
+
     }
 }

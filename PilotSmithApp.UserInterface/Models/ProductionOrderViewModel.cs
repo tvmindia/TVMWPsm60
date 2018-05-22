@@ -60,6 +60,9 @@ namespace PilotSmithApp.UserInterface.Models
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<ProductionOrderDetailViewModel> ProductionOrderDetailList { get; set; }
         public List<SelectListItem> SaleOrderSelectList { get; set; }
+        public string MailContant { get; set; }
+        public bool EmailFlag { get; set; }
+        public PDFTools PDFTools { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel
