@@ -31,6 +31,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 //****SAMTOOL MODELS END
 
                 //****PilotSmithApp APP MODELS
+                config.CreateMap<UserInBranchViewModel, UserInBranch>().ReverseMap();
                 config.CreateMap<CustomerViewModel,Customer>().ReverseMap();
                 config.CreateMap<CustomerAdvanceSearchViewModel, CustomerAdvanceSearch>().ReverseMap();
                 config.CreateMap<TitlesViewModel, Titles>().ReverseMap();

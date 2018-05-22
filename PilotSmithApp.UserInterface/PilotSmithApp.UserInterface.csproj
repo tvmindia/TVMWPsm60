@@ -710,6 +710,7 @@
     <Content Include="Scripts\UserJS\TaxType.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
+    <Content Include="Scripts\UserJS\UserBranch.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -768,6 +769,7 @@
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
+    <Compile Include="Controllers\UserInBranchController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -825,6 +827,7 @@
     <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
     <Compile Include="Models\UnitViewModel.cs" />
+    <Compile Include="Models\UserInBranchViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityFilter\AuthSecurityFilter.cs" />
@@ -979,6 +982,7 @@
     <Content Include="Views\DeliveryChallan\_DeliveryChallanForm.cshtml" />
     <Content Include="Views\DeliveryChallan\_AddDeliveryChallanDetail.cshtml" />
     <Content Include="Views\ReferenceType\_ReferenceTypeSelectList.cshtml" />
+    <Content Include="Views\UserInBranch\Index.cshtml" />
     <Content Include="Views\ProductionOrder\_EmailProductionOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -88,6 +88,7 @@
     <Compile Include="DTO\TaxType.cs" />
     <Compile Include="DTO\Unit.cs" />
     <Compile Include="DTO\PSAUser.cs" />
+    <Compile Include="DTO\UserInBranch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
