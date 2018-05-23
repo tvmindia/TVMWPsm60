@@ -195,6 +195,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiryDetail.ID);
                                         enquiryDetail.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : enquiryDetail.EnquiryID);
                                         enquiryDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : enquiryDetail.ProductSpec);
+                                        enquiryDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : enquiryDetail.SpecTag);
                                         enquiryDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
