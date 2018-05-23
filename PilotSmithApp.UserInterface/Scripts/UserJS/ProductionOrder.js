@@ -553,7 +553,7 @@ function AddProductionOrderDetailToList() {
                             var Product = new Object;
                             var ProductModel = new Object()
                             var Unit = new Object();
-                            var Plant = new Plant();
+                            var Plant = new Object();
                             ProductionOrderDetailVM.ID = _emptyGuid;
                             ProductionOrderDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                             Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
