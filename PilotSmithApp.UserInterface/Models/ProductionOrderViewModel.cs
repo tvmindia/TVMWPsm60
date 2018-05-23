@@ -87,7 +87,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Order Qty")]
         public decimal? OrderQty{get;set;}
         [Display(Name = "Produced Qty")]
-        public decimal? ProducedQty{get;set;}
+        public decimal? ProducedQty{get;set;}       
         [Display(Name = "Unit")]
         public int? UnitCode{get;set;}
         [Display(Name = "Rate")]

@@ -328,7 +328,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "OrderQty", render: function (data, type, row) {
+                 "data": "PrevProducedQty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
