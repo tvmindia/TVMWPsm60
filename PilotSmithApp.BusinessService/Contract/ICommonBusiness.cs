@@ -1,4 +1,5 @@
 ﻿using PilotSmithApp.DataAccessObject.DTO;
+using System;
 using System.Collections.Generic;
 
 namespace PilotSmithApp.BusinessService.Contract
@@ -14,5 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         string GetXMLfromSaleInvoiceObject(List<SaleInvoiceDetail> saleInvoiceDetailList, string mandatoryProperties);
         string GetXMLfromDeliveryChallanObject(List<DeliveryChallanDetail> deliveryChallanDetailList, string mandatoryProperties);
         string SendMessage(string message, string mobileNo,string provider,string type);
+        bool CheckDocumentIsDeletable(string docType, Guid? id);
     }
 }

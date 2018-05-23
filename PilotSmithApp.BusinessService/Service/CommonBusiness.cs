@@ -339,5 +339,9 @@ namespace PilotSmithApp.BusinessService.Service
             return _commonRepository.SendMessage(message, MobileNo, provider, type);
         }
         #endregion messageSending
+        public bool CheckDocumentIsDeletable(string docType, Guid? id)
+        {
+            return _commonRepository.CheckDocumentIsDeletable(docType, id);
+        }
     }
 }

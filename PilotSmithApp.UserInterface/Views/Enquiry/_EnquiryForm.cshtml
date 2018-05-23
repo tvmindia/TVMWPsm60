@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnCustomerRequired", "")
+                    @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
                     @Html.Hidden("hdnCustomerdisabled", false)
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
@@ -172,7 +172,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Deny ownership</span></a>
+                                            <span style="font-size:18px;">Holding ownership</span>
                                         </div>
                                     </div>
                                 }

@@ -41,7 +41,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult GetEnquiryFollowupList(EnquiryFollowupViewModel enquiryFollowupVM)
         {
             ViewBag.Ispager = false;
-
+            ViewBag.EditableEnquiryFollowupID = Guid.Empty;
             if(enquiryFollowupVM.DataTablePaging==null)
             {
                 enquiryFollowupVM.DataTablePaging = new DataTablePagingViewModel()
@@ -55,9 +55,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                 enquiryFollowupVM.DataTablePaging.Length = 3;
                 ViewBag.Ispager = true;
             }
+            
             enquiryFollowupVM.EnquiryFollowupList = Mapper.Map<List<EnquiryFollowup>, List<EnquiryFollowupViewModel>>(_enquiryFollowupBusiness.GetAllEnquiryFollowup(Mapper.Map<EnquiryFollowupViewModel, EnquiryFollowup>(enquiryFollowupVM)));
             enquiryFollowupVM.TotalCount = enquiryFollowupVM.EnquiryFollowupList.Count > 0 ? enquiryFollowupVM.EnquiryFollowupList[0].TotalCount : 0;
             ViewBag.ButtonDisable = enquiryFollowupVM.EnquiryFollowupList.Count > 0 ? enquiryFollowupVM.EnquiryFollowupList.Where(x => x.Status == "Open").ToList().Count > 0 : false;
+            if (enquiryFollowupVM.DataTablePaging.Start == 0)
+            {
+                ViewBag.EditableEnquiryFollowupID = enquiryFollowupVM.EnquiryFollowupList.Count() > 0 ? enquiryFollowupVM.EnquiryFollowupList[0].ID : Guid.Empty; ;
+            }
             return PartialView("_EnquiryFollowupList", enquiryFollowupVM);
         }
         public ActionResult AddEnquiryFollowup(Guid id, Guid enquiryID,Guid customerID)

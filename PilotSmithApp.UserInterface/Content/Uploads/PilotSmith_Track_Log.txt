@@ -1,0 +1,11 @@
+PilotSmith track 3-Apr-2018
+=====================================
+# Started new module Enquiry
+# Created ViewModel Enquiry and EnquuiryDetail with in EnquiryViewModel class file
+# Created ViewModel EnquiryFollowup
+# Created DTO for Enquiry, EnquiryDetail and EnquiryFollowup
+# Created Repository and Business for enquiry and enquiryfollowup
+# Checked in the changes with new module enquiry
+PilotSmith track 5-Apr-2018
+=====================================
+# Created View Models DocumentType, DocumentStatus, Employee, EnquiryGrade, ReferencePerson, ReferenceType

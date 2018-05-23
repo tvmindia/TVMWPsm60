@@ -144,7 +144,14 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionQC.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionQC.GeneralNotes);
                                     productionQC.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : productionQC.DocumentOwnerID);
                                     productionQC.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionQC.BranchCode);
-
+                                    productionQC.EmailSentYN= (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionQC.EmailSentYN);
+                                    productionQC.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionQC.LatestApprovalStatus);
+                                    productionQC.LatestApprovalStatusDescription = (sdr["LatestApprovalStatusDescription"].ToString() != "" ? (sdr["LatestApprovalStatusDescription"].ToString()) : productionQC.LatestApprovalStatusDescription);
+                                    productionQC.DocumentStatus = new DocumentStatus();
+                                    productionQC.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionQC.DocumentStatus.Code);
+                                    productionQC.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : productionQC.DocumentStatus.Description);
+                                    productionQC.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : productionQC.DocumentOwners);
+                                    productionQC.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : productionQC.DocumentOwner);
                                 }
                         }
                     }

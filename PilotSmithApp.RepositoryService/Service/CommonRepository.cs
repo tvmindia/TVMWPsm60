@@ -123,6 +123,40 @@ namespace PilotSmithApp.RepositoryService.Service
 
         }
         #endregion
+        #region Check Document IsDeletable
+        public bool CheckDocumentIsDeletable(string docType,Guid? id)
+        {
+            try
+            {
+                if(id==null)
+                {
+                    return false;
+                }
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[CheckDocumentIsDeletable]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value =id;
+                        cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.NVarChar,5).Value = docType;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        Object res = cmd.ExecuteScalar();
+                        return (res.ToString() == "Exists" ? true : false);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion Check Document IsDeletable
     }
 
 }

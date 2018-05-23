@@ -161,7 +161,7 @@ function EditEnquiry(this_Obj) {
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + Enquiry.ID, function () {
         //$('#CustomerID').trigger('change');
         if ($('#IsDocLocked').val()=="True") {
-            ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+            ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", Enquiry.ID);
         }
         else {
             ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");

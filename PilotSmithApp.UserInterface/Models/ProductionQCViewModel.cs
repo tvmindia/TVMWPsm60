@@ -41,6 +41,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int? BranchCode { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //additional fields
+        public bool IsDocLocked { get; set; }
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public string DetailJSON { get; set; }
         [Display(Name = "Quality Control Date")]
         [Required(ErrorMessage ="Date is missing")]
@@ -54,6 +57,7 @@ namespace PilotSmithApp.UserInterface.Models
         public List<ProductionQCDetailViewModel> ProductionQCDetailList { get; set; }
         public CustomerViewModel Customer { get; set; }
         public List<SelectListItem> ProdOrderSelectList { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
     }
     public class ProductionQCAdvanceSearchViewModel
     {

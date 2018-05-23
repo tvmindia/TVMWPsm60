@@ -323,10 +323,10 @@ function GetDataFromServerTraditional(page, formData) {
     }
 }
 //function will route the call for button patch change from js to controller 
-function ChangeButtonPatchView(Controller, Dom, Action) {
+function ChangeButtonPatchView(Controller, Dom, Action,ExtraParam) {
     try
     {
-        var data = { actionType: Action };
+        var data = { actionType: Action, "id": ExtraParam };
         var ds = {};
         ds = GetDataFromServer(Controller + "/ChangeButtonStyle/", data);
         if (ds == "Nochange") {
