@@ -1,8 +1,7 @@
 ﻿var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 //Add Product Category
-function AddProductCategoryMaster(flag)
-{
-    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=0", function () {       
+function AddProductCategoryMaster(flag) {
+    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=0", function () {
         $('#hdnMasterCall').val(flag);
         $('#lblModelMasterContextLabel').text('Add ProductCategory')
         $('#divModelMasterPopUp').modal('show');
@@ -10,16 +9,14 @@ function AddProductCategoryMaster(flag)
 
     //GetMasterPartial('ProductCategory', "0");
     //$('#h3ModelMasterContextLabel').text('Add ProductCategory')
-   
+
 }
 
 //onsuccess function for formsubmitt
-function SaveSuccessProductCategory(data, status)
-{
+function SaveSuccessProductCategory(data, status) {
     debugger;
     var JsonResult = JSON.parse(data)
-    switch (JsonResult.Status)
-    {
+    switch (JsonResult.Status) {
         case "OK":
             if ($('#hdnMasterCall').val() == "MSTR") {
                 $('#IsUpdate').val('True');
@@ -84,7 +81,7 @@ function AddStateMaster(flag) {
         $('#divModelMasterPopUp').modal('show');
         $('#hdnMasterCall').val(flag);
     });
-   
+
 }
 
 //onsuccess function for formsubmitt
@@ -186,7 +183,7 @@ function SaveSuccessArea(data, status) {
 function AddProductMaster(flag) {
     debugger;
 
-        $("#divMasterBody").load("Product/MasterPartial?masterCode=" + EmptyGuid, function () {
+    $("#divMasterBody").load("Product/MasterPartial?masterCode=" + EmptyGuid, function () {
         $('#hdnMasterCall').val(flag);
         $('#lblModelMasterContextLabel').text('Add Product')
         $('#divModelMasterPopUp').modal('show');
@@ -322,11 +319,16 @@ function SaveSuccessEmployeeMaster(data, status) {
                 BindOrReloadEmployeeTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required=');
-                $('.divResponsiblePersonSelectList').load('/Employee/EmployeeSelectList?required=');
-                $('.divAttendedBySelectList').load('/Employee/EmployeeSelectList?required=');
-                $('.divPreparedBySelectList').load('/Employee/EmployeeSelectList?required=');
-                $('.divQCBySelectList').load('/Employee/EmployeeSelectList?required=');
+                if ($(".divEmployeeSelectList")[0])
+                    $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required=');
+                if ($(".divResponsiblePersonSelectList")[0])
+                    $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=');
+                if ($(".divAttendedBySelectList")[0])
+                    $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=');
+                if ($(".divPreparedBySelectList")[0])
+                    $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=');
+                if ($(".divQCBySelectList")[0])
+                    $('.divQCBySelectList').load('/Employee/QCBySelectList?required=');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -353,8 +355,7 @@ function AddBranchMaster(flag) {
     //});
 }
 //========================================================================================================
-function AddReferredByMaster(flag)
-{
+function AddReferredByMaster(flag) {
     $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function () {
         $('#lblModelMasterContextLabel').text('Add Reference Person Information')
         $('#divModelMasterPopUp').modal('show');
@@ -362,8 +363,7 @@ function AddReferredByMaster(flag)
     });
 }
 //================================================================================================
-function AddDocumentStatusMaster()
-{
+function AddDocumentStatusMaster() {
     $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
         $('#lblModelMasterContextLabel').text('Add Document Status Information')
         $('#divModelMasterPopUp').modal('show');
@@ -376,7 +376,7 @@ function AddCustomerMaster(flag) {
     $("#divMasterBody").load("Customer/AddCustomerPartial", function () {
         $('#lblModelMasterContextLabel').text('Add Customer Information')
         $('#divModelMasterPopUp').modal('show');
-    });    
+    });
 }
 //==========================================================================================================
 //Add OtherCharge master

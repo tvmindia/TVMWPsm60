@@ -479,7 +479,7 @@
         try {
             $('#SaleOrderGradeCode').select2({});
             $('#QuoteID').val($('#hdnQuoteID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnQuoteID').val());
-            $('#QuoteID').select2({
+            $('#SaleOrderForm #QuoteID').select2({
                 language: {
                     noResults: function (params) {
                         return "Search result will shows here";
@@ -503,7 +503,7 @@
                 }
             });
             $('#EnquiryID').val($('#hdnEnquiryID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEnquiryID').val());
-            $('#EnquiryID').select2({
+            $('#SaleOrderForm #EnquiryID').select2({
                 language: {
                     noResults: function (params) {
                         return "Search result will shows here";
@@ -512,7 +512,7 @@
                 ajax: {
                     type: 'POST',
                     dataType: 'json',
-                    url: "Enquiry/GetEnquirySelectListOnDemand/",
+                    url: "Enquiry/GetEnquiryForSelectListOnDemand/",
                     delay: 250,
                     data: function (term) {
                         return {
