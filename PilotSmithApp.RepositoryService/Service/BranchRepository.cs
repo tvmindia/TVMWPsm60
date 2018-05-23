@@ -52,6 +52,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         branch.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : branch.Code);
                                         branch.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : branch.Description);
+                                        branch.UserInBranch = new UserInBranch()
+                                        {
+                                            IsDefault = (sdr["IsDefault"].ToString() != "" ? bool.Parse(sdr["IsDefault"].ToString()) : branch.UserInBranch.IsDefault),
+                                        };
                                     }
                                     branchList.Add(branch);
                                 }

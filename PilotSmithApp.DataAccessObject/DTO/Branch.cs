@@ -11,5 +11,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int Code { get; set; }
         public string Description { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public UserInBranch UserInBranch { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace PilotSmithApp.BusinessService.Service
                                                           {
                                                               Text = branch.Description,
                                                               Value = branch.Code.ToString(),
-                                                              Selected = false
+                                                              Selected = branch.UserInBranch.IsDefault?true: false,
                                                           }).ToList() : new List<SelectListItem>();
         }
     }
