@@ -203,6 +203,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ProductSpec = string.Empty,
                         OrderQty = 0,
                         ProducedQty=0,
+                        PrevProducedQty=0,
                         Unit=new UnitViewModel()
                         {
                             Code=0,
@@ -269,7 +270,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                             OrderQty = saleOrderDetailVM.Qty,
                             UnitCode = saleOrderDetailVM.UnitCode,
                             ProducedQty = 0,
-                            Rate=saleOrderDetailVM.Rate,
+                            PrevProducedQty=0,
+                            Rate=saleOrderDetailVM.Rate==null?0:saleOrderDetailVM.Rate,
+                            Amount=0,
                             Product = new ProductViewModel()
                             {
                                 ID = (Guid)saleOrderDetailVM.ProductID,
@@ -346,7 +349,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult EmailProductionOrder(ProductionOrderViewModel productionOrderVM)
         {
             bool emailFlag = productionOrderVM.EmailFlag;
-            //QuotationViewModel quotationVM = new QuotationViewModel();
+            
             productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(productionOrderVM.ID));
             productionOrderVM.ProductionOrderDetailList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderVM.ID));
             productionOrderVM.EmailFlag = emailFlag;
@@ -453,7 +456,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Visible = true;
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
-                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('POD');";
                     break;
 
                 case "LockDocument":

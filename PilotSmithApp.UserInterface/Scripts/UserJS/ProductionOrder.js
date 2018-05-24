@@ -329,12 +329,16 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              },
              {
                  "data": "PrevProducedQty", render: function (data, type, row) {
-                     return data + " " + row.Unit.Description
+                     if (row.PrevProducedQty != null) {
+                         return data + " " + row.Unit.Description
+                     }
+                     else
+                         return 0;
                  }, "defaultContent": "<i></i>"
              },
              {
                  "data": "OrderQty", render: function (data, type, row) {
-                     var CurProducedQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.OrderQty));
+                     var CurProducedQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.PrevProducedQty));
                      if (CurProducedQty >= 0) {
                          return CurProducedQty
                      }
@@ -348,11 +352,24 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Rate", render: function (data, type, row) {
+                     if (row.Rate != null) {
+                         return data
+                     }
+                     else
+                         return 0;
+                 }, "defaultContent": "<i></i>"
+             },
              {
                  "data": "Amount", render: function (data, type, row) {
-                     var Amount = roundoff(parseFloat(row.OrderQty) * parseFloat(row.Rate));
-                     return Amount
+                     if (row.Rate != null) {
+                         debugger;
+                         var Amount = roundoff(parseFloat(row.OrderQty) * parseFloat(row.Rate));
+                         return Amount
+                     }
+                     else
+                         return 0;
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Plant.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
@@ -365,17 +382,17 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                          var M1 = '25%'
                          result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left> Milestone Reach : ' + M1 + '" data-content="1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted+ ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M1
                      }                    
-                     if (((row.MileStone2FcFinishDtFormatted != null && (row.MileStone2FcFinishDtFormatted)) && (row.MileStone2AcTFinishDtFormatted != null && (row.MileStone2AcTFinishDtFormatted))))
+                     if (((row.MileStone2FcFinishDtFormatted != null && (row.MileStone2FcFinishDtFormatted != "")) && (row.MileStone2AcTFinishDtFormatted != null && (row.MileStone2AcTFinishDtFormatted != ""))))
                      {
                          var M2 = '50%'
                          result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M2 + '" data-content="2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M2
                      }
-                     if (((row.MileStone3FcFinishDtFormatted != null && (row.MileStone3FcFinishDtFormatted)) && (row.MileStone3AcTFinishDtFormatted != null && (row.MileStone3AcTFinishDtFormatted))))
+                     if (((row.MileStone3FcFinishDtFormatted != null && (row.MileStone3FcFinishDtFormatted != "")) && (row.MileStone3AcTFinishDtFormatted != null && (row.MileStone3AcTFinishDtFormatted != ""))))
                      {
                          var M3 = '75%'
                          result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M3 + '" data-content="3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M3
                      }
-                     if (((row.MileStone4FcFinishDtFormatted != null && (row.MileStone4FcFinishDtFormatted)) && (row.MileStone4AcTFinishDtFormatted != null && (row.MileStone4AcTFinishDtFormatted))))
+                     if (((row.MileStone4FcFinishDtFormatted != null && (row.MileStone4FcFinishDtFormatted != "")) && (row.MileStone4AcTFinishDtFormatted != null && (row.MileStone4AcTFinishDtFormatted != ""))))
                      {
                          var M4 = '100%'
                          result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone Reach : ' + M4 + '" data-content="4) ⌚ Forecast :  ' + row.MileStone4FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone4AcTFinishDtFormatted + '<br/>3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M4
@@ -694,15 +711,16 @@ function EmailProductionOrder() {
     });
 }
 function SendProductionOrderEmail() {
+    debugger;
     $('#hdnProductionOrderEMailContent').val($('#divProductionOrderEmailcontainer').html());
     $('#FormProductionOrderEmailSend #ID').val($('#ProductionOrderForm #ID').val());
 }
 function UpdateProductionOrderEmailInfo() {
-    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
-    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+    debugger;    
     $('#FormUpdateProductionOrderEmailInfo #ID').val($('#ProductionOrderForm #ID').val());
 }
 function DownloadProductionOrder() {
+    debugger;
     var bodyContent = $('#divProductionOrderEmailcontainer').html();
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
@@ -763,4 +781,40 @@ function SaveSuccessProductionOrderEmailSend(data, status) {
         //this will show the error msg in the browser console(F12) 
         console.log(e.message);
     }
+}
+
+function ShowSendForApproval(documentTypeCode) {
+    debugger;
+    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=POD", function () {
+        if ($('#LatestApprovalStatus').val() == 3) {
+            var documentID = $('#ProductionOrderForm #ID').val();
+            var latestApprovalID = $('#ProductionOrderForm #LatestApprovalID').val();
+            ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID);
+            SendForApproval('POD')
+            //BindPurchaseOrder($('#ID').val());
+
+        }
+        else {
+            $('#SendApprovalModal').modal('show');
+        }
+    });
+}
+
+function SendForApproval(documentTypeCode) {
+    debugger;
+
+    var documentID = $('#ProductionOrderForm #ID').val();
+    var approversCSV;
+    var count = $('#ApproversCount').val();
+
+    for (i = 0; i < count; i++) {
+        if (i == 0)
+            approversCSV = $('#ApproverLevel' + i).val();
+        else
+            approversCSV = approversCSV + ',' + $('#ApproverLevel' + i).val();
+    }
+    SendDocForApproval(documentID, documentTypeCode, approversCSV);
+    $('#SendApprovalModal').modal('hide');
+    //BindPurchaseOrder($('#ID').val());
+
 }
