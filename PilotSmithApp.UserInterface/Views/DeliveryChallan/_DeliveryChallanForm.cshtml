@@ -10,6 +10,7 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     @*@Html.HiddenFor(model=>model.SaleOrderID, htmlAttributes:new { @class="",@id= "hdnSaleOrderID", @value = Guid.Empty })
         @Html.HiddenFor(model=>model.ProdOrderID,htmlAttributes:new { @class="", @id = "hdnProdOrderID", @value = Guid.Empty })*@
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })

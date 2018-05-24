@@ -16,7 +16,11 @@ else
 @Html.ValidationMessage("BranchCode", "", new { @class = "text-danger" })
 <script>
     $(document).ready(function () {
-        $('#BranchCode').val($('#hdnBranchCode').val());
+        debugger;
+        if ($('#hdnBranchCode').val())
+        {
+            $('#BranchCode').val($('#hdnBranchCode').val());
+        }
         $('#BranchCode').select2({});
         $('.select2').addClass('form-control newinput');
     });

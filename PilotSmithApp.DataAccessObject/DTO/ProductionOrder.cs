@@ -42,6 +42,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string LatestApprovalStatusDescription { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public Branch Branch { get; set; }
+        public string MailContant { get; set; }
     }
 
     public class ProductionOrderAdvanceSearch
@@ -89,5 +90,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Unit Unit { get; set; }
         public decimal? PrevProducedQty { get; set; }
         public Plant Plant { get; set; }
+
     }
 }

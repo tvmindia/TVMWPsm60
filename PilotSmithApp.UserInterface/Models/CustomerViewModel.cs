@@ -69,7 +69,6 @@ namespace PilotSmithApp.UserInterface.Models
         public PaymentTermViewModel PaymentTerm { get; set; }
 
         //Additional properties
-        public bool CustomerDisabled { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }

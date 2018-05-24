@@ -7,6 +7,7 @@ using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -24,7 +25,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _saleOrderBusiness = saleOrderBusiness;
         }
         // GET: ProductOrder
-        [AuthSecurityFilter(ProjectObject = "ProductOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -84,7 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();
             productionOrderDetailVM.IsUpdate = false;
             productionOrderDetailVM.OrderQty = 0;
-            productionOrderDetailVM.ProducedQty = 0;
+            productionOrderDetailVM.ProducedQty = 0;           
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -209,7 +210,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                         },
                         Rate=0,
                         //MileStone1FcFinishDt= _pSASysCommon.GetCurrentDateTime(),
-                        //MileStone1FcFinishDtFormatted = _pSASysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy"),
+                        //MileStone1FcFinishDtFormatted = "-",
+                        //MileStone1AcTFinishDtFormatted = "-",
+                        //MileStone2FcFinishDtFormatted = "-",
+                        //MileStone2AcTFinishDtFormatted = "-",
+                        //MileStone3FcFinishDtFormatted = "-",
+                        //MileStone3AcTFinishDtFormatted = "-",
+                        //MileStone4FcFinishDtFormatted = "-",
+                        //MileStone4AcTFinishDtFormatted = "-",
                         Product = new ProductViewModel()
                         {
                             ID = Guid.Empty,
@@ -261,7 +269,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             OrderQty = saleOrderDetailVM.Qty,
                             UnitCode = saleOrderDetailVM.UnitCode,
                             ProducedQty = 0,
-
+                            Rate=saleOrderDetailVM.Rate,
                             Product = new ProductViewModel()
                             {
                                 ID = (Guid)saleOrderDetailVM.ProductID,
@@ -334,6 +342,58 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion DeleteProductionOrderDetail
 
+        #region Email ProductionOrder
+        public ActionResult EmailProductionOrder(ProductionOrderViewModel productionOrderVM)
+        {
+            bool emailFlag = productionOrderVM.EmailFlag;
+            //QuotationViewModel quotationVM = new QuotationViewModel();
+            productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(productionOrderVM.ID));
+            productionOrderVM.ProductionOrderDetailList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderVM.ID));
+            productionOrderVM.EmailFlag = emailFlag;
+            @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
+            productionOrderVM.PDFTools = new PDFTools();
+            return PartialView("_EmailProductionOrder", productionOrderVM);
+        }
+        #endregion Email ProductionOrder
+
+        #region EmailSent
+        [HttpPost, ValidateInput(false)]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
+        public async Task<string> SendProductionOrderEmail(ProductionOrderViewModel productionOrderVM)
+        {
+            try
+            {
+                object result = null;
+                if (!string.IsNullOrEmpty(productionOrderVM.ID.ToString()))
+                {
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    productionOrderVM.PSASysCommon = new PSASysCommonViewModel();
+                    productionOrderVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                    productionOrderVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+
+                    bool sendsuccess = await _productionOrderBusiness.ProductionOrderEmailPush(Mapper.Map<ProductionOrderViewModel, ProductionOrder>(productionOrderVM));
+                    if (sendsuccess)
+                    {
+                        //1 is meant for mail sent successfully
+                        productionOrderVM.EmailSentYN = sendsuccess;
+                        result = _productionOrderBusiness.UpdateProductionOrderEmailInfo(Mapper.Map<ProductionOrderViewModel, ProductionOrder>(productionOrderVM));
+                    }
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, MailResult = sendsuccess, Message = _appConstant.MailSuccess });
+                }
+                else
+                {
+
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = "ID is Missing" });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion EmailSent
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
@@ -395,6 +455,42 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
                     break;
+
+                case "LockDocument":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Disable = true;
+                    toolboxVM.addbtn.DisableReason = "Document Locked";
+                    toolboxVM.addbtn.Event = "";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+                    break;
+
                 case "Add":
 
                     toolboxVM.savebtn.Visible = true;

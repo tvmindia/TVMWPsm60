@@ -60,6 +60,9 @@ namespace PilotSmithApp.UserInterface.Models
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<ProductionOrderDetailViewModel> ProductionOrderDetailList { get; set; }
         public List<SelectListItem> SaleOrderSelectList { get; set; }
+        public string MailContant { get; set; }
+        public bool EmailFlag { get; set; }
+        public PDFTools PDFTools { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel
@@ -84,7 +87,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Order Qty")]
         public decimal? OrderQty{get;set;}
         [Display(Name = "Produced Qty")]
-        public decimal? ProducedQty{get;set;}
+        public decimal? ProducedQty{get;set;}       
         [Display(Name = "Unit")]
         public int? UnitCode{get;set;}
         [Display(Name = "Rate")]

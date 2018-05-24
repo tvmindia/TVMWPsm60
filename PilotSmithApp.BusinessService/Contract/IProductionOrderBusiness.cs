@@ -18,6 +18,7 @@ namespace PilotSmithApp.BusinessService.Contract
         object DeleteProductionOrderDetail(Guid id);
         List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm);
         List<SelectListItem> GetProductionOrderForSelectList(Guid? id);
-        
+        object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder);
+        Task<bool> ProductionOrderEmailPush(ProductionOrder productionOrder);
     }
 }

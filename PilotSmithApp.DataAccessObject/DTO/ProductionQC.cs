@@ -27,6 +27,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? BranchCode { get; set; }
         public PSASysCommon  PSASysCommon { get; set; }
         //additional fields
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
+        public string LatestApprovalStatusDescription { get; set; }
         public string DetailXML { get; set; }
         public string ProdQCDateFormatted { get; set; }
         public int TotalCount { get; set; }

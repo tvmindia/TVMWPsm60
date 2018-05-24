@@ -26,7 +26,7 @@ namespace PilotSmithApp.BusinessService.Service
                                      {
                                          Text = documentStatus.Description,
                                          Value = documentStatus.Code.ToString(),
-                                         Selected = false
+                                         Selected = documentStatus.Description == "OPEN"?true:false
                                      }).ToList():new List<SelectListItem>();
         }
     }

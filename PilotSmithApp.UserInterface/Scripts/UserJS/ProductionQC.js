@@ -10,6 +10,7 @@ $(document).ready(function () {
     try {
         BindOrReloadProductionQCTable('Init');
         $('#tblProductionQC tbody').on('dblclick', 'td', function () {
+            if (this.textContent !== "No data available in table")
             EditProductionQC(this);
         });
     }

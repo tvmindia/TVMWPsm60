@@ -20,12 +20,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICustomerBusiness _customerBusiness;
         IBranchBusiness _branchBusiness;
         IEnquiryGradeBusiness _enquiryGradeBusiness;
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness)
+        ICommonBusiness _commonBusiness;
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness, ICommonBusiness commonBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
             _enquiryGradeBusiness = enquiryGradeBusiness;
+            _commonBusiness = commonBusiness;
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -49,7 +51,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsDocLocked = enquiryVM.DocumentOwners.Contains(appUA.UserName);
                     enquiryVM.Customer = new CustomerViewModel
                     {
-                        CustomerDisabled = true,
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
@@ -61,19 +62,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM = new EnquiryViewModel();
                     enquiryVM.IsUpdate = false;
                     enquiryVM.ID = Guid.Empty;
-                    enquiryVM.DocumentStatusCode = 1;
                     enquiryVM.DocumentStatus = new DocumentStatusViewModel();
-                    enquiryVM.DocumentStatus.Description = "Open";
+                    enquiryVM.DocumentStatus.Description = "OPEN";
                     enquiryVM.Customer = new CustomerViewModel
                     {
-                        CustomerDisabled = false,
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                         },
                     };
                 }
-               
+
                 enquiryVM.EnquiryGrade = new EnquiryGradeViewModel()
                 {
                     EnquiryGradeSelectList = _enquiryGradeBusiness.GetEnquiryGradeSelectList()
@@ -102,7 +101,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             try
             {
                 List<EnquiryDetailViewModel> enquiryItemViewModelList = new List<EnquiryDetailViewModel>();
-                if(enquiryID==Guid.Empty)
+                if (enquiryID == Guid.Empty)
                 {
                     EnquiryDetailViewModel enquiryDetailVM = new EnquiryDetailViewModel()
                     {
@@ -136,12 +135,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     enquiryItemViewModelList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));
                 }
-                return JsonConvert.SerializeObject(new { Status = "OK", Records = enquiryItemViewModelList,Message="Success" });
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = enquiryItemViewModelList, Message = "Success" });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConstant.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Status = "ERROR", Records ="" ,Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
             }
         }
         #endregion Get Enquiry DetailList By EnquiryID
@@ -257,7 +256,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
 
                 AppConstMessage cm = _appConstant.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Status = "ERROR",Record="", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
             }
 
         }
@@ -283,7 +282,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get Enquiry SelectList On Demand
         #region EnquirySelectList
-        public ActionResult EnquirySelectList(string required,Guid? id)
+        public ActionResult EnquirySelectList(string required, Guid? id)
         {
             ViewBag.IsRequired = required;
             EnquiryViewModel enquiryVM = new EnquiryViewModel();
@@ -295,7 +294,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -337,11 +336,23 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Text = "Reset";
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetEnquiry();";
-
-                    toolboxVM.deletebtn.Visible = true;
-                    toolboxVM.deletebtn.Text = "Delete";
-                    toolboxVM.deletebtn.Title = "Delete";
-                    toolboxVM.deletebtn.Event = "DeleteEnquiry();";
+                    if (_commonBusiness.CheckDocumentIsDeletable("ENQ", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteEnquiry();";
+                    }
+                   
 
                     break;
                 case "LockDocument":
