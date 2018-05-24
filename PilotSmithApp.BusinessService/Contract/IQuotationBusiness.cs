@@ -19,7 +19,7 @@ namespace PilotSmithApp.BusinessService.Contract
         object DeleteQuotationDetail(Guid id);
         object UpdateQuotationEmailInfo(Quotation quotation);
         Task<bool> QuoteEmailPush(Quotation quotation);
-        List<SelectListItem> GetQuotationForSelectList();
+        List<SelectListItem> GetQuotationForSelectList(Guid? quoteID);
         List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm);
     }
 }

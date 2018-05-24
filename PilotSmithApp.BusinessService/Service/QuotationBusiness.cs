@@ -92,10 +92,10 @@ namespace PilotSmithApp.BusinessService.Service
             return sendsuccess;
         }
 
-        public List<SelectListItem> GetQuotationForSelectList()
+        public List<SelectListItem> GetQuotationForSelectList(Guid? quoteID)
         {
             List<SelectListItem> selectListItem = null;
-            List<Quotation> quotationList = _quotationRepository.GetQuotationForSelectList();
+            List<Quotation> quotationList = _quotationRepository.GetQuotationForSelectList(quoteID);
             return selectListItem = quotationList!=null?(from quotation in quotationList
                                      select new SelectListItem
                                      {

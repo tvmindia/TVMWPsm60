@@ -39,6 +39,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? AdvanceAmount { get; set; }
 
         //Aditional Fields
+        public string MailContant { get; set; }
         public string DocumentType { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public List<SaleOrderDetail> SaleOrderDetailList { get; set; }
@@ -47,12 +48,16 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public string SaleOrderDateFormatted { get; set; }
         public string ExpectedDelvDateFormatted { get; set; }
         public string PurchaseOrdDateFormatted { get; set; }
         public Customer Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
         public Branch Branch { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
     }
 
     public class SaleOrderAdvanceSearch

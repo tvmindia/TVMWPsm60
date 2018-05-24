@@ -62,7 +62,12 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? AdvanceAmount { get; set; }
 
         //Aditional Fields
+        public string MailContant { get; set; }
+        public bool EmailFlag { get; set; }
         public string DocumentType { get; set; }
+        public bool IsDocLocked { get; set; }
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SaleOrderDetailViewModel> SaleOrderDetailList { get; set; }
         public string DetailJSON { get; set; }
@@ -83,6 +88,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string LatestApprovalStatusDescription { get; set; }
         public BranchViewModel Branch { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
+        public PDFTools PDFTools { get; set; }
         public List<SelectListItem> QuotationSelectList{ get; set; }
         public List<SelectListItem> EnquirySelectList { get; set; }
     }

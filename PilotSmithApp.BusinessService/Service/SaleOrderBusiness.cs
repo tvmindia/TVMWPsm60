@@ -13,13 +13,73 @@ namespace PilotSmithApp.BusinessService.Service
     public class SaleOrderBusiness:ISaleOrderBusiness
     {
         ISaleOrderRepository _saleOrderRepository;
-        public SaleOrderBusiness(ISaleOrderRepository saleOrderRepository)
+        ICommonBusiness _commonBusiness;
+        IMailBusiness _mailBusiness;
+        public SaleOrderBusiness(ISaleOrderRepository saleOrderRepository, ICommonBusiness commonBusiness, IMailBusiness mailBusiness)
         {
             _saleOrderRepository = saleOrderRepository;
+            _commonBusiness = commonBusiness;
+            _mailBusiness = mailBusiness;
+        }
+        public List<SaleOrder> GetAllSaleOrder(SaleOrderAdvanceSearch saleOrderAdvanceSearch)
+        {
+            return _saleOrderRepository.GetAllSaleOrder(saleOrderAdvanceSearch);
         }
         public List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm)
         {
             return _saleOrderRepository.GetSaleOrderForSelectListOnDemand(searchTerm);
+        }
+        public object InsertUpdateSaleOrder(SaleOrder saleOrder)
+        {
+            if (saleOrder.SaleOrderDetailList.Count > 0)
+            {
+                saleOrder.DetailXML = _commonBusiness.GetXMLfromSaleOrderObject(saleOrder.SaleOrderDetailList, "ProductID");
+            }
+            return _saleOrderRepository.InsertUpdateSaleOrder(saleOrder);
+        }
+        public SaleOrder GetSaleOrder(Guid id)
+        {
+            return _saleOrderRepository.GetSaleOrder(id);
+        }
+        public object DeleteSaleOrder(Guid id)
+        {
+            return _saleOrderRepository.DeleteSaleOrder(id);
+        }
+        public object DeleteSaleOrderDetail(Guid id)
+        {
+            return _saleOrderRepository.DeleteSaleOrderDetail(id);
+        }
+        public object UpdateSaleOrderEmailInfo(SaleOrder saleOrder)
+        {
+            return _saleOrderRepository.UpdateSaleOrderEmailInfo(saleOrder);
+        }
+        public async Task<bool> QuoteEmailPush(SaleOrder saleOrder)
+        {
+
+            bool sendsuccess = false;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(saleOrder.EmailSentTo))
+                {
+                    string[] EmailList = saleOrder.EmailSentTo.Split(',');
+                    foreach (string email in EmailList)
+                    {
+                        Mail _mail = new Mail();
+                        _mail.Body = saleOrder.MailContant;
+                        _mail.Subject = "SaleOrder";
+                        _mail.To = email;
+                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sendsuccess;
         }
         public List<SelectListItem> GetSaleOrderForSelectList(Guid? id)
         {
@@ -32,10 +92,6 @@ namespace PilotSmithApp.BusinessService.Service
                                                                  Value = saleOrder.ID.ToString(),
                                                                  Selected = false
                                                              }).ToList() : new List<SelectListItem>();
-        }
-        public SaleOrder GetSaleOrder(Guid id)
-        {
-            return _saleOrderRepository.GetSaleOrder(id);
         }
         public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
         {

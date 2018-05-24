@@ -10,9 +10,15 @@ namespace PilotSmithApp.BusinessService.Contract
 {
     public interface ISaleOrderBusiness
     {
+        List<SaleOrder> GetAllSaleOrder(SaleOrderAdvanceSearch saleOrderAdvanceSearch);
         List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm);
         List<SelectListItem> GetSaleOrderForSelectList(Guid? id);
         SaleOrder GetSaleOrder(Guid id);
         List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID);
+        object InsertUpdateSaleOrder(SaleOrder saleOrder);
+        object DeleteSaleOrder(Guid id);
+        object DeleteSaleOrderDetail(Guid id);
+        object UpdateSaleOrderEmailInfo(SaleOrder saleOrder);
+        Task<bool> QuoteEmailPush(SaleOrder saleOrder);
     }
 }

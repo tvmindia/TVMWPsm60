@@ -14,6 +14,7 @@ namespace PilotSmithApp.BusinessService.Contract
         string GetXMLfromProductionQCObject(List<ProductionQCDetail> productionQCDetailList, string mandatoryProperties);
         string GetXMLfromSaleInvoiceObject(List<SaleInvoiceDetail> saleInvoiceDetailList, string mandatoryProperties);
         string GetXMLfromDeliveryChallanObject(List<DeliveryChallanDetail> deliveryChallanDetailList, string mandatoryProperties);
+        string GetXMLfromSaleOrderObject(List<SaleOrderDetail> saleOrderDetailList, string mandatoryProperties);
         string SendMessage(string message, string mobileNo,string provider,string type);
         bool CheckDocumentIsDeletable(string docType, Guid? id);
     }

@@ -48,7 +48,7 @@ namespace PilotSmithApp.BusinessService.Service
             int j = 0;
             for (i = 0; i < ppty.Length; i++)
             {
-                if(mandatoryList.Where(x=>x== ppty[i].Name).Count()>0)
+                if (mandatoryList.Where(x => x == ppty[i].Name).Count() > 0)
                 {
                     mandIndx[j] = i;
                     j = j + 1;
@@ -67,12 +67,12 @@ namespace PilotSmithApp.BusinessService.Service
             var properties = GetProperties(some_object);
             object[] mand = new object[mandIndx.Count()];
             int j = 0;
-            foreach(int i in mandIndx)
+            foreach (int i in mandIndx)
             {
-                mand[j] = properties[i].GetValue(some_object, null)==(object)Guid.Empty?null: properties[i].GetValue(some_object, null);
+                mand[j] = properties[i].GetValue(some_object, null) == (object)Guid.Empty ? null : properties[i].GetValue(some_object, null);
                 j = j + 1;
             }
-            if (mand.Where(x=>x==null||x==(object)Guid.Empty).Count()==0)
+            if (mand.Where(x => x == null || x == (object)Guid.Empty).Count() == 0)
             {
 
                 result = result + "<item ";
@@ -297,8 +297,41 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 return "";
             }
+        }
+        public string GetXMLfromSaleOrderObject(List<SaleOrderDetail> saleOrderDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(saleOrderDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in saleOrderDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
 
         }
+
         public string GetXMLfromDeliveryChallanObject(List<DeliveryChallanDetail> deliveryChallanDetailList, string mandatoryProperties)
         {
             string result = "<Details>";
@@ -335,7 +368,7 @@ namespace PilotSmithApp.BusinessService.Service
         //Send Message
         #region messageSending
         public string SendMessage(string message, string MobileNo, string provider, string type)
-        {           
+        {
             return _commonRepository.SendMessage(message, MobileNo, provider, type);
         }
         #endregion messageSending

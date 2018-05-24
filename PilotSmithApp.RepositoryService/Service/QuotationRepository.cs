@@ -494,7 +494,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion Delete Quotation Detail
 
         #region GetQuotationForSelectList
-        public List<Quotation> GetQuotationForSelectList()
+        public List<Quotation> GetQuotationForSelectList(Guid? quoteID)
         {
             List<Quotation> quotationList = null;
             try
@@ -510,6 +510,15 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetSelectListForQuotation]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        if(quoteID==null)
+                        {
+                            cmd.Parameters.AddWithValue("@ID", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = quoteID;
+                        }
+                        
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))

@@ -23,6 +23,92 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
+        #region Get All Quotation
+        public List<SaleOrder> GetAllSaleOrder(SaleOrderAdvanceSearch saleOrderAdvanceSearch)
+        {
+            List<SaleOrder> saleOrderList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetAllSaleOrder]";
+                        if (string.IsNullOrEmpty(saleOrderAdvanceSearch.SearchTerm))
+                        {
+                            cmd.Parameters.AddWithValue("@SearchValue", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = saleOrderAdvanceSearch.SearchTerm;
+                        }
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = saleOrderAdvanceSearch.DataTablePaging.Start;
+                        if (saleOrderAdvanceSearch.DataTablePaging.Length == -1)
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = saleOrderAdvanceSearch.DataTablePaging.Length;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = saleOrderAdvanceSearch.FromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = saleOrderAdvanceSearch.ToDate;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                saleOrderList = new List<SaleOrder>();
+                                while (sdr.Read())
+                                {
+                                    SaleOrder saleOrder = new SaleOrder();
+                                    {
+                                        saleOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleOrder.ID);
+                                        saleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : saleOrder.SaleOrderNo);
+                                        saleOrder.SaleOrderDate = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()) : saleOrder.SaleOrderDate);
+                                        saleOrder.SaleOrderDateFormatted = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()).ToString(_settings.DateFormat) : saleOrder.SaleOrderDateFormatted);
+                                        //quotation.RequirementSpec = (sdr["RequirementSpec"].ToString() != "" ? sdr["RequirementSpec"].ToString() : quotation.RequirementSpec);
+                                        saleOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleOrder.CustomerID);
+                                        saleOrder.Customer = new Customer();
+                                        saleOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleOrder.Customer.ID);
+                                        saleOrder.Customer.CompanyName = (sdr["CustomerCompanyName"].ToString() != "" ? sdr["CustomerCompanyName"].ToString() : saleOrder.Customer.CompanyName);
+                                        saleOrder.Customer.ContactPerson = (sdr["CustomerContactPerson"].ToString() != "" ? sdr["CustomerContactPerson"].ToString() : saleOrder.Customer.ContactPerson);
+                                        saleOrder.Customer.Mobile = (sdr["CustomerMobile"].ToString() != "" ? sdr["CustomerMobile"].ToString() : saleOrder.Customer.Mobile);
+                                        saleOrder.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : saleOrder.ExpectedDelvDate);
+                                        saleOrder.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : saleOrder.ExpectedDelvDateFormatted);
+                                        saleOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleOrder.DocumentStatusCode);
+                                        saleOrder.DocumentStatus = new DocumentStatus();
+                                        saleOrder.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleOrder.DocumentStatus.Code);
+                                        saleOrder.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : saleOrder.DocumentStatus.Description);
+                                        saleOrder.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : saleOrder.ReferredByCode);
+                                        saleOrder.ReferencePerson = new ReferencePerson();
+                                        saleOrder.ReferencePerson.Code = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : saleOrder.ReferencePerson.Code);
+                                        saleOrder.ReferencePerson.Name = (sdr["ReferredByCode"].ToString() != "" ? (sdr["ReferencePersonName"].ToString()) : saleOrder.ReferencePerson.Name);
+                                        //quotation.ResponsiblePersonID = (sdr["ReferencePersonName"].ToString() != "" ? Guid.Parse(sdr["ResponsiblePersonID"].ToString()) : quotation.ResponsiblePersonID);
+                                        saleOrder.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleOrder.PreparedBy);
+                                        //quotation.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotation.GeneralNotes);
+                                        saleOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleOrder.DocumentOwnerID);
+                                        saleOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleOrder.BranchCode);
+                                        saleOrder.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : saleOrder.EnquiryID);
+                                        saleOrder.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleOrder.QuoteID);
+                                        saleOrder.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : saleOrder.TotalCount);
+                                    }
+                                    saleOrderList.Add(saleOrder);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return saleOrderList;
+        }
+        #endregion Get All Quotation
         #region GetSaleOrderForSelectListOnDemand
         public List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm)
         {
@@ -74,7 +160,6 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionOrderList;
         }
         #endregion GetSaleOrderForSelectListOnDemand
-
         #region GetSaleOrderForSelectList
         public List<SaleOrder> GetSaleOrderForSelectList(Guid? id)
         {
@@ -126,7 +211,6 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionOrderList;            
         }
         #endregion GetSaleOrderForSelectList
-
         #region GetSaleOrder
         public SaleOrder GetSaleOrder(Guid id)
         {
@@ -182,6 +266,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleOrder.DocumentOwnerID);
                                     saleOrder.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleOrder.Discount);
                                     saleOrder.AdvanceAmount = (sdr["AdvanceAmount"].ToString() != "" ? decimal.Parse(sdr["AdvanceAmount"].ToString()) : saleOrder.AdvanceAmount);
+                                    saleOrder.DocumentStatus = new DocumentStatus()
+                                    {
+                                        Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : saleOrder.DocumentStatus.Description),
+                                    };
+                                    saleOrder.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : saleOrder.DocumentOwners);
+                                    saleOrder.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : saleOrder.DocumentOwner);
                                 }
                         }
                     }
@@ -196,7 +286,6 @@ namespace PilotSmithApp.RepositoryService.Service
             return saleOrder;
         }
         #endregion GetSaleOrder
-
         #region GetSaleOrderDetailListBySaleOrderID
         public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
         {
@@ -263,5 +352,254 @@ namespace PilotSmithApp.RepositoryService.Service
 
 
         #endregion GetSaleOrderDetailListBySaleOrderID
+        #region Insert Update SaleOrder
+        public object InsertUpdateSaleOrder(SaleOrder saleOrder)
+        {
+            SqlParameter outputStatus, outputID, outputSaleOrderNo = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[InsertUpdateSaleOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = saleOrder.IsUpdate;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = saleOrder.ID;
+                        cmd.Parameters.Add("@SaleOrderRefNo", SqlDbType.VarChar, 20).Value = saleOrder.SaleOrderRefNo;
+                        cmd.Parameters.Add("@SaleOrderNo", SqlDbType.VarChar, 20).Value = saleOrder.SaleOrderNo;
+                        cmd.Parameters.Add("@SaleOrderDate", SqlDbType.DateTime).Value = saleOrder.SaleOrderDateFormatted;
+                        cmd.Parameters.Add("@QuoteID", SqlDbType.UniqueIdentifier).Value = saleOrder.QuoteID;
+                        cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = saleOrder.EnquiryID;
+                        cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = saleOrder.CustomerID;
+                        cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = saleOrder.MailingAddress;
+                        cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = saleOrder.ShippingAddress;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleOrder.DocumentStatusCode;
+                        cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value = saleOrder.ExpectedDelvDateFormatted;
+                        cmd.Parameters.Add("@ReferredByCode", SqlDbType.Int).Value = saleOrder.ReferredByCode;
+                        cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = saleOrder.PreparedBy;
+                        //cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyHeader;
+                        //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleOrder.EmailSentYN;
+                        cmd.Parameters.Add("@LatestApprovalID", SqlDbType.UniqueIdentifier).Value = saleOrder.LatestApprovalID;
+                        cmd.Parameters.Add("@IsFinalApproved", SqlDbType.Bit).Value = saleOrder.IsFinalApproved;
+                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleOrder.EmailSentTo;
+                        cmd.Parameters.Add("@TermReferenceNo", SqlDbType.VarChar, 25).Value = saleOrder.TermReferenceNo;
+                        cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = saleOrder.DetailXML;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = saleOrder.hdnFileID;
+                        cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = saleOrder.GeneralNotes;
+                        cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = saleOrder.DocumentOwnerID;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = saleOrder.BranchCode;
+                        cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = saleOrder.Discount;
+                        //-----------------------//
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = saleOrder.PSASysCommon.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = saleOrder.PSASysCommon.CreatedDate;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = saleOrder.PSASysCommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = saleOrder.PSASysCommon.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        outputSaleOrderNo = cmd.Parameters.Add("@SaleOrderNoOut", SqlDbType.VarChar, 20);
+                        outputSaleOrderNo.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(_appConstant.InsertFailure);
+                    case "1":
+                        saleOrder.ID = Guid.Parse(outputID.Value.ToString());
+                        saleOrder.SaleOrderNo = outputSaleOrderNo.Value.ToString();
+                        return new
+                        {
+                            ID = saleOrder.ID,
+                            SaleOrderNo = saleOrder.SaleOrderNo,
+                            QuoteID = saleOrder.QuoteID,
+                            EnquiryID = saleOrder.EnquiryID,
+                            Status = outputStatus.Value.ToString(),
+                            Message = saleOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                ID = saleOrder.ID,
+                SaleOrderNo = saleOrder.SaleOrderNo,
+                QuoteID = saleOrder.QuoteID,
+                EnquiryID = saleOrder.EnquiryID,
+                Status = outputStatus.Value.ToString(),
+                Message = saleOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+            };
+        }
+        #endregion Insert Update SaleOrder
+        #region Update SaleOrder Email Info
+        public object UpdateSaleOrderEmailInfo(SaleOrder saleOrder)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[UpdateSaleOrderEmailInfo]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = saleOrder.ID;
+                        //cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyHeader;
+                        //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleOrder.EmailSentYN;
+                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleOrder.EmailSentTo;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = saleOrder.PSASysCommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = saleOrder.PSASysCommon.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(_appConstant.InsertFailure);
+                    case "1":
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = saleOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = saleOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+            };
+        }
+        #endregion Update SaleOrder Email Info
+        #region Delete SaleOrder
+        public object DeleteSaleOrder(Guid id)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[DeleteSaleOrder]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(_appConstant.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.DeleteSuccess
+            };
+        }
+        #endregion Delete SaleOrder
+        #region Delete SaleOrder Detail
+        public object DeleteSaleOrderDetail(Guid id)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[DeleteSaleOrderDetail]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(_appConstant.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.DeleteSuccess
+            };
+        }
+        #endregion Delete SaleOrder Detail
     }
 }

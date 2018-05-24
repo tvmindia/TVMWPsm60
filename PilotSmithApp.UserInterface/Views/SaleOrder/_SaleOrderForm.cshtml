@@ -16,37 +16,89 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
-
-                <div class="col-md-12" style="font-size:14px">
-                    @Html.Label("Create Document From: ")
-                    <span style="margin-left:10px">
-                        @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true }) @Html.Label("Quotation")
-                    </span>
-                    <span style="margin-left:10px">
-                        @Html.RadioButtonFor(model => model.DocumentType, "Enquiry") @Html.Label("Enquiry")
-                    </span>
-                </div>
-
-                <div class="col-md-12 no-padding" id="divQuotationSelectList">
-                    <div class="col-md-12">
-                        @Html.Label("Search and select a Quotation", htmlAttributes: new { @class = "control-label" })
+                @if (!Model.IsUpdate)
+                {
+                    <div class="col-md-12" style="font-size:14px">
+                        @Html.Label("Create Document From: ")
+                        <span style="margin-left:10px">
+                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true }) @Html.Label("Quotation")
+                        </span>
+                        <span style="margin-left:10px">
+                            @Html.RadioButtonFor(model => model.DocumentType, "Enquiry") @Html.Label("Enquiry")
+                        </span>
                     </div>
-                    <div class="col-md-12">
-                       @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput",@style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)" })
-                    </div>
-                    @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
-                </div>
+                    if (Model.DocumentType == "Quotation")
+                    {
+                        <div class="col-md-12 no-padding" id="divQuotationSelectList">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Quotation", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
+                        </div>
 
-                <div class="col-md-12 no-padding" id="divEnquirySelectList" style="display:none;">
-                    <div class="col-md-12">
-                        @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
-                    </div>
-                    @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
-                </div>
+                        <div class="col-md-12 no-padding" id="divEnquirySelectList" style="display:none;">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
+                        </div>
+                    }
+                    if (Model.DocumentType == "Enquiry")
+                    {
+                        <div class="col-md-12 no-padding" id="divQuotationSelectList" style="display:none;">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Quotation", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
+                        </div>
 
+                        <div class="col-md-12 no-padding" id="divEnquirySelectList" >
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
+                        </div>
+                    }
+                }
+                else
+                {
+                    if (Model.QuoteID != null)
+                    {
+                        <div class="col-md-12 no-padding" id="divQuotationSelectList">
+                            <div class="col-md-12">
+                                @Html.Label("Quotation", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)",@disabled="" })
+                            </div>
+                            @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
+                        </div>
+                    }
+                    if (Model.EnquiryID != null)
+                    {
+                        <div class="col-md-12 no-padding" id="divEnquirySelectList">
+                            <div class="col-md-12">
+                                @Html.Label("Enquiry", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)", @disabled = "" })
+                            </div>
+                            @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
+                        </div>
+                    }
+                }
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.SaleOrderNo, htmlAttributes: new { @class = "control-label" })
@@ -129,67 +181,80 @@
                 </div>
 
             </div>
-            @if (Model.IsUpdate)
-            {
-                <div class="col-md-6 clearfix divsummerybox" style="min-height:200px;margin-top:-4.6%">
-                    <div class="col-md-2 no-padding">
+            <div class="form-group col-md-6 stausCombined">
+                <div class="boxstatus boxstatus2 shadow2">
+                    <div class="Shadow2data clearfix">
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">Document Status</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                        </div>
+                        @*<div class="form-group col-md-12">
+                            <div class="rightAmtCaption">Email Status</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            @if (Model.EmailSentYN == null)
+                            {
+                                <div class="lblStatusDisplay">EMAIL NOT SEND</div>
+                            }
+                            else if (Model.EmailSentYN == true)
+                            {
+                                <div class="lblStatusDisplay">✔ EMAIL SEND</div>
+                            }
+                            else
+                            {
+                                <div class="lblStatusDisplay">EMAIL NOT SEND</div>
+                            }
+                        </div>*@
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">Approval Status</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            @if (Model.LatestApprovalStatus == null)
+                            {
+                                <div class="lblStatusDisplay">DRAFTED </div>
+                            }
+                            else
+                            {
+                                <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
+                            }
+                        </div>
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="col-md-12"></div>
+                            <div class="form-group col-md-12">
+                                @if (!Model.IsDocLocked)
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerlock.png" title="Document Locked" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerunlock.png" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <span style="font-size:18px;">Holding ownership</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
 
                     </div>
-                    <div class="col-md-10 no-padding" style="background-color:transparent;min-height:350px;background-image:url(/Content/images/frame.png);background-repeat:no-repeat;background-size:63%">
-                        <ul class="todo-list ui-sortable" style="margin-top:25%;width:59%;">
-                            <li class="pull-left" style="width: 92%;margin-left: 8%;background-color:transparent;padding: 0px">
-                                <span class="control-label pull-left" style="text-decoration:underline">@Html.DisplayNameFor(Model => Model.EmailSentYN):</span><br />
-                                <!-- todo text -->
-                                <div class="col-md-12"></div>
-                                @if (Model.EmailSentYN == null)
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">EMAIL NOT SEND</span>
-                                }
-                                else if (Model.EmailSentYN == true)
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">✔ EMAIL SEND</span>
-                                }
-                                else
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">EMAIL NOT SEND</span>
-                                }
-                            </li>
 
-                            <li class="pull-left" style="width: 92%;margin-left: 8%;background-color:transparent;padding: 0px">
-                                <span class="control-label pull-left" style="text-decoration:underline">@Html.DisplayNameFor(Model => Model.IsFinalApproved):</span><br />
-                                <!-- todo text -->
-                                <div class="col-md-12"></div>
-                                @if (Model.IsFinalApproved == null)
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">PENDING FOR FINAL APPROVAL</span>
-                                }
-                                else if (Model.IsFinalApproved == true)
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">✔ FINALY APPROVED</span>
-                                }
-                                else
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">✗ FINAL APPROVER REJECTED</span>
-                                }
-
-                            </li>
-                            <li class="pull-left" style="width: 92%;margin-left: 8%;background-color:transparent;padding: 0px">
-                                <span class="control-label pull-left" style="text-decoration:underline;">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus):</span><br />
-                                <!-- todo text -->
-                                <div class="col-md-12"></div>
-                                @if (Model.LatestApprovalStatus == null)
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">DRAFTED DOCUMENT</span>
-                                }
-                                else
-                                {
-                                    <span class="control-label pull-left infospan" style="margin-left:9%!important">@Model.LatestApprovalStatusDescription</span>
-                                }
-                            </li>
-                        </ul>
-                    </div>
                 </div>
-            }
+            </div>
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -532,11 +597,26 @@
             console.log(e.message);
         }
         try {
-            $('#SaleOrderForm #EstimateID').change(function () {
+            $('#SaleOrderForm #QuoteID').change(function () {
                 OnServerCallBegin();
-                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&estimateID=" + this.value, function () {
+                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&quoteID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
-                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true);
+                    //BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true);
+
+                    OnServerCallComplete();
+                });
+
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('#SaleOrderForm #EnquiryID').change(function () {
+                OnServerCallBegin();
+                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
+                    //BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true);
 
                     OnServerCallComplete();
                 });
