@@ -82,7 +82,7 @@ function BindOrReloadAreaTable(action) {
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [4] },
+                { className: "text-center", "targets": [4,5] },
                 { "targets": [0], "width": "10%" },
                 { "targets": [1], "width": "10%" },
                 { "targets": [2], "width": "10%" },

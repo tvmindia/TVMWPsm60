@@ -3,7 +3,7 @@
 //*****************************************************************************
 //Author: Thomson
 //CreatedDate: 20-Apr-2018 
-//LastModified: 5-Apr-2018 
+//LastModified: 24-May-2018 
 //FileName: Approver.js
 //Description: Client side coding for Approver
 //******************************************************************************
@@ -24,7 +24,10 @@ $(document).ready(function () {
         console.log(e.message);
     }
     $("#DocumentTypeCode").select2({
+        dropdownParent: $(".divboxASearch")
     });
+    $('.select2').addClass('form-control newinput');
+    
     
 });
 
@@ -43,6 +46,7 @@ function BindOrReloadApproverTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
+                $('#DocumentTypeCode').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
@@ -98,7 +102,7 @@ function BindOrReloadApproverTable(action) {
             { "data": "PSAUser.LoginName", "defaultContent": "<i>-<i>", "width": "10%" },
             { "data": "IsDefault", "defaultContent": "<i>-<i>", "width": "10%" },
             { "data": "IsActive", "defaultContent": "<i>-<i>", "width": "10%" },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="DeleteApproverMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>  <a href="#" onclick="EditApproverMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>', "width": "4%" }
+            { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditApproverMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" onclick="DeleteApproverMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>  ', "width": "4%" }
             ],
             columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                 { className: "text-right", "targets": [ ] },
@@ -133,8 +137,9 @@ function BindOrReloadApproverTable(action) {
     }
 }
 
-//--function reset the list to initial--//
+//function reset the list to initial
 function ResetApproverList() {
+    $(".searchicon").removeClass('filterApplied');
     BindOrReloadApproverTable('Reset');
 }
 
@@ -143,9 +148,32 @@ function ImportApproverData() {
     BindOrReloadApproverTable('Export');
 }
 
+//Advance filter//
+function ApplyFilterThenSearch() {
+    debugger;
+    $(".searchicon").addClass('filterApplied');
+    CloseAdvanceSearch();
+    BindOrReloadApproverTable('Search');
+}
 //--edit Approver--//
 function EditApproverMaster(this_obj) {
     debugger;
+
+
+    //rowData = DataTables.approverList.row($(this_obj).parents('tr')).data();
+    //GetMasterPartial("Approver", rowData.ID);
+    //$('#h3ModelMasterContextLabel').text('Edit Approver')
+    //$('#divModelMasterPopUp').modal('show');
+    //$('#hdnMasterCall').val('MSTR');
+    //if ($('#IsDefault').is(":checked")) {
+    //    $('#IsDefault').prop("disabled", true);
+    //}
+    //else {
+    //    $('#IsDefault').prop("disabled", false);
+    //}
+
+
+
     approverVM = DataTables.approverList.row($(this_obj).parents('tr')).data();
     //GetMasterPartial("Approver", rowData.ID);
     //$('#h3ModelMasterContextLabel').text('Edit Approver')
@@ -155,14 +183,15 @@ function EditApproverMaster(this_obj) {
         $('#hdnMasterCall').val('MSTR');
         $('#lblModelMasterContextLabel').text('Edit Approval Information')
         $('#divModelMasterPopUp').modal('show');
+
+        if ($('#IsDefault').is(":checked")) {
+            $('#IsDefault').prop("disabled", true);
+        }
+        else {
+            $('#IsDefault').prop("disabled", false);
+        }
     });
-    
-    if ($('#IsDefault').is(":checked")) {
-        $('#IsDefault').prop("disabled",true);
-    }
-    else {
-        $('#IsDefault').prop("disabled", false);
-    }
+   
 }
 
 //--Function To Confirm Approver Deletion 

@@ -36,6 +36,7 @@ namespace PilotSmithApp.UserInterface.Models
     {
         [Display(Name = "Search")]
         public string SearchTerm { get; set; }
+        [Display(Name = "Document Type")]
         public string DocumentTypeCode { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         public DocumentTypeViewModel DocumentType { get; set; }

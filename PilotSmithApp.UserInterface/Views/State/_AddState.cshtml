@@ -3,20 +3,10 @@
 @using (Ajax.BeginForm("InsertUpdateState", "State", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessState", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormState" }))
 {
         @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })        
+        @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+        @Html.HiddenFor(model => model.Code, htmlAttributes: new { @class = "" })
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group col-md-12 no-padding">
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label" })
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control newinput",@readonly= "readonly" } })  
-                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })                 
-                </div>
-            </div>
-        </div>
 
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-12 no-padding">

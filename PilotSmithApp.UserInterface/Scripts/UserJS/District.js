@@ -84,7 +84,7 @@ function BindOrReloadDistrictTable(action) {
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [3] },
+                { className: "text-center", "targets": [3,4] },
                 { "targets": [0], "width": "10%" },
                 {"targets":[1],"width":"10%"},
                 { "targets": [2], "width": "50%" },

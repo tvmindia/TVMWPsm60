@@ -79,7 +79,7 @@ function BindOrReloadStateTable(action) {
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [2] },
+                { className: "text-center", "targets": [2,3] },
                 { "targets": [0], "width": "10%" },
                 { "targets": [1], "width": "50%" },
                 { "targets": [2], "width": "30%" },
