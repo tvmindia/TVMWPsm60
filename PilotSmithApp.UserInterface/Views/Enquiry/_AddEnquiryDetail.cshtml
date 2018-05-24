@@ -83,27 +83,27 @@
             dropdownParent: $("#divModelPopEnquiry")
         });
         $('.select2').addClass('form-control newinput');
-        $('#ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined)
-            {
-                $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#FormEnquiryDetail #ProductSpec').val($('#FormEnquiryDetail #spnProductName').text());
-                });
-            }
-            if ($('.divProductModelSelectList') != undefined) {
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "")
-                {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value, function () {                        
-                    });
-                }
-                else
-                {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                }
-            }
-        });
+        //$('#ProductID').change(function () {
+        //    if ($('#divProductBasicInfo') != undefined)
+        //    {
+        //        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+        //            $('#FormEnquiryDetail #ProductSpec').val($('#FormEnquiryDetail #spnProductName').text());
+        //        });
+        //    }
+        //    if ($('.divProductModelSelectList') != undefined) {
+        //        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+        //        if (this.value != "")
+        //        {
+        //            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value, function () {                        
+        //            });
+        //        }
+        //        else
+        //        {
+        //            $('.divProductModelSelectList').empty();
+        //            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        //        }
+        //    }
+        //});
        
     });
 </script>

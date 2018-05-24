@@ -20,12 +20,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICustomerBusiness _customerBusiness;
         IBranchBusiness _branchBusiness;
         IEnquiryBusiness _enquiryBusiness;
-        public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness)
+        ICommonBusiness _commonBusiness;
+        public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness)
         {
             _estimateBusiness = estimateBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
             _enquiryBusiness = enquiryBusiness;
+            _commonBusiness = commonBusiness;
         }
         // GET: Estimate
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
@@ -45,6 +47,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate(id));
                     estimateVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    estimateVM.IsDocLocked = estimateVM.DocumentOwners.Contains(appUA.UserName);
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
                 }
                 else if(id==Guid.Empty && enquiryID==null)
@@ -52,7 +56,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM = new EstimateViewModel();
                     estimateVM.IsUpdate = false;
                     estimateVM.ID = Guid.Empty;
-                    estimateVM.DocumentStatusCode = 3;
                     estimateVM.EnquiryID = null;
                     estimateVM.EnquirySelectList = new List<SelectListItem>();
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
@@ -265,38 +268,38 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (enquiryID != Guid.Empty)
                 {
                     List<EnquiryDetailViewModel> enquiryDetailVMList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));
-                    foreach (EnquiryDetailViewModel enquiryDetailVM in enquiryDetailVMList)
-                    {
-                        EstimateDetailViewModel estimateDetailVM = new EstimateDetailViewModel()
-                        {
-                            ID = Guid.Empty,
-                            EstimateID = Guid.Empty,
-                            ProductID = enquiryDetailVM.ProductID,
-                            ProductModelID = enquiryDetailVM.ProductModelID,
-                            ProductSpec = enquiryDetailVM.ProductSpec,
-                            Qty = enquiryDetailVM.Qty,
-                            UnitCode = enquiryDetailVM.UnitCode,
-                            CostRate = 0,
-                            SellingRate = 0,
-                            
-                            Product = new ProductViewModel()
-                            {
-                                ID = (Guid)enquiryDetailVM.ProductID,
-                                Code = enquiryDetailVM.Product.Code,
-                                Name = enquiryDetailVM.Product.Name,
-                            },
-                            ProductModel = new ProductModelViewModel()
-                            {
-                                ID = (Guid)enquiryDetailVM.ProductModelID,
-                                Name = enquiryDetailVM.ProductModel.Name
-                            },
-                            Unit = new UnitViewModel()
-                            {
-                                Description = enquiryDetailVM.Unit.Description
-                            },
-                        };
-                        estimateItemViewModelList.Add(estimateDetailVM);
-                    }
+                    estimateItemViewModelList = (from enquiryDetailVM in enquiryDetailVMList
+                                          select new EstimateDetailViewModel
+                                          {
+                                              ID = Guid.Empty,
+                                              EstimateID = Guid.Empty,
+                                              ProductID = enquiryDetailVM.ProductID,
+                                              ProductModelID = enquiryDetailVM.ProductModelID,
+                                              ProductSpec = enquiryDetailVM.ProductSpec,
+                                              Qty = enquiryDetailVM.Qty,
+                                              UnitCode = enquiryDetailVM.UnitCode,
+                                              CostRate = enquiryDetailVM.ProductModel.CostPrice,
+                                              SellingRate = enquiryDetailVM.Rate,
+                                              SpecTag = enquiryDetailVM.SpecTag,
+
+
+                                              Product = new ProductViewModel()
+                                              {
+                                                  ID = (Guid)enquiryDetailVM.ProductID,
+                                                  Code = enquiryDetailVM.Product.Code,
+                                                  Name = enquiryDetailVM.Product.Name,
+                                              },
+                                              ProductModel = new ProductModelViewModel()
+                                              {
+                                                  ID = (Guid)enquiryDetailVM.ProductModelID,
+                                                  Name = enquiryDetailVM.ProductModel.Name
+                                              },
+                                              Unit = new UnitViewModel()
+                                              {
+                                                  Description = enquiryDetailVM.Unit.Description
+                                              },
+                                          }).ToList();
+
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = estimateItemViewModelList, Message = "Success" });
             }
@@ -350,7 +353,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -393,11 +396,58 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetEstimate();";
 
+                    if (_commonBusiness.CheckDocumentIsDeletable("EST", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteEstimate();";
+                    }
+                    
+
+                    break;
+                case "LockDocument":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Disable = true;
+                    toolboxVM.addbtn.DisableReason = "Document Locked";
+                    toolboxVM.addbtn.Event = "";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
                     toolboxVM.deletebtn.Visible = true;
                     toolboxVM.deletebtn.Text = "Delete";
                     toolboxVM.deletebtn.Title = "Delete";
-                    toolboxVM.deletebtn.Event = "DeleteEstimate();";
-
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
                     break;
                 case "Add":
 

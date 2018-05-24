@@ -207,6 +207,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryDetail.ProductModel = new ProductModel();
                                         enquiryDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         enquiryDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : enquiryDetail.ProductModel.Name);
+                                        enquiryDetail.ProductModel.CostPrice = (sdr["CostPrice"].ToString() != "" ? decimal.Parse(sdr["CostPrice"].ToString()) : enquiryDetail.ProductModel.CostPrice);
                                         enquiryDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : enquiryDetail.Qty);
                                         enquiryDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : enquiryDetail.Rate);
                                         enquiryDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetail.UnitCode);

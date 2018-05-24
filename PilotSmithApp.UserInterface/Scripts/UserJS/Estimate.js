@@ -159,8 +159,12 @@ function EditEstimate(this_Obj) {
     $('#lblEstimateInfo').text(Estimate.EstimateNo);
     //this will return form body(html)
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID+ "&enquiryID=" +Estimate.EnquiryID, function () {
-        
-        ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
+        if ($('#IsDocLocked').val() == "True") {
+            ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", Estimate.ID);
+        }
+        else {
+            ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument");
+        }
         BindEstimateDetailList(Estimate.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
@@ -307,17 +311,19 @@ function BindEstimateDetailList(id,IsEnquiry) {
              { "data": "CostRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "SellingRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "TotalCostPrice", render: function (data, type, row) { return parseFloat(row.CostRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
+             { "data": "TotalSeingPrice", render: function (data, type, row) { return parseFloat(row.SellingRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "30%" },
+                 { "targets": [0], "width": "21%" },
                  { "targets": [1], "width": "10%" },
-                 { "targets": [2, 3], "width": "10%" },
-                 { "targets": [4], "width": "20%" },
-                 { "targets": [5], "width": "5%" },
+                 { "targets": [2, 3, 7], "width": "10%" },
+                 { "targets": [5,6], "width": "12%" },
+                 { "targets": [4], "width": "15%" },
                  { className: "text-left", "targets": [0,4] },
-                 { className: "text-right", "targets": [1, 2, 3] },
-                 { className: "text-center", "targets": [5] }
+                 { className: "text-right", "targets": [1, 2, 3,5,6] },
+                 { className: "text-center", "targets": [7] }
              ],
              destroy:true
          });
@@ -429,9 +435,11 @@ function AddEstimateDetailToList() {
                     var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
                     if (estimateDetailList.length > 0) {
                         var checkpoint = 0;
+                        var productSpec = $('#ProductSpec').val();
+                        productSpec = productSpec.replace(/\n/g, ' ');
                         for (var i = 0; i < estimateDetailList.length; i++) {
                             if ((estimateDetailList[i].ProductID == $('#ProductID').val()) && (estimateDetailList[i].ProductModelID == $('#ProductModelID').val()
-                                && (estimateDetailList[i].ProductSpec == $('#ProductSpec').val() && (estimateDetailList[i].UnitCode == $('#UnitCode').val())))) {
+                                && (estimateDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (estimateDetailList[i].UnitCode == $('#UnitCode').val())))) {
                                 estimateDetailList[i].Qty = parseFloat(estimateDetailList[i].Qty) + parseFloat($('#Qty').val());
                                 checkpoint = 1;
                                 break;

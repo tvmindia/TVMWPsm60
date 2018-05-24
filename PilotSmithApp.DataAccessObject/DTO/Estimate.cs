@@ -31,6 +31,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public Guid hdnFileID { get; set; }
         public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Enquiry Enquiry { get; set; }
         public Customer Customer { get; set; }

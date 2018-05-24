@@ -145,6 +145,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     estimate.Branch.Description = (sdr["BranchCode"].ToString() != "" ? sdr["BranchCode"].ToString() : estimate.Branch.Description);
                                     estimate.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : estimate.BranchCode);
                                     estimate.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : estimate.DocumentOwnerID);
+                                    estimate.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : estimate.DocumentOwners);
+                                    estimate.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : estimate.DocumentOwner);
                                 }
                         }
                     }

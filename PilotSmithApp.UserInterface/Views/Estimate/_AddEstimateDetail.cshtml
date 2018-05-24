@@ -15,7 +15,8 @@
                 @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
             </div>
         </div>
-
+        <!-- This hidden field will keep the information whether the field is required or not -->
+        @Html.Hidden("hdnProductRequired", "required")
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
@@ -28,7 +29,8 @@
                 @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
             </div>
         </div>
-
+        <!-- This hidden field will keep the information whether the field is required or not -->
+        @Html.Hidden("hdnProductModelRequired", "required")
         <div id="divProductBasicInfo">
             @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
         </div>
@@ -61,7 +63,7 @@
                 <div class="col-md-12">
                     <div class="divUnitSelectList">
                         @*<span class="form-control newinput"><i id="dropLoad" class=""></i></span>*@
-                        @Html.Action("UnitSelectList", "Unit", new { required = "" })
+                        @Html.Action("UnitSelectList", "Unit", new { required = "required" })
                     </div>
                     @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
                 </div>
@@ -115,27 +117,27 @@
             dropdownParent: $("#divModelPopEstimate")
         });
         $('.select2').addClass('form-control newinput');
-        $('#ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined) {
-                debugger;
-                $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#ProductSpec').val($('#spnProductName').text());
-                });
-            }
-            if ($('.divProductModelSelectList') != undefined) {
-                debugger;
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "") {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+        //$('#ProductID').change(function () {
+        //    if ($('#divProductBasicInfo') != undefined) {
+        //        debugger;
+        //        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+        //            $('#ProductSpec').val($('#spnProductName').text());
+        //        });
+        //    }
+        //    if ($('.divProductModelSelectList') != undefined) {
+        //        debugger;
+        //        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+        //        if (this.value != "") {
+        //            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
 
-                }
-                else {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                }
-            }
+        //        }
+        //        else {
+        //            $('.divProductModelSelectList').empty();
+        //            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        //        }
+        //    }
 
-        });
+        //});
 
     });
 </script>

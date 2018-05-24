@@ -206,7 +206,7 @@ function SaveSuccessProduct(data, status) {
                 BindOrReloadProductTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divProductSelectList').load('/Product/ProductSelectList?required=');
+                $('.divProductSelectList').load('/Product/ProductSelectList?required='+$('#hdnProductRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -279,7 +279,7 @@ function SaveSuccessProductModel(data, status) {
                 BindOrReloadProductModelTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divProductModelSelectList').load('/ProductModel/ProductModelSelectList?required=');
+                $('.divProductModelSelectList').load('/ProductModel/ProductModelSelectList?required=' + $('#hdnProductModelRequired').val()+'&productID='+$('#hdnProductID').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

@@ -29,7 +29,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string GeneralNotes { get; set; }
         [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
-        [Display(Name = "Branch Code")]
+        [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
 
         //Aditional Fields
@@ -49,6 +49,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Document Locked")]
         public bool IsDocLocked { get; set; }
         public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public EnquiryViewModel Enquiry { get; set; }
         public CustomerViewModel Customer { get; set; }

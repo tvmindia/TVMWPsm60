@@ -561,6 +561,7 @@ function UploadFile(FileObject)
                             $('#hdnFileDupID').val(result.Records.ParentID);
                             notyAlert('success', result.Message);
                             PaintImages(result.Records.ParentID);
+                            cancelAll();
                         }
                         else if(result.Result=="ERROR")
                         {
