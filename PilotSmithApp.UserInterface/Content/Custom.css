@@ -649,13 +649,13 @@ color: #e32;
         background-Repeat: no-repeat;
         cursor: pointer;
     }
- input.ApplyPer{
+ /*input.ApplyPer{
         background-image: url('../Content/images/percentage.png');
         background-Position: 97% center;
         background-Repeat: no-repeat;
         background-size:12px;
         width:52%;
- }
+ }*/
 .skin-green-light .main-sidebar {
     background-color:#00c0ef05;
 }

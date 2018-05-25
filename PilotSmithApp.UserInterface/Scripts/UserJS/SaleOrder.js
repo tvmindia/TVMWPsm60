@@ -389,8 +389,6 @@ function BindSaleOrderDetailList(id, IsEstimated) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(row.SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(data)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(row.IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
-             
-             { "data": "CessPerc", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "CessAmt", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Rate", render: function (data, type, row) {
@@ -404,11 +402,11 @@ function BindSaleOrderDetailList(id, IsEstimated) {
              ],
              columnDefs: [
                  { "targets": [0], "width": "35%" },
-                 { "targets": [2,4,5,8], "width": "10%" },
-                 { "targets": [1, 3, 6, 7, 9], "width": "5%" },
-                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7, 8] },
+                 { "targets": [2,4,5,6,7], "width": "10%" },
+                 { "targets": [1, 3, 8], "width": "5%" },
+                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
                  { className: "text-left", "targets": [0] },
-                 { className: "text-center", "targets": [1, 9] }
+                 { className: "text-center", "targets": [1, 8] }
              ],
              rowCallback: function (row, data, index) {
                  debugger;
