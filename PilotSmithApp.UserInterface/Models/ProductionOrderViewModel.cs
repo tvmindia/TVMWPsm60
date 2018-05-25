@@ -37,7 +37,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int? BranchCode{get;set;}
 
         //Aditional Fields
-        [Display(Name ="ProductionOrder Date")]
+        [Display(Name ="Production Order Date")]
         [Required(ErrorMessage ="Production Date is missing")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
         public string ProdOrderDateFormatted { get; set; }
@@ -68,7 +68,9 @@ namespace PilotSmithApp.UserInterface.Models
     public class ProductionOrderAdvanceSearchViewModel
     {
         public string SearchTerm { get; set; }
+        [Display(Name ="From Date")]
         public string FromDate { get; set; }
+        [Display(Name ="To Date")]
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
     }

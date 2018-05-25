@@ -19,36 +19,37 @@
             <div class="col-md-12 headSeperator">General Details</div>
 
             <div class="form-group col-md-6 ">
-                @*<div class="col-md-12 no-padding">
+                @if (!Model.IsUpdate)
+                {
+                    <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.SaleOrderID, htmlAttributes: new { @class = "control-label" })
+                            @Html.Label("Search and select a Sale Order", htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            <div class="divEnquirySelectList">
-                                @Html.Action("EnquirySelectList", "Enquiry", new { required = "" })
+                            @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
+                            @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
+                    </div>
+                }
+
+                else
+                {
+                    if (Model.SaleOrderID != null)
+                    {
+                        <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Sale Order", htmlAttributes: new { @class = "control-label" })
                             </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
+                                @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
-                        @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
-                    </div>*@
+                    }
+                }
 
-
-                <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
-                    <div class="col-md-12">
-                        @Html.Label("Search and select a SaleOrder", htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @if (Model.IsUpdate)
-                        {
-                            @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
-                        }
-                        else
-                        {
-                            @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
-                        }
-                        @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })
-                    </div>
-                    @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
-                </div>
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -75,7 +76,7 @@
                         @Html.LabelFor(model => model.ProdOrderDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ProdOrderDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                        @Html.EditorFor(model => model.ProdOrderDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.ProdOrderDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -84,7 +85,7 @@
                         @Html.LabelFor(model => model.ExpectedDelvDateFormatted, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ExpectedDelvDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                        @Html.EditorFor(model => model.ExpectedDelvDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.ExpectedDelvDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -93,10 +94,10 @@
                         @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("EmployeeSelectList", "Employee", new { required = "" })
+                        <div class="divEmployeeSelectList">
+                            @Html.Action("PreparedBySelectList", "Employee", new { required = "" })
                         </div>
-                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnEmployeeID" })
+                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
                     </div>
                 </div>
 
@@ -120,9 +121,9 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @if (Model.IsUpdate)
+                            @if (Model.IsUpdate || Model.SaleOrderID != null)
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" ,disabled=true})
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
                             }
                             else
                             {
@@ -198,7 +199,25 @@
                                 <div class="lblStatusDisplay">EMAIL NOT SEND</div>
                             }
                         </div>
-                       
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="form-group col-md-12">
+                                <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.BranchCode)</div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="lblStatusDisplay">@Model.Branch.Description</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-md-12">
+                                <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.BranchCode)</div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="lblStatusDisplay">------</div>
+                            </div>
+                        }
+
 
                         @if (Model.IsUpdate)
                         {
@@ -224,7 +243,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Deny ownership</span></a>
+                                            <span style="font-size:18px;">Holding ownership</span>
                                         </div>
                                     </div>
                                 }
@@ -257,8 +276,8 @@
                             <th>Prev Prod Order Qty</th>
                             <th>Curr Prod Order Qty</th>
                             <th>Produced Qty</th>
-                            <th>Rate</th>
-                            <th>Amount</th>
+                            <th>Rate(₹)</th>
+                            <th>Amount(₹)</th>
                             <th>Supplier/Plant</th>
                             <th>Milestone</th>
                             <th>...</th>
@@ -297,11 +316,11 @@
             @Html.Partial("_Fileupload")
         </div>
     </div>
-        <div class="" hidden="hidden">
-            <div class="col-md-offset-2 col-md-10">
-                <input id="btnInsertUpdateProductionOrder" type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="" hidden="hidden">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="btnInsertUpdateProductionOrder" type="submit" value="Create" class="btn btn-default" />
         </div>
+    </div>
 }
 
 <script>

@@ -129,7 +129,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? CessPerc { get; set; }
         [Display(Name = "Cess Amount")]
         public decimal? CessAmt { get; set; }
-
+        public Guid SpecTag { get; set; }
 
         //Additional Fields        
         public bool IsUpdate { get; set; }

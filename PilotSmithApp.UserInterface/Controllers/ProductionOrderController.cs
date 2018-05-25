@@ -19,10 +19,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IProductionOrderBusiness _productionOrderBusiness;
         ISaleOrderBusiness _saleOrderBusiness;
-        public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness,ISaleOrderBusiness saleOrderBusiness)
+        ICommonBusiness _commonBusiness;
+        public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness,ISaleOrderBusiness saleOrderBusiness,ICommonBusiness commonBusiness)
         {
             _productionOrderBusiness = productionOrderBusiness;
             _saleOrderBusiness = saleOrderBusiness;
+            _commonBusiness = commonBusiness;
         }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
@@ -50,8 +52,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     productionOrderVM = new ProductionOrderViewModel();
                     productionOrderVM.IsUpdate = false;
-                    productionOrderVM.ID = Guid.Empty;
-                    productionOrderVM.DocumentStatusCode = 7;
+                    productionOrderVM.ID = Guid.Empty;                   
                     productionOrderVM.SaleOrderID = null;
                     productionOrderVM.SaleOrderSelectList = new List<SelectListItem>();
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
@@ -62,11 +63,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     SaleOrderViewModel saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleOrderID));
                     productionOrderVM = new ProductionOrderViewModel();
                     productionOrderVM.IsUpdate = false;
-                    productionOrderVM.ID = Guid.Empty;
-                    productionOrderVM.DocumentStatusCode = 7;
+                    productionOrderVM.ID = Guid.Empty;                  
                     productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     productionOrderVM.SaleOrderID = saleOrderID;
                     productionOrderVM.CustomerID = saleOrderVM.CustomerID;
+                    productionOrderVM.BranchCode = saleOrderVM.BranchCode;
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
                     productionOrderVM.DocumentStatus.Description = "OPEN";
                 }           
@@ -258,40 +259,40 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (saleOrderID != Guid.Empty)
                 {
                     List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
-                    foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderDetailVMList)
-                    {
-                        ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel()
-                        {
-                            ID = Guid.Empty,
-                            ProdOrderID = Guid.Empty,
-                            ProductID = saleOrderDetailVM.ProductID,
-                            ProductModelID = saleOrderDetailVM.ProductModelID,
-                            ProductSpec = saleOrderDetailVM.ProductSpec,
-                            OrderQty = saleOrderDetailVM.Qty,
-                            UnitCode = saleOrderDetailVM.UnitCode,
-                            ProducedQty = 0,
-                            PrevProducedQty=0,
-                            Rate=saleOrderDetailVM.Rate==null?0:saleOrderDetailVM.Rate,
-                            Amount=0,
-                            Product = new ProductViewModel()
-                            {
-                                ID = (Guid)saleOrderDetailVM.ProductID,
-                                Code = saleOrderDetailVM.Product.Code,
-                                Name = saleOrderDetailVM.Product.Name,
-                            },
-                            ProductModel = new ProductModelViewModel()
-                            {
-                                ID = (Guid)saleOrderDetailVM.ProductModelID,
-                                Name = saleOrderDetailVM.ProductModel.Name
-                            },
-                            Unit = new UnitViewModel()
-                            {
-                                Description = saleOrderDetailVM.Unit.Description
-                            },
-                        };
-                        productionOrderItemViewModelList.Add(productionOrderDetailVM);
-                    }
-                }
+                    productionOrderItemViewModelList = (from saleOrderDetailVM in saleOrderDetailVMList
+                                                        select new ProductionOrderDetailViewModel
+                                                        {
+                                                            ID = Guid.Empty,
+                                                            ProdOrderID = Guid.Empty,
+                                                            ProductID = saleOrderDetailVM.ProductID,
+                                                            ProductModelID = saleOrderDetailVM.ProductModelID,
+                                                            ProductSpec = saleOrderDetailVM.ProductSpec,
+                                                            OrderQty = saleOrderDetailVM.Qty,
+                                                            UnitCode = saleOrderDetailVM.UnitCode,
+                                                            ProducedQty = 0,
+                                                            PrevProducedQty = 0,
+                                                            Rate = saleOrderDetailVM.Rate == null ? 0 : saleOrderDetailVM.Rate,
+                                                            Amount = 0,
+                                                            SpecTag=saleOrderDetailVM.SpecTag,
+                                                            Product = new ProductViewModel()
+                                                            {
+                                                                ID = (Guid)saleOrderDetailVM.ProductID,
+                                                                Code = saleOrderDetailVM.Product.Code,
+                                                                Name = saleOrderDetailVM.Product.Name,
+                                                            },
+                                                            ProductModel = new ProductModelViewModel()
+                                                            {
+                                                                ID = (Guid)saleOrderDetailVM.ProductModelID,
+                                                                Name = saleOrderDetailVM.ProductModel.Name
+                                                            },
+                                                            Unit = new UnitViewModel()
+                                                            {
+                                                                Description = saleOrderDetailVM.Unit.Description
+                                                            },
+                                                        }).ToList();
+                             
+                        }
+                      
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = productionOrderItemViewModelList, Message = "Success" });
             }
             catch (Exception ex)
@@ -400,7 +401,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType,Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -443,10 +444,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetProductionOrder();";
 
-                    toolboxVM.deletebtn.Visible = true;
-                    toolboxVM.deletebtn.Text = "Delete";
-                    toolboxVM.deletebtn.Title = "Delete";
-                    toolboxVM.deletebtn.Event = "DeleteProductionOrder();";
+                    if (_commonBusiness.CheckDocumentIsDeletable("POD", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteProductionOrder();";
+                    }
 
                     toolboxVM.EmailBtn.Visible = true;
                     toolboxVM.EmailBtn.Text = "Email";

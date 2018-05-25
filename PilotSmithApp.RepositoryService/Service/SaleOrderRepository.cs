@@ -334,6 +334,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderDetail.ProductModel.Name = (sdr["ModelName"].ToString() != "" ? sdr["ModelName"].ToString() : saleOrderDetail.ProductModel.Name);
                                         saleOrderDetail.Unit = new Unit();
                                         saleOrderDetail.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : saleOrderDetail.Unit.Description);
+                                        saleOrderDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : saleOrderDetail.SpecTag);
                                     }
                                     saleOrderDetailList.Add(saleOrderDetail);
                                 }

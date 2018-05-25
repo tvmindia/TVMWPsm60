@@ -140,6 +140,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionOrder.DocumentStatusCode);
                                     productionOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrder.GeneralNotes);
                                     productionOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : productionOrder.DocumentOwnerID);
+                                    productionOrder.Branch = new Branch();
+                                    productionOrder.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : productionOrder.Branch.Description);
                                     productionOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionOrder.BranchCode);
                                     productionOrder.DocumentStatus = new DocumentStatus();
                                     productionOrder.DocumentStatus.Description = (sdr["DocumentStatus"].ToString() != "" ? sdr["DocumentStatus"].ToString() : productionOrder.DocumentStatus.Description);
@@ -302,6 +304,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         {
                             ID = productionOrder.ID,
                             ProductionOrderNo = productionOrder.ProdOrderNo,
+                            SaleOrderID=productionOrder.SaleOrderID,
                             Status = outputStatus.Value.ToString(),
                             Message = productionOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
                         };

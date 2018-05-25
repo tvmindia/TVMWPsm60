@@ -100,13 +100,14 @@ function BindOrReloadProductionOrderTable(action) {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [0, 2, 3, 4, 5, 6] },
-                          { className: "text-center", "targets": [1] },
-                            { "targets": [0], "width": "10%" },
-                            { "targets": [2], "width": "20%" },
-                            { "targets": [1, 3, 4], "width": "10%" },
-                            { "targets": [5], "width": "7%" },
-                            { "targets": [6], "width": "7%" },
+                          { className: "text-left", "targets": [0, 2, 3, 4, 5] },
+                          { className: "text-center", "targets": [1,6] },
+                            { "targets": [0], "width": "30%" },
+                            { "targets": [2], "width": "10%" },
+                            { "targets": [3, 4], "width": "10%" },
+                            { "targets": [1], "width": "20%" },
+                            { "targets": [5], "width": "10%" },
+                            { "targets": [6], "width": "10%" },
 
             ],
             destroy: true,
@@ -157,7 +158,7 @@ function AddProductionOrder() {
     //this will return form body(html)
     OnServerCallBegin();
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid+"&saleOrderID=", function () {
-        $('#lblProductionOrderInfo').text('<<ProductionOrder No.>>');
+        $('#lblProductionOrderInfo').text('<<Production Order No.>>');
         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
         BindProductionOrderDetailList(_emptyGuid);
         //BindProductionOrderOtherChargesDetailList(_emptyGuid)
@@ -177,7 +178,7 @@ function EditProductionOrder(this_Obj) {
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID+"&saleOrderID="+productionOrder.SaleOrderID, function () {
         if ($('#IsDocLocked').val() == "True")
         {
-            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit",productionOrder.ID);
         }
         else
         {
@@ -197,6 +198,7 @@ function EditProductionOrder(this_Obj) {
 }
 
 function ResetProductionOrder() {
+    debugger;
     //this will return form body(html)
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val()+"&saleOrderID="+$('#hdnSaleOrderID').val(), function () {
         if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
@@ -205,6 +207,10 @@ function ResetProductionOrder() {
             $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
             openNav();
 
+        }
+        else {
+            $('#hdnCustomerID').val('');
+            $('#hdnSaleOrderID').val('');
         }
         BindProductionOrderDetailList($('#ID').val(), false);
         clearUploadControl();
@@ -374,7 +380,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              },
              { "data": "Plant.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
-                 "data": "", render: function (data, type, row) {
+                 "data": "result", render: function (data, type, row) {
                      debugger;
                      var result = "";
                      if ((((row.MileStone1FcFinishDtFormatted != null) && (row.MileStone1FcFinishDtFormatted!="")) && ((row.MileStone1AcTFinishDtFormatted != null) && (row.MileStone1AcTFinishDtFormatted!=""))))
@@ -410,11 +416,10 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              ],
              columnDefs: [
                  { className: "text-right", "targets": [1, 2, 3, 4, 5, 6] },
-                 { className: "text-left", "targets": [0] },
-                 {className:"text-center","targets":[8]},
+                 { className: "text-left", "targets": [0,7] },
+                 {className:"text-center","targets":[8,9]},
                  { "targets": [0], "width": "20%" },
-                 { "targets": [1, 2, 3, 4, 5, 6, 7, 8,9], "width": "10%" },
-                 //{ "targets": [9], "width": "7%" }
+                 { "targets": [1, 2, 3, 4, 5, 6, 7, 8,9], "width": "9%" },                
              ]
          });
     $('[data-toggle="popover"]').popover({
@@ -621,7 +626,7 @@ function EditProductionOrderDetail(this_Obj) {
     _datatablerowindex = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).index();
     var productionOrderDetail = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelProductionOrderPopBody").load("ProductionOrder/AddProductionOrderDetail", function () {
-        $('#lblModelPopProductionOrder').text('ProductionOrder Detail')
+        $('#lblModelPopProductionOrder').text('Production Order Detail')
         $('#FormProductionOrderDetail #IsUpdate').val('True');
         $('#FormProductionOrderDetail #ID').val(productionOrderDetail.ID);
         $("#FormProductionOrderDetail #ProductID").val(productionOrderDetail.ProductID)
@@ -706,7 +711,7 @@ function DeleteProductionOrderDetail(ID) {
 function EmailProductionOrder() {
     debugger;
     $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailProductionOrder').text('Email ProductionOrder')
+        $('#lblModelEmailProductionOrder').text('Email Production Order')
         $('#divModelEmailProductionOrder').modal('show');
     });
 }
@@ -740,7 +745,7 @@ function SaveSuccessUpdateProductionOrderEmailInfo(data, status) {
             case "OK":
                 MasterAlert("success", _result.Message)
                 $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=False", function () {
-                    $('#lblModelEmailProductionOrder').text('Send Email ProductionOrder')
+                    $('#lblModelEmailProductionOrder').text('Send Email Production Order')
                 });
                 break;
             case "ERROR":

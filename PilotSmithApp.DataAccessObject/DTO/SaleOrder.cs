@@ -85,6 +85,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? IGSTPerc { get; set; }
         public decimal? CessPerc { get; set; }
         public decimal? CessAmt { get; set; }
+        public Guid SpecTag { get; set; }
 
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }
