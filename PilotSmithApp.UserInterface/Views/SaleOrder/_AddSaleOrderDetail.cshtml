@@ -95,81 +95,96 @@
     <div class="form-group col-md-12 no-padding" id="divGSTCalculatedFields">
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.SGSTAmt, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.SGSTPerc, htmlAttributes: new { @class = "control-label " })
             </div>
             <div class="col-md-12">
-                @Html.EditorFor(model => model.SGSTAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.SGSTAmt, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.SGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.SGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.CGSTAmt, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.CGSTPerc, htmlAttributes: new { @class = "control-label " })
             </div>
             <div class="col-md-12">
-                @Html.EditorFor(model => model.CGSTAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.CGSTAmt, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.CGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.CGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.IGSTAmt, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.IGSTPerc, htmlAttributes: new { @class = "control-label " })
             </div>
             <div class="col-md-12">
-                @Html.EditorFor(model => model.IGSTAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.IGSTAmt, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.IGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.IGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
-
-
-    <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-default" id="btnAddSaleOrderDetail" onclick="AddSaleOrderDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-    </div>
-}
-<script>
-    $(document).ready(function () {
-        $.validator.unobtrusive.parse("#FormSaleOrderDetail");
-        $('#divModelPopSaleOrder #ProductID,#divModelPopSaleOrder #UnitCode,#divModelPopSaleOrder #TaxTypeCode,#divModelPopSaleOrder #ProductModelID').select2({
-            dropdownParent: $("#divModelPopSaleOrder")
-        });
-        $('.select2').addClass('form-control newinput');
-        $('#divModelPopSaleOrder #ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined)
-            {
-                $('#divModelPopSaleOrder #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#divModelPopSaleOrder #ProductSpec').val($('#divModelPopSaleOrder #spnProductName').text());
+    <div class="form-group col-md-12 no-padding" id="divCessCalculatedFields">
+        <div class="col-md-6 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.CessPerc, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.CessPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyPercentage", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.CessPerc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-6 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.CessAmt, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.CessAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.CessAmt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button class="btn btn-default" id="btnAddSaleOrderDetail" onclick="AddSaleOrderDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        </div>
+        }
+        <script>
+            $(document).ready(function () {
+                $.validator.unobtrusive.parse("#FormSaleOrderDetail");
+                $('#divModelPopSaleOrder #ProductID,#divModelPopSaleOrder #UnitCode,#divModelPopSaleOrder #TaxTypeCode,#divModelPopSaleOrder #ProductModelID').select2({
+                    dropdownParent: $("#divModelPopSaleOrder")
                 });
-            }
-            if ($('.divProductModelSelectList') != undefined) {
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "")
-                {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
-                }
-                else
-                {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                }
-            }
-        });
-        //$('#divModelPopSaleOrder #TaxTypeCode').change(function () {
-        //    $('#divGSTCalculatedFields').load("SaleOrder/GSTCalculatedFields?TaxTypeCode=" + this.value + "&Discount=" + $('#divModelPopSaleOrder #Discount').val() + "&Qty=" + $('#divModelPopSaleOrder #Qty').val() + "&Rate=" + $('#divModelPopSaleOrder #Rate').val())
-        //});
-        $('#divModelPopSaleOrder .CalculateGST').change(function () {
-            debugger;
-            var qty = parseInt($('#divModelPopSaleOrder #Qty').val()!=""?$('#divModelPopSaleOrder #Qty').val():1);
-            var rate = parseFloat($('#divModelPopSaleOrder #Rate').val()!=""?$('#divModelPopSaleOrder #Rate').val():0);
-            var discount = parseFloat($('#divModelPopSaleOrder #Discount').val()!=""?$('#divModelPopSaleOrder #Discount').val():0);
-            var CGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val()!=""?$('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1]:0);
-            var SGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val()!=""?$('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1]:0);
-            var IGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-            var taxableAmount = rate * qty - discount;
-            $('#divModelPopSaleOrder #CGSTAmt').val(taxableAmount * CGST / 100);
-            $('#divModelPopSaleOrder #SGSTAmt').val(taxableAmount * SGST / 100);
-            $('#divModelPopSaleOrder #IGSTAmt').val(taxableAmount * IGST / 100);
-        });
-    });
-</script>
+                $('.select2').addClass('form-control newinput');
+                $('#divModelPopSaleOrder #ProductID').change(function () {
+                    if ($('#divProductBasicInfo') != undefined) {
+                        $('#divModelPopSaleOrder #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                            $('#divModelPopSaleOrder #ProductSpec').val($('#divModelPopSaleOrder #spnProductName').text());
+                        });
+                    }
+                    if ($('.divProductModelSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                        }
+                        else {
+                            $('.divProductModelSelectList').empty();
+                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                        }
+                    }
+                });
+                //$('#divModelPopSaleOrder #TaxTypeCode').change(function () {
+                //    $('#divGSTCalculatedFields').load("SaleOrder/GSTCalculatedFields?TaxTypeCode=" + this.value + "&Discount=" + $('#divModelPopSaleOrder #Discount').val() + "&Qty=" + $('#divModelPopSaleOrder #Qty').val() + "&Rate=" + $('#divModelPopSaleOrder #Rate').val())
+                //});
+                $('#divModelPopSaleOrder .CalculateGST').change(function () {
+                    debugger;
+                    var qty = parseInt($('#divModelPopSaleOrder #Qty').val() != "" ? $('#divModelPopSaleOrder #Qty').val() : 1);
+                    var rate = parseFloat($('#divModelPopSaleOrder #Rate').val() != "" ? $('#divModelPopSaleOrder #Rate').val() : 0);
+                    var discount = parseFloat($('#divModelPopSaleOrder #Discount').val() != "" ? $('#divModelPopSaleOrder #Discount').val() : 0);
+                    var CGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                    var SGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                    var IGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                    var taxableAmount = rate * qty - discount;
+                    $('#divModelPopSaleOrder #CGSTAmt').val(taxableAmount * CGST / 100);
+                    $('#divModelPopSaleOrder #SGSTAmt').val(taxableAmount * SGST / 100);
+                    $('#divModelPopSaleOrder #IGSTAmt').val(taxableAmount * IGST / 100);
+                });
+            });
+        </script>
 

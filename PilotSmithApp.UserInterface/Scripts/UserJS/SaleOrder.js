@@ -158,7 +158,7 @@ function AddSaleOrder() {
     //OnServerCallBegin();
     $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&saleOrderID=", function () {
         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
-       // BindSaleOrderDetailList(_emptyGuid);
+        BindSaleOrderDetailList(_emptyGuid);
         //BindSaleOrderOtherChargesDetailList(_emptyGuid)
        // OnServerCallComplete();
         setTimeout(function () {
@@ -358,10 +358,12 @@ function BindSaleOrderDetailList(id, IsEstimated) {
                  searchPlaceholder: "Search"
              },
              columns: [
-             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Product.Code", render: function (data, type, row) {
+                     debugger;
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
+                 }, "defaultContent": "<i></i>"
+             },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
@@ -387,6 +389,9 @@ function BindSaleOrderDetailList(id, IsEstimated) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(row.SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(data)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(row.IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
+             
+             { "data": "CessPerc", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "CessAmt", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Rate", render: function (data, type, row) {
                      var TaxableAmt = roundoff((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0))
@@ -398,13 +403,12 @@ function BindSaleOrderDetailList(id, IsEstimated) {
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "15%" },
-                 { "targets": [1, 2], "width": "10%" },
-                 { "targets": [3], "width": "30%" },
-                 { "targets": [4, 5, 6, 7, 8, 9, 10], "width": "5%" },
-                 { className: "text-right", "targets": [4, 5, 6, 7, 8, 9] },
-                 { className: "text-left", "targets": [3] },
-                 { className: "text-center", "targets": [0, 1, 2, 10] }
+                 { "targets": [0], "width": "35%" },
+                 { "targets": [2,4,5,8], "width": "10%" },
+                 { "targets": [1, 3, 6, 7, 9], "width": "5%" },
+                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7, 8] },
+                 { className: "text-left", "targets": [0] },
+                 { className: "text-center", "targets": [1, 9] }
              ],
              rowCallback: function (row, data, index) {
                  debugger;
