@@ -171,13 +171,18 @@ namespace PilotSmithApp.UserInterface.Controllers
                     SaleOrderDetailViewModel saleOrderDetailVM = new SaleOrderDetailViewModel()
                     {
                         ID = Guid.Empty,
-                        SaleOrderID = Guid.Empty,
+                        SaleOrderID = saleOrderID,
                         ProductID = Guid.Empty,
                         ProductModelID = Guid.Empty,
                         ProductSpec = string.Empty,
                         Qty = 0,
-                        Rate=0,
-                        CessAmt=0,
+                        Rate = 0,
+                        Discount=0,
+                        SGSTPerc=0,
+                        CGSTPerc=0,
+                        IGSTPerc=0,
+                        CessAmt = 0,
+                        CessPerc = 0,
                         UnitCode = null,                      
                         Product = new ProductViewModel()
                         {
@@ -194,6 +199,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         {
                             Description = null,
                         },
+                        TaxType=new TaxTypeViewModel()
+                        {
+                            Description="",
+                        }
                     };
                     saleOrderItemViewModelList.Add(saleOrderDetailVM);
                 }

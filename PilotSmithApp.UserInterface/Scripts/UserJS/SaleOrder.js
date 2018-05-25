@@ -380,21 +380,38 @@ function BindSaleOrderDetailList(id, IsEstimated) {
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "CGSTAmt", render: function (data, type, row) {
+                 "data": "Rate", render: function (data, type, row) {
                      debugger;
-                     var CGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[0].split('-')[1] : 0);
-                     var SGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[1].split('-')[1] : 0);
-                     var IGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[2].split('-')[1] : 0);
-                     var GSTAmt = roundoff(parseFloat(data) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(row.SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(data)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(row.IGSTAmt)) + '</p>"/>' + GSTAmt
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
+                     var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
+                     var Taxable = Total - Discount
+                     var CGSTAmt = parseFloat(Taxable * CGST / 100);
+                     var SGSTAmt = parseFloat(Taxable * SGST / 100)
+                     var IGSTAmt=parseFloat(Taxable * IGST / 100)
+                     var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(SGSTAmt) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "CessAmt", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "CessAmt", render: function (data, type, row) {
+                     debugger;
+                     return '<i style="font-size:10px">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px">Cess(₹) -</i>' + data
+                 }, "defaultContent": "<i></i>"
+             },
              {
                  "data": "Rate", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
                      var TaxableAmt = roundoff((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0))
-                     var GSTAmt = roundoff(parseFloat(row.CGSTAmt) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
-                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt) + parseFloat(row.CGSTAmt))
+                     var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+                     var SGSTAmt = parseFloat(TaxableAmt * SGST / 100)
+                     var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
+                     var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
+                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt))
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
@@ -529,9 +546,11 @@ function AddSaleOrderDetailToList() {
                 saleOrderDetailList[0].Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
                 saleOrderDetailList[0].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
                 saleOrderDetailList[0].TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
-                saleOrderDetailList[0].CGSTAmt = $('#divModelSaleOrderPopBody #CGSTAmt').val();
-                saleOrderDetailList[0].SGSTAmt = $('#divModelSaleOrderPopBody #SGSTAmt').val();
-                saleOrderDetailList[0].IGSTAmt = $('#divModelSaleOrderPopBody #IGSTAmt').val();
+                saleOrderDetailList[0].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
+                saleOrderDetailList[0].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
+                saleOrderDetailList[0].IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
+                saleOrderDetailList[0].CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val();
+                saleOrderDetailList[0].CessAmt = $('#divModelSaleOrderPopBody #CessAmt').val();
                 _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
                 $('#divModelPopSaleOrder').modal('hide');
             }
