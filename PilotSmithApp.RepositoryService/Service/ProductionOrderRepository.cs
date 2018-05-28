@@ -147,6 +147,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.DocumentStatus.Description = (sdr["DocumentStatus"].ToString() != "" ? sdr["DocumentStatus"].ToString() : productionOrder.DocumentStatus.Description);
                                     productionOrder.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : productionOrder.DocumentOwners);
                                     productionOrder.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : productionOrder.DocumentOwner);
+                                    productionOrder.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : productionOrder.EmailSentTo);
+                                    productionOrder.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionOrder.EmailSentYN);
+                                    productionOrder.LatestApprovalID = (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : productionOrder.LatestApprovalID);
+                                    productionOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionOrder.LatestApprovalStatus);
+                                    productionOrder.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : productionOrder.LatestApprovalStatusDescription);
+                                    productionOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : productionOrder.IsFinalApproved);
                                 }
                         }
                     }

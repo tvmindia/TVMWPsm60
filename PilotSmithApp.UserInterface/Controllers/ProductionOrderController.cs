@@ -86,7 +86,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();
             productionOrderDetailVM.IsUpdate = false;
             productionOrderDetailVM.OrderQty = 0;
-            productionOrderDetailVM.ProducedQty = 0;           
+            productionOrderDetailVM.ProducedQty = 0;
+            productionOrderDetailVM.PrevProducedQty = 0;        
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -345,6 +346,41 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion DeleteProductionOrderDetail
+
+        #region UpdateProductionOrderEmailInfo
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
+        public string UpdateProductionOrderEmailInfo(ProductionOrderViewModel productionOrderVM)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                productionOrderVM.PSASysCommon = new PSASysCommonViewModel();
+                productionOrderVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                productionOrderVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                object result = _productionOrderBusiness.UpdateProductionOrderEmailInfo(Mapper.Map<ProductionOrderViewModel, ProductionOrder>(productionOrderVM));
+
+                if (productionOrderVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+
+        #endregion UpdateProductionOrderEmailInfo
 
         #region Email ProductionOrder
         public ActionResult EmailProductionOrder(ProductionOrderViewModel productionOrderVM)
