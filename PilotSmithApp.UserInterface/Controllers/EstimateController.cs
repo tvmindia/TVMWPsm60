@@ -69,7 +69,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.ID = Guid.Empty;
                     estimateVM.CustomerID = enquiryVM.CustomerID;
                     estimateVM.BranchCode = enquiryVM.BranchCode;
-                    estimateVM.DocumentStatusCode = 3;
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
                     estimateVM.EnquiryID = enquiryID;
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();

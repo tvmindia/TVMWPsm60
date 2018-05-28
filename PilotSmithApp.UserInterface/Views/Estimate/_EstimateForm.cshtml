@@ -75,7 +75,7 @@
                         @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.EstimateDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                        @Html.EditorFor(model => model.EstimateDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.EstimateDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -123,7 +123,7 @@
                         @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divBranchSelectList">
+                        <div class="divEmployeeSelectList">
                             @Html.Action("EmployeeSelectList", "Employee", new { required = "" })
                         </div>
                         @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnEmployeeID" })

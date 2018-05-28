@@ -66,7 +66,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public string EstimateDate { get; set; }
         public string SearchTerm { get; set; }
+        [Display(Name = "Estimate From")]
         public string FromDate { get; set; }
+        [Display(Name = "Estimate To")]
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
     }

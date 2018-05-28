@@ -28,7 +28,10 @@
                 <span class="control-label">@Html.DisplayNameFor(Model => Model.Mobile):</span>
                 <!-- todo text -->
                 <span>@Model.Mobile</span>
+                
             </li>
         </ul>
+        @Html.HiddenFor(model => model.BillingAddress, htmlAttributes: new { @class = "", @id = "hdnCustomerBillingAddress" })
+        @Html.HiddenFor(model => model.ShippingAddress, htmlAttributes: new { @class = "", @id = "hdnCustomerShippingAddress" })
     </div>
 </div>

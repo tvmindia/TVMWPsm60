@@ -77,6 +77,7 @@ namespace PilotSmithApp.UserInterface.Models
         public List<QuotationDetailViewModel> QuotationDetailList { get; set; }
         public PDFTools PDFTools { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
+        public List<SelectListItem> EstimateSelectList { get; set; }
     }
     public class QuotationAdvanceSearchViewModel
     {
@@ -108,12 +109,13 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Tax Type")]
         public int? TaxTypeCode { get; set; }
         [Display(Name = "CGST Amount")]
-        public decimal? CGSTAmt { get; set; }
+        public decimal? CGSTPerc { get; set; }
         [Display(Name = "SGST Amount")]
-        public decimal? SGSTAmt { get; set; }
+        public decimal? SGSTPerc { get; set; }
         [Display(Name = "IGST Amount")]
-        public decimal? IGSTAmt { get; set; }
+        public decimal? IGSTPerc { get; set; }
         public bool IsUpdate { get; set; }
+        public Guid SpecTag { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }
         public ProductModelViewModel ProductModel { get; set; }

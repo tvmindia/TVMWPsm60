@@ -7,7 +7,7 @@
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.Qty, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.Qty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
@@ -51,11 +51,11 @@
         </div>
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divUnitSelectList">
-                    @Html.Action("UnitSelectList", "Unit", new { required = "" })
+                    @Html.Action("UnitSelectList", "Unit", new { required = "required" })
                 </div>
                 @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
             </div>
@@ -64,7 +64,7 @@
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency CalculateGST", @onkeypress = "return isNumber(event)" } })
@@ -95,29 +95,32 @@
     <div class="form-group col-md-12 no-padding" id="divGSTCalculatedFields">
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.SGSTAmt, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.SGSTPerc, htmlAttributes: new { @class = "control-label " })
             </div>
             <div class="col-md-12">
-                @Html.EditorFor(model => model.SGSTAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.SGSTAmt, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="col-md-4 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.CGSTAmt, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.CGSTAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.CGSTAmt, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.SGSTPerc, htmlAttributes: new { @id = "hdnSGSTPerc" })
+                @Html.EditorFor(model => model.SGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.SGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.IGSTAmt, htmlAttributes: new { @class = "control-label " })
+                @Html.LabelFor(model => model.CGSTPerc, htmlAttributes: new { @class = "control-label " })
             </div>
             <div class="col-md-12">
-                @Html.EditorFor(model => model.IGSTAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.IGSTAmt, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.CGSTPerc, htmlAttributes: new { @id = "hdnCGSTPerc" })
+                @Html.EditorFor(model => model.CGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.CGSTPerc, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.IGSTPerc, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                @Html.HiddenFor(model => model.IGSTPerc, htmlAttributes: new { @id = "hdnIGSTPerc" })
+                @Html.EditorFor(model => model.IGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.IGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
@@ -166,9 +169,12 @@
             var SGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val()!=""?$('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1]:0);
             var IGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
             var taxableAmount = rate * qty - discount;
-            $('#divModelPopQuotation #CGSTAmt').val(taxableAmount * CGST / 100);
-            $('#divModelPopQuotation #SGSTAmt').val(taxableAmount * SGST / 100);
-            $('#divModelPopQuotation #IGSTAmt').val(taxableAmount * IGST / 100);
+            $('#divModelPopQuotation #hdnCGSTPerc').val(CGST);
+            $('#divModelPopQuotation #hdnSGSTPerc').val(SGST);
+            $('#divModelPopQuotation #hdnIGSTPerc').val(IGST);
+            $('#divModelPopQuotation #CGSTPerc').val(taxableAmount * CGST / 100);
+            $('#divModelPopQuotation #SGSTPerc').val(taxableAmount * SGST / 100);
+            $('#divModelPopQuotation #IGSTPerc').val(taxableAmount * IGST / 100);
         });
     });
 </script>

@@ -45,6 +45,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(id));
                     quotationVM.IsUpdate = true;
+                    quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
                 }
                 else if(id==Guid.Empty&&estimateID==null)
                 {
@@ -52,6 +53,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.IsUpdate = false;
                     quotationVM.ID = Guid.Empty;
                     quotationVM.EstimateID = null;
+                    quotationVM.EstimateSelectList = new List<SelectListItem>();
                 }
                 else if(id == Guid.Empty && estimateID != null)
                 {
@@ -59,7 +61,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM = new QuotationViewModel();
                     quotationVM.IsUpdate = false;
                     quotationVM.ID = Guid.Empty;
+                    quotationVM.EstimateID = estimateID;
                     quotationVM.CustomerID = estimateVM.CustomerID;
+                    quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
                 }
                 quotationVM.Customer = new CustomerViewModel
                 {
@@ -150,44 +154,41 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (estimateID != Guid.Empty)
                 {
                     List<EstimateDetailViewModel> estimateVMList = Mapper.Map<List<EstimateDetail>,List<EstimateDetailViewModel>>(_estimateBusiness.GetEstimateDetailListByEstimateID(estimateID));
-                    foreach(EstimateDetailViewModel estimateDetailVM in estimateVMList)
-                    {
-                        QuotationDetailViewModel quotationDetailVM = new QuotationDetailViewModel()
-                        {
-                            ID = Guid.Empty,
-                            QuoteID = Guid.Empty,
-                            ProductID = estimateDetailVM.ProductID,
-                            ProductModelID = estimateDetailVM.ProductModelID,
-                            ProductSpec = estimateDetailVM.ProductSpec,
-                            Qty = estimateDetailVM.Qty,
-                            UnitCode = estimateDetailVM.UnitCode,
-                            Rate = estimateDetailVM.SellingRate,
-                            CGSTAmt = 0,
-                            IGSTAmt=0,
-                            SGSTAmt=0,
-                            Discount=0,
-                            Product = new ProductViewModel()
-                            {
-                                ID = (Guid)estimateDetailVM.ProductID,
-                                Code = estimateDetailVM.Product.Code,
-                                Name = estimateDetailVM.Product.Name,
-                            },
-                            ProductModel = new ProductModelViewModel()
-                            {
-                                ID = (Guid)estimateDetailVM.ProductModelID,
-                                Name = estimateDetailVM.ProductModel.Name
-                            },
-                            Unit = new UnitViewModel()
-                            {
-                                Description = estimateDetailVM.Unit.Description,
-                            },
-                            TaxType = new TaxTypeViewModel()
-                            {
-                                ValueText = "",
-                            }
-                        };
-                        quotationItemViewModelList.Add(quotationDetailVM);
-                    }
+                    quotationItemViewModelList=(from estimateDetailVM in estimateVMList
+                                                select new QuotationDetailViewModel {
+                                                    ID = Guid.Empty,
+                                                    QuoteID = Guid.Empty,
+                                                    ProductID = estimateDetailVM.ProductID,
+                                                    ProductModelID = estimateDetailVM.ProductModelID,
+                                                    ProductSpec = estimateDetailVM.ProductSpec,
+                                                    Qty = estimateDetailVM.Qty,
+                                                    UnitCode = estimateDetailVM.UnitCode,
+                                                    Rate = estimateDetailVM.SellingRate,
+                                                    CGSTPerc = 0,
+                                                    IGSTPerc = 0,
+                                                    SGSTPerc = 0,
+                                                    Discount = 0,
+                                                    SpecTag = estimateDetailVM.SpecTag,
+                                                    Product = new ProductViewModel()
+                                                    {
+                                                        ID = (Guid)estimateDetailVM.ProductID,
+                                                        Code = estimateDetailVM.Product.Code,
+                                                        Name = estimateDetailVM.Product.Name,
+                                                    },
+                                                    ProductModel = new ProductModelViewModel()
+                                                    {
+                                                        ID = (Guid)estimateDetailVM.ProductModelID,
+                                                        Name = estimateDetailVM.ProductModel.Name
+                                                    },
+                                                    Unit = new UnitViewModel()
+                                                    {
+                                                        Description = estimateDetailVM.Unit.Description,
+                                                    },
+                                                    TaxType = new TaxTypeViewModel()
+                                                    {
+                                                        ValueText = "",
+                                                    }
+                                                }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationItemViewModelList, Message = "Success" });
             }

@@ -208,6 +208,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateDetail.ProductModel.Name = (sdr["ModelName"].ToString() != "" ? sdr["ModelName"].ToString() : estimateDetail.ProductModel.Name);
                                         estimateDetail.Unit = new Unit();
                                         estimateDetail.Unit.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : estimateDetail.Unit.Description);
+                                        estimateDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : estimateDetail.SpecTag);
                                     }
                                     estimateDetailList.Add(estimateDetail);
                                 }

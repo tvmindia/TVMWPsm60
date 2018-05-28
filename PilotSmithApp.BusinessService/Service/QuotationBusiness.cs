@@ -35,7 +35,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (quotation.QuotationDetailList.Count > 0)
             {
-                quotation.DetailXML = _commonBusiness.GetXMLfromQuotationObject(quotation.QuotationDetailList, "ProductID");
+                quotation.DetailXML = _commonBusiness.GetXMLfromQuotationObject(quotation.QuotationDetailList, "ProductID, Qty, Rate, UnitCode");
             }
             return _quotationRepository.InsertUpdateQuotation(quotation);
         }
@@ -54,9 +54,9 @@ namespace PilotSmithApp.BusinessService.Service
         public QuotationDetail CalculateGST(QuotationDetail quotationDetail)
         {
             TaxType taxType = _taxTypeBusiness.GetTaxType((int)quotationDetail.TaxTypeCode);
-            quotationDetail.CGSTAmt = ((quotationDetail.Rate*quotationDetail.Qty-quotationDetail.Discount)*(taxType.CGSTPercentage))/100;
-            quotationDetail.SGSTAmt = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.SGSTPercentage)) / 100;
-            quotationDetail.IGSTAmt = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.IGSTPercentage)) / 100;
+            quotationDetail.CGSTPerc = ((quotationDetail.Rate*quotationDetail.Qty-quotationDetail.Discount)*(taxType.CGSTPercentage))/100;
+            quotationDetail.SGSTPerc = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.SGSTPercentage)) / 100;
+            quotationDetail.IGSTPerc = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.IGSTPercentage)) / 100;
             return quotationDetail;
         }
         public object UpdateQuotationEmailInfo(Quotation quotation)
