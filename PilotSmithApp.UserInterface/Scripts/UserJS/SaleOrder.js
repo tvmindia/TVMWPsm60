@@ -183,7 +183,7 @@ function EditSaleOrder(this_Obj) {
     $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID + "&quoteID=" + SaleOrder.QuoteID + "&enquiryID=" + SaleOrder.EnquiryID, function () {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit");
-        //BindSaleOrderDetailList(SaleOrder.ID);
+        BindSaleOrderDetailList(SaleOrder.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
         PaintImages(SaleOrder.ID);
@@ -211,8 +211,8 @@ function ResetSaleOrder() {
     });
 }
 function SaveSaleOrder() {
-    //var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data().toArray();
-    //$('#DetailJSON').val(JSON.stringify(saleOrderDetailList));
+    var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data().toArray();
+    $('#DetailJSON').val(JSON.stringify(saleOrderDetailList));
     $('#btnInsertUpdateSaleOrder').trigger('click');
 }
 function ApplyFilterThenSearch() {
@@ -398,7 +398,7 @@ function BindSaleOrderDetailList(id, IsEstimated) {
              {
                  "data": "CessAmt", render: function (data, type, row) {
                      debugger;
-                     return '<i style="font-size:10px">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px">Cess(₹) -</i>' + data
+                     return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + data
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -428,7 +428,13 @@ function BindSaleOrderDetailList(id, IsEstimated) {
              rowCallback: function (row, data, index) {
                  debugger;
                  var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
-                 var GSTAmt = parseFloat(data.CGSTAmt) + parseFloat(data.SGSTAmt) + parseFloat(data.IGSTAmt)
+                 var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
+                 var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
+                 var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
+                 var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+                 var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
+                 var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
+                 var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
                  var GrossTotalAmt = TaxableAmt + GSTAmt
 
                  var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
@@ -518,9 +524,11 @@ function AddSaleOrderDetailToList() {
             saleOrderDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
             TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
             saleOrderDetailList[_datatablerowindex].TaxType = TaxType;
-            saleOrderDetailList[_datatablerowindex].CGSTAmt = $('#divModelSaleOrderPopBody #CGSTAmt').val();
-            saleOrderDetailList[_datatablerowindex].SGSTAmt = $('#divModelSaleOrderPopBody #SGSTAmt').val();
-            saleOrderDetailList[_datatablerowindex].IGSTAmt = $('#divModelSaleOrderPopBody #IGSTAmt').val();
+            saleOrderDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
+            saleOrderDetailList[_datatablerowindex].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
+            saleOrderDetailList[_datatablerowindex].IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
+            saleOrderDetailList[_datatablerowindex].CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val();
+            saleOrderDetailList[_datatablerowindex].CessAmt = $('#divModelSaleOrderPopBody #CessAmt').val();
             _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
             $('#divModelPopSaleOrder').modal('hide');
             _datatablerowindex = -1;
@@ -579,9 +587,11 @@ function AddSaleOrderDetailToList() {
                 var TaxType = new Object();
                 TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
                 SaleOrderDetailVM.TaxType = TaxType;
-                SaleOrderDetailVM.CGSTAmt = $('#divModelSaleOrderPopBody #CGSTAmt').val();
-                SaleOrderDetailVM.SGSTAmt = $('#divModelSaleOrderPopBody #SGSTAmt').val();
-                SaleOrderDetailVM.IGSTAmt = $('#divModelSaleOrderPopBody #IGSTAmt').val();
+                SaleOrderDetailVM.CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
+                SaleOrderDetailVM.SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
+                SaleOrderDetailVM.IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
+                SaleOrderDetailVM.CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val();
+                SaleOrderDetailVM.CessAmt = $('#divModelSaleOrderPopBody #CessAmt').val();
                 _dataTable.SaleOrderDetailList.row.add(SaleOrderDetailVM).draw(true);
                 $('#divModelPopSaleOrder').modal('hide');
             }
@@ -598,6 +608,7 @@ function EditSaleOrderDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderDetail = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail", function () {
+        debugger;
         $('#lblModelPopSaleOrder').text('SaleOrder Detail')
         $('#FormSaleOrderDetail #IsUpdate').val('True');
         $('#FormSaleOrderDetail #ID').val(saleOrderDetail.ID);
@@ -625,11 +636,20 @@ function EditSaleOrderDetail(this_Obj) {
         $('#FormSaleOrderDetail #hdnUnitCode').val(saleOrderDetail.UnitCode);
         $('#FormSaleOrderDetail #Rate').val(saleOrderDetail.Rate);
         $('#FormSaleOrderDetail #Discount').val(saleOrderDetail.Discount);
-        $('#FormSaleOrderDetail #TaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
+        $('#FormSaleOrderDetail #TaxTypeCode').val(saleOrderDetail.TaxType.Code);
         $('#FormSaleOrderDetail #hdnTaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
-        $('#FormSaleOrderDetail #CGSTAmt').val(saleOrderDetail.CGSTAmt);
-        $('#FormSaleOrderDetail #SGSTAmt').val(saleOrderDetail.SGSTAmt);
-        $('#FormSaleOrderDetail #IGSTAmt').val(saleOrderDetail.IGSTAmt);
+        $('#FormSaleOrderDetail #hdnCGSTPerc').val(saleOrderDetail.CGSTPerc);
+        $('#FormSaleOrderDetail #hdnSGSTPerc').val(saleOrderDetail.SGSTPerc);
+        $('#FormSaleOrderDetail #hdnIGSTPerc').val(saleOrderDetail.IGSTPerc);
+        var TaxableAmt=((parseFloat(saleOrderDetail.Rate) * parseInt(saleOrderDetail.Qty)) - parseFloat(saleOrderDetail.Discount))
+        var CGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.CGSTPerc)) / 100;
+        var SGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.SGSTPerc)) / 100;
+        var IGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.IGSTPerc)) / 100;
+        $('#FormSaleOrderDetail #CGSTPerc').val(CGSTAmt);
+        $('#FormSaleOrderDetail #SGSTPerc').val(SGSTAmt);
+        $('#FormSaleOrderDetail #IGSTPerc').val(IGSTAmt);
+        $('#FormSaleOrderDetail #CessPerc').val(saleOrderDetail.CessPerc);
+        $('#FormSaleOrderDetail #CessAmt').val(saleOrderDetail.CessAmt);
         $('#divModelPopSaleOrder').modal('show');
     });
 }

@@ -177,7 +177,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetSaleOrderForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        if (id==null)
+                        if (id == null)
                         {
                             cmd.Parameters.AddWithValue("@ID", DBNull.Value);
                         }
@@ -208,7 +208,7 @@ namespace PilotSmithApp.RepositoryService.Service
             {
                 throw ex;
             }
-            return productionOrderList;            
+            return productionOrderList;
         }
         #endregion GetSaleOrderForSelectList
         #region GetSaleOrder
@@ -240,28 +240,28 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.SaleOrderDate = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()) : saleOrder.SaleOrderDate);
                                     saleOrder.SaleOrderDateFormatted = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()).ToString(_settings.DateFormat) : saleOrder.SaleOrderDateFormatted);
                                     saleOrder.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleOrder.QuoteID);
-                                    saleOrder.EnquiryID= (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : saleOrder.EnquiryID);                                  
+                                    saleOrder.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : saleOrder.EnquiryID);
                                     saleOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleOrder.CustomerID);
                                     saleOrder.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : saleOrder.MailingAddress);
                                     saleOrder.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : saleOrder.ShippingAddress);
                                     saleOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleOrder.DocumentStatusCode);
                                     saleOrder.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : saleOrder.ExpectedDelvDate);
-                                    saleOrder.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString()!="" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : saleOrder.ExpectedDelvDateFormatted);
+                                    saleOrder.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : saleOrder.ExpectedDelvDateFormatted);
                                     saleOrder.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : saleOrder.ReferredByCode);
                                     saleOrder.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleOrder.PreparedBy);
                                     saleOrder.PurchaseOrdNo = (sdr["PurchaseOrdNo"].ToString() != "" ? sdr["PurchaseOrdNo"].ToString() : saleOrder.PurchaseOrdNo);
-                                    saleOrder.PurchaseOrdDate = (sdr["PurchaseOrdDate"].ToString() != "" ? DateTime.Parse(sdr["PurchaseOrdDate"].ToString() ): saleOrder.PurchaseOrdDate);
+                                    saleOrder.PurchaseOrdDate = (sdr["PurchaseOrdDate"].ToString() != "" ? DateTime.Parse(sdr["PurchaseOrdDate"].ToString()) : saleOrder.PurchaseOrdDate);
                                     saleOrder.PurchaseOrdDateFormatted = (sdr["PurchaseOrdDate"].ToString() != "" ? DateTime.Parse(sdr["PurchaseOrdDate"].ToString()).ToString(_settings.DateFormat) : saleOrder.PurchaseOrdDateFormatted);
                                     saleOrder.BankCode = (sdr["BankCode"].ToString() != "" ? int.Parse(sdr["BankCode"].ToString()) : saleOrder.BankCode);
-                                    saleOrder.CarrierCode= (sdr["CarrierCode"].ToString() != "" ? int.Parse(sdr["CarrierCode"].ToString()) : saleOrder.CarrierCode);
+                                    saleOrder.CarrierCode = (sdr["CarrierCode"].ToString() != "" ? int.Parse(sdr["CarrierCode"].ToString()) : saleOrder.CarrierCode);
                                     saleOrder.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : saleOrder.EmailSentYN);
-                                    saleOrder.LatestApprovalID= (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : saleOrder.LatestApprovalID);
-                                    saleOrder.LatestApprovalStatus= (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : saleOrder.LatestApprovalStatus);
-                                    saleOrder.IsFinalApproved= (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : saleOrder.IsFinalApproved);
-                                    saleOrder.EmailSentTo= (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : saleOrder.EmailSentTo);
-                                    saleOrder.TermReferenceNo= (sdr["TermReferenceNo"].ToString() != "" ? sdr["TermReferenceNo"].ToString() : saleOrder.TermReferenceNo);
-                                    saleOrder.PrintRemark= (sdr["PrintRemark"].ToString() != "" ? sdr["PrintRemark"].ToString() : saleOrder.PrintRemark);
-                                    saleOrder.GeneralNotes= (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleOrder.GeneralNotes);
+                                    saleOrder.LatestApprovalID = (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : saleOrder.LatestApprovalID);
+                                    saleOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : saleOrder.LatestApprovalStatus);
+                                    saleOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : saleOrder.IsFinalApproved);
+                                    saleOrder.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : saleOrder.EmailSentTo);
+                                    saleOrder.TermReferenceNo = (sdr["TermReferenceNo"].ToString() != "" ? sdr["TermReferenceNo"].ToString() : saleOrder.TermReferenceNo);
+                                    saleOrder.PrintRemark = (sdr["PrintRemark"].ToString() != "" ? sdr["PrintRemark"].ToString() : saleOrder.PrintRemark);
+                                    saleOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleOrder.GeneralNotes);
                                     saleOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleOrder.BranchCode);
                                     saleOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleOrder.DocumentOwnerID);
                                     saleOrder.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleOrder.Discount);
@@ -320,9 +320,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : saleOrderDetail.ProductModelID);
                                         saleOrderDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : saleOrderDetail.UnitCode);
                                         saleOrderDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : saleOrderDetail.Rate);
-                                        saleOrderDetail.Discount= (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleOrderDetail.Discount);
-                                        saleOrderDetail.TaxTypeCode= (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderDetail.TaxTypeCode);
-                                        saleOrderDetail.CGSTPerc= (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : saleOrderDetail.CGSTPerc);
+                                        saleOrderDetail.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleOrderDetail.Discount);
+                                        saleOrderDetail.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderDetail.TaxTypeCode);
+                                        saleOrderDetail.CGSTPerc = (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : saleOrderDetail.CGSTPerc);
                                         saleOrderDetail.SGSTPerc = (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : saleOrderDetail.SGSTPerc);
                                         saleOrderDetail.IGSTPerc = (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : saleOrderDetail.IGSTPerc);
                                         saleOrderDetail.CessPerc = (sdr["CessPerc"].ToString() != "" ? decimal.Parse(sdr["CessPerc"].ToString()) : saleOrderDetail.CessPerc);
@@ -335,6 +335,11 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderDetail.Unit = new Unit();
                                         saleOrderDetail.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : saleOrderDetail.Unit.Description);
                                         saleOrderDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : saleOrderDetail.SpecTag);
+                                        saleOrderDetail.TaxType = new TaxType()
+                                        {
+                                            Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderDetail.TaxType.Code),
+                                            ValueText= (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleOrderDetail.TaxType.ValueText),
+                                        };
                                     }
                                     saleOrderDetailList.Add(saleOrderDetail);
                                 }
