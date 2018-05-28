@@ -70,9 +70,10 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
         public int? TaxTypeCode { get; set; }
-        public decimal? CGSTAmt { get; set; }
-        public decimal? SGSTAmt { get; set; }
-        public decimal? IGSTAmt { get; set; }
+        public decimal? CGSTPerc { get; set; }
+        public decimal? SGSTPerc { get; set; }
+        public decimal? IGSTPerc { get; set; }
+        public Guid SpecTag { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set; }

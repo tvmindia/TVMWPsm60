@@ -219,52 +219,57 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion GetSaleOrderDetailListBySaleOrderID
-        #region Get SaleOrder DetailList By SaleOrderID with Estimate
+        #region Get SaleOrder DetailList By SaleOrderID with Quotation
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
-        public string GetSaleOrderDetailListBySaleOrderIDWithEstimate(Guid estimateID)
+        public string GetSaleOrderDetailListByQuotationIDFromQuotation(Guid quoteID)
         {
             try
             {
                 List<SaleOrderDetailViewModel> saleOrderItemViewModelList = new List<SaleOrderDetailViewModel>();
-                if (estimateID != Guid.Empty)
+                if (quoteID != Guid.Empty)
                 {
-                    List<EstimateDetailViewModel> estimateVMList = null;// Mapper.Map<List<EstimateDetail>, List<EstimateDetailViewModel>>(_estimateBusiness.GetEstimateDetailListByEstimateID(estimateID));
-                    foreach (EstimateDetailViewModel estimateDetailVM in estimateVMList)
-                    {
-                        SaleOrderDetailViewModel saleOrderDetailVM = new SaleOrderDetailViewModel()
-                        {
-                            ID = Guid.Empty,
-                            SaleOrderID = Guid.Empty,
-                            ProductID = estimateDetailVM.ProductID,
-                            ProductModelID = estimateDetailVM.ProductModelID,
-                            ProductSpec = estimateDetailVM.ProductSpec,
-                            Qty = estimateDetailVM.Qty,
-                            UnitCode = estimateDetailVM.UnitCode,
-                            Rate = estimateDetailVM.SellingRate,
-                            Discount = 0,
-                            Product = new ProductViewModel()
-                            {
-                                ID = (Guid)estimateDetailVM.ProductID,
-                                Code = estimateDetailVM.Product.Code,
-                                Name = estimateDetailVM.Product.Name,
-                            },
-                            ProductModel = new ProductModelViewModel()
-                            {
-                                ID = (Guid)estimateDetailVM.ProductModelID,
-                                Name = estimateDetailVM.ProductModel.Name
-                            },
-                            Unit = new UnitViewModel()
-                            {
-                                Description = estimateDetailVM.Unit.Description,
-                            },
-                            TaxType = new TaxTypeViewModel()
-                            {
-                                ValueText = "",
-                            }
-                        };
-                        saleOrderItemViewModelList.Add(saleOrderDetailVM);
-                    }
+                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID));
+                    saleOrderItemViewModelList = (from quotationDetailVM in quotationDetailVMList
+                                                  select new SaleOrderDetailViewModel
+                                                  {
+                                                      ID = Guid.Empty,
+                                                      SaleOrderID = Guid.Empty,
+                                                      ProductID = quotationDetailVM.ProductID,
+                                                      ProductModelID = quotationDetailVM.ProductModelID,
+                                                      ProductSpec = quotationDetailVM.ProductSpec,
+                                                      Qty = quotationDetailVM.Qty,
+                                                      UnitCode = quotationDetailVM.UnitCode,
+                                                      Rate = quotationDetailVM.Rate,
+                                                      SpecTag = quotationDetailVM.SpecTag,
+                                                      Discount = quotationDetailVM.Discount,
+                                                      TaxTypeCode = quotationDetailVM.TaxTypeCode,
+                                                      CGSTPerc = quotationDetailVM.CGSTPerc,
+                                                      SGSTPerc = quotationDetailVM.SGSTPerc,
+                                                      IGSTPerc = quotationDetailVM.IGSTPerc,
+                                                      CessAmt = 0,
+                                                      CessPerc = 0,
+                                                      Product = new ProductViewModel()
+                                                      {
+                                                          ID = (Guid)quotationDetailVM.ProductID,
+                                                          Code = quotationDetailVM.Product.Code,
+                                                          Name = quotationDetailVM.Product.Name,
+                                                      },
+                                                      ProductModel = new ProductModelViewModel()
+                                                      {
+                                                          ID = (Guid)quotationDetailVM.ProductModelID,
+                                                          Name = quotationDetailVM.ProductModel.Name
+                                                      },
+                                                      Unit = new UnitViewModel()
+                                                      {
+                                                          Description = quotationDetailVM.Unit.Description
+                                                      },
+                                                      TaxType = new TaxTypeViewModel()
+                                                      {
+                                                          //Code=(int)quotationDetailVM.TaxTypeCode,
+                                                          Description=quotationDetailVM.TaxType.Description
+                                                      },
+                                                 }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderItemViewModelList, Message = "Success" });
             }
@@ -274,7 +279,67 @@ namespace PilotSmithApp.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
             }
         }
-        #endregion Get SaleOrder DetailList By SaleOrderID with Estimate
+        #endregion Get SaleOrder DetailList By SaleOrderID with Quotation
+        #region Get SaleOrder DetailList By EnquiryID From Enquiry
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public string GetSaleOrderDetailListByEnquiryIDFromEnquiry(Guid enquiryID)
+        {
+            try
+            {
+                List<SaleOrderDetailViewModel> saleOrderItemViewModelList = new List<SaleOrderDetailViewModel>();
+                if (enquiryID != Guid.Empty)
+                {
+                    List<EnquiryDetailViewModel> enquiryDetailVMList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));
+                    saleOrderItemViewModelList = (from enquiryDetailVM in enquiryDetailVMList
+                                                 select new SaleOrderDetailViewModel
+                                                 {
+                                                     ID = Guid.Empty,
+                                                     SaleOrderID = Guid.Empty,
+                                                     ProductID = enquiryDetailVM.ProductID,
+                                                     ProductModelID = enquiryDetailVM.ProductModelID,
+                                                     ProductSpec = enquiryDetailVM.ProductSpec,
+                                                     Qty = enquiryDetailVM.Qty,
+                                                     UnitCode = enquiryDetailVM.UnitCode,
+                                                     Rate = enquiryDetailVM.Rate,
+                                                     SpecTag = enquiryDetailVM.SpecTag,
+                                                     TaxTypeCode=null,
+                                                     SGSTPerc=0,
+                                                     CGSTPerc=0,
+                                                     IGSTPerc=0,
+                                                     CessAmt=0,
+                                                     CessPerc=0,
+                                                     Discount=0,
+                                                     Product = new ProductViewModel()
+                                                     {
+                                                         ID = (Guid)enquiryDetailVM.ProductID,
+                                                         Code = enquiryDetailVM.Product.Code,
+                                                         Name = enquiryDetailVM.Product.Name,
+                                                     },
+                                                     ProductModel = new ProductModelViewModel()
+                                                     {
+                                                         ID = (Guid)enquiryDetailVM.ProductModelID,
+                                                         Name = enquiryDetailVM.ProductModel.Name
+                                                     },
+                                                     Unit = new UnitViewModel()
+                                                     {
+                                                         Description = enquiryDetailVM.Unit.Description
+                                                     },
+                                                     TaxType=new TaxTypeViewModel()
+                                                     {
+                                                     },
+                                                 }).ToList();
+
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleOrder DetailList By EnquiryID From Enquiry
         #region Delete SaleOrder
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "D")]

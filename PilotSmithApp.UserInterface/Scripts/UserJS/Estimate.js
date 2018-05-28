@@ -179,6 +179,7 @@ function EditEstimate(this_Obj) {
 }
 
 function ResetEstimate() {
+    debugger;
     //this will return form body(html)
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID="+$('#hdnEnquiryID').val(), function () {
         if ($('#ID').val() != _emptyGuid && $('#ID').val() != null)
@@ -189,10 +190,17 @@ function ResetEstimate() {
                 openNav();
             }, 100);
         }
+        else {
+            debugger;
+            $('#hdnEnquiryID').val('');
+            $('#hdnCustomerID').val('');
+            $("#EstimateForm #CustomerID").prop('disabled', false);
+        }
         BindEstimateDetailList($('#ID').val(), false);
         clearUploadControl();
         PaintImages($('#EstimateForm #ID').val());
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
+        
     });
 }
 function SaveEstimate() {

@@ -204,6 +204,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationDetail.ID);
                                         quotationDetail.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : quotationDetail.QuoteID);
                                         quotationDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : quotationDetail.ProductSpec);
+                                        quotationDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : quotationDetail.SpecTag);
                                         quotationDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
@@ -225,9 +226,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationDetail.TaxTypeCode= (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationDetail.TaxTypeCode);
                                         quotationDetail.TaxType = new TaxType();
                                         quotationDetail.TaxType.ValueText= (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : quotationDetail.TaxType.ValueText);
-                                        quotationDetail.CGSTAmt = (sdr["CGSTAmt"].ToString() != "" ? decimal.Parse(sdr["CGSTAmt"].ToString()) : quotationDetail.CGSTAmt);
-                                        quotationDetail.SGSTAmt = (sdr["SGSTAmt"].ToString() != "" ? decimal.Parse(sdr["SGSTAmt"].ToString()) : quotationDetail.SGSTAmt);
-                                        quotationDetail.IGSTAmt = (sdr["IGSTAmt"].ToString() != "" ? decimal.Parse(sdr["IGSTAmt"].ToString()) : quotationDetail.IGSTAmt);
+                                        quotationDetail.CGSTPerc = (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : quotationDetail.CGSTPerc);
+                                        quotationDetail.SGSTPerc = (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : quotationDetail.SGSTPerc);
+                                        quotationDetail.IGSTPerc = (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : quotationDetail.IGSTPerc);
                                     }
                                     quotationDetailList.Add(quotationDetail);
                                 }

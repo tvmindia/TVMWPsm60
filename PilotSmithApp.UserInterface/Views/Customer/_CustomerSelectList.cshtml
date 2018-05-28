@@ -28,11 +28,16 @@ else
 
 <script>
     $(document).ready(function () {
+        debugger;
         $('#CustomerID').val($('#hdnCustomerID').val());
         $('#CustomerID').select2({});
         $('.select2').addClass('form-control newinput');
         $('#CustomerID').change(function () {
-            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + this.value)
+            debugger;
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + this.value, function () {
+                $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+            });
         });
     });
 </script>
