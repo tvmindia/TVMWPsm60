@@ -346,20 +346,21 @@
                     <tbody>
                         <tr>
                             <td style="text-align: right">
-                                <label class="control-label" for="lblTaxTotal">GST Amount</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblTaxTotal">00.00</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right">
                                 <label class="control-label" for="lblItemTotal">Total Taxable Amount</label>
                             </td>
                             <td class="ApplyCurrency" style="text-align: right">
                                 <label class="control-label " for="" id="lblItemTotal">00.00</label>
                             </td>
                         </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label" for="lblTaxTotal">GST Amount</label>
+                            </td>
+                            <td class="ApplyCurrency" style="text-align: right">
+                                <label class="control-label " for="" id="lblTaxTotal">00.00</label>
+                            </td>
+                        </tr>
+                        
                         <tr>
                             <td style="text-align: right">
                                 <label class="control-label" for="lblCessAmount">Cess Amount</label>
@@ -597,7 +598,7 @@
                 OnServerCallBegin();
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&quoteID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
-                    //BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true);
+                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false,true);
 
                     OnServerCallComplete();
                 });
@@ -612,8 +613,7 @@
                 OnServerCallBegin();
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
-                    //BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true);
-
+                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true, false)
                     OnServerCallComplete();
                 });
 
@@ -622,6 +622,7 @@
         catch (e) {
             console.log(e.message);
         }
+
         try {
             $('[name="DocumentType"]').change(function () {
                 if (this.value == "Quotation") {
