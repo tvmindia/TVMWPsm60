@@ -731,6 +731,7 @@ function DeleteSaleOrderDetail(ID) {
             notyAlert('success', _result.Message);
             var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
             saleOrderDetailList.splice(_datatablerowindex, 1);
+            ClearCalculatedFields();
             _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
         }
         if (_status == "ERROR") {
