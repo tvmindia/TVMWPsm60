@@ -576,6 +576,7 @@ function AddQuotationDetailToList() {
                             $('#divModelPopQuotation').modal('hide');
                         }
                         else if (checkpoint == 0) {
+                            ClearCalculatedFields();
                             var QuotationDetailVM = new Object();
                             QuotationDetailVM.ID = _emptyGuid;
                             QuotationDetailVM.ProductID = ($("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID").val() : _emptyGuid);
@@ -692,6 +693,7 @@ function DeleteQuotationDetail(ID) {
             notyAlert('success', _result.Message);
             var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
             quotationDetailList.splice(_datatablerowindex, 1);
+            ClearCalculatedFields();
             _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
         }
         if (_status == "ERROR") {
