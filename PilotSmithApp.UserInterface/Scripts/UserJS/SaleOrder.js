@@ -182,7 +182,12 @@ function EditSaleOrder(this_Obj) {
     //this will return form body(html)
     $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID + "&quoteID=" + SaleOrder.QuoteID + "&enquiryID=" + SaleOrder.EnquiryID, function () {
         //$('#CustomerID').trigger('change');
-        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit");
+        if ($('#IsDocLocked').val() == "True") {
+            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", Estimate.ID);
+        }
+        else {
+            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+        }
         BindSaleOrderDetailList(SaleOrder.ID,false,false);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
@@ -604,6 +609,7 @@ function AddSaleOrderDetailToList() {
                         $('#divModelPopSaleOrder').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        ClearCalculatedFields();
                         var SaleOrderDetailVM = new Object();
                         SaleOrderDetailVM.ID = _emptyGuid;
                         SaleOrderDetailVM.ProductID = ($("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID").val() : _emptyGuid);
