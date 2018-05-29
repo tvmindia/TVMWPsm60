@@ -21,12 +21,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICustomerBusiness _customerBusiness;
         IBranchBusiness _branchBusiness;
         IEstimateBusiness _estimateBusiness;
-        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEstimateBusiness estimateBusiness)
+        ICommonBusiness _commonBusiness;
+        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEstimateBusiness estimateBusiness, ICommonBusiness commonBusiness)
         {
             _quotationBusiness = quotationBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
             _estimateBusiness = estimateBusiness;
+            _commonBusiness = commonBusiness;
         }
         // GET: Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
@@ -45,6 +47,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(id));
                     quotationVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    quotationVM.IsDocLocked = quotationVM.DocumentOwners.Contains(appUA.UserName);
                     quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
                 }
                 else if(id==Guid.Empty&&estimateID==null)
@@ -54,6 +58,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.ID = Guid.Empty;
                     quotationVM.EstimateID = null;
                     quotationVM.EstimateSelectList = new List<SelectListItem>();
+                    quotationVM.DocumentStatus = new DocumentStatusViewModel();
+                    quotationVM.DocumentStatus.Description = "-";
+                    quotationVM.Branch = new BranchViewModel();
+                    quotationVM.Branch.Description = "-";
                 }
                 else if(id == Guid.Empty && estimateID != null)
                 {
@@ -64,6 +72,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.EstimateID = estimateID;
                     quotationVM.CustomerID = estimateVM.CustomerID;
                     quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
+                    quotationVM.DocumentStatus = new DocumentStatusViewModel();
+                    quotationVM.DocumentStatus.Description = "-";
+                    quotationVM.Branch = new BranchViewModel();
+                    quotationVM.Branch.Description = "-";
                 }
                 quotationVM.Customer = new CustomerViewModel
                 {
@@ -88,6 +100,15 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddQuotationDetail", quotationDetailVM);
         }
         #endregion Quotation Detail Add
+        #region QuotationOtherCharge Detail 
+        public ActionResult QuotationOtherChargeDetail()
+        {
+            QuotationOtherChargeViewModel quotationOtherChargeVM = new QuotationOtherChargeViewModel();
+            quotationOtherChargeVM.IsUpdate = false;
+            return PartialView("_QuotationOtherCharge", quotationOtherChargeVM);
+        }
+        #endregion QuotationOtherCharge Detail Add
+
         #region Get Quotation DetailList By QuotationID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
@@ -143,7 +164,48 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get Quotation DetailList By QuotationID
-        #region Get Quotation DetailList By QuotationID with Estimate
+
+        #region Get Quotation OtherChargeList By QuotationID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public string GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        {
+            try
+            {
+                List<QuotationOtherChargeViewModel> quotationOtherChargeViewModelList = new List<QuotationOtherChargeViewModel>();
+                if (quotationID == Guid.Empty)
+                {
+                    QuotationOtherChargeViewModel quotationOtherChargeVM = new QuotationOtherChargeViewModel()
+                    {
+                        ID = Guid.Empty,
+                        QuoteID = Guid.Empty,
+                        ChargeAmount=0,
+                        OtherCharge=new OtherChargeViewModel()
+                        {
+                            Description= "",
+                        },
+                        TaxType = new TaxTypeViewModel()
+                        {
+                            ValueText = "",
+                        }
+                    };
+                    quotationOtherChargeViewModelList.Add(quotationOtherChargeVM);
+                }
+                else
+                {
+                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID));
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get Quotation OtherChargeList By QuotationID
+
+            #region Get Quotation DetailList By QuotationID with Estimate
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuotationDetailListByQuotationIDWithEstimate(Guid estimateID)
@@ -430,7 +492,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -473,10 +535,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetQuotation();";
 
-                    toolboxVM.deletebtn.Visible = true;
-                    toolboxVM.deletebtn.Text = "Delete";
-                    toolboxVM.deletebtn.Title = "Delete";
-                    toolboxVM.deletebtn.Event = "DeleteQuotation();";
+                    if (_commonBusiness.CheckDocumentIsDeletable("QUO", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteQuotation();";
+                    }
 
                     toolboxVM.EmailBtn.Visible = true;
                     toolboxVM.EmailBtn.Text = "Email";
@@ -487,6 +561,54 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    break;
+                case "LockDocument":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Disable = true;
+                    toolboxVM.addbtn.DisableReason = "Document Locked";
+                    toolboxVM.addbtn.Event = "";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Disable = true;
+                    toolboxVM.EmailBtn.DisableReason = "Document Locked";
+                    toolboxVM.EmailBtn.Event = "";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
                     break;
                 case "Add":
 

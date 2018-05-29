@@ -128,16 +128,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region OtherChargeSelectList
-        [AuthSecurityFilter(ProjectObject = "OtherCharge", Mode = "R")]
-        public ActionResult OtherChargeSelectList(string required)
-        {
-            ViewBag.IsRequired = required;
-            OtherChargeViewModel otherChargeVM = new OtherChargeViewModel();
-            otherChargeVM.OtherChargeSelectList = _otherChargeBusiness.GetOtherChargeForSelectList();
-            return PartialView("_OtherChargeSelectList", otherChargeVM);
-        }
-        #endregion 
+        //#region OtherChargeSelectList
+        //[AuthSecurityFilter(ProjectObject = "OtherCharge", Mode = "R")]
+        //public ActionResult OtherChargeSelectList(string required)
+        //{
+        //    ViewBag.IsRequired = required;
+        //    OtherChargeViewModel otherChargeVM = new OtherChargeViewModel();
+        //    otherChargeVM.OtherChargeSelectList = _otherChargeBusiness.GetOtherChargeForSelectList();
+        //    return PartialView("_OtherChargeSelectList", otherChargeVM);
+        //}
+        //#endregion 
 
         #region OtherChargeSelectList
         public ActionResult OtherChargeSelectList(string required, bool? disabled)

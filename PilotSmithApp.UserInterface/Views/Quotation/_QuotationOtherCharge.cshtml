@@ -1,0 +1,67 @@
+﻿@model PilotSmithApp.UserInterface.Models.QuotationOtherChargeViewModel
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormOtherExpenseDetail" }))
+{
+    @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.OtherChargeCode, htmlAttributes: new { @class = "control-label lblrequired" })
+            </div>
+            <div class="col-md-12">
+                @Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "" })
+                @Html.ValidationMessageFor(model => model.OtherChargeCode, "", new { @class = "text-danger" })
+                @Html.Hidden("hdnCGSTPerc", 0)
+                @Html.Hidden("hdnSGSTPerc", 0)
+                @Html.Hidden("hdnIGSTPerc", 0)
+            </div>
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ChargeAmount, htmlAttributes: new { @class = "control-label lblrequired" })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.ChargeAmount, new { htmlAttributes = new { @class = "form-control ApplyCurrency  newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.ChargeAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                <div class="divTaxTypeSelectList">
+                    @Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })
+                </div>
+                @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-default" id="btnAddOtherExpenseDetail" onclick="AddOtherExpenseDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
+        $('#divModelPopOtherExpenses #TaxTypeCode').select2({
+            dropdownParent: $("#divModelPopOtherExpenses")
+        });
+        $('.select2').addClass('form-control newinput');
+        $('#divModelPopOtherExpenses .CalculateGST').change(function () {
+            debugger;
+            var ChargeAmount = parseFloat($('#divModelPopOtherExpenses #ChargeAmount').val() != "" ? $('#divModelPopOtherExpenses #ChargeAmount').val() : 0);
+            if (($('#divModelPopOtherExpenses #TaxTypeCode').val() != null) || ($('#divModelPopOtherExpenses #TaxTypeCode').val() != "")) {
+                var CGST = parseFloat($('#divModelPopOtherExpenses #TaxTypeCode').val() != "" ? $('#divModelPopOtherExpenses #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                var SGST = parseFloat($('#divModelPopOtherExpenses #TaxTypeCode').val() != "" ? $('#divModelPopOtherExpenses #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                var IGST = parseFloat($('#divModelPopOtherExpenses #TaxTypeCode').val() != "" ? $('#divModelPopOtherExpenses #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                $('#divModelPopOtherExpenses #hdnCGSTPerc').val(CGST);
+                $('#divModelPopOtherExpenses #hdnSGSTPerc').val(SGST);
+                $('#divModelPopOtherExpenses #hdnIGSTPerc').val(IGST);
+            }
+            //$('#divModelPopOtherExpenses #CGSTPerc').val(ChargeAmount * CGST / 100);
+            //$('#divModelPopOtherExpenses #SGSTPerc').val(ChargeAmount * SGST / 100);
+            //$('#divModelPopOtherExpenses #IGSTPerc').val(ChargeAmount * IGST / 100);
+        });
+    });
+</script>

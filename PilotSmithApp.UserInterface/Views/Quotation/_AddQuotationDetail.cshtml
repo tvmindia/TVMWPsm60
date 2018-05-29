@@ -16,6 +16,8 @@
                 @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
             </div>
         </div>
+        <!-- This hidden field will keep the information whether the field is required or not -->
+        @Html.Hidden("hdnProductRequired", "required")
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
@@ -28,6 +30,8 @@
                 @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
             </div>
         </div>
+        <!-- This hidden field will keep the information whether the field is required or not -->
+        @Html.Hidden("hdnProductModelRequired", "required")
         <div id="divProductBasicInfo">
             @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
         </div>
@@ -99,7 +103,7 @@
             </div>
             <div class="col-md-12">
                 @Html.HiddenFor(model => model.SGSTPerc, htmlAttributes: new { @id = "hdnSGSTPerc" })
-                @Html.EditorFor(model => model.SGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.EditorFor(model => model.SGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
                 @Html.ValidationMessageFor(model => model.SGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -109,7 +113,7 @@
             </div>
             <div class="col-md-12">
                 @Html.HiddenFor(model => model.CGSTPerc, htmlAttributes: new { @id = "hdnCGSTPerc" })
-                @Html.EditorFor(model => model.CGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.EditorFor(model => model.CGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
                 @Html.ValidationMessageFor(model => model.CGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -119,7 +123,7 @@
             </div>
             <div class="col-md-12">
                 @Html.HiddenFor(model => model.IGSTPerc, htmlAttributes: new { @id = "hdnIGSTPerc" })
-                @Html.EditorFor(model => model.IGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                @Html.EditorFor(model => model.IGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
                 @Html.ValidationMessageFor(model => model.IGSTPerc, "", new { @class = "text-danger" })
             </div>
         </div>
