@@ -157,6 +157,7 @@ function AddSaleOrder() {
     //this will return form body(html)
     //OnServerCallBegin();
     $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&saleOrderID=", function () {
+        $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
         BindSaleOrderDetailList(_emptyGuid,false,false);
         //BindSaleOrderOtherChargesDetailList(_emptyGuid)
@@ -181,15 +182,19 @@ function EditSaleOrder(this_Obj) {
     var SaleOrder = _dataTable.SaleOrderList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
     $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID + "&quoteID=" + SaleOrder.QuoteID + "&enquiryID=" + SaleOrder.EnquiryID, function () {
+        $('#lblSaleOrderInfo').text(SaleOrder.SaleOrderNo);
         //$('#CustomerID').trigger('change');
         if ($('#IsDocLocked').val() == "True") {
-            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", Estimate.ID);
+            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
         }
         else {
             ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
         }
         BindSaleOrderDetailList(SaleOrder.ID,false,false);
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
+            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+        });
         clearUploadControl();
         PaintImages(SaleOrder.ID);
         OnServerCallComplete();
@@ -212,7 +217,10 @@ function ResetSaleOrder() {
         BindSaleOrderDetailList($('#ID').val(), false,false);
         clearUploadControl();
         PaintImages($('#SaleOrderForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
+        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
+            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+        });
     });
 }
 function SaveSaleOrder() {
@@ -241,6 +249,7 @@ function SaveSuccessSaleOrder(data, status) {
                     BindSaleOrderDetailList(_result.ID,false,false);
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#lblSaleOrderInfo').text(_result.SaleOrderNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit");
