@@ -335,11 +335,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderDetail.Unit = new Unit();
                                         saleOrderDetail.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : saleOrderDetail.Unit.Description);
                                         saleOrderDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : saleOrderDetail.SpecTag);
-                                        saleOrderDetail.TaxType = new TaxType()
-                                        {
-                                            Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderDetail.TaxType.Code),
-                                            ValueText= (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleOrderDetail.TaxType.ValueText),
-                                        };
+                                        saleOrderDetail.TaxType = new TaxType();
+                                        saleOrderDetail.TaxType.Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderDetail.TaxType.Code);
+                                        saleOrderDetail.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleOrderDetail.TaxType.ValueText);
                                     }
                                     saleOrderDetailList.Add(saleOrderDetail);
                                 }

@@ -112,9 +112,11 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Product Specification")]
         public string ProductSpec { get; set; }
         [Display(Name = "Quantity")]
+        [Required(ErrorMessage = "Quantity is missing")]
         public decimal? Qty { get; set; }
         [Display(Name = "Unit")]
         public int? UnitCode { get; set; }
+        [Required(ErrorMessage ="Rate is missing")]
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
         [Display(Name = "Tax Type")]
