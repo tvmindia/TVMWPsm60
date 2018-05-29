@@ -144,6 +144,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : quotation.MailingAddress);
                                     quotation.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : quotation.ShippingAddress);
                                     quotation.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : quotation.DocumentStatusCode);
+                                    quotation.DocumentStatus = new DocumentStatus();
+                                    quotation.DocumentStatus.Description = (sdr["DocumentStatus"].ToString() != "" ? sdr["DocumentStatus"].ToString() : quotation.DocumentStatus.Description);
                                     quotation.ValidUpToDate = (sdr["ValidUpToDate"].ToString() != "" ? DateTime.Parse(sdr["ValidUpToDate"].ToString()) : quotation.ValidUpToDate);
                                     quotation.ValidUpToDateFormatted = (sdr["ValidUpToDate"].ToString() != "" ? DateTime.Parse(sdr["ValidUpToDate"].ToString()).ToString("dd-MMM-yyyy") : quotation.ValidUpToDateFormatted);
                                     quotation.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : quotation.ReferredByCode);
@@ -160,6 +162,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : quotation.Discount);
                                     quotation.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotation.GeneralNotes);
                                     quotation.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : quotation.DocumentOwnerID);
+                                    quotation.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : quotation.DocumentOwners);
+                                    quotation.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : quotation.DocumentOwner);
+                                    quotation.Branch = new Branch();
+                                    quotation.Branch.Description= (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : quotation.Branch.Description);
                                     quotation.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.BranchCode);
                                 }
                         }
@@ -598,5 +604,58 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetQuotationForSelectListOnDemand
 
-    }
+        #region GetQuotationOtherChargeListByQuotationID
+        public List<QuotationOtherCharge> GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        {
+            List<QuotationOtherCharge> quotationOtherChargeList = new List<QuotationOtherCharge>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetQuotationOtherChargeListByQuotationID]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@QuoteID", SqlDbType.UniqueIdentifier).Value = quotationID;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    QuotationOtherCharge quotationOtherCharge = new QuotationOtherCharge();
+                                    {
+                                        quotationOtherCharge.ID= (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationOtherCharge.ID);
+                                        quotationOtherCharge.OtherChargeCode= (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : quotationOtherCharge.OtherChargeCode);
+                                        quotationOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : quotationOtherCharge.ChargeAmount);
+                                        quotationOtherCharge.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationOtherCharge.TaxTypeCode);
+                                        quotationOtherCharge.TaxType = new TaxType();
+                                        quotationOtherCharge.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : quotationOtherCharge.TaxType.ValueText);
+                                        quotationOtherCharge.CGSTPerc = (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : quotationOtherCharge.CGSTPerc);
+                                        quotationOtherCharge.SGSTPerc = (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : quotationOtherCharge.SGSTPerc);
+                                        quotationOtherCharge.IGSTPerc = (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : quotationOtherCharge.IGSTPerc);
+                                        quotationOtherCharge.OtherCharge = new OtherCharge();
+                                        quotationOtherCharge.OtherCharge.Description= (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : quotationOtherCharge.OtherCharge.Description);
+                                    }
+                                    quotationOtherChargeList.Add(quotationOtherCharge);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return quotationOtherChargeList;
+        }
+        #endregion GetQuotationOtherChargeListByQuotationID
+
+        }
 }

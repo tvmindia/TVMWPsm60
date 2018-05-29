@@ -10,9 +10,9 @@ namespace PilotSmithApp.UserInterface.Models
     public class QuotationViewModel
     {
         public Guid ID { get; set; }
-        [Display(Name = "Quotation Number")]
+        [Display(Name = "Quotation No.")]
         public string QuoteNo { get; set; }
-        [Display(Name = "Quotation Ref. Number")]
+        [Display(Name = "Quotation Ref No.")]
         public string QuoteRefNo { get; set; }
         public DateTime QuoteDate { get; set; }
         [Display(Name = "Estimate")]
@@ -55,7 +55,11 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? Discount { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional fields
-        
+
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
+        [Display(Name = "Document Locked")]
+        public bool IsDocLocked { get; set; }
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }
         public string DetailJSON { get; set; }
@@ -83,7 +87,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public string EnquiryDate { get; set; }
         public string SearchTerm { get; set; }
+        [Display(Name = "Quotation From")]
         public string FromDate { get; set; }
+        [Display(Name = "Quotation To")]
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
     }
@@ -126,12 +132,20 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid QuoteID { get; set; }
+        [Display(Name = "Other Charge")]
         public int OtherChargeCode { get; set; }
+        [Display(Name = "Amount")]
         public decimal ChargeAmount { get; set; }
+        [Display(Name = "Tax Type")]
         public int TaxTypeCode { get; set; }
-        public decimal CGSTAmt { get; set; }
-        public decimal SGSTAmt { get; set; }
-        public decimal IGSTAmt { get; set; }
+        public decimal CGSTPerc { get; set; }
+        public decimal SGSTPerc { get; set; }
+        public decimal IGSTPerc { get; set; }
+
+        //Additional fields
+        public bool IsUpdate { get; set; }
+        public TaxTypeViewModel TaxType { get; set; }
+        public OtherChargeViewModel OtherCharge { get; set; }
 
     }
 }

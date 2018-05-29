@@ -94,8 +94,12 @@
 
                     foreach (var mp in Model.QuotationDetailList)
                     {
+                        decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0;
                         itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                        itemgSTAmount = Math.Round((decimal)mp.SGSTAmt + (decimal)mp.CGSTAmt + (decimal)mp.IGSTAmt, 2);
+                        CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc/ (decimal)100));
+                        SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100));
+                        IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100));
+                        itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                         itemgrandTotal = itemtaxableAmount + itemgSTAmount;
                         <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
 
@@ -111,9 +115,9 @@
                         </tr>
                         slno = slno + 1;
                         totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
-                        totalCGST = totalCGST + (decimal)@mp.CGSTAmt;
-                        totalSGST = totalSGST + (decimal)@mp.SGSTAmt;
-                        totalIGST = totalIGST + (decimal)@mp.IGSTAmt;
+                        totalCGST = totalCGST + (decimal)CGSTAmt;
+                        totalSGST = totalSGST + (decimal)SGSTAmt;
+                        totalIGST = totalIGST + (decimal)IGSTAmt;
                     }
                     grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
                     grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);

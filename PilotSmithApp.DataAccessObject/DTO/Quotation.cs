@@ -40,6 +40,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string QuoteDateFormatted { get; set; }
         public string ValidUpToDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
@@ -87,9 +89,14 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int OtherChargeCode { get; set; }
         public decimal ChargeAmount { get; set; }
         public int TaxTypeCode { get; set; }
-        public decimal CGSTAmt { get; set; }
-        public decimal SGSTAmt { get; set; }
-        public decimal IGSTAmt { get; set; }
+        public decimal CGSTPerc { get; set; }
+        public decimal SGSTPerc { get; set; }
+        public decimal IGSTPerc { get; set; }
+
+        //Additional fields
+        public bool IsUpdate { get; set; }
+        public TaxType TaxType { get; set; }
+        public OtherCharge OtherCharge { get; set; }
 
     }
 }

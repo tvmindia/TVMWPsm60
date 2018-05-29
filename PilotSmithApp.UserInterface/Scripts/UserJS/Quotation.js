@@ -155,7 +155,7 @@ function AddQuotation() {
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=", function () {
         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
         BindQuotationDetailList(_emptyGuid);
-        //BindQuotationOtherChargesDetailList(_emptyGuid)
+        BindQuotationOtherChargesDetailList(_emptyGuid);
         OnServerCallComplete();
         setTimeout(function () {
             //resides in customjs for sliding
@@ -170,7 +170,12 @@ function EditQuotation(this_Obj) {
     //this will return form body(html)
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + Quotation.EstimateID, function () {
         //$('#CustomerID').trigger('change');
-        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
+        if ($('#IsDocLocked').val() == "True") {
+            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
+        }
+        else {
+            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+        }
         BindQuotationDetailList(Quotation.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
@@ -297,42 +302,50 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Charge Amount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
-                 "data": "CGSTPerc", render: function (data, type, row) {
+                 "data": "ChargeAmount", render: function (data, type, row) {
                      debugger;
-                     return ""
-                     //var CGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[0].split('-')[1] : 0);
-                     //var SGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[1].split('-')[1] : 0);
-                     //var IGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[2].split('-')[1] : 0);
-                     //var GSTAmt = roundoff(parseFloat(data) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
-                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(row.SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(data)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(row.IGSTAmt)) + '</p>"/>' + GSTAmt
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "Charge Amount", render: function (data, type, row) {
-                     return ""
-                     //var TaxableAmt = roundoff((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0))
-                     //var GSTAmt = roundoff(parseFloat(row.CGSTAmt) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
-                     //var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt) + parseFloat(row.CGSTAmt))
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))
+                     return Total
                      //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
              ],             
              columnDefs: [
-                 { "targets": [0], "width": "20%" },
+                 { "targets": [0], "width": "30%" },
                  { "targets": [1, 2], "width": "20%" },
                  { "targets": [3], "width": "20%" },
-                 { className: "text-left", "targets": [3] },
-                 { className: "text-center", "targets": [0, 1, 2] }
+                 { className: "text-right", "targets": [1, 2, 3] },
+                 { className: "text-left", "targets": [0] },
+                 { className: "text-center", "targets": [4] }
              ],
              destroy: true,
          });
 }
 function BindQuotationDetailList(id, IsEstimated) {
     debugger;
-
+    ClearCalculatedFields();
     _dataTable.QuotationDetailList = $('#tblQuotationDetails').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -347,10 +360,11 @@ function BindQuotationDetailList(id, IsEstimated) {
                  searchPlaceholder: "Search"
              },
              columns: [
-             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Product.Code", render: function (data, type, row) {
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
+                 }, "defaultContent": "<i></i>"
+             },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
@@ -396,23 +410,26 @@ function BindQuotationDetailList(id, IsEstimated) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "15%" },
-                 { "targets": [1, 2], "width": "10%" },
-                 { "targets": [3], "width": "30%" },
-                 { "targets": [4, 5, 6, 7, 8, 9, 10], "width": "5%" },
-                 { className: "text-right", "targets": [4, 5, 6, 7, 8, 9] },
-                 { className: "text-left", "targets": [3] },
-                 { className: "text-center", "targets": [0, 1, 2, 10] }
+                 { "targets": [0], "width": "30%" },
+                 { "targets": [1,2,3,4, 5, 6, 7], "width": "10%" },
+                 { className: "text-right", "targets": [1,2,3,4, 5, 6] },
+                 { className: "text-left", "targets": [3, 0] },
+                 { className: "text-center", "targets": [7] }
              ],
              rowCallback: function (row, data, index) {
                  debugger;
                  var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
-                 var GSTAmt = parseFloat(data.CGSTPerc) + parseFloat(data.SGSTPerc) + parseFloat(data.IGSTPerc)
-                 var GrossTotalAmt = TaxableAmt + GSTAmt
-
+                 var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
+                 var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
+                 var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
+                 var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+                 var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
+                 var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
+                 var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
+                 var GrossTotalAmt = TaxableAmt + GSTAmt 
                  var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
                  var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
                  var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
@@ -431,7 +448,7 @@ function BindQuotationDetailList(id, IsEstimated) {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'left'
+        'placement': 'top'
     });
 }
 function GetQuotationDetailListByQuotationID(id, IsEstimated) {
@@ -503,6 +520,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[_datatablerowindex].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
                 quotationDetailList[_datatablerowindex].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
                 quotationDetailList[_datatablerowindex].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
+                ClearCalculatedFields();
                 _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
                 $('#divModelPopQuotation').modal('hide');
                 _datatablerowindex = -1;
@@ -532,6 +550,7 @@ function AddQuotationDetailToList() {
                     quotationDetailList[0].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
                     quotationDetailList[0].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
                     quotationDetailList[0].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
+                    ClearCalculatedFields();
                     _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
                     $('#divModelPopQuotation').modal('hide');
                 }
@@ -552,6 +571,7 @@ function AddQuotationDetailToList() {
                         }
                         if (checkpoint == 1) {
                             debugger;
+                            ClearCalculatedFields();
                             _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
                             $('#divModelPopQuotation').modal('hide');
                         }
@@ -680,13 +700,20 @@ function DeleteQuotationDetail(ID) {
     }
 }
 function CalculateGrandTotal(value) {
-    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) - parseFloat(value!=""?value:0))
+    var GrandTotal = roundoff(parseFloat($('#lblGrossAmount').text()) - parseFloat(value != "" ? value : 0))
     $('#lblGrandTotal').text(GrandTotal);
+}
+function ClearCalculatedFields() {
+    $('#lblTaxTotal').text('0.00');
+    $('#lblItemTotal').text('0.00');
+    $('#lblGrossAmount').text('0.00');
+    $('#lblGrandTotal').text('0.00');
 }
 //=========================================================================================================================
 //Email Quotation
 //
 function EmailQuotation() {
+    debugger;
     $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=True", function () {
         $('#lblModelEmailQuotation').text('Email Quotation')
         $('#divModelEmailQuotation').modal('show');
@@ -798,4 +825,138 @@ function SendForApproval(documentTypeCode) {
         $('#SendApprovalModal').modal('hide');
         //BindPurchaseOrder($('#ID').val());
         
+}
+
+//OtherExpense------------------
+function AddOtherExpenseDetailList() {
+    $("#divModelQuotationPopBody").load("Quotation/QuotationOtherChargeDetail", function () {
+        $('#lblModelPopQuotation').text('OtherExpense Detail')
+        $('#divModelPopQuotation').modal('show');
+    });
+}
+function AddOtherExpenseDetailToList() {
+    debugger;
+    $("#FormOtherExpenseDetail").submit(function () { });
+    debugger;
+    if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
+        if (($('#divModelQuotationPopBody #OtherChargeCode').val() != "") && ($('#divModelQuotationPopBody #ChargeAmount').val() != "")) {
+            debugger;
+            var quotationOtherExpenseDetailList = _dataTable.QuotationOtherExpenseDetailList.rows().data();
+            quotationOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            quotationOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
+            TaxType = new Object;
+            if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
+                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
+            }
+            else
+                quotationDetailList[_datatablerowindex].TaxTypeCode = null;
+            quotationOtherExpenseDetailList[_datatablerowindex].TaxType = TaxType;
+            quotationOtherExpenseDetailList[_datatablerowindex].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
+            quotationOtherExpenseDetailList[_datatablerowindex].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
+            quotationOtherExpenseDetailList[_datatablerowindex].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
+            ClearCalculatedFields();
+            _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
+            $('#divModelPopQuotation').modal('hide');
+            _datatablerowindex = -1;
+        }
+    }
+    else {
+        if (($('#divModelQuotationPopBody #OtherChargeCode').val() != "") && ($('#divModelQuotationPopBody #ChargeAmount').val() != "")) {
+            debugger;
+            if (_dataTable.QuotationOtherChargesDetailList.rows().data().length === 0) {
+                _dataTable.QuotationOtherChargesDetailList.clear().rows.add(GetQuotationOtherChargesDetailListByQuotationID(_emptyGuid, false)).draw(false);
+                debugger;
+                var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
+                quotationOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                quotationOtherExpenseDetailList[0].ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
+                if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
+                    quotationOtherExpenseDetailList[0].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                }
+                else
+                    quotationOtherExpenseDetailList[0].TaxTypeCode = null;
+                quotationOtherExpenseDetailList[0].TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
+                quotationOtherExpenseDetailList[0].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
+                quotationOtherExpenseDetailList[0].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
+                quotationOtherExpenseDetailList[0].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
+                ClearCalculatedFields();
+                _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
+                $('#divModelPopQuotation').modal('hide');
+            }
+            else {
+                debugger;
+                var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
+                if (quotationOtherExpenseDetailList.length > 0) {
+                    var checkpoint = 0;
+                    var otherCharge = $('#OtherChargeCode').text();
+                    for (var i = 0; i < quotationOtherExpenseDetailList.length; i++) {
+                        if ((quotationOtherExpenseDetailList[i].OtherCharge.Description == otherCharge)) {
+                            quotationOtherExpenseDetailList[i].ChargeAmount = $('#ChargeAmount').val();
+                            checkpoint = 1;
+                            break;
+                        }
+                    }
+                    if (checkpoint == 1) {
+                        debugger;
+                        ClearCalculatedFields();
+                        _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
+                        $('#divModelPopQuotation').modal('hide');
+                    }
+                    else if (checkpoint == 0) {
+                        ClearCalculatedFields();
+                        var QuotationOtherChargesDetailVM = new Object();
+                        QuotationOtherChargesDetailVM.ID = _emptyGuid;
+                        var OtherCharge = new Object;
+                        OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                        QuotationOtherChargesDetailVM.OtherCharge = OtherCharge;
+                        QuotationOtherChargesDetailVM.ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
+                        var TaxType = new Object();
+                        if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
+                            QuotationOtherChargesDetailVM.TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                            TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
+                        }
+                        else
+                            QuotationOtherChargesDetailVM.TaxTypeCode = null;
+                        QuotationOtherChargesDetailVM.TaxType = TaxType;
+                        QuotationOtherChargesDetailVM.CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
+                        QuotationOtherChargesDetailVM.SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
+                        QuotationOtherChargesDetailVM.IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
+                        _dataTable.QuotationDetailList.row.add(QuotationOtherChargesDetailVM).draw(true);
+                        debugger;
+                        $('#divModelPopQuotation').modal('hide');
+                    }
+                }
+            }
+        }
+    }
+}
+
+function GetQuotationOtherChargesDetailListByQuotationID(id) {
+    try {
+        debugger;
+
+        var quotationOtherChargesDetailList = [];
+        
+        var data = { "quotationID": id };
+        _jsonData = GetDataFromServer("Quotation/GetQuotationOtherChargesDetailListByQuotationID/", data);
+        
+
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            quotationOtherChargesDetailList = _jsonData.Records;
+        }
+        if (_status == "OK") {
+            return quotationOtherChargesDetailList;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
 }

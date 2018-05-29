@@ -31,6 +31,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _quotationRepository.GetQuotationDetailListByQuotationID(quoteID);
         }
+        public List<QuotationOtherCharge> GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        {
+            return _quotationRepository.GetQuotationOtherChargesDetailListByQuotationID(quotationID);
+        }
         public object InsertUpdateQuotation(Quotation quotation)
         {
             if (quotation.QuotationDetailList.Count > 0)

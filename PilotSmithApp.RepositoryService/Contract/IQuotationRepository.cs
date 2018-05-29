@@ -11,6 +11,7 @@ namespace PilotSmithApp.RepositoryService.Contract
     {
         List<Quotation> GetAllQuotation(QuotationAdvanceSearch quotationAdvanceSearch);
         List<QuotationDetail> GetQuotationDetailListByQuotationID(Guid quotationID);
+        List<QuotationOtherCharge> GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID);
         Quotation GetQuotation(Guid id);
         object InsertUpdateQuotation(Quotation quotation);
         object DeleteQuotation(Guid id);
