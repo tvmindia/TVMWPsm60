@@ -11,6 +11,7 @@
     @*@Html.AntiForgeryToken()*@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
@@ -269,9 +270,20 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                            @if (Model.IsUpdate || Model.EnquiryID != null||Model.QuoteID!=null)
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
+                            }
+                            else
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                            }
                         </div>
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnCustomerRequired", "required")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnCustomerdisabled", false)
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
                 </div>
                 <div id="divCustomerBasicInfo">
