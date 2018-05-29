@@ -955,7 +955,6 @@
     <Content Include="Views\ProductionOrder\_AddProductionOrderDetail.cshtml" />
     <Content Include="Views\ProductionQC\_ProductionQCForm.cshtml" />
     <Content Include="Views\ProductionQC\Index.cshtml" />
-    <Content Include="Views\Quotation\_QuotationSelectList.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\ServiceCall\Index.cshtml" />
     <Content Include="Views\ServiceCall\_AddServiceCallDetail.cshtml" />

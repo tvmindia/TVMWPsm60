@@ -708,6 +708,7 @@ function ConfirmDeleteSaleOrderDetail(this_Obj) {
     if (saleOrderDetail.ID === _emptyGuid) {
         var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
         saleOrderDetailList.splice(_datatablerowindex, 1);
+        ClearCalculatedFields();
         _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
         notyAlert('success', 'Detail Row deleted successfully');
     }
