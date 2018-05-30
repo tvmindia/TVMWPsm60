@@ -356,10 +356,17 @@ function AddBranchMaster(flag) {
 }
 //========================================================================================================
 function AddReferredByMaster(flag) {
-    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Reference Person Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Reference Person Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 //================================================================================================

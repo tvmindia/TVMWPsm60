@@ -85,7 +85,6 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region MasterPartial
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             ReferencePersonViewModel referencePersonVM = masterCode == 0 ? new ReferencePersonViewModel() : Mapper.Map<ReferencePerson, ReferencePersonViewModel>(_referencePersonBusiness.GetReferencePerson(masterCode));
