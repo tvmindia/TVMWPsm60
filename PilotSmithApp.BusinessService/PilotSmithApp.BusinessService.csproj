@@ -52,6 +52,7 @@
     <Compile Include="Contract\ICompanyBusiness.cs" />
     <Compile Include="Contract\ICustomerCategoryBusiness.cs" />
     <Compile Include="Contract\IDeliveryChallanBusiness.cs" />
+    <Compile Include="Contract\IDepartmentBusiness.cs" />
     <Compile Include="Contract\IDistrictBusiness.cs" />
     <Compile Include="Contract\ICustomerBusiness.cs" />
     <Compile Include="Contract\IDocumentApprovalBusiness.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Contract\IMailBusiness.cs" />
     <Compile Include="Contract\IOtherChargeBusiness.cs" />
     <Compile Include="Contract\IPlantBusiness.cs" />
+    <Compile Include="Contract\IPositionBusiness.cs" />
     <Compile Include="Contract\IProductBusiness.cs" />
     <Compile Include="Contract\IProductCategoryBusiness.cs" />
     <Compile Include="Contract\IProductionOrderBusiness.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Service\CompanyBusiness.cs" />
     <Compile Include="Service\CustomerCategoryBusiness.cs" />
     <Compile Include="Service\DeliveryChallanBusiness.cs" />
+    <Compile Include="Service\DepartmentBusiness.cs" />
     <Compile Include="Service\DistrictBusiness.cs" />
     <Compile Include="Service\CustomerBusiness.cs" />
     <Compile Include="Service\DocumentApprovalBusiness.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="Service\MailBusiness.cs" />
     <Compile Include="Service\OtherChargeBusiness.cs" />
     <Compile Include="Service\PlantBusiness.cs" />
+    <Compile Include="Service\PositionBusiness.cs" />
     <Compile Include="Service\ProductBusiness.cs" />
     <Compile Include="Service\ProductCategoryBusiness.cs" />
     <Compile Include="Service\ProductionOrderBusiness.cs" />

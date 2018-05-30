@@ -30,16 +30,16 @@ function BindOrReloadEmployeeTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#DepartmentCode').val('');
+                $('#PositionCode').val('');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#DepartmentCode').val('');
+                $('#PositionCode').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('#DepartmentCode').val() == "") && ($('#PositionCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -51,8 +51,8 @@ function BindOrReloadEmployeeTable(action) {
         }
         EmployeeAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         EmployeeAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        EmployeeAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        EmployeeAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        EmployeeAdvanceSearchViewModel.DepartmentCode = $('#DepartmentCode').val();
+        EmployeeAdvanceSearchViewModel.PositionCode = $('#PositionCode').val();
         //apply datatable plugin on Employee table
         _dataTable.EmployeeList = $('#tblEmployee').DataTable(
         {
@@ -89,7 +89,8 @@ function BindOrReloadEmployeeTable(action) {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditEmployeeMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteEmployeeMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                  { "targets": [0] ,"visible": false, "searchable": false }
+                  { "targets": [0], "visible": false, "searchable": false },
+                  { className: "text-center", "targets": [6] }
          
             ],
             destroy: true,
@@ -132,6 +133,14 @@ function ExportEmployeeData() {
     $('.excelExport').show();
     OnServerCallBegin();
     BindOrReloadEmployeeTable('Export');
+}
+
+//Advance filter//
+function ApplyFilterThenSearch() {
+    debugger;
+    $(".searchicon").addClass('filterApplied');
+    CloseAdvanceSearch();
+    BindOrReloadEmployeeTable('Search');
 }
 
 function EditEmployeeMaster(this_Obj) {

@@ -175,9 +175,9 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = employeeAdvanceSearch.DataTablePaging.Length;
-                       
-                        //cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = employeeAdvanceSearch.FromDate;
-                        //cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = employeeAdvanceSearch.ToDate;
+
+                        cmd.Parameters.Add("@DepartmentCode", SqlDbType.Int).Value = employeeAdvanceSearch.DepartmentCode;
+                        cmd.Parameters.Add("@PositionCode", SqlDbType.Int).Value = employeeAdvanceSearch.PositionCode;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

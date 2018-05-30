@@ -69,7 +69,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<EstimateAdvanceSearchViewModel, EstimateAdvanceSearch>().ReverseMap();
                 config.CreateMap<BranchViewModel, Branch>().ReverseMap();
                 config.CreateMap<EmployeeViewModel, Employee>().ReverseMap();
-                config.CreateMap<EmployeeAdvanceSearchViewModel, EnquiryAdvanceSearch>().ReverseMap();
+                config.CreateMap<EmployeeAdvanceSearchViewModel, EmployeeAdvanceSearch>().ReverseMap();
                 config.CreateMap<PSAUserViewModel, SAMTool.DataAccessObject.DTO.User>().ReverseMap();
                 config.CreateMap<QuotationViewModel, Quotation>().ReverseMap();
                 config.CreateMap<QuotationAdvanceSearchViewModel, QuotationAdvanceSearch>().ReverseMap();
@@ -105,6 +105,9 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<DeliveryChallanViewModel, DeliveryChallan>().ReverseMap();
                 config.CreateMap<DeliveryChallanAdvanceSearchViewModel, DeliveryChallanAdvanceSearch>().ReverseMap();
                 config.CreateMap<DeliveryChallanDetailViewModel, DeliveryChallanDetail>().ReverseMap();
+                config.CreateMap<DepartmentViewModel, Department>().ReverseMap();
+                config.CreateMap<PositionViewModel, Position>().ReverseMap();
+
             });
         }
     }

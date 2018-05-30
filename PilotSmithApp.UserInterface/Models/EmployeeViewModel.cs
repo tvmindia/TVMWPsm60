@@ -43,5 +43,11 @@ namespace PilotSmithApp.UserInterface.Models
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Department")]
+        public int? DepartmentCode { get; set; }
+        public DepartmentViewModel Department { get; set; }
+        [Display(Name = "Position")]
+        public int? PositionCode { get; set; }
+        public PositionViewModel Position { get; set; }
     }
 }

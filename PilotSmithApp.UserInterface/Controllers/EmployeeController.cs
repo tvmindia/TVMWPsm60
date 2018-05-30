@@ -20,15 +20,25 @@ namespace PilotSmithApp.UserInterface.Controllers
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         IUserBusiness _userBusiness;
         IEmployeeBusiness _employeeBusiness;
-        public EmployeeController(IEmployeeBusiness employeeBusiness, IUserBusiness userBusiness)
+        IDepartmentBusiness _departmentBusiness;
+        IPositionBusiness _positionBusiness;
+
+        public EmployeeController(IEmployeeBusiness employeeBusiness, IUserBusiness userBusiness, IDepartmentBusiness departmentBusiness, IPositionBusiness positionBusiness)
         {
             _employeeBusiness = employeeBusiness;
             _userBusiness = userBusiness;
+            _departmentBusiness = departmentBusiness;
+            _positionBusiness =positionBusiness;
         }
         // GET: Employee
         public ActionResult Index()
         {
-            return View();
+            EmployeeAdvanceSearchViewModel employeeAdvanceSearchVM = new EmployeeAdvanceSearchViewModel();
+            employeeAdvanceSearchVM.Department = new DepartmentViewModel();
+            employeeAdvanceSearchVM.Department.DepartmentSelectList = _departmentBusiness.GetDepartmentSelectList();
+            employeeAdvanceSearchVM.Position = new PositionViewModel();
+            employeeAdvanceSearchVM.Position.PositionSelectList = _positionBusiness.GetPositionSelectList();
+            return View(employeeAdvanceSearchVM);
         }
         #region InsertUpdateEmployee
         [HttpPost]

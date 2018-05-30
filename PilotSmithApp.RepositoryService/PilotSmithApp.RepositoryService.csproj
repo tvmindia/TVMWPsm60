@@ -52,6 +52,7 @@
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IDatabaseFactory.cs" />
     <Compile Include="Contract\IDeliveryChallanRepository.cs" />
+    <Compile Include="Contract\IDepartmentRepository.cs" />
     <Compile Include="Contract\IDistrictRepository.cs" />
     <Compile Include="Contract\IDocumentApprovalRepository.cs" />
     <Compile Include="Contract\IDocumentStatusRepository.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Contract\IFileUploadRepository.cs" />
     <Compile Include="Contract\IOtherChargeRepository.cs" />
     <Compile Include="Contract\IPlantRepository.cs" />
+    <Compile Include="Contract\IPositionRepository.cs" />
     <Compile Include="Contract\IProductCategoryRepository.cs" />
     <Compile Include="Contract\IProductionOrderRepository.cs" />
     <Compile Include="Contract\IProductionQCRepository.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Service\CustomerRepository.cs" />
     <Compile Include="Service\DatabaseFactory.cs" />
     <Compile Include="Service\DeliveryChallanRepository.cs" />
+    <Compile Include="Service\DepartmentRepository.cs" />
     <Compile Include="Service\DistrictRepository.cs" />
     <Compile Include="Service\DocumentApprovalRepository.cs" />
     <Compile Include="Service\DocumentStatusRepository.cs" />
@@ -106,6 +109,7 @@
     <Compile Include="Service\FileUploadRepository.cs" />
     <Compile Include="Service\OtherChargeRepository.cs" />
     <Compile Include="Service\PlantRepository.cs" />
+    <Compile Include="Service\PositionRepository.cs" />
     <Compile Include="Service\ProductCategoryRepository.cs" />
     <Compile Include="Service\ProductionOrderRepository.cs" />
     <Compile Include="Service\ProductionQCRepository.cs" />
