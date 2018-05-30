@@ -609,7 +609,10 @@
             $('#SaleOrderForm #QuoteID').change(function () {
                 OnServerCallBegin();
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&quoteID=" + this.value, function () {
-                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
+                        $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                        $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+                    });
                     BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false,true);
 
                     OnServerCallComplete();
