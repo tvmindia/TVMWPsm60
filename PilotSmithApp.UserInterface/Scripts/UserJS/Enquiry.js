@@ -151,6 +151,9 @@ function AddEnquiry() {
             ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
             BindEnquiryDetailList(_emptyGuid);
         }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function EditEnquiry(this_Obj) {
@@ -172,15 +175,24 @@ function EditEnquiry(this_Obj) {
             clearUploadControl();
             PaintImages(Enquiry.ID);
         }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function ResetEnquiry() {
-    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + $('#EnquiryForm #ID').val(), function () {
-        $('#lblEnquiryInfo').text($('#EnquiryNo').val());
-        BindEnquiryDetailList($('#ID').val());
-        clearUploadControl();
-        PaintImages($('#EnquiryForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
+    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + $('#EnquiryForm #ID').val(), function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
+            BindEnquiryDetailList($('#ID').val());
+            clearUploadControl();
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
+            PaintImages($('#EnquiryForm #ID').val());
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+        
     });
 }
 function SaveEnquiry() {
