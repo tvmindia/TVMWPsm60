@@ -41,6 +41,10 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 quotation.DetailXML = _commonBusiness.GetXMLfromQuotationObject(quotation.QuotationDetailList, "ProductID, Qty, Rate, UnitCode");
             }
+            if(quotation.QuotationOtherChargeList.Count>0)
+            {
+                quotation.OtherChargeDetailXML= _commonBusiness.GetXMLfromQuotationOtherChargeObject(quotation.QuotationOtherChargeList, "OtherChargeCode , ChargeAmount");
+            }
             return _quotationRepository.InsertUpdateQuotation(quotation);
         }
         public Quotation GetQuotation(Guid id)
@@ -111,6 +115,10 @@ namespace PilotSmithApp.BusinessService.Service
         public List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm)
         {
             return _quotationRepository.GetQuotationForSelectListOnDemand(searchTerm);
+        }
+        public object DeleteQuotationOtherChargeDetail(Guid id)
+        {
+            return _quotationRepository.DeleteQuotationOtherChargeDetail(id);
         }
     }
 }

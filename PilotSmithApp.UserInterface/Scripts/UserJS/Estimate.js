@@ -140,15 +140,20 @@ function AddEstimate() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=", function () {
-        $('#lblEstimateInfo').text('<<Estimate No.>>');
-        ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
-        BindEstimateDetailList(_emptyGuid);
-        OnServerCallComplete();
-        //resides in customjs for sliding
-        setTimeout(function () {
-            openNav();
-        }, 100);
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblEstimateInfo').text('<<Estimate No.>>');
+            ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
+            BindEstimateDetailList(_emptyGuid);
+            OnServerCallComplete();
+            //resides in customjs for sliding
+            setTimeout(function () {
+                openNav();
+            }, 100);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -158,7 +163,8 @@ function EditEstimate(this_Obj) {
     var Estimate = _dataTable.EstimateList.row($(this_Obj).parents('tr')).data();
     $('#lblEstimateInfo').text(Estimate.EstimateNo);
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID+ "&enquiryID=" +Estimate.EnquiryID, function () {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID + "&enquiryID=" + Estimate.EnquiryID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success"){
         if ($('#IsDocLocked').val() == "True") {
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", Estimate.ID);
         }
@@ -175,31 +181,39 @@ function EditEstimate(this_Obj) {
            $("#divEstimateForm #EnquiryID").prop('disabled', true);
             openNav();
         }, 100);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
 function ResetEstimate() {
     debugger;
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID="+$('#hdnEnquiryID').val(), function () {
-        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null)
-        {
-            //resides in customjs for sliding
-            setTimeout(function () {
-                $("#divEstimateForm #EnquiryID").prop('disabled', true);
-                openNav();
-            }, 100);
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=" + $('#hdnEnquiryID').val(), function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+                //resides in customjs for sliding
+                setTimeout(function () {
+                    $("#divEstimateForm #EnquiryID").prop('disabled', true);
+                    openNav();
+                }, 100);
+            }
+            else {
+                debugger;
+                $('#hdnEnquiryID').val('');
+                $('#hdnCustomerID').val('');
+                $("#EstimateForm #CustomerID").prop('disabled', false);
+            }
+            BindEstimateDetailList($('#ID').val(), false);
+            clearUploadControl();
+            PaintImages($('#EstimateForm #ID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
         }
         else {
-            debugger;
-            $('#hdnEnquiryID').val('');
-            $('#hdnCustomerID').val('');
-            $("#EstimateForm #CustomerID").prop('disabled', false);
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
-        BindEstimateDetailList($('#ID').val(), false);
-        clearUploadControl();
-        PaintImages($('#EstimateForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
         
     });
 }

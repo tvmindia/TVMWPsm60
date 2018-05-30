@@ -88,6 +88,7 @@ function BindOrReloadQuotationTable(action) {
                { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
                 {
                     "data": "IsFinalApproved", render: function (data, type, row) {
+                        debugger;
                         if (data) {
                             return "Approved ✔";// <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
                         }
@@ -152,15 +153,21 @@ function ExportQuotationData() {
 function AddQuotation() {
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=", function () {
-        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
-        BindQuotationDetailList(_emptyGuid);
-        BindQuotationOtherChargesDetailList(_emptyGuid);
-        OnServerCallComplete();
-        setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-        }, 100);
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
+            $('#lblQuotationInfo').text('<<Quotation No.>>');
+            BindQuotationDetailList(_emptyGuid);
+            BindQuotationOtherChargesDetailList(_emptyGuid);
+            OnServerCallComplete();
+            setTimeout(function () {
+                //resides in customjs for sliding
+                openNav();
+            }, 100);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function EditQuotation(this_Obj) {
@@ -168,45 +175,62 @@ function EditQuotation(this_Obj) {
     OnServerCallBegin();
     var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + Quotation.EstimateID, function () {
-        //$('#CustomerID').trigger('change');
-        if ($('#IsDocLocked').val() == "True") {
-            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
-        }
-        else {
-            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
-        }
-        BindQuotationDetailList(Quotation.ID);
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-        clearUploadControl();
-        PaintImages(Quotation.ID);
-        OnServerCallComplete();
-        setTimeout(function () {
-            $("#divQuotationForm #EstimateID").prop('disabled', true);
-            //resides in customjs for sliding
-            openNav();
-        }, 100);
-    });
-}
-function ResetQuotation() {
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function () {
-        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null)
-        {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + Quotation.EstimateID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            debugger;
+            $('#lblQuotationInfo').text(Quotation.QuoteNo);
+            //$('#CustomerID').trigger('change');
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
+            }
+            else {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+            }
+            BindQuotationDetailList(Quotation.ID);
+            BindQuotationOtherChargesDetailList(Quotation.ID);
+            CalculateTotal();
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(Quotation.ID);
+            OnServerCallComplete();
             setTimeout(function () {
                 $("#divQuotationForm #EstimateID").prop('disabled', true);
                 //resides in customjs for sliding
                 openNav();
             }, 100);
         }
-        BindQuotationDetailList($('#ID').val(),false);
-        clearUploadControl();
-        PaintImages($('#QuotationForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+}
+function ResetQuotation() {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+                setTimeout(function () {
+                    $("#divQuotationForm #EstimateID").prop('disabled', true);
+                    //resides in customjs for sliding
+                    openNav();
+                }, 100);
+            }
+            BindQuotationDetailList($('#ID').val(), false);
+            BindQuotationOtherChargesDetailList($('#ID').val());
+            CalculateTotal();
+            clearUploadControl();
+            PaintImages($('#QuotationForm #ID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function SaveQuotation() {
     var quotationDetailList = _dataTable.QuotationDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(quotationDetailList));
+    var otherChargesDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data().toArray();
+    $('#OtherChargesDetailJSON').val(JSON.stringify(otherChargesDetailList));
     $('#btnInsertUpdateQuotation').trigger('click');
 }
 function ApplyFilterThenSearch() {
@@ -227,7 +251,10 @@ function SaveSuccessQuotation(data, status) {
                 $('#IsUpdate').val('True');
                 $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _result.ID + "&estimateID="+ _result.EstimateID, function () {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
+                    $('#lblQuotationInfo').text(_result.QuotationNo);
                     BindQuotationDetailList(_result.ID);
+                    BindQuotationOtherChargesDetailList(_result.ID);
+                    CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
@@ -326,11 +353,11 @@ function BindQuotationOtherChargesDetailList(id) {
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))
-                     return Total
-                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                     //return Total
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotationOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],             
              columnDefs: [
                  { "targets": [0], "width": "30%" },
@@ -340,12 +367,39 @@ function BindQuotationOtherChargesDetailList(id) {
                  { className: "text-left", "targets": [0] },
                  { className: "text-center", "targets": [4] }
              ],
+             //rowCallback: function (row, data, index) {
+             //    debugger;
+             //    var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
+             //    var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
+             //    var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
+             //    var CGSTAmt = parseFloat(data.ChargeAmount * CGST / 100);
+             //    var SGSTAmt = parseFloat(data.ChargeAmount * SGST / 100)
+             //    var IGSTAmt = parseFloat(data.ChargeAmount * IGST / 100)
+             //    var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+             //    var Total = roundoff(parseFloat(data.ChargeAmount) + parseFloat(GSTAmt))
+             //    var OtherChargeAmt = roundoff(parseFloat($('#lblOtherChargeAmount').text()) + parseFloat(Total))
+             //    var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + parseFloat(Total))
+             //    var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()))
+             //    var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()))
+             //    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + parseFloat(Total))
+
+             //    $('#lblOtherChargeAmount').text(OtherChargeAmt);
+             //    $('#lblGrossAmount').text(GrossAmount);
+             //    $('#lblTaxTotal').text(TaxTotal);
+             //    $('#lblItemTotal').text(TaxableTotal);
+             //    $('#lblGrandTotal').text(GrandTotal);
+             //},
              destroy: true,
          });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'top'
+    });
 }
 function BindQuotationDetailList(id, IsEstimated) {
     debugger;
-    ClearCalculatedFields();
+    //ClearCalculatedFields();
     _dataTable.QuotationDetailList = $('#tblQuotationDetails').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -419,27 +473,29 @@ function BindQuotationDetailList(id, IsEstimated) {
                  { className: "text-left", "targets": [3, 0] },
                  { className: "text-center", "targets": [7] }
              ],
-             rowCallback: function (row, data, index) {
-                 debugger;
-                 var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
-                 var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
-                 var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
-                 var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
-                 var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
-                 var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
-                 var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
-                 var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
-                 var GrossTotalAmt = TaxableAmt + GSTAmt 
-                 var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
-                 var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
-                 var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
-                 var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + GrossTotalAmt)
+             //rowCallback: function (row, data, index) {
+             //    debugger;
+             //    var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
+             //    var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
+             //    var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
+             //    var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
+             //    var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+             //    var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
+             //    var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
+             //    var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
+             //    var GrossTotalAmt = TaxableAmt + GSTAmt 
+             //    var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
+             //    var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
+             //    var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
+             //    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + GrossTotalAmt)
+             //    var OtherChargeAmt = roundoff(parseFloat($('#lblOtherChargeAmount').text()))
 
-                 $('#lblTaxTotal').text(TaxTotal);
-                 $('#lblItemTotal').text(TaxableTotal);
-                 $('#lblGrossAmount').text(GrossAmount);
-                 $('#lblGrandTotal').text(GrandTotal);
-             },
+             //    $('#lblTaxTotal').text(TaxTotal);
+             //    $('#lblItemTotal').text(TaxableTotal);
+             //    $('#lblGrossAmount').text(GrossAmount);
+             //    $('#lblGrandTotal').text(GrandTotal);
+             //    $('#lblOtherChargeAmount').text(OtherChargeAmt);
+             //},
              initComplete: function (settings, json) {
                  $('#QuotationForm #Discount').trigger('change');
              },
@@ -513,7 +569,7 @@ function AddQuotationDetailToList() {
                 Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
                 quotationDetailList[_datatablerowindex].Unit = Unit;
                 quotationDetailList[_datatablerowindex].Rate = $('#divModelQuotationPopBody #Rate').val();
-                quotationDetailList[_datatablerowindex].Discount = $('#Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
+                quotationDetailList[_datatablerowindex].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
                 quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
                 TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                 quotationDetailList[_datatablerowindex].TaxType = TaxType;
@@ -522,6 +578,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[_datatablerowindex].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
                 ClearCalculatedFields();
                 _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
+                CalculateTotal();
                 $('#divModelPopQuotation').modal('hide');
                 _datatablerowindex = -1;
             }
@@ -552,6 +609,7 @@ function AddQuotationDetailToList() {
                     quotationDetailList[0].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
                     ClearCalculatedFields();
                     _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
+                    CalculateTotal();
                     $('#divModelPopQuotation').modal('hide');
                 }
                 else {
@@ -573,6 +631,7 @@ function AddQuotationDetailToList() {
                             debugger;
                             ClearCalculatedFields();
                             _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
+                            CalculateTotal();
                             $('#divModelPopQuotation').modal('hide');
                         }
                         else if (checkpoint == 0) {
@@ -604,6 +663,7 @@ function AddQuotationDetailToList() {
                             QuotationDetailVM.SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
                             QuotationDetailVM.IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
                             _dataTable.QuotationDetailList.row.add(QuotationDetailVM).draw(true);
+                            CalculateTotal();
                             $('#divModelPopQuotation').modal('hide');
                         }
                     }
@@ -670,7 +730,9 @@ function ConfirmDeleteQuotationDetail(this_Obj) {
     if (quotationDetail.ID === _emptyGuid) {
         var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
         quotationDetailList.splice(_datatablerowindex, 1);
+        ClearCalculatedFields();
         _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
+        CalculateTotal();
         notyAlert('success', 'Detail Row deleted successfully');
     }
     else {
@@ -695,6 +757,7 @@ function DeleteQuotationDetail(ID) {
             quotationDetailList.splice(_datatablerowindex, 1);
             ClearCalculatedFields();
             _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
+            CalculateTotal();
         }
         if (_status == "ERROR") {
             notyAlert('error', _message);
@@ -710,6 +773,7 @@ function ClearCalculatedFields() {
     $('#lblItemTotal').text('0.00');
     $('#lblGrossAmount').text('0.00');
     $('#lblGrandTotal').text('0.00');
+    $('#lblOtherChargeAmount').text(0.00);
 }
 //=========================================================================================================================
 //Email Quotation
@@ -843,22 +907,22 @@ function AddOtherExpenseDetailToList() {
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
         if (($('#divModelQuotationPopBody #OtherChargeCode').val() != "") && ($('#divModelQuotationPopBody #ChargeAmount').val() != "")) {
             debugger;
-            var quotationOtherExpenseDetailList = _dataTable.QuotationOtherExpenseDetailList.rows().data();
+            var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
             quotationOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
             quotationOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
+            quotationOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode").val() : _emptyGuid;
             TaxType = new Object;
             if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
-                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                quotationOtherExpenseDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
                 TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
             }
-            else
-                quotationDetailList[_datatablerowindex].TaxTypeCode = null;
             quotationOtherExpenseDetailList[_datatablerowindex].TaxType = TaxType;
             quotationOtherExpenseDetailList[_datatablerowindex].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
             quotationOtherExpenseDetailList[_datatablerowindex].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
             quotationOtherExpenseDetailList[_datatablerowindex].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
             ClearCalculatedFields();
             _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
+            CalculateTotal();
             $('#divModelPopQuotation').modal('hide');
             _datatablerowindex = -1;
         }
@@ -871,18 +935,18 @@ function AddOtherExpenseDetailToList() {
                 debugger;
                 var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
                 quotationOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                quotationOtherExpenseDetailList[0].OtherChargeCode = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode").val() : _emptyGuid;
                 quotationOtherExpenseDetailList[0].ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
                 if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
                     quotationOtherExpenseDetailList[0].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
                 }
-                else
-                    quotationOtherExpenseDetailList[0].TaxTypeCode = null;
                 quotationOtherExpenseDetailList[0].TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                 quotationOtherExpenseDetailList[0].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
                 quotationOtherExpenseDetailList[0].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
                 quotationOtherExpenseDetailList[0].IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
                 ClearCalculatedFields();
                 _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
+                CalculateTotal();
                 $('#divModelPopQuotation').modal('hide');
             }
             else {
@@ -890,10 +954,10 @@ function AddOtherExpenseDetailToList() {
                 var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
                 if (quotationOtherExpenseDetailList.length > 0) {
                     var checkpoint = 0;
-                    var otherCharge = $('#OtherChargeCode').text();
+                    var otherCharge = $('#OtherChargeCode').val();
                     for (var i = 0; i < quotationOtherExpenseDetailList.length; i++) {
-                        if ((quotationOtherExpenseDetailList[i].OtherCharge.Description == otherCharge)) {
-                            quotationOtherExpenseDetailList[i].ChargeAmount = $('#ChargeAmount').val();
+                        if ((quotationOtherExpenseDetailList[i].OtherChargeCode == otherCharge)) {
+                            quotationOtherExpenseDetailList[i].ChargeAmount = parseFloat(quotationOtherExpenseDetailList[i].ChargeAmount) + parseFloat($('#ChargeAmount').val());
                             checkpoint = 1;
                             break;
                         }
@@ -902,6 +966,7 @@ function AddOtherExpenseDetailToList() {
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
+                        CalculateTotal();
                         $('#divModelPopQuotation').modal('hide');
                     }
                     else if (checkpoint == 0) {
@@ -911,26 +976,30 @@ function AddOtherExpenseDetailToList() {
                         var OtherCharge = new Object;
                         OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                         QuotationOtherChargesDetailVM.OtherCharge = OtherCharge;
+                        QuotationOtherChargesDetailVM.OtherChargeCode = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode").val() : _emptyGuid;
                         QuotationOtherChargesDetailVM.ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
                         var TaxType = new Object();
                         if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
                             QuotationOtherChargesDetailVM.TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
                             TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                         }
-                        else
-                            QuotationOtherChargesDetailVM.TaxTypeCode = null;
                         QuotationOtherChargesDetailVM.TaxType = TaxType;
                         QuotationOtherChargesDetailVM.CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
                         QuotationOtherChargesDetailVM.SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
                         QuotationOtherChargesDetailVM.IGSTPerc = $('#divModelQuotationPopBody #hdnIGSTPerc').val();
-                        _dataTable.QuotationDetailList.row.add(QuotationOtherChargesDetailVM).draw(true);
-                        debugger;
+                        _dataTable.QuotationOtherChargesDetailList.row.add(QuotationOtherChargesDetailVM).draw(true);
+                        CalculateTotal();
                         $('#divModelPopQuotation').modal('hide');
                     }
                 }
             }
         }
     }
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'left'
+    });
 }
 
 function GetQuotationOtherChargesDetailListByQuotationID(id) {
@@ -961,4 +1030,112 @@ function GetQuotationOtherChargesDetailListByQuotationID(id) {
         console.log(e.message);
 
     }
+}
+
+function EditQuotationOtherChargesDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
+    var quotationOtherChargesDetail = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
+    $("#divModelQuotationPopBody").load("Quotation/QuotationOtherChargeDetail", function () {
+        debugger;
+        $('#lblModelPopQuotation').text('OtherCharges Detail')
+        $('#FormOtherExpenseDetail #IsUpdate').val('True');
+        $('#FormOtherExpenseDetail #ID').val(quotationOtherChargesDetail.ID);
+        $("#FormOtherExpenseDetail #OtherChargeCode").val(quotationOtherChargesDetail.OtherChargeCode);
+        $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(quotationOtherChargesDetail.OtherChargeCode);
+        $("#FormOtherExpenseDetail #ChargeAmount").val(quotationOtherChargesDetail.ChargeAmount);
+        
+        $('#FormOtherExpenseDetail #TaxTypeCode').val(quotationOtherChargesDetail.TaxType.ValueText);
+        $('#FormOtherExpenseDetail #hdnTaxTypeCode').val(quotationOtherChargesDetail.TaxType.ValueText);
+        $('#FormOtherExpenseDetail #hdnCGSTPerc').val(quotationOtherChargesDetail.CGSTPerc);
+        $('#FormOtherExpenseDetail #hdnSGSTPerc').val(quotationOtherChargesDetail.SGSTPerc);
+        $('#FormOtherExpenseDetail #hdnIGSTPerc').val(quotationOtherChargesDetail.IGSTPerc);
+        
+        var CGSTAmt = (quotationOtherChargesDetail.ChargeAmount * parseFloat(quotationOtherChargesDetail.CGSTPerc)) / 100;
+        var SGSTAmt = (quotationOtherChargesDetail.ChargeAmount * parseFloat(quotationOtherChargesDetail.SGSTPerc)) / 100;
+        var IGSTAmt = (quotationOtherChargesDetail.ChargeAmount * parseFloat(quotationOtherChargesDetail.IGSTPerc)) / 100;
+        $('#FormOtherExpenseDetail #CGSTPerc').val(CGSTAmt);
+        $('#FormOtherExpenseDetail #SGSTPerc').val(SGSTAmt);
+        $('#FormOtherExpenseDetail #IGSTPerc').val(IGSTAmt);
+        $('#divModelPopQuotation').modal('show');
+    });
+}
+function ConfirmDeleteQuotationOtherChargeDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
+    var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
+    if (quotationOtherChargeDetail.ID === _emptyGuid) {
+        var quotationOtherChargeDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
+        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+        ClearCalculatedFields();
+        _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+        CalculateTotal();
+        notyAlert('success', 'Detail Row deleted successfully');
+    }
+    else {
+        notyConfirm('Are you sure to delete?', 'DeleteQuotationOtherChargeDetail("' + quotationOtherChargeDetail.ID + '")');
+
+    }
+}
+function DeleteQuotationOtherChargeDetail(ID) {
+    if (ID != _emptyGuid && ID != null && ID != '') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("Quotation/DeleteQuotationOtherChargeDetail/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            var quotationOtherChargeDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
+            quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+            ClearCalculatedFields();
+            _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+            CalculateTotal();
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+}
+function CalculateTotal()
+{
+    var TaxTotal = 0, TaxableTotal = 0, GrossAmount = 0, GrandTotal = 0, OtherChargeAmt=0.00;
+    var quotationDetail= _dataTable.QuotationDetailList.rows().data();
+    var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.rows().data();
+    for (var i = 0; i < quotationDetail.length; i++) {
+        var TaxableAmt = (parseFloat(quotationDetail[i].Rate != "" ? quotationDetail[i].Rate : 0) * parseInt(quotationDetail[i].Qty != "" ? quotationDetail[i].Qty : 1)) - parseFloat(quotationDetail[i].Discount != "" ? quotationDetail[i].Discount : 0)
+        var CGST = parseFloat(quotationDetail[i].CGSTPerc != "" ? quotationDetail[i].CGSTPerc : 0);
+        var SGST = parseFloat(quotationDetail[i].SGSTPerc != "" ? quotationDetail[i].SGSTPerc : 0);
+        var IGST = parseFloat(quotationDetail[i].IGSTPerc != "" ? quotationDetail[i].IGSTPerc : 0);
+        var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+        var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
+        var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
+        var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
+        var GrossTotalAmt = TaxableAmt + GSTAmt
+        TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
+        TaxableTotal = roundoff(parseFloat(TaxableTotal) + parseFloat(TaxableAmt))
+        GrossAmount = roundoff(parseFloat(GrossAmount) + GrossTotalAmt)
+    }
+    for (var i = 0; i < quotationOtherChargeDetail.length; i++) {
+        var CGST = parseFloat(quotationOtherChargeDetail[i].CGSTPerc != "" ? quotationOtherChargeDetail[i].CGSTPerc : 0);
+        var SGST = parseFloat(quotationOtherChargeDetail[i].SGSTPerc != "" ? quotationOtherChargeDetail[i].SGSTPerc : 0);
+        var IGST = parseFloat(quotationOtherChargeDetail[i].IGSTPerc != "" ? quotationOtherChargeDetail[i].IGSTPerc : 0);
+        var CGSTAmt = parseFloat(quotationOtherChargeDetail[i].ChargeAmount * CGST / 100);
+        var SGSTAmt = parseFloat(quotationOtherChargeDetail[i].ChargeAmount * SGST / 100)
+        var IGSTAmt = parseFloat(quotationOtherChargeDetail[i].ChargeAmount * IGST / 100)
+        var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+        var Total = roundoff(parseFloat(quotationOtherChargeDetail[i].ChargeAmount) + parseFloat(GSTAmt))
+        OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(Total))
+    }
+    GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt))
+    $('#lblTaxTotal').text(TaxTotal);
+    $('#lblItemTotal').text(TaxableTotal);
+    $('#lblGrossAmount').text(GrossAmount);
+    $('#lblGrandTotal').text(GrossAmount);
+    $('#lblOtherChargeAmount').text(OtherChargeAmt);
+    $('#Discount').trigger('onchange');
 }

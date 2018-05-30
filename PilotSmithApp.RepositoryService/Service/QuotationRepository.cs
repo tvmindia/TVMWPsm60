@@ -81,6 +81,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotation.DocumentStatus = new DocumentStatus();
                                         quotation.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : quotation.DocumentStatus.Code);
                                         quotation.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : quotation.DocumentStatus.Description);
+                                        quotation.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : quotation.IsFinalApproved);
                                         quotation.ReferredByCode = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : quotation.ReferredByCode);
                                         quotation.ReferencePerson = new ReferencePerson();
                                         quotation.ReferencePerson.Code = (sdr["ReferredByCode"].ToString() != "" ? int.Parse(sdr["ReferredByCode"].ToString()) : quotation.ReferencePerson.Code);
@@ -291,6 +292,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar,-1).Value = quotation.EmailSentTo;
                         cmd.Parameters.Add("@TermReferenceNo", SqlDbType.VarChar,25).Value = quotation.TermReferenceNo;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = quotation.DetailXML;
+                        cmd.Parameters.Add("@OtherChargeDetailXML", SqlDbType.Xml).Value = quotation.OtherChargeDetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = quotation.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = quotation.GeneralNotes;
                         cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = quotation.DocumentOwnerID;
@@ -631,6 +633,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     QuotationOtherCharge quotationOtherCharge = new QuotationOtherCharge();
                                     {
                                         quotationOtherCharge.ID= (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationOtherCharge.ID);
+                                        quotationOtherCharge.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : quotationOtherCharge.QuoteID);
                                         quotationOtherCharge.OtherChargeCode= (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : quotationOtherCharge.OtherChargeCode);
                                         quotationOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : quotationOtherCharge.ChargeAmount);
                                         quotationOtherCharge.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationOtherCharge.TaxTypeCode);
@@ -657,5 +660,56 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetQuotationOtherChargeListByQuotationID
 
+        #region Delete Quotation OtherCharge
+        public object DeleteQuotationOtherChargeDetail(Guid id)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[DeleteQuotationOtherCharge]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(_appConstant.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.DeleteSuccess
+            };
         }
+        #endregion Delete Quotation OtherCharge
+
+    }
 }

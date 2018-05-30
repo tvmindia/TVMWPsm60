@@ -63,6 +63,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }
         public string DetailJSON { get; set; }
+        public string OtherChargesDetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
         [Required(ErrorMessage = "Quotation Date is missing")]
         [Display(Name = "Quotation Date")]
@@ -79,6 +80,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ReferencePersonViewModel ReferencePerson { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<QuotationDetailViewModel> QuotationDetailList { get; set; }
+        public List<QuotationOtherChargeViewModel> QuotationOtherChargeList { get; set; }
         public PDFTools PDFTools { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> EstimateSelectList { get; set; }
@@ -133,13 +135,17 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid ID { get; set; }
         public Guid QuoteID { get; set; }
         [Display(Name = "Other Charge")]
-        public int OtherChargeCode { get; set; }
+        public int? OtherChargeCode { get; set; }
         [Display(Name = "Amount")]
-        public decimal ChargeAmount { get; set; }
+        [Required(ErrorMessage = "Charge Amount is missing")]
+        public decimal? ChargeAmount { get; set; }
         [Display(Name = "Tax Type")]
-        public int TaxTypeCode { get; set; }
+        public int? TaxTypeCode { get; set; }
+        [Display(Name = "CGST Amount")]
         public decimal CGSTPerc { get; set; }
+        [Display(Name = "SGST Amount")]
         public decimal SGSTPerc { get; set; }
+        [Display(Name = "IGST Amount")]
         public decimal IGSTPerc { get; set; }
 
         //Additional fields
