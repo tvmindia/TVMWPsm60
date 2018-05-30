@@ -24,7 +24,7 @@
                     @Html.LabelFor(model => model.CGSTPercentage, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.CGSTPercentage, new { htmlAttributes = new { @class = "form-control newinput  Amount ", @onkeypress = "return isNumber(event)" } })
+                    @Html.EditorFor(model => model.CGSTPercentage, new { htmlAttributes = new { @class = "form-control newinput ApplyPercentage Amount ", @onkeypress = "return isNumber(event)" } })
                     @Html.HiddenFor(model => model.CGSTPercentage, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     @Html.LabelFor(model => model.SGSTPercentage, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.SGSTPercentage, new { htmlAttributes = new { @class = "form-control newinput  Amount ", @onkeypress = "return isNumber(event)" } })
+                    @Html.EditorFor(model => model.SGSTPercentage, new { htmlAttributes = new { @class = "form-control newinput ApplyPercentage Amount ", @onkeypress = "return isNumber(event)" } })
                     @Html.HiddenFor(model => model.SGSTPercentage, htmlAttributes: new { @class = "", @id = "hdnDistrictCode" })
                 </div>
             </div>
@@ -47,7 +47,7 @@
                     @Html.LabelFor(model => model.IGSTPercentage, htmlAttributes: new { @class = "control-label" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.IGSTPercentage, new { htmlAttributes = new { @class = "form-control newinput Amount ", @onkeypress = "return isNumber(event)"} })
+                    @Html.EditorFor(model => model.IGSTPercentage, new { htmlAttributes = new { @class = "form-control newinput ApplyPercentage Amount ", @onkeypress = "return isNumber(event)"} })
                     @Html.ValidationMessageFor(model => model.IGSTPercentage, "", new { @class = "text-danger" })
                 </div>
             </div>
