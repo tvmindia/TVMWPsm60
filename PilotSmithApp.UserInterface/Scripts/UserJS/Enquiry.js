@@ -101,7 +101,7 @@ function BindOrReloadEnquiryTable(action) {
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
-                debugger;
+                
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblEnquiry').fadeIn(100);
                 if (action == undefined) {
@@ -143,38 +143,35 @@ function AddEnquiry() {
     //this will return form body(html)
     $('#lblEnquiryInfo').text("<<Enquiry No.>>");
     OnServerCallBegin();
-    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _emptyGuid, function () {
-        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
-        BindEnquiryDetailList(_emptyGuid);
-        OnServerCallComplete();
-        //setTimeout(function () {
-            //resides in customjs for sliding
+    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success")
+        {
+            OnServerCallComplete();
             openNav();
-        //}, 100);
+            ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
+            BindEnquiryDetailList(_emptyGuid);
+        }
     });
 }
 function EditEnquiry(this_Obj) {
     OnServerCallBegin();
     var Enquiry = _dataTable.EnquiryList.row($(this_Obj).parents('tr')).data();
     $('#lblEnquiryInfo').text(Enquiry.EnquiryNo);
-    //this will return form body(html)
-    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + Enquiry.ID, function () {
-        //$('#CustomerID').trigger('change');
-        if ($('#IsDocLocked').val()=="True") {
-            ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", Enquiry.ID);
-        }
-        else {
-            ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
-        }
-        BindEnquiryDetailList(Enquiry.ID);
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-        clearUploadControl();
-        PaintImages(Enquiry.ID);
-        OnServerCallComplete();
-        //setTimeout(function () {
-            //resides in customjs for sliding
+    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + Enquiry.ID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
             openNav();
-        //}, 100);
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", Enquiry.ID);
+            }
+            else {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+            }
+            BindEnquiryDetailList(Enquiry.ID);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(Enquiry.ID);
+        }
     });
 }
 function ResetEnquiry() {
@@ -198,7 +195,7 @@ function ApplyFilterThenSearch() {
 }
 function SaveSuccessEnquiry(data, status) {
     try {
-        debugger;
+        
         var _jsonData = JSON.parse(data)
         //message field will return error msg only
         _message = _jsonData.Message;
@@ -276,7 +273,7 @@ function DeleteEnquiryItem(id) {
     }
 }
 function BindEnquiryDetailList(id) {
-    debugger;
+    
     _dataTable.EnquiryDetailList = $('#tblEnquiryDetails').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -293,7 +290,7 @@ function BindEnquiryDetailList(id) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
+                     
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
@@ -328,7 +325,7 @@ function BindEnquiryDetailList(id) {
 }
 function GetEnquiryDetailListByEnquiryID(id) {
     try {
-        debugger;
+        
         var data = { "enquiryID": id };
         var enquiryDetailList = [];
         _jsonData = GetDataFromServer("Enquiry/GetEnquiryDetailListByEnquiryID/", data);
@@ -359,14 +356,14 @@ function AddEnquiryDetailList()
     });
 }
 function AddEnquiryDetailToList() {
-    debugger;
+    
     $("#FormEnquiryDetail").submit(function () { });
-        debugger;
+        
         if($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
             if (($('#ProductID').val() != "" )&& ($('#Rate').val() != "" )&& ($('#Qty').val() != "" )&& ($('#UnitCode').val() != ""))
             {
-                debugger;
+                
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
                 enquiryDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                 enquiryDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
@@ -393,7 +390,7 @@ function AddEnquiryDetailToList() {
             {
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
-                    debugger;
+                    
                     var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
                     enquiryDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                     enquiryDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
@@ -411,7 +408,7 @@ function AddEnquiryDetailToList() {
                 else {
                     var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
                     if (enquiryDetailList.length > 0) {
-                        debugger;
+                        
                         var checkpoint = 0;
                         for (var i = 0; i < enquiryDetailList.length; i++) {
                             if ((enquiryDetailList[i].ProductID == $('#ProductID').val()) && (enquiryDetailList[i].ProductModelID == $('#ProductModelID').val()
@@ -426,7 +423,7 @@ function AddEnquiryDetailToList() {
                             $('#divModelPopEnquiry').modal('hide');
                         }
                         else if (checkpoint == 0) {
-                            debugger;
+                            
                             var EnquiryDetailVM = new Object();
                             var Product = new Object;
                             var ProductModel = new Object()
@@ -461,7 +458,7 @@ function AddEnquiryDetailToList() {
 }
 function EditEnquiryDetail(this_Obj)
 {
-    debugger;
+    
     _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
     var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail", function () {
@@ -496,7 +493,7 @@ function EditEnquiryDetail(this_Obj)
     });
 }
 function ConfirmDeleteEnquiryDetail(this_Obj) {
-    debugger;
+    
     _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
     var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
     if (enquiryDetail.ID === _emptyGuid) {
@@ -536,7 +533,7 @@ function DeleteEnquiryDetail(ID) {
 //EnquiryFollowup Section
 function AddEnquiryFollowUp()
 {
-    debugger;
+    
     $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?id="+_emptyGuid+ "&enquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val()+"&customerID=" + ($('#EnquiryForm #hdnCustomerID').val()!=""?$('#EnquiryForm #hdnCustomerID').val():_emptyGuid), function () {
         $('#lblModelPopEnquiry').text('Add Enquiry Followup')
         $('#btnresetEnquiryFollowup').trigger('click');
@@ -552,7 +549,7 @@ function EnquiryFollowUpPaging(start)
 }
 function EditEnquiryFollowup(id)
 {
-    debugger;
+    
     $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?id=" + id + "&enquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val()+"&customerID="+_emptyGuid , function () {
         $('#lblModelPopEnquiry').text('Edit Enquiry Followup')
         $('#divModelPopEnquiry').modal('show');
@@ -560,7 +557,7 @@ function EditEnquiryFollowup(id)
 }
 function SaveSuccessEnquiryFollowup(data, status) {
     try {
-        debugger;
+        
         var _jsonData = JSON.parse(data)
         //message field will return error msg only
         _message = _jsonData.Message;

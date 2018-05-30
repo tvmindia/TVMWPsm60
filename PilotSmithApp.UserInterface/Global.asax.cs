@@ -18,6 +18,8 @@ namespace PilotSmithApp.UserInterface
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             MappingConfig.RegisterMaps();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //Enabling Bundling and Minification
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

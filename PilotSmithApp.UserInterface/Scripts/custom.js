@@ -1,66 +1,66 @@
 var appAddress = window.location.protocol + "//" + window.location.host + "/";   //Retrieving browser Url 
 var fileArray = [];
-(function Checker() {
-    var flag = false;
-    $.ajax({
-        url: appAddress + 'Account/AreyouAlive/',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
+//(function Checker() {
+//    var flag = false;
+//    $.ajax({
+//        type: 'POST',
+//        url: appAddress + 'Account/AreyouAlive/',
+//        contentType: "application/json; charset=utf-8",
+//        dataType: "json",
+//        success: function (data) {
 
-            if (data.Result == "OK") {
-                switch (data.Record) {
-                    case "dead":
-                        $('.modal').modal('hide');
-                        $("#RedirectToLoginModel").modal('show');
+//            if (data.Result == "OK") {
+//                switch (data.Record) {
+//                    case "dead":
+//                        $('.modal').modal('hide');
+//                        $("#RedirectToLoginModel").modal('show');
   
-                        flag = true;
-                        break;
-                    case "alive":
-                        flag = false;
-                        break;
-                }
+//                        flag = true;
+//                        break;
+//                    case "alive":
+//                        flag = false;
+//                        break;
+//                }
 
 
-            }
-            if (data.Result == "ERROR") {
-                notyAlert('error', data.Message);
-            }
+//            }
+//            if (data.Result == "ERROR") {
+//                notyAlert('error', data.Message);
+//            }
 
-        },
-        complete: function () {
-            // Schedule the next request when the current one's complete
-            //  setTimeout(Checker, 126000);
-            if (flag != true) {
-                //for 15.2 minutes
-                setTimeout(Checker, 912000);
-               // setTimeout(Checker, 126000);
-            }
+//        },
+//        complete: function () {
+//            // Schedule the next request when the current one's complete
+//            //  setTimeout(Checker, 126000);
+//            if (flag != true) {
+//                //for 15.2 minutes
+//                setTimeout(Checker, 912000);
+//               // setTimeout(Checker, 126000);
+//            }
 
-        }
-    });
-})();
+//        },
+//    });
+//})();
 
 //LOADER/SPINNER
 $(window).bind("load", function () {
     "use strict";
     $('.dataTables_processing').hide();
-    $(".spn_hol").fadeOut(1000);
+    $(".spn_hol").fadeOut(100);
 });
 $(document).ready(function () {
-    debugger;
-    $("input.Amount").on('click',function () {
-        debugger;
-        $(this).select();
-    });
-    $('#ahrefHome').on('click',function () {
-        $('.wrap,a').toggleClass('active');
-        return false;
-    });    
-    $('.wrap').mouseleave(function () {
-        $('.wrap,a').removeClass('active');
-        return false;
-    });
+    //$("input.Amount").on('click',function () {
+    //    debugger;
+    //    $(this).select();
+    //});
+    //$('#ahrefHome').on('click',function () {
+    //    $('.wrap,a').toggleClass('active');
+    //    return false;
+    //});    
+    //$('.wrap').mouseleave(function () {
+    //    $('.wrap,a').removeClass('active');
+    //    return false;
+    //});
     //$('#divMainBody').attr('style',"height:"+screen.height + "px");
     var wrap = $(".EntryForms");
     wrap.on("scroll", function (e) {
@@ -92,7 +92,7 @@ $(document).ready(function () {
     //    }
     //});
 
-    $('input,textarea').attr('autocomplete', 'off');
+    //$('input,textarea').attr('autocomplete', 'off');
    
     //menu submenu popup on click 3rd level menus
     $('.navbar a.dropdown-toggle').on('click', function (e) {
