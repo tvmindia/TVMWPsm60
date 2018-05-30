@@ -27,13 +27,13 @@ function BindOrReloadCustomerTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                //$('#FromDate').val('');
+                //$('#ToDate').val('');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                //$('#FromDate').val('');
+                //$('#ToDate').val('');
                 break;
             case 'Search':
                 if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == ""))
@@ -49,8 +49,8 @@ function BindOrReloadCustomerTable(action) {
         }
         CustomerAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         CustomerAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        CustomerAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        CustomerAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        //CustomerAdvanceSearchViewModel.FromDate = $('#FromDate').val();
+        //CustomerAdvanceSearchViewModel.ToDate = $('#ToDate').val();
         //apply datatable plugin on Customer table
         _dataTable.customerList = $('#tblCustomer').DataTable(
         {
@@ -165,12 +165,6 @@ function ResetCustomer() {
 }
 function SaveCustomer() {
     $('#btnInsertUpdateCustomer').trigger('click');
-}
-function ApplyFilterThenSearch()
-{
-    $(".searchicon").addClass('filterApplied');
-    CloseAdvanceSearch();
-    BindOrReloadCustomerTable('Search');
 }
 function SaveSuccessCustomer(data, status) {
     try {
