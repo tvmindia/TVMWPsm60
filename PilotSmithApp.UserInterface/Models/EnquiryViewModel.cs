@@ -55,6 +55,8 @@ namespace PilotSmithApp.UserInterface.Models
         public EnquiryGradeViewModel EnquiryGrade { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public AreaViewModel Area { get; set;}
         public List<EnquiryDetailViewModel> EnquiryDetailList { get; set; }
         public List<SelectListItem> EnquirySelectList { get; set; }
     }
@@ -64,11 +66,30 @@ namespace PilotSmithApp.UserInterface.Models
         public string SearchTerm { get; set; }
         [Display(Name ="Enquiry From")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
-        public string FromDate { get; set; }
+        public string AdvFromDate { get; set; }
         [Display(Name = "Enquiry To")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
-        public string ToDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Reffered By ")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+
     }
     public class EnquiryDetailViewModel
     {

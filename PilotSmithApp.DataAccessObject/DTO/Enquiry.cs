@@ -34,6 +34,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ReferencePerson ReferencePerson { get; set; }
         public EnquiryGrade EnquiryGrade { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public Branch Branch { get; set; }
+        public Area Area { get; set;}
         public PSASysCommon PSASysCommon { get; set; }
         public List<EnquiryDetail> EnquiryDetailList { get; set; }
     }
@@ -41,9 +44,21 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public string EnquiryDate { get; set; }
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public Area Area { get; set; }
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
     }
     public class EnquiryDetail
     {
