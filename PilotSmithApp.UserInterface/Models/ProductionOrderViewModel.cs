@@ -30,8 +30,11 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? DocumentOwnerID{get;set;}
         public bool? EmailSentYN{get;set;}
         public Guid? LatestApprovalID{get;set;}
+        [Display(Name = "Approval Status")]
         public int? LatestApprovalStatus{get;set;}
+        [Display(Name = "Final Approval")]
         public bool? IsFinalApproved{get;set;}
+        [Required(ErrorMessage = "Please specify at least one recipient.")]
         public string EmailSentTo{get;set;}
         [Display(Name ="Branch")]
         public int? BranchCode{get;set;}

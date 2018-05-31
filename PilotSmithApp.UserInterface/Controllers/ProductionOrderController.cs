@@ -28,8 +28,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id,string saleOrderID)
         {
+            ViewBag.ID = id;
+            ViewBag.SaleOrderID = saleOrderID;
             return View();
         }
 
@@ -541,6 +543,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Disable = true;
                     toolboxVM.deletebtn.DisableReason = "Document Locked";
                     toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
                     break;
 
                 case "Add":

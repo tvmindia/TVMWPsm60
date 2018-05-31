@@ -10,7 +10,6 @@
                 @Html.HiddenFor(model => model.DocumentType, htmlAttributes: new { @class = "", Value = @ViewBag.DocumentType })
                 @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", Value = @ViewBag.ApprovalLogID })
 
-
                 <div id="DocumentSummarydiv" class="col-md-12 no-left-padding">
                     @*Document Summary*@
                     @{
@@ -67,6 +66,14 @@
         LoadApprovalDocument();
     });
 </script>
+
+
+@section Scripts {
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/DocumentApproval/ApprovalHistory")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/DocumentApproval/ApproveDocument")
+}
+
 
 
 

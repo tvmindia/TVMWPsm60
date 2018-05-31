@@ -31,8 +31,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             return View();
         }
         #region Enquiry Form
