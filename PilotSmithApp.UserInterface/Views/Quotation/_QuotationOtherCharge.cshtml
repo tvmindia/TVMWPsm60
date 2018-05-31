@@ -9,12 +9,11 @@
                 @Html.LabelFor(model => model.OtherChargeCode, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
-                @Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "" })
-                @Html.ValidationMessageFor(model => model.OtherChargeCode, "", new { @class = "text-danger" })
-                @Html.Hidden("hdnCGSTPerc", 0)
-                @Html.Hidden("hdnSGSTPerc", 0)
-                @Html.Hidden("hdnIGSTPerc", 0)
+                <div class="divOtherChargeSelectList">
+                    @Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })
+                </div>
             </div>
+            @Html.HiddenFor(model => model.OtherChargeCode, htmlAttributes: new { @id = "hdnOtherChargeCode" })
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -36,6 +35,38 @@
                 @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
             </div>
         </div>
+        <div class="col-md-12 no-padding" id="divGSTCalculatedFields">
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.SGSTPerc, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.HiddenFor(model => model.SGSTPerc, htmlAttributes: new { @id = "hdnSGSTPerc" })
+                    @Html.EditorFor(model => model.SGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
+                    @Html.ValidationMessageFor(model => model.SGSTPerc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.CGSTPerc, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.HiddenFor(model => model.CGSTPerc, htmlAttributes: new { @id = "hdnCGSTPerc" })
+                    @Html.EditorFor(model => model.CGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
+                    @Html.ValidationMessageFor(model => model.CGSTPerc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.IGSTPerc, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.HiddenFor(model => model.IGSTPerc, htmlAttributes: new { @id = "hdnIGSTPerc" })
+                    @Html.EditorFor(model => model.IGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
+                    @Html.ValidationMessageFor(model => model.IGSTPerc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal-footer d-flex justify-content-center">
         <button class="btn btn-default" id="btnAddOtherExpenseDetail" onclick="AddOtherExpenseDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
@@ -44,24 +75,22 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
-        $('#divModelPopOtherExpenses #TaxTypeCode').select2({
-            dropdownParent: $("#divModelPopOtherExpenses")
+        $('#divModelPopQuotation #TaxTypeCode').select2({
+            dropdownParent: $("#divModelPopQuotation")
         });
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopOtherExpenses .CalculateGST').change(function () {
+        $('#divModelPopQuotation .CalculateGST').change(function () {
             debugger;
-            var ChargeAmount = parseFloat($('#divModelPopOtherExpenses #ChargeAmount').val() != "" ? $('#divModelPopOtherExpenses #ChargeAmount').val() : 0);
-            if (($('#divModelPopOtherExpenses #TaxTypeCode').val() != null) || ($('#divModelPopOtherExpenses #TaxTypeCode').val() != "")) {
-                var CGST = parseFloat($('#divModelPopOtherExpenses #TaxTypeCode').val() != "" ? $('#divModelPopOtherExpenses #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-                var SGST = parseFloat($('#divModelPopOtherExpenses #TaxTypeCode').val() != "" ? $('#divModelPopOtherExpenses #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-                var IGST = parseFloat($('#divModelPopOtherExpenses #TaxTypeCode').val() != "" ? $('#divModelPopOtherExpenses #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-                $('#divModelPopOtherExpenses #hdnCGSTPerc').val(CGST);
-                $('#divModelPopOtherExpenses #hdnSGSTPerc').val(SGST);
-                $('#divModelPopOtherExpenses #hdnIGSTPerc').val(IGST);
-            }
-            //$('#divModelPopOtherExpenses #CGSTPerc').val(ChargeAmount * CGST / 100);
-            //$('#divModelPopOtherExpenses #SGSTPerc').val(ChargeAmount * SGST / 100);
-            //$('#divModelPopOtherExpenses #IGSTPerc').val(ChargeAmount * IGST / 100);
+            var ChargeAmount = parseFloat($('#divModelPopQuotation #ChargeAmount').val() != "" ? $('#divModelPopQuotation #ChargeAmount').val() : 0);
+            var CGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+            var SGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+            var IGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+            $('#divModelPopQuotation #hdnCGSTPerc').val(CGST);
+            $('#divModelPopQuotation #hdnSGSTPerc').val(SGST);
+            $('#divModelPopQuotation #hdnIGSTPerc').val(IGST);
+            $('#divModelPopQuotation #CGSTPerc').val(ChargeAmount * CGST / 100);
+            $('#divModelPopQuotation #SGSTPerc').val(ChargeAmount * SGST / 100);
+            $('#divModelPopQuotation #IGSTPerc').val(ChargeAmount * IGST / 100);
         });
     });
 </script>

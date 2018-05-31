@@ -205,7 +205,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get Quotation OtherChargeList By QuotationID
 
-            #region Get Quotation DetailList By QuotationID with Estimate
+        #region Get Quotation DetailList By QuotationID with Estimate
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public string GetQuotationDetailListByQuotationIDWithEstimate(Guid estimateID)
@@ -303,6 +303,27 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion Delete Quotation Detail
+        #region Delete Quotation OtherCharge
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "D")]
+        public string DeleteQuotationOtherChargeDetail(Guid id)
+        {
+
+            try
+            {
+                object result = _quotationBusiness.DeleteQuotationOtherChargeDetail(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion Delete Quotation OtherCharge
         #region GetAllQuotation
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
@@ -347,15 +368,20 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
+                object ResultFromJS;
+                string ReadableFormat;
                 AppUA appUA = Session["AppUA"] as AppUA;
                 quotationVM.PSASysCommon = new PSASysCommonViewModel();
                 quotationVM.PSASysCommon.CreatedBy = appUA.UserName;
                 quotationVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
                 quotationVM.PSASysCommon.UpdatedBy = appUA.UserName;
                 quotationVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
-                object ResultFromJS = JsonConvert.DeserializeObject(quotationVM.DetailJSON);
-                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                ResultFromJS = JsonConvert.DeserializeObject(quotationVM.DetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 quotationVM.QuotationDetailList = JsonConvert.DeserializeObject<List<QuotationDetailViewModel>>(ReadableFormat);
+                ResultFromJS = JsonConvert.DeserializeObject(quotationVM.OtherChargesDetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                quotationVM.QuotationOtherChargeList= JsonConvert.DeserializeObject<List<QuotationOtherChargeViewModel>>(ReadableFormat);
                 object result = _quotationBusiness.InsertUpdateQuotation(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
 
                 if (quotationVM.ID == Guid.Empty)

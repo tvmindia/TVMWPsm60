@@ -192,8 +192,6 @@ function EditSaleOrder(this_Obj) {
         }
         BindSaleOrderDetailList(SaleOrder.ID,false,false);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
-            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
         });
         clearUploadControl();
         PaintImages(SaleOrder.ID);
@@ -218,8 +216,6 @@ function ResetSaleOrder() {
         clearUploadControl();
         PaintImages($('#SaleOrderForm #ID').val());
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
-            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
         });
     });
 }

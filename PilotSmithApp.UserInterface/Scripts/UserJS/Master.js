@@ -1,10 +1,17 @@
 ﻿var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 //Add Product Category
 function AddProductCategoryMaster(flag) {
-    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=0", function () {
-        $('#hdnMasterCall').val(flag);
-        $('#lblModelMasterContextLabel').text('Add ProductCategory')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add ProductCategory')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 
     //GetMasterPartial('ProductCategory', "0");
@@ -39,12 +46,17 @@ function SaveSuccessProductCategory(data, status) {
 
 //Add Product Specification
 function AddProductSpecificationMaster(flag) {
-
-
-    $("#divMasterBody").load("ProductSpecification/MasterPartial?masterCode=0", function () {
-        $('#hdnMasterCall').val(flag);
-        $('#lblModelMasterContextLabel').text('Add Product Specification')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("ProductSpecification/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Product Specification')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 
 }
@@ -76,10 +88,17 @@ function SaveSuccessProductSpecification(data, status) {
 
 //Add State master
 function AddStateMaster(flag) {
-    $("#divMasterBody").load("State/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add State Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("State/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add State Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 
 }
@@ -112,10 +131,17 @@ function SaveSuccessState(data, status) {
 //Add District
 function AddDistrictMaster(flag) {
     debugger;
-    $("#divMasterBody").load("District/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add District Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("District/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add District Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -147,10 +173,17 @@ function SaveSuccessDistrict(data, status) {
 //Add Area
 function AddAreaMaster(flag) {
     debugger;
-    $("#divMasterBody").load("Area/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Area Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("Area/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Area Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -182,11 +215,17 @@ function SaveSuccessArea(data, status) {
 //Add Product
 function AddProductMaster(flag) {
     debugger;
-
-    $("#divMasterBody").load("Product/MasterPartial?masterCode=" + EmptyGuid, function () {
-        $('#hdnMasterCall').val(flag);
-        $('#lblModelMasterContextLabel').text('Add Product')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("Product/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Product')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 
     //GetMasterPartial('Product', EmptyGuid);
@@ -223,11 +262,17 @@ function SaveSuccessProduct(data, status) {
 //Add Company
 function AddCompanyMaster(flag) {
     debugger;
-
-    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + EmptyGuid, function () {
-        $('#hdnMasterCall').val(flag);
-        $('#lblModelMasterContextLabel').text('Add Company')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Company')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 
 }
@@ -260,11 +305,17 @@ function SaveSuccessCompany(data, status) {
 //Add Product Model
 function AddProductModelMaster(flag) {
     debugger;
-
-    $("#divMasterBody").load("ProductModel/MasterPartial?masterCode=" + EmptyGuid, function () {
-        $('#hdnMasterCall').val(flag);
-        $('#lblModelMasterContextLabel').text('Add Product Model')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("ProductModel/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Product Model')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -301,10 +352,17 @@ function AddEmployeeMaster(flag) {
     //    $('#hdnMasterCall').val(flag);
     //});
     debugger;
-    $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function () {
-        $('#lblModelMasterContextLabel').text('Add Employee Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Employee Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -343,10 +401,17 @@ function SaveSuccessEmployeeMaster(data, status) {
 }
 //=========================================================================================================
 function AddBranchMaster(flag) {
-    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
-        $('#lblModelMasterContextLabel').text('Add Branch Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Branch Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
     //$("#divMasterBody").load("Employee/MasterPartial?masterCode=" + EmptyGuid, function () {
     //    $('#lblModelMasterContextLabel').text('Add Employee Information')
@@ -356,34 +421,62 @@ function AddBranchMaster(flag) {
 }
 //========================================================================================================
 function AddReferredByMaster(flag) {
-    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Reference Person Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Reference Person Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 //================================================================================================
 function AddDocumentStatusMaster() {
-    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function () {
-        $('#lblModelMasterContextLabel').text('Add Document Status Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("DynamicUI/PopUpUnderConstruction", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Document Status Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 //==========================================================================================================
 //Add Customer master
 function AddCustomerMaster(flag) {
-    $("#divMasterBody").load("Customer/AddCustomerPartial", function () {
-        $('#lblModelMasterContextLabel').text('Add Customer Information')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("Customer/AddCustomerPartial", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Customer Information')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 //==========================================================================================================
 //Add OtherCharge master
 function AddOtherChargeMaster(flag) {
-    $("#divMasterBody").load("OtherCharge/AddOtherChargePartial", function () {
-        $('#lblModelMasterContextLabel').text('Add Other Charge Information')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("OtherCharge/AddOtherChargePartial", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Other Charge Information')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -409,11 +502,17 @@ function SaveSuccessCustomerMaster(data, status) {
 //-- add Approver--//
 function AddApproverMaster(flag) {
     debugger;
-
-    $("#divMasterBody").load("Approver/MasterPartial?masterCode=" + EmptyGuid, function () {
-        $('#hdnMasterCall').val(flag);
-        $('#lblModelMasterContextLabel').text('Add Approver')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("Approver/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Approver')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 
     //GetMasterPartial("Approver", "");
@@ -450,11 +549,18 @@ function SaveSuccessApprover(data, status) {
 //Add ReferencePerson
 function AddReferencePersonMaster(flag) {
     debugger;
-    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Reference Person Information')
-        $('.modal-dialog').attr('style', 'min-width:60%')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val(flag);
+    OnServerCallBegin();
+    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Reference Person Information')
+            $('.modal-dialog').attr('style', 'min-width:60%')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -487,11 +593,18 @@ function SaveSuccessReferencePerson(data, status) {
 //Add PaymentTerm
 function AddPaymentTermMaster(flag) {
     debugger;
-    $("#divMasterBody").load("PaymentTerm/MasterPartial?masterCode=", function () {
-        $('#lblModelMasterContextLabel').text('Add Payment Term Information')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("PaymentTerm/MasterPartial?masterCode=", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Payment Term Information')
+            $('#divModelMasterPopUp').modal('show');
 
-        $('#hdnMasterCall').val(flag);
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -523,11 +636,18 @@ function SaveSuccessPaymentTerm(data, status) {
 //Add TaxType
 function AddTaxTypeMaster(flag) {
     debugger;
-    $("#divMasterBody").load("TaxType/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Tax Type Information')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("TaxType/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Tax Type Information')
+            $('#divModelMasterPopUp').modal('show');
 
-        $('#hdnMasterCall').val(flag);
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -559,11 +679,18 @@ function SaveSuccessTaxType(data, status) {
 //Add CustomerCategory
 function AddCustomerCategoryMaster(flag) {
     debugger;
-    $("#divMasterBody").load("CustomerCategory/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Customer Category Information')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("CustomerCategory/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Customer Category Information')
+            $('#divModelMasterPopUp').modal('show');
 
-        $('#hdnMasterCall').val(flag);
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -595,11 +722,18 @@ function SaveSuccessCustomerCategory(data, status) {
 //Add Plant
 function AddPlantMaster(flag) {
     debugger;
-    $("#divMasterBody").load("Plant/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Plant Information')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("Plant/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Plant Information')
+            $('#divModelMasterPopUp').modal('show');
 
-        $('#hdnMasterCall').val(flag);
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -632,11 +766,18 @@ function SaveSuccessPlant(data, status) {
 //Add OtherCharge
 function AddOtherChargeMaster(flag) {
     debugger;
-    $("#divMasterBody").load("OtherCharge/MasterPartial?masterCode=0", function () {
-        $('#lblModelMasterContextLabel').text('Add Other Charge Information')
-        $('#divModelMasterPopUp').modal('show');
+    OnServerCallBegin();
+    $("#divMasterBody").load("OtherCharge/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Other Charge Information')
+            $('#divModelMasterPopUp').modal('show');
 
-        $('#hdnMasterCall').val(flag);
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 

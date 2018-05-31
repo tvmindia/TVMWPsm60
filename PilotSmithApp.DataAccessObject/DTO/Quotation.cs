@@ -36,6 +36,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         //Additional fields
+        public string OtherChargeDetailXML { get; set; }
         public string MailContant { get; set; }
         public string QuoteDateFormatted { get; set; }
         public string ValidUpToDateFormatted { get; set; }
@@ -50,6 +51,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ReferencePerson ReferencePerson { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public List<QuotationDetail> QuotationDetailList { get; set; }
+        public List<QuotationOtherCharge> QuotationOtherChargeList { get; set; }
 
     }
     public class QuotationAdvanceSearch
@@ -86,9 +88,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public Guid ID { get; set; }
         public Guid QuoteID { get; set; }
-        public int OtherChargeCode { get; set; }
-        public decimal ChargeAmount { get; set; }
-        public int TaxTypeCode { get; set; }
+        public int? OtherChargeCode { get; set; }
+        public decimal? ChargeAmount { get; set; }
+        public int? TaxTypeCode { get; set; }
         public decimal CGSTPerc { get; set; }
         public decimal SGSTPerc { get; set; }
         public decimal IGSTPerc { get; set; }

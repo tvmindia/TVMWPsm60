@@ -125,17 +125,7 @@
                                 @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
-                                @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
-                            </div>
-                            <div class="col-md-12">
-                                <div class="divDocumentStatusSelectList">
-                                    @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "QUO" })
-                                </div>
-                                @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                            </div>
-                        </div>
+                        
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
@@ -145,6 +135,17 @@
                                     @Html.Action("BranchSelectList", "Branch", new { required = "" })
                                 </div>
                                 @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 no-padding">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                <div class="divDocumentStatusSelectList">
+                                    @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "QUO" })
+                                </div>
+                                @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                             </div>
                         </div>
                     </div>
@@ -178,24 +179,6 @@
                             else
                             {
                                 <div class="lblStatusDisplay">EMAIL NOT SEND</div>
-                            }
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.IsFinalApproved)</div>
-                        </div>
-                        <div class="form-group col-md-12">
-
-                            @if (Model.IsFinalApproved == null)
-                            {
-                                <div class="lblStatusDisplay">PENDING FOR FINAL APPROVAL</div>
-                            }
-                            else if (Model.IsFinalApproved == true)
-                            {
-                                <div class="lblStatusDisplay">✔ FINALY APPROVED</div>
-                            }
-                            else
-                            {
-                                <div class="lblStatusDisplay">✗ FINAL APPROVER REJECTED</div>
                             }
                         </div>
                         <div class="form-group col-md-12">
@@ -319,6 +302,7 @@
                 </div>
 
                 @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.OtherChargesDetailJSON, htmlAttributes: new { @class = "" })
                 <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
                     <table id="tblQuotationDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                         <thead>
@@ -335,7 +319,7 @@
                         </thead>
                     </table>
                 </div>
-                <div class="col-md-7 ">
+                <div class="form-group col-md-7 ">
                     <table id="tblQuotationOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                             <thead>
                                 <tr class="text-center TableHead">
@@ -348,7 +332,7 @@
                             </thead>
                         </table>
                 </div>
-                <div class="col-md-5" style="padding-right:3.7%">
+                <div class="col-md-5" style="padding-right:1.5%" >
                     <table class="table dataTable no-footer DetailSummerybox">
                         <tbody>
                             <tr>
@@ -365,6 +349,14 @@
                                 </td>
                                 <td class="ApplyCurrency" style="text-align: right">
                                     <label class="control-label " for="" id="lblTaxTotal">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblGrossAmount">Other Charge Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
                                 </td>
                             </tr>
                             <tr>

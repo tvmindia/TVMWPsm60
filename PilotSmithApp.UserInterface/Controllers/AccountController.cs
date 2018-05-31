@@ -129,7 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
-        [HttpGet]
+        [HttpPost]
         public string AreyouAlive()
         {
             string result = "";

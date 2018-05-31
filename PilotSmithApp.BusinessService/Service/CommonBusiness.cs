@@ -167,6 +167,40 @@ namespace PilotSmithApp.BusinessService.Service
 
         }
 
+        public string GetXMLfromQuotationOtherChargeObject(List<QuotationOtherCharge> quotationOtherChargeList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(quotationOtherChargeList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in quotationOtherChargeList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
+        }
+
         public string GetXMLfromEstimateObject(List<EstimateDetail> estimateDetailList, string mandatoryProperties)
         {
             string result = "<Details>";
