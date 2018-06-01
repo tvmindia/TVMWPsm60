@@ -109,14 +109,14 @@ function BindOrReloadEnquiryTable(action) {
                 data: { "EnquiryAdvanceSearchVM": EnquiryAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 6,
             columns: [
                { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
-
-                           return "<b>Customer-</b>"+row.Customer.ContactPerson+"</br>"+"<b>Organization-</b>"+data ;
+                       debugger;
+                       return "<b>Customer-</b>" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<b>Organization-</b>" + data;
 
                    }, "defaultContent": "<i>-</i>"
                },
@@ -134,12 +134,12 @@ function BindOrReloadEnquiryTable(action) {
             columnDefs: [ { className: "text-right", "targets": [] },
                           { className: "text-left", "targets": [2,3,4,5,6,7] },
                           { className: "text-center", "targets": [0, 1, 8] },
-                            { "targets": [0,3,5,6], "width": "10%" },
-                            { "targets": [1], "width": "10%" },
-                            { "targets": [4, 2,7], "width": "20%" },
-                           // { "targets": [4], "width": "20%" },
+                            { "targets": [0,1,2,3,5,6], "width": "10%" },
+                            //{ "targets": [1], "width": "10%" },
+                            { "targets": [4], "width": "20%" },
+                            { "targets": [7], "width": "20%" },
                            // { "targets": [6], "width": "10%" },
-                            { "targets": [8], "width": "5%" },
+                            { "targets": [8], "width": "2%" },
                         ],
             destroy: true,
             //for performing the import operation after the data loaded

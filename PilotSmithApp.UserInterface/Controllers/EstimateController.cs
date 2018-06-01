@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,19 +22,58 @@ namespace PilotSmithApp.UserInterface.Controllers
         IBranchBusiness _branchBusiness;
         IEnquiryBusiness _enquiryBusiness;
         ICommonBusiness _commonBusiness;
-        public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness)
+        IAreaBusiness _areaBusiness;
+        IReferencePersonBusiness _referencePersonBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;
+        private IUserBusiness _userBusiness;
+
+        public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness,
+            IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
+            IAreaBusiness areaBusiness,IReferencePersonBusiness referencePersonBusiness,
+            IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness)
         {
             _estimateBusiness = estimateBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
             _enquiryBusiness = enquiryBusiness;
             _commonBusiness = commonBusiness;
+            _areaBusiness = areaBusiness;
+            _referencePersonBusiness = referencePersonBusiness;
+            _documentStatusBusiness = documentStatusBusiness;
+            _userBusiness = userBusiness;
         }
         // GET: Estimate
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult Index()
         {
-            return View();
+            EstimateAdvanceSearchViewModel estimateAdvanceSearchVM = new EstimateAdvanceSearchViewModel();
+            estimateAdvanceSearchVM.Area = new AreaViewModel();
+            estimateAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            estimateAdvanceSearchVM.Customer = new CustomerViewModel();
+            estimateAdvanceSearchVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
+            estimateAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
+            estimateAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
+            estimateAdvanceSearchVM.Branch = new BranchViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            estimateAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
+            estimateAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
+            estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST");
+            estimateAdvanceSearchVM.PSAUser = new PSAUserViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+
+            if (PSAUserVMList != null)
+                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = PSAuVM.UserName,
+                        Value = PSAuVM.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            estimateAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
+            return View(estimateAdvanceSearchVM);
         } 
 
         #region GetEstimateForm
@@ -60,6 +100,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.EnquirySelectList = new List<SelectListItem>();
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
                     estimateVM.DocumentStatus.Description = "OPEN";
+                    estimateVM.Branch = new BranchViewModel();
+                    estimateVM.Branch.Description = "-";
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {
@@ -73,6 +115,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.EnquiryID = enquiryID;
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
                     estimateVM.DocumentStatus.Description = "OPEN";
+                    estimateVM.Branch = new BranchViewModel();
+                    estimateVM.Branch.Description = "-";
                 }
                 
             }
