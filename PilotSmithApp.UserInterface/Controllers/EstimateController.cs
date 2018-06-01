@@ -100,6 +100,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.EnquirySelectList = new List<SelectListItem>();
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
                     estimateVM.DocumentStatus.Description = "OPEN";
+                    estimateVM.Branch = new BranchViewModel();
+                    estimateVM.Branch.Description = "-";
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {
@@ -113,6 +115,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.EnquiryID = enquiryID;
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
                     estimateVM.DocumentStatus.Description = "OPEN";
+                    estimateVM.Branch = new BranchViewModel();
+                    estimateVM.Branch.Description = "-";
                 }
                 
             }
