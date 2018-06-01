@@ -34,7 +34,7 @@ function BindOrReloadEnquiryTable(action) {
         //switch case to check the operation
         switch (action) {
             case 'Reset':
-                $('.divboxASearch #SearchTerm').val('');
+                $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
@@ -46,7 +46,7 @@ function BindOrReloadEnquiryTable(action) {
 
                 break;
             case 'Init':
-                $('.divboxASearch #SearchTerm').val('');
+                $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('');
@@ -68,7 +68,7 @@ function BindOrReloadEnquiryTable(action) {
                 break;
         }
         EnquiryAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        EnquiryAdvanceSearchViewModel.SearchTerm = $('.divboxASearch #SearchTerm').val();
+        EnquiryAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         EnquiryAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
         EnquiryAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
         EnquiryAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
@@ -103,14 +103,14 @@ function BindOrReloadEnquiryTable(action) {
                 data: { "EnquiryAdvanceSearchVM": EnquiryAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 6,
             columns: [
                { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
-
-                           return "<b>Customer-</b>"+row.Customer.ContactPerson+"</br>"+"<b>Organization-</b>"+data ;
+                       debugger;
+                       return "<b>Customer-</b>" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<b>Organization-</b>" + data;
 
                    }, "defaultContent": "<i>-</i>"
                },
