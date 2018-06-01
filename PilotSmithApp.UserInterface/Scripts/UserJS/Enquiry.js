@@ -40,7 +40,7 @@ function BindOrReloadEnquiryTable(action) {
         //switch case to check the operation
         switch (action) {
             case 'Reset':
-                $('.divboxASearch #SearchTerm').val('');
+                $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
@@ -52,7 +52,7 @@ function BindOrReloadEnquiryTable(action) {
 
                 break;
             case 'Init':
-                $('.divboxASearch #SearchTerm').val('');
+                $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('');
@@ -63,7 +63,7 @@ function BindOrReloadEnquiryTable(action) {
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
                 break;
             case 'Search':
-                if (($('.divboxASearch #SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvReferencePersonCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvReferencePersonCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "")) {
                     return true;
                 }
                 break;
@@ -74,7 +74,7 @@ function BindOrReloadEnquiryTable(action) {
                 break;
         }
         EnquiryAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        EnquiryAdvanceSearchViewModel.SearchTerm = $('.divboxASearch #SearchTerm').val();
+        EnquiryAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         EnquiryAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
         EnquiryAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
         EnquiryAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
