@@ -91,7 +91,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion MasterPartial
         #region ProductModelSelectList
-        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult ProductModelSelectList(string required, bool? disabled, Guid productID)
         {
             ViewBag.IsRequired = required;

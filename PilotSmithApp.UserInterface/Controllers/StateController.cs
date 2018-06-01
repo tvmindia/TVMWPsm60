@@ -129,7 +129,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region State SelectList
-        [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]
         public ActionResult StateSelectList(string required)
         {
             ViewBag.IsRequired = required;

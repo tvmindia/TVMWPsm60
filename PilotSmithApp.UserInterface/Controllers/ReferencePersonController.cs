@@ -43,7 +43,6 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateReferencePerson
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "W")]
         public string InsertUpdateReferencePerson(ReferencePersonViewModel referencePersonVM)
         {

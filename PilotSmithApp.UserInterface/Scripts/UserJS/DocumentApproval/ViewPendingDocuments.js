@@ -9,6 +9,10 @@ $(document).ready(function () {
         $('#tblPendingDocuments tbody').on('dblclick', 'td', function () {
             Edit(this);
         });
+        debugger;
+        if ($('#DocID').val() != "") {
+            EditRedirectFromDocument($('#DocID').val(), $('#ApprLogID').val(), $('#DocType').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -87,7 +91,7 @@ function BindOrReloadDocumentApprovals(action) {
                         }, "defaultContent": "<i>-</i>"
                     }
                 ],
-                columnDefs: [{ "targets": [0,1], "visible": false, "searchable": false },
+                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                     { className: "text-left", "targets": [2,3] },
                     { className: "text-center", "targets": [4,5] }],
                 destroy: true,
@@ -144,4 +148,17 @@ function Edit(curObj) {
         }, 100);
     });
     //window.location.replace("ApproveDocument?code=APR&ID=" + rowData.ApprovalLogID + '&DocType=' + rowData.DocumentTypeCode + '&DocID=' + rowData.DocumentID);
+}
+
+function EditRedirectFromDocument(DocumentID, ApprovalLogID, DocumentType)
+{
+     OnServerCallBegin();
+    debugger;   
+    $("#divPendingDocumentForm").load("/DocumentApproval/ApproveDocument?ID=" + ApprovalLogID + "&DocType=" + DocumentType + '&DocID=' + DocumentID, function () {
+        OnServerCallComplete();
+        setTimeout(function () {
+            //resides in customjs for sliding
+            openNav();
+        }, 100);
+    });
 }

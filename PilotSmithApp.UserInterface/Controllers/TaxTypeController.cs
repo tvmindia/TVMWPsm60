@@ -125,7 +125,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region TaxType SelectList
-        [AuthSecurityFilter(ProjectObject = "TaxType", Mode = "R")]
         public ActionResult TaxTypeSelectList(string required)
         {
             ViewBag.IsRequired = required;

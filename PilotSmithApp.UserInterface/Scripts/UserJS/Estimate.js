@@ -183,14 +183,11 @@ function AddEstimate() {
     OnServerCallBegin();
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
             $('#lblEstimateInfo').text('<<Estimate No.>>');
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Add");
             BindEstimateDetailList(_emptyGuid);
-            OnServerCallComplete();
-            //resides in customjs for sliding
-            setTimeout(function () {
-                openNav();
-            }, 100);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -205,7 +202,9 @@ function EditEstimate(this_Obj) {
     $('#lblEstimateInfo').text(Estimate.EstimateNo);
     //this will return form body(html)
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID + "&enquiryID=" + Estimate.EnquiryID, function (responseTxt, statusTxt, xhr) {
-        if (statusTxt == "success"){
+        if (statusTxt == "success") {
+         OnServerCallComplete();
+         openNav();
         if ($('#IsDocLocked').val() == "True") {
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", Estimate.ID);
         }
@@ -216,12 +215,7 @@ function EditEstimate(this_Obj) {
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
         PaintImages(Estimate.ID);        
-        OnServerCallComplete();
-        //resides in customjs for sliding
-        setTimeout(function () {
-           $("#divEstimateForm #EnquiryID").prop('disabled', true);
-            openNav();
-        }, 100);
+        $("#divEstimateForm #EnquiryID").prop('disabled', true);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

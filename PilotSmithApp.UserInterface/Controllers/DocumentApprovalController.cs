@@ -28,13 +28,17 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         // GET: DocumentApproval
         [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
-        public ActionResult ViewPendingDocuments()
+        public ActionResult ViewPendingDocuments(string ID, string DocType, string DocID)
         {
+            ViewBag.DocumentID = DocID;
+            ViewBag.ApprovalLogID = ID;
+            ViewBag.DocumentType = DocType;
+
             DocumentApprovalAdvanceSearchViewModel documentApprovalAdvanceSearchVM = new DocumentApprovalAdvanceSearchViewModel();
             documentApprovalAdvanceSearchVM.DocumentType = new DocumentTypeViewModel()
             {
                 DocumentTypeSelectList = _documentTypeBusiness.GetDocumentTypeSelectList(),
-            };
+            };          
             return View(documentApprovalAdvanceSearchVM);
         }
         [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]

@@ -83,7 +83,9 @@
                     </div>
                 </div>
             </div>
-
+            @Html.Hidden("DocID", "", htmlAttributes: new { @class = "", Value = ViewBag.DocumentID });
+            @Html.Hidden("ApprLogID", "", htmlAttributes: new { @class = "", Value = ViewBag.ApprovalLogID });
+            @Html.Hidden("DocType", "", htmlAttributes: new { @class = "", Value = ViewBag.DocumentType });
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>

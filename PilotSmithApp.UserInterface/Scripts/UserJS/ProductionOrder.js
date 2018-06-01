@@ -8,10 +8,17 @@ var _result = "";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
+        debugger;
         BindOrReloadProductionOrderTable('Init');
         $('#tblProductionOrder tbody').on('dblclick', 'td', function () {
+            if (this.textContent !== "No data available in table")
             EditProductionOrder(this);
         });
+        debugger;
+        if ($('#RedirectToDocument').val() != "")
+        {
+            EditRedirectToDocument($('#RedirectToDocument').val(), $('#RedirectToDocumentSaleOrder').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -61,7 +68,7 @@ function BindOrReloadProductionOrderTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5]
+                                 columns: [0, 1, 2, 3, 4]
                              }
             }],
             ordering: false,
@@ -86,28 +93,28 @@ function BindOrReloadProductionOrderTable(action) {
                { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
                //{ "data": "UserName", "defaultContent": "<i>-</i>" },
-               {
-                   "data": "IsFinalApproved", render: function (data, type, row) {
-                       if (data) {
-                           return "Approved ✔";// <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
-                       }
-                       else {
-                           return 'Pending';
-                       }
+               //{
+               //    "data": "IsFinalApproved", render: function (data, type, row) {
+               //        if (data) {
+               //            return "Approved ✔";// <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
+               //        }
+               //        else {
+               //            return 'Pending';
+               //        }
 
-                   }, "defaultContent": "<i>-</i>"
-               },
+               //    }, "defaultContent": "<i>-</i>"
+               //},
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [0, 2, 3, 4, 5] },
-                          { className: "text-center", "targets": [1,6] },
+                          { className: "text-left", "targets": [0, 2, 3, 4] },
+                          { className: "text-center", "targets": [1,5] },
                             { "targets": [0], "width": "30%" },
                             { "targets": [2], "width": "10%" },
                             { "targets": [3, 4], "width": "10%" },
                             { "targets": [1], "width": "20%" },
                             { "targets": [5], "width": "10%" },
-                            { "targets": [6], "width": "10%" },
+                           
 
             ],
             destroy: true,
@@ -795,7 +802,7 @@ function ShowSendForApproval(documentTypeCode) {
             var documentID = $('#ProductionOrderForm #ID').val();
             var latestApprovalID = $('#ProductionOrderForm #LatestApprovalID').val();
             ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID);
-            SendForApproval('POD')
+           // SendForApproval('POD')
             //BindPurchaseOrder($('#ID').val());
 
         }
@@ -822,4 +829,36 @@ function SendForApproval(documentTypeCode) {
     $('#SendApprovalModal').modal('hide');
     //BindPurchaseOrder($('#ID').val());
 
+}
+
+function EditRedirectToDocument(id, saleOrderID)
+{
+    debugger;
+    OnServerCallBegin();  
+  
+    //this will return form body(html)
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + id + "&saleOrderID=" + saleOrderID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblProductionOrderInfo').text($('#ProdOrderNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
+            }
+            BindProductionOrderDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+            
+            //resides in customjs for sliding
+            $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
+            
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

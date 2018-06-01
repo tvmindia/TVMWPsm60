@@ -103,7 +103,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion MasterPartial
         # region ProductSelectList
-        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
         public ActionResult ProductSelectList(string required, bool? disabled)
         {
             ViewBag.IsRequired = required;

@@ -133,7 +133,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region Area SelectList
-        [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
         public ActionResult AreaSelectList(string required)
         {
             ViewBag.IsRequired = required;

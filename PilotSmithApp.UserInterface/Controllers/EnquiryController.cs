@@ -45,7 +45,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
             enquiryAdvanceSearchVM.Area = new AreaViewModel();
@@ -75,6 +75,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
             enquiryAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
             return View(enquiryAdvanceSearchVM);
+            ViewBag.ID = id;
+            return View();
         }
         #region Enquiry Form
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]

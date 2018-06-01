@@ -13,6 +13,12 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
             EditEnquiry(this);
         });
+        debugger;
+        if ($('#RedirectToDocument').val() != "")
+        {           
+            EditRedirectFromDocument($('#RedirectToDocument').val());
+        }
+            
     }
     catch (e) {
         console.log(e.message);
@@ -57,7 +63,7 @@ function BindOrReloadEnquiryTable(action) {
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
                 break;
             case 'Search':
-                if (($('.divboxASearch #SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvReferencePersonCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvReferencePersonCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "")) {
                     return true;
                 }
                 break;
@@ -661,4 +667,32 @@ function DeleteEnquiryFollowup(ID) {
             notyAlert('error', _message);
         }
     }
+}
+
+
+function EditRedirectFromDocument(id)
+{
+    debugger;
+    OnServerCallBegin();
+   
+    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+            }
+            BindEnquiryDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }
