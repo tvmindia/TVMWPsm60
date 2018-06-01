@@ -155,15 +155,12 @@ function AddQuotation() {
     OnServerCallBegin();
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
             ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
             $('#lblQuotationInfo').text('<<Quotation No.>>');
             BindQuotationDetailList(_emptyGuid);
             BindQuotationOtherChargesDetailList(_emptyGuid);
-            OnServerCallComplete();
-            setTimeout(function () {
-                //resides in customjs for sliding
-                openNav();
-            }, 100);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -178,10 +175,17 @@ function EditQuotation(this_Obj) {
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + Quotation.EstimateID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             debugger;
+            OnServerCallComplete();
+            openNav();
             $('#lblQuotationInfo').text(Quotation.QuoteNo);
             //$('#CustomerID').trigger('change');
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
+                if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
+                }
+                else {
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+                }
             }
             else {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
@@ -192,12 +196,7 @@ function EditQuotation(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(Quotation.ID);
-            OnServerCallComplete();
-            setTimeout(function () {
-                $("#divQuotationForm #EstimateID").prop('disabled', true);
-                //resides in customjs for sliding
-                openNav();
-            }, 100);
+            $("#divQuotationForm #EstimateID").prop('disabled', true);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -208,11 +207,15 @@ function ResetQuotation() {
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-                setTimeout(function () {
                     $("#divQuotationForm #EstimateID").prop('disabled', true);
                     //resides in customjs for sliding
                     openNav();
-                }, 100);
+            }
+            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
+            }
+            else {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
             }
             BindQuotationDetailList($('#ID').val(), false);
             BindQuotationOtherChargesDetailList($('#ID').val());
@@ -367,28 +370,6 @@ function BindQuotationOtherChargesDetailList(id) {
                  { className: "text-left", "targets": [0] },
                  { className: "text-center", "targets": [4] }
              ],
-             //rowCallback: function (row, data, index) {
-             //    debugger;
-             //    var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
-             //    var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
-             //    var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
-             //    var CGSTAmt = parseFloat(data.ChargeAmount * CGST / 100);
-             //    var SGSTAmt = parseFloat(data.ChargeAmount * SGST / 100)
-             //    var IGSTAmt = parseFloat(data.ChargeAmount * IGST / 100)
-             //    var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-             //    var Total = roundoff(parseFloat(data.ChargeAmount) + parseFloat(GSTAmt))
-             //    var OtherChargeAmt = roundoff(parseFloat($('#lblOtherChargeAmount').text()) + parseFloat(Total))
-             //    var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + parseFloat(Total))
-             //    var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()))
-             //    var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()))
-             //    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + parseFloat(Total))
-
-             //    $('#lblOtherChargeAmount').text(OtherChargeAmt);
-             //    $('#lblGrossAmount').text(GrossAmount);
-             //    $('#lblTaxTotal').text(TaxTotal);
-             //    $('#lblItemTotal').text(TaxableTotal);
-             //    $('#lblGrandTotal').text(GrandTotal);
-             //},
              destroy: true,
          });
     $('[data-toggle="popover"]').popover({
@@ -473,29 +454,6 @@ function BindQuotationDetailList(id, IsEstimated) {
                  { className: "text-left", "targets": [3, 0] },
                  { className: "text-center", "targets": [7] }
              ],
-             //rowCallback: function (row, data, index) {
-             //    debugger;
-             //    var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
-             //    var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
-             //    var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
-             //    var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
-             //    var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
-             //    var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
-             //    var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
-             //    var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
-             //    var GrossTotalAmt = TaxableAmt + GSTAmt 
-             //    var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
-             //    var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
-             //    var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
-             //    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + GrossTotalAmt)
-             //    var OtherChargeAmt = roundoff(parseFloat($('#lblOtherChargeAmount').text()))
-
-             //    $('#lblTaxTotal').text(TaxTotal);
-             //    $('#lblItemTotal').text(TaxableTotal);
-             //    $('#lblGrossAmount').text(GrossAmount);
-             //    $('#lblGrandTotal').text(GrandTotal);
-             //    $('#lblOtherChargeAmount').text(OtherChargeAmt);
-             //},
              initComplete: function (settings, json) {
                  $('#QuotationForm #Discount').trigger('change');
              },
@@ -773,7 +731,7 @@ function ClearCalculatedFields() {
     $('#lblItemTotal').text('0.00');
     $('#lblGrossAmount').text('0.00');
     $('#lblGrandTotal').text('0.00');
-    $('#lblOtherChargeAmount').text(0.00);
+    $('#lblOtherChargeAmount').text('0.00');
 }
 //=========================================================================================================================
 //Email Quotation
@@ -795,6 +753,7 @@ function UpdateQuotationEmailInfo() {
     $('#FormUpdateQuotationEmailInfo #ID').val($('#QuotationForm #ID').val());
 }
 function DownloadQuotation() {
+    debugger;
     var bodyContent = $('#divQuotationEmailcontainer').html();
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
@@ -860,13 +819,15 @@ function SaveSuccessQuotationEmailSend(data, status) {
 function ShowSendForApproval(documentTypeCode) {
     debugger;
     $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
+        debugger;
     if ($('#LatestApprovalStatus').val() == 3) {
         var documentID = $('#QuotationForm #ID').val();
-        var latestApprovalID = $('QuotationForm #LatestApprovalID').val();
+        var latestApprovalID = $('#LatestApprovalID').val();
         ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID);
-        SendForApproval('QUO')
+        //SendForApproval('QUO')
         //BindPurchaseOrder($('#ID').val());
-
+        ResetQuotation();
+        
     }
     else {
         $('#SendApprovalModal').modal('show');
@@ -889,6 +850,7 @@ function SendForApproval(documentTypeCode) {
         }
         SendDocForApproval(documentID, documentTypeCode, approversCSV);
         $('#SendApprovalModal').modal('hide');
+        ResetQuotation();
         //BindPurchaseOrder($('#ID').val());
         
 }
@@ -1103,7 +1065,7 @@ function DeleteQuotationOtherChargeDetail(ID) {
 }
 function CalculateTotal()
 {
-    var TaxTotal = 0, TaxableTotal = 0, GrossAmount = 0, GrandTotal = 0, OtherChargeAmt=0.00;
+    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt=0.00;
     var quotationDetail= _dataTable.QuotationDetailList.rows().data();
     var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.rows().data();
     for (var i = 0; i < quotationDetail.length; i++) {

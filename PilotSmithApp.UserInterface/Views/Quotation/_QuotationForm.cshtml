@@ -12,6 +12,8 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
@@ -107,17 +109,6 @@
                         </div>
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
-                                @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })
-                            </div>
-                            <div class="col-md-12">
-                                <div class="divDocumentOwnerSelectList">
-                                    @Html.Action("DocumentOwnerSelectList", "DocumentOwner", new { required = "" })
-                                </div>
-                                @Html.HiddenFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })
-                            </div>
-                        </div>
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
                                 @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
@@ -125,7 +116,17 @@
                                 @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        
+                        <div class="col-md-6 no-padding">
+                               <div class="col-md-12">
+                                    @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                               </div>
+                         <div class="col-md-12">
+                         <div class="divDocumentStatusSelectList">
+                                @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "QUO" })
+                         </div>
+                                @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                        </div>
+                        </div>
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
@@ -137,17 +138,7 @@
                                 @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                             </div>
                         </div>
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
-                                @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
-                            </div>
-                            <div class="col-md-12">
-                                <div class="divDocumentStatusSelectList">
-                                    @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "QUO" })
-                                </div>
-                                @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                            </div>
-                        </div>
+                        
                     </div>
             @*@if (Model.IsUpdate)
                 {*@

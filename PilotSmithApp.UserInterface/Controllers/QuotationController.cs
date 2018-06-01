@@ -59,7 +59,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.EstimateID = null;
                     quotationVM.EstimateSelectList = new List<SelectListItem>();
                     quotationVM.DocumentStatus = new DocumentStatusViewModel();
-                    quotationVM.DocumentStatus.Description = "-";
+                    quotationVM.DocumentStatus.Description = "OPEN";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
                 }
@@ -73,7 +73,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.CustomerID = estimateVM.CustomerID;
                     quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
                     quotationVM.DocumentStatus = new DocumentStatusViewModel();
-                    quotationVM.DocumentStatus.Description = "-";
+                    quotationVM.DocumentStatus.Description = "OPEN";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
                 }

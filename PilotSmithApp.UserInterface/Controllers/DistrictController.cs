@@ -131,7 +131,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region District SelectList
-        [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
         public ActionResult DistrictSelectList(string required)
         {
             ViewBag.IsRequired = required;

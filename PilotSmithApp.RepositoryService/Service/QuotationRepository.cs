@@ -295,7 +295,6 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@OtherChargeDetailXML", SqlDbType.Xml).Value = quotation.OtherChargeDetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = quotation.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = quotation.GeneralNotes;
-                        cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = quotation.DocumentOwnerID;
                         cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = quotation.BranchCode;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = quotation.Discount;
                         //-----------------------//
