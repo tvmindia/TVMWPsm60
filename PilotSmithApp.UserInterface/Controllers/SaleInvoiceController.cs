@@ -20,12 +20,17 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICustomerBusiness _customerBusiness;
         IBranchBusiness _branchBusiness;
         IEstimateBusiness _estimateBusiness;
-        public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEstimateBusiness estimateBusiness)
+        IQuotationBusiness _quotationBusiness;
+        ISaleOrderBusiness _saleOrderBusiness;
+        public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness,
+            IEstimateBusiness estimateBusiness,IQuotationBusiness quotationBusiness,ISaleOrderBusiness saleOrderBusiness)
         {
             _saleInvoiceBusiness = saleInvoiceBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
             _estimateBusiness = estimateBusiness;
+            _quotationBusiness = quotationBusiness;
+            _saleOrderBusiness = saleOrderBusiness;
         }
         // GET: SaleInvoice
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -35,7 +40,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #region SaleInvoice Form
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
-        public ActionResult SaleInvoiceForm(Guid id, Guid? estimateID)
+        public ActionResult SaleInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID)
         {
             SaleInvoiceViewModel saleInvoiceVM = null;
             try
@@ -45,25 +50,50 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(id));
                     saleInvoiceVM.IsUpdate = true;
                 }
-                else if (id == Guid.Empty && estimateID == null)
+                else if (id == Guid.Empty && quotationID != null)
                 {
+                    QuotationViewModel quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation((Guid)quotationID));
                     saleInvoiceVM = new SaleInvoiceViewModel();
                     saleInvoiceVM.IsUpdate = false;
-                    saleInvoiceVM.ID = Guid.Empty;
-                    //saleInvoiceVM.EstimateID = null;
-                    saleInvoiceVM.DocumentStatusCode = 5;
-                    saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.ID = Guid.Empty; 
+                    saleInvoiceVM.DocumentType = "Quotation";
+                    saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
+                    saleInvoiceVM.QuoteID = quotationID;
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.CustomerID = quotationVM.CustomerID;
+                    saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "OPEN",
+                    };
                 }
-                else if (id == Guid.Empty && estimateID != null)
+                else if (id == Guid.Empty && saleorderID != null)
                 {
-                    EstimateViewModel estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate((Guid)estimateID));
+                    SaleOrderViewModel saleorderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleorderID));
                     saleInvoiceVM = new SaleInvoiceViewModel();
                     saleInvoiceVM.IsUpdate = false;
                     saleInvoiceVM.ID = Guid.Empty;
+                    saleInvoiceVM.DocumentType = "SaleOrder";
+                    saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
+                    saleInvoiceVM.SaleOrderID = saleorderID;
+                    saleInvoiceVM.CustomerID = saleorderVM.CustomerID;
+                    saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "OPEN",
+                    };
+                }
+                else   
+                {
+                    saleInvoiceVM = new SaleInvoiceViewModel();
+                    saleInvoiceVM.IsUpdate = false;
+                    saleInvoiceVM.ID = Guid.Empty;
+                    saleInvoiceVM.DocumentType = "Quotation";
                     saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
-                    //saleInvoiceVM.CustomerID = estimateVM.CustomerID;
+                    saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "OPEN",
+                    };
                 }
                 saleInvoiceVM.Customer = new CustomerViewModel
                 {
