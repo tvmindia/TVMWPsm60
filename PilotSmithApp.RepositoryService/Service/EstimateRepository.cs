@@ -46,7 +46,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         else
                         {
-                            cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = estimateAdvanceSearch.SearchTerm;
+                            cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = estimateAdvanceSearch.SearchTerm.Trim();
 
                         }
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = estimateAdvanceSearch.DataTablePaging.Start;
@@ -54,8 +54,20 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = estimateAdvanceSearch.DataTablePaging.Length;
-                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = estimateAdvanceSearch.FromDate;
-                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = estimateAdvanceSearch.ToDate;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = estimateAdvanceSearch.AdvFromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = estimateAdvanceSearch.AdvToDate;
+                        if (estimateAdvanceSearch.AdvCustomerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@CustomerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = estimateAdvanceSearch.AdvCustomerID;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = estimateAdvanceSearch.AdvAreaCode;
+                        cmd.Parameters.Add("@ReferencePersonCode", SqlDbType.Int).Value = estimateAdvanceSearch.AdvReferencePersonCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = estimateAdvanceSearch.AdvBranchCode;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = estimateAdvanceSearch.AdvDocumentStatusCode;
+                        if (estimateAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = estimateAdvanceSearch.AdvDocumentOwnerID;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -76,10 +88,14 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimate.Enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : estimate.Enquiry.EnquiryNo);
                                         estimate.Customer = new Customer();
                                         estimate.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : estimate.Customer.CompanyName);
-                                        // estimate.DocumentStatus = new DocumentStatus();
-                                        //.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? sdr["DocumentStatusDescription"].ToString() : estimate.DocumentStatus.Description);
+                                        estimate.DocumentStatus = new DocumentStatus();
+                                        estimate.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? sdr["DocumentStatusDescription"].ToString() : estimate.DocumentStatus.Description);
                                         estimate.Branch = new Branch();
                                         estimate.Branch.Description = (sdr["BranchCode"].ToString() != "" ? sdr["BranchCode"].ToString() : estimate.Branch.Description);
+                                        estimate.Area = new Area();
+                                        estimate.Area.Description = (sdr["Area"].ToString() != "" ? (sdr["Area"].ToString()) : estimate.Area.Description);
+                                        estimate.ReferencePerson = new ReferencePerson();
+                                        estimate.ReferencePerson.Name = (sdr["ReferencePerson"].ToString() != "" ? (sdr["ReferencePerson"].ToString()) : estimate.ReferencePerson.Name);
                                         estimate.UserName = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : estimate.UserName);
                                         estimate.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : estimate.TotalCount);
                                         estimate.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : estimate.FilteredCount);

@@ -55,7 +55,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             enquiryAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
             enquiryAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
             enquiryAdvanceSearchVM.Branch = new BranchViewModel();
-            enquiryAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(null);
+            AppUA appUA = Session["AppUA"] as AppUA;
+            enquiryAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
             enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
             enquiryAdvanceSearchVM.PSAUser = new PSAUserViewModel();
