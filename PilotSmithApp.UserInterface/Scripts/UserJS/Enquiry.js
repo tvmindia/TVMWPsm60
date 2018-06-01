@@ -13,14 +13,26 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
             EditEnquiry(this);
         });
+        debugger;
+        if ($('#RedirectToDocument').val() != "")
+        {           
+            EditRedirectFromDocument($('#RedirectToDocument').val());
+        }
+            
     }
     catch (e) {
         console.log(e.message);
     }
+    $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID").select2({
+        dropdownParent: $(".divboxASearch")
+    });
+
+    $('.select2').addClass('form-control newinput');
 });
 //function bind the Enquiry list checking search and filter
 function BindOrReloadEnquiryTable(action) {
     try {
+        debugger;
         //creating advancesearch object
         EnquiryAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
@@ -28,17 +40,30 @@ function BindOrReloadEnquiryTable(action) {
         //switch case to check the operation
         switch (action) {
             case 'Reset':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #SearchTerm').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('').trigger('change');
+                $('.divboxASearch #AdvCustomerID').val('').trigger('change');
+                $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');
+                $('.divboxASearch #AdvBranchCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
+
                 break;
             case 'Init':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #SearchTerm').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('');
+                $('.divboxASearch #AdvCustomerID').val('');
+                $('.divboxASearch #AdvReferencePersonCode').val('');
+                $('.divboxASearch #AdvBranchCode').val('');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
+                $('.divboxASearch #AdvDocumentOwnerID').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('.divboxASearch #SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvReferencePersonCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "")) {
                     return true;
                 }
                 break;
@@ -49,9 +74,15 @@ function BindOrReloadEnquiryTable(action) {
                 break;
         }
         EnquiryAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        EnquiryAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        EnquiryAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        EnquiryAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        EnquiryAdvanceSearchViewModel.SearchTerm = $('.divboxASearch #SearchTerm').val();
+        EnquiryAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
+        EnquiryAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
+        EnquiryAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        EnquiryAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
+        EnquiryAdvanceSearchViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val();
+        EnquiryAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
+        EnquiryAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
+        EnquiryAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
         //apply datatable plugin on Enquiry table
         _dataTable.EnquiryList = $('#tblEnquiry').DataTable(
         {
@@ -68,6 +99,7 @@ function BindOrReloadEnquiryTable(action) {
             paging: true,
             lengthChange: false,
             processing: true,
+            autoWidth:false,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
@@ -81,22 +113,33 @@ function BindOrReloadEnquiryTable(action) {
             columns: [
                { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+
+                           return "<b>Customer-</b>"+row.Customer.ContactPerson+"</br>"+"<b>Organization-</b>"+data ;
+
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
                { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
+               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "DocumentStatus.Description", render: function (data, type, row) {
+                           return "<b>Doc.Status-</b>" + data +"</br>" +"<b>Doc.Owner-</b>" + row.PSAUser.LoginName +"</br>"+"<b>Branch-</b>" + row.Branch.Description;
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEnquiry(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [ { className: "text-right", "targets": [] },
-                          { className: "text-left", "targets": [2,3,5,6] },
-                          { className: "text-center", "targets": [0, 1, 4, 7, 8] },
-                            { "targets": [0,1,4], "width": "10%" },
-                            { "targets": [2,3], "width": "10%" },
-                            { "targets": [5], "width": "30%" },
-                            { "targets": [6], "width": "10%" },
-                            { "targets": [7,8], "width": "5%" },
+                          { className: "text-left", "targets": [2,3,4,5,6,7] },
+                          { className: "text-center", "targets": [0, 1, 8] },
+                            { "targets": [0,3,5,6], "width": "10%" },
+                            { "targets": [1], "width": "10%" },
+                            { "targets": [4, 2,7], "width": "20%" },
+                           // { "targets": [4], "width": "20%" },
+                           // { "targets": [6], "width": "10%" },
+                            { "targets": [8], "width": "5%" },
                         ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -624,4 +667,32 @@ function DeleteEnquiryFollowup(ID) {
             notyAlert('error', _message);
         }
     }
+}
+
+
+function EditRedirectFromDocument(id)
+{
+    debugger;
+    OnServerCallBegin();
+   
+    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+            }
+            BindEnquiryDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

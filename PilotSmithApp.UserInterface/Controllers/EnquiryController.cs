@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,18 +22,59 @@ namespace PilotSmithApp.UserInterface.Controllers
         IBranchBusiness _branchBusiness;
         IEnquiryGradeBusiness _enquiryGradeBusiness;
         ICommonBusiness _commonBusiness;
-        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness, ICommonBusiness commonBusiness)
+        IAreaBusiness _areaBusiness;
+        IReferencePersonBusiness _referencePersonBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;
+        private IUserBusiness _userBusiness;
+
+        public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,
+            IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
+            ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
+            IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
             _enquiryGradeBusiness = enquiryGradeBusiness;
             _commonBusiness = commonBusiness;
+            _areaBusiness= areaBusiness;
+            _referencePersonBusiness = referencePersonBusiness;
+            _documentStatusBusiness = documentStatusBusiness;
+            _userBusiness = userBusiness;
+
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
+            enquiryAdvanceSearchVM.Area = new AreaViewModel();
+            enquiryAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            enquiryAdvanceSearchVM.Customer = new CustomerViewModel();
+            enquiryAdvanceSearchVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
+            enquiryAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
+            enquiryAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
+            enquiryAdvanceSearchVM.Branch = new BranchViewModel();
+            enquiryAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(null);
+            enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
+            enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
+            enquiryAdvanceSearchVM.PSAUser = new PSAUserViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+
+            if (PSAUserVMList != null)
+                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = PSAuVM.UserName,
+                        Value = PSAuVM.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            enquiryAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
+            return View(enquiryAdvanceSearchVM);
+            ViewBag.ID = id;
             return View();
         }
         #region Enquiry Form

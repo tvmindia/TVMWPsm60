@@ -52,8 +52,20 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = enquiryAdvanceSearch.DataTablePaging.Length;
-                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = enquiryAdvanceSearch.FromDate;
-                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = enquiryAdvanceSearch.ToDate;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = enquiryAdvanceSearch.AdvFromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = enquiryAdvanceSearch.AdvToDate;
+                        if (enquiryAdvanceSearch.AdvCustomerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@CustomerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = enquiryAdvanceSearch.AdvCustomerID;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = enquiryAdvanceSearch.AdvAreaCode;
+                        cmd.Parameters.Add("@ReferencePersonCode", SqlDbType.Int).Value = enquiryAdvanceSearch.AdvReferencePersonCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = enquiryAdvanceSearch.AdvBranchCode;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = enquiryAdvanceSearch.AdvDocumentStatusCode;
+                        if (enquiryAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
+                        else
+                        cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiryAdvanceSearch.AdvDocumentOwnerID;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -91,7 +103,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiry.AttendedByID = (sdr["AttendedByID"].ToString() != "" ? Guid.Parse(sdr["AttendedByID"].ToString()) : enquiry.AttendedByID);
                                         enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
                                         enquiry.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : enquiry.DocumentOwnerID);
+                                        enquiry.PSAUser = new PSAUser();
+                                        enquiry.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : enquiry.PSAUser.LoginName);
                                         enquiry.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : enquiry.BranchCode);
+                                        enquiry.Branch = new Branch();
+                                        enquiry.Branch.Description = (sdr["Branch"].ToString() != "" ? (sdr["Branch"].ToString()) : enquiry.Branch.Description);
+                                        enquiry.Area = new Area();
+                                        enquiry.Area.Description = (sdr["Area"].ToString() != "" ? (sdr["Area"].ToString()) : enquiry.Area.Description);
                                         enquiry.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiry.FilteredCount);
                                         enquiry.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiry.FilteredCount);
                                     }
