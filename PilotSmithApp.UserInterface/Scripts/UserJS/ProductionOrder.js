@@ -218,6 +218,7 @@ function ResetProductionOrder() {
         else {
             $('#hdnCustomerID').val('');
             $('#hdnSaleOrderID').val('');
+            $('#lblProductionOrderInfo').text('<<Production Order No.>>');
         }
         BindProductionOrderDetailList($('#ID').val(), false);
         clearUploadControl();
@@ -255,7 +256,7 @@ function SaveSuccessProductionOrder(data, status) {
                     BindProductionOrderDetailList(_result.ID);                   
                     clearUploadControl();
                     PaintImages(_result.ID);
-                    $('#lblProductionOrderInfo').text(_result.ProdOrderNo);
+                    $('#lblProductionOrderInfo').text(_result.ProductionOrderNo);
                 });
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
                 BindOrReloadProductionOrderTable('Init');
@@ -804,7 +805,7 @@ function ShowSendForApproval(documentTypeCode) {
             ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID);
            // SendForApproval('POD')
             //BindPurchaseOrder($('#ID').val());
-
+            ResetProductionOrder();
         }
         else {
             $('#SendApprovalModal').modal('show');
@@ -828,16 +829,16 @@ function SendForApproval(documentTypeCode) {
     SendDocForApproval(documentID, documentTypeCode, approversCSV);
     $('#SendApprovalModal').modal('hide');
     //BindPurchaseOrder($('#ID').val());
-
+    ResetProductionOrder();
 }
 
-function EditRedirectToDocument(id, saleOrderID)
+function EditRedirectToDocument(id)
 {
     debugger;
     OnServerCallBegin();  
   
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + id + "&saleOrderID=" + saleOrderID, function (responseTxt, statusTxt, xhr) {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + id, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();

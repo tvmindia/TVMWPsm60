@@ -15,9 +15,11 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Delivery challan Ref.No.")]
         public string DelvChallanRefNo { get; set; }
         public DateTime DelvChallanDate { get; set; }
-        [Display(Name = "Select Sale Order")]
+        [Display(Name = "Sale Order")]
+        [Required(ErrorMessage ="Select Document")]
         public Guid? SaleOrderID { get; set; }
-        [Display(Name = "Select Prouction Order")]
+        [Display(Name = "Prouction Order")]
+        [Required(ErrorMessage = "Select Document")]
         public Guid? ProdOrderID { get; set; }
         [Display(Name ="Select Customer")]
         public Guid? CustomerID { get; set; }
@@ -75,7 +77,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         
         public string SearchTerm { get; set; }
+        [Display(Name ="From Date")]
         public string FromDate { get; set; }
+        [Display(Name = "To Date")]
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
     }
@@ -109,5 +113,6 @@ namespace PilotSmithApp.UserInterface.Models
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
         public bool IsUpdate { get; set; }
+        public decimal? PrevDelQty { get; set; }
     }
 }

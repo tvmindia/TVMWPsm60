@@ -40,15 +40,29 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string UserName { get; set; }
         public List<EstimateDetail> EstimateDetailList { get; set; }
         public Employee Employee { get; set; }
+        public Area Area { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
     }
 
     public class EstimateAdvanceSearch
     {
         public string EstimateDate { get; set; }
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public Area Area { get; set; }
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
     }
 
     public class EstimateDetail

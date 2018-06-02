@@ -257,8 +257,21 @@ function DeleteSaleInvoiceItem(id) {
         console.log(e.message);
     }
 }
-function BindSaleInvoiceDetailList(id) {
+function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
     debugger;
+    var data;
+    if (id == _emptyGuid && !(IsSaleOrder) && !(IsQuotation)) {
+        data = null;
+    }
+    else if (id == _emptyGuid && (IsSaleOrder)) {
+        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation)
+    }
+    else if (id == _emptyGuid && (IsQuotation)) {
+        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation)
+    }
+    else {
+        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation)
+    }
     _dataTable.SaleInvoiceDetailList = $('#tblSaleInvoiceDetails').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -267,42 +280,101 @@ function BindSaleInvoiceDetailList(id) {
              paging: false,
              ordering: false,
              bInfo: false,
-             data: id == _emptyGuid ? null : GetSaleInvoiceDetailListBySaleInvoiceID(id),
+             data: data,//id == _emptyGuid ? null : GetSaleInvoiceDetailListBySaleInvoiceID(id),
              language: {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
              },
              columns: [
-             { "data": "Product.Code", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Product.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductModel.Name", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ProductSpec", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Product.Code", render: function (data, type, row) {
+                     return '<b>Code</b> : ' + data +
+                         '</br><b>Name</b> : ' + row.Product.Name +
+                         '</br><b>Model</b> : ' + row.ProductModel.Name +
+                         '</br><b>Spec</b> : ' + row.ProductSpec
+                 }, "defaultContent": "<i></i>"
+             },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
-             ],
-             columnDefs: [
-                 { "targets": [0, 4], "width": "10%" },
-                 { "targets": [1, 2], "width": "15%" },
-                 { "targets": [3], "width": "35%" },
-                 { "targets": [5], "width": "10%" },
-                 { "targets": [6], "width": "5%" },
-                 { className: "text-right", "targets": [4, 5] },
-                 { className: "text-left", "targets": [1, 2, 3] },
-                 { className: "text-center", "targets": [0, 6] }
-             ]
+             { "data": "Discount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {//Taxable
+                 "data": "Rate", render: function (data, type, row) {
+                     var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
+                     var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
+                     var Taxable = Total - Discount
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
+                 }, "defaultContent": "<i></i>"
+             },
+             {//GST
+               "data": "Rate", render: function (data, type, row) {
+                   debugger;
+                   var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                   var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                   var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                   var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
+                   var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
+                   var Taxable = Total - Discount
+                   var CGSTAmt = parseFloat(Taxable * CGST / 100);
+                   var SGSTAmt = parseFloat(Taxable * SGST / 100)
+                   var IGSTAmt = parseFloat(Taxable * IGST / 100)
+                   var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
+                   return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(SGSTAmt) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+               }, "defaultContent": "<i></i>"
+             },
+            {//Cess
+                "data": "CessAmt", render: function (data, type, row) {
+                    return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + data
+                }, "defaultContent": "<i></i>"
+            },
+            {
+                "data": "Rate", render: function (data, type, row) {
+                    var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                    var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                    var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                    var TaxableAmt = roundoff((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0))
+                    var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+                    var SGSTAmt = parseFloat(TaxableAmt * SGST / 100)
+                    var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
+                    var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
+                    var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt) + parseFloat(row.CessAmt))
+                    return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                }, "defaultContent": "<i></i>"
+            },
+            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+            ],
+            columnDefs: [
+                { className: "text-right", "targets": [2,3,4,5,6,7] },
+                { className: "text-left", "targets": [0] },
+                { className: "text-center", "targets": [1,8] }
+            ]
          });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'top'
+    });
 }
-function GetSaleInvoiceDetailListBySaleInvoiceID(id) {
+function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation) {
     try {
         debugger;
-        var data = { "saleInvoiceID": id };
         var saleInvoiceDetailList = [];
-        _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceDetailListBySaleInvoiceID/", data);
+        if (IsSaleOrder) {
+            var data = { "saleOrderID": $('#SaleInvoiceForm #hdnSaleOrderID').val() };
+            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceDetailListBySaleOrderIDFromSaleOrder/", data);
+        }
+        else if (IsQuotation) {
+            var data = { "quoteID": $('#SaleInvoiceForm #hdnQuoteID').val() };
+            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceDetailListByQuotationIDFromQuotation/", data);
+        }
+        else {
+            var data = { "saleInvoiceID": id };
+            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceDetailListBySaleInvoiceID/", data);
+        }
+       
         if (_jsonData != '') {
             _jsonData = JSON.parse(_jsonData);
             _message = _jsonData.Message;

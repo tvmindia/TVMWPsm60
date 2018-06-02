@@ -16,6 +16,11 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+      $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID").select2({
+        dropdownParent: $(".divboxASearch")
+        });
+
+    $('.select2').addClass('form-control newinput');
 });
 
 //function bind the Enquiry list checking search and filter
@@ -29,16 +34,28 @@ function BindOrReloadEstimateTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('').trigger('change');
+                $('.divboxASearch #AdvCustomerID').val('').trigger('change');
+                $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');
+                $('.divboxASearch #AdvBranchCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('');
+                $('.divboxASearch #AdvCustomerID').val('');
+                $('.divboxASearch #AdvReferencePersonCode').val('');
+                $('.divboxASearch #AdvBranchCode').val('');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
+                $('.divboxASearch #AdvDocumentOwnerID').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") &&($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvReferencePersonCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "")) {
                     return true;
                 }
                 break;
@@ -50,8 +67,14 @@ function BindOrReloadEstimateTable(action) {
         }
         EstimateAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         EstimateAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        EstimateAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        EstimateAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        EstimateAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
+        EstimateAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
+        EstimateAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        EstimateAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
+        EstimateAdvanceSearchViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val();
+        EstimateAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
+        EstimateAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
+        EstimateAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
         //apply datatable plugin on Estimate table
         debugger;
         _dataTable.EstimateList = $('#tblEstimate').DataTable(
@@ -61,13 +84,14 @@ function BindOrReloadEstimateTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0 ,1, 2, 3, 4, 5, 6]
+                                 columns: [0 ,1, 2, 3, 4, 5,6]
                              }
             }],
             ordering: false,
             searching: false,
             paging: true,
             lengthChange: false,
+            autoWidth: false,
             processing: true,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -78,20 +102,37 @@ function BindOrReloadEstimateTable(action) {
                 data: { "estimateAdvanceSearchVM": EstimateAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 7,
             columns: [
                { "data": "EstimateNo", "defaultContent": "<i>-</i>" },
-               { "data": "EstimateRefNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "EstimateRefNo", "defaultContent": "<i>-</i>" },
                { "data": "EstimateDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Enquiry.EnquiryNo", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
-               { "data": "UserName", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+
+                       return "<b>Customer-</b>" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<b>Organization-</b>" + data;
+
+                   }, "defaultContent": "<i>-</i>"
+               },
+               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
+               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
+                {
+                    "data": "UserName", render: function (data, type, row) {
+
+                        return "<b>Document Status-</b>" + row.DocumentStatus.Description + "</br>" + "<b>Doc.Owner-</b>" + data + "</br>" + "<b>Branch-</b>" + row.Branch.Description;
+
+                    }, "defaultContent": "<i>-</i>"
+                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimate(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                    { className: "text-left", "targets": [0, 1] },
-                    { className: "text-center", "targets": [2] }
+                    { className: "text-left", "targets": [0,2] },
+                    { className: "text-center", "targets": [1,7] },
+                    { "targets": [0,1,2,4, 5], "width": "10%" },
+                    { "targets": [3,6], "width": "20%" },
+                    {"targets": [7], "width": "5%"
+        },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
