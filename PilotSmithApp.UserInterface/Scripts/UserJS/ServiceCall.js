@@ -140,7 +140,7 @@ function AddServiceCall() {
     //OnServerCallBegin();
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
-        BindServiceCallChargeDetailList("00000000-0000-0000-0000-000000000000");
+        BindServiceCallChargeDetailList(_emptyGuid);
         //BindServiceCallDetailList("00000000-0000-0000-0000-000000000000", true);
         // BindProductionOrderDetailList(_emptyGuid);
         //BindProductionOrderOtherChargesDetailList(_emptyGuid)
