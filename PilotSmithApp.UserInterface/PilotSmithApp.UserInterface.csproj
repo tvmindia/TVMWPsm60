@@ -256,15 +256,19 @@
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
+    <Content Include="Content\images\contact.png" />
     <Content Include="Content\images\contract.png" />
     <Content Include="Content\images\CustPOrd.png" />
+    <Content Include="Content\images\datePicker.png" />
     <Content Include="Content\images\document.png" />
     <Content Include="Content\images\email.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
+    <Content Include="Content\images\organisation.png" />
     <Content Include="Content\images\ownerlock.png" />
     <Content Include="Content\images\ownerunlock.png" />
     <Content Include="Content\images\patternpop.png" />
+    <Content Include="Content\images\Pilot.png" />
     <Content Include="Content\images\production.png" />
     <Content Include="Content\images\rupee.png" />
     <Content Include="Content\images\saleorder.png" />
@@ -726,6 +730,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\AppObjectController.cs" />
+    <Compile Include="Controllers\ApprovalStatusController.cs" />
     <Compile Include="Controllers\ApproverController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BankController.cs" />
@@ -776,6 +781,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ApprovalLogViewModel.cs" />
+    <Compile Include="Models\ApprovalStatusViewModel.cs" />
     <Compile Include="Models\ApproverViewModel.cs" />
     <Compile Include="Models\AreaViewModel.cs" />
     <Compile Include="Models\BankViewModel.cs" />
@@ -1000,6 +1006,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\ProductImages\" />
     <Folder Include="Content\Uploads\" />
+    <Folder Include="Views\ApprovalStatus\" />
     <Folder Include="Views\Bank\" />
     <Folder Include="Views\FileUpload\" />
   </ItemGroup>

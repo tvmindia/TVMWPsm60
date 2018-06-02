@@ -102,9 +102,9 @@ function BindOrReloadDeliveryChallanTable(action) {
             columnDefs: [
                           { className: "text-left", "targets": [0, 1, 3, 4, 5] },
                           { className: "text-center", "targets": [2,6] },
-                            { "targets": [0, 1, 2, 5], "width": "10%" },
-                            {"targets": [3,4],"width":"20%"},
-                            { "targets": [6], "width": "7%" },
+                            { "targets": [0, 1, 2, 5], "width": "20%" },
+                            {"targets": [3,4],"width":"10%"},
+                            { "targets": [6], "width": "10%" },
 
             ],
             destroy: true,
@@ -154,13 +154,20 @@ function AddDeliveryChallan() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&prodOrderID=&saleOrderID=", function () {
-        $('#lblDeliveryChallanInfo').text('<<DeliveryChallan No.>>');
-        ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Add");
-        BindDeliveryChallanDetailList(_emptyGuid);
-        OnServerCallComplete();
-        //resides in customjs for sliding       
-        openNav();        
+    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&delvChallanID=", function (responseTxt, statusTxt, xhr) {
+        
+        if (statusTxt == "success")
+        {
+            $('#lblDeliveryChallanInfo').text('<<DeliveryChallan No.>>');
+            ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Add");
+            BindDeliveryChallanDetailList(_emptyGuid, false, false);
+            OnServerCallComplete();
+            //resides in customjs for sliding       
+            openNav();
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -170,42 +177,55 @@ function EditDeliveryChallan(this_Obj) {
     var DeliveryChallan = _dataTable.DeliveryChallanList.row($(this_Obj).parents('tr')).data();
     $('#lblDeliveryChallanInfo').text(DeliveryChallan.DelvChallanNo);
     //this will return form body(html)
-    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + DeliveryChallan.ID+"&prodOrderID=" + DeliveryChallan.ProdOrderID+"&saleOrderID=" + DeliveryChallan.SaleOrderID, function () {
+    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + DeliveryChallan.ID + "&saleOrderID=" + DeliveryChallan.SaleOrderID + "&prodOrderID=" + DeliveryChallan.ProdOrderID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit");
+            }
+            else {
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument");
+            }
+            BindDeliveryChallanDetailList(DeliveryChallan.ID, false, false);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(DeliveryChallan.ID);
+            OnServerCallComplete();
+            //resides in customjs for sliding
 
-        if ($('#IsDocLocked').val() == "True")
-        {
-            ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit");
-        }
-        else
-        {
-            ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument");
-        }
-        BindDeliveryChallanDetailList(DeliveryChallan.ID);
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-        clearUploadControl();
-        PaintImages(DeliveryChallan.ID);
-        OnServerCallComplete();
-        //resides in customjs for sliding
-        
-        $("#divDeliveryChallanForm #SaleOrderID").prop('disabled', true);
-        $("#divDeliveryChallanForm #ProdOrderID").prop('disabled', true);
+            //$("#divDeliveryChallanForm #SaleOrderID").prop('disabled', true);
+            //$("#divDeliveryChallanForm #ProdOrderID").prop('disabled', true);
             openNav();
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
        
     });
 }
 
 function ResetDeliveryChallan() {
     //this will return form body(html)
-    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val() + "&prodOrderID=&saleOrderID=" + $('#hdnProdOrderID #hdnSaleOrderID').val(), function () {
-        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-            //resides in customjs for sliding
-
-            openNav();
+    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val() + "&prodOrderID=" + $('#hdnProdOrderID').val(), function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+                $('#divDeliveryChallanForm #ProdOrderID').prop('disabled', true);
+                //resides in customjs for sliding
+                openNav();
+            }
+            else {
+                $('#hdnCustomerID').val('');
+                $('#hdnSaleOrderID').val('');
+                $('#hdnProdOrderID').val('');
+                $('#lblDeliveryChallanInfo').text('<<DeliveryChallan No.>>');
+            }
+            BindDeliveryChallanDetailList($('#ID').val(), false, false);
+            clearUploadControl();
+            PaintImages($('#DeliveryChallanForm #ID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
         }
-        BindDeliveryChallanDetailList($('#ID').val(), false);
-        clearUploadControl();
-        PaintImages($('#DeliveryChallanForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function SaveDeliveryChallan() {
@@ -230,9 +250,9 @@ function SaveSuccessDeliveryChallan(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _result.ID +"&prodOrderID="+_result.ProdOrderID+"&saleOrderID="+_result.SaleOrderID, function () {
+                $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _result.ID +"&prodOrderID="+_result.ProdOrderID, function () {
                     ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit");
-                    BindDeliveryChallanDetailList(_result.ID);
+                    BindDeliveryChallanDetailList(_result.ID,false,false);
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblDeliveryChallanInfo').text(_result.DeliveryChallanNo);
@@ -295,6 +315,21 @@ function DeleteDeliveryChallanItem(id) {
 
 function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
     debugger;
+    var data;
+    if (id == _emptyGuid && !(IsProdOrder) && !(IsSaleOrder))
+    {
+        data = null;
+    }
+    else if (id == _emptyGuid && !(IsProdOrder))
+    {
+        data = GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder, IsSaleOrder)
+    }
+    else if (id == _emptyGuid && !(IsSaleOrder)) {
+        data = GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder, IsSaleOrder)
+    }
+    else {
+        data = GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder, IsSaleOrder)
+    }
     _dataTable.DeliveryChallanDetailList = $('#tblDeliveryChallanDetails').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -303,10 +338,10 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
              paging: false,
              ordering: false,
              bInfo: false,
-             data:                 
-                 //id==_emptyGuid?null: GetDeliveryChallanDetailListByDeliveryChallanID(id),  
+             data:data,
+                 //id == _emptyGuid ? null : GetDeliveryChallanDetailListByDeliveryChallanID(id),
                  //!IsSaleOrder ? id == _emptyGuid ? null : GetDeliveryChallanDetailListByDeliveryChallanID(id, false) : GetDeliveryChallanDetailListByDeliveryChallanID(id, true),         
-                 (!(IsProdOrder||IsSaleOrder)) ? id == _emptyGuid ? null : GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder,IsSaleOrder) : GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder,IsSaleOrder),         
+                 //(!(IsProdOrder||IsSaleOrder)) ? id == _emptyGuid ? null : GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder,IsSaleOrder) : GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder,IsSaleOrder),         
 
              language: {
                  search: "_INPUT_",
@@ -326,18 +361,13 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
              },
              //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
             {
-                "data": "DelvQty", render: function (data, type, row) {
+                "data": "PrevDelQty", render: function (data, type, row) {
                     return data + " " + row.Unit.Description
                 }, "defaultContent": "<i></i>"
             },
              {
                  "data": "DelvQty", render: function (data, type, row) {
-                     var curDelQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.DelvQty));
-                     if (curDelQty >= 0)
-                     { return curDelQty; }
-                     else
-                         return 0;
-                     
+                   return data                 
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
@@ -348,8 +378,8 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
                  { className: "text-right", "targets": [1, 2, 3] },
                  { className: "text-center", "targets": [4] },
                  { "targets": [0], "width": "30%" },
-                 { "targets": [1,2,3], "width": "10%" },                 
-                 { "targets": [4], "width": "7%" },                                
+                 { "targets": [1,2,3], "width": "20%" },                 
+                 { "targets": [4], "width": "10%" },                                
              ],
              destroy: true
          });
@@ -470,9 +500,11 @@ function AddDeliveryChallanDetailToList() {
                 var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
                 if (deliveryChallanDetailList.length > 0) {
                     var checkpoint = 0;
+                    var productSpec = $('#ProductSpec').val();
+                    productSpec = productSpec.replace(/\n/g, ' ');
                     for (var i = 0; i < deliveryChallanDetailList.length; i++) {
                         if ((deliveryChallanDetailList[i].ProductID == $('#ProductID').val()) && (deliveryChallanDetailList[i].ProductModelID == $('#ProductModelID').val()
-                            && (deliveryChallanDetailList[i].ProductSpec == $('#ProductSpec').val() && (deliveryChallanDetailList[i].OrderQty == $('#OrderQty').val())))) {
+                            && (deliveryChallanDetailList[i].ProductSpec.replace(/\n/g,' ') == productSpec && (deliveryChallanDetailList[i].OrderQty == $('#OrderQty').val())))) {
                             deliveryChallanDetailList[i].DelvQty = parseFloat(deliveryChallanDetailList[i].DelvQty) + parseFloat($('#DelvQty').val());
                             checkpoint = 1;
                             break;

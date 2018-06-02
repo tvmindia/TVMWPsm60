@@ -84,16 +84,42 @@ namespace PilotSmithApp.UserInterface.Models
         public PDFTools PDFTools { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> EstimateSelectList { get; set; }
+        public AreaViewModel Area { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
     }
     public class QuotationAdvanceSearchViewModel
     {
         public string EnquiryDate { get; set; }
         public string SearchTerm { get; set; }
         [Display(Name = "Quotation From")]
-        public string FromDate { get; set; }
+        public string AdvFromDate { get; set; }
         [Display(Name = "Quotation To")]
-        public string ToDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Referred By ")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Email Sent(Y/N)")]      
+        public string AdvEmailSentStatus { get; set; }
     }
     public class QuotationDetailViewModel
     {

@@ -51,9 +51,23 @@ namespace PilotSmithApp.RepositoryService.Service
                         if (quotationAdvanceSearch.DataTablePaging.Length == -1)
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
-                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = quotationAdvanceSearch.DataTablePaging.Length;
-                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = quotationAdvanceSearch.FromDate;
-                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = quotationAdvanceSearch.ToDate;
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = quotationAdvanceSearch.DataTablePaging.Length;                        
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = quotationAdvanceSearch.AdvFromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = quotationAdvanceSearch.AdvToDate;
+                        if (quotationAdvanceSearch.AdvCustomerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@CustomerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quotationAdvanceSearch.AdvCustomerID;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = quotationAdvanceSearch.AdvAreaCode;
+                        cmd.Parameters.Add("@ReferencePersonCode", SqlDbType.Int).Value = quotationAdvanceSearch.AdvReferencePersonCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = quotationAdvanceSearch.AdvBranchCode;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = quotationAdvanceSearch.AdvDocumentStatusCode;
+                        if (quotationAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = quotationAdvanceSearch.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@ApprovalStatusCode", SqlDbType.Int).Value = quotationAdvanceSearch.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.NVarChar,5).Value = quotationAdvanceSearch.AdvEmailSentStatus;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -91,9 +105,18 @@ namespace PilotSmithApp.RepositoryService.Service
                                         //quotation.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotation.GeneralNotes);
                                         quotation.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : quotation.DocumentOwnerID);
                                         quotation.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.BranchCode);
+                                        quotation.Branch = new Branch();
+                                        quotation.Branch.Description = (sdr["Branch"].ToString() != "" ? (sdr["Branch"].ToString()) : quotation.Branch.Description);
                                         quotation.EstimateID= (sdr["EstimateID"].ToString() != "" ? Guid.Parse(sdr["EstimateID"].ToString()) : quotation.EstimateID);
                                         quotation.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : quotation.FilteredCount);
                                         quotation.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : quotation.FilteredCount);
+                                        quotation.Area = new Area();
+                                        quotation.Area.Description = (sdr["Area"].ToString() != "" ? (sdr["Area"].ToString()) : quotation.Area.Description);
+                                        quotation.PSAUser = new PSAUser();
+                                        quotation.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : quotation.PSAUser.LoginName);
+                                        quotation.ApprovalStatus = new ApprovalStatus();
+                                        quotation.ApprovalStatus.Code= (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : quotation.ApprovalStatus.Code);
+                                        quotation.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? (sdr["ApprovalStatus"].ToString()) : quotation.ApprovalStatus.Description);
                                     }
                                     quotationList.Add(quotation);
                                 }

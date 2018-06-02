@@ -134,6 +134,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     deliveryChallan.PreparedBy= (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : deliveryChallan.PreparedBy);
                                     deliveryChallan.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? (sdr["GeneralNotes"]).ToString() : deliveryChallan.GeneralNotes);
                                     deliveryChallan.DocumentOwnerID  = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : deliveryChallan.DocumentOwnerID);
+                                    deliveryChallan.Branch = new Branch();
+                                    deliveryChallan.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : deliveryChallan.Branch.Description);
                                     deliveryChallan.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : deliveryChallan.BranchCode);
                                     deliveryChallan.VehiclePlateNo = (sdr["VehiclePlateNo"].ToString() != "" ? sdr["VehiclePlateNo"].ToString() : deliveryChallan.VehiclePlateNo);
                                     deliveryChallan.DriverName = (sdr["DriverName"].ToString() != "" ? sdr["DriverName"].ToString() : deliveryChallan.DriverName);
@@ -199,7 +201,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallanDetail.Unit = new Unit();
                                         deliveryChallanDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : deliveryChallanDetail.UnitCode);
                                         deliveryChallanDetail.Unit.Description = (sdr["Unit"].ToString() != "" ? (sdr["Unit"].ToString()) : deliveryChallanDetail.Unit.Description);
-
+                                        deliveryChallanDetail.PrevDelQty = (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : deliveryChallanDetail.PrevDelQty);
                                     }
                                     deliveryChallanDetailList.Add(deliveryChallanDetail);
                                 }
@@ -276,6 +278,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         {
                             ID = deliveryChallan.ID,
                             DeliveryChallanNo = deliveryChallan.DelvChallanNo,
+                            SaleOrderID=deliveryChallan.SaleOrderID,
+                            ProdOrderID=deliveryChallan.ProdOrderID,
                             Status = outputStatus.Value.ToString(),
                             Message = deliveryChallan.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
                         };

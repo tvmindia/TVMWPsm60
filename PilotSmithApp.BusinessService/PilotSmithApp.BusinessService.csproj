@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\IApprovalStatusBusiness.cs" />
     <Compile Include="Contract\IApproverBusiness.cs" />
     <Compile Include="Contract\IAreaBusiness.cs" />
     <Compile Include="Contract\IBankBusiness.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Contract\IUnitBusiness.cs" />
     <Compile Include="Contract\IUserInBranchBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ApprovalStatusBusiness.cs" />
     <Compile Include="Service\ApproverBusiness.cs" />
     <Compile Include="Service\AreaBusiness.cs" />
     <Compile Include="Service\BankBusiness.cs" />
