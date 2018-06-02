@@ -17,6 +17,8 @@ namespace PilotSmithApp.RepositoryService.Contract
         object DeleteSaleOrder(Guid id);
         object DeleteSaleOrderDetail(Guid id);
         object UpdateSaleOrderEmailInfo(SaleOrder saleOrder);
+        object DeleteSaleOrderOtherChargeDetail(Guid id);
         List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID);
+        List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID);
     }
 }

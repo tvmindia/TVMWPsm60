@@ -124,6 +124,52 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="divModelEmailSaleOrder" tabindex="-1" role="dialog" aria-labelledby="SaleOrder" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width:60%;">
+        <div class="clearfix" style="background-color:#068a78;">
+            <div class="col-md-12 no-padding" style="background-color:white">
+                <div class="modal-header text-center">
+                    <label style="font-size:16px;" id="lblModelEmailSaleOrder"></label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: black;font-size: 2em;">&times;</span>
+                    </button>
+                </div>
+                <div class="no-padding" id="divModelEmailSaleOrderBody">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="SendApprovalModal" tabindex="-1" role="dialog" aria-labelledby="SaleOrder" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width:40%;">
+        <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
+            <div class="col-md-10 no-right-padding" style="background-color:white">
+                <div class="modal-header text-center">
+                    <label style="font-size:16px;" id="lblModelPopSaleOrder"></label>
+                </div>
+                <div class="no-padding" id="SendApprovalModalBody">
+                    @*@{
+                            @Html.Action("GetApprovers", "DocumentApproval", new { DocumentTypeCode = "QUO" });
+                        }*@
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-default" id="" onclick="SendForApproval('SOD')" style="margin-right:3%;margin-top:2%">Send For Approval <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                </div>
+
+            </div>
+            <div class="col-md-2" style="font-size: 90px;color: white;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: white;font-size: 2em;">&times;</span>
+                </button>
+                <label style="transform: rotate(20deg)"><i id="iconModelSaleOrderPop" class=""></i></label>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jsZip")

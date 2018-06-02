@@ -735,6 +735,7 @@
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
+    <Compile Include="Controllers\CarrierController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CustomerCategoryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
@@ -785,6 +786,7 @@
     <Compile Include="Models\AreaViewModel.cs" />
     <Compile Include="Models\BankViewModel.cs" />
     <Compile Include="Models\BranchViewModel.cs" />
+    <Compile Include="Models\CarrierViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\CustomerCategoryViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
@@ -990,6 +992,10 @@
     <Content Include="Views\UserInBranch\Index.cshtml" />
     <Content Include="Views\ProductionOrder\_EmailProductionOrder.cshtml" />
     <Content Include="Views\Quotation\_QuotationOtherCharge.cshtml" />
+    <Content Include="Views\SaleOrder\_SaleOrderOtherCharge.cshtml" />
+    <Content Include="Views\Carrier\_CarrierSelectList.cshtml" />
+    <Content Include="Views\SaleOrder\_EmailSaleOrder.cshtml" />
+    <Content Include="Views\ServiceCall\_AddServiceCallCharge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -34,6 +34,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Customer Customer { get; set; }
         public Employee Employee { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
+        public string ServiceCallChargesJSON { get; set; }
     }
 
     public class ServiceCallAdvanceSearch
@@ -61,5 +62,25 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set; }
         public string InstalledDateFormatted { get; set; }
+    }
+
+    public class ServiceCallCharge
+    {
+        public Guid ID { get; set; }
+        public Guid? ServiceCallID { get; set; }
+        public int? OtherChargeCode { get; set; }
+        public decimal? ChargeAmount { get; set; }
+        public int? TaxTypeCode { get; set; }
+        public decimal? CGSTPerc { get; set; }
+        public decimal? SGSTPerc { get; set; }
+        public decimal? IGSTPerc { get; set; }
+        public decimal? AddlTaxPerc { get; set; }
+        public decimal? AddlTaxAmt { get; set; }
+
+        //Additional Field
+        public bool IsUpdate { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
+        public TaxType TaxType { get; set; }
+        public OtherCharge OtherCharge { get; set; }
     }
 }

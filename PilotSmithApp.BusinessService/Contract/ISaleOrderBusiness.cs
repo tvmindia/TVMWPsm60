@@ -18,7 +18,9 @@ namespace PilotSmithApp.BusinessService.Contract
         object InsertUpdateSaleOrder(SaleOrder saleOrder);
         object DeleteSaleOrder(Guid id);
         object DeleteSaleOrderDetail(Guid id);
+        object DeleteSaleOrderOtherChargeDetail(Guid id);
         object UpdateSaleOrderEmailInfo(SaleOrder saleOrder);
         Task<bool> QuoteEmailPush(SaleOrder saleOrder);
+        List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID);
     }
 }
