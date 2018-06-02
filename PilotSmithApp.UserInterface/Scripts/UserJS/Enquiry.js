@@ -91,7 +91,7 @@ function BindOrReloadEnquiryTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0,1, 2, 3, 4, 5, 6,7]
+                                 columns: [0,1, 2, 3, 4, 5, 6]
                              }
             }],
             ordering: false,
@@ -111,35 +111,37 @@ function BindOrReloadEnquiryTable(action) {
             },
             pageLength: 6,
             columns: [
-               { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
-               { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
                {
-                   "data": "Customer.CompanyName", render: function (data, type, row) {
-                       debugger;
-                       return "<b>Customer-</b>" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<b>Organization-</b>" + data;
+                   "data": "EnquiryNo", render: function (data, type, row) {
+                       return data + "<br/>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.EnquiryDateFormatted
 
                    }, "defaultContent": "<i>-</i>"
                },
-               { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       debugger;
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
+               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                {
                    "data": "DocumentStatus.Description", render: function (data, type, row) {
-                           return "<b>Doc.Status-</b>" + data +"</br>" +"<b>Doc.Owner-</b>" + row.PSAUser.LoginName +"</br>"+"<b>Branch-</b>" + row.Branch.Description;
+                           return "<b>Doc.Status-</b>" + data +"</br>"+"<b>Branch-</b>" + row.Branch.Description;
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEnquiry(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [ { className: "text-right", "targets": [] },
-                          { className: "text-left", "targets": [2,3,4,5,6,7] },
-                          { className: "text-center", "targets": [0, 1, 8] },
-                            { "targets": [0,1,2,3,5,6], "width": "10%" },
-                            //{ "targets": [1], "width": "10%" },
-                            { "targets": [4], "width": "20%" },
-                            { "targets": [7], "width": "20%" },
-                           // { "targets": [6], "width": "10%" },
-                            { "targets": [8], "width": "2%" },
+                          { className: "text-left", "targets": [0,1,2,3,4,5,6] },
+                          { className: "text-center", "targets": [ 7] },
+                            { "targets": [0, 3, 5], "width": "10%" },
+                            { "targets": [4], "width": "15%" },
+                            { "targets": [1,2,6], "width": "20%" },
+                            { "targets": [7], "width": "2%" },
                         ],
             destroy: true,
             //for performing the import operation after the data loaded

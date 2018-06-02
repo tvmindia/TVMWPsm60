@@ -76,9 +76,9 @@ function BindOrReloadEstimateTable(action) {
         EstimateAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
         EstimateAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
         //apply datatable plugin on Estimate table
-        debugger;
+        
         _dataTable.EstimateList = $('#tblEstimate').DataTable(
-        {
+            {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
             buttons: [{
                 extend: 'excel',
@@ -104,40 +104,43 @@ function BindOrReloadEstimateTable(action) {
             },
             pageLength: 7,
             columns: [
-               { "data": "EstimateNo", "defaultContent": "<i>-</i>" },
-               //{ "data": "EstimateRefNo", "defaultContent": "<i>-</i>" },
-               { "data": "EstimateDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "EstimateNo", render: function (data, type, row) {
+                       return data + " <br/>" + "<img src='./Content/images/datePicker.png' height='10px'>"+"&nbsp;"+ row.EstimateDateFormatted
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "Enquiry.EnquiryNo", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
 
-                       return "<b>Customer-</b>" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<b>Organization-</b>" + data;
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + " </br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
 
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
+               { "data": "UserName", "defaultContent": "<i>-</i>" },
                 {
-                    "data": "UserName", render: function (data, type, row) {
+                    "data": "DocumentStatus.Description", render: function (data, type, row) {
 
-                        return "<b>Document Status-</b>" + row.DocumentStatus.Description + "</br>" + "<b>Doc.Owner-</b>" + data + "</br>" + "<b>Branch-</b>" + row.Branch.Description;
+                        return "<b>Document Status-</b>" + data + " </br>" + "<b>Branch-</b>" + row.Branch.Description;
 
                     }, "defaultContent": "<i>-</i>"
                 },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimate(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                    { className: "text-left", "targets": [0,2] },
-                    { className: "text-center", "targets": [1,7] },
-                    { "targets": [0,1,2,4, 5], "width": "10%" },
-                    { "targets": [3,6], "width": "20%" },
-                    {"targets": [7], "width": "5%"
+                    { className: "text-left", "targets": [0,1,2,3,4,5,6] },
+                    { className: "text-center", "targets": [7] },
+                    { "targets": [0,1,3,4, 5], "width": "10%" },
+                    { "targets": [2,6], "width": "20%" },
+                    {"targets": [7], "width": "2%"
         },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
-                debugger;
+            
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblEstimate').fadeIn(100);
                 if (action == undefined) {

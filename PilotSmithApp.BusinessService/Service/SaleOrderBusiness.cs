@@ -35,6 +35,10 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 saleOrder.DetailXML = _commonBusiness.GetXMLfromSaleOrderObject(saleOrder.SaleOrderDetailList, "ProductID");
             }
+            if (saleOrder.SaleOrderOtherChargeList.Count > 0)
+            {
+                saleOrder.OtherChargeDetailXML = _commonBusiness.GetXMLfromSaleOrderOtherChargeObject(saleOrder.SaleOrderOtherChargeList, "OtherChargeCode , ChargeAmount");
+            }
             return _saleOrderRepository.InsertUpdateSaleOrder(saleOrder);
         }
         public SaleOrder GetSaleOrder(Guid id)
@@ -48,6 +52,10 @@ namespace PilotSmithApp.BusinessService.Service
         public object DeleteSaleOrderDetail(Guid id)
         {
             return _saleOrderRepository.DeleteSaleOrderDetail(id);
+        }
+        public object DeleteSaleOrderOtherChargeDetail(Guid id)
+        {
+            return _saleOrderRepository.DeleteSaleOrderOtherChargeDetail(id);
         }
         public object UpdateSaleOrderEmailInfo(SaleOrder saleOrder)
         {
@@ -96,6 +104,11 @@ namespace PilotSmithApp.BusinessService.Service
         public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
         {
             return _saleOrderRepository.GetSaleOrderDetailListBySaleOrderID(saleOrderID);
+        }
+
+        public List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID)
+        {
+            return _saleOrderRepository.GetSaleOrderOtherChargesDetailListBySaleOrderID(SaleOrderID);
         }
 
     }
