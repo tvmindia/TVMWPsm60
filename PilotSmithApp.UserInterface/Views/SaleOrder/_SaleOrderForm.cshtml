@@ -12,6 +12,8 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
@@ -191,7 +193,7 @@
                         <div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
                         </div>
-                        @*<div class="form-group col-md-12">
+                        <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Email Status</div>
                         </div>
                         <div class="form-group col-md-12">
@@ -207,7 +209,7 @@
                             {
                                 <div class="lblStatusDisplay">EMAIL NOT SEND</div>
                             }
-                        </div>*@
+                        </div>
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Approval Status</div>
                         </div>
@@ -220,6 +222,12 @@
                             {
                                 <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
                             }
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">Branch</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="lblStatusDisplay">@Model.Branch.Description</div>
                         </div>
                         @if (Model.IsUpdate)
                         {
@@ -323,6 +331,7 @@
             </div>
 
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+            @Html.HiddenFor(model => model.OtherChargesDetailJSON, htmlAttributes: new { @class = "" })
             <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
                 <table id="tblSaleOrderDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                     <thead>
@@ -340,19 +349,21 @@
                     </thead>
                 </table>
             </div>
-            <div class="col-md-7 no-left-padding">
-                @*<table id="tblSaleOrderOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                        <thead>
-                            <tr class="text-center TableHead">
-                                <th style="width:20%">Other Charge</th>
-                                <th style="width:20%">Charge Amount(₹)</th>
-                                <th style="width:20%">GST(₹)</th>
-                                <th style="width:20%">Total(₹)</th>
-                                <th style="width:20%">...</th>
-                            </tr>
-                        </thead>
-                    </table>*@
+            <div class="form-group col-md-7">
+                <table id="tblSaleOrderOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                    <thead>
+                        <tr class="text-center TableHead">
+                            <th style="width:20%">Other Charge</th>
+                            <th style="width:15%">Charge Amount(₹)</th>
+                            <th style="width:15%">GST(₹)</th>
+                            <th style="width:20%">Additional Tax(₹)</th>
+                            <th style="width:20%">Total(₹)</th>
+                            <th style="width:10%">...</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
+            
             <div class="col-md-5" style="padding-right:3.7%">
                 <table class="table dataTable no-footer DetailSummerybox">
                     <tbody>
@@ -379,6 +390,14 @@
                             </td>
                             <td class="ApplyCurrency" style="text-align: right">
                                 <label class="control-label " for="" id="lblCessAmount">00.00</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label" for="lblGrossAmount">Other Charge Amount</label>
+                            </td>
+                            <td class="ApplyCurrency" style="text-align: right">
+                                <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
                             </td>
                         </tr>
                         <tr>
@@ -433,6 +452,19 @@
                         @Html.ValidationMessageFor(model => model.PurchaseOrdDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                
+            </div>
+
+            <div class="form-group col-md-12">
+                @*<div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.CarrierCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.Action("CarrierSelectList", "Carrier", new { required = "" })
+                        @Html.HiddenFor(model => model.CarrierCode, htmlAttributes: new { @class = "", @id = "hdnCarrierCode" })
+                    </div>
+                </div>*@
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
@@ -440,27 +472,6 @@
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
                         @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group col-md-12">
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.CarrierCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.CarrierCode, new { htmlAttributes = new { @class = "form-control newinput" } })
-                        @Html.ValidationMessageFor(model => model.CarrierCode, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control newinput Amount", @onkeypress = "return isNumber(event)" } })
-                        @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-4 no-padding">
@@ -614,7 +625,7 @@
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
                     BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false,true);
-
+                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000",true);
                     OnServerCallComplete();
                 });
 
@@ -629,6 +640,7 @@
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
                     BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true, false)
+                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000",false);
                     OnServerCallComplete();
                 });
 

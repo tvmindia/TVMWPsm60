@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,17 +10,24 @@ namespace PilotSmithApp.UserInterface.Models
     public class SaleInvoiceViewModel
     {
         public Guid ID { get; set; }
+        [Display(Name = "Invoice No")]
         public string SaleInvNo { get; set; }
+        [Display(Name = "Reference No")]
         public string SaleInvRefNo { get; set; }
         public DateTime SaleInvDate { get; set; }
         public Guid? QuoteID { get; set; }
         public Guid? SaleOrderID { get; set; }
+        [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
+        [Display(Name = "Mailing Address")]
         public string MailingAddress { get; set; }
+        [Display(Name = "Shipping Address")]
         public string ShippingAddress { get; set; }
+        [Display(Name = "Document Status")]
         public int? DocumentStatusCode { get; set; }
         public DateTime? ExpectedDelvDate { get; set; }
         public bool? CashInvoiceYN { get; set; }
+        [Display(Name = "Prepared By")]
         public Guid? PreparedBy { get; set; }
         public string PurchaseOrdNo { get; set; }
         public DateTime? PurchaseOrdDate { get; set; }
@@ -30,7 +38,9 @@ namespace PilotSmithApp.UserInterface.Models
         public bool? IsFinalApproved { get; set; }
         public string EmailSentTo { get; set; }
         public string PrintRemark { get; set; }
+        [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
+        [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
         public int? BranchCode { get; set; }
         public decimal? Discount { get; set; }
@@ -39,11 +49,14 @@ namespace PilotSmithApp.UserInterface.Models
         public string DocumentType { get; set; }
         public string DetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
+        [Display(Name = "Invoice Date")]
         public string SaleInvDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
+        [Display(Name = "Expected Delivery Date")]
         public string ExpectedDelvDateFormatted { get; set; }
+        [Display(Name = "Purchase Order Date")]
         public string PurchaseOrdDateFormatted { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public CustomerViewModel Customer { get; set; }
@@ -55,7 +68,9 @@ namespace PilotSmithApp.UserInterface.Models
     public class SaleInvoiceAdvanceSearchViewModel
     {
         public string SearchTerm { get; set; }
+        [Display(Name = "From Date")]
         public string FromDate { get; set; }
+        [Display(Name = "To Date")]
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
     }

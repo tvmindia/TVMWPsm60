@@ -107,7 +107,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<DeliveryChallanDetailViewModel, DeliveryChallanDetail>().ReverseMap();
                 config.CreateMap<DepartmentViewModel, Department>().ReverseMap();
                 config.CreateMap<PositionViewModel, Position>().ReverseMap();
-
+                config.CreateMap<ApprovalStatusViewModel, ApprovalStatus>().ReverseMap();
             });
         }
     }

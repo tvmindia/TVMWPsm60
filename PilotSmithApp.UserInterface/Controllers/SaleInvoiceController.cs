@@ -19,13 +19,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         ISaleInvoiceBusiness _saleInvoiceBusiness;
         ICustomerBusiness _customerBusiness;
         IBranchBusiness _branchBusiness;
-        IEstimateBusiness _estimateBusiness;
-        public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEstimateBusiness estimateBusiness)
+        ISaleOrderBusiness _saleOrderBusiness;
+        IQuotationBusiness _quotationBusiness;
+        public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness,
+           IQuotationBusiness quotationBusiness,ISaleOrderBusiness saleOrderBusiness)
         {
             _saleInvoiceBusiness = saleInvoiceBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
-            _estimateBusiness = estimateBusiness;
+            _quotationBusiness = quotationBusiness;
+            _saleOrderBusiness = saleOrderBusiness;
         }
         // GET: SaleInvoice
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -35,7 +38,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #region SaleInvoice Form
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
-        public ActionResult SaleInvoiceForm(Guid id, Guid? estimateID)
+        public ActionResult SaleInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID)
         {
             SaleInvoiceViewModel saleInvoiceVM = null;
             try
@@ -45,25 +48,50 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(id));
                     saleInvoiceVM.IsUpdate = true;
                 }
-                else if (id == Guid.Empty && estimateID == null)
+                else if (id == Guid.Empty && quotationID != null)
                 {
+                    QuotationViewModel quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation((Guid)quotationID));
                     saleInvoiceVM = new SaleInvoiceViewModel();
                     saleInvoiceVM.IsUpdate = false;
-                    saleInvoiceVM.ID = Guid.Empty;
-                    //saleInvoiceVM.EstimateID = null;
-                    saleInvoiceVM.DocumentStatusCode = 5;
-                    saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.ID = Guid.Empty; 
+                    saleInvoiceVM.DocumentType = "Quotation";
+                    saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
+                    saleInvoiceVM.QuoteID = quotationID;
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.CustomerID = quotationVM.CustomerID;
+                    saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "OPEN",
+                    };
                 }
-                else if (id == Guid.Empty && estimateID != null)
+                else if (id == Guid.Empty && saleorderID != null)
                 {
-                    EstimateViewModel estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate((Guid)estimateID));
+                    SaleOrderViewModel saleorderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleorderID));
                     saleInvoiceVM = new SaleInvoiceViewModel();
                     saleInvoiceVM.IsUpdate = false;
                     saleInvoiceVM.ID = Guid.Empty;
+                    saleInvoiceVM.DocumentType = "SaleOrder";
+                    saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
+                    saleInvoiceVM.SaleOrderID = saleorderID;
+                    saleInvoiceVM.CustomerID = saleorderVM.CustomerID;
+                    saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "OPEN",
+                    };
+                }
+                else   
+                {
+                    saleInvoiceVM = new SaleInvoiceViewModel();
+                    saleInvoiceVM.IsUpdate = false;
+                    saleInvoiceVM.ID = Guid.Empty;
+                    saleInvoiceVM.DocumentType = "Quotation";
                     saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
-                    //saleInvoiceVM.CustomerID = estimateVM.CustomerID;
+                    saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "OPEN",
+                    };
                 }
                 saleInvoiceVM.Customer = new CustomerViewModel
                 {
@@ -143,47 +171,50 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get SaleInvoice DetailList By SaleInvoiceID
-        #region Get SaleInvoice DetailList By SaleInvoiceID with Estimate
+
+        #region Get SaleInvoice DetailList By SaleOrderID From saleOrder
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
-        public string GetSaleInvoiceDetailListBySaleInvoiceIDWithEstimate(Guid estimateID)
+        public string GetSaleInvoiceDetailListBySaleOrderIDFromSaleOrder(Guid saleOrderID)
         {
             try
             {
                 List<SaleInvoiceDetailViewModel> saleInvoiceItemViewModelList = new List<SaleInvoiceDetailViewModel>();
-                if (estimateID != Guid.Empty)
+                if (saleOrderID != Guid.Empty)
                 {
-                    List<EstimateDetailViewModel> estimateVMList = Mapper.Map<List<EstimateDetail>, List<EstimateDetailViewModel>>(_estimateBusiness.GetEstimateDetailListByEstimateID(estimateID));
-                    foreach (EstimateDetailViewModel estimateDetailVM in estimateVMList)
+                    List<SaleOrderDetailViewModel> saleOrderVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
+                    foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderVMList)
                     {
                         SaleInvoiceDetailViewModel saleInvoiceDetailVM = new SaleInvoiceDetailViewModel()
                         {
                             ID = Guid.Empty,
                             //QuoteID = Guid.Empty,
-                            ProductID = estimateDetailVM.ProductID,
-                            ProductModelID = estimateDetailVM.ProductModelID,
-                            ProductSpec = estimateDetailVM.ProductSpec,
-                            Qty = estimateDetailVM.Qty,
-                            UnitCode = estimateDetailVM.UnitCode,
-                            Rate = estimateDetailVM.SellingRate,
-                            //CGSTAmt = 0,
-                            //IGSTAmt = 0,
-                            //SGSTAmt = 0,
-                            Discount = 0,
+                            ProductID = saleOrderDetailVM.ProductID,
+                            ProductModelID = saleOrderDetailVM.ProductModelID,
+                            ProductSpec = saleOrderDetailVM.ProductSpec,
+                            Qty = saleOrderDetailVM.Qty,
+                            UnitCode = saleOrderDetailVM.UnitCode,
+                            Rate = saleOrderDetailVM.Rate,
+                            CGSTPerc = saleOrderDetailVM.CGSTPerc,
+                            SGSTPerc = saleOrderDetailVM.SGSTPerc,
+                            IGSTPerc = saleOrderDetailVM.IGSTPerc,
+                            Discount = saleOrderDetailVM.Discount,
+                            CessAmt = saleOrderDetailVM.CessAmt,
+                            CessPerc = saleOrderDetailVM.CessPerc,
                             Product = new ProductViewModel()
                             {
-                                ID = (Guid)estimateDetailVM.ProductID,
-                                Code = estimateDetailVM.Product.Code,
-                                Name = estimateDetailVM.Product.Name,
+                                ID = (Guid)saleOrderDetailVM.ProductID,
+                                Code = saleOrderDetailVM.Product.Code,
+                                Name = saleOrderDetailVM.Product.Name,
                             },
                             ProductModel = new ProductModelViewModel()
                             {
-                                ID = (Guid)estimateDetailVM.ProductModelID,
-                                Name = estimateDetailVM.ProductModel.Name
+                                ID = (Guid)saleOrderDetailVM.ProductModelID,
+                                Name = saleOrderDetailVM.ProductModel.Name
                             },
                             Unit = new UnitViewModel()
                             {
-                                Description = estimateDetailVM.Unit.Description,
+                                Description = saleOrderDetailVM.Unit.Description,
                             },
                             TaxType = new TaxTypeViewModel()
                             {
@@ -201,7 +232,111 @@ namespace PilotSmithApp.UserInterface.Controllers
                 return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
             }
         }
-        #endregion Get SaleInvoice DetailList By SaleInvoiceID with Estimate
+        #endregion Get SaleInvoice DetailList By SaleOrderID From saleOrder
+
+        #region Get SaleInvoice DetailList By QuotationID From Quotation
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetSaleInvoiceDetailListByQuotationIDFromQuotation(Guid quoteID)
+        {
+            try
+            {
+                List<SaleInvoiceDetailViewModel> saleInvoiceItemViewModelList = new List<SaleInvoiceDetailViewModel>();
+                if (quoteID != Guid.Empty)
+                {
+                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID));
+                    saleInvoiceItemViewModelList = (from quotationDetailVM in quotationDetailVMList
+                                                  select new SaleInvoiceDetailViewModel
+                                                  {
+                                                      ID = Guid.Empty,
+                                                      SaleInvID = Guid.Empty,
+                                                      ProductID = quotationDetailVM.ProductID,
+                                                      ProductModelID = quotationDetailVM.ProductModelID,
+                                                      ProductSpec = quotationDetailVM.ProductSpec,
+                                                      Qty = quotationDetailVM.Qty,
+                                                      UnitCode = quotationDetailVM.UnitCode,
+                                                      Rate = quotationDetailVM.Rate,
+                                                     // SpecTag = quotationDetailVM.SpecTag,
+                                                      Discount = quotationDetailVM.Discount,
+                                                      TaxTypeCode = quotationDetailVM.TaxTypeCode,
+                                                      CGSTPerc = quotationDetailVM.CGSTPerc,
+                                                      SGSTPerc = quotationDetailVM.SGSTPerc,
+                                                      IGSTPerc = quotationDetailVM.IGSTPerc,
+                                                      CessAmt = 0,
+                                                      CessPerc = 0,
+                                                      Product = new ProductViewModel()
+                                                      {
+                                                          ID = (Guid)quotationDetailVM.ProductID,
+                                                          Code = quotationDetailVM.Product.Code,
+                                                          Name = quotationDetailVM.Product.Name,
+                                                      },
+                                                      ProductModel = new ProductModelViewModel()
+                                                      {
+                                                          ID = (Guid)quotationDetailVM.ProductModelID,
+                                                          Name = quotationDetailVM.ProductModel.Name
+                                                      },
+                                                      Unit = new UnitViewModel()
+                                                      {
+                                                          Description = quotationDetailVM.Unit.Description
+                                                      },
+                                                      TaxType = new TaxTypeViewModel()
+                                                      {
+                                                          //Code=(int)quotationDetailVM.TaxTypeCode,
+                                                          Description = quotationDetailVM.TaxType.Description
+                                                      },
+                                                  }).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleInvoice DetailList By QuotationID From Quotation
+
+        #region Get Quotation OtherChargeList By QuotationID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        {
+            try
+            {
+                List<QuotationOtherChargeViewModel> quotationOtherChargeViewModelList = new List<QuotationOtherChargeViewModel>();
+                if (quotationID == Guid.Empty)
+                {
+                    QuotationOtherChargeViewModel quotationOtherChargeVM = new QuotationOtherChargeViewModel()
+                    {
+                        ID = Guid.Empty,
+                        QuoteID = Guid.Empty,
+                        ChargeAmount = 0,
+                        OtherCharge = new OtherChargeViewModel()
+                        {
+                            Description = "",
+                        },
+                        TaxType = new TaxTypeViewModel()
+                        {
+                            ValueText = "",
+                        }
+                    };
+                    quotationOtherChargeViewModelList.Add(quotationOtherChargeVM);
+                }
+                else
+                {
+                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID));
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get Quotation OtherChargeList By QuotationID
+
+
         #region Delete SaleInvoice
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "D")]

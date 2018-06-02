@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\IApprovalStatusRepository.cs" />
     <Compile Include="Contract\IApproverRepository.cs" />
     <Compile Include="Contract\IAreaRepository.cs" />
     <Compile Include="Contract\IBankRepository.cs" />
     <Compile Include="Contract\IBranchRepository.cs" />
+    <Compile Include="Contract\ICarrierRepository.cs" />
     <Compile Include="Contract\ICommonRepository.cs" />
     <Compile Include="Contract\ICompanyRepository.cs" />
     <Compile Include="Contract\ICustomerCategoryRepository.cs" />
@@ -85,10 +87,12 @@
     <Compile Include="Contract\IUnitRepository.cs" />
     <Compile Include="Contract\IUserInBranchRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ApprovalStatusRepository.cs" />
     <Compile Include="Service\ApproverRepository.cs" />
     <Compile Include="Service\AreaRepository.cs" />
     <Compile Include="Service\BankRepository.cs" />
     <Compile Include="Service\BranchRepository.cs" />
+    <Compile Include="Service\CarrierRepository.cs" />
     <Compile Include="Service\CommonRepository.cs" />
     <Compile Include="Service\CompanyRepository.cs" />
     <Compile Include="Service\CustomerCategoryRepository.cs" />

@@ -19,7 +19,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         IDeliveryChallanBusiness _deliveryChallanBusiness;
         IProductionOrderBusiness _productionOrderBusiness;
         ISaleOrderBusiness _saleOrderBusiness;
-        public DeliveryChallanController(IDeliveryChallanBusiness deliveryChallanBusiness,IProductionOrderBusiness productionOrderBusiness,ISaleOrderBusiness saleOrderBusiness)
+        public DeliveryChallanController(IDeliveryChallanBusiness deliveryChallanBusiness, IProductionOrderBusiness productionOrderBusiness, ISaleOrderBusiness saleOrderBusiness)
         {
             _deliveryChallanBusiness = deliveryChallanBusiness;
             _productionOrderBusiness = productionOrderBusiness;
@@ -34,61 +34,65 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region DeliveryChallan Form
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
-        public ActionResult DeliveryChallanForm(Guid id, Guid? saleOrderID,Guid? prodOrderID)
+        public ActionResult DeliveryChallanForm(Guid id, Guid? saleOrderID, Guid? prodOrderID)
         {
             DeliveryChallanViewModel deliveryChallanVM = null;
             try
             {
-                if(id!=Guid.Empty)
+                if (id != Guid.Empty)
                 {
                     deliveryChallanVM = Mapper.Map<DeliveryChallan, DeliveryChallanViewModel>(_deliveryChallanBusiness.GetDeliveryChallan(id));
                     deliveryChallanVM.IsUpdate = true;
                     AppUA appUA = Session["AppUA"] as AppUA;
                     deliveryChallanVM.IsDocLocked = deliveryChallanVM.DocumentOwners.Contains(appUA.UserName);
-                    deliveryChallanVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
-                    deliveryChallanVM.ProductionOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(prodOrderID);
+                    if (deliveryChallanVM.SaleOrderID != null)
+                    {
+                        deliveryChallanVM.DocumentType = "SaleOrder";
+                        deliveryChallanVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
+                    }
+                    if (deliveryChallanVM.ProdOrderID != null)
+                    {
+                        deliveryChallanVM.DocumentType = "ProductionOrder";
+                        deliveryChallanVM.ProductionOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(prodOrderID);
+                    }
+
                 }
-                else if(id==Guid.Empty && saleOrderID==null && prodOrderID==null)
+                else if (id == Guid.Empty && saleOrderID != null)
                 {
-                    deliveryChallanVM = new DeliveryChallanViewModel();
-                    deliveryChallanVM.IsUpdate = false;
-                    deliveryChallanVM.ID = Guid.Empty;
-                    deliveryChallanVM.SaleOrderID = null;
-                    deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
-                    deliveryChallanVM.ProdOrderID = null;
-                    deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
-                }
-                else if(id==Guid.Empty && saleOrderID!=null && prodOrderID==null)
-                {
-                    SaleOrderViewModel saleOrderVM = Mapper.Map<SaleOrder,SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleOrderID));
+                    SaleOrderViewModel saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleOrderID));
                     deliveryChallanVM = new DeliveryChallanViewModel();
                     deliveryChallanVM.IsUpdate = false;
                     deliveryChallanVM.ID = Guid.Empty;
                     deliveryChallanVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     deliveryChallanVM.SaleOrderID = saleOrderID;
                     deliveryChallanVM.CustomerID = saleOrderVM.CustomerID;
-                    deliveryChallanVM.ProdOrderID = prodOrderID;
-                    deliveryChallanVM.SaleOrderValue = true;
-                    deliveryChallanVM.ProdOrderValue = false;
-                    deliveryChallanVM.DocumentType = "SaleOrder";      
+                    deliveryChallanVM.BranchCode = saleOrderVM.BranchCode;
+                    deliveryChallanVM.DocumentType = "SaleOrder";
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
                 }
-                else if(id==Guid.Empty && saleOrderID==null && prodOrderID!=null)
+                else if (id == Guid.Empty && prodOrderID != null)
                 {
-                    ProductionOrderViewModel productionOrderVM = Mapper.Map<ProductionOrder,ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder((Guid)prodOrderID));
+                    ProductionOrderViewModel productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder((Guid)prodOrderID));
                     deliveryChallanVM = new DeliveryChallanViewModel();
                     deliveryChallanVM.IsUpdate = false;
                     deliveryChallanVM.ID = Guid.Empty;
                     deliveryChallanVM.ProductionOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(prodOrderID);
                     deliveryChallanVM.ProdOrderID = prodOrderID;
                     deliveryChallanVM.CustomerID = productionOrderVM.CustomerID;
+                    deliveryChallanVM.BranchCode = productionOrderVM.BranchCode;
                     deliveryChallanVM.SaleOrderID = null;
-                    deliveryChallanVM.SaleOrderValue = false;
-                    deliveryChallanVM.ProdOrderValue = true;
+                    deliveryChallanVM.DocumentType = "ProductionOrder";
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
                 }
+                else
+                {
+                    deliveryChallanVM = new DeliveryChallanViewModel();
+                    deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.DocumentType = "SaleOrder";
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -186,7 +190,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         public ActionResult GetDeliveryChallanForSelectListOnDemand(string searchTerm)
         {
-            List<DeliveryChallanViewModel> deliveryChallanVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<DeliveryChallan>,List<DeliveryChallanViewModel>>(_deliveryChallanBusiness.GetDeliveryChallanForSelectListOnDemand(searchTerm));
+            List<DeliveryChallanViewModel> deliveryChallanVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<DeliveryChallan>, List<DeliveryChallanViewModel>>(_deliveryChallanBusiness.GetDeliveryChallanForSelectListOnDemand(searchTerm));
             var list = new List<Select2Model>();
             if (deliveryChallanVMList != null)
             {
@@ -222,12 +226,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ProductSpec = string.Empty,
                         OrderQty = 0,
                         DelvQty = 0,
+                        PrevDelQty=0,
                         Unit = new UnitViewModel()
                         {
                             Code = 0,
                             Description = string.Empty,
                         },
-                       
+
                         Product = new ProductViewModel()
                         {
                             ID = Guid.Empty,
@@ -267,37 +272,38 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (prodOrderID != Guid.Empty)
                 {
                     List<ProductionOrderDetailViewModel> productionOrderDetailVMList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(prodOrderID));
-                    foreach (ProductionOrderDetailViewModel productionOrderDetailVM in productionOrderDetailVMList)
-                    {
-                        DeliveryChallanDetailViewModel deliveryChallanDetailVM = new DeliveryChallanDetailViewModel()
-                        {
-                            ID = Guid.Empty,
-                            DelvChallanID = Guid.Empty,
-                            ProductID = productionOrderDetailVM.ProductID,
-                            ProductModelID = productionOrderDetailVM.ProductModelID,
-                            ProductSpec = productionOrderDetailVM.ProductSpec,
-                            OrderQty = productionOrderDetailVM.OrderQty,
-                            UnitCode = productionOrderDetailVM.UnitCode,
-                            DelvQty=0,                            
 
-                            Product = new ProductViewModel()
-                            {
-                                ID = (Guid)productionOrderDetailVM.ProductID,
-                                Code = productionOrderDetailVM.Product.Code,
-                                Name = productionOrderDetailVM.Product.Name,
-                            },
-                            ProductModel = new ProductModelViewModel()
-                            {
-                                ID = (Guid)productionOrderDetailVM.ProductModelID,
-                                Name = productionOrderDetailVM.ProductModel.Name
-                            },
-                            Unit = new UnitViewModel()
-                            {
-                                Description = productionOrderDetailVM.Unit.Description
-                            },
-                        };
-                        deliveryChallanItemViewModelList.Add(deliveryChallanDetailVM);
-                    }
+                    deliveryChallanItemViewModelList = (from productionOrderDetailVM in productionOrderDetailVMList
+                                                        select new DeliveryChallanDetailViewModel
+                                                        {
+
+                                                            ID = Guid.Empty,
+                                                            DelvChallanID = Guid.Empty,
+                                                            ProductID = productionOrderDetailVM.ProductID,
+                                                            ProductModelID = productionOrderDetailVM.ProductModelID,
+                                                            ProductSpec = productionOrderDetailVM.ProductSpec,
+                                                            OrderQty = productionOrderDetailVM.OrderQty,
+                                                            UnitCode = productionOrderDetailVM.UnitCode,
+                                                            DelvQty = 0,
+                                                            SpecTag = productionOrderDetailVM.SpecTag,
+                                                            PrevDelQty=0,
+                                                            Product = new ProductViewModel()
+                                                            {
+                                                                ID = (Guid)productionOrderDetailVM.ProductID,
+                                                                Code = productionOrderDetailVM.Product.Code,
+                                                                Name = productionOrderDetailVM.Product.Name,
+                                                            },
+                                                            ProductModel = new ProductModelViewModel()
+                                                            {
+                                                                ID = (Guid)productionOrderDetailVM.ProductModelID,
+                                                                Name = productionOrderDetailVM.ProductModel.Name
+                                                            },
+                                                            Unit = new UnitViewModel()
+                                                            {
+                                                                Description = productionOrderDetailVM.Unit.Description
+                                                            },
+                                                        }).ToList();
+
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = deliveryChallanItemViewModelList, Message = "Success" });
             }
@@ -320,37 +326,38 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (saleOrderID != Guid.Empty)
                 {
                     List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
-                    foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderDetailVMList)
-                    {
-                        DeliveryChallanDetailViewModel deliveryChallanDetailVM = new DeliveryChallanDetailViewModel()
-                        {
-                            ID = Guid.Empty,
-                            DelvChallanID = Guid.Empty,
-                            ProductID = saleOrderDetailVM.ProductID,
-                            ProductModelID = saleOrderDetailVM.ProductModelID,
-                            ProductSpec = saleOrderDetailVM.ProductSpec,
-                            OrderQty = saleOrderDetailVM.Qty,
-                            UnitCode = saleOrderDetailVM.UnitCode,
-                            DelvQty = 0,
+                    deliveryChallanItemViewModelList = (from saleOrderDetailVM in saleOrderDetailVMList
+                                                        select new DeliveryChallanDetailViewModel
+                                                        {
 
-                            Product = new ProductViewModel()
-                            {
-                                ID = (Guid)saleOrderDetailVM.ProductID,
-                                Code = saleOrderDetailVM.Product.Code,
-                                Name = saleOrderDetailVM.Product.Name,
-                            },
-                            ProductModel = new ProductModelViewModel()
-                            {
-                                ID = (Guid)saleOrderDetailVM.ProductModelID,
-                                Name = saleOrderDetailVM.ProductModel.Name
-                            },
-                            Unit = new UnitViewModel()
-                            {
-                                Description = saleOrderDetailVM.Unit.Description
-                            },
-                        };
-                        deliveryChallanItemViewModelList.Add(deliveryChallanDetailVM);
-                    }
+                                                            ID = Guid.Empty,
+                                                            DelvChallanID = Guid.Empty,
+                                                            ProductID = saleOrderDetailVM.ProductID,
+                                                            ProductModelID = saleOrderDetailVM.ProductModelID,
+                                                            ProductSpec = saleOrderDetailVM.ProductSpec,
+                                                            OrderQty = saleOrderDetailVM.Qty,
+                                                            UnitCode = saleOrderDetailVM.UnitCode,
+                                                            DelvQty = 0,
+                                                            SpecTag = saleOrderDetailVM.SpecTag,
+                                                            PrevDelQty=0,
+                                                            Product = new ProductViewModel()
+                                                            {
+                                                                ID = (Guid)saleOrderDetailVM.ProductID,
+                                                                Code = saleOrderDetailVM.Product.Code,
+                                                                Name = saleOrderDetailVM.Product.Name,
+                                                            },
+                                                            ProductModel = new ProductModelViewModel()
+                                                            {
+                                                                ID = (Guid)saleOrderDetailVM.ProductModelID,
+                                                                Name = saleOrderDetailVM.ProductModel.Name
+                                                            },
+                                                            Unit = new UnitViewModel()
+                                                            {
+                                                                Description = saleOrderDetailVM.Unit.Description
+                                                            },
+                                                        }).ToList();
+
+
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = deliveryChallanItemViewModelList, Message = "Success" });
             }
