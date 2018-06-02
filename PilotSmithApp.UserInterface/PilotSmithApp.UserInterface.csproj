@@ -984,6 +984,7 @@
     <Content Include="Views\UserInBranch\Index.cshtml" />
     <Content Include="Views\ProductionOrder\_EmailProductionOrder.cshtml" />
     <Content Include="Views\Quotation\_QuotationOtherCharge.cshtml" />
+    <Content Include="Views\ServiceCall\_AddServiceCallCharge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

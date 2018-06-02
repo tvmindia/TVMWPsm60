@@ -138,33 +138,33 @@
                 </div>
                 @*<div class="form-group col-md-12 ">*@
 
-                                       
-                   
-                   
 
-                </div>
+
+
+
             </div>
         </div>
+    </div>
         <div class="col-md-12">&nbsp;</div>
 
 
         <div class="col-md-11 divbox1">
             <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">ServiceCall Details<a class="btn btn-openid pull-right" onclick="AddServiceCallDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
+                <div class="col-md-12 headSeperator">Service Call Details<a class="btn btn-openid pull-right" onclick="AddServiceCallDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
 
                 @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
                 <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
                     <table id="tblServiceCallDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                         <thead>
                             <tr class="text-center TableHead">
-                                <th>Product Code</th>
-                                <th>Product Name</th>
-                                <th>Model</th>
-                                <th>Spec.</th>
-                                <th>Guarantee</th>
-                                <th>Installed Date</th>
-                                <th>Service Status</th>
-                                <th>...</th>
+                                <th style="width:10%">Product Code</th>
+                                <th style="width:15%">Product Name</th>
+                                <th style="width:15%">Model</th>
+                                <th style="width:25%">Spec.</th>
+                                <th style="width:10%">Guarantee</th>
+                                <th style="width:10%">Installed Date</th>
+                                <th style="width:10%">Service Status</th>
+                                <th style="width:5%">...</th>
                             </tr>
                         </thead>
                     </table>
@@ -172,6 +172,80 @@
             </div>
         </div>
 
+        <div class="col-md-11 divbox1">
+            <div class="col-md-12 divbox2">
+                <div class="col-md-12 headSeperator">
+                    Service Call Charges Details
+                    <a class="btn btn-openid pull-right" onclick="AddServiceCallChargeDetail()" id="btnServiceCallCharge" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Service Call Charge</a>
+
+                </div>
+
+                @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.ServiceCallChargesJSON, htmlAttributes: new { @class = "" })
+                <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
+                    <table id="tblServiceCallChargeDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                        <thead>
+                            <tr class="text-center TableHead">
+                                <th style="width:30%">Other Charge</th>
+                                <th style="width:14%">Charge Amount(₹)</th>
+                                <th style="width:14%">GST(₹)</th>
+                                @*<th style="width:15%">Additional Tax(%)</th>*@
+                                <th style="width:14%">Additional Tax(₹)</th>
+                                <th style="width:14%">Total(₹)</th>
+                                <th style="width:14%">...</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-7">&nbsp;</div>
+                <div class="col-md-5" style="padding-right:3.5%">
+                    <table class="table dataTable no-footer DetailSummerybox">
+                        <tbody>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblItemTotal">Total Taxable Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblItemTotal">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblTaxTotal">GST Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblTaxTotal">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblGrossAmount">Other Charge Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblGrossAmount">Gross Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblGrossAmount">00.00</label>
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td style="text-align: right">
+                                    <label class="control-label " for="lblGrandTotal">Grand Total</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblGrandTotal" style="font-weight: bold !important;">00.00</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         <div class="col-md-11 divbox1">
             <div class="col-md-12 divbox2">
@@ -197,7 +271,7 @@
                             @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
                             @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                         </div>
-                    </div>                  
+                    </div>
 
                     <div class="col-md-12">&nbsp;</div>
                 </div>
@@ -215,9 +289,9 @@
                 <input id="btnInsertUpdateServiceCall" type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
-        }
+}
 
-        <script>
+<script>
             $(document).ready(function () {
                 try {
                     $.validator.unobtrusive.parse("#ServiceCallForm");
@@ -266,20 +340,21 @@
                 catch (e) {
                     console.log(e.message);
                 }
-                try {
-                    $('#ServiceCallForm #EnquiryID').change(function () {
-                        debugger;
-                        OnServerCallBegin();
-                        $('#divServiceCallForm').load("ServiceCall/ServiceCallForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
-                            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
-                            BindServiceCallDetailList("00000000-0000-0000-0000-000000000000", true);
-                            OnServerCallComplete();
-                        });
-                    });
-                }
-                catch (e) {
-                    console.log(e.message);
-                }
+                //try {
+                //    $('#ServiceCallForm #EnquiryID').change(function () {
+                //        debugger;
+                //        OnServerCallBegin();
+                //        $('#divServiceCallForm').load("ServiceCall/ServiceCallForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
+                //            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
+                //            BindServiceCallChargeDetailList("00000000-0000-0000-0000-000000000000");
+                //            BindServiceCallDetailList("00000000-0000-0000-0000-000000000000", true);
+                //            OnServerCallComplete();
+                //        });
+                //    });
+                //}
+                //catch (e) {
+                //    console.log(e.message);
+                //}
             });
-        </script>
+</script>
 

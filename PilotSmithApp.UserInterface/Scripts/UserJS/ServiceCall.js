@@ -140,6 +140,8 @@ function AddServiceCall() {
     //OnServerCallBegin();
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
+        BindServiceCallChargeDetailList("00000000-0000-0000-0000-000000000000");
+        //BindServiceCallDetailList("00000000-0000-0000-0000-000000000000", true);
         // BindProductionOrderDetailList(_emptyGuid);
         //BindProductionOrderOtherChargesDetailList(_emptyGuid)
         // OnServerCallComplete();
@@ -156,4 +158,83 @@ function AddServiceCallDetailList() {
         $('#lblModelServiceCall').text('ServiceCall Detail')
         $('#divModelPopServiceCall').modal('show');
     });
+}
+
+//Bind ServiceCallCharges Table
+function BindServiceCallChargeDetailList(id) {
+    debugger;
+    _dataTable.ServiceCallChargeDetailList = $('#tblServiceCallChargeDetailList').DataTable(
+         {
+             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             order: [],
+             searching: false,
+             paging: false,
+             ordering: false,
+             bInfo: false,
+             data: id == _emptyGuid ? null : GetQuotationOtherChargesDetailListByServiceCallID(id),
+             language: {
+                 search: "_INPUT_",
+                 searchPlaceholder: "Search"
+             },
+             columns: [
+             { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     debugger;
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": "AddlTaxAmt", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))
+                     //return Total
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotationOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             ],
+             columnDefs: [
+                 //{ "targets": [0], "width": "30%" },
+                 //{ "targets": [1, 2], "width": "20%" },
+                 //{ "targets": [3], "width": "20%" },
+                 { className: "text-right", "targets": [1, 2, 3, 4] },
+                 { className: "text-left", "targets": [0] },
+                 { className: "text-center", "targets": [5] }
+             ],
+             destroy: true,
+         });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'top'
+    });
+}
+
+function AddServiceCallChargeDetail() {
+    try {
+        debugger;
+        $("#divModelCallChargesPopBody").load("ServiceCall/AddServiceCallCharge", function () {
+            $('#lblModelPopCallCharges').text('ServiceCall Charges')
+            $('#divModelPopCallCharges').modal('show');
+        });
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }
