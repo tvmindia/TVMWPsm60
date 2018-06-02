@@ -20,12 +20,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         ISaleOrderBusiness _saleOrderBusiness;
         IQuotationBusiness _quotationBusiness;
         IEnquiryBusiness _enquiryBusiness;
+        ICommonBusiness _commonBusiness;
         #region Constructor Injection
-        public SaleOrderController(ISaleOrderBusiness saleOrderBusiness, IQuotationBusiness quotationBusiness, IEnquiryBusiness enquiryBusiness)
+        public SaleOrderController(ISaleOrderBusiness saleOrderBusiness, IQuotationBusiness quotationBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness)
         {
             _saleOrderBusiness = saleOrderBusiness;
             _quotationBusiness = quotationBusiness;
             _enquiryBusiness = enquiryBusiness;
+            _commonBusiness = commonBusiness;
         }
         #endregion Constructor Injection
         // GET: SaleOrder
@@ -69,6 +71,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     Description = "OPEN",
                 };
+                saleOrderVM.Branch = new BranchViewModel();
+                saleOrderVM.Branch.Description = "-";
             }
             else if (id == Guid.Empty && enquiryID != null)
             {
@@ -83,6 +87,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     Description = "OPEN",
                 };
+                saleOrderVM.Branch = new BranchViewModel();
+                saleOrderVM.Branch.Description = "-";
             }
             else
             {
@@ -94,6 +100,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     Description = "OPEN",
                 };
+                saleOrderVM.Branch = new BranchViewModel();
+                saleOrderVM.Branch.Description = "-";
             }
             return PartialView("_SaleOrderForm", saleOrderVM);
         }
@@ -125,7 +133,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddSaleOrderDetail", saleOrderDetailVM);
         }
         #endregion SaleOrder Detail Add
-
+        #region QuotationOtherCharge Detail 
+        public ActionResult SaleOrderOtherChargeDetail()
+        {
+            SaleOrderOtherChargeViewModel saleOrderOtherChargeVM = new SaleOrderOtherChargeViewModel();
+            saleOrderOtherChargeVM.IsUpdate = false;
+            return PartialView("_SaleOrderOtherCharge", saleOrderOtherChargeVM);
+        }
+        #endregion QuotationOtherCharge Detail Add
         #region GetAllSaleOrder
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
@@ -266,8 +281,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       },
                                                       TaxType = new TaxTypeViewModel()
                                                       {
-                                                          //Code=(int)quotationDetailVM.TaxTypeCode,
-                                                          Description = quotationDetailVM.TaxType.Description
+                                                          Code=quotationDetailVM.TaxType.Code,
+                                                          ValueText = quotationDetailVM.TaxType.ValueText
                                                       },
                                                   }).ToList();
                 }
@@ -338,6 +353,92 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get SaleOrder DetailList By EnquiryID From Enquiry
+
+        #region Get SaleOrder OtherChargeList By SaleOrderID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public string GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid saleOrderID)
+        {
+            try
+            {
+                List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeViewModelList = new List<SaleOrderOtherChargeViewModel>();
+                if (saleOrderID == Guid.Empty)
+                {
+                    SaleOrderOtherChargeViewModel saleOrderOtherChargeVM = new SaleOrderOtherChargeViewModel()
+                    {
+                        ID = Guid.Empty,
+                        SaleOrderID = Guid.Empty,
+                        ChargeAmount = 0,
+                        OtherCharge = new OtherChargeViewModel()
+                        {
+                            Description = "",
+                        },
+                        TaxType = new TaxTypeViewModel()
+                        {
+                            ValueText = "",
+                        }
+                    };
+                    saleOrderOtherChargeViewModelList.Add(saleOrderOtherChargeVM);
+                }
+                else
+                {
+                    saleOrderOtherChargeViewModelList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID));
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleOrder OtherChargeList By SaleOrderID
+
+        #region Get SaleOrder OtherCharge DetailList By QuotationID From Quotation
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public string GetSaleOrderOtherChargesDetailListByQuotationIDFromQuotation(Guid quoteID)
+        {
+            try
+            {
+                List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeViewModelList = new List<SaleOrderOtherChargeViewModel>();
+                if (quoteID != Guid.Empty)
+                {
+                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID));
+                    saleOrderOtherChargeViewModelList = (from quotationOtherChargeVM in quotationOtherChargeVMList
+                                                         select new SaleOrderOtherChargeViewModel
+                                                  {
+                                                      ID = Guid.Empty,
+                                                      SaleOrderID = Guid.Empty,
+                                                      OtherChargeCode = quotationOtherChargeVM.OtherChargeCode,
+                                                      ChargeAmount = quotationOtherChargeVM.ChargeAmount,
+                                                      TaxTypeCode = quotationOtherChargeVM.TaxTypeCode,
+                                                      CGSTPerc = quotationOtherChargeVM.CGSTPerc,
+                                                      SGSTPerc = quotationOtherChargeVM.SGSTPerc,
+                                                      IGSTPerc = quotationOtherChargeVM.IGSTPerc,
+                                                      AddlTaxPerc = 0,
+                                                      AddlTaxAmt = 0,
+                                                      OtherCharge = new OtherChargeViewModel()
+                                                      {
+                                                          Description = quotationOtherChargeVM.OtherCharge.Description
+                                                      },
+                                                      TaxType = new TaxTypeViewModel()
+                                                      {
+                                                          Code= quotationOtherChargeVM.TaxType.Code,
+                                                          ValueText = quotationOtherChargeVM.TaxType.ValueText
+                                                      },
+                                                  }).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleOrder DetailList By SaleOrderID with Quotation
+
         #region Delete SaleOrder
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "D")]
@@ -380,6 +481,27 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion Delete SaleOrder Detail
+        #region Delete SaleOrder OtherCharge
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "D")]
+        public string DeleteSaleOrderOtherChargeDetail(Guid id)
+        {
+
+            try
+            {
+                object result = _saleOrderBusiness.DeleteSaleOrderOtherChargeDetail(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+
+        }
+        #endregion Delete SaleOrder OtherCharge
         #region InsertUpdateSaleOrder
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
@@ -389,15 +511,20 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
+                object ResultFromJS;
+                string ReadableFormat;
                 AppUA appUA = Session["AppUA"] as AppUA;
                 saleOrderVM.PSASysCommon = new PSASysCommonViewModel();
                 saleOrderVM.PSASysCommon.CreatedBy = appUA.UserName;
                 saleOrderVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
                 saleOrderVM.PSASysCommon.UpdatedBy = appUA.UserName;
                 saleOrderVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
-                object ResultFromJS = JsonConvert.DeserializeObject(saleOrderVM.DetailJSON);
-                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                ResultFromJS = JsonConvert.DeserializeObject(saleOrderVM.DetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleOrderVM.SaleOrderDetailList = JsonConvert.DeserializeObject<List<SaleOrderDetailViewModel>>(ReadableFormat);
+                ResultFromJS = JsonConvert.DeserializeObject(saleOrderVM.OtherChargesDetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                saleOrderVM.SaleOrderOtherChargeList = JsonConvert.DeserializeObject<List<SaleOrderOtherChargeViewModel>>(ReadableFormat);
                 object result = _saleOrderBusiness.InsertUpdateSaleOrder(Mapper.Map<SaleOrderViewModel, SaleOrder>(saleOrderVM));
 
                 if (saleOrderVM.ID == Guid.Empty)
@@ -462,6 +589,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             //SaleOrderViewModel saleOrderVM = new SaleOrderViewModel();
             saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder(saleOrderVM.ID));
             saleOrderVM.SaleOrderDetailList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderVM.ID));
+            saleOrderVM.SaleOrderOtherChargeList= Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderVM.ID));
             saleOrderVM.EmailFlag = emailFlag;
             @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
             saleOrderVM.PDFTools = new PDFTools();
@@ -509,7 +637,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -552,10 +680,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetSaleOrder();";
 
-                    toolboxVM.deletebtn.Visible = true;
-                    toolboxVM.deletebtn.Text = "Delete";
-                    toolboxVM.deletebtn.Title = "Delete";
-                    toolboxVM.deletebtn.Event = "DeleteSaleOrder();";
+                    if (_commonBusiness.CheckDocumentIsDeletable("SOD", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteSaleOrder();";
+                    }
 
                     toolboxVM.EmailBtn.Visible = true;
                     toolboxVM.EmailBtn.Text = "Email";
@@ -565,7 +705,55 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Visible = true;
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
-                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('SOD');";
+                    break;
+                case "LockDocument":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Disable = true;
+                    toolboxVM.addbtn.DisableReason = "Document Locked";
+                    toolboxVM.addbtn.Event = "";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Disable = true;
+                    toolboxVM.EmailBtn.DisableReason = "Document Locked";
+                    toolboxVM.EmailBtn.Event = "";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
                     break;
                 case "Add":
 

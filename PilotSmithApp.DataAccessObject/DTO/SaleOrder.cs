@@ -39,10 +39,12 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? AdvanceAmount { get; set; }
 
         //Aditional Fields
+        public string OtherChargeDetailXML { get; set; }
         public string MailContant { get; set; }
         public string DocumentType { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public List<SaleOrderDetail> SaleOrderDetailList { get; set; }
+        public List<SaleOrderOtherCharge> SaleOrderOtherChargeList { get; set; }
         public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         public bool IsUpdate { get; set; }
@@ -54,6 +56,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ExpectedDelvDateFormatted { get; set; }
         public string PurchaseOrdDateFormatted { get; set; }
         public Customer Customer { get; set; }
+        public Carrier Carrier { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
         public Branch Branch { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
@@ -97,15 +100,20 @@ namespace PilotSmithApp.DataAccessObject.DTO
     {
         public Guid ID { get; set; }
         public Guid SaleOrderID { get; set; }
-        public int OtherChargeCode { get; set; }
-        public decimal ChargeAmount { get; set; }
-        public int TaxTypeCode { get; set; }
+        public int? OtherChargeCode { get; set; }
+        public decimal? ChargeAmount { get; set; }
+        public int? TaxTypeCode { get; set; }
         public decimal CGSTPerc { get; set; }
         public decimal SGSTPerc { get; set; }
         public decimal IGSTPerc { get; set; }
-        public decimal AddlTaxPec { get; set; }
-        public decimal AddlTaxAmt { get; set; }
+        public decimal? AddlTaxPerc { get; set; }
+        public decimal? AddlTaxAmt { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+
+        //Additional fields
+        public bool IsUpdate { get; set; }
+        public TaxType TaxType { get; set; }
+        public OtherCharge OtherCharge { get; set; }
 
     }
 }
