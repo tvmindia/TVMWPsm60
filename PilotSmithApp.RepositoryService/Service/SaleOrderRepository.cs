@@ -338,6 +338,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderDetail.TaxType = new TaxType();
                                         saleOrderDetail.TaxType.Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderDetail.TaxType.Code);
                                         saleOrderDetail.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleOrderDetail.TaxType.ValueText);
+                                        saleOrderDetail.PrevProduceQty = (sdr["PrevProduceQty"].ToString() != "" ? decimal.Parse(sdr["PrevProduceQty"].ToString()) : saleOrderDetail.PrevProduceQty);
+                                        saleOrderDetail.PrevDelQty= (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : saleOrderDetail.PrevDelQty);
                                     }
                                     saleOrderDetailList.Add(saleOrderDetail);
                                 }

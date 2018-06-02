@@ -92,6 +92,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ProductModel ProductModel { get; set; }
         public Unit Unit { get; set; }
         public TaxType TaxType { get; set; }
+        public decimal? PrevProduceQty { get; set; }
+        public decimal? PrevDelQty { get; set; }
     }
     public class SaleOrderOtherCharge
     {

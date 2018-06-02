@@ -184,6 +184,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         CessAmt = 0,
                         CessPerc = 0,
                         UnitCode = null,
+                        PrevProduceQty=0,
+                        PrevDelQty=0,
                         Product = new ProductViewModel()
                         {
                             ID = Guid.Empty,

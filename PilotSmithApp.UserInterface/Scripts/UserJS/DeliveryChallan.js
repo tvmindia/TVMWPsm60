@@ -367,7 +367,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
             },
              {
                  "data": "DelvQty", render: function (data, type, row) {
-                   return data                 
+                     return data + " " + row.Unit.Description
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
