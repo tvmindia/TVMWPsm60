@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\ApprovalLog.cs" />
+    <Compile Include="DTO\ApprovalStatus.cs" />
     <Compile Include="DTO\Approver.cs" />
     <Compile Include="DTO\Area.cs" />
     <Compile Include="DTO\Bank.cs" />
