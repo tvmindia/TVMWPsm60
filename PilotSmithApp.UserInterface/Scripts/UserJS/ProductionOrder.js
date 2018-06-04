@@ -23,6 +23,11 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+    $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+        dropdownParent: $(".divboxASearch")
+    });
+
+    $('.select2').addClass('form-control newinput');
 });
 
 //function bind the ProductionOrder list checking search and filter
@@ -39,14 +44,28 @@ function BindOrReloadProductionOrderTable(action) {
                 $('#SearchTerm').val('');
                 $('#FromDate').val('');
                 $('#ToDate').val('');
+                $('.divboxASearch #AdvCustomerID').val('').trigger('change');              
+                $('.divboxASearch #AdvBranchCode').val('').trigger('change');
+                $('.divboxASearch #AdvAreaCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
+                $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
+                $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
                 $('#FromDate').val('');
                 $('#ToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('');
+                $('.divboxASearch #AdvCustomerID').val('');               
+                $('.divboxASearch #AdvBranchCode').val('');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
+                $('.divboxASearch #AdvDocumentOwnerID').val('');
+                $('.divboxASearch #AdvApprovalStatusCode').val('');
+                $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "")  && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -60,6 +79,14 @@ function BindOrReloadProductionOrderTable(action) {
         ProductionOrderAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         ProductionOrderAdvanceSearchViewModel.FromDate = $('#FromDate').val();
         ProductionOrderAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        ProductionOrderAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        ProductionOrderAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();       
+        ProductionOrderAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
+        ProductionOrderAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
+        ProductionOrderAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
+        ProductionOrderAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+        ProductionOrderAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val();
+
         //apply datatable plugin on ProductionOrder table
         _dataTable.ProductionOrderList = $('#tblProductionOrder').DataTable(
         {
@@ -76,6 +103,7 @@ function BindOrReloadProductionOrderTable(action) {
             paging: true,
             lengthChange: false,
             processing: true,
+            autoWidth:false,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
@@ -86,34 +114,42 @@ function BindOrReloadProductionOrderTable(action) {
                 type: 'POST'
             },
             pageLength: 13,
-            columns: [
-               { "data": "ProdOrderNo", "defaultContent": "<i>-</i>" },
-               { "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-               //{ "data": "UserName", "defaultContent": "<i>-</i>" },
-               //{
-               //    "data": "IsFinalApproved", render: function (data, type, row) {
-               //        if (data) {
-               //            return "Approved ✔";// <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
-               //        }
-               //        else {
-               //            return 'Pending';
-               //        }
+            columns: [   
+                {
+                    "data": "ProdOrderNo", render: function (data, type, row) {
+                        return row.ProdOrderNo + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ProdOrderDateFormatted;
+                    }, "defaultContent": "<i>-</i>"
+                },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },              
+               { "data": "Area.Description", "defaultContent": "<i>-</i>" },             
+               {
+                   "data": "Branch.Description", render: function (data, type, row) {
+                       return "<b>Doc.Owner-</b>" + row.PSAUser.LoginName + "</br>" + "<b>Branch-</b>" + row.Branch.Description;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               {
+                   "data": "DocumentStatus.Description", render: function (data, type, row) {
+                       return "<b>Doc.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '') + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
+                   }, "defaultContent": "<i>-</i>"
+               },
 
-               //    }, "defaultContent": "<i>-</i>"
-               //},
+
+
+
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [0, 2, 3, 4] },
-                          { className: "text-center", "targets": [1,5] },
-                            { "targets": [0], "width": "30%" },
-                            { "targets": [2], "width": "10%" },
-                            { "targets": [3, 4], "width": "10%" },
-                            { "targets": [1], "width": "20%" },
-                            { "targets": [5], "width": "10%" },
+                          { className: "text-left", "targets": [0,1, 2, 3, 4] },
+                          { className: "text-center", "targets": [5] },
+                            { "targets": [0,1], "width": "12%" },
+                            { "targets": [2], "width": "15%" },
+                             { "targets": [3], "width": "15%" },
+                            { "targets": [4], "width": "24%" },                      
+                            { "targets": [5], "width": "3%" },                         
                            
 
             ],

@@ -109,28 +109,34 @@ function BindOrReloadEnquiryTable(action) {
                 data: { "EnquiryAdvanceSearchVM": EnquiryAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 6,
+            pageLength: 8,
             columns: [
                {
                    "data": "EnquiryNo", render: function (data, type, row) {
-                       return data + "<br/>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.EnquiryDateFormatted
+                       return (data == null ? " " : data) + "<br/>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + (row.EnquiryDateFormatted == null ? " " : row.EnquiryDateFormatted)
 
                    }, "defaultContent": "<i>-</i>"
                },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
-                       debugger;
-                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                      
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + (data == null ? " " : data);
 
                    }, "defaultContent": "<i>-</i>"
                },
-               { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "RequirementSpec", render: function (data, type, row) {
+                       debugger;
+                       return '<div style="width:100%;text-overflow: ellipsis;overflow: hidden; class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Requirement Specification" data-content="' + data + '</p>"/>' + (data == null ? " " : data.substring(0, 30))//if (data.length > 30){var newdata = data.substring(0, 30);return newdata + ' <a style="color:rgba(94, 66, 209, 0.8);"> More.. ▼</a>';}else{return data ;}
+
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                {
                    "data": "DocumentStatus.Description", render: function (data, type, row) {
-                           return "<b>Doc.Status-</b>" + data +"</br>"+"<b>Branch-</b>" + row.Branch.Description;
+                       return "<b>Doc.Status-</b>" + (data == null ? " " : data) + "</br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEnquiry(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
@@ -144,6 +150,16 @@ function BindOrReloadEnquiryTable(action) {
                             { "targets": [7], "width": "2%" },
                         ],
             destroy: true,
+         
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 
@@ -164,7 +180,7 @@ function BindOrReloadEnquiryTable(action) {
                     $(".buttons-excel").trigger('click');
                     BindOrReloadEnquiryTable();
                 }
-            }
+            } 
         });
         $(".buttons-excel").hide();
     }
