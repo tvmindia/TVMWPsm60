@@ -36,6 +36,18 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
+
+
+        #region SaleInvoice Other Charge Detail 
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public ActionResult SaleInvoiceOtherChargeDetail()
+        {
+            SaleInvoiceOtherChargeViewModel saleInvocieOtherChargeVM = new SaleInvoiceOtherChargeViewModel();
+            saleInvocieOtherChargeVM.IsUpdate = false;
+            return PartialView("_SaleInvoiceOtherCharge", saleInvocieOtherChargeVM);
+        }
+        #endregion SaleInvoice Other Charge Detail 
+
         #region SaleInvoice Form
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
         public ActionResult SaleInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID)
@@ -108,6 +120,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_SaleInvoiceForm", saleInvoiceVM);
         }
         #endregion SaleInvoice Form
+
         #region SaleInvoice Detail Add
         public ActionResult AddSaleInvoiceDetail()
         {
@@ -116,6 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddSaleInvoiceDetail", saleInvoiceDetailVM);
         }
         #endregion SaleInvoice Detail Add
+
         #region Get SaleInvoice DetailList By SaleInvoiceID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]

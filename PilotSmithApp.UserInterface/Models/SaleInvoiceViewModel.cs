@@ -109,8 +109,10 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal CGSTPerc { get; set; }
         public decimal SGSTPerc { get; set; }
         public decimal IGSTPerc { get; set; }
-        public decimal AddlTaxPec { get; set; }
+        public decimal AddlTaxPerc { get; set; }
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        //Additional Fields
+        public bool IsUpdate { get; set; }
     }
 }

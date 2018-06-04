@@ -632,6 +632,15 @@ function DeleteSaleInvoiceDetail(ID) {
         }
     }
 }
+//OtherExpense------------------
+function AddOtherExpenseDetailList() {
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/SaleInvoiceOtherChargeDetail", function () {
+        $('#lblModelPopSaleInvoice').text('OtherExpense Detail')
+        $('#divModelPopSaleInvoice').modal('show');
+    });
+}
+
+
 //================================================================================================
 //SaleInvoiceFollowup Section
 function AddSaleInvoiceFollowUp() {
