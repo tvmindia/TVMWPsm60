@@ -166,5 +166,6 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? Amount { get; set; }
         public decimal? CurProducedQty { get; set; }
         public PlantViewModel Plant { get; set; }
+        public decimal? PrevDelQty { get; set; }
     }
 }

@@ -160,7 +160,7 @@ function AddSaleOrder() {
         $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
         BindSaleOrderDetailList(_emptyGuid,false,false);
-        //BindSaleOrderOtherChargesDetailList(_emptyGuid)
+        BindSaleOrderOtherChargesDetailList(_emptyGuid, false);
         // OnServerCallComplete();
         setTimeout(function () {
             //resides in customjs for sliding
@@ -190,7 +190,9 @@ function EditSaleOrder(this_Obj) {
         else {
             ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
         }
-        BindSaleOrderDetailList(SaleOrder.ID,false,false);
+        BindSaleOrderDetailList(SaleOrder.ID, false, false);
+        BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
+        CalculateTotal();
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
         });
         clearUploadControl();
@@ -212,7 +214,8 @@ function ResetSaleOrder() {
                 openNav();
             }, 100);
         }
-        BindSaleOrderDetailList($('#ID').val(), false,false);
+        BindSaleOrderDetailList($('#ID').val(), false, false);
+        BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
         clearUploadControl();
         PaintImages($('#SaleOrderForm #ID').val());
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
@@ -222,6 +225,8 @@ function ResetSaleOrder() {
 function SaveSaleOrder() {
     var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(saleOrderDetailList));
+    var otherChargesDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data().toArray();
+    $('#OtherChargesDetailJSON').val(JSON.stringify(otherChargesDetailList));
     $('#btnInsertUpdateSaleOrder').trigger('click');
 }
 function ApplyFilterThenSearch() {
@@ -242,7 +247,9 @@ function SaveSuccessSaleOrder(data, status) {
                 $('#IsUpdate').val('True');
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID, function () {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit");
-                    BindSaleOrderDetailList(_result.ID,false,false);
+                    BindSaleOrderDetailList(_result.ID, false, false);
+                    BindSaleOrderOtherChargesDetailList(_result.ID, false);
+                    CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblSaleOrderInfo').text(_result.SaleOrderNo);
@@ -301,8 +308,18 @@ function DeleteSaleOrderItem(id) {
     }
 }
 //
-function BindSaleOrderOtherChargesDetailList(id) {
+function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
     debugger;
+    var data;
+    if (id == _emptyGuid && !(IsQuotation)) {
+        data = null;
+    }
+    else if (id == _emptyGuid && (IsQuotation)) {
+        data = GetSaleOrderOtherChargesDetailListBySaleOrderID(id, IsQuotation)
+    }
+    else {
+        data = GetSaleOrderOtherChargesDetailListBySaleOrderID(id, IsQuotation)
+    }
     _dataTable.SaleOrderOtherChargesDetailList = $('#tblSaleOrderOtherChargesDetailList').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -311,45 +328,74 @@ function BindSaleOrderOtherChargesDetailList(id) {
              paging: false,
              ordering: false,
              bInfo: false,
-             data: id == _emptyGuid ? null : GetSaleOrderOtherChargesDetailListBySaleOrderID(id),
+             data: data,
              language: {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Charge Amount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
-                 "data": "CGSTAmt", render: function (data, type, row) {
+                 "data": "ChargeAmount", render: function (data, type, row) {
                      debugger;
-                     return ""
-                     //var CGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[0].split('-')[1] : 0);
-                     //var SGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[1].split('-')[1] : 0);
-                     //var IGST = parseFloat(row.TaxType.ValueText != "" ? row.TaxType.ValueText.split('|')[1].split(',')[2].split('-')[1] : 0);
-                     //var GSTAmt = roundoff(parseFloat(data) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
-                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(row.SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(data)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(row.IGSTAmt)) + '</p>"/>' + GSTAmt
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "Charge Amount", render: function (data, type, row) {
-                     return ""
-                     //var TaxableAmt = roundoff((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0))
-                     //var GSTAmt = roundoff(parseFloat(row.CGSTAmt) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt))
-                     //var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(row.SGSTAmt) + parseFloat(row.IGSTAmt) + parseFloat(row.CGSTAmt))
-                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     var TaxAmt = parseFloat(data) + parseFloat(GSTAmt)
+                     var AddlTax = parseFloat(TaxAmt * row.AddlTaxPerc / 100);
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Additional Tax : % ' + row.AddlTaxPerc + '</p>"/>' + roundoff(AddlTax)
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             {
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     var TaxAmt = parseFloat(data) + parseFloat(GSTAmt)
+                     var AddlTax = parseFloat(TaxAmt * row.AddlTaxPerc / 100);
+                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt) + parseFloat(AddlTax))
+                     //return Total
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "20%" },
-                 { "targets": [1, 2], "width": "20%" },
-                 { "targets": [3], "width": "20%" },
-                 { className: "text-left", "targets": [3] },
-                 { className: "text-center", "targets": [0, 1, 2] }
+                 { "targets": [0], "width": "30%" },
+                 { "targets": [1, 2, 3,4], "width": "15%" },
+                 { "targets": [5], "width": "10%" },
+                 { className: "text-left", "targets": [0] },
+                 { className: "text-right", "targets": [1, 2, 3,4] },
+                 { className: "text-center", "targets": [5] }
              ],
              destroy: true,
          });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'top'
+    });
 }
 function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
     debugger;
@@ -421,7 +467,19 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
              {
                  "data": "CessAmt", render: function (data, type, row) {
                      debugger;
-                     return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + data
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
+                     var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
+                     var Taxable = Total - Discount
+                     var CGSTAmt = parseFloat(Taxable * CGST / 100);
+                     var SGSTAmt = parseFloat(Taxable * SGST / 100)
+                     var IGSTAmt = parseFloat(Taxable * IGST / 100)
+                     var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
+                     var TaxAmount = Taxable + parseFloat(GSTAmt);
+                     var Cess = roundoff(parseFloat(TaxAmount * row.CessPerc / 100));
+                     return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + Cess
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -434,11 +492,13 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      var SGSTAmt = parseFloat(TaxableAmt * SGST / 100)
                      var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt) + parseFloat(row.CessAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                     var TaxAmount = TaxableAmt + parseFloat(GSTAmt);
+                     var Cess = roundoff(parseFloat(TaxAmount * row.CessPerc / 100));
+                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt) + parseFloat(Cess))
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '<br/>Cess : ₹ ' + row.CessAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
                  { "targets": [0], "width": "35%" },
@@ -448,29 +508,29 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                  { className: "text-left", "targets": [0] },
                  { className: "text-center", "targets": [1, 8] }
              ],
-             rowCallback: function (row, data, index) {
-                 debugger;
-                 var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
-                 var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
-                 var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
-                 var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
-                 var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
-                 var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
-                 var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
-                 var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
-                 var GrossTotalAmt = TaxableAmt + GSTAmt + parseFloat(data.CessAmt)
-                 var CessAmt = roundoff(parseFloat($('#lblCessAmount').text()) + parseFloat(data.CessAmt))
-                 var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
-                 var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
-                 var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
-                 var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + GrossTotalAmt)
+             //rowCallback: function (row, data, index) {
+             //    debugger;
+             //    var TaxableAmt = (parseFloat(data.Rate != "" ? data.Rate : 0) * parseInt(data.Qty != "" ? data.Qty : 1)) - parseFloat(data.Discount != "" ? data.Discount : 0)
+             //    var CGST = parseFloat(data.CGSTPerc != "" ? data.CGSTPerc : 0);
+             //    var SGST = parseFloat(data.SGSTPerc != "" ? data.SGSTPerc : 0);
+             //    var IGST = parseFloat(data.IGSTPerc != "" ? data.IGSTPerc : 0);
+             //    var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+             //    var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
+             //    var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
+             //    var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
+             //    var GrossTotalAmt = TaxableAmt + GSTAmt + parseFloat(data.CessAmt)
+             //    var CessAmt = roundoff(parseFloat($('#lblCessAmount').text()) + parseFloat(data.CessAmt))
+             //    var TaxTotal = roundoff(parseFloat($('#lblTaxTotal').text()) + GSTAmt)
+             //    var TaxableTotal = roundoff(parseFloat($('#lblItemTotal').text()) + TaxableAmt)
+             //    var GrossAmount = roundoff(parseFloat($('#lblGrossAmount').text()) + GrossTotalAmt)
+             //    var GrandTotal = roundoff(parseFloat($('#lblGrandTotal').text()) + GrossTotalAmt)
 
-                 $('#lblTaxTotal').text(TaxTotal);
-                 $('#lblItemTotal').text(TaxableTotal);
-                 $('#lblGrossAmount').text(GrossAmount);
-                 $('#lblCessAmount').text(CessAmt);
-                 $('#lblGrandTotal').text(GrandTotal);
-             },
+             //    $('#lblTaxTotal').text(TaxTotal);
+             //    $('#lblItemTotal').text(TaxableTotal);
+             //    $('#lblGrossAmount').text(GrossAmount);
+             //    $('#lblCessAmount').text(CessAmt);
+             //    $('#lblGrandTotal').text(GrandTotal);
+             //},
              initComplete: function (settings, json) {
                  $('#SaleOrderForm #Discount').trigger('change');
              },
@@ -479,7 +539,7 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'left'
+        'placement': 'top'
     });
 }
 function GetSaleOrderDetailListBySaleOrderID(id, IsEnquiry, IsQuotation) {
@@ -556,10 +616,11 @@ function AddSaleOrderDetailToList() {
             saleOrderDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
             saleOrderDetailList[_datatablerowindex].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
             saleOrderDetailList[_datatablerowindex].IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
-            saleOrderDetailList[_datatablerowindex].CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val();
+            saleOrderDetailList[_datatablerowindex].CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val() != "" ? $('#divModelSaleOrderPopBody #CessPerc').val() : 0;
             saleOrderDetailList[_datatablerowindex].CessAmt = $('#divModelSaleOrderPopBody #CessAmt').val();
             ClearCalculatedFields();
             _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
+            CalculateTotal();
             $('#divModelPopSaleOrder').modal('hide');
             _datatablerowindex = -1;
         }
@@ -587,10 +648,11 @@ function AddSaleOrderDetailToList() {
                 saleOrderDetailList[0].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
                 saleOrderDetailList[0].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
                 saleOrderDetailList[0].IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
-                saleOrderDetailList[0].CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val();
+                saleOrderDetailList[0].CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val() != "" ? $('#divModelSaleOrderPopBody #CessPerc').val() : 0;
                 saleOrderDetailList[0].CessAmt = $('#divModelSaleOrderPopBody #CessAmt').val();
                 ClearCalculatedFields();
                 _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
+                CalculateTotal();
                 $('#divModelPopSaleOrder').modal('hide');               
             }
             else {
@@ -611,6 +673,7 @@ function AddSaleOrderDetailToList() {
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
+                        CalculateTotal();
                         $('#divModelPopSaleOrder').modal('hide');
                     }
                     else if (checkpoint == 0) {
@@ -641,9 +704,10 @@ function AddSaleOrderDetailToList() {
                         SaleOrderDetailVM.CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
                         SaleOrderDetailVM.SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
                         SaleOrderDetailVM.IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
-                        SaleOrderDetailVM.CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val();
+                        SaleOrderDetailVM.CessPerc = $('#divModelSaleOrderPopBody #CessPerc').val() != "" ? $('#divModelSaleOrderPopBody #CessPerc').val() : 0;
                         SaleOrderDetailVM.CessAmt = $('#divModelSaleOrderPopBody #CessAmt').val();
                         _dataTable.SaleOrderDetailList.row.add(SaleOrderDetailVM).draw(true);
+                        CalculateTotal();
                         $('#divModelPopSaleOrder').modal('hide');
                     }
                 }
@@ -689,8 +753,10 @@ function EditSaleOrderDetail(this_Obj) {
         $('#FormSaleOrderDetail #hdnUnitCode').val(saleOrderDetail.UnitCode);
         $('#FormSaleOrderDetail #Rate').val(saleOrderDetail.Rate);
         $('#FormSaleOrderDetail #Discount').val(saleOrderDetail.Discount);
-        $('#FormSaleOrderDetail #TaxTypeCode').val(saleOrderDetail.TaxType.Code);
-        $('#FormSaleOrderDetail #hdnTaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
+        if (saleOrderDetail.TaxType.Code != 0) {
+            $('#FormSaleOrderDetail #TaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
+            $('#FormSaleOrderDetail #hdnTaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
+        }
         $('#FormSaleOrderDetail #hdnCGSTPerc').val(saleOrderDetail.CGSTPerc);
         $('#FormSaleOrderDetail #hdnSGSTPerc').val(saleOrderDetail.SGSTPerc);
         $('#FormSaleOrderDetail #hdnIGSTPerc').val(saleOrderDetail.IGSTPerc);
@@ -715,6 +781,7 @@ function ConfirmDeleteSaleOrderDetail(this_Obj) {
         saleOrderDetailList.splice(_datatablerowindex, 1);
         ClearCalculatedFields();
         _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
+        CalculateTotal();
         notyAlert('success', 'Detail Row deleted successfully');
     }
     else {
@@ -739,6 +806,7 @@ function DeleteSaleOrderDetail(ID) {
             saleOrderDetailList.splice(_datatablerowindex, 1);
             ClearCalculatedFields();
             _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
+            CalculateTotal();
         }
         if (_status == "ERROR") {
             notyAlert('error', _message);
@@ -753,12 +821,15 @@ function CalculateGrandTotal(value) {
 //Email SaleOrder
 //
 function EmailSaleOrder() {
+    debugger;
     $("#divModelEmailSaleOrderBody").load("SaleOrder/EmailSaleOrder?ID=" + $('#SaleOrderForm #ID').val() + "&EmailFlag=True", function () {
         $('#lblModelEmailSaleOrder').text('Email SaleOrder')
         $('#divModelEmailSaleOrder').modal('show');
     });
 }
 function SendSaleOrderEmail() {
+    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
     $('#hdnSaleOrderEMailContent').val($('#divSaleOrderEmailcontainer').html());
     $('#FormSaleOrderEmailSend #ID').val($('#SaleOrderForm #ID').val());
 }
@@ -768,6 +839,7 @@ function UpdateSaleOrderEmailInfo() {
     $('#FormUpdateSaleOrderEmailInfo #ID').val($('#SaleOrderForm #ID').val());
 }
 function DownloadSaleOrder() {
+    debugger;
     var bodyContent = $('#divSaleOrderEmailcontainer').html();
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
@@ -832,14 +904,15 @@ function SaveSuccessSaleOrderEmailSend(data, status) {
 }
 function ShowSendForApproval(documentTypeCode) {
     debugger;
-    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
+    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=SOD", function () {
+        debugger;
         if ($('#LatestApprovalStatus').val() == 3) {
             var documentID = $('#SaleOrderForm #ID').val();
-            var latestApprovalID = $('SaleOrderForm #LatestApprovalID').val();
+            var latestApprovalID = $('#LatestApprovalID').val();
             ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID);
-            SendForApproval('QUO')
+            //SendForApproval('QUO')
             //BindPurchaseOrder($('#ID').val());
-
+            ResetSaleOrder();
         }
         else {
             $('#SendApprovalModal').modal('show');
@@ -862,6 +935,7 @@ function SendForApproval(documentTypeCode) {
     }
     SendDocForApproval(documentID, documentTypeCode, approversCSV);
     $('#SendApprovalModal').modal('hide');
+    ResetSaleOrder();
     //BindPurchaseOrder($('#ID').val());
 
 }
@@ -872,4 +946,269 @@ function ClearCalculatedFields()
     $('#lblGrossAmount').text('0.00');
     $('#lblCessAmount').text('0.00');
     $('#lblGrandTotal').text('0.00');
+    $('#lblOtherChargeAmount').text('0.00');
+}
+//OtherExpense------------------
+function AddOtherExpenseDetailList() {
+    $("#divModelSaleOrderPopBody").load("SaleOrder/SaleOrderOtherChargeDetail", function () {
+        $('#lblModelPopSaleOrder').text('OtherExpense Detail')
+        $('#divModelPopSaleOrder').modal('show');
+    });
+}
+function AddOtherExpenseDetailToList() {
+    debugger;
+    $("#FormOtherExpenseDetail").submit(function () { });
+    debugger;
+    if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
+        if (($('#divModelSaleOrderPopBody #OtherChargeCode').val() != "") && ($('#divModelSaleOrderPopBody #ChargeAmount').val() != "")) {
+            debugger;
+            var saleOrderOtherExpenseDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
+            saleOrderOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            saleOrderOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelSaleOrderPopBody #ChargeAmount").val();
+            saleOrderOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode").val() : _emptyGuid;
+            TaxType = new Object;
+            if ($('#divModelSaleOrderPopBody #TaxTypeCode').val() != null) {
+                saleOrderOtherExpenseDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+                TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
+            }
+            saleOrderOtherExpenseDetailList[_datatablerowindex].TaxType = TaxType;
+            saleOrderOtherExpenseDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
+            saleOrderOtherExpenseDetailList[_datatablerowindex].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
+            saleOrderOtherExpenseDetailList[_datatablerowindex].IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
+            saleOrderOtherExpenseDetailList[_datatablerowindex].AddlTaxPerc = $('#divModelSaleOrderPopBody #AddlTaxPerc').val() != "" ? $('#divModelSaleOrderPopBody #AddlTaxPerc').val() : 0;
+            saleOrderOtherExpenseDetailList[_datatablerowindex].AddlTaxAmt = $('#divModelSaleOrderPopBody #AddlTaxAmt').val() != "" ? $('#divModelSaleOrderPopBody #AddlTaxAmt').val() : 0.00;
+            ClearCalculatedFields();
+            _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(saleOrderOtherExpenseDetailList).draw(false);
+            CalculateTotal();
+            $('#divModelPopSaleOrder').modal('hide');
+            _datatablerowindex = -1;
+        }
+    }
+    else {
+        if (($('#divModelSaleOrderPopBody #OtherChargeCode').val() != "") && ($('#divModelSaleOrderPopBody #ChargeAmount').val() != "")) {
+            debugger;
+            if (_dataTable.SaleOrderOtherChargesDetailList.rows().data().length === 0) {
+                _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(GetSaleOrderOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
+                debugger;
+                var saleOrderOtherExpenseDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
+                saleOrderOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                saleOrderOtherExpenseDetailList[0].OtherChargeCode = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode").val() : _emptyGuid;
+                saleOrderOtherExpenseDetailList[0].ChargeAmount = $("#divModelSaleOrderPopBody #ChargeAmount").val();
+                if ($('#divModelSaleOrderPopBody #TaxTypeCode').val() != null) {
+                    saleOrderOtherExpenseDetailList[0].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+                }
+                saleOrderOtherExpenseDetailList[0].TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
+                saleOrderOtherExpenseDetailList[0].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
+                saleOrderOtherExpenseDetailList[0].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
+                saleOrderOtherExpenseDetailList[0].IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
+                saleOrderOtherExpenseDetailList[0].AddlTaxPerc = $('#divModelSaleOrderPopBody #AddlTaxPerc').val() != "" ? $('#divModelSaleOrderPopBody #AddlTaxPerc').val() : 0;
+                saleOrderOtherExpenseDetailList[0].AddlTaxAmt = $('#divModelSaleOrderPopBody #AddlTaxAmt').val() != "" ? $('#divModelSaleOrderPopBody #AddlTaxAmt').val() : 0.00;
+                ClearCalculatedFields();
+                _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(saleOrderOtherExpenseDetailList).draw(false);
+                CalculateTotal();
+                $('#divModelPopSaleOrder').modal('hide');
+            }
+            else {
+                debugger;
+                var saleOrderOtherExpenseDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
+                if (saleOrderOtherExpenseDetailList.length > 0) {
+                    var checkpoint = 0;
+                    var otherCharge = $('#OtherChargeCode').val();
+                    for (var i = 0; i < saleOrderOtherExpenseDetailList.length; i++) {
+                        if ((saleOrderOtherExpenseDetailList[i].OtherChargeCode == otherCharge)) {
+                            saleOrderOtherExpenseDetailList[i].ChargeAmount = parseFloat(saleOrderOtherExpenseDetailList[i].ChargeAmount) + parseFloat($('#ChargeAmount').val());
+                            checkpoint = 1;
+                            break;
+                        }
+                    }
+                    if (checkpoint == 1) {
+                        debugger;
+                        ClearCalculatedFields();
+                        _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(saleOrderOtherExpenseDetailList).draw(false);
+                        CalculateTotal();
+                        $('#divModelPopSaleOrder').modal('hide');
+                    }
+                    else if (checkpoint == 0) {
+                        ClearCalculatedFields();
+                        var SaleOrderOtherChargesDetailVM = new Object();
+                        SaleOrderOtherChargesDetailVM.ID = _emptyGuid;
+                        var OtherCharge = new Object;
+                        OtherCharge.Description = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                        SaleOrderOtherChargesDetailVM.OtherCharge = OtherCharge;
+                        SaleOrderOtherChargesDetailVM.OtherChargeCode = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode").val() : _emptyGuid;
+                        SaleOrderOtherChargesDetailVM.ChargeAmount = $("#divModelSaleOrderPopBody #ChargeAmount").val();
+                        var TaxType = new Object();
+                        if ($('#divModelSaleOrderPopBody #TaxTypeCode').val() != null) {
+                            SaleOrderOtherChargesDetailVM.TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+                            TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
+                        }
+                        SaleOrderOtherChargesDetailVM.TaxType = TaxType;
+                        SaleOrderOtherChargesDetailVM.CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
+                        SaleOrderOtherChargesDetailVM.SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
+                        SaleOrderOtherChargesDetailVM.IGSTPerc = $('#divModelSaleOrderPopBody #hdnIGSTPerc').val();
+                        SaleOrderOtherChargesDetailVM.AddlTaxPerc = $('#divModelSaleOrderPopBody #AddlTaxPerc').val() != "" ? $('#divModelSaleOrderPopBody #AddlTaxPerc').val() : 0.00;
+                        SaleOrderOtherChargesDetailVM.AddlTaxAmt = $('#divModelSaleOrderPopBody #AddlTaxAmt').val() != "" ? $('#divModelSaleOrderPopBody #AddlTaxAmt').val() : 0.00;
+                        _dataTable.SaleOrderOtherChargesDetailList.row.add(SaleOrderOtherChargesDetailVM).draw(true);
+                        CalculateTotal();
+                        $('#divModelPopSaleOrder').modal('hide');
+                    }
+                }
+            }
+        }
+    }
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'left'
+    });
+}
+function GetSaleOrderOtherChargesDetailListBySaleOrderID(id, IsQuotation) {
+    try {
+        debugger;
+
+        var SaleOrderOtherChargesDetailList = [];
+        if (IsQuotation) {
+            var data = { "quoteID": $('#SaleOrderForm #hdnQuoteID').val() };
+            _jsonData = GetDataFromServer("SaleOrder/GetSaleOrderOtherChargesDetailListByQuotationIDFromQuotation/", data);
+        }
+        else {
+            var data = { "saleOrderID": id };
+            _jsonData = GetDataFromServer("SaleOrder/GetSaleOrderOtherChargesDetailListBySaleOrderID/", data);
+        }
+
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            SaleOrderOtherChargesDetailList = _jsonData.Records;
+        }
+        if (_status == "OK") {
+            return SaleOrderOtherChargesDetailList;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
+}
+function EditSaleOrderOtherChargesDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
+    var saleOrderOtherChargesDetail = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
+    $("#divModelSaleOrderPopBody").load("SaleOrder/SaleOrderOtherChargeDetail", function () {
+        debugger;
+        $('#lblModelPopQuotation').text('OtherCharges Detail')
+        $('#FormOtherExpenseDetail #IsUpdate').val('True');
+        $('#FormOtherExpenseDetail #ID').val(saleOrderOtherChargesDetail.ID);
+        $("#FormOtherExpenseDetail #OtherChargeCode").val(saleOrderOtherChargesDetail.OtherChargeCode);
+        $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(saleOrderOtherChargesDetail.OtherChargeCode);
+        $("#FormOtherExpenseDetail #ChargeAmount").val(saleOrderOtherChargesDetail.ChargeAmount);
+        if (saleOrderOtherChargesDetail.TaxType.Code != 0) {
+            $('#FormOtherExpenseDetail #TaxTypeCode').val(saleOrderOtherChargesDetail.TaxType.ValueText);
+            $('#FormOtherExpenseDetail #hdnTaxTypeCode').val(saleOrderOtherChargesDetail.TaxType.ValueText);
+        }
+        $('#FormOtherExpenseDetail #hdnCGSTPerc').val(saleOrderOtherChargesDetail.CGSTPerc);
+        $('#FormOtherExpenseDetail #hdnSGSTPerc').val(saleOrderOtherChargesDetail.SGSTPerc);
+        $('#FormOtherExpenseDetail #hdnIGSTPerc').val(saleOrderOtherChargesDetail.IGSTPerc);
+        $('#FormOtherExpenseDetail #hdnAddlTaxPerc').val(saleOrderOtherChargesDetail.AddlTaxPerc);
+        $('#FormOtherExpenseDetail #hdnAddlTaxAmt').val(saleOrderOtherChargesDetail.AddlTaxAmt);
+        $('#FormOtherExpenseDetail #AddlTaxPerc').val(saleOrderOtherChargesDetail.AddlTaxPerc);
+        $('#FormOtherExpenseDetail #AddlTaxAmt').val(saleOrderOtherChargesDetail.AddlTaxAmt);
+
+        var CGSTAmt = (saleOrderOtherChargesDetail.ChargeAmount * parseFloat(saleOrderOtherChargesDetail.CGSTPerc)) / 100;
+        var SGSTAmt = (saleOrderOtherChargesDetail.ChargeAmount * parseFloat(saleOrderOtherChargesDetail.SGSTPerc)) / 100;
+        var IGSTAmt = (saleOrderOtherChargesDetail.ChargeAmount * parseFloat(saleOrderOtherChargesDetail.IGSTPerc)) / 100;
+        $('#FormOtherExpenseDetail #CGSTPerc').val(CGSTAmt);
+        $('#FormOtherExpenseDetail #SGSTPerc').val(SGSTAmt);
+        $('#FormOtherExpenseDetail #IGSTPerc').val(IGSTAmt);
+        $('#divModelPopSaleOrder').modal('show');
+    });
+}
+function ConfirmDeleteSaleOrderOtherChargeDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
+    var saleOrderOtherChargeDetail = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
+    if (saleOrderOtherChargeDetail.ID === _emptyGuid) {
+        var quotationOtherChargeDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
+        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+        ClearCalculatedFields();
+        _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+        CalculateTotal();
+        notyAlert('success', 'Detail Row deleted successfully');
+    }
+    else {
+        notyConfirm('Are you sure to delete?', 'DeleteSaleOrderOtherChargeDetail("' + saleOrderOtherChargeDetail.ID + '")');
+
+    }
+}
+function DeleteSaleOrderOtherChargeDetail(ID) {
+    if (ID != _emptyGuid && ID != null && ID != '') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("SaleOrder/DeleteSaleOrderOtherChargeDetail/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            var saleOrderOtherChargeDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
+            saleOrderOtherChargeDetailList.splice(_datatablerowindex, 1);
+            ClearCalculatedFields();
+            _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(saleOrderOtherChargeDetailList).draw(false);
+            CalculateTotal();
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+}
+function CalculateTotal() {
+    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, CessAmt=0.00;
+    var saleOrderDetail = _dataTable.SaleOrderDetailList.rows().data();
+    var saleOrderOtherChargeDetail = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
+    for (var i = 0; i < saleOrderDetail.length; i++) {
+        var TaxableAmt = (parseFloat(saleOrderDetail[i].Rate != "" ? saleOrderDetail[i].Rate : 0) * parseInt(saleOrderDetail[i].Qty != "" ? saleOrderDetail[i].Qty : 1)) - parseFloat(saleOrderDetail[i].Discount != "" ? saleOrderDetail[i].Discount : 0)
+        var CGST = parseFloat(saleOrderDetail[i].CGSTPerc != "" ? saleOrderDetail[i].CGSTPerc : 0);
+        var SGST = parseFloat(saleOrderDetail[i].SGSTPerc != "" ? saleOrderDetail[i].SGSTPerc : 0);
+        var IGST = parseFloat(saleOrderDetail[i].IGSTPerc != "" ? saleOrderDetail[i].IGSTPerc : 0);
+        var CGSTAmt = parseFloat(TaxableAmt * CGST / 100);
+        var SGSTAmt = parseFloat(TaxableAmt * SGST / 100);
+        var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
+        var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
+        var TaxAmount = TaxableAmt + parseFloat(GSTAmt);
+        var Cess = roundoff(parseFloat(TaxAmount * saleOrderDetail[i].CessPerc / 100));
+        CessAmt = roundoff(parseFloat(CessAmt) + parseFloat(Cess));
+        var GrossTotalAmt = TaxableAmt + GSTAmt
+        TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
+        TaxableTotal = roundoff(parseFloat(TaxableTotal) + parseFloat(TaxableAmt))
+        GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(GrossTotalAmt))
+    }
+    for (var i = 0; i < saleOrderOtherChargeDetail.length; i++) {
+        var CGST = parseFloat(saleOrderOtherChargeDetail[i].CGSTPerc != "" ? saleOrderOtherChargeDetail[i].CGSTPerc : 0);
+        var SGST = parseFloat(saleOrderOtherChargeDetail[i].SGSTPerc != "" ? saleOrderOtherChargeDetail[i].SGSTPerc : 0);
+        var IGST = parseFloat(saleOrderOtherChargeDetail[i].IGSTPerc != "" ? saleOrderOtherChargeDetail[i].IGSTPerc : 0);
+        var CGSTAmt = parseFloat(saleOrderOtherChargeDetail[i].ChargeAmount * CGST / 100);
+        var SGSTAmt = parseFloat(saleOrderOtherChargeDetail[i].ChargeAmount * SGST / 100)
+        var IGSTAmt = parseFloat(saleOrderOtherChargeDetail[i].ChargeAmount * IGST / 100)
+        var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+        var TaxAmt = parseFloat(saleOrderOtherChargeDetail[i].ChargeAmount) + parseFloat(GSTAmt)
+        var AddlTax = parseFloat(TaxAmt * saleOrderOtherChargeDetail[i].AddlTaxPerc / 100);
+        var Total = roundoff(parseFloat(saleOrderOtherChargeDetail[i].ChargeAmount) + parseFloat(GSTAmt) + parseFloat(AddlTax))
+        OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(Total))
+    }
+    GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt) + parseFloat(CessAmt))
+    $('#lblTaxTotal').text(TaxTotal);
+    $('#lblItemTotal').text(TaxableTotal);
+    $('#lblGrossAmount').text(GrossAmount);
+    $('#lblGrandTotal').text(GrossAmount);
+    $('#lblOtherChargeAmount').text(OtherChargeAmt);
+    $('#Discount').trigger('onchange');
+    $('#lblCessAmount').text(CessAmt);
 }

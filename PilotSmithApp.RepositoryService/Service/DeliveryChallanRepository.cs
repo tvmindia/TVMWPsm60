@@ -202,6 +202,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallanDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : deliveryChallanDetail.UnitCode);
                                         deliveryChallanDetail.Unit.Description = (sdr["Unit"].ToString() != "" ? (sdr["Unit"].ToString()) : deliveryChallanDetail.Unit.Description);
                                         deliveryChallanDetail.PrevDelQty = (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : deliveryChallanDetail.PrevDelQty);
+                                        deliveryChallanDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : deliveryChallanDetail.SpecTag);
                                     }
                                     deliveryChallanDetailList.Add(deliveryChallanDetail);
                                 }

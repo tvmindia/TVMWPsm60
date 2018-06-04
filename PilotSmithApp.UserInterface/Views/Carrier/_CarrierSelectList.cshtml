@@ -1,0 +1,21 @@
+﻿@model PilotSmithApp.UserInterface.Models.CarrierViewModel
+
+@if (ViewBag.IsRequired == "required")
+{
+    @Html.DropDownList("CarrierCode", Model.CarrierSelectList, "--Select carrier--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Unit is missing", @onchange = "$('#hdnCarrierCode').val(this.value)" })
+
+}
+else
+{
+    @Html.DropDownList("CarrierCode", Model.CarrierSelectList, "--Select carrier--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnCarrierCode').val(this.value)" })
+
+}
+@Html.ValidationMessage("CarrierCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $('#CarrierCode').val($('#hdnCarrierCode').val());
+        $('#CarrierCode').select2({});
+        $('.select2').addClass('form-control newinput');
+    });
+</script>

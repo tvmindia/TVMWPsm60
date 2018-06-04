@@ -62,6 +62,10 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? AdvanceAmount { get; set; }
 
         //Aditional Fields
+        [Display(Name = "Mail Body Header")]
+        public string MailBodyHeader { get; set; }
+        [Display(Name = "Mail Footer Header")]
+        public string MailBodyFooter { get; set; }
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }
         public string DocumentType { get; set; }
@@ -70,7 +74,9 @@ namespace PilotSmithApp.UserInterface.Models
         public string DocumentOwner { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SaleOrderDetailViewModel> SaleOrderDetailList { get; set; }
+        public List<SaleOrderOtherChargeViewModel> SaleOrderOtherChargeList { get; set; }
         public string DetailJSON { get; set; }
+        public string OtherChargesDetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }
@@ -87,6 +93,7 @@ namespace PilotSmithApp.UserInterface.Models
         public CustomerViewModel Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
         public BranchViewModel Branch { get; set; }
+        public CarrierViewModel Carrier { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public PDFTools PDFTools { get; set; }
         public List<SelectListItem> QuotationSelectList{ get; set; }
@@ -140,20 +147,36 @@ namespace PilotSmithApp.UserInterface.Models
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
         public TaxTypeViewModel TaxType { get; set; }
+        public decimal? PrevProduceQty { get; set; }
+        public decimal? PrevDelQty { get; set; }
     }
     public class SaleOrderOtherChargeViewModel
     {
         public Guid ID { get; set; }
         public Guid SaleOrderID { get; set; }
-        public int OtherChargeCode { get; set; }
-        public decimal ChargeAmount { get; set; }
-        public int TaxTypeCode { get; set; }
+        [Display(Name = "Other Charge")]
+        public int? OtherChargeCode { get; set; }
+        [Display(Name = "Amount")]
+        [Required(ErrorMessage = "Charge Amount is missing")]
+        public decimal? ChargeAmount { get; set; }
+        [Display(Name = "Tax Type")]
+        public int? TaxTypeCode { get; set; }
+        [Display(Name = "CGST Amount")]
         public decimal CGSTPerc { get; set; }
+        [Display(Name = "SGST Amount")]
         public decimal SGSTPerc { get; set; }
+        [Display(Name = "IGST Amount")]
         public decimal IGSTPerc { get; set; }
-        public decimal AddlTaxPec { get; set; }
-        public decimal AddlTaxAmt { get; set; }
+        [Display(Name = "Additional Tax Perc")]
+        public decimal? AddlTaxPerc { get; set; }
+        [Display(Name = "Additional Tax Amount")]
+        public decimal? AddlTaxAmt { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+
+        //Additional fields
+        public bool IsUpdate { get; set; }
+        public TaxTypeViewModel TaxType { get; set; }
+        public OtherChargeViewModel OtherCharge { get; set; }
 
     }
 

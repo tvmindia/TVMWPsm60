@@ -253,6 +253,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         OrderQty = 0,
                         ProducedQty=0,
                         PrevProducedQty=0,
+                        PrevDelQty=0,
                         Unit=new UnitViewModel()
                         {
                             Code=0,
@@ -318,7 +319,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             OrderQty = saleOrderDetailVM.Qty,
                                                             UnitCode = saleOrderDetailVM.UnitCode,
                                                             ProducedQty = 0,
-                                                            PrevProducedQty = 0,
+                                                            PrevProducedQty = saleOrderDetailVM.PrevProduceQty,
                                                             Rate = saleOrderDetailVM.Rate == null ? 0 : saleOrderDetailVM.Rate,
                                                             Amount = 0,
                                                             SpecTag=saleOrderDetailVM.SpecTag,

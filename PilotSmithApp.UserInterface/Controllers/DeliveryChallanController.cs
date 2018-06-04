@@ -286,7 +286,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             UnitCode = productionOrderDetailVM.UnitCode,
                                                             DelvQty = 0,
                                                             SpecTag = productionOrderDetailVM.SpecTag,
-                                                            PrevDelQty=0,
+                                                            PrevDelQty=productionOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()
                                                             {
                                                                 ID = (Guid)productionOrderDetailVM.ProductID,
@@ -339,7 +339,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             UnitCode = saleOrderDetailVM.UnitCode,
                                                             DelvQty = 0,
                                                             SpecTag = saleOrderDetailVM.SpecTag,
-                                                            PrevDelQty=0,
+                                                            PrevDelQty=saleOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()
                                                             {
                                                                 ID = (Guid)saleOrderDetailVM.ProductID,

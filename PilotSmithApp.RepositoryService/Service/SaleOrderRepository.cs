@@ -242,6 +242,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleOrder.QuoteID);
                                     saleOrder.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : saleOrder.EnquiryID);
                                     saleOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleOrder.CustomerID);
+                                    saleOrder.Customer = new Customer();
+                                    saleOrder.Customer.CompanyName = (sdr["CustomerCompanyName"].ToString() != "" ? (sdr["CustomerCompanyName"].ToString()) : saleOrder.Customer.CompanyName);
                                     saleOrder.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : saleOrder.MailingAddress);
                                     saleOrder.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : saleOrder.ShippingAddress);
                                     saleOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleOrder.DocumentStatusCode);
@@ -257,12 +259,15 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : saleOrder.EmailSentYN);
                                     saleOrder.LatestApprovalID = (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : saleOrder.LatestApprovalID);
                                     saleOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : saleOrder.LatestApprovalStatus);
+                                    saleOrder.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : saleOrder.LatestApprovalStatusDescription);
                                     saleOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : saleOrder.IsFinalApproved);
                                     saleOrder.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : saleOrder.EmailSentTo);
                                     saleOrder.TermReferenceNo = (sdr["TermReferenceNo"].ToString() != "" ? sdr["TermReferenceNo"].ToString() : saleOrder.TermReferenceNo);
                                     saleOrder.PrintRemark = (sdr["PrintRemark"].ToString() != "" ? sdr["PrintRemark"].ToString() : saleOrder.PrintRemark);
                                     saleOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleOrder.GeneralNotes);
                                     saleOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleOrder.BranchCode);
+                                    saleOrder.Branch = new Branch();
+                                    saleOrder.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : saleOrder.Branch.Description);
                                     saleOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleOrder.DocumentOwnerID);
                                     saleOrder.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleOrder.Discount);
                                     saleOrder.AdvanceAmount = (sdr["AdvanceAmount"].ToString() != "" ? decimal.Parse(sdr["AdvanceAmount"].ToString()) : saleOrder.AdvanceAmount);
@@ -338,6 +343,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderDetail.TaxType = new TaxType();
                                         saleOrderDetail.TaxType.Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderDetail.TaxType.Code);
                                         saleOrderDetail.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleOrderDetail.TaxType.ValueText);
+                                        saleOrderDetail.PrevProduceQty = (sdr["PrevProduceQty"].ToString() != "" ? decimal.Parse(sdr["PrevProduceQty"].ToString()) : saleOrderDetail.PrevProduceQty);
+                                        saleOrderDetail.PrevDelQty= (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : saleOrderDetail.PrevDelQty);
                                     }
                                     saleOrderDetailList.Add(saleOrderDetail);
                                 }
@@ -387,6 +394,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value = saleOrder.ExpectedDelvDateFormatted;
                         cmd.Parameters.Add("@ReferredByCode", SqlDbType.Int).Value = saleOrder.ReferredByCode;
                         cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = saleOrder.PreparedBy;
+                        cmd.Parameters.Add("@PurchaseOrdNo", SqlDbType.VarChar, 20).Value = saleOrder.PurchaseOrdNo;
+                        cmd.Parameters.Add("@PurchaseOrdDate", SqlDbType.DateTime).Value = saleOrder.PurchaseOrdDateFormatted;
                         //cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyHeader;
                         //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleOrder.EmailSentYN;
@@ -395,11 +404,13 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleOrder.EmailSentTo;
                         cmd.Parameters.Add("@TermReferenceNo", SqlDbType.VarChar, 25).Value = saleOrder.TermReferenceNo;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = saleOrder.DetailXML;
+                        cmd.Parameters.Add("@OtherChargeDetailXML", SqlDbType.Xml).Value = saleOrder.OtherChargeDetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = saleOrder.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = saleOrder.GeneralNotes;
                         cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = saleOrder.DocumentOwnerID;
                         cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = saleOrder.BranchCode;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = saleOrder.Discount;
+                        cmd.Parameters.Add("@AdvanceAmount", SqlDbType.Decimal).Value = saleOrder.AdvanceAmount;
                         //-----------------------//
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = saleOrder.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = saleOrder.PSASysCommon.CreatedDate;
@@ -605,5 +616,113 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Delete SaleOrder Detail
+
+        #region Delete SaleOrder OtherCharge
+        public object DeleteSaleOrderOtherChargeDetail(Guid id)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[DeleteSaleOrderOtherCharge]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+
+
+                    }
+                }
+
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+
+                        throw new Exception(_appConstant.DeleteFailure);
+
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.DeleteSuccess
+            };
+        }
+        #endregion Delete SaleOrder OtherCharge
+
+        #region GetSaleOrderOtherChargeListBySaleOrderID
+        public List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID)
+        {
+            List<SaleOrderOtherCharge> saleorderOtherChargeList = new List<SaleOrderOtherCharge>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetSaleOrderOtherChargeListBySaleOrderID]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@SaleOrderID", SqlDbType.UniqueIdentifier).Value = SaleOrderID;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    SaleOrderOtherCharge saleOrderOtherCharge = new SaleOrderOtherCharge();
+                                    {
+                                        saleOrderOtherCharge.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleOrderOtherCharge.ID);
+                                        saleOrderOtherCharge.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleOrderOtherCharge.SaleOrderID);
+                                        saleOrderOtherCharge.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : saleOrderOtherCharge.OtherChargeCode);
+                                        saleOrderOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : saleOrderOtherCharge.ChargeAmount);
+                                        saleOrderOtherCharge.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderOtherCharge.TaxTypeCode);
+                                        saleOrderOtherCharge.TaxType = new TaxType();
+                                        saleOrderOtherCharge.TaxType.Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleOrderOtherCharge.TaxType.Code);
+                                        saleOrderOtherCharge.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleOrderOtherCharge.TaxType.ValueText);
+                                        saleOrderOtherCharge.CGSTPerc = (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : saleOrderOtherCharge.CGSTPerc);
+                                        saleOrderOtherCharge.SGSTPerc = (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : saleOrderOtherCharge.SGSTPerc);
+                                        saleOrderOtherCharge.IGSTPerc = (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : saleOrderOtherCharge.IGSTPerc);
+                                        saleOrderOtherCharge.AddlTaxPerc = (sdr["AddlTaxPerc"].ToString() != "" ? decimal.Parse(sdr["AddlTaxPerc"].ToString()) : saleOrderOtherCharge.AddlTaxPerc);
+                                        saleOrderOtherCharge.AddlTaxAmt = (sdr["AddlTaxAmt"].ToString() != "" ? decimal.Parse(sdr["AddlTaxAmt"].ToString()) : saleOrderOtherCharge.AddlTaxAmt);
+                                        saleOrderOtherCharge.OtherCharge = new OtherCharge();
+                                        saleOrderOtherCharge.OtherCharge.Description = (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : saleOrderOtherCharge.OtherCharge.Description);
+                                    }
+                                    saleorderOtherChargeList.Add(saleOrderOtherCharge);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return saleorderOtherChargeList;
+        }
+        #endregion GetSaleOrderOtherChargeListBySaleOrderID
     }
 }
