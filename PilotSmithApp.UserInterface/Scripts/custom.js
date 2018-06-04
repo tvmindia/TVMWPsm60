@@ -131,7 +131,7 @@ $(document).ready(function () {
         }
 
     });
-   
+    $('.EntryForms').attr('style', 'height:' + (screen.availHeight / 1.53) + 'px');
    
 });
 function ChangeNavPosition()
