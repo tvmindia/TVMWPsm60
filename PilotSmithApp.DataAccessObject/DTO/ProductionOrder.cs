@@ -27,6 +27,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? BranchCode { get; set; }
 
         //Aditional Fields
+        public string MailFrom { get; set; }
         public string ProdOrderDateFormatted { get; set; }
         public string ExpectedDelvDateFormatted { get; set; }
         public PSASysCommon PSASysCommon { get; set; }

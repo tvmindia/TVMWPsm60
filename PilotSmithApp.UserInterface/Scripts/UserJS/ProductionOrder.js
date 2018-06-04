@@ -817,6 +817,7 @@ function SaveSuccessProductionOrderEmailSend(data, status) {
             case "OK":
                 MasterAlert("success", _message)
                 $('#divModelEmailProductionOrder').modal('hide');
+                ResetProductionOrder();
                 break;
             case "ERROR":
                 MasterAlert("success", _message)

@@ -173,6 +173,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionOrder.LatestApprovalStatus);
                                     productionOrder.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : productionOrder.LatestApprovalStatusDescription);
                                     productionOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : productionOrder.IsFinalApproved);
+                                    string mailFrom = (sdr["MailFromAddress"].ToString() != "" ? sdr["MailFromAddress"].ToString() : productionOrder.MailFrom);
+                                    productionOrder.MailFrom = mailFrom.Replace("\n", "<br />");
                                 }
                         }
                     }
