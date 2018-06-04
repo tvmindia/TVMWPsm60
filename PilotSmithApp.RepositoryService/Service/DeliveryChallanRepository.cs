@@ -79,7 +79,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallan.Employee = new Employee();
                                         deliveryChallan.Employee.Name = (sdr["PreparedBy"].ToString() != "" ? sdr["PreparedBy"].ToString() : deliveryChallan.Employee.Name);
                                         deliveryChallan.Branch = new Branch();
-                                        deliveryChallan.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["PreparedBy"].ToString() : deliveryChallan.Branch.Description);
+                                        deliveryChallan.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : deliveryChallan.Branch.Description);
                                         deliveryChallan.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : deliveryChallan.FilteredCount);
                                         deliveryChallan.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : deliveryChallan.FilteredCount);
                                     }
@@ -202,6 +202,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallanDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : deliveryChallanDetail.UnitCode);
                                         deliveryChallanDetail.Unit.Description = (sdr["Unit"].ToString() != "" ? (sdr["Unit"].ToString()) : deliveryChallanDetail.Unit.Description);
                                         deliveryChallanDetail.PrevDelQty = (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : deliveryChallanDetail.PrevDelQty);
+                                         //deliveryChallanDetail.PrevDelQtyProd = (sdr["PrevDelQtyProd"].ToString() != "" ? decimal.Parse(sdr["PrevDelQtyProd"].ToString()) : deliveryChallanDetail.PrevDelQtyProd);
+                                         //deliveryChallanDetail.PrevDelQtySale = (sdr["PrevDelQtySale"].ToString() != "" ? decimal.Parse(sdr["PrevDelQtySale"].ToString()) : deliveryChallanDetail.PrevDelQtySale);
                                         deliveryChallanDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : deliveryChallanDetail.SpecTag);
                                     }
                                     deliveryChallanDetailList.Add(deliveryChallanDetail);

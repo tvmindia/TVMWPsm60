@@ -149,6 +149,7 @@ namespace PilotSmithApp.UserInterface.Models
         public TaxTypeViewModel TaxType { get; set; }
         public decimal? PrevProduceQty { get; set; }
         public decimal? PrevDelQty { get; set; }
+        public decimal? DelvQty { get; set; }
     }
     public class SaleOrderOtherChargeViewModel
     {

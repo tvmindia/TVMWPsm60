@@ -76,5 +76,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ProductModel ProductModel { get; set; }
         public Unit Unit { get; set; }
         public decimal? PrevDelQty { get; set; }
+        //public decimal? PrevDelQtySale { get; set; }
+        //public decimal? PrevDelQtyProd { get; set; }
     }
 }

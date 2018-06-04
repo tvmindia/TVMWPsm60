@@ -36,6 +36,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool? IsFinalApproved { get; set; }
         public string EmailSentTo { get; set; }
         [Display(Name ="Branch")]
+        [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode { get; set; }
         [Display(Name ="Vehicle Plate No.")]
         public string VehiclePlateNo { get; set; }
@@ -114,5 +115,7 @@ namespace PilotSmithApp.UserInterface.Models
         public UnitViewModel Unit { get; set; }
         public bool IsUpdate { get; set; }
         public decimal? PrevDelQty { get; set; }
+        //public decimal? PrevDelQtySale { get; set; }
+        //public decimal? PrevDelQtyProd { get; set; }
     }
 }

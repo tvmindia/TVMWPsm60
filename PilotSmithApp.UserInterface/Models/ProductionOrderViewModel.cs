@@ -24,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Prepared By")]
         public Guid? PreparedBy{get;set;}
         [Display(Name = "Status")]
+        [Required(ErrorMessage = "Documentstatus is missing")]
         public int? DocumentStatusCode{get;set;}
         [Display(Name = "General Notes")]
         public string GeneralNotes{get;set;}
@@ -37,6 +38,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Please specify at least one recipient.")]
         public string EmailSentTo{get;set;}
         [Display(Name ="Branch")]
+        [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode{get;set;}
 
         //Aditional Fields
@@ -144,5 +146,6 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? CurProducedQty { get; set; }
         public PlantViewModel Plant { get; set; }
         public decimal? PrevDelQty { get; set; }
+        public decimal? DelvQty { get; set; }
     }
 }
