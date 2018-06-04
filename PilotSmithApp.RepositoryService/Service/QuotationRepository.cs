@@ -117,6 +117,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotation.ApprovalStatus = new ApprovalStatus();
                                         quotation.ApprovalStatus.Code= (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : quotation.ApprovalStatus.Code);
                                         quotation.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? (sdr["ApprovalStatus"].ToString()) : quotation.ApprovalStatus.Description);
+                                        quotation.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse (sdr["EmailSentYN"].ToString()) : quotation.EmailSentYN);
                                     }
                                     quotationList.Add(quotation);
                                 }
@@ -255,6 +256,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationDetail.Discount= (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : quotationDetail.Discount);
                                         quotationDetail.TaxTypeCode= (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationDetail.TaxTypeCode);
                                         quotationDetail.TaxType = new TaxType();
+                                        quotationDetail.TaxType.Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationDetail.TaxType.Code);
                                         quotationDetail.TaxType.ValueText= (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : quotationDetail.TaxType.ValueText);
                                         quotationDetail.CGSTPerc = (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : quotationDetail.CGSTPerc);
                                         quotationDetail.SGSTPerc = (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : quotationDetail.SGSTPerc);
@@ -660,6 +662,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : quotationOtherCharge.ChargeAmount);
                                         quotationOtherCharge.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationOtherCharge.TaxTypeCode);
                                         quotationOtherCharge.TaxType = new TaxType();
+                                        quotationOtherCharge.TaxType.Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : quotationOtherCharge.TaxType.Code);
                                         quotationOtherCharge.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : quotationOtherCharge.TaxType.ValueText);
                                         quotationOtherCharge.CGSTPerc = (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : quotationOtherCharge.CGSTPerc);
                                         quotationOtherCharge.SGSTPerc = (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : quotationOtherCharge.SGSTPerc);

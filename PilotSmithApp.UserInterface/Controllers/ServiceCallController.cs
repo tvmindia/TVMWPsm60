@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Newtonsoft.Json;
+using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using System;
 using System.Collections.Generic;
@@ -18,9 +20,43 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ServiceCall Form
         //[AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
-        public ActionResult ServiceCallForm()
+        public ActionResult ServiceCallForm(Guid id)
         {
-            ServiceCallViewModel serviceCallVM = new ServiceCallViewModel();
+            ServiceCallViewModel serviceCallVM = null;
+            try
+            {
+                if (id != Guid.Empty)
+                {
+                    //serviceCallVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(id));
+                    serviceCallVM.IsUpdate = true;
+                    //AppUA appUA = Session["AppUA"] as AppUA;
+                    //serviceCallVM.IsDocLocked = serviceCallVM.DocumentOwners.Contains(appUA.UserName);
+                    //serviceCallVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
+                }
+                else //(id == Guid.Empty)
+                {
+                    serviceCallVM = new ServiceCallViewModel();
+                    serviceCallVM.IsUpdate = false;
+                    serviceCallVM.ID = Guid.Empty;
+                    //serviceCallVM.EstimateID = null;
+                    //serviceCallVM.EstimateSelectList = new List<SelectListItem>();
+                    serviceCallVM.DocumentStatus = new DocumentStatusViewModel();
+                    serviceCallVM.DocumentStatus.Description = "OPEN";
+                    //serviceCallVM.Branch = new BranchViewModel();
+                    //serviceCallVM.Branch.Description = "-";
+                }
+                serviceCallVM.Customer = new CustomerViewModel
+                {
+                    //Titles = new TitlesViewModel()
+                    //{
+                    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                    //},
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return PartialView("_ServiceCallForm", serviceCallVM);
         }
         #endregion ServiceCall Form
@@ -33,6 +69,15 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddServiceCallDetail", serviceCallDetailVM);
         }
         #endregion ServiceCall Detail Add
+
+        #region ServiceCall Charges Add
+        public ActionResult AddServiceCallCharge()
+        {
+            ServiceCallChargeViewModel serviceCallChargeVM = new ServiceCallChargeViewModel();
+            serviceCallChargeVM.IsUpdate = false;
+            return PartialView("_AddServiceCallCharge", serviceCallChargeVM);
+        }
+        #endregion ServiceCall Charges Add
 
         #region GetAllServiceCall
         [HttpPost]

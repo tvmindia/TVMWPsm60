@@ -366,6 +366,40 @@ namespace PilotSmithApp.BusinessService.Service
 
         }
 
+        public string GetXMLfromSaleOrderOtherChargeObject(List<SaleOrderOtherCharge> saleOrderOtherChargeDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(saleOrderOtherChargeDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in saleOrderOtherChargeDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
+        }
+
         public string GetXMLfromDeliveryChallanObject(List<DeliveryChallanDetail> deliveryChallanDetailList, string mandatoryProperties)
         {
             string result = "<Details>";

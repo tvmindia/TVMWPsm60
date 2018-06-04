@@ -95,7 +95,7 @@ function BindOrReloadQuotationTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5, 6]
+                                 columns: [0, 1, 2, 3, 4, 5]
                              }
             }],
             ordering: false,
@@ -125,7 +125,7 @@ function BindOrReloadQuotationTable(action) {
                         return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
                     }, "defaultContent": "<i>-</i>"
                },             
-               { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
+               //{ "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },              
                { "data": "Branch.Description", render: function (data, type, row)
@@ -134,19 +134,24 @@ function BindOrReloadQuotationTable(action) {
                     }, "defaultContent": "<i>-</i>"
                },               
                {"data": "DocumentStatus.Description", render: function (data, type, row) {
-                        return "<b>Doc.Status-</b>" + data + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
+                   return "<b>Doc.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px'  >" : '')
+                     
+                       
+                       + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
                     }, "defaultContent": "<i>-</i>"
                },
 
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotation(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
-                          { className: "text-left", "targets": [0,1,2, 3, 5, 6] },
-                          { className: "text-center", "targets": [4] },
-                            { "targets": [0, 1,2], "width": "20%" },
-                            { "targets": [3, 4], "width": "10%" },
-                            { "targets": [5], "width": "10%" },
-                            { "targets": [6], "width": "10%" },                         
+                          { className: "text-left", "targets": [0,1,2,3, 4, 5] },
+                          { className: "text-center", "targets": [6] },
+                            { "targets": [0], "width": "10%" },
+                            { "targets": [1], "width": "12%" },
+                            { "targets": [2, 3], "width": "10%" },
+                            { "targets": [4], "width": "15%" },
+                            { "targets": [5], "width": "22%" },
+                            { "targets": [6], "width": "3%" },                         
             ],
             destroy: true,
             //for performing the import operation after the data loaded

@@ -47,6 +47,7 @@
     <Compile Include="Contract\IAreaRepository.cs" />
     <Compile Include="Contract\IBankRepository.cs" />
     <Compile Include="Contract\IBranchRepository.cs" />
+    <Compile Include="Contract\ICarrierRepository.cs" />
     <Compile Include="Contract\ICommonRepository.cs" />
     <Compile Include="Contract\ICompanyRepository.cs" />
     <Compile Include="Contract\ICustomerCategoryRepository.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Contract\ISaleInvoiceRepository.cs" />
     <Compile Include="Contract\ISaleOrderRepository.cs" />
     <Compile Include="Contract\ISalesInvoiceRepository.cs" />
+    <Compile Include="Contract\IServiceCallRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
     <Compile Include="Contract\IPaymentTermRepository.cs" />
     <Compile Include="Contract\ITaxTypeRepository.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Service\AreaRepository.cs" />
     <Compile Include="Service\BankRepository.cs" />
     <Compile Include="Service\BranchRepository.cs" />
+    <Compile Include="Service\CarrierRepository.cs" />
     <Compile Include="Service\CommonRepository.cs" />
     <Compile Include="Service\CompanyRepository.cs" />
     <Compile Include="Service\CustomerCategoryRepository.cs" />
@@ -124,6 +127,7 @@
     <Compile Include="Service\SaleInvoiceRepository.cs" />
     <Compile Include="Service\SaleOrderRepository.cs" />
     <Compile Include="Service\SalesInvoiceRepository.cs" />
+    <Compile Include="Service\ServiceCallRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
     <Compile Include="Service\PaymentTermRepository.cs" />
     <Compile Include="Service\TaxTypeRepository.cs" />

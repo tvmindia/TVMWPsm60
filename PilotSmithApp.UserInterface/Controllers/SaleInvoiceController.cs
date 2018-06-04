@@ -296,6 +296,47 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get SaleInvoice DetailList By QuotationID From Quotation
 
+        #region Get Quotation OtherChargeList By QuotationID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        {
+            try
+            {
+                List<QuotationOtherChargeViewModel> quotationOtherChargeViewModelList = new List<QuotationOtherChargeViewModel>();
+                if (quotationID == Guid.Empty)
+                {
+                    QuotationOtherChargeViewModel quotationOtherChargeVM = new QuotationOtherChargeViewModel()
+                    {
+                        ID = Guid.Empty,
+                        QuoteID = Guid.Empty,
+                        ChargeAmount = 0,
+                        OtherCharge = new OtherChargeViewModel()
+                        {
+                            Description = "",
+                        },
+                        TaxType = new TaxTypeViewModel()
+                        {
+                            ValueText = "",
+                        }
+                    };
+                    quotationOtherChargeViewModelList.Add(quotationOtherChargeVM);
+                }
+                else
+                {
+                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID));
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get Quotation OtherChargeList By QuotationID
+
+
         #region Delete SaleInvoice
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "D")]
