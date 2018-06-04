@@ -483,9 +483,11 @@ function AddEnquiryDetailToList() {
                     if (enquiryDetailList.length > 0) {
                         
                         var checkpoint = 0;
+                        var productSpec = $('#ProductSpec').val();
+                        productSpec = productSpec.replace(/\n/g, ' ');
                         for (var i = 0; i < enquiryDetailList.length; i++) {
                             if ((enquiryDetailList[i].ProductID == $('#ProductID').val()) && (enquiryDetailList[i].ProductModelID == $('#ProductModelID').val()
-                                && (enquiryDetailList[i].ProductSpec == $('#ProductSpec').val()))) {
+                                && (enquiryDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (enquiryDetailList[i].UnitCode == $('#UnitCode').val())))) {
                                 enquiryDetailList[i].Qty = parseFloat(enquiryDetailList[i].Qty)+parseFloat($('#Qty').val());
                                 checkpoint = 1;
                                 break;
