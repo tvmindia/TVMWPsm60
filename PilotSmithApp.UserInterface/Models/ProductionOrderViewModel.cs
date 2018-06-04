@@ -66,6 +66,9 @@ namespace PilotSmithApp.UserInterface.Models
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }
         public PDFTools PDFTools { get; set; }
+        public AreaViewModel Area { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel
@@ -76,6 +79,26 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="To Date")]
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }        
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Email Sent(Y/N)")]
+        public string AdvEmailSentStatus { get; set; }
     }
 
     public class ProductionOrderDetailViewModel
