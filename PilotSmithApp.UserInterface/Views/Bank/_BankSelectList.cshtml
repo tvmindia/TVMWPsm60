@@ -1,0 +1,24 @@
+﻿@model PilotSmithApp.UserInterface.Models.BankViewModel
+
+@if (@ViewBag.IsRequired == "required")
+{
+    
+        @Html.DropDownList("BankCode", Model.SelectList, "--Select bank--", new { @class = "form-control newinput", @required = "", @title = "The Document status is missing", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)" })
+   
+}
+else
+{
+   
+        @Html.DropDownList("BankCode", Model.SelectList, "--Select bank--", new { @class = "form-control newinput ", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)" })
+    
+}
+
+@Html.ValidationMessage("BankCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $('#BankCode').val($('#hdnBankCode').val());
+        $('#BankCode').select2({});
+        $('.select2').addClass('form-control newinput');
+    });
+</script>

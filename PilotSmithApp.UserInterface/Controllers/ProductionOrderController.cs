@@ -4,12 +4,14 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -20,11 +22,26 @@ namespace PilotSmithApp.UserInterface.Controllers
         IProductionOrderBusiness _productionOrderBusiness;
         ISaleOrderBusiness _saleOrderBusiness;
         ICommonBusiness _commonBusiness;
-        public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness,ISaleOrderBusiness saleOrderBusiness,ICommonBusiness commonBusiness)
+        IBranchBusiness _branchBusiness;
+        IAreaBusiness _areaBusiness;
+        ICustomerBusiness _customerBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;
+        IApprovalStatusBusiness _approvalStatusBusiness;
+        private IUserBusiness _userBusiness;
+
+        public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness,ISaleOrderBusiness saleOrderBusiness,ICommonBusiness commonBusiness,
+            IAreaBusiness areaBusiness,
+            IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness, IApprovalStatusBusiness approvalStatusBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness)
         {
             _productionOrderBusiness = productionOrderBusiness;
             _saleOrderBusiness = saleOrderBusiness;
             _commonBusiness = commonBusiness;
+            _customerBusiness = customerBusiness;
+            _branchBusiness = branchBusiness;
+            _areaBusiness = areaBusiness;           
+            _documentStatusBusiness = documentStatusBusiness;
+            _userBusiness = userBusiness;
+            _approvalStatusBusiness = approvalStatusBusiness;
         }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
@@ -32,7 +49,35 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ViewBag.ID = id;
             ViewBag.SaleOrderID = saleOrderID;
-            return View();
+            ProductionOrderAdvanceSearchViewModel productionOrderAdvanceSearchVM = new ProductionOrderAdvanceSearchViewModel();
+            productionOrderAdvanceSearchVM.Area = new AreaViewModel();
+            productionOrderAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            productionOrderAdvanceSearchVM.Customer = new CustomerViewModel();
+            productionOrderAdvanceSearchVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();            
+            productionOrderAdvanceSearchVM.Branch = new BranchViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            productionOrderAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
+            productionOrderAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
+            productionOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
+            productionOrderAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
+            productionOrderAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
+            productionOrderAdvanceSearchVM.PSAUser = new PSAUserViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+
+            if (PSAUserVMList != null)
+                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = PSAuVM.UserName,
+                        Value = PSAuVM.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            productionOrderAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
+
+            return View(productionOrderAdvanceSearchVM);
         }
 
         #region ProductionOrderForm Form

@@ -54,6 +54,19 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = productionOrderAdvanceSearch.DataTablePaging.Length;
                         cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = productionOrderAdvanceSearch.FromDate;
                         cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = productionOrderAdvanceSearch.ToDate;
+                        if (productionOrderAdvanceSearch.AdvCustomerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@CustomerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = productionOrderAdvanceSearch.AdvCustomerID;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvBranchCode;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvDocumentStatusCode;
+                        if (productionOrderAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = productionOrderAdvanceSearch.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@ApprovalStatusCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.NVarChar).Value = productionOrderAdvanceSearch.AdvEmailSentStatus;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -86,6 +99,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionOrder.BranchCode);
                                         productionOrder.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionOrder.FilteredCount);
                                         productionOrder.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : productionOrder.FilteredCount);
+                                        productionOrder.Area = new Area();
+                                        productionOrder.Area.Description= (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : productionOrder.Area.Description);
+                                        productionOrder.ApprovalStatus = new ApprovalStatus();
+                                        productionOrder.ApprovalStatus.Description= (sdr["ApprovalStatus"].ToString() != "" ? sdr["ApprovalStatus"].ToString() : productionOrder.ApprovalStatus.Description);
+                                        productionOrder.PSAUser = new PSAUser();
+                                        productionOrder.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : productionOrder.PSAUser.LoginName);
+                                        productionOrder.EmailSentYN= (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionOrder.EmailSentYN);
                                     }
                                     productionOrderList.Add(productionOrder);
                                 }
