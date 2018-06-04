@@ -274,7 +274,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       {
                                                           ID = (Guid)quotationDetailVM.ProductModelID,
                                                           Name = quotationDetailVM.ProductModel.Name
-                                                      },
+                                                      }, 
                                                       Unit = new UnitViewModel()
                                                       {
                                                           Description = quotationDetailVM.Unit.Description
@@ -282,7 +282,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       TaxType = new TaxTypeViewModel()
                                                       {
                                                           //Code=(int)quotationDetailVM.TaxTypeCode,
-                                                          Description = quotationDetailVM.TaxType.Description
+                                                          Description = quotationDetailVM.TaxType.Description,
+                                                          ValueText = quotationDetailVM.TaxType.ValueText
                                                       },
                                                   }).ToList();
                 }
