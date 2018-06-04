@@ -264,6 +264,7 @@
     <Content Include="Content\images\email.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
+    <Content Include="Content\images\mailSend.png" />
     <Content Include="Content\images\organisation.png" />
     <Content Include="Content\images\ownerlock.png" />
     <Content Include="Content\images\ownerunlock.png" />
@@ -997,6 +998,7 @@
     <Content Include="Views\SaleOrder\_EmailSaleOrder.cshtml" />
     <Content Include="Views\ServiceCall\_AddServiceCallCharge.cshtml" />
     <Content Include="Views\Bank\_BankSelectList.cshtml" />
+    <Content Include="Views\SaleInvoice\_SaleInvoiceOtherCharge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

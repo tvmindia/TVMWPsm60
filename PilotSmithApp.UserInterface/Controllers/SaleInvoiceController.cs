@@ -36,6 +36,18 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
+
+
+        #region SaleInvoice Other Charge Detail 
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public ActionResult SaleInvoiceOtherChargeDetail()
+        {
+            SaleInvoiceOtherChargeViewModel saleInvocieOtherChargeVM = new SaleInvoiceOtherChargeViewModel();
+            saleInvocieOtherChargeVM.IsUpdate = false;
+            return PartialView("_SaleInvoiceOtherCharge", saleInvocieOtherChargeVM);
+        }
+        #endregion SaleInvoice Other Charge Detail 
+
         #region SaleInvoice Form
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
         public ActionResult SaleInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID)
@@ -108,6 +120,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_SaleInvoiceForm", saleInvoiceVM);
         }
         #endregion SaleInvoice Form
+
         #region SaleInvoice Detail Add
         public ActionResult AddSaleInvoiceDetail()
         {
@@ -116,6 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddSaleInvoiceDetail", saleInvoiceDetailVM);
         }
         #endregion SaleInvoice Detail Add
+
         #region Get SaleInvoice DetailList By SaleInvoiceID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -274,7 +288,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       {
                                                           ID = (Guid)quotationDetailVM.ProductModelID,
                                                           Name = quotationDetailVM.ProductModel.Name
-                                                      },
+                                                      }, 
                                                       Unit = new UnitViewModel()
                                                       {
                                                           Description = quotationDetailVM.Unit.Description
@@ -282,7 +296,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       TaxType = new TaxTypeViewModel()
                                                       {
                                                           //Code=(int)quotationDetailVM.TaxTypeCode,
-                                                          Description = quotationDetailVM.TaxType.Description
+                                                          Description = quotationDetailVM.TaxType.Description,
+                                                          ValueText = quotationDetailVM.TaxType.ValueText
                                                       },
                                                   }).ToList();
                 }

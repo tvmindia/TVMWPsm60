@@ -4,7 +4,7 @@
 }
 @if (@ViewBag.IsRequired == "required")
 {
-    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Branch is missing", @onchange = "$('#hdnBranchCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Branch is missing", @onchange = "$('#hdnBranchCode').val(this.value)" };
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Branch is missing", @onchange = "$('#hdnBranchCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Branch is missing", @onchange = "$('#hdnBranchCode').val(this.value)" };
 }
 else
 {
