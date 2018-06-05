@@ -48,18 +48,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EstimateAdvanceSearchViewModel estimateAdvanceSearchVM = new EstimateAdvanceSearchViewModel();
-            estimateAdvanceSearchVM.Area = new AreaViewModel();
-            estimateAdvanceSearchVM.Area.AreaSelectList = selectListItem;
-            estimateAdvanceSearchVM.Customer = new CustomerViewModel();
-            estimateAdvanceSearchVM.Customer.CustomerSelectList = selectListItem;
-            estimateAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
-            estimateAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = selectListItem;
-            estimateAdvanceSearchVM.Branch = new BranchViewModel();
-            estimateAdvanceSearchVM.Branch.BranchList = selectListItem;
             estimateAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST"); ;
-            estimateAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            estimateAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
+            estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST");
             return View(estimateAdvanceSearchVM);
         } 
 

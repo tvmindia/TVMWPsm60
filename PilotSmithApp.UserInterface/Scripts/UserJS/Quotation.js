@@ -114,7 +114,7 @@ function BindOrReloadQuotationTable(action) {
                 data: { "QuotationAdvanceSearchVM": QuotationAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [             
 
                {"data": "QuoteNo", render: function (data, type, row) {

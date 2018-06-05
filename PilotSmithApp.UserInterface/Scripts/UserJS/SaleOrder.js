@@ -108,7 +108,7 @@ function BindOrReloadSaleOrderTable(action) {
                 data: { "saleOrderAdvanceSearchVM": SaleOrderAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [
                {
                    "data": "SaleOrderNo", render: function (data, type, row) {

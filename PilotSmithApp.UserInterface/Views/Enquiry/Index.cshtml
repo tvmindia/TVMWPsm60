@@ -10,7 +10,9 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
 }
-
+@{ 
+    List<SelectListItem> EmptySelectList = new List<SelectListItem>();
+}
 <section class="content" id="main">
     <div class="row">
         <div class="form-group col-md-6">
@@ -60,7 +62,7 @@
                         @Html.LabelFor(model => model.AdvCustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvCustomerID, Model.Customer.CustomerSelectList, "Select customer",new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvCustomerID, EmptySelectList, "Select customer",new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-right-padding">
@@ -68,7 +70,7 @@
                         @Html.LabelFor(model => model.AdvAreaCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvAreaCode, Model.Area.AreaSelectList, "Select area", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvAreaCode, EmptySelectList, "Select area", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-left-padding">
@@ -76,7 +78,7 @@
                         @Html.LabelFor(model => model.AdvReferencePersonCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvReferencePersonCode, Model.ReferencePerson.ReferencePersonSelectList, "Select reffered by", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvReferencePersonCode, EmptySelectList, "Select reffered by", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-right-padding">
@@ -84,7 +86,7 @@
                         @Html.LabelFor(model => model.AdvBranchCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvBranchCode, Model.Branch.BranchList, "Select branch", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvBranchCode, EmptySelectList, "Select branch", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-left-padding">
@@ -100,7 +102,7 @@
                         @Html.LabelFor(model => model.AdvDocumentOwnerID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvDocumentOwnerID, Model.PSAUser.UserSelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvDocumentOwnerID, EmptySelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-12">&nbsp;</div>
