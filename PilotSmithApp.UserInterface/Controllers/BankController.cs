@@ -129,8 +129,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion DeleteBank
         #region BankSelctList
-        public ActionResult BankSelectList(BankViewModel bankVM)
+        public ActionResult BankSelectList(string required)
         {
+            ViewBag.IsRequired = required;
+            BankViewModel bankVM = new BankViewModel();
             bankVM.BankCode = bankVM.Code;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             bankVM.SelectList = new List<SelectListItem>();

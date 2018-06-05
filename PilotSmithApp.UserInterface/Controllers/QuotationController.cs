@@ -497,6 +497,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             //QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
             quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>,List <QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
+            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
             quotationVM.EmailFlag = emailFlag;
             @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
             quotationVM.PDFTools = new PDFTools();

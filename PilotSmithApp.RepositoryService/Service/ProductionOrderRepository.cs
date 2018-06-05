@@ -173,6 +173,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionOrder.LatestApprovalStatus);
                                     productionOrder.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : productionOrder.LatestApprovalStatusDescription);
                                     productionOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : productionOrder.IsFinalApproved);
+                                    string mailFrom = (sdr["MailFromAddress"].ToString() != "" ? sdr["MailFromAddress"].ToString() : productionOrder.MailFrom);
+                                    productionOrder.MailFrom = mailFrom.Replace("\n", "<br />");
                                 }
                         }
                     }
@@ -258,6 +260,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : Guid.Empty);
                                         productionOrderDetail.PrevProducedQty = (sdr["PrevProduceQty"].ToString() != "" ? decimal.Parse(sdr["PrevProduceQty"].ToString()) : productionOrderDetail.PrevProducedQty);
                                         productionOrderDetail.PrevDelQty = (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : productionOrderDetail.PrevDelQty);
+                                        productionOrderDetail.DelvQty= (sdr["DelvQty"].ToString() != "" ? decimal.Parse(sdr["DelvQty"].ToString()) : productionOrderDetail.DelvQty);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
                                 }

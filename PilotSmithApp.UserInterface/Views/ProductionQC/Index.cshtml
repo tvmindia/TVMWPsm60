@@ -54,6 +54,81 @@
                         @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
                     </div>
                 </div>
+
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvCustomerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvCustomerID, Model.Customer.CustomerSelectList, "Select customer", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvAreaCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvAreaCode, Model.Area.AreaSelectList, "Select area", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvPlantCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvPlantCode, Model.Plant.PlantSelectList, "Select plant", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvBranchCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvBranchCode, Model.Branch.BranchList, "Select branch", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvDocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvDocumentStatusCode, Model.DocumentStatus.DocumentStatusSelectList, "Select document status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvDocumentOwnerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvDocumentOwnerID, Model.PSAUser.UserSelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvApprovalStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvApprovalStatusCode, Model.ApprovalStatus.ApprovalStatusSelectList, "Select approval status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvEmailSentStatus, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @{
+                            List<SelectListItem> EmailStatus = new List<SelectListItem>();
+                            EmailStatus.Add(new SelectListItem
+                            { Text = "Yes", Value = "1" });
+                            EmailStatus.Add(new SelectListItem
+                            { Text = "No", Value = "0" });
+                        }
+                        @Html.DropDownListFor(model => model.AdvEmailSentStatus, EmailStatus, "--Select--", new { @class = "form-control newinput ", @style = "width:100 % !important", @id = "AdvEmailSentStatus" })
+                    </div>
+                </div>
+
+
                 <div class="col-md-12">&nbsp;</div>
                 <div class="col-md-12 no-left-padding">
                     <div class="col-md-12">
@@ -71,16 +146,14 @@
         <div class="col-md-12">
             <table id="tblProductionQC" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;display:none;">
                 <thead>
-                    <tr class="text-center TableHead">
-                        <th>Prod. No</th>
-                        <th>Prod. Date</th>
+                    <tr class="text-center TableHead">                     
+                        <th>QC Reference No.</th> 
+                        <th>Prod.Order No</th>                      
                         <th>Customer</th>
-                        <th>Contact Person</th>
-                        <th>Mobile</th>
+                        <th>Area</th>
+                        <th>Supplier / Plant</th>
+                        <th>Other Details</th>
                         <th>Status</th>
-                        <th>Prepared By</th>
-                        <th>Plant</th>
-                        <th>Approval Status</th>
                         <th>...</th>
                     </tr>
                 </thead>

@@ -131,22 +131,31 @@
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.ExpectedDelvDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.ExpectedDelvDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.ExpectedDelvDateFormatted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+               <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.Action("BankSelectList", "Bank", new { required = "" })
+                    @Html.HiddenFor(model => model.BankCode, htmlAttributes: new { @class = "", @id = "hdnBankCode" })
+                </div>
+               </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
                             @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "QUO" })
                         </div>
                         @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                    </div>
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.ExpectedDelvDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.ExpectedDelvDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                        @Html.ValidationMessageFor(model => model.ExpectedDelvDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6 no-padding">
@@ -173,11 +182,11 @@
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
                         </div>
                         @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
@@ -364,7 +373,7 @@
                 </table>
             </div>
             
-            <div class="col-md-5" style="padding-right:3.7%">
+            <div class="col-md-5" style="padding-right:1.5%">
                 <table class="table dataTable no-footer DetailSummerybox">
                     <tbody>
                         <tr>
