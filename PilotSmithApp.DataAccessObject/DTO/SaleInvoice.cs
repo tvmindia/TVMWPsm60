@@ -89,8 +89,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal CGSTPerc { get; set; }
         public decimal SGSTPerc { get; set; }
         public decimal IGSTPerc { get; set; }
-        public decimal AddlTaxPec { get; set; }
+        public decimal AddlTaxPerc { get; set; }
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public bool IsUpdate { get; set; }
+        public OtherCharge OtherCharge { get; set; }
+        public TaxType TaxType { get; set; }
     }
 }

@@ -103,9 +103,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid SaleInvID { get; set; }
-        public int OtherChargeCode { get; set; }
-        public decimal ChargeAmount { get; set; }
-        public int TaxTypeCode { get; set; }
+        public int? OtherChargeCode { get; set; }
+        public decimal? ChargeAmount { get; set; }
+        public int? TaxTypeCode { get; set; }
         public decimal CGSTPerc { get; set; }
         public decimal SGSTPerc { get; set; }
         public decimal IGSTPerc { get; set; }
@@ -114,5 +114,7 @@ namespace PilotSmithApp.UserInterface.Models
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional Fields
         public bool IsUpdate { get; set; }
+        public OtherChargeViewModel OtherCharge { get; set; }
+        public TaxTypeViewModel TaxType { get; set; }
     }
 }

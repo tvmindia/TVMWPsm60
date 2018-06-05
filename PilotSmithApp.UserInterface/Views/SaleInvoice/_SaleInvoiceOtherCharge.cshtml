@@ -104,10 +104,13 @@
         $('.select2').addClass('form-control newinput');
         $('#divModelPopSaleInvoice .CalculateGST').change(function () {
             debugger;
+            var CGST = 0, SGST = 0, IGST = 0;
             var ChargeAmount = parseFloat($('#divModelPopSaleInvoice #ChargeAmount').val() != "" ? $('#divModelPopSaleInvoice #ChargeAmount').val() : 0);
-            var CGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-            var SGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-            var IGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+            if ($('#divModelPopSaleInvoice #TaxTypeCode').val() != null) {
+                CGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                SGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                IGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+            }
             var AddlTaxPerc = parseFloat($('#divModelPopSaleInvoice #AddlTaxPerc').val() != "" ? $('#divModelPopSaleInvoice #AddlTaxPerc').val() : 0);
             $('#divModelPopSaleInvoice #hdnCGSTPerc').val(CGST);
             $('#divModelPopSaleInvoice #hdnSGSTPerc').val(SGST);
