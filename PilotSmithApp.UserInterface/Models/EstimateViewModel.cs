@@ -12,7 +12,8 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid ID { get; set; }
         [Display(Name = "Estimate No.")]
         public string EstimateNo { get; set; }
-        [Display(Name = "Estimate Ref No.")]        
+        [Display(Name = "Estimate Ref No.")]  
+        [StringLength(20,ErrorMessage ="Ref.No Cannot be longer than 20 characters")]      
         public string EstimateRefNo { get; set; }
         public DateTime EstimateDate { get; set; }
         [Display(Name = "Enquiry")]

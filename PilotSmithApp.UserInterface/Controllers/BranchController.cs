@@ -22,6 +22,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness=userBusiness;
     }
         // GET: Branch
+        [AuthSecurityFilter(ProjectObject = "Branch", Mode = "R")]
         public ActionResult Index()
         {
             return View();

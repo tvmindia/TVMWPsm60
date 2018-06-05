@@ -70,20 +70,17 @@ namespace PilotSmithApp.UserInterface.Controllers
             deliveryChallanVM.ApprovalStatus = new ApprovalStatusViewModel();
             deliveryChallanVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
             deliveryChallanVM.PSAUser = new PSAUserViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //List<SelectListItem> selectListItem = null;
             List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-
-            if (PSAUserVMList != null)
-                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PSAuVM.UserName,
-                        Value = PSAuVM.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            deliveryChallanVM.PSAUser.UserSelectList = selectListItem;
+            deliveryChallanVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
+                                                             select new SelectListItem
+                                                             {
+                                                                 Text = PSAuserVM.UserName,
+                                                                 Value = PSAuserVM.ID.ToString(),
+                                                                 Selected = false
+                                                             }).ToList() : new List<SelectListItem>();
+         
             return View(deliveryChallanVM);
         }
 

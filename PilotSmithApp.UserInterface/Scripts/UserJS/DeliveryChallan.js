@@ -140,7 +140,7 @@ function BindOrReloadDeliveryChallanTable(action) {
                },
 
 
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDeliveryChallan(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
 
             ],
             columnDefs: [
@@ -152,8 +152,8 @@ function BindOrReloadDeliveryChallanTable(action) {
                           { "targets": [3], "width": "10%" },
                           { "targets": [4], "width": "11%" },
                           { "targets": [5], "width": "15%" },
-                          { "targets": [6], "width": "22%" },
-                          { "targets": [7], "width": "2%" },
+                          { "targets": [6], "width": "18%" },
+                          { "targets": [7], "width": "8%" },
 
             ],
             destroy: true,

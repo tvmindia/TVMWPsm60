@@ -1,5 +1,6 @@
 ﻿using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _documentStatusBusiness = documentStatusBusiness;
         }
         // GET: DocumentStatus
+        [AuthSecurityFilter(ProjectObject = "DocumentStatus", Mode = "R")]
         public ActionResult Index()
         {
             return View();

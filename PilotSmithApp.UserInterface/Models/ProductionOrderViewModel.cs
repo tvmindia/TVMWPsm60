@@ -29,6 +29,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "General Notes")]
         public string GeneralNotes{get;set;}
         public Guid? DocumentOwnerID{get;set;}
+        [Display(Name ="Email Sent")]
         public bool? EmailSentYN{get;set;}
         public Guid? LatestApprovalID{get;set;}
         [Display(Name = "Approval Status")]

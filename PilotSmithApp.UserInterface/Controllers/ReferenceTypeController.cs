@@ -1,6 +1,7 @@
 ﻿using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.BusinessServices.Contracts;
 using SAMTool.DataAccessObject.DTO;
 using System;
@@ -24,6 +25,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness = userBusiness;
         }
         // GET: ReferenceType
+        [AuthSecurityFilter(ProjectObject = "ReferenceType", Mode = "R")]
         public ActionResult Index()
         {
             return View();

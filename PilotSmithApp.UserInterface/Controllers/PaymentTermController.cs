@@ -70,8 +70,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region MasterPartial
-        [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "PaymentTerm", Mode = "R")]
+        //[HttpGet]
+        //[AuthSecurityFilter(ProjectObject = "PaymentTerm", Mode = "R")]
         public ActionResult MasterPartial(string masterCode)
         {
             PaymentTermViewModel paymentTermVM = masterCode == "" ? new PaymentTermViewModel() : Mapper.Map<PaymentTerm, PaymentTermViewModel>(_paymentTermBusiness.GetPaymentTerm(masterCode));
