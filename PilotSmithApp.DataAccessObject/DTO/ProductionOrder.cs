@@ -52,8 +52,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
     public class ProductionOrderAdvanceSearch
     {
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
         public Guid AdvCustomerID { get; set; }
         public Customer Customer { get; set; }

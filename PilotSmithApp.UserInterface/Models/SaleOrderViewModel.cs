@@ -100,14 +100,45 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> QuotationSelectList{ get; set; }
         public List<SelectListItem> EnquirySelectList { get; set; }
         public string SaleOrderAmountWords { get; set; }
+        public AreaViewModel Area { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        public QuotationViewModel Quotation { get; set; }
+        public EnquiryViewModel Enquiry { get; set; }
     }
 
     public class SaleOrderAdvanceSearchViewModel
     {
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        [Display(Name = "Sale Order From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Sale Order To")]
+        public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Referred By ")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Email Sent(Y/N)")]
+        public string AdvEmailSentStatus { get; set; }
     }
 
     public class SaleOrderDetailViewModel

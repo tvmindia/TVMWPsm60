@@ -12,10 +12,15 @@ $(document).ready(function () {
         $('#tblSaleOrder tbody').on('dblclick', 'td', function () {
             //EditSaleOrder(this);
         });
+        
     }
     catch (e) {
         console.log(e.message);
     }
+    $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+        dropdownParent: $(".divboxASearch")
+    });
+    $('.select2').addClass('form-control newinput');
 });
 
 //function bind the SaleOrder list checking search and filter
@@ -30,16 +35,32 @@ function BindOrReloadSaleOrderTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('').trigger('change');
+                $('.divboxASearch #AdvCustomerID').val('').trigger('change');
+                $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');
+                $('.divboxASearch #AdvBranchCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
+                $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
+                $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('');
+                $('.divboxASearch #AdvCustomerID').val('');
+                $('.divboxASearch #AdvReferencePersonCode').val('');
+                $('.divboxASearch #AdvBranchCode').val('');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
+                $('.divboxASearch #AdvDocumentOwnerID').val('');
+                $('.divboxASearch #AdvApprovalStatusCode').val('');
+                $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvReferencePersonCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -51,8 +72,16 @@ function BindOrReloadSaleOrderTable(action) {
         }
         SaleOrderAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         SaleOrderAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        SaleOrderAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        SaleOrderAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        SaleOrderAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
+        SaleOrderAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
+        SaleOrderAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        SaleOrderAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
+        SaleOrderAdvanceSearchViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val();
+        SaleOrderAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
+        SaleOrderAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
+        SaleOrderAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
+        SaleOrderAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+        SaleOrderAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val();
         //apply datatable plugin on SaleOrder table
         _dataTable.SaleOrderList = $('#tblSaleOrder').DataTable(
         {
@@ -80,34 +109,49 @@ function BindOrReloadSaleOrderTable(action) {
             },
             pageLength: 13,
             columns: [
-               { "data": "SaleOrderNo", "defaultContent": "<i>-</i>" },
-               { "data": "SaleOrderDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "SaleOrderNo", render: function (data, type, row) {
+                       return row.SaleOrderNo + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.SaleOrderDateFormatted;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               {
+                   "data": "Quotation.QuoteNo", render: function (data, type, row) {
+                       return (data == null ? row.Enquiry.EnquiryNo : data);
+
+               }, "defaultContent": "<i>-</i>"
+               },
+               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
+               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Branch.Description", render: function (data, type, row) {
+                       return "<b>Doc.Owner-</b>" + row.PSAUser.LoginName + "</br>" + "<b>Branch-</b>" + row.Branch.Description;
+                   }, "defaultContent": "<i>-</i>"
+               },
                //{ "data": "UserName", "defaultContent": "<i>-</i>" },
                {
-                   "data": "IsFinalApproved", render: function (data, type, row) {
-                       if (data) {
-                           return "Approved ✔";// <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
-                       }
-                       else {
-                           return 'Pending';
-                       }
+                   "data": "DocumentStatus.Description", render: function (data, type, row) {
+                       return "<b>Doc.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px'  >" : '')
 
+
+                           + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
-            columnDefs: [
-                          { className: "text-left", "targets": [0, 2, 3, 4, 5, 6] },
-                          { className: "text-center", "targets": [1] },
+            columnDefs: [{ className: "text-right", "targets": [] },
+                          { className: "text-left", "targets": [0, 1, 2, 3, 4, 5,6] },
+                          { className: "text-center", "targets": [7] },
                             { "targets": [0], "width": "10%" },
-                            { "targets": [2], "width": "20%" },
-                            { "targets": [1, 3, 4], "width": "10%" },
-                            { "targets": [5], "width": "7%" },
-                            { "targets": [6], "width": "7%" },
-
+                            { "targets": [1], "width": "12%" },
+                            { "targets": [2, 3], "width": "10%" },
+                            { "targets": [4], "width": "15%" },
+                            { "targets": [5], "width": "22%" },
+                            { "targets": [6], "width": "3%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -155,18 +199,20 @@ function ExportSaleOrderData() {
 function AddSaleOrder() {
     debugger;
     //this will return form body(html)
-    //OnServerCallBegin();
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&saleOrderID=", function () {
-        $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
-        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
-        BindSaleOrderDetailList(_emptyGuid,false,false);
-        BindSaleOrderOtherChargesDetailList(_emptyGuid, false);
-        // OnServerCallComplete();
-        setTimeout(function () {
-            //resides in customjs for sliding
+    OnServerCallBegin();
+    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&saleOrderID=", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
             openNav();
-        }, 100);
-    });
+            $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
+            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+            BindSaleOrderDetailList(_emptyGuid, false, false);
+            BindSaleOrderOtherChargesDetailList(_emptyGuid, false);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+        });
 }
 
 function AddSaleOrderDetailList() {
@@ -181,45 +227,49 @@ function EditSaleOrder(this_Obj) {
     OnServerCallBegin();
     var SaleOrder = _dataTable.SaleOrderList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID + "&quoteID=" + SaleOrder.QuoteID + "&enquiryID=" + SaleOrder.EnquiryID, function () {
-        $('#lblSaleOrderInfo').text(SaleOrder.SaleOrderNo);
-        //$('#CustomerID').trigger('change');
-        if ($('#IsDocLocked').val() == "True") {
-            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID + "&quoteID=" + SaleOrder.QuoteID + "&enquiryID=" + SaleOrder.EnquiryID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblSaleOrderInfo').text(SaleOrder.SaleOrderNo);
+            //$('#CustomerID').trigger('change');
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+            }
+            else {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+            }
+            BindSaleOrderDetailList(SaleOrder.ID, false, false);
+            BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
+            CalculateTotal();
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
+            });
+            clearUploadControl();
+            PaintImages(SaleOrder.ID);
         }
         else {
-            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
-        BindSaleOrderDetailList(SaleOrder.ID, false, false);
-        BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
-        CalculateTotal();
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
-        });
-        clearUploadControl();
-        PaintImages(SaleOrder.ID);
-        OnServerCallComplete();
-        setTimeout(function () {
-            //$("#divSaleOrderForm #EstimateID").prop('disabled', true);
-            //resides in customjs for sliding
-            openNav();
-        }, 100);
     });
 }
 function ResetSaleOrder() {
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function () {
-        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-            setTimeout(function () {
-                $("#divSaleOrderForm #EstimateID").prop('disabled', true);
-                //resides in customjs for sliding
-                openNav();
-            }, 100);
+    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+                    $("#divSaleOrderForm #EstimateID").prop('disabled', true);
+                    //resides in customjs for sliding
+                    openNav();
+            }
+            BindSaleOrderDetailList($('#ID').val(), false, false);
+            BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
+            clearUploadControl();
+            PaintImages($('#SaleOrderForm #ID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
+            });
         }
-        BindSaleOrderDetailList($('#ID').val(), false, false);
-        BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
-        clearUploadControl();
-        PaintImages($('#SaleOrderForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
-        });
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function SaveSaleOrder() {

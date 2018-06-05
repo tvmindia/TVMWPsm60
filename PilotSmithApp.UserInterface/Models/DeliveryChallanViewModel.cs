@@ -72,6 +72,10 @@ namespace PilotSmithApp.UserInterface.Models
         public PlantViewModel Plant { get; set; }
         public bool SaleOrderValue { get; set; } //for radio button 
         public bool ProdOrderValue { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public AreaViewModel Area { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public string ReferenceNo { get; set; }
     }
 
     public class DeliveryChallanAdvanceSearchViewModel
@@ -79,10 +83,33 @@ namespace PilotSmithApp.UserInterface.Models
         
         public string SearchTerm { get; set; }
         [Display(Name ="From Date")]
-        public string FromDate { get; set; }
+        public string AdvFromDate { get; set; }
         [Display(Name = "To Date")]
-        public string ToDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Email Sent (Y/N)")]
+        public string AdvEmailSentStatus { get; set; }
+        [Display(Name = "Supplier / Plant")]
+        public int? AdvPlantCode { get; set; }
+        public PlantViewModel Plant { get; set; }
     }
 
     public class DeliveryChallanDetailViewModel

@@ -1,4 +1,5 @@
 ﻿@model PilotSmithApp.UserInterface.Models.QuotationViewModel
+@using PilotSmithApp.DataAccessObject.DTO;
 <div id="divQuotationEmailcontainer">
     <div style="max-width: 1100px; font-size: 16px; line-height: 24px; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #555; margin: auto; padding: 30px; border: 3px solid #adadad;">
         <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: left;border-bottom-color:#4a7f4d!important;border-bottom:thin solid">
@@ -17,8 +18,9 @@
                 <td style="width:70%;"></td>
                 <td style="width:30%;text-align:right">
                     <table style="width:100%;font-size:12px">
-                        <tr style="width:100%"><td style="text-align:left;">Number  </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.QuoteNo</td></tr>
+                        <tr style="width:100%"><td style="text-align:left;">Quotation No.  </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.QuoteNo</td></tr>
                         <tr style="width:100%"><td style="text-align:left;">Date   </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.QuoteDateFormatted  </td></tr>
+                        <tr style="width:100%"><td style="text-align:left;">Ref.No.   </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.QuoteRefNo</td></tr>
                     </table>
                     <span style="text-align:left;"></span><br />
                     <span style="text-align:left;"></span>
@@ -27,20 +29,23 @@
             </tr>
         </table>
         <br />
-        @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt=0;}
+        @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
+            var tot = "";}
         <table>
             <tr style="width:100%;">
                 <td><b>From</b></td>
                 <td></td>
-                <td><b>To</b></td>
+                <td style="width:17%;"><b>Delivery Address</b></td>
+                <td></td>
             </tr>
             <tr style="width:100%;">
+                <td></td>
                 <td style="width:400px;text-align:left;font-size:14px;vertical-align:top;">
                     Pilotsmith India Pvt. Ltd.<br />
                     Kallettumkara, Trichur Dist,<br />
                     Kerala, India 680 683<br />
                 </td>
-                <td style="width:200px;"></td>
+                <td></td>
                 <td style="width:400px;text-align:left;font-size:14px;vertical-align:top;">
 
                     @Model.Customer.CompanyName<br />
@@ -96,23 +101,23 @@
                     {
                         decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0;
                         itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                        CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc/ (decimal)100));
+                        CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100));
                         SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100));
                         IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100));
                         itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                         itemgrandTotal = itemtaxableAmount + itemgSTAmount;
-                <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
+                        <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
 
-                    <td style="width:3%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
-                    <td style="width:35%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
-                    <td style="width:12%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
-                    <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Rate</td>
-                    <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Discount</td>
-                    <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@itemtaxableAmount</td>
-                    <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
-                    <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
+                            <td style="width:3%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
+                            <td style="width:35%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                            <td style="width:12%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Rate</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Discount</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@itemtaxableAmount</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
 
-                </tr>
+                        </tr>
                         slno = slno + 1;
                         totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
                         totalCGST = totalCGST + (decimal)CGSTAmt;
@@ -121,6 +126,7 @@
                     }
                     grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
                     grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
+                    GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
                 }
 
             </thead>
@@ -132,9 +138,9 @@
                 <tr>
                     <td style="width:50%;vertical-align: top;">
                         @{
-                            if (Model.QuotationOtherChargeList.Count != 0)
-                            {
-                                @*<div class="form-group col-md-6" style="border-color: #adadad;border-style: solid !important;">*@
+    if (Model.QuotationOtherChargeList.Count != 0)
+    {
+                        @*<div class="form-group col-md-6" style="border-color: #adadad;border-style: solid !important;">*@
 
                                 <table id="OtherChargeDetailsTable" style="font-family: arial, sans-serif;border-color: #adadad;border-style: solid !important; border-collapse: collapse; width: 100%; line-height: 14px; text-align: left;" cellspacing="0">
                                     <thead>
@@ -156,7 +162,7 @@
                                                 SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100));
                                                 IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100));
                                                 GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                                                Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount , 2);
+                                                Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount, 2);
                                                 <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
 
                                                     <td style="width:7%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
@@ -183,7 +189,7 @@
                     <td style="width:10%"></td>
                     <td style="width:40%">
 
-                        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: 14px; text-align: right;">
+                        <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: 14px; text-align: left;float:right;">
 
                             <tr class="">
                                 <td style="vertical-align: top; padding: 5px;font-size:12px;" valign="top">
@@ -197,32 +203,32 @@
 
                             <tr class="">
                                 <td style="vertical-align: top; padding: 5px;font-size:12px;" valign="top">
-                                    CGST Total
+                                    GST Total
                                 </td>
 
                                 <td style="vertical-align: top; text-align: right; padding: 5px;font-size:12px;" align="right" valign="top">
-                                    @totalCGST
+                                    @GSTTotal
                                 </td>
                             </tr>
 
                             <tr class="">
                                 <td style="vertical-align: top; padding: 5px;font-size:12px;" valign="top">
-                                    SGST Total
+                                    Other Charge Total
                                 </td>
 
                                 <td style="vertical-align: top; text-align: right; padding: 5px;font-size:12px;" align="right" valign="top">
-                                    @totalSGST
+                                    @otherChargeAmt
                                 </td>
                             </tr>
-                            <tr class="">
-                                <td style="vertical-align: top; padding: 5px;font-size:12px;" valign="top">
-                                    IGST Total
-                                </td>
+                            @*<tr class="">
+                                    <td style="vertical-align: top; padding: 5px;font-size:12px;" valign="top">
+                                        IGST Total
+                                    </td>
 
-                                <td style="vertical-align: top; text-align: right; padding: 5px;font-size:12px;" align="right" valign="top">
-                                    @totalIGST
-                                </td>
-                            </tr>
+                                    <td style="vertical-align: top; text-align: right; padding: 5px;font-size:12px;" align="right" valign="top">
+                                        @totalIGST
+                                    </td>
+                                </tr>*@
                             <tr class="">
                                 <td style="vertical-align: top; padding: 5px;font-size:12px;" valign="top">
                                     Gross Amount
@@ -250,10 +256,10 @@
                             </tr>
 
                             <tr class="total">
-                                <td style="vertical-align: top; padding: 5px;" valign="top"></td>
+                                <td style="vertical-align: top; padding: 5px; font-size:14px;" valign="top">Total:</td>
 
                                 <td style="vertical-align: top; text-align: right; border-top-style: solid; border-top-width: 2px; border-top-color: #eee; font-weight: bold; padding: 5px;font-size:14px;" align="right" valign="top">
-                                    Total: @grandTotal
+                                     @grandTotal
                                 </td>
                             </tr>
 
@@ -261,6 +267,21 @@
                     </td>
                 </tr>
             </tbody>
+        </table>
+
+        @{
+            PSASysCommon PSASysCommon = new PSASysCommon();
+
+            tot = PSASysCommon.NumberToWords(double.Parse(grandTotal.ToString()));
+        }
+
+        <table style="width: 100%; line-height: inherit; text-align: right;">
+
+            <tr class="details">
+                <td style="vertical-align: top; padding: 5px 5px 20px;font-size:15px;font-weight: bold;" valign="top">
+                    @tot
+                </td>
+            </tr>
         </table>
 
         <table style="width: 100%; line-height: inherit; text-align: left;">
@@ -288,32 +309,32 @@
     {
         using (Ajax.BeginForm("UpdateQuotationEmailInfo", "Quotation", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessUpdateQuotationEmailInfo", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormUpdateQuotationEmailInfo" }))
         {
-            @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput" ,@placeholder="Email Sent To"} })
+            @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
             @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-            @Html.HiddenFor(model => model.MailBodyHeader, htmlAttributes: new { @class = "" ,@id= "hdnMailBodyHeader" })
+            @Html.HiddenFor(model => model.MailBodyHeader, htmlAttributes: new { @class = "", @id = "hdnMailBodyHeader" })
             @Html.HiddenFor(model => model.MailBodyFooter, htmlAttributes: new { @class = "", @id = "hdnMailBodyFooter" })
-           <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="UpdateQuotationEmailInfo()">Next <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="UpdateQuotationEmailInfo()">Next <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
         }
     }
     else
     {
         using (Ajax.BeginForm("SendQuotationEmail", "Quotation", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotationEmailSend", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormQuotationEmailSend" }))
         {
-         @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-         @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
-         @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
-        <a class="btn btn-default" style="margin-top:2%" onclick="EmailQuotation()">Back </a>
-        <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+            @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
+            @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
+            <a class="btn btn-default" style="margin-top:2%" onclick="EmailQuotation()">Back </a>
+            <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
 
         }
 
-        using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new {  @class = "", @style = "position:fixed;bottom:1.6%;right:17%;", role = "form", @id = "PDFForm" }))
+        using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.6%;right:17%;", role = "form", @id = "PDFForm" }))
         {
-                @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
-                @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
-                @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
-                @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
-                @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
+            @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
+            @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
+            @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
+            @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
+            @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
 
             <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
 

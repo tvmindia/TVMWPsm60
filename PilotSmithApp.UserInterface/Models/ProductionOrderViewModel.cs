@@ -79,9 +79,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public string SearchTerm { get; set; }
         [Display(Name ="Production Order From")]
-        public string FromDate { get; set; }
+        public string AdvFromDate { get; set; }
         [Display(Name = "Production Order To")]
-        public string ToDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Customer")]
         public Guid AdvCustomerID { get; set; }
@@ -101,7 +101,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
         [Display(Name = "Approval Status")]
         public int? AdvApprovalStatusCode { get; set; }
-        [Display(Name = "Email Sent(Y/N)")]
+        [Display(Name = "Email Sent (Y/N)")]
         public string AdvEmailSentStatus { get; set; }
     }
 

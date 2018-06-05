@@ -34,9 +34,9 @@ function BindOrReloadProductionQCTable(action) {
         //switch case to check the operation
         switch (action) {
             case 'Reset':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#SearchTerm').val('');                
+                $('.divboxASearch #AdvFromDate').val('').trigger('change');
+                $('.divboxASearch #AdvToDate').val('').trigger('change');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerID').val('').trigger('change');
                 $('.divboxASearch #AdvPlantCode').val('').trigger('change');
@@ -47,9 +47,9 @@ function BindOrReloadProductionQCTable(action) {
                 $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#SearchTerm').val('');                
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('');
                 $('.divboxASearch #AdvCustomerID').val('');
                 $('.divboxASearch #AdvPlantCode').val('');
@@ -60,7 +60,7 @@ function BindOrReloadProductionQCTable(action) {
                 $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvPlantCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvPlantCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -72,8 +72,8 @@ function BindOrReloadProductionQCTable(action) {
         }
         ProductionQCAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         ProductionQCAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        ProductionQCAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        ProductionQCAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        ProductionQCAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val(); 
+        ProductionQCAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
         ProductionQCAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
         ProductionQCAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
         ProductionQCAdvanceSearchViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val();
@@ -109,7 +109,7 @@ function BindOrReloadProductionQCTable(action) {
                 data: { "ProductionQCAdvanceSearchVM": ProductionQCAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [                
             
                 {
@@ -137,9 +137,6 @@ function BindOrReloadProductionQCTable(action) {
                        return "<b>Doc.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '') + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
                    }, "defaultContent": "<i>-</i>"
                },
-
-
-
 
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
 
