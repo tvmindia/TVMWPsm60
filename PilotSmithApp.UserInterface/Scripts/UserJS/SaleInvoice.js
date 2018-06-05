@@ -185,6 +185,8 @@ function EditSaleInvoice(this_Obj) {
 function ResetSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function () {
         BindSaleInvoiceDetailList($('#ID').val());
+        BindSaleInvoiceOtherChargesDetailList($('#ID').val());
+        CalculateTotal();
         clearUploadControl();
         PaintImages($('#SaleInvoiceForm #ID').val());
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
