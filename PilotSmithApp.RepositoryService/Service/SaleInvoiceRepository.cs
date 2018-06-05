@@ -247,7 +247,8 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@QuoteID", SqlDbType.UniqueIdentifier).Value = saleInvoice.QuoteID;
                         if (saleInvoice.SaleOrderID != Guid.Empty)
                             cmd.Parameters.Add("@SaleOrderID", SqlDbType.UniqueIdentifier).Value = saleInvoice.SaleOrderID;
-                        cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = saleInvoice.CustomerID;
+                        if (saleInvoice.CustomerID != Guid.Empty)
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = saleInvoice.CustomerID;
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = saleInvoice.MailingAddress;
                         cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = saleInvoice.ShippingAddress;
                         cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleInvoice.DocumentStatusCode;
