@@ -46,32 +46,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult Index()
         {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
             EstimateAdvanceSearchViewModel estimateAdvanceSearchVM = new EstimateAdvanceSearchViewModel();
             estimateAdvanceSearchVM.Area = new AreaViewModel();
-            estimateAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            estimateAdvanceSearchVM.Area.AreaSelectList = selectListItem;
             estimateAdvanceSearchVM.Customer = new CustomerViewModel();
-            estimateAdvanceSearchVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
+            estimateAdvanceSearchVM.Customer.CustomerSelectList = selectListItem;
             estimateAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
-            estimateAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
+            estimateAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = selectListItem;
             estimateAdvanceSearchVM.Branch = new BranchViewModel();
-            AppUA appUA = Session["AppUA"] as AppUA;
-            estimateAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
+            estimateAdvanceSearchVM.Branch.BranchList = selectListItem;
             estimateAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST");
+            estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST"); ;
             estimateAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-
-            if (PSAUserVMList != null)
-                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PSAuVM.UserName,
-                        Value = PSAuVM.ID.ToString(),
-                        Selected = false
-                    });
-                }
             estimateAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
             return View(estimateAdvanceSearchVM);
         } 

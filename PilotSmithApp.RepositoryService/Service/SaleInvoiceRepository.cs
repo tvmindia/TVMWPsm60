@@ -405,5 +405,60 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Delete SaleInvoice Detail
+
+        public List<SaleInvoiceOtherCharge> GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(Guid saleInvoiceID)
+        {
+            List<SaleInvoiceOtherCharge> saleInvoiceOtherChargeList = new List<SaleInvoiceOtherCharge>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetSaleInvoiceOtherChargeListBySaleInvoiceID]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@SaleInvoiceID", SqlDbType.UniqueIdentifier).Value = saleInvoiceID;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    SaleInvoiceOtherCharge saleInvoiceOtherCharge = new SaleInvoiceOtherCharge();
+                                    {
+                                        saleInvoiceOtherCharge.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleInvoiceOtherCharge.ID);
+                                        saleInvoiceOtherCharge.SaleInvID = (sdr["SaleInvoiceID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoiceOtherCharge.SaleInvID);
+                                        saleInvoiceOtherCharge.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : saleInvoiceOtherCharge.OtherChargeCode);
+                                        saleInvoiceOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : saleInvoiceOtherCharge.ChargeAmount);
+                                        saleInvoiceOtherCharge.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleInvoiceOtherCharge.TaxTypeCode);
+                                        saleInvoiceOtherCharge.TaxType = new TaxType();
+                                        saleInvoiceOtherCharge.TaxType.Code = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleInvoiceOtherCharge.TaxType.Code);
+                                        saleInvoiceOtherCharge.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleInvoiceOtherCharge.TaxType.ValueText);
+                                        saleInvoiceOtherCharge.CGSTPerc = (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : saleInvoiceOtherCharge.CGSTPerc);
+                                        saleInvoiceOtherCharge.SGSTPerc = (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : saleInvoiceOtherCharge.SGSTPerc);
+                                        saleInvoiceOtherCharge.IGSTPerc = (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : saleInvoiceOtherCharge.IGSTPerc);
+                                        saleInvoiceOtherCharge.AddlTaxPerc = (sdr["AddlTaxPerc"].ToString() != "" ? decimal.Parse(sdr["AddlTaxPerc"].ToString()) : saleInvoiceOtherCharge.AddlTaxPerc);
+                                        saleInvoiceOtherCharge.AddlTaxAmt = (sdr["AddlTaxAmt"].ToString() != "" ? decimal.Parse(sdr["AddlTaxAmt"].ToString()) : saleInvoiceOtherCharge.AddlTaxAmt);
+                                        saleInvoiceOtherCharge.OtherCharge = new OtherCharge();
+                                        saleInvoiceOtherCharge.OtherCharge.Description = (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : saleInvoiceOtherCharge.OtherCharge.Description);
+                                    }
+                                    saleInvoiceOtherChargeList.Add(saleInvoiceOtherCharge);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return saleInvoiceOtherChargeList;
+        }
     }
 }

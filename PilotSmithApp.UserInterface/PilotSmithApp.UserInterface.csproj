@@ -669,6 +669,7 @@
     <Content Include="Scripts\PDF.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\UserJS\AdvanceSelectList.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\OtherCharge.js" />
     <Content Include="Scripts\UserJS\DeliveryChallan.js" />
@@ -974,7 +975,6 @@
     <Content Include="Views\Plant\_PlantSelectList.cshtml" />
     <Content Include="Views\ProductionQC\_AddProductionQCDetail.cshtml" />
     <Content Include="Views\Employee\_QCBySelectList.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\ReferencePerson\_AddReferencePerson.cshtml" />
     <Content Include="Views\ReferencePerson\Index.cshtml" />
     <Content Include="Views\PaymentTerm\Index.cshtml" />

@@ -15,5 +15,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateSaleInvoice(SaleInvoice saleInvoice);
         object DeleteSaleInvoice(Guid id);
         object DeleteSaleInvoiceDetail(Guid id);
+        List<SaleInvoiceOtherCharge> GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(Guid saleInvoiceID);
     }
 }

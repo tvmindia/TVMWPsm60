@@ -144,7 +144,7 @@ function AddSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
         BindSaleInvoiceDetailList(_emptyGuid);
-        BindSaleInvoiceOtherChargesDetailList(_emptyGuid, false);
+        BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
         OnServerCallComplete();
         //setTimeout(function () {
         //resides in customjs for sliding
@@ -435,7 +435,8 @@ function AddSaleInvoiceDetailToList() {
             saleInvoiceDetailList[_datatablerowindex].Unit = Unit;
             saleInvoiceDetailList[_datatablerowindex].Rate = $('#Rate').val();
             saleInvoiceDetailList[_datatablerowindex].Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
-            saleInvoiceDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+            if ($('#divModelSaleInvoicePopBody #TaxTypeCode').val()!=null)
+                saleInvoiceDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
             saleInvoiceDetailList[_datatablerowindex].TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
             saleInvoiceDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
             saleInvoiceDetailList[_datatablerowindex].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
@@ -639,7 +640,283 @@ function AddOtherExpenseDetailList() {
         $('#divModelPopSaleInvoice').modal('show');
     });
 }
+function AddOtherExpenseDetailToList() {
+    debugger;
+    $("#FormOtherExpenseDetail").submit(function () { });
+    debugger;
+    if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
+        if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() != "")) {
+            debugger;
+            var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelSaleInvoicePopBody #ChargeAmount").val();
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
+            TaxType = new Object;
+            if ($('#divModelSaleInvoicePopBody #TaxTypeCode').val() != null) {
+                saleInvoiceOtherExpenseDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
+            }
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].TaxType = TaxType;
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].AddlTaxPerc = $('#divModelSaleInvoicePopBody #AddlTaxPerc').val() != "" ? $('#divModelSaleInvoicePopBody #AddlTaxPerc').val() : 0;
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].AddlTaxAmt = $('#divModelSaleInvoicePopBody #AddlTaxAmt').val() != "" ? $('#divModelSaleInvoicePopBody #AddlTaxAmt').val() : 0.00;
+            ClearCalculatedFields();
+            _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(saleInvoiceOtherExpenseDetailList).draw(false);
+            CalculateTotal();
+            $('#divModelPopSaleInvoice').modal('hide');
+            _datatablerowindex = -1;
+        }
+    }
+    else {
+        if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() != "")) {
+            debugger;
+            if (_dataTable.SaleInvoiceOtherChargesDetailList.rows().data().length === 0) {
+                _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(GetSaleInvoiceOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
+                var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
+                //saleInvoiceOtherExpenseDetailList.OtherCharge = new Object;
+                //saleInvoiceOtherExpenseDetailList.TaxType = new Object;
+                saleInvoiceOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                saleInvoiceOtherExpenseDetailList[0].OtherChargeCode = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
+                saleInvoiceOtherExpenseDetailList[0].ChargeAmount = $("#divModelSaleInvoicePopBody #ChargeAmount").val();
+                if ($('#divModelSaleInvoicePopBody #TaxTypeCode').val() != null) {
+                    saleInvoiceOtherExpenseDetailList[0].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                }
+                saleInvoiceOtherExpenseDetailList[0].TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
+                saleInvoiceOtherExpenseDetailList[0].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
+                saleInvoiceOtherExpenseDetailList[0].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
+                saleInvoiceOtherExpenseDetailList[0].IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
+                saleInvoiceOtherExpenseDetailList[0].AddlTaxPerc = $('#divModelSaleInvoicePopBody #AddlTaxPerc').val() != "" ? $('#divModelSaleInvoicePopBody #AddlTaxPerc').val() : 0;
+                saleInvoiceOtherExpenseDetailList[0].AddlTaxAmt = $('#divModelSaleInvoicePopBody #AddlTaxAmt').val() != "" ? $('#divModelSaleInvoicePopBody #AddlTaxAmt').val() : 0.00;
+                ClearCalculatedFields();
+                _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(saleInvoiceOtherExpenseDetailList).draw(false);
+                CalculateTotal();
+                $('#divModelPopSaleInvoice').modal('hide');
+            }
+            else {
+                debugger;
+                var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
+                if (saleInvoiceOtherExpenseDetailList.length > 0) {
+                    var checkpoint = 0;
+                    var otherCharge = $('#OtherChargeCode').val();
+                    for (var i = 0; i < saleInvoiceOtherExpenseDetailList.length; i++) {
+                        if ((saleInvoiceOtherExpenseDetailList[i].OtherChargeCode == otherCharge)) {
+                            saleInvoiceOtherExpenseDetailList[i].ChargeAmount = parseFloat(saleInvoiceOtherExpenseDetailList[i].ChargeAmount) + parseFloat($('#ChargeAmount').val());
+                            checkpoint = 1;
+                            break;
+                        }
+                    }
+                    if (checkpoint == 1) {
+                        debugger;
+                        ClearCalculatedFields();
+                        _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(saleInvoiceOtherExpenseDetailList).draw(false);
+                        CalculateTotal();
+                        $('#divModelPopSaleInvoice').modal('hide');
+                    }
+                    else if (checkpoint == 0) {
+                        ClearCalculatedFields();
+                        var SaleInvoiceOtherChargesDetailVM = new Object();
+                        SaleInvoiceOtherChargesDetailVM.ID = _emptyGuid;
+                        var OtherCharge = new Object;
+                        OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                        SaleInvoiceOtherChargesDetailVM.OtherCharge = OtherCharge;
+                        SaleInvoiceOtherChargesDetailVM.OtherChargeCode = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
+                        SaleInvoiceOtherChargesDetailVM.ChargeAmount = $("#divModelSaleInvoicePopBody #ChargeAmount").val();
+                        var TaxType = new Object();
+                        if ($('#divModelSaleInvoicePopBody #TaxTypeCode').val() != null) {
+                            SaleInvoiceOtherChargesDetailVM.TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                            TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
+                        }
+                        SaleInvoiceOtherChargesDetailVM.TaxType = TaxType;
+                        SaleInvoiceOtherChargesDetailVM.CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
+                        SaleInvoiceOtherChargesDetailVM.SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
+                        SaleInvoiceOtherChargesDetailVM.IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
+                        SaleInvoiceOtherChargesDetailVM.AddlTaxPerc = $('#divModelSaleInvoicePopBody #AddlTaxPerc').val() != "" ? $('#divModelSaleInvoicePopBody #AddlTaxPerc').val() : 0.00;
+                        SaleInvoiceOtherChargesDetailVM.AddlTaxAmt = $('#divModelSaleInvoicePopBody #AddlTaxAmt').val() != "" ? $('#divModelSaleInvoicePopBody #AddlTaxAmt').val() : 0.00;
+                        _dataTable.SaleInvoiceOtherChargesDetailList.row.add(SaleInvoiceOtherChargesDetailVM).draw(true);
+                        CalculateTotal();
+                        $('#divModelPopSaleInvoice').modal('hide');
+                    }
+                }
+            }
+        }
+    }
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'left'
+    });
+}
 
+//OtherExpense
+function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
+    debugger;
+    var data;
+    if (id == _emptyGuid && !(IsQuotation) && !(IsSaleOrder)) {
+        data = null;
+    }
+    else if (id == _emptyGuid && (IsQuotation)) {
+        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder)
+    }
+    else if (id == _emptyGuid && (IsSaleOrder)) {
+        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder)
+    }
+    else {
+        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder)
+    }
+
+    _dataTable.SaleInvoiceOtherChargesDetailList = $('#tblSaleInvoiceOtherChargesDetailList').DataTable(
+         {
+             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             order: [],
+             searching: false,
+             paging: false,
+             ordering: false,
+             bInfo: false,
+             data: data,
+             language: {
+                 search: "_INPUT_",
+                 searchPlaceholder: "Search"
+             },
+             columns: [
+             { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     var TaxAmt = parseFloat(data) + parseFloat(GSTAmt)
+                     if (row.AddlTaxPerc != undefined || row.AddlTaxPerc != null) {
+                         var AddlTax = parseFloat(TaxAmt * row.AddlTaxPerc / 100);
+                     }
+                     else {
+                         AddlTax = 0;
+                         row.AddlTaxPerc = 0;
+                     }
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Additional Tax :' + row.AddlTaxPerc + '%</p>"/>' + roundoff(AddlTax)
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "ChargeAmount", render: function (data, type, row) {
+                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
+                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
+                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
+                     var CGSTAmt = parseFloat(data * CGST / 100);
+                     var SGSTAmt = parseFloat(data * SGST / 100)
+                     var IGSTAmt = parseFloat(data * IGST / 100)
+                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
+                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))// + parseFloat(row.AddlTaxAmt))
+
+                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
+                 }, "defaultContent": "<i></i>"
+             },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeletesaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             ],
+             columnDefs: [
+                 //{ "targets": [0], "width": "30%" },
+                 //{ "targets": [1, 2, 3, 4], "width": "15%" },
+                 //{ "targets": [5], "width": "10%" },
+                 { className: "text-left", "targets": [0] },
+                 { className: "text-right", "targets": [1, 2, 3, 4] },
+                 { className: "text-center", "targets": [5] }
+             ],
+             destroy: true,
+         });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover',
+        'placement': 'top'
+    });
+}
+
+function GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder) {
+    try {
+        var SaleInvoiceOtherChargesDetailList = [];
+        if (IsQuotation) {
+            var data = { "quoteID": $('#SaleInvoiceForm #hdnQuoteID').val() };
+            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceOtherChargesDetailListByQuotationIDFromQuotation/", data);
+        }
+        else if (IsSaleOrder) {
+            var data = { "saleOrderID": $('#SaleInvoiceForm #hdnsaleOrderID').val() };
+            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceOtherChargesDetailListBySaleOrderIDFromSaleOrder/", data);
+        }
+        else {
+            var data = { "saleInvoiceID": id };
+            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID/", data);
+        }
+
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            SaleInvoiceOtherChargesDetailList = _jsonData.Records;
+        }
+        if (_status == "OK") {
+            return SaleInvoiceOtherChargesDetailList;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
+}
+
+function EditSaleInvoiceOtherChargesDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
+    var saleInvoiceOtherChargesDetail = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/SaleInvoiceOtherChargeDetail", function () {
+        debugger;
+        $('#lblModelPopQuotation').text('OtherCharges Detail')
+        $('#FormOtherExpenseDetail #IsUpdate').val('True');
+        $('#FormOtherExpenseDetail #ID').val(saleInvoiceOtherChargesDetail.ID);
+        $("#FormOtherExpenseDetail #OtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
+        $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
+        $("#FormOtherExpenseDetail #ChargeAmount").val(saleInvoiceOtherChargesDetail.ChargeAmount);
+        if (saleInvoiceOtherChargesDetail.TaxType.Code != 0) {
+            $('#FormOtherExpenseDetail #TaxTypeCode').val(saleInvoiceOtherChargesDetail.TaxType.ValueText);
+            $('#FormOtherExpenseDetail #hdnTaxTypeCode').val(saleInvoiceOtherChargesDetail.TaxType.ValueText);
+        }
+        $('#FormOtherExpenseDetail #hdnCGSTPerc').val(saleInvoiceOtherChargesDetail.CGSTPerc);
+        $('#FormOtherExpenseDetail #hdnSGSTPerc').val(saleInvoiceOtherChargesDetail.SGSTPerc);
+        $('#FormOtherExpenseDetail #hdnIGSTPerc').val(saleInvoiceOtherChargesDetail.IGSTPerc);
+        $('#FormOtherExpenseDetail #hdnAddlTaxPerc').val(saleInvoiceOtherChargesDetail.AddlTaxPerc);
+        $('#FormOtherExpenseDetail #hdnAddlTaxAmt').val(saleInvoiceOtherChargesDetail.AddlTaxAmt);
+        $('#FormOtherExpenseDetail #AddlTaxPerc').val(saleInvoiceOtherChargesDetail.AddlTaxPerc);
+        $('#FormOtherExpenseDetail #AddlTaxAmt').val(saleInvoiceOtherChargesDetail.AddlTaxAmt);
+
+        var CGSTAmt = (saleInvoiceOtherChargesDetail.ChargeAmount * parseFloat(saleInvoiceOtherChargesDetail.CGSTPerc)) / 100;
+        var SGSTAmt = (saleInvoiceOtherChargesDetail.ChargeAmount * parseFloat(saleInvoiceOtherChargesDetail.SGSTPerc)) / 100;
+        var IGSTAmt = (saleInvoiceOtherChargesDetail.ChargeAmount * parseFloat(saleInvoiceOtherChargesDetail.IGSTPerc)) / 100;
+        $('#FormOtherExpenseDetail #CGSTPerc').val(CGSTAmt);
+        $('#FormOtherExpenseDetail #SGSTPerc').val(SGSTAmt);
+        $('#FormOtherExpenseDetail #IGSTPerc').val(IGSTAmt);
+        $('#divModelPopSaleInvoice').modal('show');
+    });
+}
 
 //================================================================================================
 //SaleInvoiceFollowup Section
@@ -722,132 +999,6 @@ function DeleteSaleInvoiceFollowup(ID) {
     }
 }
 
-//OtherExpense
-function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation) {
-    debugger;
-    var data;
-    if (id == _emptyGuid && !(IsQuotation)) {
-        data = null;
-    }
-    else if (id == _emptyGuid && (IsQuotation)) {
-        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation)
-    }
-    else {
-        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation)
-    }
-    _dataTable.SaleInvoiceOtherChargesDetailList = $('#tblSaleInvoiceOtherChargesDetailList').DataTable(
-         {
-             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
-             order: [],
-             searching: false,
-             paging: false,
-             ordering: false,
-             bInfo: false,
-             data: data,
-             language: {
-                 search: "_INPUT_",
-                 searchPlaceholder: "Search"
-             },
-             columns: [
-             { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             {
-                 "data": "ChargeAmount", render: function (data, type, row) {
-                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
-                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
-                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
-                     var CGSTAmt = parseFloat(data * CGST / 100);
-                     var SGSTAmt = parseFloat(data * SGST / 100)
-                     var IGSTAmt = parseFloat(data * IGST / 100)
-                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
-                 }, "defaultContent": "<i></i>"
-             },
-             {
-                 "data": "ChargeAmount", render: function (data, type, row) {
-                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
-                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
-                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
-                     var CGSTAmt = parseFloat(data * CGST / 100);
-                     var SGSTAmt = parseFloat(data * SGST / 100)
-                     var IGSTAmt = parseFloat(data * IGST / 100)
-                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     var TaxAmt = parseFloat(data) + parseFloat(GSTAmt)
-                     if (row.AddlTaxPerc != undefined || row.AddlTaxPerc != null) {
-                         var AddlTax = parseFloat(TaxAmt * row.AddlTaxPerc / 100);
-                     }
-                     else {
-                         AddlTax = 0;
-                         row.AddlTaxPerc = 0;
-                     }
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Additional Tax :' + row.AddlTaxPerc + '%</p>"/>' + roundoff(AddlTax)
-                 }, "defaultContent": "<i></i>"
-             },
-             {
-                 "data": "ChargeAmount", render: function (data, type, row) {
-                     var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
-                     var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
-                     var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
-                     var CGSTAmt = parseFloat(data * CGST / 100);
-                     var SGSTAmt = parseFloat(data * SGST / 100)
-                     var IGSTAmt = parseFloat(data * IGST / 100)
-                     var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))// + parseFloat(row.AddlTaxAmt))
-
-                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
-                 }, "defaultContent": "<i></i>"
-             },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeletesaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
-             ],
-             columnDefs: [
-                 //{ "targets": [0], "width": "30%" },
-                 //{ "targets": [1, 2, 3, 4], "width": "15%" },
-                 //{ "targets": [5], "width": "10%" },
-                 { className: "text-left", "targets": [0] },
-                 { className: "text-right", "targets": [1, 2, 3, 4] },
-                 { className: "text-center", "targets": [5] }
-             ],
-             destroy: true,
-         });
-    $('[data-toggle="popover"]').popover({
-        html: true,
-        'trigger': 'hover',
-        'placement': 'top'
-    });
-}
-
-function GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation) {
-    try {
-        var SaleInvoiceOtherChargesDetailList = [];
-        if (IsQuotation) {
-            var data = { "quotationID": $('#SaleInvoiceForm #hdnQuoteID').val() };
-            _jsonData = GetDataFromServer("SaleInvoice/GetQuotationOtherChargesDetailListByQuotationID/", data);
-        }
-        else {
-            var data = { "saleOrderID": id };
-            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceOtherChargesDetailListBySaleOrderID/", data);
-        }
-
-        if (_jsonData != '') {
-            _jsonData = JSON.parse(_jsonData);
-            _message = _jsonData.Message;
-            _status = _jsonData.Status;
-            SaleInvoiceOtherChargesDetailList = _jsonData.Records;
-        }
-        if (_status == "OK") {
-            return SaleInvoiceOtherChargesDetailList;
-        }
-        if (_status == "ERROR") {
-            notyAlert('error', _message);
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-
-    }
-}
 
 //Calculations Methods
 function CalculateTotal() {

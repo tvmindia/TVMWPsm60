@@ -58,6 +58,15 @@
                                 @Html.ValidationMessageFor(model => model.QuoteNo, "", new { @class = "text-danger" })
                             </div>
                         </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.QuoteDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.QuoteDateFormatted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.QuoteRefNo, htmlAttributes: new { @class = "control-label" })
@@ -67,15 +76,7 @@
                                 @Html.ValidationMessageFor(model => model.QuoteRefNo, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
-                                @Html.LabelFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
-                            </div>
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.QuoteDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.QuoteDateFormatted, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+                        
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
@@ -118,7 +119,7 @@
                         </div>
                         <div class="col-md-6 no-padding">
                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                                </div>
                          <div class="col-md-12">
                          <div class="divDocumentStatusSelectList">
@@ -129,11 +130,11 @@
                         </div>
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
-                                @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
                             <div class="col-md-12">
                                 <div class="divBranchSelectList">
-                                    @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                                    @Html.Action("BranchSelectList", "Branch", new { required = "required" })
                                 </div>
                                 @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                             </div>
@@ -466,8 +467,10 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
+                    ClearCalculatedFields();
                     BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
                     BindQuotationOtherChargesDetailList("00000000-0000-0000-0000-000000000000");
+                    CalculateTotal();
                     OnServerCallComplete();
                 });
             });

@@ -16,7 +16,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-      $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID").select2({
+      $("#AdvDocumentStatusCode").select2({
         dropdownParent: $(".divboxASearch")
         });
 
