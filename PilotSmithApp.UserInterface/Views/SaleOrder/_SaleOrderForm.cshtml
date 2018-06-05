@@ -633,8 +633,13 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
+                    ClearCalculatedFields();
                     BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false,true);
-                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000",true);
+                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true);
+                    CalculateTotal();
+                    debugger;
+                    $("input[type=radio][value=Enquiry]").attr("disabled", true);
+                    $("input[type=radio][value=Enquiry]").attr('title', "Quotation details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 
@@ -648,8 +653,13 @@
                 OnServerCallBegin();
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
+                    debugger;
+                    ClearCalculatedFields();
                     BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true, false)
-                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000",false);
+                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false);
+                    CalculateTotal();
+                    $('#DocumentType').prop('disabled', true);
+                    $("#DocumentType").attr('title', "Enquiry details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 
