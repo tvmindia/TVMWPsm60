@@ -21,13 +21,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Bank> bankList= _bankRepository.GetBankForSelectList();
-            return selectListItem = (from bank in bankList
-                                     select new SelectListItem
-                                     {
-                                         Text=bank.Name,
-                                         Value=bank.Code,
-                                         Selected=false,
-                                     }).ToList();
+            return selectListItem = bankList != null ? (from bank in bankList
+                                                        select new SelectListItem
+                                                        {
+                                                            Text = bank.Name,
+                                                            Value = bank.Code,
+                                                            Selected = false,
+                                                        }).ToList() : new List<SelectListItem>();
         }
         public List<Bank> GetAllBank(BankAdvanceSearch bankAdvanceSearch)
         {
