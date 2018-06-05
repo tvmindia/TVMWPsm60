@@ -267,6 +267,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value=saleInvoice.Discount;
                         cmd.Parameters.Add("@AdvanceAmount", SqlDbType.Decimal).Value=saleInvoice.AdvanceAmount;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = saleInvoice.DetailXML;
+                        cmd.Parameters.Add("@OtherChargeDetailXML", SqlDbType.Xml).Value = saleInvoice.OtherChargeDetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = saleInvoice.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = saleInvoice.GeneralNotes;
                         if (saleInvoice.DocumentOwnerID != Guid.Empty)
@@ -445,7 +446,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     SaleInvoiceOtherCharge saleInvoiceOtherCharge = new SaleInvoiceOtherCharge();
                                     {
                                         saleInvoiceOtherCharge.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleInvoiceOtherCharge.ID);
-                                        saleInvoiceOtherCharge.SaleInvID = (sdr["SaleInvoiceID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoiceOtherCharge.SaleInvID);
+                                        saleInvoiceOtherCharge.SaleInvID = (sdr["SaleInvID"].ToString() != "" ? Guid.Parse(sdr["SaleInvID"].ToString()) : saleInvoiceOtherCharge.SaleInvID);
                                         saleInvoiceOtherCharge.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : saleInvoiceOtherCharge.OtherChargeCode);
                                         saleInvoiceOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : saleInvoiceOtherCharge.ChargeAmount);
                                         saleInvoiceOtherCharge.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleInvoiceOtherCharge.TaxTypeCode);

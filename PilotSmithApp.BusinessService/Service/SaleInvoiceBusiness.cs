@@ -32,6 +32,10 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 saleInvoice.DetailXML = _commonBusiness.GetXMLfromSaleInvoiceObject(saleInvoice.SaleInvoiceDetailList, "ProductID");
             }
+            if (saleInvoice.SaleInvoiceOtherChargeDetailList.Count > 0)
+            {
+                saleInvoice.OtherChargeDetailXML = _commonBusiness.GetXMLfromSaleInvoiceOtherChargeObject(saleInvoice.SaleInvoiceOtherChargeDetailList, "OtherChargeCode,ChargeAmount");
+            }
             return _saleInvoiceRepository.InsertUpdateSaleInvoice(saleInvoice);
         }
         public SaleInvoice GetSaleInvoice(Guid id)

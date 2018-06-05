@@ -195,7 +195,9 @@ function ResetSaleInvoice() {
 function SaveSaleInvoice() {
     debugger;
     var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data().toArray();
+    var saleInvoiceOtherChargesDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(saleInvoiceDetailList));
+    $('#OtherChargesDetailJSON').val(JSON.stringify(saleInvoiceOtherChargesDetailList));
     $('#btnInsertUpdateSaleInvoice').trigger('click');
 }
 function ApplyFilterThenSearch() {

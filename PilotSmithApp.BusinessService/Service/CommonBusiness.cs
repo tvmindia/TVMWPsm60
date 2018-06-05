@@ -444,5 +444,39 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _commonRepository.CheckDocumentIsDeletable(docType, id);
         }
+
+        public string GetXMLfromSaleInvoiceOtherChargeObject(List<SaleInvoiceOtherCharge> saleInvoiceOtherChargeDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(saleInvoiceOtherChargeDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in saleInvoiceOtherChargeDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
+        }
     }
 }
