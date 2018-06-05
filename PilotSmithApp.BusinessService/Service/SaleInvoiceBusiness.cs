@@ -46,5 +46,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _saleInvoiceRepository.DeleteSaleInvoiceDetail(id);
         }
+        public List<SaleInvoiceOtherCharge> GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(Guid saleInvoiceID)
+        {
+            return _saleInvoiceRepository.GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(saleInvoiceID);
+        }
     }
 }
