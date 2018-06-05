@@ -190,7 +190,7 @@
                     $('#divModelPopSaleOrder #CGSTPerc').val(taxableAmount * CGST / 100);
                     $('#divModelPopSaleOrder #SGSTPerc').val(taxableAmount * SGST / 100);
                     $('#divModelPopSaleOrder #IGSTPerc').val(taxableAmount * IGST / 100);
-                    var TaxAmount = taxableAmount + parseFloat(taxableAmount * CGST / 100) + parseFloat(taxableAmount * SGST / 100) + parseFloat(taxableAmount * IGST / 100)
+                    var TaxAmount = parseFloat(taxableAmount * CGST / 100) + parseFloat(taxableAmount * SGST / 100) + parseFloat(taxableAmount * IGST / 100)
                     $('#divModelPopSaleOrder #CessAmt').val((TaxAmount * CessPerc) / 100);
                 });
             });

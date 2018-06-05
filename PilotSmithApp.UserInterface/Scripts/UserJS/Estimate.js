@@ -10,7 +10,8 @@ $(document).ready(function () {
     try {
         BindOrReloadEstimateTable('Init');
         $('#tblEstimate tbody').on('dblclick', 'td', function () {
-            EditEstimate(this);
+            if (this.textContent !== "No data available in table")
+                EditEstimate(this);
         });
     }
     catch (e) {
@@ -219,6 +220,7 @@ function EditEstimate(this_Obj) {
         clearUploadControl();
         PaintImages(Estimate.ID);        
         $("#divEstimateForm #EnquiryID").prop('disabled', true);
+        
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -373,7 +375,7 @@ function BindEstimateDetailList(id,IsEnquiry) {
              { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "TotalCostPrice", render: function (data, type, row) { return parseFloat(row.CostRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
              { "data": "TotalSeingPrice", render: function (data, type, row) { return parseFloat(row.SellingRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True") ?'<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-" },
              ],
              columnDefs: [
                  { "targets": [0], "width": "21%" },
