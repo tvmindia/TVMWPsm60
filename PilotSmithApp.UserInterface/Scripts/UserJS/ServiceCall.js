@@ -11,7 +11,7 @@ $(document).ready(function () {
         debugger;
         BindOrReloadServiceCallTable('Init');
         $('#tblServiceCall tbody').on('dblclick', 'td', function () {
-            //EditServiceCall(this);
+            EditServiceCall(this);
         });
     }
     catch (e) {
@@ -84,7 +84,7 @@ function BindOrReloadServiceCallTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                                 columns: [0, 1, 2, 3, 4, 5, 6, 7]
                              }
             }],
             ordering: false,
@@ -103,23 +103,27 @@ function BindOrReloadServiceCallTable(action) {
             },
             pageLength: 8,
             columns: [
-               { "data": "ServiceCallNo", "defaultContent": "<i>-</i>" },
-               { "data": "ServiceCallDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "ServiceCallNo", render: function (data, type, row) {
+                       return data + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ServiceCallDateFormatted;
+                   }
+                   , "defaultContent": "<i>-</i>"
+               },
                {
                    "data": "Customer", render: function (data, type, row) {
                        return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (data.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data.CompanyName;
                }, "defaultContent": "<i>-</i>" },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "Employee.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ServicedByName", "defaultContent": "<i>-</i>" },//5
+               { "data": "ServicedByName", "defaultContent": "<i>-</i>" },//4
                { "data": "ServicedDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },//7
+               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },//6
                { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCall(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [0, 2,3,4,5,7,8] },
-                          { className: "text-center", "targets": [1,6,9] },                           
+                          { className: "text-left", "targets": [0,3,4,6,7] },
+                          { className: "text-center", "targets": [5,8] },                           
 
             ],
             destroy: true,
@@ -182,10 +186,10 @@ function AddServiceCall() {
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
+            openNav();
             BindServiceCallChargeDetailList(_emptyGuid);
             BindServiceCallDetailList(_emptyGuid);
             OnServerCallComplete();
-            openNav();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -200,6 +204,7 @@ function EditServiceCall(this_Obj) {
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + ServiceCall.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
+            openNav();
             BindServiceCallDetailList(ServiceCall.ID);
             BindServiceCallChargeDetailList(ServiceCall.ID)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -207,7 +212,6 @@ function EditServiceCall(this_Obj) {
             PaintImages(ServiceCall.ID);
             CalculateTotal()
             OnServerCallComplete();
-            openNav();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -276,7 +280,7 @@ function EditServiceCallChargeDetail(this_Obj) {
         debugger;
         _datatablerowindex = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).index();
         var serviceCallChargeDetail = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).data();
-        $("#divModelCallChargesPopBody").load("Quotation/QuotationOtherChargeDetail", function () {
+        $("#divModelCallChargesPopBody").load("ServiceCall/AddServiceCallCharge", function () {
             debugger;
             $('#lblModelPopCallCharges').text('OtherCharges Detail')
             $('#FormServiceCallChargeDetail #IsUpdate').val('True');
@@ -297,8 +301,8 @@ function EditServiceCallChargeDetail(this_Obj) {
             $('#FormServiceCallChargeDetail #CGSTPerc').val(CGSTAmt);
             $('#FormServiceCallChargeDetail #SGSTPerc').val(SGSTAmt);
             $('#FormServiceCallChargeDetail #IGSTPerc').val(IGSTAmt);
-            $('#FormServiceCallChargeDetail #IGSTPerc').val(IGSTAmt);
-            $('#FormServiceCallChargeDetail #IGSTPerc').val(IGSTAmt);
+            $('#FormServiceCallChargeDetail #AddlTaxPerc').val(serviceCallChargeDetail.AddlTaxPerc);
+            $('#FormServiceCallChargeDetail #AddlTaxAmt').val(serviceCallChargeDetail.AddlTaxAmt);
             $('#divModelPopCallCharges').modal('show');
         });
     }
@@ -666,6 +670,7 @@ function AddServiceCallChargeDetailToList() {
                             ClearCalculatedFields();
                             var ServiceCallChargeDetailVM = new Object();
                             ServiceCallChargeDetailVM.ID = _emptyGuid;
+                            ServiceCallChargeDetailVM.ServiceCallID = _emptyGuid;
                             var OtherCharge = new Object;
                             OtherCharge.Description = $("#divModelCallChargesPopBody #OtherChargeCode").val() != "" ? $("#divModelCallChargesPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                             ServiceCallChargeDetailVM.OtherCharge = OtherCharge;
