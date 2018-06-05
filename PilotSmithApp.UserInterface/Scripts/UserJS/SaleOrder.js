@@ -108,7 +108,7 @@ function BindOrReloadSaleOrderTable(action) {
                 data: { "saleOrderAdvanceSearchVM": SaleOrderAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [
                {
                    "data": "SaleOrderNo", render: function (data, type, row) {
@@ -397,7 +397,7 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -411,7 +411,7 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
                      //var TaxAmt = parseFloat(data) + parseFloat(GSTAmt)
                      var AddlTax = parseFloat(GSTAmt * row.AddlTaxPerc / 100);
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Additional Tax : % ' + row.AddlTaxPerc + '</p>"/>' + roundoff(AddlTax)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Additional Tax : % ' + row.AddlTaxPerc + '</p>"/>' + roundoff(AddlTax)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -427,10 +427,10 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                      var AddlTax = parseFloat(GSTAmt * row.AddlTaxPerc / 100);
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt) + parseFloat(AddlTax))
                      //return Total
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
                  { "targets": [0], "width": "30%" },
@@ -445,7 +445,6 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'left'
     });
 }
 function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
@@ -590,7 +589,6 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover'
-        //'placement': 'top'
     });
 }
 function GetSaleOrderDetailListBySaleOrderID(id, IsEnquiry, IsQuotation) {
@@ -767,8 +765,7 @@ function AddSaleOrderDetailToList() {
     }
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover',
-        'placement': 'top'
+        'trigger': 'hover'
     });
 }
 function EditSaleOrderDetail(this_Obj) {
@@ -1110,7 +1107,6 @@ function AddOtherExpenseDetailToList() {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'left'
     });
 }
 function GetSaleOrderOtherChargesDetailListBySaleOrderID(id, IsQuotation) {

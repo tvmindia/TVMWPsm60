@@ -102,6 +102,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "OPEN";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
+                    quotationVM.IsDocLocked = false;
                 }
                 else if(id == Guid.Empty && estimateID != null)
                 {
@@ -116,6 +117,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "OPEN";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
+                    quotationVM.IsDocLocked = false;
                 }
                 quotationVM.Customer = new CustomerViewModel
                 {

@@ -12,7 +12,6 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Service Call No")]
         public string ServiceCallNo { get; set; }
         public DateTime ServiceCallDate { get; set; }
-        [Display(Name = "Service Call Time")]
         public TimeSpan? ServiceCallTime { get; set; }
         [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }
@@ -29,6 +28,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime? ServiceDate { get; set; }
         [Display(Name = "Service Comments")]
         public string ServiceComments { get; set; }
+        public int? BranchCode { get; set; }
 
         //Additional Fields
         public List<ServiceCallDetailViewModel> ServiceCallDetailList { get; set; }
@@ -37,6 +37,8 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Service Call Date is missing")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)",ErrorMessage ="Date format not accepted")]
         public string ServiceCallDateFormatted { get; set; }
+        [Display(Name = "Service Call Time")]
+        public string ServiceCallTimeFormatted { get; set; }
         [Display(Name = "Service Date")]
         [Required(ErrorMessage = "Service Date is missing")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)",ErrorMessage ="Date format not accepted")]
@@ -49,7 +51,11 @@ namespace PilotSmithApp.UserInterface.Models
         public CustomerViewModel Customer { get; set; }
         public EmployeeViewModel Employee { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
-        public string ServiceCallChargesJSON { get; set; }
+        public string CallChargeJSON { get; set; }
+        public List<ServiceCallChargeViewModel> ServiceCallChargeList { get; set; }
+        public string ServicedByName { get; set; }
+        public BranchViewModel Branch { get; set; }
+        public AreaViewModel Area { get; set; }
     }
 
     public class ServiceCallAdvanceSearchViewModel
@@ -57,11 +63,29 @@ namespace PilotSmithApp.UserInterface.Models
         public string SearchTerm { get; set; }
         [Display(Name = "Service From")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
-        public string FromDate { get; set; }
+        public string AdvFromDate { get; set; }
         [Display(Name = "Service To")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
-        public string ToDate { get; set; }
+        public string AdvToDate { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        [Display(Name = "Service By")]
+        public Guid AdvServicedBy { get; set; }
+        [Display(Name = "Attended By")]
+        public Guid AdvAttendedBy { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+
+        public CustomerViewModel AdvCustomer { get; set; }
+        public AreaViewModel AdvArea { get; set; }
+        public EmployeeViewModel AdvEmployee { get; set; }
+        public DocumentStatusViewModel AdvDocumentStatus { get; set; }
+        public BranchViewModel AdvBranch { get; set; }
     }
 
     public class ServiceCallDetailViewModel
@@ -76,17 +100,18 @@ namespace PilotSmithApp.UserInterface.Models
         public string ProductSpec { get;set;}
         [Display(Name = "Guarantee Y/N")]
         public bool? GuaranteeYN { get;set;}
-        [Display(Name = "Installed Date")]
         public DateTime? InstalledDate { get;set;}
         [Display(Name = "Service Status")]
         public int? ServiceStatusCode { get;set;}
         public bool IsUpdate { get; set; }
 
         //Additional Field
+        [Display(Name = "Installed Date")]
+        public string InstalledDateFormatted { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }
         public ProductModelViewModel ProductModel { get; set; }
-        public string InstalledDateFormatted { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
     }
 
     public class ServiceCallChargeViewModel

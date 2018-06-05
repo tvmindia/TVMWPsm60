@@ -11,6 +11,7 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
+    @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
@@ -103,12 +104,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                    @if (!Model.IsDocLocked && Model.IsUpdate)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput">@Model.Branch.Description</span>
                         </div>
-                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divBranchSelectList">
+                                @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                            </div>
+                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                        </div>
+                    }
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">

@@ -118,9 +118,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     deliveryChallanVM.SaleOrderID = saleOrderID;
                     deliveryChallanVM.CustomerID = saleOrderVM.CustomerID;
-                    deliveryChallanVM.BranchCode = saleOrderVM.BranchCode;
+                    deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && prodOrderID != null)
                 {
@@ -131,17 +132,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.ProductionOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(prodOrderID);
                     deliveryChallanVM.ProdOrderID = prodOrderID;
                     deliveryChallanVM.CustomerID = productionOrderVM.CustomerID;
-                    deliveryChallanVM.BranchCode = productionOrderVM.BranchCode;
                     deliveryChallanVM.SaleOrderID = null;
                     deliveryChallanVM.DocumentType = "ProductionOrder";
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.IsDocLocked = false;
                 }
                 else
                 {
                     deliveryChallanVM = new DeliveryChallanViewModel();
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.SaleOrderID = null;
+                    deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
+                    deliveryChallanVM.IsDocLocked = false;
+                    deliveryChallanVM.IsUpdate = false;
+                    deliveryChallanVM.ID = Guid.Empty;
                 }
             }
             catch (Exception ex)

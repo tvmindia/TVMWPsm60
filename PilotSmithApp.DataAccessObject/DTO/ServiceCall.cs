@@ -20,13 +20,16 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid? ServicedBy { get; set; }
         public DateTime? ServiceDate { get; set; }
         public string ServiceComments { get; set; }
+        public int? BranchCode { get; set; }
 
         //Additional Fields
         public List<ServiceCallDetail> ServiceCallDetailList { get; set; }
+        public List<ServiceCallCharge> ServiceCallChargeList { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public string ServiceCallDateFormatted { get; set; }
+        public string ServiceCallTimeFormatted { get; set; }
         public string ServiceDateFormatted { get; set; }
-        public string DetailJSON { get; set; }
+        public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         public bool IsUpdate { get; set; }
         public int TotalCount { get; set; }
@@ -34,15 +37,30 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Customer Customer { get; set; }
         public Employee Employee { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
-        public string ServiceCallChargesJSON { get; set; }
+        public string CallChargeXML { get; set; }
+        public string ServicedByName { get; set; }
+        public Branch Branch { get; set; }
+        public Area Area { get; set; }
     }
 
     public class ServiceCallAdvanceSearch
     {
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Guid AdvServicedBy { get; set; }
+        public Guid AdvAttendedBy { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public int? AdvBranchCode { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+
+        public Customer AdvCustomer { get; set; }
+        public Area AdvArea { get; set; }
+        public Employee AdvEmployee { get; set; }
+        public DocumentStatus AdvDocumentStatus { get; set; }
+        public Branch AdvBranch { get; set; }
     }
 
     public class ServiceCallDetail
@@ -62,6 +80,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set; }
         public string InstalledDateFormatted { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
     }
 
     public class ServiceCallCharge

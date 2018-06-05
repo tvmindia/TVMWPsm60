@@ -119,12 +119,22 @@
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
-                        <div class="col-md-12">
-                            <div class="divBranchSelectList">
-                                @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                        @if(!Model.IsDocLocked&&Model.IsUpdate)
+                        {
+                            <div class="col-md-12">
+                               <span class="form-control newinput">@Model.Branch.Description</span>
                             </div>
-                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-12">
+                                <div class="divBranchSelectList">
+                                    @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                                </div>
+                                @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                            </div>
+                        }
+                        
                     </div>
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
@@ -203,13 +213,13 @@
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             @{
-                if (Model.IsDocLocked)
+                if (Model.IsDocLocked||!Model.IsUpdate)
                 {
                     <div class="col-md-12 headSeperator">Enquiry Details<a class="btn btn-openid pull-right" onclick="AddEnquiryDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
                 }
                 else
                 {
-                    <div class="col-md-12 headSeperator">Enquiry Details<a class="btn btn-openid pull-right" disabled onclick="AddEnquiryDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
+                    <div class="col-md-12 headSeperator">Enquiry Details<a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
                 }
             }
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })

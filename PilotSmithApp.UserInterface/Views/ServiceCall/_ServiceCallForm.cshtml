@@ -1,4 +1,16 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ServiceCallViewModel
+@{ 
+    List<SelectListItem> TimeSelectList = new List<SelectListItem>();
+    DateTime now = DateTime.Now;
+    DateTime startTime = new DateTime(now.Year, now.Month, now.Day, 9, 0, 0);
+    DateTime endTime = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0);
+    while (startTime <= endTime)
+    {
+        TimeSelectList.Add(new SelectListItem
+        { Text = startTime.ToShortTimeString(), Value = startTime.ToShortTimeString(), Selected = false });
+        startTime = startTime.AddMinutes(15);
+    }
+}
 <style>
     .todo-list > li {
         background: #ffffff;
@@ -53,11 +65,11 @@
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.ServiceCallTime, htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.ServiceCallTimeFormatted, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ServiceCallTime, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
-                        @Html.ValidationMessageFor(model => model.ServiceCallTime, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.ServiceCallTimeFormatted, TimeSelectList, "--Select Time--", new { @class = "form-control newinput", @style = "width:100%", @id= "ServiceCallTime" } )
+                        @Html.ValidationMessageFor(model => model.ServiceCallTimeFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -117,6 +129,18 @@
                     </div>
                 </div>
 
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divBranchSelectList">
+                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                        </div>
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                </div>
+
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
@@ -157,13 +181,10 @@
                     <table id="tblServiceCallDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                         <thead>
                             <tr class="text-center TableHead">
-                                <th style="width:10%">Product Code</th>
-                                <th style="width:15%">Product Name</th>
-                                <th style="width:15%">Model</th>
-                                <th style="width:25%">Spec.</th>
-                                <th style="width:10%">Guarantee</th>
-                                <th style="width:10%">Installed Date</th>
-                                <th style="width:10%">Service Status</th>
+                                <th style="width:50%">Product</th>
+                                <th style="width:15%">Guarantee</th>
+                                <th style="width:15%">Installed Date</th>
+                                <th style="width:15%">Service Status</th>
                                 <th style="width:5%">...</th>
                             </tr>
                         </thead>
@@ -176,12 +197,12 @@
             <div class="col-md-12 divbox2">
                 <div class="col-md-12 headSeperator">
                     Service Call Charges Details
-                    <a class="btn btn-openid pull-right" onclick="AddServiceCallChargeDetail()" id="btnServiceCallCharge" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Service Call Charge</a>
+                    <a class="btn btn-openid pull-right" onclick="AddServiceCallChargeDetailList()" id="btnServiceCallCharge" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Service Call Charge</a>
 
                 </div>
 
                 @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
-                @Html.HiddenFor(model => model.ServiceCallChargesJSON, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.CallChargeJSON, htmlAttributes: new { @class = "" })
                 <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
                     <table id="tblServiceCallChargeDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                         <thead>
@@ -203,14 +224,6 @@
                         <tbody>
                             <tr>
                                 <td style="text-align: right">
-                                    <label class="control-label" for="lblItemTotal">Total Taxable Amount</label>
-                                </td>
-                                <td class="ApplyCurrency" style="text-align: right">
-                                    <label class="control-label " for="" id="lblItemTotal">00.00</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right">
                                     <label class="control-label" for="lblTaxTotal">GST Amount</label>
                                 </td>
                                 <td class="ApplyCurrency" style="text-align: right">
@@ -223,14 +236,6 @@
                                 </td>
                                 <td class="ApplyCurrency" style="text-align: right">
                                     <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right">
-                                    <label class="control-label" for="lblGrossAmount">Gross Amount</label>
-                                </td>
-                                <td class="ApplyCurrency" style="text-align: right">
-                                    <label class="control-label " for="" id="lblGrossAmount">00.00</label>
                                 </td>
                             </tr>
                             <tr class="odd">
@@ -334,7 +339,7 @@
                     console.log(e.message);
                 }
                 try {
-                    $('#CustomerID,#BranchCode').select2({});
+                    $('#CustomerID,#BranchCode,#ServiceCallTime').select2({});
                     $('.select2').addClass('form-control newinput');
                 }
                 catch (e) {
