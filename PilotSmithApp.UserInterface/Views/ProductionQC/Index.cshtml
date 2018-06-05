@@ -124,7 +124,7 @@
                             EmailStatus.Add(new SelectListItem
                             { Text = "No", Value = "0" });
                         }
-                        @Html.DropDownListFor(model => model.AdvEmailSentStatus, EmailStatus, "--Select--", new { @class = "form-control newinput ", @style = "width:100 % !important", @id = "AdvEmailSentStatus" })
+                        @Html.DropDownListFor(model => model.AdvEmailSentStatus, EmailStatus, "Select status", new { @class = "form-control newinput ", @style = "width:100 % !important", @id = "AdvEmailSentStatus" })
                     </div>
                 </div>
 
