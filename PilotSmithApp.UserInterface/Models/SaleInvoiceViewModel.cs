@@ -111,6 +111,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid ID { get; set; }
         public Guid SaleInvID { get; set; }
         public int? OtherChargeCode { get; set; }
+        [Required(ErrorMessage = "Charge Amount is missing")]
         public decimal? ChargeAmount { get; set; }
         public int? TaxTypeCode { get; set; }
         public decimal CGSTPerc { get; set; }

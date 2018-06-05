@@ -167,52 +167,59 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
             public override void OnStartPage(PdfWriter writer, Document document)
             {
-                
-               // iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
-               // //Resize image depend upon your need
-               // jpg.ScaleToFit(60f, 50f);
-               // jpg.SpacingBefore = 10f;
-               // jpg.SpacingAfter = 1f;
-               // jpg.Alignment = Element.ALIGN_LEFT;
-               // //jpg.SetAbsolutePosition(document.Left, document.Top - 60);
-               // Font myFont = FontFactory.GetFont(FontFactory.TIMES_BOLD, 14, iTextSharp.text.Font.BOLD);
-               // //string line1 = "AURA Private Limited" + "\n";
-               // //string line2 = "Customer Payment Ledger Report" + "\n";
-               // Paragraph header = new Paragraph();
-               //// Phrase ph1=new Phrase(line1, myFont);
-               // //Phrase ph2 = new Phrase(line2, myFont);
-               // //header.Add(ph1);
-               // //header.Add(ph2);
-               // header.Alignment = Element.ALIGN_RIGHT;
-               // PdfPTable headerTbl = new PdfPTable(2);
-               // headerTbl.TotalWidth = document.PageSize.Width;
-               // //headerTbl.HeaderHeight = 60;
-               // headerTbl.HorizontalAlignment = Element.ALIGN_LEFT;
-               // float[] widths = new float[] { 100f, document.PageSize.Width - 100 };
-               // headerTbl.SetWidths(widths);
-               // PdfPCell cell = new PdfPCell(jpg);
-               // cell.Border = 0;
-               // cell.PaddingLeft = 10;
-               // headerTbl.AddCell(cell);
-               // PdfPCell cell1 = new PdfPCell(header);
-               // cell1.Border = 0;
-               // cell1.PaddingLeft = 50;
-               // //cell1.Width = document.PageSize.Width - 90;
-               // headerTbl.AddCell(cell1);
-               // ColumnText ct = new ColumnText(writer.DirectContent);
-               // ct.SetSimpleColumn(new Rectangle(10, 790, 559, 600));
-               // foreach (IElement e in Header)
-               // {                    
-               //     ct.AddElement(e);
-               // }
-               // ct.Go();
 
-               // headerTbl.WriteSelectedRows(0, -1, 0, 832, writer.DirectContent);
+                //iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
+                ////Resize image depend upon your need
+                //jpg.ScaleToFit(90.70f, 70.86f);
+                ////jpg.SpacingBefore = 39.68f;
+                ////jpg.SpacingAfter = 22.67f;
+                //jpg.Alignment = Element.ALIGN_LEFT;
+                ////jpg.SetAbsolutePosition(document.Left, document.Top - 60);
+                //Font myFont = FontFactory.GetFont(FontFactory.TIMES_BOLD, 14, iTextSharp.text.Font.BOLD);
+                //Font myFont1 = FontFactory.GetFont(FontFactory.TIMES_BOLD, 10, iTextSharp.text.Font.NORMAL);
+                //Font myFont2 = FontFactory.GetFont(FontFactory.TIMES_BOLD, 12, iTextSharp.text.Font.BOLDITALIC);
+                //string line1 = "Pilotsmith (India) Pvt.Ltd." + "\n";
+                //string line2 = "www.pilotsmithindia.com" + "\n";
+                //string line3 = "\n"+"Manufacturers and Consultants for Food and Ayurvedic Processing Equipments." + "\n";
+                //Paragraph header = new Paragraph();
+                //Phrase ph1 = new Phrase(line1, myFont);
+                //Phrase ph2 = new Phrase(line2, myFont1);
+                //Phrase ph3 = new Phrase(line3, myFont2);
+                //header.Add(ph1);
+                //header.Add(ph2);
+                //header.Add(ph3);
+                //header.Alignment = Element.ALIGN_LEFT;
+                //PdfPTable headerTbl = new PdfPTable(2);
+                //headerTbl.TotalWidth = document.PageSize.Width;
+                ////headerTbl.HeaderHeight = 60;
+                //headerTbl.HorizontalAlignment = Element.ALIGN_LEFT;
+                //float[] widths = new float[] { 90.70f, document.PageSize.Width - 90.70f };
+                //headerTbl.SetWidths(widths);
+                //PdfPCell cell = new PdfPCell(jpg);
+                //cell.Border = 0;
+                //cell.PaddingLeft = 10;
+                //headerTbl.AddCell(cell);
+                //PdfPCell cell1 = new PdfPCell(header);
+                //cell1.Border = 0;
+                //cell1.PaddingLeft = 50;
+                ////cell1.Width = document.PageSize.Width - 90;
+                //headerTbl.AddCell(cell1);
+                ////ColumnText ct = new ColumnText(writer.DirectContent);
+                ////ct.SetSimpleColumn(new Rectangle(10, 790, 559, 600));
+                ////foreach (IElement e in Header)
+                ////{
+                ////    ct.AddElement(e);
+                ////}
+                ////ct.Go();
+
+                //headerTbl.WriteSelectedRows(0, -1, 0, 832, writer.DirectContent);
             }
             }
         [HttpPost]
         public FileResult Download(PDFTools PDFTools)
         {
+           // Footer footobj = new Footer();
+            
             //jpg.Alignment = Element.ALIGN_LEFT;
             string htmlBody = PDFTools.Content == null ? "" : PDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
             StringReader reader = new StringReader(htmlBody.ToString());
@@ -222,6 +229,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
                 PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
                 Footer footobj = new Footer();
+                footobj.imageURL = Server.MapPath("~/Content/images/logo2.png");
                 writer.PageEvent = footobj;
                 pdfDoc.Open();
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);

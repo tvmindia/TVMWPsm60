@@ -104,6 +104,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.SaleOrderSelectList = new List<SelectListItem>();
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
                     productionOrderVM.DocumentStatus.Description = "OPEN";
+                    productionOrderVM.Branch = new BranchViewModel();
+                    productionOrderVM.Branch.Description = "-";
+                    productionOrderVM.IsDocLocked = false;
                 }     
                 else if(id==Guid.Empty && saleOrderID!=null)
                 {
@@ -114,9 +117,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     productionOrderVM.SaleOrderID = saleOrderID;
                     productionOrderVM.CustomerID = saleOrderVM.CustomerID;
-                    productionOrderVM.BranchCode = saleOrderVM.BranchCode;
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
                     productionOrderVM.DocumentStatus.Description = "OPEN";
+                    productionOrderVM.Branch = new BranchViewModel();
+                    productionOrderVM.IsDocLocked = false;
+                    productionOrderVM.Branch.Description = "-";
                 }           
             }
             catch(Exception ex)
