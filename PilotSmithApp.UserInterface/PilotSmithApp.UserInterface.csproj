@@ -669,6 +669,7 @@
     <Content Include="Scripts\PDF.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\UserJS\AdvanceSelectList.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\OtherCharge.js" />
     <Content Include="Scripts\UserJS\DeliveryChallan.js" />

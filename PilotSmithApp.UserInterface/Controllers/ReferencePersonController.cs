@@ -159,6 +159,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion ReferencePerson SelectList
 
+        #region Get ReferencePerson SelectList On Demand
+        [HttpPost]
+        public ActionResult GetReferencePersonForSelectListOnDemand(string searchTerm)
+        {
+            List<SelectListItem> referencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
+            var list = referencePersonSelectList != null ? (from SelectListItem in referencePersonSelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                 select new Select2Model
+                                                 {
+                                                     text = SelectListItem.Text,
+                                                     id = SelectListItem.Value,
+                                                 }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get ReferencePerson SelectList On Demand
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]

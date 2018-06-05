@@ -133,7 +133,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.IsRequired = required;
             ViewBag.IsDisabled = disabled;
             ViewBag.HasAddPermission = false;
-            ViewBag.propertydisable = disabled==null?false:disabled;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
             //Permission _permission = Session["UserRights"] as Permission;
             AppUA appUA = Session["AppUA"] as AppUA;
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Customer");
@@ -268,6 +268,22 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion DeleteCustomer
+
+        #region Get Customer SelectList On Demand
+        [HttpPost]
+        public ActionResult GetCustomerForSelectListOnDemand(string searchTerm)
+        {
+            List<SelectListItem> customerSelectList = _customerBusiness.GetCustomerSelectList();
+            var list = customerSelectList != null ? (from SelectListItem in customerSelectList.Where(x=>x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                     select new Select2Model
+                                                     {
+                                                         text = SelectListItem.Text,
+                                                         id = SelectListItem.Value,
+                                                     }).ToList()  : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get Customer SelectList On Demand
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]

@@ -45,38 +45,24 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public ActionResult Index(string id)
+        public ActionResult Index()
         {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
             enquiryAdvanceSearchVM.Area = new AreaViewModel();
-            enquiryAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            enquiryAdvanceSearchVM.Area.AreaSelectList = selectListItem;
             enquiryAdvanceSearchVM.Customer = new CustomerViewModel();
-            enquiryAdvanceSearchVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
+            enquiryAdvanceSearchVM.Customer.CustomerSelectList = selectListItem;
             enquiryAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
-            enquiryAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
+            enquiryAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = selectListItem;
             enquiryAdvanceSearchVM.Branch = new BranchViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
-            enquiryAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
+            enquiryAdvanceSearchVM.Branch.BranchList = selectListItem;
             enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
             enquiryAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-
-            if (PSAUserVMList != null)
-                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PSAuVM.UserName,
-                        Value = PSAuVM.ID.ToString(),
-                        Selected = false
-                    });
-                }
             enquiryAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
             return View(enquiryAdvanceSearchVM);
-            ViewBag.ID = id;
-            return View();
         }
         #region Enquiry Form
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -335,7 +321,6 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_EnquirySelectList", enquiryVM);
         }
         #endregion EnquirySelectList
-
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]

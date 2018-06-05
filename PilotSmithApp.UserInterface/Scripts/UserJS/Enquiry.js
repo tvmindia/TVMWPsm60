@@ -13,17 +13,17 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
             EditEnquiry(this);
         });
-        debugger;
-        if ($('#RedirectToDocument').val() != "")
-        {           
-            EditRedirectFromDocument($('#RedirectToDocument').val());
-        }
+        //======================Disabled(Funcyion for redirection from email)
+        //if ($('#RedirectToDocument').val() != "")
+        //{           
+        //    EditRedirectFromDocument($('#RedirectToDocument').val());
+        //}
             
     }
     catch (e) {
         console.log(e.message);
     }
-    $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID").select2({
+    $("#AdvDocumentStatusCode").select2({
         dropdownParent: $(".divboxASearch")
     });
 
@@ -32,7 +32,7 @@ $(document).ready(function () {
 //function bind the Enquiry list checking search and filter
 function BindOrReloadEnquiryTable(action) {
     try {
-        debugger;
+        
         //creating advancesearch object
         EnquiryAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
@@ -126,7 +126,7 @@ function BindOrReloadEnquiryTable(action) {
                },
                {
                    "data": "RequirementSpec", render: function (data, type, row) {
-                       debugger;
+                       
                        return '<div style="width:100%;text-overflow: ellipsis;overflow: hidden; class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Requirement Specification" data-content="' + data + '</p>"/>' + (data == null ? " " : data.substring(0, 30))//if (data.length > 30){var newdata = data.substring(0, 30);return newdata + ' <a style="color:rgba(94, 66, 209, 0.8);"> More.. ▼</a>';}else{return data ;}
 
                    }, "defaultContent": "<i>-</i>"
@@ -688,31 +688,31 @@ function DeleteEnquiryFollowup(ID) {
         }
     }
 }
-
-
-function EditRedirectFromDocument(id)
-{
-    debugger;
-    OnServerCallBegin();
+//=====================Disabled functions===================================
+//==========================================================================
+//function EditRedirectFromDocument(id)
+//{
+    
+//    OnServerCallBegin();
    
-    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
-        if (statusTxt == "success") {
-            OnServerCallComplete();
-            openNav();
-            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
-            if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
-            }
-            else {
-                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
-            }
-            BindEnquiryDetailList(id);
-            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-            clearUploadControl();
-            PaintImages(id);
-        }
-        else {
-            console.log("Error: " + xhr.status + ": " + xhr.statusText);
-        }
-    });
-}
+//    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+//        if (statusTxt == "success") {
+//            OnServerCallComplete();
+//            openNav();
+//            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
+//            if ($('#IsDocLocked').val() == "True") {
+//                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
+//            }
+//            else {
+//                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+//            }
+//            BindEnquiryDetailList(id);
+//            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+//            clearUploadControl();
+//            PaintImages(id);
+//        }
+//        else {
+//            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+//        }
+//    });
+//}
