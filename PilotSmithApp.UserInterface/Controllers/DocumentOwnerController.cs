@@ -45,5 +45,21 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_DocumentOwnerSelectList", userVM);
         }
         #endregion Document Owner SelectList
+
+        #region Get Document Owner SelectList On Demand
+        [HttpPost]
+        public ActionResult GetDocumentOwnerForSelectListOnDemand(string searchTerm)
+        {
+            List<PSAUserViewModel> UserVMList = Mapper.Map<List<User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+            var list = UserVMList != null ? (from user in UserVMList.Where(x => x.UserName.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                 select new Select2Model
+                                                 {
+                                                     text = user.UserName,
+                                                     id = user.ID.ToString(),
+                                                 }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get Document Owner SelectList On Demand
+
     }
 }

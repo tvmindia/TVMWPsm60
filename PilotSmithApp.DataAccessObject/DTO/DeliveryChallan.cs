@@ -48,14 +48,33 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DocumentType { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
         public Plant Plant { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public Area Area { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public string ReferenceNo { get; set; }
     }
 
     public class DeliveryChallanAdvanceSearch
     {
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public Area Area { get; set; }
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public int? AdvApprovalStatusCode { get; set; }
+        public string AdvEmailSentStatus { get; set; }
+        public int? AdvPlantCode { get; set; }
+        public Plant Plant { get; set; }
     }
 
     public class DeliveryChallanDetail
@@ -76,5 +95,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ProductModel ProductModel { get; set; }
         public Unit Unit { get; set; }
         public decimal? PrevDelQty { get; set; }
+        //public decimal? PrevDelQtySale { get; set; }
+        //public decimal? PrevDelQtyProd { get; set; }
     }
 }

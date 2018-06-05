@@ -8,7 +8,7 @@ var _result = "";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
-        BindOrReloadProductionQCTable('Init');
+        BindOrReloadProductionQCTable('Init');       
         $('#tblProductionQC tbody').on('dblclick', 'td', function () {
             if (this.textContent !== "No data available in table")
             EditProductionQC(this);
@@ -17,10 +17,16 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+    $("#AdvAreaCode,#AdvCustomerID,#AdvPlantCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+        dropdownParent: $(".divboxASearch")
+    });
+
+    $('.select2').addClass('form-control newinput');
 });
 //function bind the ProductionQC list checking search and filter
 function BindOrReloadProductionQCTable(action) {
     try {
+        debugger;
         //creating advancesearch object
         ProductionQCAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
@@ -28,17 +34,33 @@ function BindOrReloadProductionQCTable(action) {
         //switch case to check the operation
         switch (action) {
             case 'Reset':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#SearchTerm').val('');                
+                $('.divboxASearch #AdvFromDate').val('').trigger('change');
+                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvAreaCode').val('').trigger('change');
+                $('.divboxASearch #AdvCustomerID').val('').trigger('change');
+                $('.divboxASearch #AdvPlantCode').val('').trigger('change');
+                $('.divboxASearch #AdvBranchCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
+                $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
+                $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#SearchTerm').val('');                
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('');
+                $('.divboxASearch #AdvCustomerID').val('');
+                $('.divboxASearch #AdvPlantCode').val('');
+                $('.divboxASearch #AdvBranchCode').val('');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
+                $('.divboxASearch #AdvDocumentOwnerID').val('');
+                $('.divboxASearch #AdvApprovalStatusCode').val('');
+                $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvPlantCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -50,17 +72,26 @@ function BindOrReloadProductionQCTable(action) {
         }
         ProductionQCAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         ProductionQCAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        ProductionQCAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        ProductionQCAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        ProductionQCAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val(); 
+        ProductionQCAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
+        ProductionQCAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        ProductionQCAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
+        ProductionQCAdvanceSearchViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val();
+        ProductionQCAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
+        ProductionQCAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
+        ProductionQCAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
+        ProductionQCAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+        ProductionQCAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val();
         //apply datatable plugin on ProductionQC table
         _dataTable.ProductionQCList = $('#tblProductionQC').DataTable(
-        {
+       
+        {           
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
             buttons: [{
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                                 columns: [0, 1, 2, 3, 4, 5,6]
                              }
             }],
             ordering: false,
@@ -68,6 +99,7 @@ function BindOrReloadProductionQCTable(action) {
             paging: true,
             lengthChange: false,
             processing: true,
+            autoWidth:false,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
@@ -77,27 +109,52 @@ function BindOrReloadProductionQCTable(action) {
                 data: { "ProductionQCAdvanceSearchVM": ProductionQCAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
-            columns: [
-               { "data": "ProdQCNo", "defaultContent": "<i>-</i>" },
-               { "data": "ProdQCDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-               { "data": "PreparedBy", "defaultContent": "<i>-</i>" },
-               { "data": "Plant", "defaultContent": "<i>-</i>" },
-               { "data": "LatestApprovalStatus", "defaultContent": "<i>-</i>" },
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionQC(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+            pageLength: 8,
+            columns: [                
+            
+                {
+                    "data": "ProdQCNo", render: function (data, type, row) {
+                        return row.ProdQCNo + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ProdQCDateFormatted;
+                    }, "defaultContent": "<i>-</i>"
+                },
+                { "data": "ProdOrderNo", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
+               { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Branch.Description", render: function (data, type, row) {
+                       debugger;
+                       return "<b>Doc.Owner-</b>" + row.PSAUser.LoginName + "</br>" + "<b>Branch-</b>" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               {
+                   "data": "DocumentStatus.Description", render: function (data, type, row) {
+                       debugger;
+                       return "<b>Doc.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '') + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
+                   }, "defaultContent": "<i>-</i>"
+               },
+
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+
+
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
-                          { className: "text-left", "targets": [2, 3, 5, 6] },
-                          { className: "text-center", "targets": [0, 1, 4, 7, 8] },
-                            { "targets": [0, 1, 4], "width": "10%" },
-                            { "targets": [2, 3], "width": "10%" },
-                            { "targets": [5], "width": "30%" },
-                            { "targets": [6], "width": "10%" },
-                            { "targets": [7, 8], "width": "5%" },
+                          { className: "text-left", "targets": [0,1,2, 3,4,5,6] },
+                          { className: "text-center", "targets": [6] },
+                            { "targets": [0], "width": "13%" },
+                            { "targets": [1], "width": "10%" },
+                            { "targets": [2], "width": "15%" },
+                            { "targets": [3], "width": "10%" },           
+                            { "targets": [4], "width": "12%" },
+                             { "targets": [5], "width": "15%" },
+                             { "targets": [6], "width": "22%" },
+                             { "targets": [7], "width": "2%" },
+
+                                              
             ],
             destroy: true,
             //for performing the import operation after the data loaded

@@ -16,6 +16,11 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+    $("#AdvAreaCode,#AdvCustomerID,#AdvPlantCode,#AdvBranchCode,#AdvDocumentOwnerID,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+        dropdownParent: $(".divboxASearch")
+    });
+
+    $('.select2').addClass('form-control newinput');
 });
 
 //function bind the SaleOrder list checking search and filter
@@ -29,17 +34,31 @@ function BindOrReloadDeliveryChallanTable(action) {
         //switch case to check the operation
         switch (action) {
             case 'Reset':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#SearchTerm').val('');               
+                $('.divboxASearch #AdvFromDate').val('').trigger('change');
+                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvAreaCode').val('').trigger('change');
+                $('.divboxASearch #AdvCustomerID').val('').trigger('change');
+                $('.divboxASearch #AdvPlantCode').val('').trigger('change');
+                $('.divboxASearch #AdvBranchCode').val('').trigger('change');                
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
+                $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
+                $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('');
+                $('.divboxASearch #AdvCustomerID').val('');
+                $('.divboxASearch #AdvPlantCode').val('');
+                $('.divboxASearch #AdvBranchCode').val('');               
+                $('.divboxASearch #AdvDocumentOwnerID').val('');
+                $('.divboxASearch #AdvApprovalStatusCode').val('');
+                $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvPlantCode').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -51,8 +70,15 @@ function BindOrReloadDeliveryChallanTable(action) {
         }
         DeliveryChallanAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         DeliveryChallanAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        DeliveryChallanAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        DeliveryChallanAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();       
+        DeliveryChallanAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+        DeliveryChallanAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val();
         //apply datatable plugin on SaleOrder table
         _dataTable.DeliveryChallanList = $('#tblDeliveryChallan').DataTable(
         {
@@ -61,7 +87,7 @@ function BindOrReloadDeliveryChallanTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5]
+                                 columns: [0, 1, 2, 3, 4, 5,6]
                              }
             }],
             ordering: false,
@@ -69,6 +95,7 @@ function BindOrReloadDeliveryChallanTable(action) {
             paging: true,
             lengthChange: false,
             processing: true,
+            autoWidth:false,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
@@ -78,33 +105,55 @@ function BindOrReloadDeliveryChallanTable(action) {
                 data: { "deliveryChallanAdvanceSearchVM": DeliveryChallanAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
-            columns: [
-               { "data": "DelvChallanNo", "defaultContent": "<i>-</i>" },
-               { "data": "DelvChallanRefNo", "defaultContent": "<i>-</i>" },
-               { "data": "DelvChallanDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },               
-               //{ "data": "UserName", "defaultContent": "<i>-</i>" },
+            pageLength: 8,
+            columns: [              
+                {
+                    "data": "DelvChallanNo", render: function (data, type, row) {
+                        return row.DelvChallanNo + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.DelvChallanDateFormatted;
+                    }, "defaultContent": "<i>-</i>"
+                },
+                 {
+                     "data": "Customer.CompanyName", render: function (data, type, row) {
+                         return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                     }, "defaultContent": "<i>-</i>"
+                 },              
+                 {
+                     "data": "ReferenceNo", render: function (data, type, row) {
+                         debugger;
+                         return (row.SaleOrder.SaleOrderNo == null ? row.ProductionOrder.ProdOrderNo : row.SaleOrder.SaleOrderNo);
+                     }, "defaultContent": "<i>-</i>"
+                 },              
+               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
+               { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
                {
-                   "data": "IsFinalApproved", render: function (data, type, row) {
-                       if (data) {
-                           return "Approved ✔";// <br/>📅 " + (row.FinalApprovalDateFormatted !== null ? row.FinalApprovalDateFormatted : "-");
-                       }
-                       else {
-                           return 'Pending';
-                       }
+                   "data": "Branch.Description", render: function (data, type, row) {
+                       debugger;
+                       return "<b>Doc.Owner-</b>" + row.PSAUser.LoginName + "</br>" + "<b>Branch-</b>" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },              
 
+               {
+                   "data": "ApprovalStatus.Description", render: function (data, type, row) {
+                       debugger;
+                       return "<b>Appr.Status-</b>" + data + "</br>"  +(row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '');
                    }, "defaultContent": "<i>-</i>"
                },
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDeliveryChallan(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+
+
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [0, 1, 3, 4, 5] },
-                          { className: "text-center", "targets": [2,6] },
-                            { "targets": [0, 1, 2, 5], "width": "20%" },
-                            {"targets": [3,4],"width":"10%"},
-                            { "targets": [6], "width": "10%" },
+                          { className: "text-left", "targets": [0, 1, 3, 4, 5,6] },
+                          { className: "text-center", "targets": [7] },
+                          { "targets": [0], "width": "12%" },
+                          { "targets": [1], "width": "12%" },
+                          { "targets": [2], "width": "15%" },
+                          { "targets": [3], "width": "10%" },
+                          { "targets": [4], "width": "11%" },
+                          { "targets": [5], "width": "15%" },
+                          { "targets": [6], "width": "22%" },
+                          { "targets": [7], "width": "2%" },
 
             ],
             destroy: true,
@@ -362,12 +411,23 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
              //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
             {
                 "data": "PrevDelQty", render: function (data, type, row) {
-                    return data + " " + row.Unit.Description
+                    if (row.PrevDelQty > 0)
+                    {
+                        return data + " " + row.Unit.Description
+                    }
+                    else {
+                        return 0 + " " + row.Unit.Description
+                    }
                 }, "defaultContent": "<i></i>"
             },
              {
                  "data": "DelvQty", render: function (data, type, row) {
-                   return data                 
+                     if (row.DelvQty > 0)
+                     {
+                         return data + " " + row.Unit.Description
+                     }
+                     else
+                         return 0 + " " + row.Unit.Description
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },

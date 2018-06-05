@@ -4,9 +4,11 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,17 +21,70 @@ namespace PilotSmithApp.UserInterface.Controllers
         IDeliveryChallanBusiness _deliveryChallanBusiness;
         IProductionOrderBusiness _productionOrderBusiness;
         ISaleOrderBusiness _saleOrderBusiness;
-        public DeliveryChallanController(IDeliveryChallanBusiness deliveryChallanBusiness, IProductionOrderBusiness productionOrderBusiness, ISaleOrderBusiness saleOrderBusiness)
+        IAreaBusiness _areaBusiness;
+        IBranchBusiness _branchBusiness;
+        ICustomerBusiness _customerBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;
+        IApprovalStatusBusiness _approvalStatusBusiness;
+        IPlantBusiness _plantBusiness;
+        private IUserBusiness _userBusiness;
+
+        public DeliveryChallanController(IDeliveryChallanBusiness deliveryChallanBusiness,
+            IProductionOrderBusiness productionOrderBusiness,
+            ISaleOrderBusiness saleOrderBusiness,
+            IAreaBusiness areaBusiness,
+            IBranchBusiness branchBusiness,
+            ICustomerBusiness customerBusiness,
+            IDocumentStatusBusiness documentStatusBusiness,
+            IApprovalStatusBusiness approvalStatusBusiness,
+            IPlantBusiness plantBusiness,
+            IUserBusiness userBusiness
+            )
         {
             _deliveryChallanBusiness = deliveryChallanBusiness;
             _productionOrderBusiness = productionOrderBusiness;
             _saleOrderBusiness = saleOrderBusiness;
+            _areaBusiness = areaBusiness;
+            _branchBusiness = branchBusiness;
+            _customerBusiness = customerBusiness;
+            _documentStatusBusiness = documentStatusBusiness;
+            _plantBusiness = plantBusiness;
+            _approvalStatusBusiness = approvalStatusBusiness;
+            _userBusiness = userBusiness;
         }
         // GET: DeliveryChallan
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
         public ActionResult Index()
         {
-            return View();
+            DeliveryChallanAdvanceSearchViewModel deliveryChallanVM = new DeliveryChallanAdvanceSearchViewModel();
+
+            deliveryChallanVM.Area = new AreaViewModel();
+            deliveryChallanVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            deliveryChallanVM.Customer = new CustomerViewModel();
+            deliveryChallanVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
+            deliveryChallanVM.Plant = new PlantViewModel();
+            deliveryChallanVM.Plant.PlantSelectList = _plantBusiness.GetPlantForSelectList();
+            deliveryChallanVM.Branch = new BranchViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            deliveryChallanVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);            
+            deliveryChallanVM.ApprovalStatus = new ApprovalStatusViewModel();
+            deliveryChallanVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
+            deliveryChallanVM.PSAUser = new PSAUserViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+
+            if (PSAUserVMList != null)
+                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = PSAuVM.UserName,
+                        Value = PSAuVM.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            deliveryChallanVM.PSAUser.UserSelectList = selectListItem;
+            return View(deliveryChallanVM);
         }
 
         #region DeliveryChallan Form
@@ -108,6 +163,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             deliveryChallanDetailVM.IsUpdate = false;
             deliveryChallanDetailVM.OrderQty = 0;
             deliveryChallanDetailVM.DelvQty = 0;
+            deliveryChallanDetailVM.PrevDelQty = 0;
             return PartialView("_AddDeliveryChallanDetail", deliveryChallanDetailVM);
         }
         #endregion DeliveryChallan Detail Add
@@ -284,9 +340,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             ProductSpec = productionOrderDetailVM.ProductSpec,
                                                             OrderQty = productionOrderDetailVM.OrderQty,
                                                             UnitCode = productionOrderDetailVM.UnitCode,
-                                                            DelvQty = 0,
+                                                            DelvQty = productionOrderDetailVM.DelvQty,
                                                             SpecTag = productionOrderDetailVM.SpecTag,
-                                                            PrevDelQty=0,
+                                                            PrevDelQty=productionOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()
                                                             {
                                                                 ID = (Guid)productionOrderDetailVM.ProductID,
@@ -337,9 +393,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             ProductSpec = saleOrderDetailVM.ProductSpec,
                                                             OrderQty = saleOrderDetailVM.Qty,
                                                             UnitCode = saleOrderDetailVM.UnitCode,
-                                                            DelvQty = 0,
+                                                            DelvQty = saleOrderDetailVM.DelvQty,
                                                             SpecTag = saleOrderDetailVM.SpecTag,
-                                                            PrevDelQty=0,
+                                                            PrevDelQty=saleOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()
                                                             {
                                                                 ID = (Guid)saleOrderDetailVM.ProductID,

@@ -10,13 +10,14 @@ $(document).ready(function () {
     try {
         BindOrReloadEstimateTable('Init');
         $('#tblEstimate tbody').on('dblclick', 'td', function () {
-            EditEstimate(this);
+            if (this.textContent !== "No data available in table")
+                EditEstimate(this);
         });
     }
     catch (e) {
         console.log(e.message);
     }
-      $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID").select2({
+      $("#AdvDocumentStatusCode").select2({
         dropdownParent: $(".divboxASearch")
         });
 
@@ -102,18 +103,18 @@ function BindOrReloadEstimateTable(action) {
                 data: { "estimateAdvanceSearchVM": EstimateAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 7,
+            pageLength: 8,
             columns: [
                {
                    "data": "EstimateNo", render: function (data, type, row) {
-                       return data + " <br/>" + "<img src='./Content/images/datePicker.png' height='10px'>"+"&nbsp;"+ row.EstimateDateFormatted
+                       return (data == null ? " " : data) + " <br/>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + (row.EstimateDateFormatted == null ? " " : row.EstimateDateFormatted)
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": "Enquiry.EnquiryNo", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
 
-                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + " </br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + " </br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + (data == null ? " " : data);
 
                    }, "defaultContent": "<i>-</i>"
                },
@@ -123,7 +124,7 @@ function BindOrReloadEstimateTable(action) {
                 {
                     "data": "DocumentStatus.Description", render: function (data, type, row) {
 
-                        return "<b>Document Status-</b>" + data + " </br>" + "<b>Branch-</b>" + row.Branch.Description;
+                        return "<b>Document Status-</b>" + (data == null ? " " : data) + " </br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
 
                     }, "defaultContent": "<i>-</i>"
                 },
@@ -219,6 +220,7 @@ function EditEstimate(this_Obj) {
         clearUploadControl();
         PaintImages(Estimate.ID);        
         $("#divEstimateForm #EnquiryID").prop('disabled', true);
+        
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -373,7 +375,7 @@ function BindEstimateDetailList(id,IsEnquiry) {
              { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "TotalCostPrice", render: function (data, type, row) { return parseFloat(row.CostRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
              { "data": "TotalSeingPrice", render: function (data, type, row) { return parseFloat(row.SellingRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True") ?'<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-" },
              ],
              columnDefs: [
                  { "targets": [0], "width": "21%" },

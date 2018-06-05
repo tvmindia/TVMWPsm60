@@ -27,6 +27,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? BranchCode { get; set; }
 
         //Aditional Fields
+        public string MailFrom { get; set; }
         public string ProdOrderDateFormatted { get; set; }
         public string ExpectedDelvDateFormatted { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
@@ -43,14 +44,30 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DocumentStatus DocumentStatus { get; set; }
         public Branch Branch { get; set; }
         public string MailContant { get; set; }
+        public Area Area { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
     }
 
     public class ProductionOrderAdvanceSearch
     {
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public Area Area { get; set; }       
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public int? AdvApprovalStatusCode { get; set; }
+        public string AdvEmailSentStatus { get; set; }
     }
 
     public class ProductionOrderDetail
@@ -90,6 +107,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Unit Unit { get; set; }
         public decimal? PrevProducedQty { get; set; }
         public Plant Plant { get; set; }
-
+        public decimal? PrevDelQty { get; set; }
+        public decimal? DelvQty { get; set; }
     }
 }

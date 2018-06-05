@@ -32,6 +32,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string PurchaseOrdNo { get; set; }
         public DateTime? PurchaseOrdDate { get; set; }
         public int? BillSeriesCode { get; set; }
+        [Display(Name = "Email Sent")]
         public bool? EmailSentYN { get; set; }
         public Guid? LatestApprovalID { get; set; }
         public int? LatestApprovalStatus { get; set; }
@@ -42,19 +43,24 @@ namespace PilotSmithApp.UserInterface.Models
         public string GeneralNotes { get; set; }
         [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
+        [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
         public decimal? Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
         //additional Fields
         public string DocumentType { get; set; }
         public string DetailJSON { get; set; }
+        public string OtherChargesDetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
         [Display(Name = "Invoice Date")]
+
+        [Required(ErrorMessage = "Invoice Date is missing")]
         public string SaleInvDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
         [Display(Name = "Expected Delivery Date")]
+        [Required(ErrorMessage = "Expected Delivery Date is missing")]
         public string ExpectedDelvDateFormatted { get; set; }
         [Display(Name = "Purchase Order Date")]
         public string PurchaseOrdDateFormatted { get; set; }
@@ -62,6 +68,7 @@ namespace PilotSmithApp.UserInterface.Models
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<SaleInvoiceDetailViewModel> SaleInvoiceDetailList { get; set; }
+        public List<SaleInvoiceOtherChargeViewModel> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> SaleOrderSelectList { get; set; }
     }
@@ -103,14 +110,18 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid SaleInvID { get; set; }
-        public int OtherChargeCode { get; set; }
-        public decimal ChargeAmount { get; set; }
-        public int TaxTypeCode { get; set; }
+        public int? OtherChargeCode { get; set; }
+        public decimal? ChargeAmount { get; set; }
+        public int? TaxTypeCode { get; set; }
         public decimal CGSTPerc { get; set; }
         public decimal SGSTPerc { get; set; }
         public decimal IGSTPerc { get; set; }
-        public decimal AddlTaxPec { get; set; }
+        public decimal AddlTaxPerc { get; set; }
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        //Additional Fields
+        public bool IsUpdate { get; set; }
+        public OtherChargeViewModel OtherCharge { get; set; }
+        public TaxTypeViewModel TaxType { get; set; }
     }
 }

@@ -38,6 +38,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
 
         //additional Fields
         public string DetailXML { get; set; }
+        public string OtherChargeDetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         public string SaleInvDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
@@ -48,6 +49,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
+        public List<SaleInvoiceOtherCharge> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SaleInvoiceDetail> SaleInvoiceDetailList { get; set; }
     }
     public class SaleInvoiceAdvanceSearch
@@ -89,8 +91,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal CGSTPerc { get; set; }
         public decimal SGSTPerc { get; set; }
         public decimal IGSTPerc { get; set; }
-        public decimal AddlTaxPec { get; set; }
+        public decimal AddlTaxPerc { get; set; }
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public bool IsUpdate { get; set; }
+        public OtherCharge OtherCharge { get; set; }
+        public TaxType TaxType { get; set; }
     }
 }

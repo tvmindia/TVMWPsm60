@@ -117,6 +117,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotation.ApprovalStatus = new ApprovalStatus();
                                         quotation.ApprovalStatus.Code= (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : quotation.ApprovalStatus.Code);
                                         quotation.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? (sdr["ApprovalStatus"].ToString()) : quotation.ApprovalStatus.Description);
+                                        quotation.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse (sdr["EmailSentYN"].ToString()) : quotation.EmailSentYN);
                                     }
                                     quotationList.Add(quotation);
                                 }

@@ -107,11 +107,11 @@
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "", code = "POD" })
+                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "POD" })
                         </div>
                         @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
@@ -146,11 +146,11 @@
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
                         </div>
                         @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>

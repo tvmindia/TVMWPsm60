@@ -1,7 +1,8 @@
-﻿@model PilotSmithApp.UserInterface.Models.SaleOrderOtherChargeViewModel
+﻿
+@model PilotSmithApp.UserInterface.Models.SaleInvoiceOtherChargeViewModel
 @using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormOtherExpenseDetail" }))
 {
-    @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.SaleInvID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
@@ -97,27 +98,30 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
-        $('#divModelPopSaleOrder #TaxTypeCode').select2({
-            dropdownParent: $("#divModelPopSaleOrder")
+        $('#divModelPopSaleInvoice #TaxTypeCode').select2({
+            dropdownParent: $("#divModelPopSaleInvoice")
         });
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopSaleOrder .CalculateGST').change(function () {
+        $('#divModelPopSaleInvoice .CalculateGST').change(function () {
             debugger;
-            var ChargeAmount = parseFloat($('#divModelPopSaleOrder #ChargeAmount').val() != "" ? $('#divModelPopSaleOrder #ChargeAmount').val() : 0);
-            var CGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-            var SGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-            var IGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-            var AddlTaxPerc = parseFloat($('#divModelPopSaleOrder #AddlTaxPerc').val() != "" ? $('#divModelPopSaleOrder #AddlTaxPerc').val() : 0);
-            $('#divModelPopSaleOrder #hdnCGSTPerc').val(CGST);
-            $('#divModelPopSaleOrder #hdnSGSTPerc').val(SGST);
-            $('#divModelPopSaleOrder #hdnIGSTPerc').val(IGST);
-            $('#divModelPopSaleOrder #hdnAddlTaxPerc').val(AddlTaxPerc);
-            $('#divModelPopSaleOrder #CGSTPerc').val(ChargeAmount * CGST / 100);
-            $('#divModelPopSaleOrder #SGSTPerc').val(ChargeAmount * SGST / 100);
-            $('#divModelPopSaleOrder #IGSTPerc').val(ChargeAmount * IGST / 100);
-            var TaxAmount = parseFloat($('#divModelPopSaleOrder #CGSTPerc').val()) + parseFloat($('#divModelPopSaleOrder #SGSTPerc').val()) + parseFloat($('#divModelPopSaleOrder #IGSTPerc').val())
-            $('#divModelPopSaleOrder #AddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
-            $('#divModelPopSaleOrder #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+            var CGST = 0, SGST = 0, IGST = 0;
+            var ChargeAmount = parseFloat($('#divModelPopSaleInvoice #ChargeAmount').val() != "" ? $('#divModelPopSaleInvoice #ChargeAmount').val() : 0);
+            if ($('#divModelPopSaleInvoice #TaxTypeCode').val() != null) {
+                CGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                SGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                IGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+            }
+            var AddlTaxPerc = parseFloat($('#divModelPopSaleInvoice #AddlTaxPerc').val() != "" ? $('#divModelPopSaleInvoice #AddlTaxPerc').val() : 0);
+            $('#divModelPopSaleInvoice #hdnCGSTPerc').val(CGST);
+            $('#divModelPopSaleInvoice #hdnSGSTPerc').val(SGST);
+            $('#divModelPopSaleInvoice #hdnIGSTPerc').val(IGST);
+            $('#divModelPopSaleInvoice #hdnAddlTaxPerc').val(AddlTaxPerc);
+            $('#divModelPopSaleInvoice #CGSTPerc').val(ChargeAmount * CGST / 100);
+            $('#divModelPopSaleInvoice #SGSTPerc').val(ChargeAmount * SGST / 100);
+            $('#divModelPopSaleInvoice #IGSTPerc').val(ChargeAmount * IGST / 100);
+            var TaxAmount = parseFloat($('#divModelPopSaleInvoice #CGSTPerc').val()) + parseFloat($('#divModelPopSaleInvoice #SGSTPerc').val()) + parseFloat($('#divModelPopSaleInvoice #IGSTPerc').val())
+            $('#divModelPopSaleInvoice #AddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+            $('#divModelPopSaleInvoice #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
         });
     });
 </script>

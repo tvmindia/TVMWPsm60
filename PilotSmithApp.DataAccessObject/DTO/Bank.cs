@@ -14,6 +14,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? ActualODLimit { get; set; }
         public decimal? DisplayODLimit { get; set; }
         //additional fields
+        public string BankCode { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }

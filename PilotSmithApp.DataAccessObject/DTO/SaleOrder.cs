@@ -61,14 +61,39 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Branch Branch { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public ReferencePerson ReferencePerson { get; set; }
+        public Bank Bank { get; set; }
+        public string SaleOrderAmountWords { get; set; }
+        public string MailBodyFooter { get; set; }
+        public string MailFrom { get; set; }
+        public Area Area { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public Quotation Quotation { get; set; }
+        public Enquiry Enquiry { get; set; }
     }
 
     public class SaleOrderAdvanceSearch
     {
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public Area Area { get; set; }
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public int? AdvApprovalStatusCode { get; set; }
+        // public string AdvEmailSentStatus { get; set; }
+        public string AdvEmailSentStatus { get; set; }
     }
 
     public class SaleOrderDetail
@@ -95,6 +120,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ProductModel ProductModel { get; set; }
         public Unit Unit { get; set; }
         public TaxType TaxType { get; set; }
+        public decimal? PrevProduceQty { get; set; }
+        public decimal? PrevDelQty { get; set; }
+        public decimal? DelvQty { get; set; }
     }
     public class SaleOrderOtherCharge
     {

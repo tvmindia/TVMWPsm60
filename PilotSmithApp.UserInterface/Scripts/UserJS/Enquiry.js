@@ -13,17 +13,17 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
             EditEnquiry(this);
         });
-        debugger;
-        if ($('#RedirectToDocument').val() != "")
-        {           
-            EditRedirectFromDocument($('#RedirectToDocument').val());
-        }
+        //======================Disabled(Funcyion for redirection from email)
+        //if ($('#RedirectToDocument').val() != "")
+        //{           
+        //    EditRedirectFromDocument($('#RedirectToDocument').val());
+        //}
             
     }
     catch (e) {
         console.log(e.message);
     }
-    $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID").select2({
+    $("#AdvDocumentStatusCode").select2({
         dropdownParent: $(".divboxASearch")
     });
 
@@ -32,7 +32,7 @@ $(document).ready(function () {
 //function bind the Enquiry list checking search and filter
 function BindOrReloadEnquiryTable(action) {
     try {
-        debugger;
+        
         //creating advancesearch object
         EnquiryAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
@@ -109,28 +109,33 @@ function BindOrReloadEnquiryTable(action) {
                 data: { "EnquiryAdvanceSearchVM": EnquiryAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 6,
+            pageLength: 8,
             columns: [
                {
                    "data": "EnquiryNo", render: function (data, type, row) {
-                       return data + "<br/>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.EnquiryDateFormatted
+                       return (data == null ? " " : data) + "<br/>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + (row.EnquiryDateFormatted == null ? " " : row.EnquiryDateFormatted)
 
                    }, "defaultContent": "<i>-</i>"
                },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
-                       debugger;
-                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                      
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + (data == null ? " " : data);
 
                    }, "defaultContent": "<i>-</i>"
                },
-               { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "RequirementSpec", render: function (data, type, row) {
+                       return '<div style="width:100%;text-overflow: ellipsis;overflow: hidden; class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Requirement Specification" data-content="' + data + '</p>"/>' + (data == null ? " " : data.substring(0, 50)+(data.length>50?'...':''))//if (data.length > 30){var newdata = data.substring(0, 30);return newdata + ' <a style="color:rgba(94, 66, 209, 0.8);"> More.. ▼</a>';}else{return data ;}
+
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                {
                    "data": "DocumentStatus.Description", render: function (data, type, row) {
-                           return "<b>Doc.Status-</b>" + data +"</br>"+"<b>Branch-</b>" + row.Branch.Description;
+                       return "<b>Doc.Status-</b>" + (data == null ? " " : data) + "</br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEnquiry(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
@@ -144,6 +149,16 @@ function BindOrReloadEnquiryTable(action) {
                             { "targets": [7], "width": "2%" },
                         ],
             destroy: true,
+         
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 
@@ -164,7 +179,7 @@ function BindOrReloadEnquiryTable(action) {
                     $(".buttons-excel").trigger('click');
                     BindOrReloadEnquiryTable();
                 }
-            }
+            } 
         });
         $(".buttons-excel").hide();
     }
@@ -363,7 +378,7 @@ function BindEnquiryDetailList(id) {
                      return parseFloat(data)*parseFloat(row.Qty)
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True") ? '<a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
              ],
              columnDefs: [
                  { "targets": [1,4], "width": "10%" },
@@ -467,9 +482,11 @@ function AddEnquiryDetailToList() {
                     if (enquiryDetailList.length > 0) {
                         
                         var checkpoint = 0;
+                        var productSpec = $('#ProductSpec').val();
+                        productSpec = productSpec.replace(/\n/g, ' ');
                         for (var i = 0; i < enquiryDetailList.length; i++) {
                             if ((enquiryDetailList[i].ProductID == $('#ProductID').val()) && (enquiryDetailList[i].ProductModelID == $('#ProductModelID').val()
-                                && (enquiryDetailList[i].ProductSpec == $('#ProductSpec').val()))) {
+                                && (enquiryDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (enquiryDetailList[i].UnitCode == $('#UnitCode').val())))) {
                                 enquiryDetailList[i].Qty = parseFloat(enquiryDetailList[i].Qty)+parseFloat($('#Qty').val());
                                 checkpoint = 1;
                                 break;
@@ -670,31 +687,31 @@ function DeleteEnquiryFollowup(ID) {
         }
     }
 }
-
-
-function EditRedirectFromDocument(id)
-{
-    debugger;
-    OnServerCallBegin();
+//=====================Disabled functions===================================
+//==========================================================================
+//function EditRedirectFromDocument(id)
+//{
+    
+//    OnServerCallBegin();
    
-    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
-        if (statusTxt == "success") {
-            OnServerCallComplete();
-            openNav();
-            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
-            if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
-            }
-            else {
-                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
-            }
-            BindEnquiryDetailList(id);
-            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-            clearUploadControl();
-            PaintImages(id);
-        }
-        else {
-            console.log("Error: " + xhr.status + ": " + xhr.statusText);
-        }
-    });
-}
+//    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+//        if (statusTxt == "success") {
+//            OnServerCallComplete();
+//            openNav();
+//            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
+//            if ($('#IsDocLocked').val() == "True") {
+//                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
+//            }
+//            else {
+//                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+//            }
+//            BindEnquiryDetailList(id);
+//            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+//            clearUploadControl();
+//            PaintImages(id);
+//        }
+//        else {
+//            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+//        }
+//    });
+//}

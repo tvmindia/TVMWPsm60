@@ -52,8 +52,21 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = productionOrderAdvanceSearch.DataTablePaging.Length;
-                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = productionOrderAdvanceSearch.FromDate;
-                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = productionOrderAdvanceSearch.ToDate;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = productionOrderAdvanceSearch.AdvFromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = productionOrderAdvanceSearch.AdvToDate;
+                        if (productionOrderAdvanceSearch.AdvCustomerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@CustomerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = productionOrderAdvanceSearch.AdvCustomerID;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvBranchCode;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvDocumentStatusCode;
+                        if (productionOrderAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = productionOrderAdvanceSearch.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@ApprovalStatusCode", SqlDbType.Int).Value = productionOrderAdvanceSearch.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.NVarChar).Value = productionOrderAdvanceSearch.AdvEmailSentStatus;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -86,6 +99,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionOrder.BranchCode);
                                         productionOrder.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionOrder.FilteredCount);
                                         productionOrder.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : productionOrder.FilteredCount);
+                                        productionOrder.Area = new Area();
+                                        productionOrder.Area.Description= (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : productionOrder.Area.Description);
+                                        productionOrder.ApprovalStatus = new ApprovalStatus();
+                                        productionOrder.ApprovalStatus.Description= (sdr["ApprovalStatus"].ToString() != "" ? sdr["ApprovalStatus"].ToString() : productionOrder.ApprovalStatus.Description);
+                                        productionOrder.PSAUser = new PSAUser();
+                                        productionOrder.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : productionOrder.PSAUser.LoginName);
+                                        productionOrder.EmailSentYN= (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionOrder.EmailSentYN);
                                     }
                                     productionOrderList.Add(productionOrder);
                                 }
@@ -153,6 +173,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionOrder.LatestApprovalStatus);
                                     productionOrder.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : productionOrder.LatestApprovalStatusDescription);
                                     productionOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : productionOrder.IsFinalApproved);
+                                    string mailFrom = (sdr["MailFromAddress"].ToString() != "" ? sdr["MailFromAddress"].ToString() : productionOrder.MailFrom);
+                                    productionOrder.MailFrom = mailFrom.Replace("\n", "<br />");
                                 }
                         }
                     }
@@ -237,6 +259,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.MileStone4AcTFinishDtFormatted = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4AcTFinishDtFormatted==null?"": productionOrderDetail.MileStone4AcTFinishDtFormatted);
                                         productionOrderDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : Guid.Empty);
                                         productionOrderDetail.PrevProducedQty = (sdr["PrevProduceQty"].ToString() != "" ? decimal.Parse(sdr["PrevProduceQty"].ToString()) : productionOrderDetail.PrevProducedQty);
+                                        productionOrderDetail.PrevDelQty = (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : productionOrderDetail.PrevDelQty);
+                                        productionOrderDetail.DelvQty= (sdr["DelvQty"].ToString() != "" ? decimal.Parse(sdr["DelvQty"].ToString()) : productionOrderDetail.DelvQty);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
                                 }

@@ -142,6 +142,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Area SelectList
 
+        #region Get Area SelectList On Demand
+        [HttpPost]
+        public ActionResult GetAreaForSelectListOnDemand(string searchTerm)
+        {
+            List<SelectListItem> areaSelectList = _areaBusiness.GetAreaForSelectList();
+            var list = areaSelectList != null ? (from SelectListItem in areaSelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                     select new Select2Model
+                                                     {
+                                                         text = SelectListItem.Text,
+                                                         id = SelectListItem.Value,
+                                                     }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get Area SelectList On Demand
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]

@@ -36,6 +36,18 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
+
+
+        #region SaleInvoice Other Charge Detail 
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public ActionResult SaleInvoiceOtherChargeDetail()
+        {
+            SaleInvoiceOtherChargeViewModel saleInvocieOtherChargeVM = new SaleInvoiceOtherChargeViewModel();
+            saleInvocieOtherChargeVM.IsUpdate = false;
+            return PartialView("_SaleInvoiceOtherCharge", saleInvocieOtherChargeVM);
+        }
+        #endregion SaleInvoice Other Charge Detail 
+
         #region SaleInvoice Form
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
         public ActionResult SaleInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID)
@@ -46,7 +58,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (id != Guid.Empty)
                 {
                     saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(id));
-                    saleInvoiceVM.IsUpdate = true;
+                    saleInvoiceVM.IsUpdate = true;  
+                    //if (saleInvoiceVM.QuoteID != Guid.Empty)
+                    //{
+                    saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
+                    //}
+                    //else
+                    //{
+                        saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
+                   // }
                 }
                 else if (id == Guid.Empty && quotationID != null)
                 {
@@ -108,6 +128,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_SaleInvoiceForm", saleInvoiceVM);
         }
         #endregion SaleInvoice Form
+
         #region SaleInvoice Detail Add
         public ActionResult AddSaleInvoiceDetail()
         {
@@ -116,6 +137,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_AddSaleInvoiceDetail", saleInvoiceDetailVM);
         }
         #endregion SaleInvoice Detail Add
+
         #region Get SaleInvoice DetailList By SaleInvoiceID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -274,7 +296,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       {
                                                           ID = (Guid)quotationDetailVM.ProductModelID,
                                                           Name = quotationDetailVM.ProductModel.Name
-                                                      },
+                                                      }, 
                                                       Unit = new UnitViewModel()
                                                       {
                                                           Description = quotationDetailVM.Unit.Description
@@ -282,7 +304,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       TaxType = new TaxTypeViewModel()
                                                       {
                                                           //Code=(int)quotationDetailVM.TaxTypeCode,
-                                                          Description = quotationDetailVM.TaxType.Description
+                                                          Description = quotationDetailVM.TaxType.Description,
+                                                          ValueText = quotationDetailVM.TaxType.ValueText
                                                       },
                                                   }).ToList();
                 }
@@ -336,6 +359,135 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get Quotation OtherChargeList By QuotationID
 
+        #region Get SaleInvoice OtherChargeList By SaleInvoiceID
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(Guid saleInvoiceID)
+        {
+            try
+            {
+                List<SaleInvoiceOtherChargeViewModel> saleOrderOtherChargeViewModelList = new List<SaleInvoiceOtherChargeViewModel>();
+                if (saleInvoiceID == Guid.Empty)
+                {
+                    SaleInvoiceOtherChargeViewModel saleOrderOtherChargeVM = new SaleInvoiceOtherChargeViewModel()
+                    {
+                        ID = Guid.Empty,
+                        SaleInvID = Guid.Empty,
+                        ChargeAmount = 0,
+                        OtherCharge = new OtherChargeViewModel()
+                        {
+                            Description = "",
+                        },
+                        TaxType = new TaxTypeViewModel()
+                        {
+                            ValueText = "",
+                        }
+                    };
+                    saleOrderOtherChargeViewModelList.Add(saleOrderOtherChargeVM);
+                }
+                else
+                {
+                    saleOrderOtherChargeViewModelList = Mapper.Map<List<SaleInvoiceOtherCharge>, List<SaleInvoiceOtherChargeViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(saleInvoiceID));
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleOrder OtherChargeList By SaleOrderID
+
+        #region Get SaleInvoice OtherCharge DetailList By QuotationID From Quotation
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetSaleInvoiceOtherChargesDetailListByQuotationIDFromQuotation(Guid quoteID)
+        {
+            try
+            {
+                List<SaleInvoiceOtherChargeViewModel> saleInvoiceOtherChargeViewModelList = new List<SaleInvoiceOtherChargeViewModel>();
+                if (quoteID != Guid.Empty)
+                {
+                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID));
+                    saleInvoiceOtherChargeViewModelList = (from quotationOtherChargeVM in quotationOtherChargeVMList
+                                                         select new SaleInvoiceOtherChargeViewModel
+                                                         {
+                                                             ID = Guid.Empty,
+                                                             SaleInvID = Guid.Empty,
+                                                             OtherChargeCode = quotationOtherChargeVM.OtherChargeCode,
+                                                             ChargeAmount = quotationOtherChargeVM.ChargeAmount,
+                                                             TaxTypeCode = quotationOtherChargeVM.TaxTypeCode,
+                                                             CGSTPerc = quotationOtherChargeVM.CGSTPerc,
+                                                             SGSTPerc = quotationOtherChargeVM.SGSTPerc,
+                                                             IGSTPerc = quotationOtherChargeVM.IGSTPerc,
+                                                             AddlTaxPerc = 0,
+                                                             AddlTaxAmt = 0,
+                                                             OtherCharge = new OtherChargeViewModel()
+                                                             {
+                                                                 Description = quotationOtherChargeVM.OtherCharge.Description
+                                                             },
+                                                             TaxType = new TaxTypeViewModel()
+                                                             {
+                                                                 Code = quotationOtherChargeVM.TaxType.Code,
+                                                                 ValueText = quotationOtherChargeVM.TaxType.ValueText
+                                                             },
+                                                         }).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleOrder DetailList By SaleOrderID with Quotation
+
+        #region Get SaleInvoice OtherCharge DetailList By SaleOrderID From SaleOrder
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetSaleInvoiceOtherChargesDetailListBySaleOrderIDFromSaleOrder(Guid saleOrderID)
+        {
+            try
+            {
+                List<SaleInvoiceOtherChargeViewModel> saleInvoiceOtherChargeViewModelList = new List<SaleInvoiceOtherChargeViewModel>();
+                if (saleOrderID != Guid.Empty)
+                {
+                    List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeVMList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID));
+                    saleInvoiceOtherChargeViewModelList = (from quotationOtherChargeVM in saleOrderOtherChargeVMList
+                                                           select new SaleInvoiceOtherChargeViewModel
+                                                           {
+                                                               ID = Guid.Empty,
+                                                               SaleInvID = Guid.Empty,
+                                                               OtherChargeCode = quotationOtherChargeVM.OtherChargeCode,
+                                                               ChargeAmount = quotationOtherChargeVM.ChargeAmount,
+                                                               TaxTypeCode = quotationOtherChargeVM.TaxTypeCode,
+                                                               CGSTPerc = quotationOtherChargeVM.CGSTPerc,
+                                                               SGSTPerc = quotationOtherChargeVM.SGSTPerc,
+                                                               IGSTPerc = quotationOtherChargeVM.IGSTPerc,
+                                                               AddlTaxPerc = 0,
+                                                               AddlTaxAmt = 0,
+                                                               OtherCharge = new OtherChargeViewModel()
+                                                               {
+                                                                   Description = quotationOtherChargeVM.OtherCharge.Description
+                                                               },
+                                                               TaxType = new TaxTypeViewModel()
+                                                               {
+                                                                   Code = quotationOtherChargeVM.TaxType.Code,
+                                                                   ValueText = quotationOtherChargeVM.TaxType.ValueText
+                                                               },
+                                                           }).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleOrder DetailList By SaleOrderID with Quotation
 
         #region Delete SaleInvoice
         [HttpGet]
@@ -423,15 +575,21 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
+                object ResultFromJS;
+                string ReadableFormat;
                 AppUA appUA = Session["AppUA"] as AppUA;
                 saleInvoiceVM.PSASysCommon = new PSASysCommonViewModel();
                 saleInvoiceVM.PSASysCommon.CreatedBy = appUA.UserName;
                 saleInvoiceVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
                 saleInvoiceVM.PSASysCommon.UpdatedBy = appUA.UserName;
                 saleInvoiceVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
-                object ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
-                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceDetailViewModel>>(ReadableFormat);
+                ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.OtherChargesDetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                saleInvoiceVM.SaleInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceOtherChargeViewModel>>(ReadableFormat);
+
                 object result = _saleInvoiceBusiness.InsertUpdateSaleInvoice(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
 
                 if (saleInvoiceVM.ID == Guid.Empty)
