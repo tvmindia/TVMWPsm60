@@ -78,9 +78,9 @@ namespace PilotSmithApp.UserInterface.Models
     public class ProductionOrderAdvanceSearchViewModel
     {
         public string SearchTerm { get; set; }
-        [Display(Name ="From Date")]
+        [Display(Name ="Production Order From")]
         public string FromDate { get; set; }
-        [Display(Name ="To Date")]
+        [Display(Name = "Production Order To")]
         public string ToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Customer")]

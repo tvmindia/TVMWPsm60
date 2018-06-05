@@ -41,6 +41,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DocumentStatus DocumentStatus { get; set;}
         public Plant Plant { get; set; }
         public Employee Employee { get; set; }
+        public Area Area { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public Branch Branch { get; set; }
+        public string ProdOrderNo { get; set; }
     }
     public class ProductionQCAdvanceSearch
     {
@@ -49,6 +54,21 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string FromDate { get; set; }
         public string ToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public Area Area { get; set; }
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public int? AdvApprovalStatusCode { get; set; }
+        public string AdvEmailSentStatus { get; set; }
+        public int? AdvPlantCode { get; set; }
+        public Plant Plant { get; set; }        
     }
     public class ProductionQCDetail 
     {

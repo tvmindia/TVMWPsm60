@@ -4,12 +4,13 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
 namespace PilotSmithApp.UserInterface.Controllers
 {
     public class ProductionQCController : Controller
@@ -18,16 +19,69 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IProductionQCBusiness _productionQCBusiness;
         IProductionOrderBusiness _productionOrderBusiness;
-        public ProductionQCController(IProductionQCBusiness productionQCBusiness, IProductionOrderBusiness productionOrderBusiness)
+        IAreaBusiness _areaBusiness;
+        IBranchBusiness _branchBusiness;
+        ICustomerBusiness _customerBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;
+        IApprovalStatusBusiness _approvalStatusBusiness;
+        IPlantBusiness _plantBusiness;
+        private IUserBusiness _userBusiness;
+
+        public ProductionQCController(IProductionQCBusiness productionQCBusiness, 
+          IProductionOrderBusiness productionOrderBusiness,
+          IAreaBusiness areaBusiness,
+          IBranchBusiness branchBusiness,
+          ICustomerBusiness customerBusiness,
+          IDocumentStatusBusiness documentStatusBusiness,
+          IApprovalStatusBusiness approvalStatusBusiness,
+          IPlantBusiness plantBusiness,
+          IUserBusiness userBusiness)
         {
             _productionQCBusiness = productionQCBusiness;
             _productionOrderBusiness = productionOrderBusiness;
+            _areaBusiness = areaBusiness;
+            _branchBusiness = branchBusiness;
+            _customerBusiness = customerBusiness;
+            _documentStatusBusiness = documentStatusBusiness;
+            _plantBusiness = plantBusiness;
+            _approvalStatusBusiness = approvalStatusBusiness;
+            _userBusiness = userBusiness;
         }
         // GET: ProductionQ
         [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
         public ActionResult Index()
         {
             ProductionQCAdvanceSearchViewModel productionQCVM = new ProductionQCAdvanceSearchViewModel();
+
+            productionQCVM.Area = new AreaViewModel();
+            productionQCVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            productionQCVM.Customer = new CustomerViewModel();
+            productionQCVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
+            productionQCVM.Plant = new PlantViewModel();
+            productionQCVM.Plant.PlantSelectList = _plantBusiness.GetPlantForSelectList();
+            productionQCVM.Branch = new BranchViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            productionQCVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
+            productionQCVM.DocumentStatus = new DocumentStatusViewModel();
+            productionQCVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("PQC");
+            productionQCVM.ApprovalStatus = new ApprovalStatusViewModel();
+            productionQCVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
+            productionQCVM.PSAUser = new PSAUserViewModel();
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+
+            if (PSAUserVMList != null)
+                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
+                {
+                    selectListItem.Add(new SelectListItem
+                    {
+                        Text = PSAuVM.UserName,
+                        Value = PSAuVM.ID.ToString(),
+                        Selected = false
+                    });
+                }
+            productionQCVM.PSAUser.UserSelectList = selectListItem;
+
             return View(productionQCVM);
         }
         #region ProductionQC Form

@@ -54,6 +54,20 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = productionQCAdvanceSearch.DataTablePaging.Length;
                         cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = productionQCAdvanceSearch.FromDate;
                         cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = productionQCAdvanceSearch.ToDate;
+                        if (productionQCAdvanceSearch.AdvCustomerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@CustomerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = productionQCAdvanceSearch.AdvCustomerID;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = productionQCAdvanceSearch.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = productionQCAdvanceSearch.AdvBranchCode;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionQCAdvanceSearch.AdvDocumentStatusCode;
+                        if (productionQCAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = productionQCAdvanceSearch.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@ApprovalStatusCode", SqlDbType.Int).Value = productionQCAdvanceSearch.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.NVarChar).Value = productionQCAdvanceSearch.AdvEmailSentStatus;
+                        cmd.Parameters.Add("@PlantCode", SqlDbType.Int).Value = productionQCAdvanceSearch.AdvPlantCode;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -69,6 +83,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQC.ProdQCDate = (sdr["ProdQCDate"].ToString() != "" ? DateTime.Parse(sdr["ProdQCDate"].ToString()) : productionQC.ProdQCDate);
                                         productionQC.ProdQCDateFormatted = (sdr["ProdQCDate"].ToString() != "" ? DateTime.Parse(sdr["ProdQCDate"].ToString()).ToString(_settings.DateFormat) : productionQC.ProdQCDateFormatted);
                                         productionQC.ProdOrderID= (sdr["ProdOrderID"].ToString() != "" ? Guid.Parse(sdr["ProdOrderID"].ToString()) : productionQC.ProdOrderID);
+                                        productionQC.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionQC.ProdOrderNo);
+
                                         productionQC.PlantCode= (sdr["PlantCode"].ToString() != "" ? int.Parse(sdr["PlantCode"].ToString()) : productionQC.PlantCode);
                                         productionQC.Plant = new Plant();
                                         productionQC.Plant.Code= (sdr["PlantCode"].ToString() != "" ? int.Parse(sdr["PlantCode"].ToString()) : productionQC.Plant.Code);
@@ -90,9 +106,18 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQC.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionQC.GeneralNotes);
                                         productionQC.LatestApprovalStatus= (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionQC.LatestApprovalStatus);
                                         productionQC.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : productionQC.DocumentOwnerID);
-                                        productionQC.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionQC.BranchCode);
+                                        productionQC.Branch = new Branch();
+                                        productionQC.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : productionQC.Branch.Description);
+                                        productionQC.Branch.Code = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) :  productionQC.Branch.Code );
                                         productionQC.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionQC.FilteredCount);
                                         productionQC.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : productionQC.FilteredCount);
+                                        productionQC.ApprovalStatus = new ApprovalStatus();
+                                        productionQC.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? sdr["ApprovalStatus"].ToString() : productionQC.ApprovalStatus.Description);
+                                        productionQC.PSAUser = new PSAUser();
+                                        productionQC.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : productionQC.PSAUser.LoginName);
+                                        productionQC.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionQC.EmailSentYN);
+                                        productionQC.Area = new Area();
+                                        productionQC.Area.Description = (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : productionQC.Area.Description);
                                     }
                                     productionQCList.Add(productionQC);
                                 }

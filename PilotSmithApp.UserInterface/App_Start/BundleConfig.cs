@@ -59,6 +59,7 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/Roles").Include("~/Scripts/UserJS/Roles.js"));
             //------------------------------------
             //---------------------------------------
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/AdvanceSelectList").Include("~/Scripts/UserJS/AdvanceSelectList.js"));
             bundles.Add(new ScriptBundle("~/bundles/CustomerJS/Customer").Include("~/Scripts/UserJS/CustomerJS/Customer.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/ProductCategory").Include("~/Scripts/UserJS/ProductCategory.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/ProductSpecification").Include("~/Scripts/UserJS/ProductSpecification.js"));
