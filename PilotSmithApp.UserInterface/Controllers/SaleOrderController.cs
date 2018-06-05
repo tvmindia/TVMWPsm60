@@ -118,6 +118,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
+                saleOrderVM.IsDocLocked = false;
             }
             else if (id == Guid.Empty && enquiryID != null)
             {
@@ -134,6 +135,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
+                saleOrderVM.IsDocLocked = false;
             }
             else
             {
@@ -147,6 +149,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
+                saleOrderVM.IsDocLocked = false;
             }
             return PartialView("_SaleOrderForm", saleOrderVM);
         }

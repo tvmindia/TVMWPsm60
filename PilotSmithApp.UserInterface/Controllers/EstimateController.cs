@@ -89,6 +89,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "OPEN";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    estimateVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {
@@ -103,6 +104,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "OPEN";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    estimateVM.IsDocLocked = false;
                 }
                 
             }

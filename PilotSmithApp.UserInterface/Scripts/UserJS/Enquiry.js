@@ -363,7 +363,7 @@ function BindEnquiryDetailList(id) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      
-                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +row.Product.Name + "<br/>" + row.ProductModel.Name
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -378,7 +378,7 @@ function BindEnquiryDetailList(id) {
                      return parseFloat(data)*parseFloat(row.Qty)
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True") ? '<a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
              ],
              columnDefs: [
                  { "targets": [1,4], "width": "10%" },
@@ -391,8 +391,7 @@ function BindEnquiryDetailList(id) {
          });
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover',
-        'placement': 'top'
+        'trigger': 'hover'
     });
 }
 function GetEnquiryDetailListByEnquiryID(id) {
@@ -527,7 +526,6 @@ function AddEnquiryDetailToList() {
         $('[data-toggle="popover"]').popover({
             html: true,
             'trigger': 'hover',
-            'placement': 'top'
         });
 }
 function EditEnquiryDetail(this_Obj)

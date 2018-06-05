@@ -105,13 +105,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionQCVM.IsUpdate = false;
                     productionQCVM.ID = Guid.Empty;
                     productionQCVM.ProdOrderID = null;
-                    productionQCVM.DocumentStatusCode = 9;
                     productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
                     productionQCVM.DocumentStatus = new DocumentStatusViewModel()
                     {
                         Description="OPEN",
                     };
-                    
+                    productionQCVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && productionOrderID != null)
                 {
@@ -119,7 +118,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionQCVM = new ProductionQCViewModel();
                     productionQCVM.IsUpdate = false;
                     productionQCVM.ID = Guid.Empty;
-                    productionQCVM.DocumentStatusCode = 9;
                     productionQCVM.ProdOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(productionOrderID);
                     productionQCVM.ProdOrderID = productionOrderID;
                     productionQCVM.CustomerID = productioOrderVM.CustomerID;
@@ -127,6 +125,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description = "OPEN",
                     };
+                    productionQCVM.IsDocLocked = false;
                 }
             }
             catch (Exception ex)
