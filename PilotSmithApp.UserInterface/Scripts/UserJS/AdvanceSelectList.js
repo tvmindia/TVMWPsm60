@@ -33,6 +33,7 @@ $(document).ready(function () {
     $('.select2').addClass('form-control newinput');
 });
 
+// Customer SelectList //
 function BindCustomerSelectList() {
     $('#AdvCustomerID').select2({
         ajax: {
@@ -53,7 +54,7 @@ function BindCustomerSelectList() {
         }
     });
 }
-
+// Area SelectList //
 function BindAreaSelectList() {
     $('#AdvAreaCode').select2({
         ajax: {
@@ -74,7 +75,7 @@ function BindAreaSelectList() {
         }
     });
 }
-
+// Reference Person SelectList //
 function BindReferenceSelectList() {
     $('#AdvReferencePersonCode').select2({
         ajax: {
@@ -95,7 +96,7 @@ function BindReferenceSelectList() {
         }
     });
 }
-
+// Branch SelectList //
 function BindBranchSelectList() {
     $('#AdvBranchCode').select2({
         ajax: {
@@ -116,7 +117,7 @@ function BindBranchSelectList() {
         }
     });
 }
-
+// DocumentOwner SelectList //
 function BindDocumentOwnerSelectList() {
     $('#AdvDocumentOwnerID').select2({
         ajax: {
