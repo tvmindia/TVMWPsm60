@@ -40,18 +40,18 @@
             <div class="form-group col-md-12">
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.FromDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvFromDate, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                        @Html.EditorFor(model => model.AdvFromDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
                     </div>
                 </div>
                 <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.ToDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvToDate, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                        @Html.EditorFor(model => model.AdvToDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
                     </div>
                 </div>
 
@@ -147,7 +147,7 @@
             <table id="tblProductionQC" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;display:none;">
                 <thead>
                     <tr class="text-center TableHead">                     
-                        <th>QC Reference No.</th> 
+                        <th>QC No</th> 
                         <th>Prod.Order No</th>                      
                         <th>Customer</th>
                         <th>Area</th>

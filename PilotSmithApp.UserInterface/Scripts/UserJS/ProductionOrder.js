@@ -41,9 +41,9 @@ function BindOrReloadProductionOrderTable(action) {
         //switch case to check the operation
         switch (action) {
             case 'Reset':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#SearchTerm').val('');               
+                $('.divboxASearch #AdvFromDate').val('').trigger('change');
+                $('.divboxASearch #AdvToDate').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerID').val('').trigger('change');              
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
@@ -53,9 +53,9 @@ function BindOrReloadProductionOrderTable(action) {
                 $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
-                $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('#SearchTerm').val('');               
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('');
                 $('.divboxASearch #AdvCustomerID').val('');               
                 $('.divboxASearch #AdvBranchCode').val('');
@@ -65,7 +65,7 @@ function BindOrReloadProductionOrderTable(action) {
                 $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "")  && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -76,9 +76,9 @@ function BindOrReloadProductionOrderTable(action) {
                 break;
         }
         ProductionOrderAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        ProductionOrderAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        ProductionOrderAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        ProductionOrderAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        ProductionOrderAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();        
+        ProductionOrderAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
+        ProductionOrderAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
         ProductionOrderAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
         ProductionOrderAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();       
         ProductionOrderAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
@@ -113,7 +113,7 @@ function BindOrReloadProductionOrderTable(action) {
                 data: { "ProductionOrderAdvanceSearchVM": ProductionOrderAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [   
                 {
                     "data": "ProdOrderNo", render: function (data, type, row) {

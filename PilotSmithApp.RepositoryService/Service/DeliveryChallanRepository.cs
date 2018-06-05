@@ -49,8 +49,21 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = deliveryChallanAdvanceSearch.DataTablePaging.Length;
-                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = deliveryChallanAdvanceSearch.FromDate;
-                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = deliveryChallanAdvanceSearch.ToDate;
+                        cmd.Parameters.Add("@FromDate", SqlDbType.DateTime).Value = deliveryChallanAdvanceSearch.AdvFromDate;
+                        cmd.Parameters.Add("@Todate", SqlDbType.DateTime).Value = deliveryChallanAdvanceSearch.AdvToDate;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = deliveryChallanAdvanceSearch.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = deliveryChallanAdvanceSearch.AdvBranchCode;
+                        if (deliveryChallanAdvanceSearch.AdvCustomerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@CustomerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = deliveryChallanAdvanceSearch.AdvCustomerID;
+                        if (deliveryChallanAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
+                            cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = deliveryChallanAdvanceSearch.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@ApprovalStatusCode", SqlDbType.Int).Value = deliveryChallanAdvanceSearch.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.NVarChar).Value = deliveryChallanAdvanceSearch.AdvEmailSentStatus;
+                        cmd.Parameters.Add("@PlantCode", SqlDbType.Int).Value = deliveryChallanAdvanceSearch.AdvPlantCode;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -74,6 +87,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallan.ProductionOrder.ProdOrderNo= (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : deliveryChallan.ProductionOrder.ProdOrderNo);
                                         deliveryChallan.Customer = new Customer();
                                         deliveryChallan.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : deliveryChallan.Customer.CompanyName);
+                                        deliveryChallan.Customer.ContactPerson= (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : deliveryChallan.Customer.ContactPerson);
+
                                         deliveryChallan.Plant = new Plant();
                                         deliveryChallan.Plant.Description = (sdr["Plant"].ToString() != "" ? sdr["Plant"].ToString() : deliveryChallan.Plant.Description);
                                         deliveryChallan.Employee = new Employee();
@@ -82,6 +97,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         deliveryChallan.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : deliveryChallan.Branch.Description);
                                         deliveryChallan.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : deliveryChallan.FilteredCount);
                                         deliveryChallan.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : deliveryChallan.FilteredCount);
+                                        deliveryChallan.ApprovalStatus = new ApprovalStatus();
+                                        deliveryChallan.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? sdr["ApprovalStatus"].ToString() : deliveryChallan.ApprovalStatus.Description);
+                                        deliveryChallan.PSAUser = new PSAUser();
+                                        deliveryChallan.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : deliveryChallan.PSAUser.LoginName);
+                                        deliveryChallan.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : deliveryChallan.EmailSentYN);
+                                        deliveryChallan.Area = new Area();
+                                        deliveryChallan.Area.Description = (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : deliveryChallan.Area.Description);
                                     }
                                     deliveryChallanList.Add(deliveryChallan);
                                 }
