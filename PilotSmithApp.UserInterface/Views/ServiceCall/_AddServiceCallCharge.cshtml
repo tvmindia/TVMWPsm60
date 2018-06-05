@@ -110,6 +110,8 @@
                     var ChargeAmount = parseFloat($('#ChargeAmount').val());
                     var TaxAmount = ChargeAmount * TaxPercentage / 100;
                     $('#AddlTaxAmt').val(TaxAmount);
+                } else {
+                    $('#AddlTaxAmt').val(0);
                 }
             });
         }

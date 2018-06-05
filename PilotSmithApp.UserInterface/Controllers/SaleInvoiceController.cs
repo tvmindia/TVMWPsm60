@@ -575,15 +575,21 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
+                object ResultFromJS;
+                string ReadableFormat;
                 AppUA appUA = Session["AppUA"] as AppUA;
                 saleInvoiceVM.PSASysCommon = new PSASysCommonViewModel();
                 saleInvoiceVM.PSASysCommon.CreatedBy = appUA.UserName;
                 saleInvoiceVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
                 saleInvoiceVM.PSASysCommon.UpdatedBy = appUA.UserName;
                 saleInvoiceVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
-                object ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
-                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceDetailViewModel>>(ReadableFormat);
+                ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.OtherChargesDetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                saleInvoiceVM.SaleInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceOtherChargeViewModel>>(ReadableFormat);
+
                 object result = _saleInvoiceBusiness.InsertUpdateSaleInvoice(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
 
                 if (saleInvoiceVM.ID == Guid.Empty)

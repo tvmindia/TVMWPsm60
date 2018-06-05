@@ -50,6 +50,7 @@ namespace PilotSmithApp.UserInterface.Models
         //additional Fields
         public string DocumentType { get; set; }
         public string DetailJSON { get; set; }
+        public string OtherChargesDetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
         [Display(Name = "Invoice Date")]
 
@@ -67,6 +68,7 @@ namespace PilotSmithApp.UserInterface.Models
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<SaleInvoiceDetailViewModel> SaleInvoiceDetailList { get; set; }
+        public List<SaleInvoiceOtherChargeViewModel> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> SaleOrderSelectList { get; set; }
     }
@@ -109,6 +111,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid ID { get; set; }
         public Guid SaleInvID { get; set; }
         public int? OtherChargeCode { get; set; }
+        [Required(ErrorMessage = "Charge Amount is missing")]
         public decimal? ChargeAmount { get; set; }
         public int? TaxTypeCode { get; set; }
         public decimal CGSTPerc { get; set; }

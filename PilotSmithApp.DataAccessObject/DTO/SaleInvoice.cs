@@ -38,6 +38,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
 
         //additional Fields
         public string DetailXML { get; set; }
+        public string OtherChargeDetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         public string SaleInvDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
@@ -48,6 +49,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
+        public List<SaleInvoiceOtherCharge> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SaleInvoiceDetail> SaleInvoiceDetailList { get; set; }
     }
     public class SaleInvoiceAdvanceSearch

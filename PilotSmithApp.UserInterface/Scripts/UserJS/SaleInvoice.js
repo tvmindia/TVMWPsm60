@@ -195,7 +195,9 @@ function ResetSaleInvoice() {
 function SaveSaleInvoice() {
     debugger;
     var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data().toArray();
+    var saleInvoiceOtherChargesDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(saleInvoiceDetailList));
+    $('#OtherChargesDetailJSON').val(JSON.stringify(saleInvoiceOtherChargesDetailList));
     $('#btnInsertUpdateSaleInvoice').trigger('click');
 }
 function ApplyFilterThenSearch() {
@@ -307,9 +309,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
-                         '<b>Code</b> : ' + data +
-                         '</br><b>Name</b> : ' + row.Product.Name +
-                         '</br><b>Model</b> : ' + row.ProductModel.Name
+                         row.Product.Name +'</br>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              {

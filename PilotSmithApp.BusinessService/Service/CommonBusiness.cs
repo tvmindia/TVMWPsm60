@@ -433,6 +433,65 @@ namespace PilotSmithApp.BusinessService.Service
             }
 
         }
+
+        public string GetXMLfromServiceCallObject(List<ServiceCallDetail> serviceCallDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(serviceCallDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in serviceCallDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+                }
+                result = result + "</Details>";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public string GetXMLfromServiceCallChargeObject(List<ServiceCallCharge> serviceCallChargeList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(serviceCallChargeList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in serviceCallChargeList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+                }
+                result = result + "</Details>";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         //Send Message
         #region messageSending
         public string SendMessage(string message, string MobileNo, string provider, string type)
@@ -443,6 +502,40 @@ namespace PilotSmithApp.BusinessService.Service
         public bool CheckDocumentIsDeletable(string docType, Guid? id)
         {
             return _commonRepository.CheckDocumentIsDeletable(docType, id);
+        }
+
+        public string GetXMLfromSaleInvoiceOtherChargeObject(List<SaleInvoiceOtherCharge> saleInvoiceOtherChargeDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(saleInvoiceOtherChargeDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in saleInvoiceOtherChargeDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
         }
     }
 }
