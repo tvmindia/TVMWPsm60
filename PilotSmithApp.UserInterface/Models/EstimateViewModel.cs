@@ -20,6 +20,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Customer")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Document Status")]
+        [Required(ErrorMessage = "Documentstatus is missing")]
         public int? DocumentStatusCode { get; set; }
         [Display(Name = "Valid upto")]
         public DateTime ValidUpToDate { get; set; }
@@ -30,6 +31,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
         [Display(Name = "Branch")]
+        [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode { get; set; }
 
         //Aditional Fields

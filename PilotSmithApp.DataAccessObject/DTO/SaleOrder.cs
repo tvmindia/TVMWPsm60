@@ -61,6 +61,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Branch Branch { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public ReferencePerson ReferencePerson { get; set; }
+        public Bank Bank { get; set; }
+        public string SaleOrderAmountWords { get; set; }
+        public string MailBodyFooter { get; set; }
+        public string MailFrom { get; set; }
+
     }
 
     public class SaleOrderAdvanceSearch
@@ -97,6 +102,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public TaxType TaxType { get; set; }
         public decimal? PrevProduceQty { get; set; }
         public decimal? PrevDelQty { get; set; }
+        public decimal? DelvQty { get; set; }
     }
     public class SaleOrderOtherCharge
     {

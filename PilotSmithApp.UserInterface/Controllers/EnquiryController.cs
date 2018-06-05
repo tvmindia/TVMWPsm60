@@ -107,6 +107,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.ID = Guid.Empty;
                     enquiryVM.DocumentStatus = new DocumentStatusViewModel();
                     enquiryVM.DocumentStatus.Description = "OPEN";
+                    enquiryVM.Branch = new BranchViewModel();
+                    enquiryVM.Branch.Description = "-";
                     enquiryVM.Customer = new CustomerViewModel
                     {
                         Titles = new TitlesViewModel()

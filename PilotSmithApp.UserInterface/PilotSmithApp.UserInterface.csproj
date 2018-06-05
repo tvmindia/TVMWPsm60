@@ -997,6 +997,8 @@
     <Content Include="Views\Carrier\_CarrierSelectList.cshtml" />
     <Content Include="Views\SaleOrder\_EmailSaleOrder.cshtml" />
     <Content Include="Views\ServiceCall\_AddServiceCallCharge.cshtml" />
+    <Content Include="Views\Bank\_BankSelectList.cshtml" />
+    <Content Include="Views\SaleInvoice\_SaleInvoiceOtherCharge.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1009,7 +1011,6 @@
     <Folder Include="Content\ProductImages\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\ApprovalStatus\" />
-    <Folder Include="Views\Bank\" />
     <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>
