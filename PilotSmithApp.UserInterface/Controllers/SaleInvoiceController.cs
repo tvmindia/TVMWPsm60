@@ -58,7 +58,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (id != Guid.Empty)
                 {
                     saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(id));
-                    saleInvoiceVM.IsUpdate = true;
+                    saleInvoiceVM.IsUpdate = true;  
+                    //if (saleInvoiceVM.QuoteID != Guid.Empty)
+                    //{
+                    saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
+                    //}
+                    //else
+                    //{
+                        saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
+                   // }
                 }
                 else if (id == Guid.Empty && quotationID != null)
                 {

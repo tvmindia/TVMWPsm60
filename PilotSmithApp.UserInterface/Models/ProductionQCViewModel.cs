@@ -94,7 +94,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
         [Display(Name = "Approval Status")]
         public int? AdvApprovalStatusCode { get; set; }
-        [Display(Name = "EmailSent(Y/N)")]
+        [Display(Name = "Email Sent (Y/N)")]
         public string AdvEmailSentStatus { get; set; }
         [Display(Name = "Supplier / Plant")]
         public int? AdvPlantCode { get; set; }

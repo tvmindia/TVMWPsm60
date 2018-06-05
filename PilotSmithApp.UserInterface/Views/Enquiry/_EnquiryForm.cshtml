@@ -42,7 +42,7 @@
                         <div class="divCustomerSelectList">
                             @if (Model.IsUpdate)
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required",disabled=true })
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
                             }
                             else
                             {
@@ -162,7 +162,7 @@
                                 {
                                     <div class="col-md-12 no-padding">
                                         <div class="col-md-2 no-padding">
-                                            <img src="~/Content/images/ownerlock.png" title="Document Locked"/>
+                                            <img src="~/Content/images/ownerlock.png" title="Document Locked" />
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
@@ -202,8 +202,16 @@
     </div>
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Enquiry Details<a class="btn btn-openid pull-right" onclick="AddEnquiryDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
-
+            @{
+                if (Model.IsDocLocked)
+                {
+                    <div class="col-md-12 headSeperator">Enquiry Details<a class="btn btn-openid pull-right" onclick="AddEnquiryDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
+                }
+                else
+                {
+                    <div class="col-md-12 headSeperator">Enquiry Details<a class="btn btn-openid pull-right" disabled onclick="AddEnquiryDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
+                }
+            }
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
             <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
                 <table id="tblEnquiryDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
@@ -248,7 +256,7 @@
             <input id="btnInsertUpdateEnquiry" type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
-}
+                }
 <script>
     $(document).ready(function () {
         try {
