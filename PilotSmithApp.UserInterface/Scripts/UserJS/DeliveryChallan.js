@@ -362,12 +362,23 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
              //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
             {
                 "data": "PrevDelQty", render: function (data, type, row) {
-                    return data + " " + row.Unit.Description
+                    if (row.PrevDelQty > 0)
+                    {
+                        return data + " " + row.Unit.Description
+                    }
+                    else {
+                        return 0 + " " + row.Unit.Description
+                    }
                 }, "defaultContent": "<i></i>"
             },
              {
                  "data": "DelvQty", render: function (data, type, row) {
-                     return data + " " + row.Unit.Description
+                     if (row.DelvQty > 0)
+                     {
+                         return data + " " + row.Unit.Description
+                     }
+                     else
+                         return 0 + " " + row.Unit.Description
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },

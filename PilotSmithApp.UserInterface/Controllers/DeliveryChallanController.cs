@@ -108,6 +108,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             deliveryChallanDetailVM.IsUpdate = false;
             deliveryChallanDetailVM.OrderQty = 0;
             deliveryChallanDetailVM.DelvQty = 0;
+            deliveryChallanDetailVM.PrevDelQty = 0;
             return PartialView("_AddDeliveryChallanDetail", deliveryChallanDetailVM);
         }
         #endregion DeliveryChallan Detail Add

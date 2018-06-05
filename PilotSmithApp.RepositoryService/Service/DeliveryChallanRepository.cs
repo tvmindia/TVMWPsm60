@@ -141,6 +141,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     deliveryChallan.DriverName = (sdr["DriverName"].ToString() != "" ? sdr["DriverName"].ToString() : deliveryChallan.DriverName);
                                     deliveryChallan.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? sdr["DocumentOwners"].ToString().Split(',') : deliveryChallan.DocumentOwners);
                                     deliveryChallan.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : deliveryChallan.DocumentOwner);
+                                    deliveryChallan.LatestApprovalIDv = (sdr["LatestApprovalIDv"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalIDv"].ToString()) : deliveryChallan.LatestApprovalIDv);
+                                    deliveryChallan.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : deliveryChallan.LatestApprovalStatus);
+                                    deliveryChallan.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : deliveryChallan.LatestApprovalStatusDescription);
                                 }
                         }
                     }
