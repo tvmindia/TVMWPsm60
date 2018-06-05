@@ -78,8 +78,8 @@ function BindOrReloadSaleInvoiceTable(action) {
             },
             pageLength: 13,
             columns: [
-               { "data": "SaleInvoiceNo", "defaultContent": "<i>-</i>" },
-               { "data": "SaleInvoiceDateFormatted", "defaultContent": "<i>-</i>" },
+               { "data": "SaleInvNo", "defaultContent": "<i>-</i>" },
+               { "data": "SaleInvDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
                { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
@@ -154,14 +154,15 @@ function AddSaleInvoice() {
 }
 
 function LoadCurrentPageDropdowns() {
-    $('#divAttendedByIDSelectList').load('/Employee/EmployeeSelectList')
+    $('#divAttendedByIDSelectList').load('/Employee/AttendedBySelectList')
     $('#divBranchSelectList').load('/Branch/BranchSelectList')
-    $('#divBranchSelectList').load('/Branch/BranchSelectList')
+   // $('#divBranchSelectList').load('/Branch/BranchSelectList')
     $('#divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV')
 }
 
 
 function EditSaleInvoice(this_Obj) {
+    debugger;
     OnServerCallBegin();
     var SaleInvoice = _dataTable.SaleInvoiceList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
@@ -169,6 +170,8 @@ function EditSaleInvoice(this_Obj) {
         //$('#CustomerID').trigger('change');
         ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
         BindSaleInvoiceDetailList(SaleInvoice.ID);
+        BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
+        CalculateTotal();
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
         PaintImages(SaleInvoice.ID);
@@ -188,6 +191,7 @@ function ResetSaleInvoice() {
     });
 }
 function SaveSaleInvoice() {
+    debugger;
     var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(saleInvoiceDetailList));
     $('#btnInsertUpdateSaleInvoice').trigger('click');
@@ -211,6 +215,8 @@ function SaveSuccessSaleInvoice(data, status) {
                 $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
                     BindSaleInvoiceDetailList(_result.ID);
+                    BindSaleInvoiceOtherChargesDetailList(_result.ID);
+                    CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());

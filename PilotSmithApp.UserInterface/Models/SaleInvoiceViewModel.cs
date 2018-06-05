@@ -32,6 +32,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string PurchaseOrdNo { get; set; }
         public DateTime? PurchaseOrdDate { get; set; }
         public int? BillSeriesCode { get; set; }
+        [Display(Name = "Email Sent")]
         public bool? EmailSentYN { get; set; }
         public Guid? LatestApprovalID { get; set; }
         public int? LatestApprovalStatus { get; set; }
@@ -42,6 +43,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string GeneralNotes { get; set; }
         [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
+        [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
         public decimal? Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
@@ -50,11 +52,14 @@ namespace PilotSmithApp.UserInterface.Models
         public string DetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
         [Display(Name = "Invoice Date")]
+
+        [Required(ErrorMessage = "Invoice Date is missing")]
         public string SaleInvDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
         [Display(Name = "Expected Delivery Date")]
+        [Required(ErrorMessage = "Expected Delivery Date is missing")]
         public string ExpectedDelvDateFormatted { get; set; }
         [Display(Name = "Purchase Order Date")]
         public string PurchaseOrdDateFormatted { get; set; }

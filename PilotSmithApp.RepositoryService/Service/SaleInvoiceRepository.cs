@@ -68,13 +68,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.SaleInvNo = (sdr["SaleInvNo"].ToString() != "" ? sdr["SaleInvNo"].ToString() : saleInvoice.SaleInvNo);
                                         saleInvoice.SaleInvRefNo = (sdr["SaleInvRefNo"].ToString() != "" ? sdr["SaleInvRefNo"].ToString() : saleInvoice.SaleInvRefNo);
                                         saleInvoice.SaleInvDate = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()) : saleInvoice.SaleInvDate);
-                                        saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDateFormatted"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDateFormatted"].ToString()).ToString(_settings.DateFormat) : saleInvoice.SaleInvDateFormatted);
+                                        saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString(_settings.DateFormat) : saleInvoice.SaleInvDateFormatted);
                                         saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
                                         saleInvoice.Customer = new Customer();
                                         saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.Customer.ID);
-                                        saleInvoice.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : saleInvoice.Customer.CompanyName);
-                                        saleInvoice.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : saleInvoice.Customer.ContactPerson);
-                                        saleInvoice.Customer.Mobile = (sdr["Mobile"].ToString() != "" ? sdr["Mobile"].ToString() : saleInvoice.Customer.Mobile);
+                                        saleInvoice.Customer.CompanyName = (sdr["CustomerCompanyName"].ToString() != "" ? sdr["CustomerCompanyName"].ToString() : saleInvoice.Customer.CompanyName);
+                                        saleInvoice.Customer.ContactPerson = (sdr["CustomerContactPerson"].ToString() != "" ? sdr["CustomerContactPerson"].ToString() : saleInvoice.Customer.ContactPerson);
+                                        saleInvoice.Customer.Mobile = (sdr["CustomerMobile"].ToString() != "" ? sdr["CustomerMobile"].ToString() : saleInvoice.Customer.Mobile);
                                         saleInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatusCode);
                                         saleInvoice.DocumentStatus = new DocumentStatus();
                                         saleInvoice.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatus.Code);
@@ -124,15 +124,24 @@ namespace PilotSmithApp.RepositoryService.Service
                                 if (sdr.Read())
                                 {
                                     saleInvoice.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleInvoice.ID);
+                                    saleInvoice.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleInvoice.QuoteID);
+                                    saleInvoice.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.SaleOrderID);
                                     saleInvoice.SaleInvNo = (sdr["SaleInvNo"].ToString() != "" ? sdr["SaleInvNo"].ToString() : saleInvoice.SaleInvNo);
                                     saleInvoice.SaleInvRefNo = (sdr["SaleInvRefNo"].ToString() != "" ? sdr["SaleInvRefNo"].ToString() : saleInvoice.SaleInvRefNo);
                                     saleInvoice.SaleInvDate = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()) : saleInvoice.SaleInvDate);
-                                    saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDateFormatted"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDateFormatted"].ToString()).ToString("dd-MMM-yyyy") : saleInvoice.SaleInvDateFormatted);
+                                    saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString("dd-MMM-yyyy") : saleInvoice.SaleInvDateFormatted);
+                                    saleInvoice.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : saleInvoice.ExpectedDelvDate);
+                                    saleInvoice.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString("dd-MMM-yyyy") : saleInvoice.ExpectedDelvDateFormatted);
                                     saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
                                     saleInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatusCode);
+                                    saleInvoice.DocumentStatus = new DocumentStatus();
+                                    saleInvoice.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ?sdr["DocumentStatusDescription"].ToString() : saleInvoice.DocumentStatus.Description);
+                                    saleInvoice.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : saleInvoice.MailingAddress);
+                                    saleInvoice.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : saleInvoice.ShippingAddress);
                                     saleInvoice.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleInvoice.GeneralNotes);
                                     saleInvoice.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleInvoice.DocumentOwnerID);
                                     saleInvoice.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleInvoice.BranchCode);
+                                    saleInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleInvoice.PreparedBy);
 
                                 }
                         }
@@ -234,7 +243,9 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@SaleInvNo", SqlDbType.VarChar, 20).Value = saleInvoice.SaleInvNo;
                         cmd.Parameters.Add("@SaleInvRefNo", SqlDbType.VarChar, 20).Value = saleInvoice.SaleInvRefNo;
                         cmd.Parameters.Add("@SaleInvDate", SqlDbType.DateTime).Value = saleInvoice.SaleInvDateFormatted;
-                        cmd.Parameters.Add("@QuoteID",SqlDbType.UniqueIdentifier).Value=saleInvoice.QuoteID;
+                        if(saleInvoice.QuoteID!=Guid.Empty)
+                            cmd.Parameters.Add("@QuoteID",SqlDbType.UniqueIdentifier).Value=saleInvoice.QuoteID;
+                        if(saleInvoice.SaleOrderID!=Guid.Empty)
                         cmd.Parameters.Add("@SaleOrderID", SqlDbType.UniqueIdentifier).Value=saleInvoice.SaleOrderID;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = saleInvoice.CustomerID;
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar,-1).Value=saleInvoice.MailingAddress;
@@ -242,7 +253,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleInvoice.DocumentStatusCode;
                         cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value=saleInvoice.ExpectedDelvDateFormatted;
                         cmd.Parameters.Add("@CashInvoiceYN", SqlDbType.Bit).Value=saleInvoice.CashInvoiceYN;
-                        cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value=saleInvoice.PreparedBy;
+                        if(saleInvoice.PreparedBy != Guid.Empty)
+                            cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value=saleInvoice.PreparedBy;
                         cmd.Parameters.Add("@PurchaseOrdNo", SqlDbType.VarChar,20).Value=saleInvoice.PurchaseOrdNo;
                         cmd.Parameters.Add("@PurchaseOrdDate", SqlDbType.DateTime).Value=saleInvoice.PurchaseOrdDateFormatted;
                         cmd.Parameters.Add("@BillSeriesCode", SqlDbType.Int).Value=saleInvoice.BillSeriesCode;
@@ -257,7 +269,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = saleInvoice.DetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = saleInvoice.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = saleInvoice.GeneralNotes;
-                        cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = saleInvoice.DocumentOwnerID;
+                        if (saleInvoice.DocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = saleInvoice.DocumentOwnerID;
                         cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = saleInvoice.BranchCode;
                         //-----------------------//
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = saleInvoice.PSASysCommon.CreatedBy;
@@ -268,7 +281,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
                         outputID.Direction = ParameterDirection.Output;
-                        outputProdOrderNo = cmd.Parameters.Add("@ProdOrderNoOut", SqlDbType.VarChar, 20);
+                        outputProdOrderNo = cmd.Parameters.Add("@SaleInvNoOut", SqlDbType.VarChar, 20);
                         outputProdOrderNo.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }

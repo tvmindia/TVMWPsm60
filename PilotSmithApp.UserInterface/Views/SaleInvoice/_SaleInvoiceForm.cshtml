@@ -72,7 +72,7 @@
                 }
                 else
                 {
-                    if (Model.QuoteID != null)
+                    if (Model.QuoteID != null && Model.QuoteID != Guid.Empty)
                     {
                         <div class="col-md-12 no-padding" id="divQuotationSelectList">
                             <div class="col-md-12">
@@ -84,7 +84,7 @@
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
                     }
-                    if (Model.SaleOrderID != null)
+                    if (Model.SaleOrderID != null && Model.SaleOrderID!= Guid.Empty)
                     {
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
