@@ -24,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
         // GET: TaxType
+        [AuthSecurityFilter(ProjectObject = "TaxType", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -71,8 +72,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region MasterPartial
-        [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "TaxType", Mode = "R")]
+        //[HttpGet]
+        //[AuthSecurityFilter(ProjectObject = "TaxType", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             TaxTypeViewModel taxTypeVM = masterCode == 0 ? new TaxTypeViewModel() : Mapper.Map<TaxType, TaxTypeViewModel>(_taxTypeBusiness.GetTaxType(masterCode));

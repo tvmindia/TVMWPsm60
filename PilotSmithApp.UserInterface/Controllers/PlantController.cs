@@ -28,6 +28,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness = userBusiness;
         }
         // GET: Plant
+        [AuthSecurityFilter(ProjectObject = "Plant", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -75,8 +76,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region MasterPartial
-        [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Plant", Mode = "R")]
+        //[HttpGet]
+        //[AuthSecurityFilter(ProjectObject = "Plant", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             PlantViewModel plantVM = masterCode == 0 ? new PlantViewModel() : Mapper.Map<Plant, PlantViewModel>(_plantBusiness.GetPlant(masterCode));

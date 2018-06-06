@@ -23,7 +23,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             _customerCategoryBusiness = customerCategoryBusiness;
         }
-        #endregion
+        #endregion       
+        [AuthSecurityFilter(ProjectObject = "CustomerCategory", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -70,9 +71,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion
 
-        #region MasterPartial
-        [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "CustomerCategory", Mode = "R")]
+        #region MasterPartial      
         public ActionResult MasterPartial(int masterCode)
         {
             CustomerCategoryViewModel customerCategoryVM = masterCode == 0 ? new CustomerCategoryViewModel() : Mapper.Map<CustomerCategory, CustomerCategoryViewModel>(_customerCategoryBusiness.GetCustomerCategory(masterCode));

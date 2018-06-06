@@ -66,6 +66,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #region Approvals
+        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public ActionResult GetApprovers(string documentTypeCode)
         {
             DocumentApproverViewModel SendForApprovalVM = new DocumentApproverViewModel();

@@ -30,22 +30,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult Index()
         {
             UserInBranchViewModel userInBranchVM = new UserInBranchViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            selectListItem = new List<SelectListItem>();
-            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-
-            if (PSAUserVMList != null)
-                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PSAuVM.UserName,
-                        Value = PSAuVM.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            userInBranchVM.PSAUser = new PSAUserViewModel();
-            userInBranchVM.PSAUser.UserSelectList = selectListItem;
+           // List<SelectListItem> selectListItem = new List<SelectListItem>();
+           // selectListItem = new List<SelectListItem>();
+            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());          
+            userInBranchVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
+                                                                             select new SelectListItem
+                                                                             {
+                                                                                 Text = PSAuserVM.UserName,
+                                                                                 Value = PSAuserVM.ID.ToString(),
+                                                                                 Selected = false
+                                                                             }).ToList() : new List<SelectListItem>();
             return View(userInBranchVM);
         }
 

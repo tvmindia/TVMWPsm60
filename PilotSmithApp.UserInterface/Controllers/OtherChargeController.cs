@@ -29,6 +29,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness = userBusiness;
         }
         #endregion
+        [AuthSecurityFilter(ProjectObject = "OtherCharge", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -75,8 +76,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region MasterPartial
-        [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "OtherCharge", Mode = "R")]
         public ActionResult MasterPartial(int masterCode)
         {
             OtherChargeViewModel otherChargeVM = masterCode == 0 ? new OtherChargeViewModel() : Mapper.Map<OtherCharge, OtherChargeViewModel>(_otherChargeBusiness.GetOtherCharge(masterCode));

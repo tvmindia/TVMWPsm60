@@ -81,8 +81,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion CheckProductModelName
 
         #region MasterPartial
-        [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
+        //[HttpGet]
+        //[AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult MasterPartial(Guid masterCode)
         {
             ProductModelViewModel productModelVM = masterCode == Guid.Empty ? new ProductModelViewModel() : Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(masterCode));
