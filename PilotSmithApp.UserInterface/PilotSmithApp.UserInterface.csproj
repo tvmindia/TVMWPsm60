@@ -999,6 +999,7 @@
     <Content Include="Views\ServiceCall\_AddServiceCallCharge.cshtml" />
     <Content Include="Views\Bank\_BankSelectList.cshtml" />
     <Content Include="Views\SaleInvoice\_SaleInvoiceOtherCharge.cshtml" />
+    <Content Include="Views\Employee\_ServicedBySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

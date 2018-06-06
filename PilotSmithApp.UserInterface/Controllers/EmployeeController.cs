@@ -133,6 +133,15 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_ResponsiblePersonSelectList", employeeVM);
         }
         #endregion ResponsiblePerson SelectList
+        #region ServicedBy SelectList
+        public ActionResult ServicedBySelectList(string required)
+        {
+            ViewBag.IsRequired = required;
+            EmployeeViewModel employeeVM = new EmployeeViewModel();
+            employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            return PartialView("_ServicedBySelectList", employeeVM);
+        }
+        #endregion ServicedBy SelectList
         #region AttendedBy SelectList
         public ActionResult AttendedBySelectList(string required)
         {
