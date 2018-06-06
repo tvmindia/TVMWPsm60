@@ -16,7 +16,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-    $("#AdvAreaCode,#AdvCustomerID,#AdvPlantCode,#AdvBranchCode,#AdvDocumentOwnerID,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+    $("#AdvPlantCode,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
         dropdownParent: $(".divboxASearch")
     });
 
@@ -148,12 +148,12 @@ function BindOrReloadDeliveryChallanTable(action) {
                           { className: "text-center", "targets": [7] },
                           { "targets": [0], "width": "12%" },
                           { "targets": [1], "width": "12%" },
-                          { "targets": [2], "width": "15%" },
-                          { "targets": [3], "width": "10%" },
+                          { "targets": [2], "width": "16%" },
+                          { "targets": [3], "width": "9%" },
                           { "targets": [4], "width": "11%" },
                           { "targets": [5], "width": "15%" },
-                          { "targets": [6], "width": "18%" },
-                          { "targets": [7], "width": "8%" },
+                          { "targets": [6], "width": "24%" },
+                          { "targets": [7], "width": "2%" },
 
             ],
             destroy: true,
