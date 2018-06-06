@@ -59,6 +59,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Customer AdvCustomer { get; set; }
         public Area AdvArea { get; set; }
         public Employee AdvEmployee { get; set; }
+        public Employee AdvServicedEmployee { get; set; }
         public DocumentStatus AdvDocumentStatus { get; set; }
         public Branch AdvBranch { get; set; }
     }

@@ -54,6 +54,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             serviceCallAdvanceSearchVM.AdvDocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SRC");
             serviceCallAdvanceSearchVM.AdvEmployee = new EmployeeViewModel();
             serviceCallAdvanceSearchVM.AdvEmployee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            serviceCallAdvanceSearchVM.AdvServicedEmployee = new EmployeeViewModel();
+            serviceCallAdvanceSearchVM.AdvServicedEmployee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             return View(serviceCallAdvanceSearchVM);
         }
 
