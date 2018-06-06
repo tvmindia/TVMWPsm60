@@ -13,6 +13,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Invoice No")]
         public string SaleInvNo { get; set; }
         [Display(Name = "Reference No")]
+        [StringLength(20, ErrorMessage = "Ref.No Cannot be longer than 20 characters")]
         public string SaleInvRefNo { get; set; }
         public DateTime SaleInvDate { get; set; }
         public Guid? QuoteID { get; set; }

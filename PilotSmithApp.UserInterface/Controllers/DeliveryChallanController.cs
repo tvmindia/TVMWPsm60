@@ -523,15 +523,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Title = "Delete";
                     toolboxVM.deletebtn.Event = "DeleteDeliveryChallan();";
 
-                    toolboxVM.EmailBtn.Visible = true;
-                    toolboxVM.EmailBtn.Text = "Email";
-                    toolboxVM.EmailBtn.Title = "Email";
-                    toolboxVM.EmailBtn.Event = "EmailDeliveryChallan();";
+                    //toolboxVM.EmailBtn.Visible = true;
+                    //toolboxVM.EmailBtn.Text = "Email";
+                    //toolboxVM.EmailBtn.Title = "Email";
+                    //toolboxVM.EmailBtn.Event = "EmailDeliveryChallan();";
 
-                    toolboxVM.SendForApprovalBtn.Visible = true;
-                    toolboxVM.SendForApprovalBtn.Text = "Send";
-                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
-                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    //toolboxVM.SendForApprovalBtn.Visible = true;
+                    //toolboxVM.SendForApprovalBtn.Text = "Send";
+                    //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    //toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
                     break;
 
                 case "LockDocument":

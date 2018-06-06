@@ -13,6 +13,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Quality Control No")]
         public string ProdQCNo { get; set; }
         [Display(Name = "Quality Control Ref.No")]
+        [StringLength(20, ErrorMessage = "Ref.No Cannot be longer than 20 characters")]
         public string ProdQCRefNo { get; set; }
         public DateTime ProdQCDate { get; set; }
         [Required(ErrorMessage ="Product order is missing")]

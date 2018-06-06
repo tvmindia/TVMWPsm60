@@ -14,6 +14,7 @@ namespace PilotSmithApp.UserInterface.Models
         //[Required(ErrorMessage ="Production Order No. is missing")]
         public string ProdOrderNo{get;set;}
         [Display(Name = "Production Order Ref.No.")]
+        [StringLength(20, ErrorMessage = "Ref.No Cannot be longer than 20 characters")]
         public string ProdOrderRefNo{get;set;}
         public DateTime ProdOrderDate{get;set;}
         [Display(Name ="Select Sale Order")]
