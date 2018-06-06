@@ -120,10 +120,15 @@ function EditCompanyMaster(thisObj) {
     debugger;
     CompanyVM = _dataTables.CompanyList.row($(thisObj).parents('tr')).data();
 
-    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + CompanyVM.ID, function () {
-        $('#hdnMasterCall').val('MSTR');
-        $('#lblModelMasterContextLabel').text('Edit Company Information')
-        $('#divModelMasterPopUp').modal('show');
+    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + CompanyVM.ID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel').text('Edit Company Information')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeleteCompanyMaster(thisObj) {

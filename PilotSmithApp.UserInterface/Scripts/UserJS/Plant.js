@@ -128,10 +128,15 @@ function ExportPlantData() {
 function EditPlantMaster(thisObj) {
     debugger;
     PlantVM = _dataTables.PlantList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("Plant/MasterPartial?masterCode=" + PlantVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit Plant Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("Plant/MasterPartial?masterCode=" + PlantVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblModelMasterContextLabel').text('Edit Plant Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val('MSTR');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeletePlantMaster(thisObj) {

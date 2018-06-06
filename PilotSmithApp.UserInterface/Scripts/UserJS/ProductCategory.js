@@ -130,10 +130,15 @@ function EditProductCategoryMaster(thisObj)
     debugger;
     productCategoryVM = _dataTables.ProductCategoryList.row($(thisObj).parents('tr')).data();
 
-    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=" + productCategoryVM.Code, function () {
-        $('#hdnMasterCall').val('MSTR');
-        $('#lblModelMasterContextLabel').text('Edit Category Information')
-        $('#divModelMasterPopUp').modal('show');
+    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=" + productCategoryVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel').text('Edit Category Information')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 
     //GetMasterPartial('ProductCategory', productCategoryVM.Code);

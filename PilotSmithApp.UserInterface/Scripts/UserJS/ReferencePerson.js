@@ -166,10 +166,15 @@ function EditReferencePersonMaster(thisObj) {
     debugger;
     ReferencePersonVM = _dataTables.ReferencePersonList.row($(thisObj).parents('tr')).data();
     //this will return form body(html)
-    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=" + ReferencePersonVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit Reference Person Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("ReferencePerson/MasterPartial?masterCode=" + ReferencePersonVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblModelMasterContextLabel').text('Edit Reference Person Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val('MSTR');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 // Delete Reference Person Confirmation

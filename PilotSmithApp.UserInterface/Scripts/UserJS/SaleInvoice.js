@@ -141,16 +141,20 @@ function ExportSaleInvoiceData() {
 function AddSaleInvoice() {
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid, function () {
-        ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
-        BindSaleInvoiceDetailList(_emptyGuid);
-        BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
-        $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
-        OnServerCallComplete();
-        //setTimeout(function () {
-        //resides in customjs for sliding
-        openNav();
-        //}, 100); 
+    $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
+            BindSaleInvoiceDetailList(_emptyGuid);
+            BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
+            //setTimeout(function () {
+            //resides in customjs for sliding
+            openNav();
+            //}, 100); 
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 
@@ -167,31 +171,40 @@ function EditSaleInvoice(this_Obj) {
     OnServerCallBegin();
     var SaleInvoice = _dataTable.SaleInvoiceList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + SaleInvoice.ID, function () {
-        //$('#CustomerID').trigger('change');
-        ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
-        BindSaleInvoiceDetailList(SaleInvoice.ID);
-        BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
-        CalculateTotal();
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-        clearUploadControl();
-        PaintImages(SaleInvoice.ID);
-        $('#lblSaleInvoiceInfo').text(SaleInvoice.SaleInvNo);
-        OnServerCallComplete();
-        setTimeout(function () {
+    $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + SaleInvoice.ID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            //$('#CustomerID').trigger('change');
+            ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+            BindSaleInvoiceDetailList(SaleInvoice.ID);
+            BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
+            CalculateTotal();
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(SaleInvoice.ID);
+            OnServerCallComplete();
+            //setTimeout(function () {
             //resides in customjs for sliding
             openNav();
-        }, 100);
+            //}, 100);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function ResetSaleInvoice() {
-    $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function () {
-        BindSaleInvoiceDetailList($('#ID').val());
-        BindSaleInvoiceOtherChargesDetailList($('#ID').val());
-        CalculateTotal();
-        clearUploadControl();
-        PaintImages($('#SaleInvoiceForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
+    $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            BindSaleInvoiceDetailList($('#ID').val());
+            BindSaleInvoiceOtherChargesDetailList($('#ID').val());
+            CalculateTotal();
+            clearUploadControl();
+            PaintImages($('#SaleInvoiceForm #ID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function SaveSaleInvoice() {
