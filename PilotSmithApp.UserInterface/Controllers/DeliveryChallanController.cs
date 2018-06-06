@@ -4,7 +4,6 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
-using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,37 +19,26 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IDeliveryChallanBusiness _deliveryChallanBusiness;
         IProductionOrderBusiness _productionOrderBusiness;
-        ISaleOrderBusiness _saleOrderBusiness;
-        IAreaBusiness _areaBusiness;
-        IBranchBusiness _branchBusiness;
-        ICustomerBusiness _customerBusiness;
+        ISaleOrderBusiness _saleOrderBusiness;       
         IDocumentStatusBusiness _documentStatusBusiness;
         IApprovalStatusBusiness _approvalStatusBusiness;
         IPlantBusiness _plantBusiness;
-        private IUserBusiness _userBusiness;
+       
 
         public DeliveryChallanController(IDeliveryChallanBusiness deliveryChallanBusiness,
             IProductionOrderBusiness productionOrderBusiness,
-            ISaleOrderBusiness saleOrderBusiness,
-            IAreaBusiness areaBusiness,
-            IBranchBusiness branchBusiness,
-            ICustomerBusiness customerBusiness,
+            ISaleOrderBusiness saleOrderBusiness,           
             IDocumentStatusBusiness documentStatusBusiness,
             IApprovalStatusBusiness approvalStatusBusiness,
-            IPlantBusiness plantBusiness,
-            IUserBusiness userBusiness
+            IPlantBusiness plantBusiness           
             )
         {
             _deliveryChallanBusiness = deliveryChallanBusiness;
             _productionOrderBusiness = productionOrderBusiness;
-            _saleOrderBusiness = saleOrderBusiness;
-            _areaBusiness = areaBusiness;
-            _branchBusiness = branchBusiness;
-            _customerBusiness = customerBusiness;
+            _saleOrderBusiness = saleOrderBusiness;           
             _documentStatusBusiness = documentStatusBusiness;
             _plantBusiness = plantBusiness;
-            _approvalStatusBusiness = approvalStatusBusiness;
-            _userBusiness = userBusiness;
+            _approvalStatusBusiness = approvalStatusBusiness;            
         }
         // GET: DeliveryChallan
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
@@ -58,29 +46,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             DeliveryChallanAdvanceSearchViewModel deliveryChallanVM = new DeliveryChallanAdvanceSearchViewModel();
 
-            deliveryChallanVM.Area = new AreaViewModel();
-            deliveryChallanVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
-            deliveryChallanVM.Customer = new CustomerViewModel();
-            deliveryChallanVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
+            deliveryChallanVM.Area = new AreaViewModel();            
             deliveryChallanVM.Plant = new PlantViewModel();
-            deliveryChallanVM.Plant.PlantSelectList = _plantBusiness.GetPlantForSelectList();
-            deliveryChallanVM.Branch = new BranchViewModel();
-            AppUA appUA = Session["AppUA"] as AppUA;
-            deliveryChallanVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);            
+            deliveryChallanVM.Plant.PlantSelectList = _plantBusiness.GetPlantForSelectList();           
             deliveryChallanVM.ApprovalStatus = new ApprovalStatusViewModel();
-            deliveryChallanVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
-            deliveryChallanVM.PSAUser = new PSAUserViewModel();
-            //List<SelectListItem> selectListItem = new List<SelectListItem>();
-            //List<SelectListItem> selectListItem = null;
-            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-            deliveryChallanVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
-                                                             select new SelectListItem
-                                                             {
-                                                                 Text = PSAuserVM.UserName,
-                                                                 Value = PSAuserVM.ID.ToString(),
-                                                                 Selected = false
-                                                             }).ToList() : new List<SelectListItem>();
-         
+            deliveryChallanVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();          
             return View(deliveryChallanVM);
         }
 

@@ -383,6 +383,8 @@ function SaveSuccessEmployeeMaster(data, status) {
                     $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=');
                 if ($(".divAttendedBySelectList")[0])
                     $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=');
+                if ($(".divServicedBySelectList")[0])
+                    $('.divServicedBySelectList').load('/Employee/ServicedBySelectList?required=');
                 if ($(".divPreparedBySelectList")[0])
                     $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=');
                 if ($(".divQCBySelectList")[0])

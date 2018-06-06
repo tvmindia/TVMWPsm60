@@ -121,7 +121,7 @@
                         @Html.LabelFor(model => model.ServicedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divEmployeeSelectList">
+                        <div class="divServicedBySelectList">
                             @Html.Action("ServicedBySelectList", "Employee", new { required = "" })
                         </div>
                         @Html.HiddenFor(model => model.ServicedBy, htmlAttributes: new { @class = "", @id = "hdnServicedByID" })
