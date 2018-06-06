@@ -147,10 +147,15 @@ function EditEmployeeMaster(this_Obj) {
     debugger;
     var Employee = _dataTable.EmployeeList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + Employee.ID, function () {
-        $('#hdnMasterCall').val('MSTR');
-        $('#lblModelMasterContextLabel').text('Edit Employee Information')
-        $('#divModelMasterPopUp').modal('show');
+    $("#divMasterBody").load("Employee/MasterPartial?masterCode=" + Employee.ID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel').text('Edit Employee Information')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeleteEmployeeMaster(thisObj) {

@@ -570,7 +570,8 @@ function BindServiceCallChargeDetailList(id) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))
+                     var AddlTaxAmt = parseFloat(row.AddlTaxAmt);
+                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt) + parseFloat(AddlTaxAmt))
                      //return Total
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
@@ -774,7 +775,7 @@ function SaveSuccessServiceCall(data, status) {
                     $('#lblServiceCallInfo').text(_result.ServiceCallNo);
                     BindServiceCallChargeDetailList(_result.ID);
                     BindServiceCallDetailList(_result.ID);
-                    //CalculateTotal();
+                    CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());

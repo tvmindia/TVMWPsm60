@@ -128,10 +128,15 @@ function ExportAreaData() {
 function EditAreaMaster(thisObj) {
     debugger;
     AreaVM = _dataTables.AreaList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit Area Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblModelMasterContextLabel').text('Edit Area Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val('MSTR');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeleteAreaMaster(thisObj) {

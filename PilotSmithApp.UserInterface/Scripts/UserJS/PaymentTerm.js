@@ -132,10 +132,15 @@ function ExportPaymentTermData() {
 function EditPaymentTermMaster(thisObj) {
     debugger;
     PaymentTermVM = _dataTables.PaymentTermList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("PaymentTerm/MasterPartial?masterCode=" + PaymentTermVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit Payment Term Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("PaymentTerm/MasterPartial?masterCode=" + PaymentTermVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblModelMasterContextLabel').text('Edit Payment Term Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val('MSTR');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeletePaymentTermMaster(thisObj) {

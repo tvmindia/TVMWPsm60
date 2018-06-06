@@ -128,10 +128,15 @@ function ExportCustomerCategoryData() {
 function EditCustomerCategoryMaster(thisObj) {
     debugger;
     CustomerCategoryVM = _dataTables.CustomerCategoryList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("CustomerCategory/MasterPartial?masterCode=" + CustomerCategoryVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit Customer Category Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("CustomerCategory/MasterPartial?masterCode=" + CustomerCategoryVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblModelMasterContextLabel').text('Edit Customer Category Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val('MSTR');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeleteCustomerCategoryMaster(thisObj) {

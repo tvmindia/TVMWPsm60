@@ -167,6 +167,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : saleInvoice.Branch.Description);
                                     saleInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleInvoice.PreparedBy);
                                     saleInvoice.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleInvoice.Discount);
+                                    saleInvoice.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : saleInvoice.DocumentOwners);
+                                    saleInvoice.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : saleInvoice.DocumentOwner);
                                 }
                         }
                     }
