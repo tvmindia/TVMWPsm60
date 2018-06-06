@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.BusinessServices.Contracts;
 using SAMTool.DataAccessObject.DTO;
 using System;
@@ -18,6 +19,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness = userBusiness;
         }
         // GET: DocumentOwner
+        [AuthSecurityFilter(ProjectObject = "DocumentOwner", Mode = "R")]
         public ActionResult Index()
         {
             return View();

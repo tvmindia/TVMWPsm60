@@ -31,6 +31,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _positionBusiness =positionBusiness;
         }
         // GET: Employee
+        [AuthSecurityFilter(ProjectObject = "Employee", Mode = "R")]
         public ActionResult Index()
         {
             EmployeeAdvanceSearchViewModel employeeAdvanceSearchVM = new EmployeeAdvanceSearchViewModel();

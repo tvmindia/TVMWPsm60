@@ -75,8 +75,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region MasterPartial
-        [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
+        //[HttpGet]
+        //[AuthSecurityFilter(ProjectObject = "Company", Mode = "R")]
         public ActionResult MasterPartial(Guid masterCode)
         {
             CompanyViewModel companyVM = masterCode == Guid.Empty? new CompanyViewModel() : Mapper.Map<Company, CompanyViewModel>(_companyBusiness.GetCompany(masterCode));

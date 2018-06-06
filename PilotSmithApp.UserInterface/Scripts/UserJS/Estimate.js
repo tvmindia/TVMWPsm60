@@ -245,6 +245,7 @@ function ResetEstimate() {
                 $('#hdnEnquiryID').val('');
                 $('#hdnCustomerID').val('');
                 $("#EstimateForm #CustomerID").prop('disabled', false);
+                $('#lblEstimateInfo').text('<<Estimate No.>>');
             }
             BindEstimateDetailList($('#ID').val(), false);
             clearUploadControl();

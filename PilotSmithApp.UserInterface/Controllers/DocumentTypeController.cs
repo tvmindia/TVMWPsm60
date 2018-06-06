@@ -1,6 +1,7 @@
 ﻿using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Constructor_Injection
         // GET: DocumentType
+        [AuthSecurityFilter(ProjectObject = "DocumentType", Mode = "R")]
         public ActionResult Index()
         {
             return View();

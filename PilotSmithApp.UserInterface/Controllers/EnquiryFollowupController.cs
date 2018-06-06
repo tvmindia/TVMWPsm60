@@ -24,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _customerBusiness = customerBusiness;
         }
         // GET: EnquiryFollowup
+        [AuthSecurityFilter(ProjectObject = "EnquiryFollowup", Mode = "R")]
         public ActionResult Index()
         {
             EnquiryFollowupViewModel enquiryFollowupVM = new EnquiryFollowupViewModel();

@@ -162,11 +162,59 @@
                 </div>
                 @*<div class="form-group col-md-12 ">*@
 
-
-
-
-
             </div>
+
+            <div class="form-group col-md-6 stausCombined">
+                <div class="boxstatus boxstatus2 shadow2">
+                    <div class="Shadow2data clearfix">
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">Document Status</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">Branch</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="lblStatusDisplay">@Model.Branch.Description</div>
+                        </div>
+                        @*@if (Model.IsUpdate)
+                    {
+                        <div class="col-md-12"></div>
+                            <div class="form-group col-md-12">
+                                @if (!Model.IsDocLocked)
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerlock.png" title="Document Locked" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerunlock.png" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <span style="font-size:18px;">Holding ownership</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                    }*@
+
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
         <div class="col-md-12">&nbsp;</div>

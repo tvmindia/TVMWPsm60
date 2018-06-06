@@ -91,7 +91,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         serviceCall.ServiceCallNo = (sdr["ServiceCallNo"].ToString() != "" ? sdr["ServiceCallNo"].ToString() : serviceCall.ServiceCallNo);
                                         serviceCall.ServiceCallDate = (sdr["ServiceCallDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallDate"].ToString()) : serviceCall.ServiceCallDate);
                                         serviceCall.ServiceCallDateFormatted = (sdr["ServiceCallDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallDate"].ToString()).ToString(_settings.DateFormat) : serviceCall.ServiceCallDateFormatted);
-                                        serviceCall.ServiceCallTime = (sdr["ServiceCallTime"].ToString() != "" ? TimeSpan.Parse(sdr["ServiceCallTime"].ToString()) : serviceCall.ServiceCallTime);
+                                        serviceCall.ServiceCallTime = (sdr["ServiceCallTime"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallTime"].ToString()) : serviceCall.ServiceCallTime);
+                                        serviceCall.ServiceCallTimeFormatted = (sdr["ServiceCallTime"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallTime"].ToString()).ToString("h:mm tt") : serviceCall.ServiceCallTimeFormatted);
                                         serviceCall.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : serviceCall.CustomerID);
                                         serviceCall.Customer = new Customer();
                                         serviceCall.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : serviceCall.Customer.ID);
@@ -172,7 +173,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     serviceCall.ServiceCallNo = (sdr["ServiceCallNo"].ToString() != "" ? sdr["ServiceCallNo"].ToString() : serviceCall.ServiceCallNo);
                                     serviceCall.ServiceCallDate = (sdr["ServiceCallDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallDate"].ToString()) : serviceCall.ServiceCallDate);
                                     serviceCall.ServiceCallDateFormatted = (sdr["ServiceCallDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallDate"].ToString()).ToString(_settings.DateFormat) : serviceCall.ServiceCallDateFormatted);
-                                    serviceCall.ServiceCallTimeFormatted = (sdr["ServiceCallTime"].ToString() != "" ? (sdr["ServiceCallTime"].ToString()) : serviceCall.ServiceCallTimeFormatted);
+                                    serviceCall.ServiceCallTimeFormatted = (sdr["ServiceCallTime"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallTime"].ToString()).ToString("h:mm tt") : serviceCall.ServiceCallTimeFormatted);
                                     serviceCall.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : serviceCall.CustomerID);
                                     serviceCall.Customer = new Customer();
                                     serviceCall.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : serviceCall.Customer.ID);
@@ -184,6 +185,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     serviceCall.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : serviceCall.DocumentStatus.Code);
                                     serviceCall.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : serviceCall.DocumentStatus.Description);
                                     serviceCall.AttendedBy = (sdr["AttendedBy"].ToString() != "" ? Guid.Parse(sdr["AttendedBy"].ToString()) : serviceCall.AttendedBy);
+                                    serviceCall.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : serviceCall.BranchCode);
+                                    serviceCall.Branch = new Branch();
+                                    serviceCall.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : serviceCall.Branch.Description);
                                     //2 Employee Problem
                                     serviceCall.ServicedBy = (sdr["ServicedBy"].ToString() != "" ? Guid.Parse(sdr["ServicedBy"].ToString()) : serviceCall.ServicedBy);
                                     serviceCall.ServiceDate = (sdr["ServiceDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceDate"].ToString()) : serviceCall.ServiceDate);
@@ -360,6 +364,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CallChargeXML", SqlDbType.Xml).Value = serviceCall.CallChargeXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = serviceCall.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = serviceCall.GeneralNotes;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = serviceCall.BranchCode;
                         //-----------------------//
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = serviceCall.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = serviceCall.PSASysCommon.CreatedDate;
