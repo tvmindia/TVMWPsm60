@@ -91,7 +91,7 @@
                                 @Html.Label("SaleOrder", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.SaleOrderID, Model.QuotationSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
+                                @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
@@ -289,7 +289,14 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                            @if (Model.IsUpdate || Model.SaleOrderID != null || Model.QuoteID != null)
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
+                            }
+                            else
+                            {
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                            }  
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
