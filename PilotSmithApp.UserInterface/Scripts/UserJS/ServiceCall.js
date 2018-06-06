@@ -84,7 +84,7 @@ function BindOrReloadServiceCallTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                                 columns: [0, 1, 2, 3, 4, 5, 6]
                              }
             }],
             ordering: false,
@@ -106,17 +106,20 @@ function BindOrReloadServiceCallTable(action) {
                {
                    "data": "ServiceCallNo", render: function (data, type, row) {
                        return data + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ServiceCallDateFormatted;
-                   }
-                   , "defaultContent": "<i>-</i>"
+                   }, "defaultContent": "<i>-</i>"
                },
                {
                    "data": "Customer", render: function (data, type, row) {
                        return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (data.ContactPerson == null ? " " : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data.CompanyName;
-               }, "defaultContent": "<i>-</i>" },
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "Employee.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ServicedByName", "defaultContent": "<i>-</i>" },//4
-               { "data": "ServiceDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "ServiceDateFormatted", render: function (data, type, row) {
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.ServicedBy == null ? " " : row.ServicedByName) + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + (data === null ? " " : data);
+                   }, "defaultContent": "<i>-</i>"
+               },//4
                {
                    "data": "DocumentStatus.Description", render: function (data, type, row) {
                        return "<b>Doc.Status-</b>" + (data == null ? " " : data) + ", </br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
@@ -125,8 +128,8 @@ function BindOrReloadServiceCallTable(action) {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCall(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [0,3,4,6] },
-                          { className: "text-center", "targets": [5,7] },                           
+                          { className: "text-left", "targets": [0, 3, 4, 5, 6] },
+                          { className: "text-center", "targets": [6] },                           
 
             ],
             destroy: true,
@@ -187,6 +190,7 @@ function AddServiceCall() {
     //this will return form body(html)
     OnServerCallBegin();
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
+        $('#lblServiceCallInfo').text("Service Call Information");
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -226,7 +230,7 @@ function EditServiceCall(this_Obj) {
 function ResetServiceCall() {
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + $('#ServiceCallForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            $('#lblServiceCallInfo').text($('#ServiceCallNo').val());
+            $('#lblServiceCallInfo').text(($('#ServiceCallNo').val() !== "") ? $('#ServiceCallNo').val() : "Service Call Information");
             BindServiceCallDetailList($('#ID').val());
             BindServiceCallChargeDetailList($('#ID').val());
             clearUploadControl();
@@ -328,14 +332,14 @@ function EditServiceCallChargeDetail(this_Obj) {
 
 function ClearCalculatedFields() {
     $('#lblTaxTotal').text('0.00');
-    $('#lblItemTotal').text('0.00');
-    $('#lblGrossAmount').text('0.00');
+    //$('#lblItemTotal').text('0.00');
+    $('#lblAddlTaxTotal').text('0.00');
     $('#lblGrandTotal').text('0.00');
     $('#lblOtherChargeAmount').text('0.00');
 }
 
 function CalculateTotal() {
-    var TaxTotal = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00;
+    var TaxTotal = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, TotalAddlTax = 0.00;
     var serviceCallChargeDetailList = _dataTable.ServiceCallChargeDetailList.rows().data();
     for (var i = 0; i < serviceCallChargeDetailList.length; i++) {
         var CGST = parseFloat(serviceCallChargeDetailList[i].CGSTPerc != "" ? serviceCallChargeDetailList[i].CGSTPerc : 0);
@@ -349,8 +353,10 @@ function CalculateTotal() {
         var Total = roundoff(parseFloat(serviceCallChargeDetailList[i].ChargeAmount) + parseFloat(GSTAmt) + parseFloat(AddlTaxAmt));
         GrandTotal = roundoff(parseFloat(GrandTotal) + parseFloat(Total));
         TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt));
+        TotalAddlTax = roundoff(parseFloat(TotalAddlTax) + parseFloat(AddlTaxAmt));
         OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(serviceCallChargeDetailList[i].ChargeAmount))
     }
+    $('#lblAddlTaxTotal').text(TotalAddlTax);
     $('#lblTaxTotal').text(TaxTotal);
     $('#lblGrandTotal').text(GrandTotal);
     $('#lblOtherChargeAmount').text(OtherChargeAmt);

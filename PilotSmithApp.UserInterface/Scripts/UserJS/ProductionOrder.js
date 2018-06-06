@@ -23,7 +23,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-    $("#AdvAreaCode,#AdvCustomerID,#AdvReferencePersonCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+    $("#AdvDocumentStatusCode,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
         dropdownParent: $(".divboxASearch")
     });
 

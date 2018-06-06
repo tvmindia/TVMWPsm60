@@ -208,6 +208,7 @@ function LoadCurrentPageDropdowns() {
     $('#divBranchSelectList').load('/Branch/BranchSelectList')
     // $('#divBranchSelectList').load('/Branch/BranchSelectList')
     $('#divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV')
+    $('#divBillLocationSelectList').load('/BillLocation/BillLocationSelectList')
 }
 
 
