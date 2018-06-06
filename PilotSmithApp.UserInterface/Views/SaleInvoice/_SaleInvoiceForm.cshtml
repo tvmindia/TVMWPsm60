@@ -179,6 +179,17 @@
                             @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                         </div>
                     </div>
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.BillLocationCode, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            <div id="divBillLocationSelectList">
+                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            </div>
+                            @Html.HiddenFor(model => model.BillLocationCode, htmlAttributes: new { @class = "", @id = "hdnBillLocationCode" })
+                        </div>
+                    </div>
                     @*<div class="col-md-6 no-padding">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.DocumentOwnerID, htmlAttributes: new { @class = "control-label" })

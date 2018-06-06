@@ -33,6 +33,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public Guid DocumentOwnerID { get; set; }
         public int BranchCode { get; set; }
+        public int? BillLocationCode { get; set; }
         public decimal Discount { get; set; }
         public decimal AdvanceAmount { get; set; }
 
@@ -56,6 +57,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public Branch Branch { get; set; }
+        public BillLocation BillLocation { get; set; }
         public List<SaleInvoiceOtherCharge> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SaleInvoiceDetail> SaleInvoiceDetailList { get; set; }
         public Area Area { get; set; }

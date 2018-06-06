@@ -1,0 +1,28 @@
+﻿@model PilotSmithApp.UserInterface.Models.BillLocationViewModel
+@{
+    var SelectListattributes = new object();
+}
+@if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "BillLocation is missing", @onchange = "$('#hdnBillLocationCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "BillLocation is missing", @onchange = "$('#hdnBillLocationCode').val(this.value)" };
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnBillLocationCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnBillLocationCode').val(this.value)" };
+}
+
+@Html.DropDownList("BillLocationCode", Model.BillLocationList, "--Select BillLocation--", SelectListattributes)
+
+@Html.ValidationMessage("BillLocationCode", "", new { @class = "text-danger" })
+<script>
+    $(document).ready(function () {
+        debugger;
+        if ($('#hdnBillLocationCode').val())
+        {
+            $('#BillLocationCode').val($('#hdnBillLocationCode').val());
+        }
+        $('#BillLocationCode').select2({});
+        $('.select2').addClass('form-control newinput');
+    });
+</script>
+

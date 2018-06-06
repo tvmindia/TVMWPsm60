@@ -46,6 +46,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? DocumentOwnerID { get; set; }
         [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
+        public int? BillLocationCode { get; set; }
         public decimal? Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
         //additional Fields
@@ -76,6 +77,7 @@ namespace PilotSmithApp.UserInterface.Models
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public BranchViewModel Branch { get; set; }
+        public BillLocationViewModel BillLocation { get; set; }
         public List<SaleInvoiceDetailViewModel> SaleInvoiceDetailList { get; set; }
         public List<SaleInvoiceOtherChargeViewModel> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
