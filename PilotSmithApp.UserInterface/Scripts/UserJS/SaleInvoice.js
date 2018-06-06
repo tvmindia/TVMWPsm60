@@ -145,6 +145,7 @@ function AddSaleInvoice() {
         ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
         BindSaleInvoiceDetailList(_emptyGuid);
         BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
+        $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
         OnServerCallComplete();
         //setTimeout(function () {
         //resides in customjs for sliding
@@ -175,6 +176,7 @@ function EditSaleInvoice(this_Obj) {
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
         PaintImages(SaleInvoice.ID);
+        $('#lblSaleInvoiceInfo').text(SaleInvoice.SaleInvNo);
         OnServerCallComplete();
         setTimeout(function () {
             //resides in customjs for sliding
@@ -223,6 +225,7 @@ function SaveSuccessSaleInvoice(data, status) {
                     CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#lblSaleInvoiceInfo').text(_result.SaleInvoiceNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
@@ -308,7 +311,8 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
+                     debugger;
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
                          row.Product.Name +'</br>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
@@ -324,7 +328,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
                  }, "defaultContent": "<i></i>"
              },
              {//GST
@@ -340,7 +344,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(SGSTAmt) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(SGSTAmt) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
             {//Cess
@@ -359,7 +363,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                     var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
                     var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt) + parseFloat(row.CessAmt))
-                    return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                    return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                 }, "defaultContent": "<i></i>"
             },
             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
@@ -372,8 +376,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
          });
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover',
-        'placement': 'top'
+        'trigger': 'hover'        
     });
 }
 function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation) {
@@ -464,23 +467,28 @@ function AddSaleInvoiceDetailToList() {
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
                 debugger;
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
-                saleInvoiceDetailVM.Product.Code = $("#divModelSaleInvoicePopBody #ProductID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductID option:selected").text().split("-")[0].trim() : "";
-                saleInvoiceDetailVM.Product.Name = $("#divModelSaleInvoicePopBody #ProductID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductID option:selected").text().split("-")[1].trim() : "";
-                saleInvoiceDetailVM.ProductID = $("#divModelSaleInvoicePopBody #ProductID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductID").val() : _emptyGuid;
-                saleInvoiceDetailVM.ProductModelID = $("#divModelSaleInvoicePopBody #ProductModelID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductModelID").val() : _emptyGuid;
-                saleInvoiceDetailVM.ProductModel.Name = $("#divModelSaleInvoicePopBody #ProductModelID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductModelID option:selected").text() : "";
-                saleInvoiceDetailVM.ProductSpec = $('#divModelSaleInvoicePopBody #ProductSpec').val(); saleInvoiceDetailVM[0].Qty = $('#divModelSaleInvoicePopBody #Qty').val();
-                saleInvoiceDetailVM.UnitCode = $('#divModelSaleInvoicePopBody #UnitCode').val();
-                saleInvoiceDetailVM.Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
-                saleInvoiceDetailVM.Rate = $('#divModelSaleInvoicePopBody #Rate').val();
-                saleInvoiceDetailVM.Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
-                saleInvoiceDetailVM.TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
-                saleInvoiceDetailVM.TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
-                saleInvoiceDetailVM.CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
-                saleInvoiceDetailVM.SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
-                saleInvoiceDetailVM.IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
-                saleInvoiceDetailVM.CessPerc = $('#divModelSaleInvoicePopBody #CessPerc').val() != "" ? $('#divModelSaleInvoicePopBody #CessPerc').val() : 0;
-                saleInvoiceDetailVM.CessAmt = $('#divModelSaleInvoicePopBody #CessAmt').val();
+                saleInvoiceDetailVM.Product = new Object;
+                saleInvoiceDetailVM.ProductModel = new Object;
+                saleInvoiceDetailVM.Unit = new Object;
+                saleInvoiceDetailVM.TaxType = new Object;
+                saleInvoiceDetailVM[0].Product.Code = $("#divModelSaleInvoicePopBody #ProductID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductID option:selected").text().split("-")[0].trim() : "";
+                saleInvoiceDetailVM[0].Product.Name = $("#divModelSaleInvoicePopBody #ProductID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                saleInvoiceDetailVM[0].ProductID = $("#divModelSaleInvoicePopBody #ProductID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductID").val() : _emptyGuid;
+                saleInvoiceDetailVM[0].ProductModelID = $("#divModelSaleInvoicePopBody #ProductModelID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductModelID").val() : _emptyGuid;
+                saleInvoiceDetailVM[0].ProductModel.Name = $("#divModelSaleInvoicePopBody #ProductModelID").val() != "" ? $("#divModelSaleInvoicePopBody #ProductModelID option:selected").text() : "";
+                saleInvoiceDetailVM[0].ProductSpec = $('#divModelSaleInvoicePopBody #ProductSpec').val();
+                saleInvoiceDetailVM[0].Qty = $('#divModelSaleInvoicePopBody #Qty').val();
+                saleInvoiceDetailVM[0].UnitCode = $('#divModelSaleInvoicePopBody #UnitCode').val();
+                saleInvoiceDetailVM[0].Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
+                saleInvoiceDetailVM[0].Rate = $('#divModelSaleInvoicePopBody #Rate').val();
+                saleInvoiceDetailVM[0].Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
+                saleInvoiceDetailVM[0].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                saleInvoiceDetailVM[0].TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
+                saleInvoiceDetailVM[0].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
+                saleInvoiceDetailVM[0].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
+                saleInvoiceDetailVM[0].IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
+                saleInvoiceDetailVM[0].CessPerc = $('#divModelSaleInvoicePopBody #CessPerc').val() != "" ? $('#divModelSaleInvoicePopBody #CessPerc').val() : 0;
+                saleInvoiceDetailVM[0].CessAmt = $('#divModelSaleInvoicePopBody #CessAmt').val();
                 ClearCalculatedFields();
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailVM).draw(false);
                 CalculateTotal();
@@ -542,8 +550,8 @@ function AddSaleInvoiceDetailToList() {
     }
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover',
-        'placement': 'left'
+        'trigger': 'hover'
+        
     });
 }
 //Edit SaleInvoice Detail
@@ -752,8 +760,7 @@ function AddOtherExpenseDetailToList() {
     }
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover',
-        'placement': 'left'
+        'trigger': 'hover'
     });
 }
 
@@ -799,7 +806,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -819,7 +826,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                          AddlTax = 0;
                          row.AddlTaxPerc = 0;
                      }
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Additional Tax :' + row.AddlTaxPerc + '%</p>"/>' + roundoff(AddlTax)
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Additional Tax :' + row.AddlTaxPerc + '%</p>"/>' + roundoff(AddlTax)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -834,7 +841,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))// + parseFloat(row.AddlTaxAmt))
 
                      //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeletesaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
