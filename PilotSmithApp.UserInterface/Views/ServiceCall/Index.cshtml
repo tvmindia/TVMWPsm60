@@ -91,7 +91,7 @@
                         @Html.LabelFor(model => model.AdvServicedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvServicedBy, Model.AdvEmployee.EmployeeSelectList, "Select Employee", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvServicedBy, Model.AdvServicedEmployee.EmployeeSelectList, "Select Employee", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-right-padding">

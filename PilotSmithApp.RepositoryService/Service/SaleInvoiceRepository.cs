@@ -141,6 +141,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleInvoice.GeneralNotes);
                                     saleInvoice.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleInvoice.DocumentOwnerID);
                                     saleInvoice.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleInvoice.BranchCode);
+                                    saleInvoice.Branch = new Branch();
+                                    saleInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : saleInvoice.Branch.Description);
                                     saleInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleInvoice.PreparedBy);
                                     saleInvoice.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleInvoice.Discount);
                                 }

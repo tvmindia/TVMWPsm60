@@ -84,6 +84,7 @@ namespace PilotSmithApp.UserInterface.Models
         public CustomerViewModel AdvCustomer { get; set; }
         public AreaViewModel AdvArea { get; set; }
         public EmployeeViewModel AdvEmployee { get; set; }
+        public EmployeeViewModel AdvServicedEmployee { get; set; }
         public DocumentStatusViewModel AdvDocumentStatus { get; set; }
         public BranchViewModel AdvBranch { get; set; }
     }
