@@ -13,6 +13,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Quotation No.")]
         public string QuoteNo { get; set; }
         [Display(Name = "Quotation Ref No.")]
+        [StringLength(20, ErrorMessage = "Ref.No Cannot be longer than 20 characters")]
         public string QuoteRefNo { get; set; }
         public DateTime QuoteDate { get; set; }
         [Display(Name = "Estimate")]
@@ -44,6 +45,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Please specify at least one recipient.")]
         public string EmailSentTo { get; set; }
         [Display(Name = "Term Ref. No")]
+        [StringLength(25, ErrorMessage = "Term Ref.No Cannot be longer than 25 characters")]
         public string TermReferenceNo { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
