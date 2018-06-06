@@ -262,6 +262,9 @@ function ResetQuotation() {
             if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
             }
+            else if ($('#LatestApprovalStatus').val() == 4) {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved");
+            }
             else {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
             }
@@ -791,6 +794,7 @@ function EmailQuotation() {
 function SendQuotationEmail() {
     $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
     $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
+    
 }
 function UpdateQuotationEmailInfo() {
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
@@ -847,6 +851,7 @@ function SaveSuccessQuotationEmailSend(data, status) {
             case "OK":
                 MasterAlert("success", _message)
                 $('#divModelEmailQuotation').modal('hide');
+                ResetQuotation();
                 break;
             case "ERROR":
                 MasterAlert("success", _message)

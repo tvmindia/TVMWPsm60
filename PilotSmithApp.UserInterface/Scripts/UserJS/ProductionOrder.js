@@ -275,6 +275,9 @@ function ResetProductionOrder() {
             if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
             }
+            else if ($('#LatestApprovalStatus').val() == 4) {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved");
+            }
             else {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
             }

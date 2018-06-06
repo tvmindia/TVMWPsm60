@@ -435,10 +435,10 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@PurchaseOrdDate", SqlDbType.DateTime).Value = saleOrder.PurchaseOrdDateFormatted;
                         //cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyHeader;
                         //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
-                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleOrder.EmailSentYN;
+                        //cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleOrder.EmailSentYN;
                         cmd.Parameters.Add("@LatestApprovalID", SqlDbType.UniqueIdentifier).Value = saleOrder.LatestApprovalID;
                         cmd.Parameters.Add("@IsFinalApproved", SqlDbType.Bit).Value = saleOrder.IsFinalApproved;
-                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleOrder.EmailSentTo;
+                        //cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleOrder.EmailSentTo;
                         cmd.Parameters.Add("@TermReferenceNo", SqlDbType.VarChar, 25).Value = saleOrder.TermReferenceNo;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = saleOrder.DetailXML;
                         cmd.Parameters.Add("@OtherChargeDetailXML", SqlDbType.Xml).Value = saleOrder.OtherChargeDetailXML;
