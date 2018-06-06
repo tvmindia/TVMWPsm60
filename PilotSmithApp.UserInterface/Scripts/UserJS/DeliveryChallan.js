@@ -135,7 +135,7 @@ function BindOrReloadDeliveryChallanTable(action) {
                {
                    "data": "ApprovalStatus.Description", render: function (data, type, row) {
                        debugger;
-                       return "<b>Appr.Status-</b>" + data + "</br>"  +(row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '');
+                       return "<b>Appr.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '');
                    }, "defaultContent": "<i>-</i>"
                },
 
