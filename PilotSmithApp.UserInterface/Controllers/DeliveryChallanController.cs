@@ -343,7 +343,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             ProductSpec = productionOrderDetailVM.ProductSpec,
                                                             OrderQty = productionOrderDetailVM.OrderQty,
                                                             UnitCode = productionOrderDetailVM.UnitCode,
-                                                            DelvQty = productionOrderDetailVM.DelvQty,
+                                                            DelvQty = productionOrderDetailVM.DelvQty==null?0:productionOrderDetailVM.DelvQty,
                                                             SpecTag = productionOrderDetailVM.SpecTag,
                                                             PrevDelQty=productionOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()
@@ -396,7 +396,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             ProductSpec = saleOrderDetailVM.ProductSpec,
                                                             OrderQty = saleOrderDetailVM.Qty,
                                                             UnitCode = saleOrderDetailVM.UnitCode,
-                                                            DelvQty = saleOrderDetailVM.DelvQty,
+                                                            DelvQty = saleOrderDetailVM.DelvQty == null?0:saleOrderDetailVM.DelvQty,
                                                             SpecTag = saleOrderDetailVM.SpecTag,
                                                             PrevDelQty=saleOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()

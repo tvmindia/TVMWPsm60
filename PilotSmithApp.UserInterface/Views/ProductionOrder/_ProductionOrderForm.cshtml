@@ -125,11 +125,11 @@
                         <div class="divCustomerSelectList">
                             @if (Model.IsUpdate || Model.SaleOrderID != null)
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "", disabled = true })
                             }
                             else
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                                @Html.Action("CustomerSelectList", "Customer", new { required = "" })
                             }
                         </div>
                     </div>

@@ -424,12 +424,13 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
             },
              {
                  "data": "DelvQty", render: function (data, type, row) {
-                     if (row.DelvQty > 0)
-                     {
+                     //if (row.DelvQty > 0)
+                     //{
+                     //return row.OrderQty-row.PrevDelQty
                          return data + " " + row.Unit.Description
-                     }
-                     else
-                         return 0 + " " + row.Unit.Description
+                     //}
+                     //else
+                     //   return 0 + " " + row.Unit.Description
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
