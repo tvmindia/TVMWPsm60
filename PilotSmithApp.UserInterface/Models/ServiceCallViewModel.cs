@@ -12,7 +12,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Service Call No")]
         public string ServiceCallNo { get; set; }
         public DateTime ServiceCallDate { get; set; }
-        public TimeSpan? ServiceCallTime { get; set; }
+        public DateTime? ServiceCallTime { get; set; }
         [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Attended By")]

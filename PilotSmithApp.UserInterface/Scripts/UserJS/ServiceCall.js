@@ -116,14 +116,17 @@ function BindOrReloadServiceCallTable(action) {
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "Employee.Name", "defaultContent": "<i>-</i>" },
                { "data": "ServicedByName", "defaultContent": "<i>-</i>" },//4
-               { "data": "ServicedDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },//6
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               { "data": "ServiceDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "DocumentStatus.Description", render: function (data, type, row) {
+                       return "<b>Doc.Status-</b>" + (data == null ? " " : data) + "</br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCall(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                          { className: "text-left", "targets": [0,3,4,6,7] },
-                          { className: "text-center", "targets": [5,8] },                           
+                          { className: "text-left", "targets": [0,3,4,6] },
+                          { className: "text-center", "targets": [5,7] },                           
 
             ],
             destroy: true,
@@ -264,6 +267,17 @@ function EditServiceCallDetail(this_Obj) {
                 });
             }
             $('#FormServiceCallDetail #ProductSpec').val(serviceCallDetail.ProductSpec);
+            switch (serviceCallDetail.GuaranteeYN) {
+                case true:
+                    serviceCallDetail.GuaranteeYN = 'true'
+                    break;
+                case true:
+                    serviceCallDetail.GuaranteeYN = 'true'
+                    break;
+                default:
+                    serviceCallDetail.GuaranteeYN = ''
+                    break;
+            }
             $('#FormServiceCallDetail #GuaranteeYN').val(serviceCallDetail.GuaranteeYN);
             $('#FormServiceCallDetail #ServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
             $('#FormServiceCallDetail #InstalledDate').val(serviceCallDetail.InstalledDateFormatted);
@@ -327,12 +341,13 @@ function CalculateTotal() {
         var SGST = parseFloat(serviceCallChargeDetailList[i].SGSTPerc != "" ? serviceCallChargeDetailList[i].SGSTPerc : 0);
         var IGST = parseFloat(serviceCallChargeDetailList[i].IGSTPerc != "" ? serviceCallChargeDetailList[i].IGSTPerc : 0);
         var CGSTAmt = parseFloat(serviceCallChargeDetailList[i].ChargeAmount * CGST / 100);
-        var SGSTAmt = parseFloat(serviceCallChargeDetailList[i].ChargeAmount * SGST / 100)
-        var IGSTAmt = parseFloat(serviceCallChargeDetailList[i].ChargeAmount * IGST / 100)
-        var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-        var Total = roundoff(parseFloat(serviceCallChargeDetailList[i].ChargeAmount) + parseFloat(GSTAmt))
-        GrandTotal = roundoff(parseFloat(GrandTotal) + parseFloat(Total))
-        TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
+        var SGSTAmt = parseFloat(serviceCallChargeDetailList[i].ChargeAmount * SGST / 100);
+        var IGSTAmt = parseFloat(serviceCallChargeDetailList[i].ChargeAmount * IGST / 100);
+        var AddlTaxAmt = parseFloat(serviceCallChargeDetailList[i].AddlTaxAmt);
+        var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt));
+        var Total = roundoff(parseFloat(serviceCallChargeDetailList[i].ChargeAmount) + parseFloat(GSTAmt) + parseFloat(AddlTaxAmt));
+        GrandTotal = roundoff(parseFloat(GrandTotal) + parseFloat(Total));
+        TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt));
         OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(serviceCallChargeDetailList[i].ChargeAmount))
     }
     $('#lblTaxTotal').text(TaxTotal);
@@ -363,7 +378,7 @@ function BindServiceCallDetailList(id) {
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "true") { return "Yes" } else { return "No" } }, "defaultContent": "<i></i>" },
+             { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "true") { return "Yes" } else if (data === "false") { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "InstalledDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DocumentStatus.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCallDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' },
@@ -639,7 +654,8 @@ function AddServiceCallChargeDetailToList() {
                     serviceCallChargeDetailList[0].CGSTPerc = $('#divModelCallChargesPopBody #hdnCGSTPerc').val();
                     serviceCallChargeDetailList[0].SGSTPerc = $('#divModelCallChargesPopBody #hdnSGSTPerc').val();
                     serviceCallChargeDetailList[0].IGSTPerc = $('#divModelCallChargesPopBody #hdnIGSTPerc').val();
-                    serviceCallChargeDetailList[0].AddlTaxPerc = $('#divModelCallChargesPopBody #AddlTaxPerc').val();
+                    var AddlTaxPerc = ($('#divModelCallChargesPopBody #AddlTaxPerc').val() === "") ? 0 : $('#divModelCallChargesPopBody #AddlTaxPerc').val();
+                    serviceCallChargeDetailList[0].AddlTaxPerc = AddlTaxPerc;
                     serviceCallChargeDetailList[0].AddlTaxAmt = $('#divModelCallChargesPopBody #AddlTaxAmt').val();
                     ClearCalculatedFields();
                     _dataTable.ServiceCallChargeDetailList.clear().rows.add(serviceCallChargeDetailList).draw(false);
@@ -685,7 +701,8 @@ function AddServiceCallChargeDetailToList() {
                             ServiceCallChargeDetailVM.CGSTPerc = $('#divModelCallChargesPopBody #hdnCGSTPerc').val();
                             ServiceCallChargeDetailVM.SGSTPerc = $('#divModelCallChargesPopBody #hdnSGSTPerc').val();
                             ServiceCallChargeDetailVM.IGSTPerc = $('#divModelCallChargesPopBody #hdnIGSTPerc').val();
-                            ServiceCallChargeDetailVM.AddlTaxPerc = $('#divModelCallChargesPopBody #AddlTaxPerc').val();
+                            var AddlTaxPerc = ($('#divModelCallChargesPopBody #AddlTaxPerc').val() === "") ? 0 : $('#divModelCallChargesPopBody #AddlTaxPerc').val();
+                            ServiceCallChargeDetailVM.AddlTaxPerc = AddlTaxPerc;
                             ServiceCallChargeDetailVM.AddlTaxAmt = $('#divModelCallChargesPopBody #AddlTaxAmt').val();
                             _dataTable.ServiceCallChargeDetailList.row.add(ServiceCallChargeDetailVM).draw(true);
                             CalculateTotal();

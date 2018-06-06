@@ -11,7 +11,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid ID { get; set; }
         public string ServiceCallNo { get; set; }
         public DateTime ServiceCallDate { get; set; }
-        public TimeSpan? ServiceCallTime { get; set; }
+        public DateTime? ServiceCallTime { get; set; }
         public Guid? CustomerID { get; set; }
         public Guid? AttendedBy { get; set; }
         public string CalledPersonName { get; set; }
