@@ -119,7 +119,7 @@ function BindOrReloadServiceCallTable(action) {
                { "data": "ServiceDateFormatted", "defaultContent": "<i>-</i>" },
                {
                    "data": "DocumentStatus.Description", render: function (data, type, row) {
-                       return "<b>Doc.Status-</b>" + (data == null ? " " : data) + "</br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
+                       return "<b>Doc.Status-</b>" + (data == null ? " " : data) + ", </br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCall(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
@@ -188,11 +188,11 @@ function AddServiceCall() {
     OnServerCallBegin();
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
+            OnServerCallComplete();
             openNav();
+            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
             BindServiceCallChargeDetailList(_emptyGuid);
             BindServiceCallDetailList(_emptyGuid);
-            OnServerCallComplete();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -206,15 +206,16 @@ function EditServiceCall(this_Obj) {
     $('#lblServiceCallInfo').text(ServiceCall.ServiceCallNo);
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + ServiceCall.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
+            OnServerCallComplete();
             openNav();
+            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
             BindServiceCallDetailList(ServiceCall.ID);
             BindServiceCallChargeDetailList(ServiceCall.ID)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(ServiceCall.ID);
-            CalculateTotal()
-            OnServerCallComplete();
+            CalculateTotal();
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -245,7 +246,7 @@ function EditServiceCallDetail(this_Obj) {
         _datatablerowindex = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).index();
         var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
         $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail", function () {
-            $('#lblModelPopServiceCall').text('ServiceCall Detail')
+            $('#lblModelPopServiceCall').text('Service Call Detail')
             $('#FormServiceCallDetail #IsUpdate').val('True');
             $('#FormServiceCallDetail #ID').val(serviceCallDetail.ID);
             $("#FormServiceCallDetail #ProductID").val(serviceCallDetail.ProductID)
@@ -296,7 +297,7 @@ function EditServiceCallChargeDetail(this_Obj) {
         var serviceCallChargeDetail = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).data();
         $("#divModelCallChargesPopBody").load("ServiceCall/AddServiceCallCharge", function () {
             debugger;
-            $('#lblModelPopCallCharges').text('OtherCharges Detail')
+            $('#lblModelPopCallCharges').text('Service Call Charges Detail')
             $('#FormServiceCallChargeDetail #IsUpdate').val('True');
             $('#FormServiceCallChargeDetail #ID').val(serviceCallChargeDetail.ID);
             $("#FormServiceCallChargeDetail #OtherChargeCode").val(serviceCallChargeDetail.OtherChargeCode);
@@ -414,7 +415,7 @@ function AddServiceCallDetailToList() {
         $("#FormServiceCallDetail").submit(function () { });
 
         if ($('#FormServiceCallDetail #IsUpdate').val() == 'True') {
-            if ($('#ProductID').val() != "")  {
+            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').val() != "")) {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                 serviceCallDetailList[_datatablerowindex].Product = new Object();
@@ -437,9 +438,15 @@ function AddServiceCallDetailToList() {
                 $('#divModelPopServiceCall').modal('hide');
                 _datatablerowindex = -1;
             }
+            else {
+                $('#msgInstalledDate').show();
+                $('#msgInstalledDate').change(function () {
+                    if ($('#msgInstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
+                });
+            }
         }
         else {
-            if ($('#ProductID').val() != "") {
+            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').val() != "")) {
                 if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
@@ -489,6 +496,12 @@ function AddServiceCallDetailToList() {
                             $('#divModelPopServiceCall').modal('hide');
                     }
                 }
+            }
+            else {
+                $('#msgInstalledDate').show();
+                $('#msgInstalledDate').change(function () {
+                    if ($('#msgInstalledDate').val() !== "") { $('#msgInstalledDate').hide(); }
+                });
             }
         }
         $('[data-toggle="popover"]').popover({
