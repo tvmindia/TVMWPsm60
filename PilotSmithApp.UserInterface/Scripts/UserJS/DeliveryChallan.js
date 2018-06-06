@@ -207,12 +207,13 @@ function AddDeliveryChallan() {
         
         if (statusTxt == "success")
         {
-            $('#lblDeliveryChallanInfo').text('<<DeliveryChallan No.>>');
-            ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Add");
-            BindDeliveryChallanDetailList(_emptyGuid, false, false);
             OnServerCallComplete();
             //resides in customjs for sliding       
             openNav();
+            $('#lblDeliveryChallanInfo').text('<<DeliveryChallan No.>>');
+            ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Add");
+            BindDeliveryChallanDetailList(_emptyGuid, false, false);
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -228,6 +229,12 @@ function EditDeliveryChallan(this_Obj) {
     //this will return form body(html)
     $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + DeliveryChallan.ID + "&saleOrderID=" + DeliveryChallan.SaleOrderID + "&prodOrderID=" + DeliveryChallan.ProdOrderID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            OnServerCallComplete();
+            //resides in customjs for sliding
+
+            //$("#divDeliveryChallanForm #SaleOrderID").prop('disabled', true);
+            //$("#divDeliveryChallanForm #ProdOrderID").prop('disabled', true);
+            openNav();
             if ($('#IsDocLocked').val() == "True") {
                 ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit");
             }
@@ -238,12 +245,7 @@ function EditDeliveryChallan(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(DeliveryChallan.ID);
-            OnServerCallComplete();
-            //resides in customjs for sliding
-
-            //$("#divDeliveryChallanForm #SaleOrderID").prop('disabled', true);
-            //$("#divDeliveryChallanForm #ProdOrderID").prop('disabled', true);
-            openNav();
+           
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

@@ -106,6 +106,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.PSAUser = new PSAUser();
                                         saleInvoice.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : saleInvoice.PSAUser.LoginName);
                                         saleInvoice.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : saleInvoice.EmailSentYN);
+                                        saleInvoice.Quotation = new Quotation();
+                                        saleInvoice.QuoteID= (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleInvoice.QuoteID);
+                                        saleInvoice.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : saleInvoice.Quotation.QuoteNo);
+                                        saleInvoice.SaleOrder = new SaleOrder();
+                                        saleInvoice.QuoteID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.QuoteID);
+                                        saleInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : saleInvoice.SaleOrder.SaleOrderNo);
                                     }
                                     saleInvoiceList.Add(saleInvoice);
                                 }
