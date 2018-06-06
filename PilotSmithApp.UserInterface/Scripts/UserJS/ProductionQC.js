@@ -225,7 +225,13 @@ function EditProductionQC(this_Obj) {
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID + "&productionOrderID=" + ProductionQC.ProdOrderID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //$('#CustomerID').trigger('change');
-            ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
+            }
+            else {
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument");
+            }
+            
             BindProductionQCDetailList(ProductionQC.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
