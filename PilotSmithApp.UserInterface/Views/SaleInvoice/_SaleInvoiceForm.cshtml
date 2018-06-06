@@ -235,14 +235,14 @@
                                     <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
                                 }
                             </div>*@
-                        @*<div class="form-group col-md-12">
+                        <div class="form-group col-md-12">
                                 <div class="rightAmtCaption">Branch</div>
                             </div>
                             <div class="form-group col-md-12">
                                 <div class="lblStatusDisplay">@Model.Branch.Description</div>
-                            </div>*@
+                            </div>
 
-                        @*@if (Model.IsUpdate)
+                        @if (Model.IsUpdate)
                             {
                                 <div class="col-md-12"></div>
                                 <div class="form-group col-md-12">
@@ -271,7 +271,7 @@
                                         </div>
                                     }
                                 </div>
-                            }*@
+                            }
                     </div>
 
                 </div>
@@ -493,7 +493,6 @@
         try {
             //Fileupload
             $('#btnUpload').click(function () {
-                debugger;
                 //Pass the controller name
                 var FileObject = new Object;
                 if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
@@ -502,8 +501,6 @@
                 else {
                     FileObject.ParentID = ($('#SaleInvoiceForm #ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#SaleInvoiceForm #ID').val();
                 }
-
-
                 FileObject.ParentType = "SaleInvoice";
                 FileObject.Controller = "FileUpload";
                 UploadFile(FileObject);
@@ -574,9 +571,11 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    debugger;
                     BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false);
                     BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false)
+                    CalculateTotal();
+                    $('#DocumentType').prop('disabled', true);
+                    $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });
@@ -592,10 +591,11 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    debugger;
                     BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true);
                     BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true)
                     CalculateTotal();
+                    $("input[type=radio][value=SaleOrder]").attr("disabled", true);
+                    $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });

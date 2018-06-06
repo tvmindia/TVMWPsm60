@@ -58,6 +58,13 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Invoice Date is missing")]
         public string SaleInvDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
+        public bool IsDocLocked { get; set; }
+        public string MailFrom { get; set; }
+        public string MailBodyFooter { get; set; }
+        public string MailContant { get; set; }
+        public bool EmailFlag { get; set; } 
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
         [Display(Name = "Expected Delivery Date")]
@@ -68,36 +75,72 @@ namespace PilotSmithApp.UserInterface.Models
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
+        public BranchViewModel Branch { get; set; }
         public List<SaleInvoiceDetailViewModel> SaleInvoiceDetailList { get; set; }
         public List<SaleInvoiceOtherChargeViewModel> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> SaleOrderSelectList { get; set; }
+        public AreaViewModel Area { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public string ReferenceNo { get; set; }
     }
     public class SaleInvoiceAdvanceSearchViewModel
     {
         public string SearchTerm { get; set; }
-        [Display(Name = "From Date")]
-        public string FromDate { get; set; }
-        [Display(Name = "To Date")]
-        public string ToDate { get; set; }
+        [Display(Name = "Sale Invoice From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Sale Invoice To")]
+        public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        [Display(Name = "Approval status")]
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Email Sent (Y/N)")]
+        public string AdvEmailSentStatus { get; set; }
     }
     public class SaleInvoiceDetailViewModel
     {
         public Guid ID { get; set; }
         public Guid? SaleInvID { get; set; }
+        [Display(Name = "Product")]
         public Guid? ProductID { get; set; }
+        [Display(Name = "Product Model")]
         public Guid? ProductModelID { get; set; }
+        [Display(Name = "Product Spec")]
         public string ProductSpec { get; set; }
+        [Display(Name = "Quantity")]
         public decimal? Qty { get; set; }
+        [Display(Name = "Unit")]
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
+        [Display(Name = "Tax Type")]
         public int? TaxTypeCode { get; set; }
+        [Display(Name = "CGST Amount")]
         public decimal? CGSTPerc { get; set; }
+        [Display(Name = "SGST Amount")]
         public decimal? SGSTPerc { get; set; }
+        [Display(Name = "IGST Amount")]
         public decimal? IGSTPerc { get; set; }
+        [Display(Name = "Cess Percentage")]
         public decimal? CessPerc { get; set; }
+        [Display(Name = "Cess Amount")]
         public decimal? CessAmt { get; set; }
         //Additional Fields
         public bool IsUpdate { get; set; }
@@ -111,14 +154,22 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid SaleInvID { get; set; }
+        [Display(Name = "Other Charge")]
         public int? OtherChargeCode { get; set; }
         [Required(ErrorMessage = "Charge Amount is missing")]
+        [Display(Name = "Charge Amount")]
         public decimal? ChargeAmount { get; set; }
+        [Display(Name = "Tax Type")]
         public int? TaxTypeCode { get; set; }
+        [Display(Name = "CGST Amount")]
         public decimal CGSTPerc { get; set; }
+        [Display(Name = "SGST Amount")]
         public decimal SGSTPerc { get; set; }
+        [Display(Name = "IGST Amount")]
         public decimal IGSTPerc { get; set; }
+        [Display(Name = "Additional Tax Percentage")]
         public decimal AddlTaxPerc { get; set; }
+        [Display(Name = "Additional Tax Amount")]
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional Fields

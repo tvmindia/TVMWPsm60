@@ -46,18 +46,42 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int TotalCount { get; set; }
         public string ExpectedDelvDateFormatted { get; set; }
         public string PurchaseOrdDateFormatted { get; set; }
+        public string MailContant { get; set; }
+        public string MailBodyFooter { get; set; }
+        public string MailFrom { get; set; }
+        public string DocumentType { get; set; }
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
+        public Branch Branch { get; set; }
         public List<SaleInvoiceOtherCharge> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SaleInvoiceDetail> SaleInvoiceDetailList { get; set; }
+        public Area Area { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public string ReferenceNo { get; set; }
     }
     public class SaleInvoiceAdvanceSearch
     {
         public string SearchTerm { get; set; }
-        public string FromDate { get; set; }
-        public string ToDate { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public Area Area { get; set; }
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public int? AdvApprovalStatusCode { get; set; }
+        public string AdvEmailSentStatus { get; set; }
     }
     public class SaleInvoiceDetail
     {

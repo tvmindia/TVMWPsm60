@@ -179,16 +179,21 @@ function EditApproverMaster(this_obj) {
     //$('#h3ModelMasterContextLabel').text('Edit Approver')
     //$('#divModelMasterPopUp').modal('show');
     //$('#hdnMasterCall').val('MSTR');
-    $("#divMasterBody").load("Approver/MasterPartial?masterCode=" + approverVM.ID, function () {
-        $('#hdnMasterCall').val('MSTR');
-        $('#lblModelMasterContextLabel').text('Edit Approval Information')
-        $('#divModelMasterPopUp').modal('show');
+    $("#divMasterBody").load("Approver/MasterPartial?masterCode=" + approverVM.ID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel').text('Edit Approval Information')
+            $('#divModelMasterPopUp').modal('show');
 
-        if ($('#IsDefault').is(":checked")) {
-            $('#IsDefault').prop("disabled", true);
+            if ($('#IsDefault').is(":checked")) {
+                $('#IsDefault').prop("disabled", true);
+            }
+            else {
+                $('#IsDefault').prop("disabled", false);
+            }
         }
         else {
-            $('#IsDefault').prop("disabled", false);
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
     });
    

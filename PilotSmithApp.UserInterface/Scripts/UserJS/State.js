@@ -124,10 +124,15 @@ function ExportStateData() {
 function EditStateMaster(thisObj) {
     debugger;
     StateVM = _dataTables.StateList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("State/MasterPartial?masterCode=" + StateVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit State Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("State/MasterPartial?masterCode=" + StateVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblModelMasterContextLabel').text('Edit State Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val('MSTR');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeleteStateMaster(thisObj) {

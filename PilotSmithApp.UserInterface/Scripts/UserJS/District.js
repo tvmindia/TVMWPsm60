@@ -130,10 +130,15 @@ function ExportDistrictData() {
 function EditDistrictMaster(thisObj) {
     debugger;
     DistrictVM = _dataTables.DistrictList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("District/MasterPartial?masterCode=" + DistrictVM.Code, function () {
-        $('#lblModelMasterContextLabel').text('Edit District Information')
-        $('#divModelMasterPopUp').modal('show');
-        $('#hdnMasterCall').val('MSTR');
+    $("#divMasterBody").load("District/MasterPartial?masterCode=" + DistrictVM.Code, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            $('#lblModelMasterContextLabel').text('Edit District Information')
+            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall').val('MSTR');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function DeleteDistrictMaster(thisObj) {
