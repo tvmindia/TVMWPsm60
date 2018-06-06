@@ -88,6 +88,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimate.Enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : estimate.Enquiry.EnquiryNo);
                                         estimate.Customer = new Customer();
                                         estimate.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : estimate.Customer.CompanyName);
+                                        estimate.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : estimate.Customer.ContactPerson);
                                         estimate.DocumentStatus = new DocumentStatus();
                                         estimate.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? sdr["DocumentStatusDescription"].ToString() : estimate.DocumentStatus.Description);
                                         estimate.Branch = new Branch();

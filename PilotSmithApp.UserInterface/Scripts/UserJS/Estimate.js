@@ -133,9 +133,11 @@ function BindOrReloadEstimateTable(action) {
             columnDefs: [
                     { className: "text-left", "targets": [0,1,2,3,4,5,6] },
                     { className: "text-center", "targets": [7] },
-                    { "targets": [0,1,3,4, 5], "width": "10%" },
-                    { "targets": [2,6], "width": "20%" },
-                    {"targets": [7], "width": "2%"
+                    { "targets": [ 3, 4, 5], "width": "10%" },
+                    { "targets": [0,1], "width": "14%" },
+                    { "targets": [2], "width": "20%" },
+                    { "targets": [6], "width": "17%" },
+                    {"targets": [7], "width": "5%"
         },
             ],
             destroy: true,
