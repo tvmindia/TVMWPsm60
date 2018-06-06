@@ -235,7 +235,15 @@ function EditSaleOrder(this_Obj) {
             $('#lblSaleOrderInfo').text(SaleOrder.SaleOrderNo);
             //$('#CustomerID').trigger('change');
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+                if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+                }
+                else if ($('#LatestApprovalStatus').val() == 4) {
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved");
+                }
+                else {
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+                }
             }
             else {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
@@ -260,6 +268,12 @@ function ResetSaleOrder() {
                     $("#divSaleOrderForm #EstimateID").prop('disabled', true);
                     //resides in customjs for sliding
                     openNav();
+            }
+            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
+            }
+            else {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
             }
             BindSaleOrderDetailList($('#ID').val(), false, false);
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
