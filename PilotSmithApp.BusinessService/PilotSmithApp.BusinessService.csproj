@@ -48,6 +48,7 @@
     <Compile Include="Contract\IApproverBusiness.cs" />
     <Compile Include="Contract\IAreaBusiness.cs" />
     <Compile Include="Contract\IBankBusiness.cs" />
+    <Compile Include="Contract\IBillLocationBusiness.cs" />
     <Compile Include="Contract\IBranchBusiness.cs" />
     <Compile Include="Contract\ICarrierBusiness.cs" />
     <Compile Include="Contract\ICommonBusiness.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Service\ApproverBusiness.cs" />
     <Compile Include="Service\AreaBusiness.cs" />
     <Compile Include="Service\BankBusiness.cs" />
+    <Compile Include="Service\BillLocationBusiness.cs" />
     <Compile Include="Service\BranchBusiness.cs" />
     <Compile Include="Service\CarrierBusiness.cs" />
     <Compile Include="Service\CommonBusiness.cs" />

@@ -311,10 +311,10 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = quotation.PreparedBy;
                         cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = quotation.MailBodyHeader;
                         cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = quotation.MailBodyFooter;
-                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quotation.EmailSentYN;
+                        //cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quotation.EmailSentYN;
                         cmd.Parameters.Add("@LatestApprovalID", SqlDbType.UniqueIdentifier).Value = quotation.LatestApprovalID;
                         cmd.Parameters.Add("@IsFinalApproved", SqlDbType.Bit).Value = quotation.IsFinalApproved;
-                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar,-1).Value = quotation.EmailSentTo;
+                        //cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar,-1).Value = quotation.EmailSentTo;
                         cmd.Parameters.Add("@TermReferenceNo", SqlDbType.VarChar,25).Value = quotation.TermReferenceNo;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = quotation.DetailXML;
                         cmd.Parameters.Add("@OtherChargeDetailXML", SqlDbType.Xml).Value = quotation.OtherChargeDetailXML;

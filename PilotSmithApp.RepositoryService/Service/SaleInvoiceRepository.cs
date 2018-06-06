@@ -169,6 +169,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleInvoice.GeneralNotes);
                                     saleInvoice.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleInvoice.DocumentOwnerID);
                                     saleInvoice.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleInvoice.BranchCode);
+                                    saleInvoice.BillLocationCode = (sdr["BillingLocationCode"].ToString() != "" ? int.Parse(sdr["BillingLocationCode"].ToString()) : saleInvoice.BillLocationCode);
                                     saleInvoice.Branch = new Branch();
                                     saleInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : saleInvoice.Branch.Description);
                                     saleInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleInvoice.PreparedBy);
@@ -284,11 +285,13 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = saleInvoice.MailingAddress;
                         cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = saleInvoice.ShippingAddress;
                         cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleInvoice.DocumentStatusCode;
+                        cmd.Parameters.Add("@BillingLocationCode", SqlDbType.Int).Value = saleInvoice.BillLocationCode;
                         cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value = saleInvoice.ExpectedDelvDateFormatted;
                         cmd.Parameters.Add("@CashInvoiceYN", SqlDbType.Bit).Value = saleInvoice.CashInvoiceYN;
                         if (saleInvoice.PreparedBy != Guid.Empty)
                             cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = saleInvoice.PreparedBy;
                         cmd.Parameters.Add("@PurchaseOrdNo", SqlDbType.VarChar, 20).Value = saleInvoice.PurchaseOrdNo;
+                        cmd.Parameters.Add("@InvocieType", SqlDbType.VarChar, 20).Value = saleInvoice.InvocieType;
                         cmd.Parameters.Add("@PurchaseOrdDate", SqlDbType.DateTime).Value = saleInvoice.PurchaseOrdDateFormatted;
                         cmd.Parameters.Add("@BillSeriesCode", SqlDbType.Int).Value = saleInvoice.BillSeriesCode;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleInvoice.EmailSentYN;

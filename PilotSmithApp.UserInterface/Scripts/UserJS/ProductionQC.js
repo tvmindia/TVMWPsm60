@@ -17,7 +17,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-    $("#AdvAreaCode,#AdvCustomerID,#AdvPlantCode,#AdvBranchCode,#AdvDocumentStatusCode,#AdvDocumentOwnerID,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+    $("#AdvPlantCode,#AdvDocumentStatusCode,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
         dropdownParent: $(".divboxASearch")
     });
 
@@ -145,13 +145,13 @@ function BindOrReloadProductionQCTable(action) {
             columnDefs: [{ className: "text-right", "targets": [] },
                           { className: "text-left", "targets": [0,1,2, 3,4,5,6] },
                           { className: "text-center", "targets": [6] },
-                            { "targets": [0], "width": "13%" },
-                            { "targets": [1], "width": "10%" },
-                            { "targets": [2], "width": "15%" },
-                            { "targets": [3], "width": "10%" },           
-                            { "targets": [4], "width": "12%" },
-                             { "targets": [5], "width": "15%" },
-                             { "targets": [6], "width": "22%" },
+                            { "targets": [0], "width": "11%" },
+                            { "targets": [1], "width": "11%" },
+                            { "targets": [2], "width": "12%" },
+                            { "targets": [3], "width": "9%" },           
+                            { "targets": [4], "width": "9%" },
+                             { "targets": [5], "width": "14%" },
+                             { "targets": [6], "width": "24%" },
                              { "targets": [7], "width": "2%" },
 
                                               
