@@ -94,15 +94,8 @@
                         @Html.DropDownListFor(model => model.AdvDocumentOwnerID, Model.PSAUser.UserSelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                <div class="col-md-6 no-right-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.AdvApprovalStatusCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvApprovalStatusCode, Model.ApprovalStatus.ApprovalStatusSelectList, "Select approval status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
-                    </div>
-                </div>
-               <div class="col-md-6 no-left-padding">
+           
+               <div class="col-md-6 no-right-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.AdvEmailSentStatus, htmlAttributes: new { @class = "control-label" })
                 </div>
@@ -117,6 +110,15 @@
                     @Html.DropDownListFor(model => model.AdvEmailSentStatus, EmailStatus, "Select status", new { @class = "form-control newinput ", @style = "width:100 % !important", @id = "AdvEmailSentStatus" })
                 </div>
             </div>
+
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvApprovalStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvApprovalStatusCode, Model.ApprovalStatus.ApprovalStatusSelectList, "Select approval status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
 
 
 
