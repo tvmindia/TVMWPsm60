@@ -46,7 +46,9 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? DocumentOwnerID { get; set; }
         [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
+        [Display(Name = "Billing Location")]
         public int? BillLocationCode { get; set; }
+        [Display(Name = "Invocie Type")]
         public string InvocieType { get; set; }
         public decimal? Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
