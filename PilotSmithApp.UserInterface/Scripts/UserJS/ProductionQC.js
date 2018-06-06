@@ -138,7 +138,7 @@ function BindOrReloadProductionQCTable(action) {
                    }, "defaultContent": "<i>-</i>"
                },
 
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionQC(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
 
 
             ],
@@ -335,7 +335,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="'+ row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +row.Product.Name + "<br/>" + row.ProductModel.Name 
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -355,7 +355,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              },
              { "data": "QCDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i>__</i>" },
              { "data": "Employee.Name", render: function (data, type, row) { return data }, "defaultContent": "<i>__</i>" },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'-' },
              ],
              columnDefs: [
                  { "targets": [0], "width": "30%" },
@@ -369,8 +369,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
          });
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover',
-        'placement': 'top'
+        'trigger': 'hover'
     });
 }
 function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {

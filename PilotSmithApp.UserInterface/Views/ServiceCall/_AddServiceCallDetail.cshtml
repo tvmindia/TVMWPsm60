@@ -57,7 +57,7 @@
                 @Html.LabelFor(model => model.InstalledDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
-                @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id= "InstalledDate" } })
                 @Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -77,7 +77,7 @@
     </div>       
         @*</div>*@
         <div class="modal-footer d-flex justify-content-center">
-            <button class="btn btn-default" id="btnAddServiceCallDetail" onclick="AddServiceCallDetailList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            <button class="btn btn-default" id="btnAddServiceCallDetail" onclick="AddServiceCallDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
         </div>
 }
 <script>

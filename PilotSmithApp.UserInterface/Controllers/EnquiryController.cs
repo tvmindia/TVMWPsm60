@@ -49,19 +49,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
-            enquiryAdvanceSearchVM.Area = new AreaViewModel();
-            enquiryAdvanceSearchVM.Area.AreaSelectList = selectListItem;
-            enquiryAdvanceSearchVM.Customer = new CustomerViewModel();
-            enquiryAdvanceSearchVM.Customer.CustomerSelectList = selectListItem;
-            enquiryAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
-            enquiryAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = selectListItem;
-            enquiryAdvanceSearchVM.Branch = new BranchViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
-            enquiryAdvanceSearchVM.Branch.BranchList = selectListItem;
             enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
-            enquiryAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            enquiryAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
             return View(enquiryAdvanceSearchVM);
         }
         #region Enquiry Form
@@ -95,6 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.DocumentStatus.Description = "OPEN";
                     enquiryVM.Branch = new BranchViewModel();
                     enquiryVM.Branch.Description = "-";
+                    enquiryVM.IsDocLocked = false;
                     enquiryVM.Customer = new CustomerViewModel
                     {
                         Titles = new TitlesViewModel()

@@ -63,20 +63,16 @@ namespace PilotSmithApp.UserInterface.Controllers
             quotationAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
             quotationAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
             quotationAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //List<SelectListItem> selectListItem = null;
             List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-
-            if (PSAUserVMList != null)
-                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PSAuVM.UserName,
-                        Value = PSAuVM.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            quotationAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
+            quotationAdvanceSearchVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
+                                                      select new SelectListItem
+                                                      {
+                                                          Text = PSAuserVM.UserName,
+                                                          Value = PSAuserVM.ID.ToString(),
+                                                          Selected = false
+                                                      }).ToList() : new List<SelectListItem>();       
             return View(quotationAdvanceSearchVM);
             //return View();
         }
@@ -106,6 +102,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "OPEN";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
+                    quotationVM.IsDocLocked = false;
                 }
                 else if(id == Guid.Empty && estimateID != null)
                 {
@@ -120,6 +117,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "OPEN";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
+                    quotationVM.IsDocLocked = false;
                 }
                 quotationVM.Customer = new CustomerViewModel
                 {
@@ -491,6 +489,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Calculate GST
         #region Email Quotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult EmailQuotation(QuotationViewModel quotationVM)
         {
             bool emailFlag = quotationVM.EmailFlag;

@@ -70,20 +70,17 @@ namespace PilotSmithApp.UserInterface.Controllers
             deliveryChallanVM.ApprovalStatus = new ApprovalStatusViewModel();
             deliveryChallanVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
             deliveryChallanVM.PSAUser = new PSAUserViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //List<SelectListItem> selectListItem = null;
             List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-
-            if (PSAUserVMList != null)
-                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PSAuVM.UserName,
-                        Value = PSAuVM.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            deliveryChallanVM.PSAUser.UserSelectList = selectListItem;
+            deliveryChallanVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
+                                                             select new SelectListItem
+                                                             {
+                                                                 Text = PSAuserVM.UserName,
+                                                                 Value = PSAuserVM.ID.ToString(),
+                                                                 Selected = false
+                                                             }).ToList() : new List<SelectListItem>();
+         
             return View(deliveryChallanVM);
         }
 
@@ -121,9 +118,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     deliveryChallanVM.SaleOrderID = saleOrderID;
                     deliveryChallanVM.CustomerID = saleOrderVM.CustomerID;
-                    deliveryChallanVM.BranchCode = saleOrderVM.BranchCode;
+                    deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && prodOrderID != null)
                 {
@@ -134,17 +132,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.ProductionOrderSelectList = _productionOrderBusiness.GetProductionOrderForSelectList(prodOrderID);
                     deliveryChallanVM.ProdOrderID = prodOrderID;
                     deliveryChallanVM.CustomerID = productionOrderVM.CustomerID;
-                    deliveryChallanVM.BranchCode = productionOrderVM.BranchCode;
                     deliveryChallanVM.SaleOrderID = null;
                     deliveryChallanVM.DocumentType = "ProductionOrder";
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.IsDocLocked = false;
                 }
                 else
                 {
                     deliveryChallanVM = new DeliveryChallanViewModel();
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.SaleOrderID = null;
+                    deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
+                    deliveryChallanVM.IsDocLocked = false;
+                    deliveryChallanVM.IsUpdate = false;
+                    deliveryChallanVM.ID = Guid.Empty;
                 }
             }
             catch (Exception ex)
@@ -520,15 +523,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Title = "Delete";
                     toolboxVM.deletebtn.Event = "DeleteDeliveryChallan();";
 
-                    toolboxVM.EmailBtn.Visible = true;
-                    toolboxVM.EmailBtn.Text = "Email";
-                    toolboxVM.EmailBtn.Title = "Email";
-                    toolboxVM.EmailBtn.Event = "EmailDeliveryChallan();";
+                    //toolboxVM.EmailBtn.Visible = true;
+                    //toolboxVM.EmailBtn.Text = "Email";
+                    //toolboxVM.EmailBtn.Title = "Email";
+                    //toolboxVM.EmailBtn.Event = "EmailDeliveryChallan();";
 
-                    toolboxVM.SendForApprovalBtn.Visible = true;
-                    toolboxVM.SendForApprovalBtn.Text = "Send";
-                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
-                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    //toolboxVM.SendForApprovalBtn.Visible = true;
+                    //toolboxVM.SendForApprovalBtn.Text = "Send";
+                    //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    //toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
                     break;
 
                 case "LockDocument":

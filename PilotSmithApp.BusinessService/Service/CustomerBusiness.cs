@@ -34,13 +34,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             List<Titles> titlesList = _customerRepository.GetAllTitles();
-            return selectListItem = (from titles in titlesList
-                                     select new SelectListItem
-                                     {
-                                         Text = titles.Title,
-                                         Value = titles.Title,
-                                         Selected = false
-                                     }).ToList();
+            return selectListItem = titlesList != null ? (from titles in titlesList
+                                                          select new SelectListItem
+                                                          {
+                                                              Text = titles.Title,
+                                                              Value = titles.Title,
+                                                              Selected = false
+                                                          }).ToList() : new List<SelectListItem>();
         }
         public Customer GetCustomer(Guid id)
         {

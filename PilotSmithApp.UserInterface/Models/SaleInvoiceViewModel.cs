@@ -13,6 +13,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Invoice No")]
         public string SaleInvNo { get; set; }
         [Display(Name = "Reference No")]
+        [StringLength(20, ErrorMessage = "Ref.No Cannot be longer than 20 characters")]
         public string SaleInvRefNo { get; set; }
         public DateTime SaleInvDate { get; set; }
         public Guid? QuoteID { get; set; }
@@ -32,6 +33,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string PurchaseOrdNo { get; set; }
         public DateTime? PurchaseOrdDate { get; set; }
         public int? BillSeriesCode { get; set; }
+        [Display(Name = "Email Sent")]
         public bool? EmailSentYN { get; set; }
         public Guid? LatestApprovalID { get; set; }
         public int? LatestApprovalStatus { get; set; }
@@ -42,26 +44,40 @@ namespace PilotSmithApp.UserInterface.Models
         public string GeneralNotes { get; set; }
         [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
+        [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
         public decimal? Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
         //additional Fields
         public string DocumentType { get; set; }
         public string DetailJSON { get; set; }
+        public string OtherChargesDetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
         [Display(Name = "Invoice Date")]
+
+        [Required(ErrorMessage = "Invoice Date is missing")]
         public string SaleInvDateFormatted { get; set; }
         public bool IsUpdate { get; set; }
+        public bool IsDocLocked { get; set; }
+        public string MailFrom { get; set; }
+        public string MailBodyFooter { get; set; }
+        public string MailContant { get; set; }
+        public bool EmailFlag { get; set; } 
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
         [Display(Name = "Expected Delivery Date")]
+        [Required(ErrorMessage = "Expected Delivery Date is missing")]
         public string ExpectedDelvDateFormatted { get; set; }
         [Display(Name = "Purchase Order Date")]
         public string PurchaseOrdDateFormatted { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
+        public BranchViewModel Branch { get; set; }
         public List<SaleInvoiceDetailViewModel> SaleInvoiceDetailList { get; set; }
+        public List<SaleInvoiceOtherChargeViewModel> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> SaleOrderSelectList { get; set; }
     }
@@ -78,18 +94,29 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid? SaleInvID { get; set; }
+        [Display(Name = "Product")]
         public Guid? ProductID { get; set; }
+        [Display(Name = "Product Model")]
         public Guid? ProductModelID { get; set; }
+        [Display(Name = "Product Spec")]
         public string ProductSpec { get; set; }
+        [Display(Name = "Quantity")]
         public decimal? Qty { get; set; }
+        [Display(Name = "Unit")]
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
+        [Display(Name = "Tax Type")]
         public int? TaxTypeCode { get; set; }
+        [Display(Name = "CGST Amount")]
         public decimal? CGSTPerc { get; set; }
+        [Display(Name = "SGST Amount")]
         public decimal? SGSTPerc { get; set; }
+        [Display(Name = "IGST Amount")]
         public decimal? IGSTPerc { get; set; }
+        [Display(Name = "Cess Percentage")]
         public decimal? CessPerc { get; set; }
+        [Display(Name = "Cess Amount")]
         public decimal? CessAmt { get; set; }
         //Additional Fields
         public bool IsUpdate { get; set; }
@@ -103,13 +130,22 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid SaleInvID { get; set; }
+        [Display(Name = "Other Charge")]
         public int? OtherChargeCode { get; set; }
+        [Required(ErrorMessage = "Charge Amount is missing")]
+        [Display(Name = "Charge Amount")]
         public decimal? ChargeAmount { get; set; }
+        [Display(Name = "Tax Type")]
         public int? TaxTypeCode { get; set; }
+        [Display(Name = "CGST Amount")]
         public decimal CGSTPerc { get; set; }
+        [Display(Name = "SGST Amount")]
         public decimal SGSTPerc { get; set; }
+        [Display(Name = "IGST Amount")]
         public decimal IGSTPerc { get; set; }
+        [Display(Name = "Additional Tax Percentage")]
         public decimal AddlTaxPerc { get; set; }
+        [Display(Name = "Additional Tax Amount")]
         public decimal AddlTaxAmt { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional Fields

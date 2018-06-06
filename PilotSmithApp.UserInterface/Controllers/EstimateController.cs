@@ -48,18 +48,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EstimateAdvanceSearchViewModel estimateAdvanceSearchVM = new EstimateAdvanceSearchViewModel();
-            estimateAdvanceSearchVM.Area = new AreaViewModel();
-            estimateAdvanceSearchVM.Area.AreaSelectList = selectListItem;
-            estimateAdvanceSearchVM.Customer = new CustomerViewModel();
-            estimateAdvanceSearchVM.Customer.CustomerSelectList = selectListItem;
-            estimateAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
-            estimateAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = selectListItem;
-            estimateAdvanceSearchVM.Branch = new BranchViewModel();
-            estimateAdvanceSearchVM.Branch.BranchList = selectListItem;
             estimateAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST"); ;
-            estimateAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            estimateAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
+            estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST");
             return View(estimateAdvanceSearchVM);
         } 
 
@@ -89,6 +79,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "OPEN";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    estimateVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {
@@ -97,13 +88,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.IsUpdate = false;
                     estimateVM.ID = Guid.Empty;
                     estimateVM.CustomerID = enquiryVM.CustomerID;
-                    estimateVM.BranchCode = enquiryVM.BranchCode;
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
                     estimateVM.EnquiryID = enquiryID;
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
                     estimateVM.DocumentStatus.Description = "OPEN";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    estimateVM.IsDocLocked = false;
                 }
                 
             }

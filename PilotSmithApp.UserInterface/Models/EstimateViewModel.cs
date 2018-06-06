@@ -12,7 +12,8 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid ID { get; set; }
         [Display(Name = "Estimate No.")]
         public string EstimateNo { get; set; }
-        [Display(Name = "Estimate Ref No.")]        
+        [Display(Name = "Estimate Ref No.")]  
+        [StringLength(20,ErrorMessage ="Ref.No Cannot be longer than 20 characters")]      
         public string EstimateRefNo { get; set; }
         public DateTime EstimateDate { get; set; }
         [Display(Name = "Enquiry")]
@@ -77,22 +78,17 @@ namespace PilotSmithApp.UserInterface.Models
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Customer")]
         public Guid AdvCustomerID { get; set; }
-        public CustomerViewModel Customer { get; set; }
         [Display(Name = "Area")]
         public int? AdvAreaCode { get; set; }
-        public AreaViewModel Area { get; set; }
         [Display(Name = "Reffered By ")]
         public int? AdvReferencePersonCode { get; set; }
-        public ReferencePersonViewModel ReferencePerson { get; set; }
         [Display(Name = "Branch")]
         public int? AdvBranchCode { get; set; }
-        public BranchViewModel Branch { get; set; }
         [Display(Name = "Document Status")]
         public int? AdvDocumentStatusCode { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         [Display(Name = "Document Owner")]
         public Guid AdvDocumentOwnerID { get; set; }
-        public PSAUserViewModel PSAUser { get; set; }
     }
 
     public class EstimateDetailViewModel

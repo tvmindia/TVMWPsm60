@@ -64,7 +64,7 @@
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
 
-                        <div class="col-md-12 no-padding" id="divEnquirySelectList" >
+                        <div class="col-md-12 no-padding" id="divEnquirySelectList">
                             <div class="col-md-12">
                                 @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
                             </div>
@@ -84,7 +84,7 @@
                                 @Html.Label("Quotation", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)",@disabled="" })
+                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })
                             </div>
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
@@ -138,15 +138,15 @@
                         @Html.ValidationMessageFor(model => model.ExpectedDelvDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-               <div class="col-md-6 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.Action("BankSelectList", "Bank", new { required = "" })
+                        @Html.HiddenFor(model => model.BankCode, htmlAttributes: new { @class = "", @id = "hdnBankCode" })
+                    </div>
                 </div>
-                <div class="col-md-12">
-                    @Html.Action("BankSelectList", "Bank", new { required = "" })
-                    @Html.HiddenFor(model => model.BankCode, htmlAttributes: new { @class = "", @id = "hdnBankCode" })
-                </div>
-               </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
@@ -184,12 +184,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                    @if (!Model.IsDocLocked && Model.IsUpdate)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput">@Model.Branch.Description</span>
                         </div>
-                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divBranchSelectList">
+                                @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                            </div>
+                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                        </div>
+                    }
                 </div>
 
             </div>
@@ -287,7 +296,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @if (Model.IsUpdate || Model.EnquiryID != null||Model.QuoteID!=null)
+                            @if (Model.IsUpdate || Model.EnquiryID != null || Model.QuoteID != null)
                             {
                                 @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
                             }
@@ -334,9 +343,16 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">
                 SaleOrder Details
-                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                <a class="btn btn-openid pull-right" onclick="AddSaleOrderDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-
+                @if (Model.IsDocLocked || !Model.IsUpdate)
+                {
+                    <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                        <a class="btn btn-openid pull-right" onclick="AddSaleOrderDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                }
+                else
+                {
+                    <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                }
             </div>
 
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
@@ -372,7 +388,7 @@
                     </thead>
                 </table>
             </div>
-            
+
             <div class="col-md-5" style="padding-right:1.5%">
                 <table class="table dataTable no-footer DetailSummerybox">
                     <tbody>
@@ -392,7 +408,7 @@
                                 <label class="control-label " for="" id="lblTaxTotal">00.00</label>
                             </td>
                         </tr>
-                        
+
                         <tr>
                             <td style="text-align: right">
                                 <label class="control-label" for="lblCessAmount">Cess Amount</label>
@@ -461,19 +477,19 @@
                         @Html.ValidationMessageFor(model => model.PurchaseOrdDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                
+
             </div>
 
             <div class="form-group col-md-12">
                 @*<div class="col-md-4 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.CarrierCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.Action("CarrierSelectList", "Carrier", new { required = "" })
-                        @Html.HiddenFor(model => model.CarrierCode, htmlAttributes: new { @class = "", @id = "hdnCarrierCode" })
-                    </div>
-                </div>*@
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.CarrierCode, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.Action("CarrierSelectList", "Carrier", new { required = "" })
+                            @Html.HiddenFor(model => model.CarrierCode, htmlAttributes: new { @class = "", @id = "hdnCarrierCode" })
+                        </div>
+                    </div>*@
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
@@ -634,7 +650,7 @@
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
                     ClearCalculatedFields();
-                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false,true);
+                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false, true);
                     BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true);
                     CalculateTotal();
                     debugger;

@@ -62,20 +62,16 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
             productionOrderAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
             productionOrderAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+           // List<SelectListItem> selectListItem = null;
             List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-
-            if (PSAUserVMList != null)
-                foreach (PSAUserViewModel PSAuVM in PSAUserVMList)
-                {
-                    selectListItem.Add(new SelectListItem
-                    {
-                        Text = PSAuVM.UserName,
-                        Value = PSAuVM.ID.ToString(),
-                        Selected = false
-                    });
-                }
-            productionOrderAdvanceSearchVM.PSAUser.UserSelectList = selectListItem;
+            productionOrderAdvanceSearchVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
+                                                      select new SelectListItem
+                                                      {
+                                                          Text = PSAuserVM.UserName,
+                                                          Value = PSAuserVM.ID.ToString(),
+                                                          Selected = false
+                                                      }).ToList() : new List<SelectListItem>();           
 
             return View(productionOrderAdvanceSearchVM);
         }
@@ -104,6 +100,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.SaleOrderSelectList = new List<SelectListItem>();
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
                     productionOrderVM.DocumentStatus.Description = "OPEN";
+                    productionOrderVM.Branch = new BranchViewModel();
+                    productionOrderVM.Branch.Description = "-";
+                    productionOrderVM.IsDocLocked = false;
                 }     
                 else if(id==Guid.Empty && saleOrderID!=null)
                 {
@@ -114,9 +113,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
                     productionOrderVM.SaleOrderID = saleOrderID;
                     productionOrderVM.CustomerID = saleOrderVM.CustomerID;
-                    productionOrderVM.BranchCode = saleOrderVM.BranchCode;
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
                     productionOrderVM.DocumentStatus.Description = "OPEN";
+                    productionOrderVM.Branch = new BranchViewModel();
+                    productionOrderVM.IsDocLocked = false;
+                    productionOrderVM.Branch.Description = "-";
                 }           
             }
             catch(Exception ex)
@@ -431,6 +432,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion UpdateProductionOrderEmailInfo
 
         #region Email ProductionOrder
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
         public ActionResult EmailProductionOrder(ProductionOrderViewModel productionOrderVM)
         {
             bool emailFlag = productionOrderVM.EmailFlag;

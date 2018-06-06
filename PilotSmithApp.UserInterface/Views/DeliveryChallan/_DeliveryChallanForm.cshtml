@@ -172,12 +172,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                    @if (!Model.IsDocLocked && Model.IsUpdate)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput">@Model.Branch.Description</span>
                         </div>
-                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divBranchSelectList">
+                                @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                            </div>
+                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                        </div>
+                    }
                 </div>
 
                 <div class="col-md-6 no-padding">
@@ -202,7 +211,7 @@
                     <div class="Shadow2data clearfix">
 
                         <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus)</div>
+                            <div class="rightAmtCaption">Document Status</div>
                         </div>
                         <div class="form-group col-md-12">
 
@@ -216,7 +225,7 @@
                             }
                         </div>
 
-                        <div class="form-group col-md-12">
+                        @*<div class="form-group col-md-12">
                             <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.EmailSentYN)</div>
                         </div>
                         <div class="form-group col-md-12">
@@ -233,7 +242,7 @@
                             {
                                 <div class="lblStatusDisplay">EMAIL NOT SEND</div>
                             }
-                        </div>
+                        </div>*@
                         @if (Model.IsUpdate)
                         {
                             <div class="form-group col-md-12">
@@ -292,8 +301,16 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">
                 DeliveryChallan Details
-                @*<a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>*@
-                <a class="btn btn-openid pull-right" onclick="AddDeliveryChallanDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                @*@if (Model.IsDocLocked || !Model.IsUpdate)
+                {
+                    <a class="btn btn-openid pull-right" onclick="AddDeliveryChallanDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+
+                }
+                else
+                {
+                    <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+
+                }*@
 
             </div>
 
@@ -478,7 +495,8 @@
                 $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&saleOrderID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
                     BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", false, true);
-
+                    $("input[type=radio][value=ProductionOrder]").attr("disabled", true);
+                    $("input[type=radio][value=ProductionOrder]").attr('title', "Production Order details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 
@@ -495,7 +513,8 @@
                 $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&prodOrderID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
                     BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true, false);
-
+                    $("input[type=radio][value=SaleOrder]").attr("disabled", true);
+                    $("input[type=radio][value=SaleOrder]").attr('title', "Sale Order details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 

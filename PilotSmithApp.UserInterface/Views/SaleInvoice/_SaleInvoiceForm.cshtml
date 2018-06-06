@@ -72,7 +72,7 @@
                 }
                 else
                 {
-                    if (Model.QuoteID != null)
+                    if (Model.QuoteID != null && Model.QuoteID != Guid.Empty)
                     {
                         <div class="col-md-12 no-padding" id="divQuotationSelectList">
                             <div class="col-md-12">
@@ -84,7 +84,7 @@
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
                     }
-                    if (Model.SaleOrderID != null)
+                    if (Model.SaleOrderID != null && Model.SaleOrderID!= Guid.Empty)
                     {
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
@@ -235,12 +235,12 @@
                                     <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
                                 }
                             </div>*@
-                        @*<div class="form-group col-md-12">
+                        <div class="form-group col-md-12">
                                 <div class="rightAmtCaption">Branch</div>
                             </div>
                             <div class="form-group col-md-12">
                                 <div class="lblStatusDisplay">@Model.Branch.Description</div>
-                            </div>*@
+                            </div>
 
                         @*@if (Model.IsUpdate)
                             {
@@ -335,6 +335,7 @@
             </div>
 
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+            @Html.HiddenFor(model => model.OtherChargesDetailJSON, htmlAttributes: new { @class = "" })
             <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
                 <table id="tblSaleInvoiceDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                     <thead>

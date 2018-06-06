@@ -140,7 +140,7 @@ function BindOrReloadDeliveryChallanTable(action) {
                },
 
 
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDeliveryChallan(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
 
             ],
             columnDefs: [
@@ -152,8 +152,8 @@ function BindOrReloadDeliveryChallanTable(action) {
                           { "targets": [3], "width": "10%" },
                           { "targets": [4], "width": "11%" },
                           { "targets": [5], "width": "15%" },
-                          { "targets": [6], "width": "22%" },
-                          { "targets": [7], "width": "2%" },
+                          { "targets": [6], "width": "18%" },
+                          { "targets": [7], "width": "8%" },
 
             ],
             destroy: true,
@@ -399,7 +399,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
 
@@ -431,7 +431,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> ':'-' },   //<a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
              ],
              columnDefs: [
                   { className: "text-left", "targets": [0] },
@@ -446,7 +446,6 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'top',
 
     });
 }
@@ -607,7 +606,6 @@ function AddDeliveryChallanDetailToList() {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'top',
 
     });
 

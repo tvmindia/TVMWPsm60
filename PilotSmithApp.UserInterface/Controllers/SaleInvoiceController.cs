@@ -21,14 +21,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         IBranchBusiness _branchBusiness;
         ISaleOrderBusiness _saleOrderBusiness;
         IQuotationBusiness _quotationBusiness;
+        ICommonBusiness _commonBusiness;
         public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness,
-           IQuotationBusiness quotationBusiness,ISaleOrderBusiness saleOrderBusiness)
+           IQuotationBusiness quotationBusiness,ISaleOrderBusiness saleOrderBusiness, ICommonBusiness commonBusiness)
         {
             _saleInvoiceBusiness = saleInvoiceBusiness;
             _customerBusiness = customerBusiness;
             _branchBusiness = branchBusiness;
             _quotationBusiness = quotationBusiness;
             _saleOrderBusiness = saleOrderBusiness;
+            _commonBusiness = commonBusiness;
         }
         // GET: SaleInvoice
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -59,6 +61,19 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(id));
                     saleInvoiceVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    saleInvoiceVM.IsDocLocked = saleInvoiceVM.DocumentOwners.Contains(appUA.UserName);
+
+                    if (saleInvoiceVM.QuoteID != Guid.Empty && saleInvoiceVM.QuoteID != null)
+                    {
+                        saleInvoiceVM.DocumentType = "Quotation";
+                        saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
+                    }
+                    if (saleInvoiceVM.SaleOrderID != null && saleInvoiceVM.SaleOrderID != Guid.Empty)
+                    {
+                        saleInvoiceVM.DocumentType = "SaleOrder";
+                        saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
+                    }
                 }
                 else if (id == Guid.Empty && quotationID != null)
                 {
@@ -75,6 +90,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description = "OPEN",
                     };
+                    saleInvoiceVM.Branch = new BranchViewModel();
+                    saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && saleorderID != null)
                 {
@@ -91,6 +109,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description = "OPEN",
                     };
+                    saleInvoiceVM.Branch = new BranchViewModel();
+                    saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.IsDocLocked = false;
                 }
                 else   
                 {
@@ -104,6 +125,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description = "OPEN",
                     };
+                    saleInvoiceVM.Branch = new BranchViewModel();
+                    saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.IsDocLocked = false;
                 }
                 saleInvoiceVM.Customer = new CustomerViewModel
                 {
@@ -567,15 +591,21 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
+                object ResultFromJS;
+                string ReadableFormat;
                 AppUA appUA = Session["AppUA"] as AppUA;
                 saleInvoiceVM.PSASysCommon = new PSASysCommonViewModel();
                 saleInvoiceVM.PSASysCommon.CreatedBy = appUA.UserName;
                 saleInvoiceVM.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
                 saleInvoiceVM.PSASysCommon.UpdatedBy = appUA.UserName;
                 saleInvoiceVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
-                object ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
-                string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceDetailViewModel>>(ReadableFormat);
+                ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.OtherChargesDetailJSON);
+                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                saleInvoiceVM.SaleInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceOtherChargeViewModel>>(ReadableFormat);
+
                 object result = _saleInvoiceBusiness.InsertUpdateSaleInvoice(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
 
                 if (saleInvoiceVM.ID == Guid.Empty)
@@ -703,10 +733,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         //    return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         //}
         //#endregion Get SaleInvoice SelectList On Demand
+        
+            
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -749,17 +781,29 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetSaleInvoice();";
 
-                    toolboxVM.deletebtn.Visible = true;
-                    toolboxVM.deletebtn.Text = "Delete";
-                    toolboxVM.deletebtn.Title = "Delete";
-                    toolboxVM.deletebtn.Event = "DeleteSaleInvoice();";
+                    if (_commonBusiness.CheckDocumentIsDeletable("SIV", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteSaleOrder();";
+                    }
 
                     toolboxVM.EmailBtn.Visible = true;
                     toolboxVM.EmailBtn.Text = "Email";
                     toolboxVM.EmailBtn.Title = "Email";
                     toolboxVM.EmailBtn.Event = "EmailSaleInvoice();";
 
-                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Visible = false;
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";

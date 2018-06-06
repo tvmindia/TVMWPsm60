@@ -10,7 +10,8 @@ $(document).ready(function () {
     try {
         BindOrReloadQuotationTable('Init');
         $('#tblQuotation tbody').on('dblclick', 'td', function () {
-            EditQuotation(this);
+            if (this.textContent !== "No data available in table")
+                EditQuotation(this);
         });
     }
     catch (e) {
@@ -113,7 +114,7 @@ function BindOrReloadQuotationTable(action) {
                 data: { "QuotationAdvanceSearchVM": QuotationAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [             
 
                {"data": "QuoteNo", render: function (data, type, row) {
@@ -387,7 +388,7 @@ function BindQuotationOtherChargesDetailList(id) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -401,10 +402,10 @@ function BindQuotationOtherChargesDetailList(id) {
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))
                      //return Total
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotationOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditQuotationOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],             
              columnDefs: [
                  { "targets": [0], "width": "30%" },
@@ -419,7 +420,6 @@ function BindQuotationOtherChargesDetailList(id) {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'top'
     });
 }
 function BindQuotationDetailList(id, IsEstimated) {
@@ -441,7 +441,7 @@ function BindQuotationDetailList(id, IsEstimated) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -456,7 +456,7 @@ function BindQuotationDetailList(id, IsEstimated) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-placement="left" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -472,7 +472,7 @@ function BindQuotationDetailList(id, IsEstimated) {
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(SGSTAmt) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(SGSTAmt) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -486,10 +486,10 @@ function BindQuotationDetailList(id, IsEstimated) {
                      var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
                      var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True") ? '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"},
              ],
              columnDefs: [
                  { "targets": [0], "width": "30%" },
@@ -505,8 +505,7 @@ function BindQuotationDetailList(id, IsEstimated) {
          });
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover',
-        'placement': 'top'
+        'trigger': 'hover'
     });
 }
 function GetQuotationDetailListByQuotationID(id, IsEstimated) {
@@ -675,7 +674,6 @@ function AddQuotationDetailToList() {
         $('[data-toggle="popover"]').popover({
             html: true,
             'trigger': 'hover',
-            'placement': 'left'
         });
 }
 function EditQuotationDetail(this_Obj) {
@@ -1004,7 +1002,6 @@ function AddOtherExpenseDetailToList() {
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
-        'placement': 'left'
     });
 }
 
@@ -1138,10 +1135,10 @@ function CalculateTotal()
         OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(Total))
     }
     GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt))
-    $('#lblTaxTotal').text(TaxTotal);
-    $('#lblItemTotal').text(TaxableTotal);
+    $('#lblTaxTotal').text(roundoff(TaxTotal));
+    $('#lblItemTotal').text(roundoff(TaxableTotal));
     $('#lblGrossAmount').text(GrossAmount);
     $('#lblGrandTotal').text(GrossAmount);
-    $('#lblOtherChargeAmount').text(OtherChargeAmt);
+    $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
     $('#Discount').trigger('onchange');
 }
