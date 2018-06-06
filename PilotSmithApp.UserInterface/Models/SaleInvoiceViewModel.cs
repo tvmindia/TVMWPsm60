@@ -47,6 +47,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
         public int? BillLocationCode { get; set; }
+        public string InvocieType { get; set; }
         public decimal? Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
         //additional Fields

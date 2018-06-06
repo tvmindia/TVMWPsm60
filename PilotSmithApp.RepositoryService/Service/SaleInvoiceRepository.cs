@@ -285,6 +285,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         if (saleInvoice.PreparedBy != Guid.Empty)
                             cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = saleInvoice.PreparedBy;
                         cmd.Parameters.Add("@PurchaseOrdNo", SqlDbType.VarChar, 20).Value = saleInvoice.PurchaseOrdNo;
+                        //cmd.Parameters.Add("@InvocieType", SqlDbType.VarChar, 20).Value = saleInvoice.InvocieType;
                         cmd.Parameters.Add("@PurchaseOrdDate", SqlDbType.DateTime).Value = saleInvoice.PurchaseOrdDateFormatted;
                         cmd.Parameters.Add("@BillSeriesCode", SqlDbType.Int).Value = saleInvoice.BillSeriesCode;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleInvoice.EmailSentYN;
