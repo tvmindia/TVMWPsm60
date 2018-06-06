@@ -16,6 +16,11 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+    $("#AdvDocumentStatusCode,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+        dropdownParent: $(".divboxASearch")
+    });
+
+    $('.select2').addClass('form-control newinput');
 });
 //function bind the SaleInvoice list checking search and filter
 function BindOrReloadSaleInvoiceTable(action) {
@@ -28,16 +33,30 @@ function BindOrReloadSaleInvoiceTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #AdvFromDate').val('').trigger('change');
+                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvCustomerID').val('').trigger('change');
+                $('.divboxASearch #AdvBranchCode').val('').trigger('change');
+                $('.divboxASearch #AdvAreaCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
+                $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
+                $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#FromDate').val('');
-                $('#ToDate').val('');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
+                $('.divboxASearch #AdvAreaCode').val('');
+                $('.divboxASearch #AdvCustomerID').val('');
+                $('.divboxASearch #AdvBranchCode').val('');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
+                $('.divboxASearch #AdvDocumentOwnerID').val('');
+                $('.divboxASearch #AdvApprovalStatusCode').val('');
+                $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#FromDate').val() == "") && ($('#ToDate').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -49,8 +68,15 @@ function BindOrReloadSaleInvoiceTable(action) {
         }
         SaleInvoiceAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         SaleInvoiceAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        SaleInvoiceAdvanceSearchViewModel.FromDate = $('#FromDate').val();
-        SaleInvoiceAdvanceSearchViewModel.ToDate = $('#ToDate').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+        SaleInvoiceAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val();
         //apply datatable plugin on SaleInvoice table
         _dataTable.SaleInvoiceList = $('#tblSaleInvoice').DataTable(
         {
@@ -59,7 +85,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                                 columns: [0, 1, 2, 3, 4, 5]
                              }
             }],
             ordering: false,
@@ -67,6 +93,7 @@ function BindOrReloadSaleInvoiceTable(action) {
             paging: true,
             lengthChange: false,
             processing: true,
+            autoWidth:false,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
@@ -76,26 +103,44 @@ function BindOrReloadSaleInvoiceTable(action) {
                 data: { "SaleInvoiceAdvanceSearchVM": SaleInvoiceAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [
-               { "data": "SaleInvNo", "defaultContent": "<i>-</i>" },
-               { "data": "SaleInvDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.Mobile", "defaultContent": "<i>-</i>" },
-               { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
-               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoice(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+                 { "data": "SaleInvNo", render: function (data, type, row) {
+                         return row.SaleInvNo + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.SaleInvDateFormatted;
+                     }, "defaultContent": "<i>-</i>"
+                 },
+                 {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+                 },
+                 {
+                 "data": "ReferenceNo", render: function (data, type, row) {         
+                     return (row.SaleOrder.SaleOrderNo == null ? row.Quotation.QuoteNo : row.SaleOrder.SaleOrderNo);
+                 }, "defaultContent": "<i>-</i>"
+                 },
+                 { "data": "Area.Description", "defaultContent": "<i>-</i>" },
+                 {
+                   "data": "Branch.Description", render: function (data, type, row) {
+                       return "<b>Doc.Owner-</b>" + row.PSAUser.LoginName + "</br>" + "<b>Branch-</b>" + row.Branch.Description;
+                 }, "defaultContent": "<i>-</i>"
+                 },
+                 {
+                   "data": "DocumentStatus.Description", render: function (data, type, row) {
+                       return "<b>Doc.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '') + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
+                 }, "defaultContent": "<i>-</i>"
+                 },
+                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoice(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
-            columnDefs: [{ className: "text-right", "targets": [] },
-                          { className: "text-left", "targets": [2, 3, 5, 6] },
-                          { className: "text-center", "targets": [0, 1, 4, 7, 8] },
-                            { "targets": [0, 1, 4], "width": "10%" },
-                            { "targets": [2, 3], "width": "10%" },
-                            { "targets": [5], "width": "30%" },
-                            { "targets": [6], "width": "10%" },
-                            { "targets": [7, 8], "width": "5%" },
+            columnDefs: [{ className: "text-left", "targets": [0, 1, 2, 3, 4,5] },
+                          { className: "text-center", "targets": [6] },
+                            { "targets": [0], "width": "12%" },
+                            { "targets": [1], "width": "15%" },
+                            { "targets": [2], "width": "15%" },
+                            { "targets": [3], "width": "10%" },
+                            { "targets": [4], "width": "15%" },
+                            { "targets": [5], "width": "24%" },
+                            { "targets": [6], "width": "3%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -161,7 +206,7 @@ function AddSaleInvoice() {
 function LoadCurrentPageDropdowns() {
     $('#divAttendedByIDSelectList').load('/Employee/AttendedBySelectList')
     $('#divBranchSelectList').load('/Branch/BranchSelectList')
-   // $('#divBranchSelectList').load('/Branch/BranchSelectList')
+    // $('#divBranchSelectList').load('/Branch/BranchSelectList')
     $('#divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV')
 }
 
