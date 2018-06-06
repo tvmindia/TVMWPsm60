@@ -228,6 +228,9 @@ function EditQuotation(this_Obj) {
                 if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
                 }
+                else if ($('#LatestApprovalStatus').val() == 4) {
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved");
+                }
                 else {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
                 }
@@ -257,7 +260,7 @@ function ResetQuotation() {
                     openNav();
             }
             if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
             }
             else {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
