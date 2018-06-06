@@ -736,6 +736,7 @@
     <Compile Include="Controllers\ApproverController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\BankController.cs" />
+    <Compile Include="Controllers\BillLocationController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CarrierController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
@@ -787,6 +788,7 @@
     <Compile Include="Models\ApproverViewModel.cs" />
     <Compile Include="Models\AreaViewModel.cs" />
     <Compile Include="Models\BankViewModel.cs" />
+    <Compile Include="Models\BillLocationViewModel.cs" />
     <Compile Include="Models\BranchViewModel.cs" />
     <Compile Include="Models\CarrierViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
@@ -999,6 +1001,8 @@
     <Content Include="Views\ServiceCall\_AddServiceCallCharge.cshtml" />
     <Content Include="Views\Bank\_BankSelectList.cshtml" />
     <Content Include="Views\SaleInvoice\_SaleInvoiceOtherCharge.cshtml" />
+    <Content Include="Views\BillLocation\Index.cshtml" />
+    <Content Include="Views\BillLocation\_BillLocationSelectList.cshtml" />
     <Content Include="Views\Employee\_ServicedBySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

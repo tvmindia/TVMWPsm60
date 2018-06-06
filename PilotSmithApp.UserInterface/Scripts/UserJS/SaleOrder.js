@@ -272,6 +272,9 @@ function ResetSaleOrder() {
             if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
             }
+            else if ($('#LatestApprovalStatus').val() == 4) {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved");
+            }
             else {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
             }
@@ -950,6 +953,7 @@ function SaveSuccessSaleOrderEmailSend(data, status) {
             case "OK":
                 MasterAlert("success", _message)
                 $('#divModelEmailSaleOrder').modal('hide');
+                ResetSaleOrder();
                 break;
             case "ERROR":
                 MasterAlert("success", _message)

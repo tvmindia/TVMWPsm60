@@ -49,6 +49,7 @@
     <Compile Include="DTO\Approver.cs" />
     <Compile Include="DTO\Area.cs" />
     <Compile Include="DTO\Bank.cs" />
+    <Compile Include="DTO\BillLocation.cs" />
     <Compile Include="DTO\Branch.cs" />
     <Compile Include="DTO\Carrier.cs" />
     <Compile Include="DTO\Company.cs" />

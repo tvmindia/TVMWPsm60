@@ -309,6 +309,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = productionOrder.GeneralNotes;
                         cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = productionOrder.DocumentOwnerID;
                         cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = productionOrder.BranchCode;
+                        cmd.Parameters.Add("@LatestApprovalID", SqlDbType.UniqueIdentifier).Value = productionOrder.LatestApprovalID;
                         //-----------------------//
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = productionOrder.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = productionOrder.PSASysCommon.CreatedDate;
