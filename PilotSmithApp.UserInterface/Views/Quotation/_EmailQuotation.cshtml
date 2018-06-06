@@ -138,9 +138,9 @@
                 <tr>
                     <td style="width:50%;vertical-align: top;">
                         @{
-    if (Model.QuotationOtherChargeList.Count != 0)
-    {
-                        @*<div class="form-group col-md-6" style="border-color: #adadad;border-style: solid !important;">*@
+                            if (Model.QuotationOtherChargeList.Count != 0)
+                            {
+                                @*<div class="form-group col-md-6" style="border-color: #adadad;border-style: solid !important;">*@
 
                                 <table id="OtherChargeDetailsTable" style="font-family: arial, sans-serif;border-color: #adadad;border-style: solid !important; border-collapse: collapse; width: 100%; line-height: 14px; text-align: left;" cellspacing="0">
                                     <thead>
@@ -259,7 +259,7 @@
                                 <td style="vertical-align: top; padding: 5px; font-size:14px;" valign="top">Total:</td>
 
                                 <td style="vertical-align: top; text-align: right; border-top-style: solid; border-top-width: 2px; border-top-color: #eee; font-weight: bold; padding: 5px;font-size:14px;" align="right" valign="top">
-                                     @grandTotal
+                                    @grandTotal
                                 </td>
                             </tr>
 
@@ -324,7 +324,14 @@
             @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
             @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
             <a class="btn btn-default" style="margin-top:2%" onclick="EmailQuotation()">Back </a>
-            <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            if (Model.LatestApprovalStatus == 4)
+            {
+                <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
+            else
+            {
+                <button type="submit" disabled class="btn btn-default" style="margin-top:2%" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
 
         }
 
@@ -335,9 +342,14 @@
             @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
             @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
             @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
-
-            <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-
+            if (Model.LatestApprovalStatus == 4)
+            {
+                <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
+            else
+            {
+                <button type="submit" disabled class="btn btn-default" style="margin-top:2%" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
         }
     }
 

@@ -22,8 +22,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         ISaleOrderBusiness _saleOrderBusiness;
         IQuotationBusiness _quotationBusiness;
         ICommonBusiness _commonBusiness;
+        IApprovalStatusBusiness _approvalStatusBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;
         public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness,
-           IQuotationBusiness quotationBusiness,ISaleOrderBusiness saleOrderBusiness, ICommonBusiness commonBusiness)
+           IQuotationBusiness quotationBusiness,
+           ISaleOrderBusiness saleOrderBusiness, 
+           ICommonBusiness commonBusiness,
+           IDocumentStatusBusiness documenStatusBusiness,
+           IApprovalStatusBusiness approvalStatusBusiness
+            )
         {
             _saleInvoiceBusiness = saleInvoiceBusiness;
             _customerBusiness = customerBusiness;
@@ -31,12 +38,19 @@ namespace PilotSmithApp.UserInterface.Controllers
             _quotationBusiness = quotationBusiness;
             _saleOrderBusiness = saleOrderBusiness;
             _commonBusiness = commonBusiness;
+            _documentStatusBusiness = documenStatusBusiness;
+            _approvalStatusBusiness = approvalStatusBusiness;
         }
         // GET: SaleInvoice
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
         public ActionResult Index()
         {
-            return View();
+            SaleInvoiceAdvanceSearchViewModel saleInvoiceAdvanceSearchVM = new SaleInvoiceAdvanceSearchViewModel();            
+            saleInvoiceAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
+            saleInvoiceAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SIV");
+            saleInvoiceAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
+            saleInvoiceAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();          
+            return View(saleInvoiceAdvanceSearchVM);
         }
 
 

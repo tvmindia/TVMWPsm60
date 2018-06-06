@@ -204,13 +204,10 @@ function AddProductionQC() {
     $('#lblProductionQCInfo').text("<<ProductionQC No.>>");
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid + "&productionOrderID=", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
             ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Add");
             BindProductionQCDetailList(_emptyGuid);
-            OnServerCallComplete();
-            //setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-            //}, 100);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -225,13 +222,13 @@ function EditProductionQC(this_Obj) {
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID + "&productionOrderID=" + ProductionQC.ProdOrderID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //$('#CustomerID').trigger('change');
+            OnServerCallComplete();
+            openNav();
             ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
             BindProductionQCDetailList(ProductionQC.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(ProductionQC.ID);
-            OnServerCallComplete();
-            openNav();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

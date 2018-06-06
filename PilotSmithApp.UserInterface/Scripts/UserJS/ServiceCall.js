@@ -188,11 +188,11 @@ function AddServiceCall() {
     OnServerCallBegin();
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
+            OnServerCallComplete();
             openNav();
+            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Add");
             BindServiceCallChargeDetailList(_emptyGuid);
             BindServiceCallDetailList(_emptyGuid);
-            OnServerCallComplete();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -206,15 +206,16 @@ function EditServiceCall(this_Obj) {
     $('#lblServiceCallInfo').text(ServiceCall.ServiceCallNo);
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + ServiceCall.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
+            OnServerCallComplete();
             openNav();
+            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
             BindServiceCallDetailList(ServiceCall.ID);
             BindServiceCallChargeDetailList(ServiceCall.ID)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(ServiceCall.ID);
-            CalculateTotal()
-            OnServerCallComplete();
+            CalculateTotal();
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

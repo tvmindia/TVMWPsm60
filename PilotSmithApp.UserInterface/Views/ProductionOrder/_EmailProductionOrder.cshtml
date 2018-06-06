@@ -37,16 +37,16 @@
             <tr style="width:100%;">
                 <td style="width:400px;text-align:left;font-size:14px;vertical-align:top;">
                     @*Pilotsmith India Pvt. Ltd.<br />
-                    Kallettumkara, Trichur Dist,<br />
-                    Kerala, India 680 683<br />*@
+                        Kallettumkara, Trichur Dist,<br />
+                        Kerala, India 680 683<br />*@
                     @Html.Raw(@Model.MailFrom)
                 </td>
                 <td style="width:200px;"></td>
                 @*<td style="width:400px;text-align:left;font-size:14px;vertical-align:top;">
 
-                    @Model.Customer.CompanyName<br />
-                   
-                </td>*@
+                        @Model.Customer.CompanyName<br />
+
+                    </td>*@
             </tr>
 
         </table>
@@ -61,7 +61,7 @@
         </table>
 
         <br />
-      
+
         <br />
         <table id="ItemDetailsTable" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; line-height: 14px; text-align: left;" cellspacing="0" width="100%">
             <thead>
@@ -87,7 +87,7 @@
                         curProducedQty = Math.Round((decimal)mp.OrderQty - (decimal)mp.PrevProducedQty);
                         amount = Math.Round((decimal)mp.OrderQty * (decimal)mp.Rate);
 
-                         totMilestone = "";
+                        totMilestone = "";
                         if ((mp.MileStone1FcFinishDtFormatted != "") && (mp.MileStone1AcTFinishDtFormatted != ""))
                         {
                             totMilestone = "25%";
@@ -104,7 +104,7 @@
                         {
                             totMilestone = "100%";
                         }
-                        
+
                         <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
 
                             <td style="width:3%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
@@ -119,14 +119,14 @@
                             <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@totMilestone</td>
                         </tr>
                         slno = slno + 1;
-                        
+
                     }
-                   
+
                 }
 
             </thead>
         </table>
-        <br />       
+        <br />
     </div>
 
 
@@ -137,7 +137,7 @@
         using (Ajax.BeginForm("UpdateProductionOrderEmailInfo", "ProductionOrder", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessUpdateProductionOrderEmailInfo", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormUpdateProductionOrderEmailInfo" }))
         {
             @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
-            @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })          
+            @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
             <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="UpdateProductionOrderEmailInfo()">Next <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
         }
     }
@@ -149,8 +149,14 @@
             @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
             @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnProductionOrderEMailContent" })
             <a class="btn btn-default" style="margin-top:2%" onclick="EmailProductionOrder()">Back </a>
-            <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendProductionOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-
+            if (Model.LatestApprovalStatus == 4)
+            {
+                <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendProductionOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
+            else
+            {
+                <button type="submit" disabled class="btn btn-default" style="margin-top:2%" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
         }
 
         using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.6%;right:17%;", role = "form", @id = "PDFForm" }))
@@ -160,9 +166,14 @@
             @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
             @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "ProductionOrder", @id = "hdnContentFileName" })
             @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
-
-            <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="DownloadProductionOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-
+            if (Model.LatestApprovalStatus == 4)
+            {
+                <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="DownloadProductionOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
+            else
+            {
+                <button type="submit" disabled class="btn btn-default" style="margin-top:2%" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            }
         }
     }
 
