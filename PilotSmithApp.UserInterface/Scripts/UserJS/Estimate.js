@@ -235,10 +235,9 @@ function ResetEstimate() {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
-                setTimeout(function () {
+               
                     $("#divEstimateForm #EnquiryID").prop('disabled', true);
-                    openNav();
-                }, 100);
+                    openNav();               
             }
             else {
                 debugger;

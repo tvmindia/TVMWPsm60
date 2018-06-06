@@ -200,14 +200,20 @@ function AddProductionOrder() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid+"&saleOrderID=", function () {
-        $('#lblProductionOrderInfo').text('<<Production Order No.>>');
-        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
-        BindProductionOrderDetailList(_emptyGuid);
-        //BindProductionOrderOtherChargesDetailList(_emptyGuid)
-        OnServerCallComplete();      
-        //resides in customjs for sliding
-        openNav();
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid + "&saleOrderID=", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success")
+        {
+            $('#lblProductionOrderInfo').text('<<Production Order No.>>');
+            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
+            BindProductionOrderDetailList(_emptyGuid);
+            //BindProductionOrderOtherChargesDetailList(_emptyGuid)
+            OnServerCallComplete();
+            //resides in customjs for sliding
+            openNav();
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
 
     });
 }
@@ -218,24 +224,27 @@ function EditProductionOrder(this_Obj) {
     var productionOrder = _dataTable.ProductionOrderList.row($(this_Obj).parents('tr')).data();
     $('#lblProductionOrderInfo').text(productionOrder.ProdOrderNo);
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID+"&saleOrderID="+productionOrder.SaleOrderID, function () {
-        if ($('#IsDocLocked').val() == "True")
-        {
-            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit",productionOrder.ID);
-        }
-        else
-        {
-            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
-        }
-        BindProductionOrderDetailList(productionOrder.ID);
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-        clearUploadControl();
-        PaintImages(productionOrder.ID);
-        OnServerCallComplete();
-        //resides in customjs for sliding
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID + "&saleOrderID=" + productionOrder.SaleOrderID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
+            }
+            else {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
+            }
+            BindProductionOrderDetailList(productionOrder.ID);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(productionOrder.ID);
+            OnServerCallComplete();
+            //resides in customjs for sliding
 
-        $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
-        openNav();
+            $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
+            openNav();
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
 
     });
 }
@@ -243,23 +252,28 @@ function EditProductionOrder(this_Obj) {
 function ResetProductionOrder() {
     debugger;
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val()+"&saleOrderID="+$('#hdnSaleOrderID').val(), function () {
-        if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-            //resides in customjs for sliding
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() + "&saleOrderID=" + $('#hdnSaleOrderID').val(), function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+                //resides in customjs for sliding
 
-            $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
-            openNav();
+                $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
+                openNav();
 
+            }
+            else {
+                $('#hdnCustomerID').val('');
+                $('#hdnSaleOrderID').val('');
+                $('#lblProductionOrderInfo').text('<<Production Order No.>>');
+            }
+            BindProductionOrderDetailList($('#ID').val(), false);
+            clearUploadControl();
+            PaintImages($('#ProductionOrderForm #ID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionOrderForm #hdnCustomerID').val());
         }
         else {
-            $('#hdnCustomerID').val('');
-            $('#hdnSaleOrderID').val('');
-            $('#lblProductionOrderInfo').text('<<Production Order No.>>');
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
-        BindProductionOrderDetailList($('#ID').val(), false);
-        clearUploadControl();
-        PaintImages($('#ProductionOrderForm #ID').val());
-        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionOrderForm #hdnCustomerID').val());
     });
 }
 
@@ -383,17 +397,17 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                          return data + " " + row.Unit.Description
                      }
                      else
-                         return 0;
+                         return 0 + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
              {
                  "data": "OrderQty", render: function (data, type, row) {
                      var CurProducedQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.PrevProducedQty));
-                     if (CurProducedQty >= 0) {
-                         return CurProducedQty
+                     if (CurProducedQty > 0) {
+                         return CurProducedQty + " " + row.Unit.Description
                      }
                      else
-                         return 0;
+                         return 0 + " " + row.Unit.Description
                      //return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
@@ -408,7 +422,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                          return data
                      }
                      else
-                         return 0;
+                         return 0
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -419,7 +433,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                          return Amount
                      }
                      else
-                         return 0;
+                         return 0
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Plant.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
