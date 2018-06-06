@@ -63,6 +63,26 @@
                     </div>
                 </div>
 
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divCustomerSelectList">
+                            @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnCustomerRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnCustomerdisabled", false)
+                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
+                </div>
+
+                <div id="divCustomerBasicInfo">
+                    @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
+                </div>
+
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.ServiceCallTimeFormatted, htmlAttributes: new { @class = "control-label " })
@@ -83,6 +103,7 @@
                     </div>
                 </div>
 
+                @*<div class="form-group col-md-12 ">*@
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AttendedBy, htmlAttributes: new { @class = "control-label" })
@@ -101,9 +122,9 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divEmployeeSelectList">
-                            @Html.Action("EmployeeSelectList", "Employee", new { required = "" })
+                            @Html.Action("ServicedBySelectList", "Employee", new { required = "" })
                         </div>
-                        @Html.HiddenFor(model => model.ServicedBy, htmlAttributes: new { @class = "", @id = "hdnEmployeeID" })
+                        @Html.HiddenFor(model => model.ServicedBy, htmlAttributes: new { @class = "", @id = "hdnServicedByID" })
                     </div>
                 </div>
 
@@ -141,26 +162,6 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "" })
-                        </div>
-                    </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnCustomerRequired", "")
-                    <!-- This hidden field will keep the information whether the field is disabled or not -->
-                    @Html.Hidden("hdnCustomerdisabled", false)
-                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
-                </div>
-
-                <div id="divCustomerBasicInfo">
-                    @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
-                </div>
-                @*<div class="form-group col-md-12 ">*@
 
             </div>
 
@@ -270,6 +271,14 @@
                 <div class="col-md-5" style="padding-right:3.5%">
                     <table class="table dataTable no-footer DetailSummerybox">
                         <tbody>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblTaxTotal">Total Additional Tax</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblAddlTaxTotal">00.00</label>
+                                </td>
+                            </tr>
                             <tr>
                                 <td style="text-align: right">
                                     <label class="control-label" for="lblTaxTotal">GST Amount</label>

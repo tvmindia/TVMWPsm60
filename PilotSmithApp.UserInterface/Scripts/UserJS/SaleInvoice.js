@@ -85,7 +85,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                                 columns: [0, 1, 2, 3, 4, 5]
                              }
             }],
             ordering: false,
@@ -93,6 +93,7 @@ function BindOrReloadSaleInvoiceTable(action) {
             paging: true,
             lengthChange: false,
             processing: true,
+            autoWidth:false,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
@@ -102,41 +103,44 @@ function BindOrReloadSaleInvoiceTable(action) {
                 data: { "SaleInvoiceAdvanceSearchVM": SaleInvoiceAdvanceSearchViewModel },
                 type: 'POST'
             },
-            pageLength: 13,
+            pageLength: 8,
             columns: [
-               { "data": "SaleInvNo", render: function (data, type, row) {
+                 { "data": "SaleInvNo", render: function (data, type, row) {
                          return row.SaleInvNo + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.SaleInvDateFormatted;
                      }, "defaultContent": "<i>-</i>"
                  },
-               {
+                 {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
                        return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
                    }, "defaultContent": "<i>-</i>"
-               },
-               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
-               {
+                 },
+                 {
+                 "data": "ReferenceNo", render: function (data, type, row) {         
+                     return (row.SaleOrder.SaleOrderNo == null ? row.Quotation.QuoteNo : row.SaleOrder.SaleOrderNo);
+                 }, "defaultContent": "<i>-</i>"
+                 },
+                 { "data": "Area.Description", "defaultContent": "<i>-</i>" },
+                 {
                    "data": "Branch.Description", render: function (data, type, row) {
                        return "<b>Doc.Owner-</b>" + row.PSAUser.LoginName + "</br>" + "<b>Branch-</b>" + row.Branch.Description;
-                   }, "defaultContent": "<i>-</i>"
-               },
-               {
+                 }, "defaultContent": "<i>-</i>"
+                 },
+                 {
                    "data": "DocumentStatus.Description", render: function (data, type, row) {
                        return "<b>Doc.Status-</b>" + data + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + (row.EmailSentYN == true ? "<img src='./Content/images/mailSend.png' height='20px' >" : '') + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
-                   }, "defaultContent": "<i>-</i>"
-               },
-
-
-
-
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditProductionOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+                 }, "defaultContent": "<i>-</i>"
+                 },
+                 { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoice(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
-            columnDefs: [{ className: "text-left", "targets": [0, 1, 2, 3, 4] },
-                          { className: "text-center", "targets": [5] },
-                            { "targets": [0, 1], "width": "12%" },
+            columnDefs: [{ className: "text-left", "targets": [0, 1, 2, 3, 4,5] },
+                          { className: "text-center", "targets": [6] },
+                            { "targets": [0], "width": "12%" },
+                            { "targets": [1], "width": "15%" },
                             { "targets": [2], "width": "15%" },
-                             { "targets": [3], "width": "15%" },
-                            { "targets": [4], "width": "24%" },
-                            { "targets": [5], "width": "3%" },
+                            { "targets": [3], "width": "10%" },
+                            { "targets": [4], "width": "15%" },
+                            { "targets": [5], "width": "24%" },
+                            { "targets": [6], "width": "3%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded

@@ -87,6 +87,9 @@ namespace PilotSmithApp.UserInterface.Models
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
         public PSAUserViewModel PSAUser { get; set; }
         public string ReferenceNo { get; set; }
+        public QuotationViewModel Quotation { get; set; }
+        public SaleOrderViewModel SaleOrder { get; set; }
+
     }
     public class SaleInvoiceAdvanceSearchViewModel
     {
@@ -110,9 +113,9 @@ namespace PilotSmithApp.UserInterface.Models
         public DocumentStatusViewModel DocumentStatus { get; set; }
         [Display(Name = "Document owner")]
         public Guid AdvDocumentOwnerID { get; set; }
-        public PSAUserViewModel PSAUser { get; set; }
-        [Display(Name = "Approval status")]
+        public PSAUserViewModel PSAUser { get; set; }       
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval status")]
         public int? AdvApprovalStatusCode { get; set; }
         [Display(Name = "Email Sent (Y/N)")]
         public string AdvEmailSentStatus { get; set; }

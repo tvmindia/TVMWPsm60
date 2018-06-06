@@ -65,6 +65,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ApprovalStatus ApprovalStatus { get; set; }
         public PSAUser PSAUser { get; set; }
         public string ReferenceNo { get; set; }
+        public Quotation Quotation { get; set; }
+        public SaleOrder SaleOrder { get; set; }
     }
     public class SaleInvoiceAdvanceSearch
     {
