@@ -46,9 +46,16 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int TotalCount { get; set; }
         public string ExpectedDelvDateFormatted { get; set; }
         public string PurchaseOrdDateFormatted { get; set; }
+        public string MailContant { get; set; }
+        public string MailBodyFooter { get; set; }
+        public string MailFrom { get; set; }
+        public string DocumentType { get; set; }
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
+        public Branch Branch { get; set; }
         public List<SaleInvoiceOtherCharge> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SaleInvoiceDetail> SaleInvoiceDetailList { get; set; }
     }
