@@ -795,7 +795,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         toolboxVM.deletebtn.Visible = true;
                         toolboxVM.deletebtn.Text = "Delete";
                         toolboxVM.deletebtn.Title = "Delete";
-                        toolboxVM.deletebtn.Event = "DeleteSaleOrder();";
+                        toolboxVM.deletebtn.Event = "DeleteSaleInvoice();";
                     }
 
                     toolboxVM.EmailBtn.Visible = true;
