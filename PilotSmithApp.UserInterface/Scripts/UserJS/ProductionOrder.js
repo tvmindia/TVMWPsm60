@@ -203,13 +203,12 @@ function AddProductionOrder() {
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid + "&saleOrderID=", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success")
         {
+            OnServerCallComplete();
+            openNav();
             $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
             BindProductionOrderDetailList(_emptyGuid);
             //BindProductionOrderOtherChargesDetailList(_emptyGuid)
-            OnServerCallComplete();
-            //resides in customjs for sliding
-            openNav();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -226,6 +225,8 @@ function EditProductionOrder(this_Obj) {
     //this will return form body(html)
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID + "&saleOrderID=" + productionOrder.SaleOrderID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
             if ($('#IsDocLocked').val() == "True") {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
             }
@@ -236,11 +237,7 @@ function EditProductionOrder(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(productionOrder.ID);
-            OnServerCallComplete();
-            //resides in customjs for sliding
-
             $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
-            openNav();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
