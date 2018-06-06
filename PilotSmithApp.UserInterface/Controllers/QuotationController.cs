@@ -4,7 +4,6 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
-using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,63 +17,34 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
-        IQuotationBusiness _quotationBusiness;
-        ICustomerBusiness _customerBusiness;
-        IBranchBusiness _branchBusiness;
+        IQuotationBusiness _quotationBusiness;       
         IEstimateBusiness _estimateBusiness;
-        ICommonBusiness _commonBusiness;
-        IAreaBusiness _areaBusiness;
-        IReferencePersonBusiness _referencePersonBusiness;
+        ICommonBusiness _commonBusiness;       
         IDocumentStatusBusiness _documentStatusBusiness;
-        IApprovalStatusBusiness _approvalStatusBusiness;
-        private IUserBusiness _userBusiness;
+        IApprovalStatusBusiness _approvalStatusBusiness;      
 
-        public QuotationController(IQuotationBusiness quotationBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IEstimateBusiness estimateBusiness, ICommonBusiness commonBusiness,
-            IAreaBusiness areaBusiness,
-            IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness, IApprovalStatusBusiness approvalStatusBusiness)
+        public QuotationController(IQuotationBusiness quotationBusiness,           
+            IEstimateBusiness estimateBusiness,
+            ICommonBusiness commonBusiness,            
+            IDocumentStatusBusiness documentStatusBusiness,           
+            IApprovalStatusBusiness approvalStatusBusiness)
         {
-            _quotationBusiness = quotationBusiness;
-            _customerBusiness = customerBusiness;
-            _branchBusiness = branchBusiness;
+            _quotationBusiness = quotationBusiness;           
             _estimateBusiness = estimateBusiness;
-            _commonBusiness = commonBusiness;
-            _areaBusiness = areaBusiness;
-            _referencePersonBusiness = referencePersonBusiness;
-            _documentStatusBusiness = documentStatusBusiness;
-            _userBusiness = userBusiness;
+            _commonBusiness = commonBusiness;            
+            _documentStatusBusiness = documentStatusBusiness;           
             _approvalStatusBusiness = approvalStatusBusiness;
         }
         // GET: Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index()
         {
-            QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();
-            quotationAdvanceSearchVM.Area = new AreaViewModel();
-            quotationAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
-            quotationAdvanceSearchVM.Customer = new CustomerViewModel();
-            quotationAdvanceSearchVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
-            quotationAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
-            quotationAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
-            quotationAdvanceSearchVM.Branch = new BranchViewModel();
-            AppUA appUA = Session["AppUA"] as AppUA;
-            quotationAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
+            QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();            
             quotationAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");
             quotationAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
-            quotationAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
-            quotationAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            //List<SelectListItem> selectListItem = new List<SelectListItem>();
-            //List<SelectListItem> selectListItem = null;
-            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-            quotationAdvanceSearchVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
-                                                      select new SelectListItem
-                                                      {
-                                                          Text = PSAuserVM.UserName,
-                                                          Value = PSAuserVM.ID.ToString(),
-                                                          Selected = false
-                                                      }).ToList() : new List<SelectListItem>();       
-            return View(quotationAdvanceSearchVM);
-            //return View();
+            quotationAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();            
+            return View(quotationAdvanceSearchVM);           
         }
         #region Quotation Form
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
