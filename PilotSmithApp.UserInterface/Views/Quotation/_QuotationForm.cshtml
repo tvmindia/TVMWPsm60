@@ -480,16 +480,18 @@
         try {
             $('#QuotationForm #EstimateID').change(function () {
                 OnServerCallBegin();
-                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function () {
-                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val(), function () {
-                        $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-                        $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
-                    });
-                    ClearCalculatedFields();
-                    BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
-                    BindQuotationOtherChargesDetailList("00000000-0000-0000-0000-000000000000");
-                    CalculateTotal();
-                    OnServerCallComplete();
+                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function (responseTxt, statusTxt, xhr) {
+                    if (statusTxt == "success") {
+                        OnServerCallComplete();
+                        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val(), function () {
+                            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+                        });
+                        ClearCalculatedFields();
+                        BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
+                        BindQuotationOtherChargesDetailList("00000000-0000-0000-0000-000000000000");
+                        CalculateTotal();
+                    }
                 });
             });
         }

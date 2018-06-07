@@ -300,7 +300,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<DeliveryChallanDetailViewModel> deliveryChallanItemViewModelList = new List<DeliveryChallanDetailViewModel>();
                 if (prodOrderID != Guid.Empty)
                 {
-                    List<ProductionOrderDetailViewModel> productionOrderDetailVMList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(prodOrderID));
+                    List<ProductionOrderDetailViewModel> productionOrderDetailVMList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(prodOrderID).Where(x=>x.OrderQty!=x.PrevDelQty).ToList());
 
                     deliveryChallanItemViewModelList = (from productionOrderDetailVM in productionOrderDetailVMList
                                                         select new DeliveryChallanDetailViewModel
@@ -313,7 +313,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             ProductSpec = productionOrderDetailVM.ProductSpec,
                                                             OrderQty = productionOrderDetailVM.OrderQty,
                                                             UnitCode = productionOrderDetailVM.UnitCode,
-                                                            DelvQty = productionOrderDetailVM.DelvQty==null?0:productionOrderDetailVM.DelvQty,
+                                                            DelvQty = productionOrderDetailVM.OrderQty-productionOrderDetailVM.PrevDelQty,
                                                             SpecTag = productionOrderDetailVM.SpecTag,
                                                             PrevDelQty=productionOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()
@@ -354,7 +354,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<DeliveryChallanDetailViewModel> deliveryChallanItemViewModelList = new List<DeliveryChallanDetailViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
+                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID).Where(x=>x.Qty!=x.PrevDelQty).ToList());
                     deliveryChallanItemViewModelList = (from saleOrderDetailVM in saleOrderDetailVMList
                                                         select new DeliveryChallanDetailViewModel
                                                         {
@@ -366,7 +366,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             ProductSpec = saleOrderDetailVM.ProductSpec,
                                                             OrderQty = saleOrderDetailVM.Qty,
                                                             UnitCode = saleOrderDetailVM.UnitCode,
-                                                            DelvQty = saleOrderDetailVM.DelvQty == null?0:saleOrderDetailVM.DelvQty,
+                                                            DelvQty = saleOrderDetailVM.Qty-saleOrderDetailVM.PrevDelQty,
                                                             SpecTag = saleOrderDetailVM.SpecTag,
                                                             PrevDelQty=saleOrderDetailVM.PrevDelQty,
                                                             Product = new ProductViewModel()
