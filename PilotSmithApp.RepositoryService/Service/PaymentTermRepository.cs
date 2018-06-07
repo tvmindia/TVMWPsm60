@@ -191,7 +191,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[CheckPaymentTermCodeExist]";
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar,10).Value = paymentTerm.Code;
-                        //cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = paymentTerm.Description;
+                        //cmd.Parameters.Add("@Description", SqlDbType.NVarChar,100).Value = paymentTerm.Description==""?null: paymentTerm.Description;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

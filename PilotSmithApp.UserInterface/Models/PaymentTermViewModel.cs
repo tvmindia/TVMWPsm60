@@ -10,7 +10,7 @@ namespace PilotSmithApp.UserInterface.Models
     public class PaymentTermViewModel
     {
         [Required(ErrorMessage = "Code is missing")]
-        [Remote(action: "CheckPaymentTermCodeExist", controller: "PaymentTerm", AdditionalFields = "IsUpdate,Code")]
+        [Remote(action: "CheckPaymentTermCodeExist", controller: "PaymentTerm", AdditionalFields = "IsUpdate,Code,Description")]
         public string Code { get; set; }
         [Required(ErrorMessage = "Description is missing")]
         public string Description { get; set; }

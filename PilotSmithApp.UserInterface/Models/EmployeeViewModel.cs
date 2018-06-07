@@ -11,6 +11,7 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         [Required(ErrorMessage = "Employee Code is missing")]
+        [Remote(action: "CheckEmployeeCodeExist", controller: "Employee", AdditionalFields = "IsUpdate,ID")]
         public string Code { get; set; }
         [Required(ErrorMessage = "Employee Name is missing")]
         public string Name { get; set; }

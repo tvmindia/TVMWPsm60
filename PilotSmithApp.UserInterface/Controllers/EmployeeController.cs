@@ -198,6 +198,21 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion DeleteEmployee
+
+        #region CheckEmployeeCodeExist        
+        [AcceptVerbs("Get", "Post")]
+        [AuthSecurityFilter(ProjectObject = "Employee", Mode = "R")]
+        public ActionResult CheckEmployeeCodeExist(EmployeeViewModel employeeVM)
+        {
+            bool exists = _employeeBusiness.CheckEmployeeCodeExist(Mapper.Map<EmployeeViewModel, Employee>(employeeVM));
+            if (exists)
+            {
+                return Json("<p><span style='vertical-align: 2px'>Employee Code already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Employee", Mode = "R")]
