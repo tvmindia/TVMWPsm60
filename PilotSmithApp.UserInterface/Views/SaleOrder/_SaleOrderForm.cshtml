@@ -174,10 +174,10 @@
                         @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divAttendedByIDSelectList">
-                            @Html.Action("AttendedBySelectList", "Employee", new { required = "", postingParams = "ResponsiblePersonID" })
+                        <div class="divPreparedBySelectList">
+                            @Html.Action("PreparedBySelectList", "Employee", new { required = "", postingParams = "ResponsiblePersonID" })
                         </div>
-                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
+                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
                     </div>
                 </div>
                 <div class="col-md-6 no-padding">
