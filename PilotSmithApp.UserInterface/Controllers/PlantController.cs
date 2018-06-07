@@ -36,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdatePlant
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "Plant", Mode = "W")]
         public string InsertUpdatePlant(PlantViewModel plantVM)
         {

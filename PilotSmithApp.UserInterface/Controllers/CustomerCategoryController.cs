@@ -32,7 +32,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateCustomerCategory
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "CustomerCategory", Mode = "W")]
         public string InsertUpdateCustomerCategory(CustomerCategoryViewModel customerCategoryVM)
         {

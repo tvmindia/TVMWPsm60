@@ -38,7 +38,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateArea
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "Area", Mode = "W")]
         public string InsertUpdateArea(AreaViewModel areaVM)
         {

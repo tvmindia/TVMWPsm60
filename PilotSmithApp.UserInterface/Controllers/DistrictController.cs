@@ -36,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateDistrict
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "District", Mode = "W")]
         public string InsertUpdateDistrict(DistrictViewModel stateVM)
         {

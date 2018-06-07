@@ -34,7 +34,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateState
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "State", Mode = "W")]
         public string InsertUpdateState(StateViewModel stateVM)
         {

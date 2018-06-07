@@ -34,7 +34,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateCompany
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "Company", Mode = "W")]
         public string InsertUpdateCompany(CompanyViewModel companyVM)
         {

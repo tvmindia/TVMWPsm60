@@ -32,7 +32,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateTaxType
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "TaxType", Mode = "W")]
         public string InsertUpdateTaxType(TaxTypeViewModel taxTypeVM)
         {

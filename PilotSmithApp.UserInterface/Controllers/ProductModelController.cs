@@ -40,7 +40,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateProductModel
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "W")]
         public string InsertUpdateProductModel(ProductModelViewModel productModelVM)
         {
