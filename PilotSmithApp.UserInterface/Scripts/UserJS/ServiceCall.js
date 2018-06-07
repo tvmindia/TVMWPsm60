@@ -579,7 +579,7 @@ function BindServiceCallChargeDetailList(id) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "AddlTaxAmt", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "AddlTaxAmt", render: function (data, type, row) { return roundoff(parseFloat(data)) }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
