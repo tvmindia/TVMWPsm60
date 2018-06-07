@@ -112,6 +112,11 @@ namespace PilotSmithApp.UserInterface.Models
         public PSASysCommonViewModel PSASysCommon { get; set; }
     }
 
+    public class EnquirySummaryViewModel
+    {
+        public int TotalEnquiryCount { get; set; }
+        public int ConvertedEnquiryCount { get; set; }
+    }
     public class EnquiryValueFolloupSummaryViewModel
     {
         public string Enquiry { get; set; }

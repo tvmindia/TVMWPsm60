@@ -67,5 +67,10 @@ namespace PilotSmithApp.BusinessService.Service
 
             return _enquiryRepository.GetEnquiryValueVsFollowupCountSummary();
         }
+        public EnquirySummary GetEnquirySummaryCount()
+        {
+            return _enquiryRepository.GetEnquirySummaryCount();
+        }
+
     }
 }
