@@ -108,6 +108,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             EmployeeViewModel employeeVM = masterCode == Guid.Empty ? new EmployeeViewModel() : Mapper.Map<Employee, EmployeeViewModel>(_employeeBusiness.GetEmployee(masterCode));
             employeeVM.IsUpdate = masterCode == Guid.Empty ? false : true;
+            employeeVM.Department = new DepartmentViewModel();
+            employeeVM.Department.DepartmentSelectList= _departmentBusiness.GetDepartmentSelectList();
+            employeeVM.Position = new PositionViewModel();
+            employeeVM.Position.PositionSelectList= _positionBusiness.GetPositionSelectList();
             if (masterCode == Guid.Empty)
             {
                 employeeVM.IsActive = true;
