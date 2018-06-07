@@ -23,5 +23,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
+        #region Get ApprovalStatus SelectList On Demand
+        [HttpPost]
+        public ActionResult GetApprovalStatusSelectListOnDemand(string searchTerm)
+        {
+            List<SelectListItem> approvalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
+            var list = approvalStatusSelectList != null ? (from SelectListItem in approvalStatusSelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                     select new Select2Model
+                                                     {
+                                                         text = SelectListItem.Text,
+                                                         id = SelectListItem.Value,
+                                                     }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get ApprovalStatus SelectList On Demand
     }
 }

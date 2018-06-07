@@ -30,6 +30,14 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+    try {
+       
+        BindApprovalStatusSelectList();
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+   
     $('.select2').addClass('form-control newinput');
 });
 
@@ -138,3 +146,27 @@ function BindDocumentOwnerSelectList() {
         }
     });
 }
+
+// ApprovalStatus SelectList //
+function BindApprovalStatusSelectList() {
+    debugger;
+    $('#AdvApprovalStatusCode').select2({
+        ajax: {
+            type: 'POST',
+            dataType: 'json',
+            url: "ApprovalStatus/GetApprovalStatusSelectListOnDemand/",
+            delay: 50,
+            data: function (term) {
+                return {
+                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+        }
+    });
+}
+

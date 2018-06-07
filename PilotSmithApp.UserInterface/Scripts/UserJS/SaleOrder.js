@@ -109,6 +109,7 @@ function BindOrReloadSaleOrderTable(action) {
                 type: 'POST'
             },
             pageLength: 8,
+            autoWidth:false,
             columns: [
                {
                    "data": "SaleOrderNo", render: function (data, type, row) {
@@ -145,14 +146,16 @@ function BindOrReloadSaleOrderTable(action) {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
-                          { className: "text-left", "targets": [0, 1, 2, 3, 4, 5,6] },
-                          { className: "text-center", "targets": [7] },
-                            { "targets": [0], "width": "10%" },
-                            { "targets": [1], "width": "12%" },
-                            { "targets": [2, 3], "width": "10%" },
-                            { "targets": [4], "width": "15%" },
-                            { "targets": [5], "width": "22%" },
-                            { "targets": [6], "width": "3%" },
+                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6] },
+                         { className: "text-center", "targets": [7] },
+                           { "targets": [0], "width": "12%" },
+                           { "targets": [1], "width": "12%" },
+                           { "targets": [2], "width": "12%" },
+                           { "targets": [3], "width": "9%" },
+                           { "targets": [4], "width": "9%" },
+                           { "targets": [5], "width": "14%" },
+                           { "targets": [6], "width": "24%" },
+                           { "targets": [7], "width": "2%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded

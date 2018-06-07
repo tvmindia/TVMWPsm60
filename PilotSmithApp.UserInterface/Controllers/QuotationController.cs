@@ -41,9 +41,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();            
             quotationAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");
-            quotationAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
-            quotationAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();            
+            quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");            
             return View(quotationAdvanceSearchVM);           
         }
         #region Quotation Form
