@@ -34,6 +34,22 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View();
         }
 
+
+        #region Get Plant SelectList On Demand
+        [HttpPost]
+        public ActionResult GetPlantSelectListOnDemand(string searchTerm)
+        {
+            List<SelectListItem> plantSelectList = _plantBusiness.GetPlantForSelectList();
+            var list = plantSelectList != null ? (from SelectListItem in plantSelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                           select new Select2Model
+                                                           {
+                                                               text = SelectListItem.Text,
+                                                               id = SelectListItem.Value,
+                                                           }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get Plant SelectList On Demand
+
         #region InsertUpdatePlant
         [HttpPost]
         //[ValidateAntiForgeryToken]

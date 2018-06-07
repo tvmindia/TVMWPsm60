@@ -17,7 +17,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-    $("#AdvPlantCode,#AdvDocumentStatusCode,#AdvApprovalStatusCode,#AdvEmailSentStatus").select2({
+    $("#AdvDocumentStatusCode,#AdvEmailSentStatus").select2({
         dropdownParent: $(".divboxASearch")
     });
 
