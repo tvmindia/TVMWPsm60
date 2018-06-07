@@ -310,5 +310,37 @@ namespace PilotSmithApp.RepositoryService.Service
             return employeeList;
         }
         #endregion Get Employee SelectList
+
+        #region CheckEmployeeCodeExist
+        public bool CheckEmployeeCodeExist(Employee employee)
+        {
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[CheckEmployeeCodeExist]";
+                        cmd.Parameters.Add("@Code", SqlDbType.VarChar,10).Value = employee.Code;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = employee.ID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        Object res = cmd.ExecuteScalar();
+                        return (res.ToString() == "Exists" ? true : false);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
     }
 }

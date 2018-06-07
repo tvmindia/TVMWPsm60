@@ -15,5 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         Employee GetEmployee(Guid id);
         object DeleteEmployee(Guid id);
         List<SelectListItem> GetEmployeeSelectList();
+        bool CheckEmployeeCodeExist(Employee employee);
     }
 }

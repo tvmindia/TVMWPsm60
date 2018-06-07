@@ -14,5 +14,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<Employee> GetAllEmployee(EmployeeAdvanceSearch employeeAdvanceSearch);
         object DeleteEmployee(Guid id);
         List<Employee> GetEmployeeSelectList();
+        bool CheckEmployeeCodeExist(Employee employee);
     }
 }

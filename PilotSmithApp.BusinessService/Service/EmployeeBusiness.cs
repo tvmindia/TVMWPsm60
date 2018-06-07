@@ -45,5 +45,10 @@ namespace PilotSmithApp.BusinessService.Service
                                          Selected = false
                                      }).ToList():new List<SelectListItem>();
         }
+        public bool CheckEmployeeCodeExist(Employee employee)
+        {
+            return _employeeRepository.CheckEmployeeCodeExist(employee);
+        }
+
     }
 }
