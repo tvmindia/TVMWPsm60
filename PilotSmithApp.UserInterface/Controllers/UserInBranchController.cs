@@ -32,7 +32,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             UserInBranchViewModel userInBranchVM = new UserInBranchViewModel();
            // List<SelectListItem> selectListItem = new List<SelectListItem>();
            // selectListItem = new List<SelectListItem>();
-            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());          
+            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+            userInBranchVM.PSAUser = new PSAUserViewModel();
             userInBranchVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
                                                                              select new SelectListItem
                                                                              {
