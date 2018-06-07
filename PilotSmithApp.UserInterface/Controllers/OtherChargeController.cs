@@ -36,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #region InsertUpdateOtherCharge
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "OtherCharge", Mode = "W")]
         public string InsertUpdateOtherCharge(OtherChargeViewModel otherChargeVM)
         {

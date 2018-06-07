@@ -85,7 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllBank
         #region InsertUpdateBank
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
         public string InsertUpdateBank(BankViewModel bankVM)
         {
