@@ -114,6 +114,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<SaleInvoiceViewModel, SaleInvoice>().ReverseMap();
                 config.CreateMap<SaleInvoiceAdvanceSearchViewModel, SaleInvoiceAdvanceSearch>().ReverseMap();
                 config.CreateMap<SaleInvoiceDetailViewModel, SaleInvoiceDetail>().ReverseMap();
+                config.CreateMap<BillLocationViewModel, BillLocation>().ReverseMap();
 
             });
         }

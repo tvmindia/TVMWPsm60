@@ -161,6 +161,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : saleInvoice.ExpectedDelvDate);
                                     saleInvoice.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString("dd-MMM-yyyy") : saleInvoice.ExpectedDelvDateFormatted);
                                     saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
+                                    saleInvoice.Customer = new Customer();
+                                    saleInvoice.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : saleInvoice.Customer.CompanyName);
                                     saleInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatusCode);
                                     saleInvoice.DocumentStatus = new DocumentStatus();
                                     saleInvoice.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? sdr["DocumentStatusDescription"].ToString() : saleInvoice.DocumentStatus.Description);
@@ -170,12 +172,21 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleInvoice.DocumentOwnerID);
                                     saleInvoice.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleInvoice.BranchCode);
                                     saleInvoice.BillLocationCode = (sdr["BillingLocationCode"].ToString() != "" ? int.Parse(sdr["BillingLocationCode"].ToString()) : saleInvoice.BillLocationCode);
+                                    saleInvoice.BillLocation = new BillLocation();
+                                    saleInvoice.BillLocation.Address = (sdr["BillingLocationAddress"].ToString() != "" ? sdr["BillingLocationAddress"].ToString() : saleInvoice.BillLocation.Address);
+                                    saleInvoice.BillLocation.Name = (sdr["BillingLocationName"].ToString() != "" ? sdr["BillingLocationName"].ToString() : saleInvoice.BillLocation.Name);
                                     saleInvoice.Branch = new Branch();
                                     saleInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : saleInvoice.Branch.Description);
                                     saleInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleInvoice.PreparedBy);
                                     saleInvoice.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleInvoice.Discount);
                                     saleInvoice.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : saleInvoice.DocumentOwners);
                                     saleInvoice.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : saleInvoice.DocumentOwner);
+                                    string mailfooter = (sdr["MailBodyFooter"].ToString() != "" ? (sdr["MailBodyFooter"].ToString()) : saleInvoice.MailBodyFooter);
+                                    saleInvoice.MailBodyFooter = mailfooter.Replace("\n", "<br />");
+                                    string mailfrom = (sdr["MailFromAddress"].ToString() != "" ? (sdr["MailFromAddress"].ToString()) : saleInvoice.MailFrom);
+                                    saleInvoice.MailFrom = mailfrom.Replace("\n", "<br />");
+                                    saleInvoice.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : saleInvoice.EmailSentYN);
+                                    saleInvoice.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : saleInvoice.EmailSentTo);
                                 }
                         }
                     }
@@ -298,7 +309,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@LatestApprovalID", SqlDbType.UniqueIdentifier).Value = saleInvoice.LatestApprovalID;
                         cmd.Parameters.Add("@LatestApprovalStatus", SqlDbType.Int).Value = saleInvoice.LatestApprovalStatus;
                         cmd.Parameters.Add("@IsFinalApproved", SqlDbType.Bit).Value = saleInvoice.IsFinalApproved;
-                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.Bit).Value = saleInvoice.EmailSentYN;
+                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleInvoice.EmailSentTo;
                         cmd.Parameters.Add("@PrintRemark", SqlDbType.NVarChar, -1).Value = saleInvoice.PrintRemark;
                         cmd.Parameters.Add("@Discount", SqlDbType.Decimal).Value = saleInvoice.Discount;
                         cmd.Parameters.Add("@AdvanceAmount", SqlDbType.Decimal).Value = saleInvoice.AdvanceAmount;
@@ -509,6 +520,60 @@ namespace PilotSmithApp.RepositoryService.Service
                 throw ex;
             }
             return saleInvoiceOtherChargeList;
+        }
+
+        public object UpdateSaleInvoiceEmailInfo(SaleInvoice saleInvoice)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[UpdatesaleInvoiceEmailInfo]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = saleInvoice.ID;
+                        //cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyHeader;
+                        //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
+                        cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleInvoice.EmailSentYN;
+                        cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleInvoice.EmailSentTo;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = saleInvoice.PSASysCommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = saleInvoice.PSASysCommon.UpdatedDate;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(_appConstant.InsertFailure);
+                    case "1":
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = saleInvoice.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = saleInvoice.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+            };
         }
     }
 }

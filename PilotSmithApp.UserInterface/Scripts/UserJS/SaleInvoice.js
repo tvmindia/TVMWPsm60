@@ -192,6 +192,7 @@ function AddSaleInvoice() {
             ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
             BindSaleInvoiceDetailList(_emptyGuid);
             BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
+            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
             //setTimeout(function () {
             //resides in customjs for sliding
             openNav();
@@ -223,6 +224,7 @@ function EditSaleInvoice(this_Obj) {
             ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
             BindSaleInvoiceDetailList(SaleInvoice.ID);
             BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
+            $('#lblSaleInvoiceInfo').text(SaleInvoice.SaleInvNo);
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
@@ -1131,4 +1133,95 @@ function ClearCalculatedFields() {
 function CalculateGrandTotal(value) {
     var GrandTotal = roundoff(parseFloat($('#lblGrossAmount').text()) - parseFloat(value != "" ? value : 0))
     $('#lblGrandTotal').text(GrandTotal);
+}
+
+
+//=========================================================================================================================
+//Email SaleInvoice
+//
+function EmailSaleInvoice() {
+    debugger;
+    $("#divModelEmailSaleInvoiceBody").load("SaleInvoice/EmailSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val() + "&EmailFlag=True", function () {
+        $('#lblModelEmailSaleInvoice').text('Email SaleInvoice')
+        $('#divModelEmailSaleInvoice').modal('show');
+    });
+}
+
+function SendSaleInvoiceEmail() {
+    debugger;
+    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+    $('#hdnSaleInvoiceEMailContent').val($('#divSaleInvoiceEmailcontainer').html());
+    $('#FormSaleInvoiceEmailSend #ID').val($('#SaleInvoiceForm #ID').val());
+}
+function UpdateSaleInvoiceEmailInfo() {
+    debugger;
+    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+    $('#FormUpdateSaleInvoiceEmailInfo #ID').val($('#SaleInvoiceForm #ID').val());
+}
+function DownloadSaleInvoice() {
+    debugger;
+    var bodyContent = $('#divSaleInvoiceEmailcontainer').html();
+    var headerContent = $('#hdnHeadContent').html();
+    $('#hdnContent').val(bodyContent);
+    $('#hdnHeadContent').val(headerContent);
+    var customerName = $("#SaleInvoiceForm #CustomerID option:selected").text();
+    $('#hdnCustomerName').val(customerName);
+}
+
+function SaveSuccessUpdateSaleInvoiceEmailInfo(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                MasterAlert("success", _result.Message)
+                $("#divModelEmailSaleInvoiceBody").load("SaleInvoice/EmailSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val() + "&EmailFlag=False", function () {
+                    $('#lblModelEmailSaleInvoice').text('Send Email SaleInvoice')
+                });
+                break;
+            case "ERROR":
+                MasterAlert("success", _message)
+                $('#divModelEmailSaleInvoice').modal('hide');
+                break;
+            default:
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function SaveSuccessSaleInvoiceEmailSend(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                MasterAlert("success", _message)
+                $('#divModelEmailSaleInvoice').modal('hide');
+                ResetSaleInvoice();
+                break;
+            case "ERROR":
+                MasterAlert("success", _message)
+                $('#divModelEmailSaleInvoice').modal('hide');
+                break;
+            default:
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
 }

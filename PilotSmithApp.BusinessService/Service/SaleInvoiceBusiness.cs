@@ -13,10 +13,12 @@ namespace PilotSmithApp.BusinessService.Service
     {
         ISaleInvoiceRepository _saleInvoiceRepository;
         ICommonBusiness _commonBusiness;
-        public SaleInvoiceBusiness(ISaleInvoiceRepository saleInvoiceRepository, ICommonBusiness commonBusiness)
+        IMailBusiness _mailBusiness;
+        public SaleInvoiceBusiness(ISaleInvoiceRepository saleInvoiceRepository, ICommonBusiness commonBusiness, IMailBusiness mailBusiness)
         {
             _saleInvoiceRepository = saleInvoiceRepository;
             _commonBusiness = commonBusiness;
+            _mailBusiness = mailBusiness;
         }
         public List<SaleInvoice> GetAllSaleInvoice(SaleInvoiceAdvanceSearch saleInvoiceAdvanceSearch)
         {
@@ -53,6 +55,36 @@ namespace PilotSmithApp.BusinessService.Service
         public List<SaleInvoiceOtherCharge> GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(Guid saleInvoiceID)
         {
             return _saleInvoiceRepository.GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(saleInvoiceID);
+        }
+
+        public async Task<bool> QuoteEmailPush(SaleInvoice saleInvoice)
+        {
+            bool sendsuccess = false;
+            try
+            {
+                if (!string.IsNullOrEmpty(saleInvoice.EmailSentTo))
+                {
+                    string[] EmailList = saleInvoice.EmailSentTo.Split(',');
+                    foreach (string email in EmailList)
+                    {
+                        Mail _mail = new Mail();
+                        _mail.Body = saleInvoice.MailContant;
+                        _mail.Subject = "Sale Invoice";
+                        _mail.To = email;
+                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return sendsuccess;
+        }
+
+        public object UpdateSaleInvoiceEmailInfo(SaleInvoice saleInvoice)
+        {
+            return _saleInvoiceRepository.UpdateSaleInvoiceEmailInfo(saleInvoice);
         }
     }
 }

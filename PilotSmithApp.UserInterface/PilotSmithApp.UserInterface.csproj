@@ -1004,6 +1004,7 @@
     <Content Include="Views\BillLocation\Index.cshtml" />
     <Content Include="Views\BillLocation\_BillLocationSelectList.cshtml" />
     <Content Include="Views\Employee\_ServicedBySelectList.cshtml" />
+    <Content Include="Views\SaleInvoice\_EmailSaleInvoice.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
