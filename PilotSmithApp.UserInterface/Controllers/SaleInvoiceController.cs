@@ -7,6 +7,7 @@ using PilotSmithApp.UserInterface.SecurityFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -677,7 +678,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         //}
 
         //#endregion UpdateSaleInvoiceEmailInfo
-       
+
         //#region Email SaleInvoice
         //public ActionResult EmailSaleInvoice(SaleInvoiceViewModel saleInvoiceVM)
         //{
@@ -747,8 +748,60 @@ namespace PilotSmithApp.UserInterface.Controllers
         //    return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         //}
         //#endregion Get SaleInvoice SelectList On Demand
-        
-            
+
+        #region Email SaleInvoice
+        public ActionResult EmailSaleInvoice(SaleInvoiceViewModel saleInvoiceVM)
+        {
+            bool emailFlag = saleInvoiceVM.EmailFlag;
+            //SaleInvoiceViewModel saleInvoiceVM = new SaleInvoiceViewModel();
+            saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(saleInvoiceVM.ID));
+            saleInvoiceVM.SaleInvoiceDetailList = Mapper.Map<List<SaleInvoiceDetail>, List<SaleInvoiceDetailViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceDetailListBySaleInvoiceID(saleInvoiceVM.ID));
+            saleInvoiceVM.SaleInvoiceOtherChargeDetailList = Mapper.Map<List<SaleInvoiceOtherCharge>, List<SaleInvoiceOtherChargeViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(saleInvoiceVM.ID));
+            saleInvoiceVM.EmailFlag = emailFlag;
+            @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
+            saleInvoiceVM.PDFTools = new PDFTools();
+            return PartialView("_EmailSaleInvoice", saleInvoiceVM);
+        }
+        #endregion Email SaleInvoice
+
+        #region EmailSent
+        [HttpPost, ValidateInput(false)]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public async Task<string> SendSaleInvoiceEmail(SaleInvoiceViewModel saleInvoiceVM)
+        {
+            try
+            {
+                object result = null;
+                if (!string.IsNullOrEmpty(saleInvoiceVM.ID.ToString()))
+                {
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    saleInvoiceVM.PSASysCommon = new PSASysCommonViewModel();
+                    saleInvoiceVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                    saleInvoiceVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+
+                    bool sendsuccess = await _saleInvoiceBusiness.QuoteEmailPush(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
+                    if (sendsuccess)
+                    {
+                        //1 is meant for mail sent successfully
+                        saleInvoiceVM.EmailSentYN = sendsuccess;
+                        result = _saleInvoiceBusiness.UpdateSaleInvoiceEmailInfo(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
+                    }
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, MailResult = sendsuccess, Message = _appConstant.MailSuccess });
+                }
+                else
+                {
+
+                    return JsonConvert.SerializeObject(new { Result = "ERROR", Message = "ID is Missing" });
+                }
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion EmailSent
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
