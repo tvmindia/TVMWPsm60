@@ -22,5 +22,6 @@ namespace PilotSmithApp.BusinessService.Contract
         object UpdateSaleOrderEmailInfo(SaleOrder saleOrder);
         Task<bool> QuoteEmailPush(SaleOrder saleOrder);
         List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID);
+        SaleOrderSummary GetSaleOrderSummaryCount();
     }
 }

@@ -63,21 +63,14 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string AdvFromDate { get; set; }
         public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
-        public Guid AdvCustomerID { get; set; }
-        public Customer Customer { get; set; }
-        public int? AdvAreaCode { get; set; }
-        public Area Area { get; set; }
-        public int? AdvReferencePersonCode { get; set; }
-        public ReferencePerson ReferencePerson { get; set; }
-        public int? AdvBranchCode { get; set; }
-        public Branch Branch { get; set; }
+        public Guid AdvCustomerID { get; set; }       
+        public int? AdvAreaCode { get; set; }       
+        public int? AdvReferencePersonCode { get; set; }      
+        public int? AdvBranchCode { get; set; }       
         public int? AdvDocumentStatusCode { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
-        public Guid AdvDocumentOwnerID { get; set; }
-        public PSAUser PSAUser { get; set; }
-        public ApprovalStatus ApprovalStatus { get; set; }
-        public int? AdvApprovalStatusCode { get; set; }       
-       // public string AdvEmailSentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }       
+        public int? AdvApprovalStatusCode { get; set; }   
         public string AdvEmailSentStatus { get; set; }
     }
     public class QuotationDetail
@@ -118,5 +111,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public TaxType TaxType { get; set; }
         public OtherCharge OtherCharge { get; set; }
 
+    }
+    public class QuotationSummary
+    {
+        public int TotalQuotationCount { get; set; }
+        public int ConvertedQuotationCount { get; set; }
+        public int LostQuotationCount { get; set; }
     }
 }

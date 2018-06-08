@@ -749,7 +749,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             saleInvoiceVM.SaleInvoiceDetailList = Mapper.Map<List<SaleInvoiceDetail>, List<SaleInvoiceDetailViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceDetailListBySaleInvoiceID(saleInvoiceVM.ID));
             saleInvoiceVM.SaleInvoiceOtherChargeDetailList = Mapper.Map<List<SaleInvoiceOtherCharge>, List<SaleInvoiceOtherChargeViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(saleInvoiceVM.ID));
             saleInvoiceVM.EmailFlag = emailFlag;
-            @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
+            @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/Pilot1.PNG";
             saleInvoiceVM.PDFTools = new PDFTools();
             return PartialView("_EmailSaleInvoice", saleInvoiceVM);
         }
