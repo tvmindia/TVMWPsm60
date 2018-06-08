@@ -20,20 +20,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         IQuotationBusiness _quotationBusiness;       
         IEstimateBusiness _estimateBusiness;
         ICommonBusiness _commonBusiness;       
-        IDocumentStatusBusiness _documentStatusBusiness;
-        IApprovalStatusBusiness _approvalStatusBusiness;      
+        IDocumentStatusBusiness _documentStatusBusiness;          
 
         public QuotationController(IQuotationBusiness quotationBusiness,           
             IEstimateBusiness estimateBusiness,
             ICommonBusiness commonBusiness,            
-            IDocumentStatusBusiness documentStatusBusiness,           
-            IApprovalStatusBusiness approvalStatusBusiness)
+            IDocumentStatusBusiness documentStatusBusiness          
+            )
         {
             _quotationBusiness = quotationBusiness;           
             _estimateBusiness = estimateBusiness;
             _commonBusiness = commonBusiness;            
-            _documentStatusBusiness = documentStatusBusiness;           
-            _approvalStatusBusiness = approvalStatusBusiness;
+            _documentStatusBusiness = documentStatusBusiness;       
+           
         }
         // GET: Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]

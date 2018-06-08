@@ -120,7 +120,7 @@
                         @Html.LabelFor(model => model.AdvApprovalStatusCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvApprovalStatusCode, Model.ApprovalStatus.ApprovalStatusSelectList, "Select approval status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvApprovalStatusCode, EmptySelectList, "Select approval status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
 

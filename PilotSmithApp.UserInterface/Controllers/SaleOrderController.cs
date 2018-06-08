@@ -4,7 +4,6 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
-using SAMTool.BusinessServices.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,61 +19,28 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         ISaleOrderBusiness _saleOrderBusiness;
         IQuotationBusiness _quotationBusiness;
-        IEnquiryBusiness _enquiryBusiness;
-        ICustomerBusiness _customerBusiness;
-        IBranchBusiness _branchBusiness;
-        ICommonBusiness _commonBusiness;
-        IAreaBusiness _areaBusiness;
-        IReferencePersonBusiness _referencePersonBusiness;
-        IDocumentStatusBusiness _documentStatusBusiness;
-        IApprovalStatusBusiness _approvalStatusBusiness;
-        private IUserBusiness _userBusiness;
+        IEnquiryBusiness _enquiryBusiness;       
+        ICommonBusiness _commonBusiness;      
+        IDocumentStatusBusiness _documentStatusBusiness;      
+       
         #region Constructor Injection
-        public SaleOrderController(ISaleOrderBusiness saleOrderBusiness, IQuotationBusiness quotationBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness
-            , ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness, IAreaBusiness areaBusiness, IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness, IApprovalStatusBusiness approvalStatusBusiness)
+        public SaleOrderController(ISaleOrderBusiness saleOrderBusiness, IQuotationBusiness quotationBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
+            IDocumentStatusBusiness documentStatusBusiness)
         {
             _saleOrderBusiness = saleOrderBusiness;
             _quotationBusiness = quotationBusiness;
             _enquiryBusiness = enquiryBusiness;
-            _commonBusiness = commonBusiness;
-            _customerBusiness = customerBusiness;
-            _branchBusiness = branchBusiness;
-            _areaBusiness = areaBusiness;
-            _referencePersonBusiness = referencePersonBusiness;
-            _documentStatusBusiness = documentStatusBusiness;
-            _userBusiness = userBusiness;
-            _approvalStatusBusiness = approvalStatusBusiness;
+            _commonBusiness = commonBusiness;            
+            _documentStatusBusiness = documentStatusBusiness;           
         }
         #endregion Constructor Injection
         // GET: SaleOrder
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
         public ActionResult Index()
         {
-            SaleOrderAdvanceSearchViewModel saleOrderAdvanceSearchVM = new SaleOrderAdvanceSearchViewModel();
-            saleOrderAdvanceSearchVM.Area = new AreaViewModel();
-            saleOrderAdvanceSearchVM.Area.AreaSelectList = _areaBusiness.GetAreaForSelectList();
-            saleOrderAdvanceSearchVM.Customer = new CustomerViewModel();
-            saleOrderAdvanceSearchVM.Customer.CustomerSelectList = _customerBusiness.GetCustomerSelectList();
-            saleOrderAdvanceSearchVM.ReferencePerson = new ReferencePersonViewModel();
-            saleOrderAdvanceSearchVM.ReferencePerson.ReferencePersonSelectList = _referencePersonBusiness.GetReferencePersonSelectList();
-            saleOrderAdvanceSearchVM.Branch = new BranchViewModel();
-            AppUA appUA = Session["AppUA"] as AppUA;
-            saleOrderAdvanceSearchVM.Branch.BranchList = _branchBusiness.GetBranchForSelectList(appUA.UserName);
+            SaleOrderAdvanceSearchViewModel saleOrderAdvanceSearchVM = new SaleOrderAdvanceSearchViewModel();           
             saleOrderAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            saleOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");
-            saleOrderAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
-            saleOrderAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
-            saleOrderAdvanceSearchVM.PSAUser = new PSAUserViewModel();
-            //List<SelectListItem> selectListItem = new List<SelectListItem>();
-            //List<SelectListItem> selectListItem = null;
-            List<PSAUserViewModel> PSAUserVMList = Mapper.Map<List<SAMTool.DataAccessObject.DTO.User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
-            saleOrderAdvanceSearchVM.PSAUser.UserSelectList = PSAUserVMList != null ? (from PSAuserVM in PSAUserVMList
-                                                      select new SelectListItem
-                                                      {
-                                                          Text = PSAuserVM.UserName,
-                                                          Value = PSAuserVM.ID.ToString(),
-                                                          Selected = false
-                                                      }).ToList() : new List<SelectListItem>();          
+            saleOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SOD");           
             return View(saleOrderAdvanceSearchVM);
         }
         #region SaleOrderForm Form
