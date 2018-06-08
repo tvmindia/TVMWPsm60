@@ -175,4 +175,12 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? PrevDelQty { get; set; }
         public decimal? DelvQty { get; set; }
     }
+
+    public class ProductionOrderSummaryViewModel
+    {
+        public int TotalProductionOrderCount { get; set; }
+        public int OpenProductionOrderCount { get; set; }
+        public int ClosedProductionOrderCount { get; set; }
+        public int InProgressProductionOrderCount { get; set; }
+    }
 }
