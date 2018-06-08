@@ -598,7 +598,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[GetEnquiry]";
+                        cmd.CommandText = "[PSA].[GetEnquirySummaryCount]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

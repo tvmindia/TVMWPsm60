@@ -18,5 +18,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm);
         List<ProductionOrder> GetProductionOrderForSelectList(Guid? id);
         object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder);
+        ProductionOrderSummary GetProductionOrderSummaryCount();
     }
 }
