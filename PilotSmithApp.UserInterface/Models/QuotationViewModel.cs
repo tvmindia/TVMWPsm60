@@ -182,7 +182,7 @@ namespace PilotSmithApp.UserInterface.Models
         public OtherChargeViewModel OtherCharge { get; set; }
 
     }
-    public class QuotationSummary
+    public class QuotationSummaryViewModel
     {
         public int TotalQuotationCount { get; set; }
         public int ConvertedQuotationCount { get; set; }

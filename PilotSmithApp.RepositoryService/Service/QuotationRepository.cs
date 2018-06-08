@@ -760,7 +760,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     quotationSummary = new QuotationSummary();
                                     quotationSummary.TotalQuotationCount = (sdr["TotalQuotation"].ToString() != "" ? int.Parse(sdr["TotalQuotation"].ToString()) : quotationSummary.TotalQuotationCount);
-                                    //quotationSummary.LostQuotationCount=(sdr["TotalLostQuotation"].ToString() != "" ? int.Parse(sdr["TotalLostQuotation"].ToString()) : quotationSummary.TotalQuotationCount)
+                                    quotationSummary.LostQuotationCount = (sdr["TotalLostQuotation"].ToString() != "" ? int.Parse(sdr["TotalLostQuotation"].ToString()) : quotationSummary.LostQuotationCount);
                                     quotationSummary.ConvertedQuotationCount = (sdr["TotalConvertedQuotation"].ToString() != "" ? int.Parse(sdr["TotalConvertedQuotation"].ToString()) : quotationSummary.ConvertedQuotationCount);
                                 }
                         }
