@@ -15,59 +15,44 @@
 
         <table style="width:100%;line-height:20px;margin-top:5px">
             <tr style="width:100%;">
-                <td style="width:37%;text-align:left">
-                    <table style="width:100%;font-size:12px">
-                        <tr style="width:100%"><td style="text-align:left;">Order No  </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.SaleInvNo</td></tr>
-                        <tr style="width:100%"><td style="text-align:left;">Delivery Date   </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.ExpectedDelvDateFormatted</td></tr>
-                        @*<tr style="width:100%"><td style="text-align:left;">Bank   </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.Bank.Name</td></tr>*@
-                    </table>
-                </td>
-                <td style="width:33%;"></td>
-                <td style="width:30%;text-align:right">
-                    <table style="width:100%;font-size:12px">
-                        <tr style="width:100%"><td style="text-align:left;">Date   </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.SaleInvDateFormatted</td></tr>
-                        <tr style="width:100%"><td style="text-align:left;">P.O No  </td><td>:</td><td style="text-align:right;padding-left:5px">@Model.PurchaseOrdNo</td></tr>
-                    </table>
-                    <span style="text-align:left;"></span><br />
-                    <span style="text-align:left;"></span>
-                </td>
+                <td style="width:70%;text-align:left">
+                    <table style="width:100%;">
+                        <tr style="width:100%;">
+                            <td style="width:50%;"><b>From</b></td>
+                            <td style="width:50%;"><b>Delivery Address</b></td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td style="width:50%;text-align:left;font-size:14px;vertical-align:top;">
+                                @*  @Html.Raw(@Model.MailFrom)*@
+                                @Model.BillLocation.Name<br />
+                                @Model.BillLocation.Address<br />
+                                GSTIN/UIN : @Model.GSTIN<br />
+                                PAN : @Model.PAN<br />
+                                CIN : @Model.CIN<br/>
+                                EmailID : @Model.EmailID
+                            </td>
+                            <td style="width:50%;text-align:left;font-size:14px;vertical-align:top;">
 
+                                @Model.Customer.CompanyName<br />
+                                @Model.MailingAddress
+                            </td>
+                        </tr>
+                    </table>
+
+                </td> 
+                <td style="width:30%;text-align:right" valign="top">
+                    <table style="width:100%;font-size:12px">
+                        <tr style="width:100%"><td style="text-align:left;">Invoice No    </td><td>:</td><td style="text-align:right;padding-left:5px"><b>@Model.SaleInvNo</b></td></tr>
+                        <tr style="width:100%"><td style="text-align:left;">Date   </td><td>:</td><td style="text-align:right;padding-left:5px"><b>@Model.SaleInvDateFormatted</b></td></tr>
+                        <tr style="width:100%"><td style="text-align:left;">Delivery Date    </td><td>:</td><td style="text-align:right;padding-left:5px"><b>@Model.ExpectedDelvDateFormatted</b></td></tr>
+                        @*<tr style="width:100%"><td style="text-align:left;">P.O No  </td><td>:</td><td style="text-align:right;padding-left:5px"><b>@Model.PurchaseOrdNo</b></td></tr>*@
+                    </table> 
+                </td>
             </tr>
         </table>
         <br />
         @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, totalCess = 0, otherChargeAmt = 0, totalGSTAmt = 0;
-            var tot = "";}
-        <table style="width:100%;">
-            <tr style="width:100%;">
-                <td style="width:50%;"><b>From</b></td>
-                <td style="width:50%;"><b>Delivery Address</b></td>
-            </tr>
-            <tr style="width:100%;"> 
-                <td style="width:50%;text-align:left;font-size:14px;vertical-align:top;">
-                  @*  @Html.Raw(@Model.MailFrom)*@
-                    @Model.BillLocation.Name<br />
-                    @Model.BillLocation.Address
-                </td>
-                <td style="width:50%;text-align:left;font-size:14px;vertical-align:top;">
-                  
-                    @Model.Customer.CompanyName<br />
-                    @Model.MailingAddress
-                </td>
-            </tr> 
-        </table>
-        <br />
-        <table>
-            <tr>
-                <td style="font-size:15px"><b>Sub :</b> Sale Invoice</td>
-            </tr>
-        </table>
-        <br />
-        @*<table>
-                <tr>
-                    <td style="font-size:15px;">@Html.Raw(@Model.MailBodyHeader)</td>
-                </tr>
-            </table>*@
-        <br />
+            var tot = "";} 
         <table id="ItemDetailsTable" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; line-height: 14px; text-align: left;" cellspacing="0" width="100%">
             <thead>
                 <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
@@ -271,10 +256,20 @@
             </tr>
         </table>
         <table style="width: 100%; line-height: inherit; text-align: left;">
+            <tr class="details">
+                <td>
+                    <b><u>Declaration</u></b>
+                </td>
+                <td>
 
+                </td>
+            </tr>
             <tr class="details">
                 <td style="vertical-align: top; padding: 5px 5px 20px;font-size:14px;" valign="top">
                     @Html.Raw(@Model.MailBodyFooter)
+                </td>
+                <td>
+                    @Html.Raw(@Model.SignatureStamp)
                 </td>
             </tr>
         </table>
