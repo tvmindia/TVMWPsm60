@@ -670,6 +670,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\UserJS\AdvanceSelectList.js" />
+    <Content Include="Scripts\UserJS\Country.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\OtherCharge.js" />
     <Content Include="Scripts\UserJS\DeliveryChallan.js" />
@@ -740,6 +741,7 @@
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CarrierController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
+    <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\CustomerCategoryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
@@ -792,6 +794,7 @@
     <Compile Include="Models\BranchViewModel.cs" />
     <Compile Include="Models\CarrierViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
+    <Compile Include="Models\CountryViewModel.cs" />
     <Compile Include="Models\CustomerCategoryViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\DeliveryChallanViewModel.cs" />
@@ -1005,6 +1008,9 @@
     <Content Include="Views\BillLocation\_BillLocationSelectList.cshtml" />
     <Content Include="Views\Employee\_ServicedBySelectList.cshtml" />
     <Content Include="Views\SaleInvoice\_EmailSaleInvoice.cshtml" />
+    <Content Include="Views\Country\_AddCountry.cshtml" />
+    <Content Include="Views\Country\Index.cshtml" />
+    <Content Include="Views\Country\_CountrySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
