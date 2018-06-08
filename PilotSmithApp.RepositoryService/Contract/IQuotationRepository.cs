@@ -20,5 +20,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object UpdateQuotationEmailInfo(Quotation quotation);
         List<Quotation> GetQuotationForSelectList(Guid? quoteID);
         List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm);
+        QuotationSummary GetQuotationSummaryCount();
     }
 }

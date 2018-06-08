@@ -736,5 +736,43 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion Delete Quotation OtherCharge
 
+        #region GetQuotationSummaryCount
+        public QuotationSummary GetQuotationSummaryCount()
+        {
+            QuotationSummary quotationSummary = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetQuotationSummaryCount]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                                if (sdr.Read())
+                                {
+                                    quotationSummary = new QuotationSummary();
+                                    quotationSummary.TotalQuotationCount = (sdr["TotalQuotation"].ToString() != "" ? int.Parse(sdr["TotalQuotation"].ToString()) : quotationSummary.TotalQuotationCount);
+                                    //quotationSummary.LostQuotationCount=(sdr["TotalLostQuotation"].ToString() != "" ? int.Parse(sdr["TotalLostQuotation"].ToString()) : quotationSummary.TotalQuotationCount)
+                                    quotationSummary.ConvertedQuotationCount = (sdr["TotalConvertedQuotation"].ToString() != "" ? int.Parse(sdr["TotalConvertedQuotation"].ToString()) : quotationSummary.ConvertedQuotationCount);
+                                }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return quotationSummary;
+        }
+        #endregion GetQuotationSummaryCount
     }
 }

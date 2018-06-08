@@ -120,5 +120,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _quotationRepository.DeleteQuotationOtherChargeDetail(id);
         }
+        public QuotationSummary GetQuotationSummaryCount()
+        {
+            return _quotationRepository.GetQuotationSummaryCount();
+        }
     }
 }
