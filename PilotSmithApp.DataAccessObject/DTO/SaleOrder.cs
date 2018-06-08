@@ -137,4 +137,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public OtherCharge OtherCharge { get; set; }
 
     }
+    public class SaleOrderSummary
+    {
+        public int TotalSaleOrderCount { get; set; }
+        public int OpenSaleOrderCount { get; set; }
+    }
 }

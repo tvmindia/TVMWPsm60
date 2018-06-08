@@ -210,4 +210,9 @@ namespace PilotSmithApp.UserInterface.Models
 
     }
 
+    public class SaleOrderSummaryViewModel
+    {
+        public int TotalSaleOrderCount { get; set; }
+        public int OpenSaleOrderCount { get; set; }
+    }
 }

@@ -20,5 +20,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object DeleteSaleOrderOtherChargeDetail(Guid id);
         List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID);
         List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID);
+        SaleOrderSummary GetSaleOrderSummaryCount();
     }
 }
