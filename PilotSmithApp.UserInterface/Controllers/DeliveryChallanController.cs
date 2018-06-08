@@ -20,37 +20,23 @@ namespace PilotSmithApp.UserInterface.Controllers
         IDeliveryChallanBusiness _deliveryChallanBusiness;
         IProductionOrderBusiness _productionOrderBusiness;
         ISaleOrderBusiness _saleOrderBusiness;       
-        IDocumentStatusBusiness _documentStatusBusiness;
-        IApprovalStatusBusiness _approvalStatusBusiness;
-        IPlantBusiness _plantBusiness;
        
-
         public DeliveryChallanController(IDeliveryChallanBusiness deliveryChallanBusiness,
             IProductionOrderBusiness productionOrderBusiness,
-            ISaleOrderBusiness saleOrderBusiness,           
-            IDocumentStatusBusiness documentStatusBusiness,
-            IApprovalStatusBusiness approvalStatusBusiness,
-            IPlantBusiness plantBusiness           
+            ISaleOrderBusiness saleOrderBusiness       
+                  
             )
         {
             _deliveryChallanBusiness = deliveryChallanBusiness;
             _productionOrderBusiness = productionOrderBusiness;
-            _saleOrderBusiness = saleOrderBusiness;           
-            _documentStatusBusiness = documentStatusBusiness;
-            _plantBusiness = plantBusiness;
-            _approvalStatusBusiness = approvalStatusBusiness;            
+            _saleOrderBusiness = saleOrderBusiness;       
+                               
         }
         // GET: DeliveryChallan
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
         public ActionResult Index()
         {
-            DeliveryChallanAdvanceSearchViewModel deliveryChallanVM = new DeliveryChallanAdvanceSearchViewModel();
-
-            deliveryChallanVM.Area = new AreaViewModel();            
-            deliveryChallanVM.Plant = new PlantViewModel();
-            deliveryChallanVM.Plant.PlantSelectList = _plantBusiness.GetPlantForSelectList();           
-            deliveryChallanVM.ApprovalStatus = new ApprovalStatusViewModel();
-            deliveryChallanVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();          
+            DeliveryChallanAdvanceSearchViewModel deliveryChallanVM = new DeliveryChallanAdvanceSearchViewModel();            
             return View(deliveryChallanVM);
         }
 

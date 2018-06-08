@@ -18,35 +18,24 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IProductionQCBusiness _productionQCBusiness;
         IProductionOrderBusiness _productionOrderBusiness;       
-        IDocumentStatusBusiness _documentStatusBusiness;
-        IApprovalStatusBusiness _approvalStatusBusiness;
-        IPlantBusiness _plantBusiness;       
+        IDocumentStatusBusiness _documentStatusBusiness;        
 
         public ProductionQCController(IProductionQCBusiness productionQCBusiness, 
           IProductionOrderBusiness productionOrderBusiness,         
-          IDocumentStatusBusiness documentStatusBusiness,
-          IApprovalStatusBusiness approvalStatusBusiness,
-          IPlantBusiness plantBusiness
+          IDocumentStatusBusiness documentStatusBusiness          
           )
         {
             _productionQCBusiness = productionQCBusiness;
             _productionOrderBusiness = productionOrderBusiness;            
-            _documentStatusBusiness = documentStatusBusiness;
-            _plantBusiness = plantBusiness;
-            _approvalStatusBusiness = approvalStatusBusiness;           
+            _documentStatusBusiness = documentStatusBusiness;                  
         }
         // GET: ProductionQ
         [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
         public ActionResult Index()
         {
-            ProductionQCAdvanceSearchViewModel productionQCVM = new ProductionQCAdvanceSearchViewModel();            
-            productionQCVM.Plant = new PlantViewModel();
-            productionQCVM.Plant.PlantSelectList = _plantBusiness.GetPlantForSelectList();           
+            ProductionQCAdvanceSearchViewModel productionQCVM = new ProductionQCAdvanceSearchViewModel();                   
             productionQCVM.DocumentStatus = new DocumentStatusViewModel();
-            productionQCVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("PQC");
-            productionQCVM.ApprovalStatus = new ApprovalStatusViewModel();
-            productionQCVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();
-           
+            productionQCVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("PQC");        
             return View(productionQCVM);
         }
         #region ProductionQC Form

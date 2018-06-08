@@ -20,5 +20,6 @@ namespace PilotSmithApp.BusinessService.Contract
         List<SelectListItem> GetProductionOrderForSelectList(Guid? id);
         object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder);
         Task<bool> ProductionOrderEmailPush(ProductionOrder productionOrder);
+        ProductionOrderSummary GetProductionOrderSummaryCount();
     }
 }

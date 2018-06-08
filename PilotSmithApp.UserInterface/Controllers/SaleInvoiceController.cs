@@ -17,30 +17,23 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
-        ISaleInvoiceBusiness _saleInvoiceBusiness;
-        ICustomerBusiness _customerBusiness;
-        IBranchBusiness _branchBusiness;
+        ISaleInvoiceBusiness _saleInvoiceBusiness;      
         ISaleOrderBusiness _saleOrderBusiness;
         IQuotationBusiness _quotationBusiness;
-        ICommonBusiness _commonBusiness;
-        IApprovalStatusBusiness _approvalStatusBusiness;
+        ICommonBusiness _commonBusiness;       
         IDocumentStatusBusiness _documentStatusBusiness;
-        public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness, ICustomerBusiness customerBusiness, IBranchBusiness branchBusiness,
+        public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness,
            IQuotationBusiness quotationBusiness,
            ISaleOrderBusiness saleOrderBusiness, 
            ICommonBusiness commonBusiness,
-           IDocumentStatusBusiness documenStatusBusiness,
-           IApprovalStatusBusiness approvalStatusBusiness
+           IDocumentStatusBusiness documenStatusBusiness           
             )
         {
-            _saleInvoiceBusiness = saleInvoiceBusiness;
-            _customerBusiness = customerBusiness;
-            _branchBusiness = branchBusiness;
+            _saleInvoiceBusiness = saleInvoiceBusiness;            
             _quotationBusiness = quotationBusiness;
             _saleOrderBusiness = saleOrderBusiness;
             _commonBusiness = commonBusiness;
-            _documentStatusBusiness = documenStatusBusiness;
-            _approvalStatusBusiness = approvalStatusBusiness;
+            _documentStatusBusiness = documenStatusBusiness;            
         }
         // GET: SaleInvoice
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -48,9 +41,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             SaleInvoiceAdvanceSearchViewModel saleInvoiceAdvanceSearchVM = new SaleInvoiceAdvanceSearchViewModel();            
             saleInvoiceAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            saleInvoiceAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SIV");
-            saleInvoiceAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
-            saleInvoiceAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();          
+            saleInvoiceAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SIV");           
             return View(saleInvoiceAdvanceSearchVM);
         }
 

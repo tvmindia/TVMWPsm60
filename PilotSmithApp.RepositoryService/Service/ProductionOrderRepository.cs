@@ -611,5 +611,45 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion UpdateProductionOrderEmailInfo
+
+        #region GetProductionOrderSummaryCount
+        public ProductionOrderSummary GetProductionOrderSummaryCount()
+        {
+            ProductionOrderSummary productionOrderSummary = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProductionOrderSummaryCount]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                                if (sdr.Read())
+                                {
+                                    productionOrderSummary = new ProductionOrderSummary();
+                                    productionOrderSummary.TotalProductionOrderCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : productionOrderSummary.TotalProductionOrderCount);
+                                    productionOrderSummary.OpenProductionOrderCount = (sdr["OpenCount"].ToString() != "" ? int.Parse(sdr["OpenCount"].ToString()) : productionOrderSummary.OpenProductionOrderCount);
+                                    productionOrderSummary.ClosedProductionOrderCount = (sdr["ClosedCount"].ToString() != "" ? int.Parse(sdr["ClosedCount"].ToString()) : productionOrderSummary.ClosedProductionOrderCount);
+                                    productionOrderSummary.InProgressProductionOrderCount = (sdr["InProgressCount"].ToString() != "" ? int.Parse(sdr["InProgressCount"].ToString()) : productionOrderSummary.InProgressProductionOrderCount);
+                                }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return productionOrderSummary;
+        }
+        #endregion GetProductionOrderSummaryCount
     }
 }

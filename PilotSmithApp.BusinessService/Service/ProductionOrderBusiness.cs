@@ -98,5 +98,9 @@ namespace PilotSmithApp.BusinessService.Service
             return sendsuccess;
         }
 
+        public ProductionOrderSummary GetProductionOrderSummaryCount()
+        {
+            return _productionOrderRepository.GetProductionOrderSummaryCount();
+        }
     }
 }

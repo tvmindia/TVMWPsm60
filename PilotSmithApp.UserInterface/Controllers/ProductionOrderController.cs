@@ -21,21 +21,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         IProductionOrderBusiness _productionOrderBusiness;
         ISaleOrderBusiness _saleOrderBusiness;
         ICommonBusiness _commonBusiness;       
-        IDocumentStatusBusiness _documentStatusBusiness;
-        IApprovalStatusBusiness _approvalStatusBusiness;        
+        IDocumentStatusBusiness _documentStatusBusiness;                
 
         public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness,
             ISaleOrderBusiness saleOrderBusiness,
             ICommonBusiness commonBusiness,             
-            IDocumentStatusBusiness documentStatusBusiness,
-            IApprovalStatusBusiness approvalStatusBusiness 
+            IDocumentStatusBusiness documentStatusBusiness            
             )
         {
             _productionOrderBusiness = productionOrderBusiness;
             _saleOrderBusiness = saleOrderBusiness;
             _commonBusiness = commonBusiness;                   
-            _documentStatusBusiness = documentStatusBusiness;            
-            _approvalStatusBusiness = approvalStatusBusiness;
+            _documentStatusBusiness = documentStatusBusiness;           
+           
         }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
@@ -45,10 +43,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.SaleOrderID = saleOrderID;
             ProductionOrderAdvanceSearchViewModel productionOrderAdvanceSearchVM = new ProductionOrderAdvanceSearchViewModel();           
             productionOrderAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            productionOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
-            productionOrderAdvanceSearchVM.ApprovalStatus = new ApprovalStatusViewModel();
-            productionOrderAdvanceSearchVM.ApprovalStatus.ApprovalStatusSelectList = _approvalStatusBusiness.GetSelectListForApprovalStatus();      
-                                                
+            productionOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");          
             return View(productionOrderAdvanceSearchVM);
         }
 

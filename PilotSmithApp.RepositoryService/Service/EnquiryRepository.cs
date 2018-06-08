@@ -65,7 +65,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         if (enquiryAdvanceSearch.AdvDocumentOwnerID == Guid.Empty)
                             cmd.Parameters.AddWithValue("@DocumentOwnerID", DBNull.Value);
                         else
-                        cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiryAdvanceSearch.AdvDocumentOwnerID;
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiryAdvanceSearch.AdvDocumentOwnerID;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -165,12 +165,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiry.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiry.GeneralNotes);
                                     enquiry.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : enquiry.DocumentOwnerID);
                                     enquiry.Branch = new Branch();
-                                    enquiry.Branch.Description= (sdr["Branch"].ToString() != "" ? (sdr["Branch"].ToString()) : enquiry.Branch.Description);
+                                    enquiry.Branch.Description = (sdr["Branch"].ToString() != "" ? (sdr["Branch"].ToString()) : enquiry.Branch.Description);
                                     enquiry.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : enquiry.BranchCode);
                                     enquiry.DocumentStatus = new DocumentStatus();
-                                    enquiry.DocumentStatus.Code= (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatus.Code);
-                                    enquiry.DocumentStatus.Description= (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
-                                    enquiry.DocumentOwners= (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : enquiry.DocumentOwners);
+                                    enquiry.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatus.Code);
+                                    enquiry.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
+                                    enquiry.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : enquiry.DocumentOwners);
                                     enquiry.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : enquiry.DocumentOwner);
                                 }
                         }
@@ -215,7 +215,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : enquiryDetail.ID);
                                         enquiryDetail.EnquiryID = (sdr["EnquiryID"].ToString() != "" ? Guid.Parse(sdr["EnquiryID"].ToString()) : enquiryDetail.EnquiryID);
                                         enquiryDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : enquiryDetail.ProductSpec);
-                                        enquiryDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : enquiryDetail.SpecTag);
+                                        enquiryDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : enquiryDetail.SpecTag);
                                         enquiryDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
@@ -487,7 +487,8 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion GetEnquiryForSelectList
 
         #region GetEnquiryValueVsFollowupCountSummary
-        public List<EnquiryValueFolloupSummary> GetEnquiryValueVsFollowupCountSummary() {
+        public List<EnquiryValueFolloupSummary> GetEnquiryValueVsFollowupCountSummary()
+        {
             List<EnquiryValueFolloupSummary> EnquiryValueList = new List<EnquiryValueFolloupSummary>();
             EnquiryValueFolloupSummary EnquiryValue = null;
             try
@@ -582,5 +583,42 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetEnquiryForSelectListOnDemand
 
+        #region GetEnquirySummaryCount
+        public EnquirySummary GetEnquirySummaryCount()
+        {
+            EnquirySummary enquirySummary = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnquirySummaryCount]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                                if (sdr.Read())
+                                {
+                                    enquirySummary = new EnquirySummary();
+                                    enquirySummary.TotalEnquiryCount = (sdr["TotalEnquiry"].ToString() != "" ? int.Parse(sdr["TotalEnquiry"].ToString()) : enquirySummary.TotalEnquiryCount);
+                                    enquirySummary.ConvertedEnquiryCount = (sdr["TotalConvertedEnquiry"].ToString() != "" ? int.Parse(sdr["TotalConvertedEnquiry"].ToString()) : enquirySummary.ConvertedEnquiryCount);
+                                }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return enquirySummary;
+        }
+        #endregion GetEnquirySummaryCount
     }
 }
