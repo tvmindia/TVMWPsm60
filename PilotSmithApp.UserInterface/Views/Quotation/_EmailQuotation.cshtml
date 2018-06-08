@@ -101,9 +101,9 @@
                     {
                         decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt=0;
                         itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                        CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100));
-                        SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100));
-                        IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100));
+                        CGSTAmt = (decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100);
+                        SGSTAmt = (decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100);
+                        IGSTAmt = (decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100);
                         GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                         itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                         itemgrandTotal = itemtaxableAmount + itemgSTAmount;
@@ -127,7 +127,7 @@
                     }
                     grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
                     grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
-                    GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
+                    GSTTotal = Math.Round(GSTTotal + totalCGST + totalSGST + totalIGST, 2);
                 }
 
             </thead>

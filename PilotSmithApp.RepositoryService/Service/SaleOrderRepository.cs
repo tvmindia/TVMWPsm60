@@ -761,5 +761,43 @@ namespace PilotSmithApp.RepositoryService.Service
             return saleorderOtherChargeList;
         }
         #endregion GetSaleOrderOtherChargeListBySaleOrderID
+
+        #region GetSaleOrderSummaryCount
+        public SaleOrderSummary GetSaleOrderSummaryCount()
+        {
+            SaleOrderSummary saleOrderSummary = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetSaleOrderSummaryCount]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                                if (sdr.Read())
+                                {
+                                    saleOrderSummary = new SaleOrderSummary();
+                                    saleOrderSummary.TotalSaleOrderCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : saleOrderSummary.TotalSaleOrderCount);
+                                    saleOrderSummary.OpenSaleOrderCount = (sdr["OpenCount"].ToString() != "" ? int.Parse(sdr["OpenCount"].ToString()) : saleOrderSummary.OpenSaleOrderCount);
+                                }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return saleOrderSummary;
+        }
+        #endregion GetSaleOrderSummaryCount
     }
 }

@@ -93,9 +93,9 @@
                     {
                         decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0;
                         itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                        CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100));
-                        SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100));
-                        IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100));
+                        CGSTAmt = (decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100);
+                        SGSTAmt = (decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100);
+                        IGSTAmt = (decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100);
                         itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                         itemgrandTotal = itemtaxableAmount + itemgSTAmount + (decimal)mp.CessAmt;
                         <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">

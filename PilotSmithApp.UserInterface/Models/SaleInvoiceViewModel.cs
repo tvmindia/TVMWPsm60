@@ -66,6 +66,11 @@ namespace PilotSmithApp.UserInterface.Models
         public string MailFrom { get; set; }
         public string MailBodyFooter { get; set; }
         public string MailContant { get; set; }
+        public string SignatureStamp { get; set; }
+        public string GSTIN { get; set; }
+        public string CIN { get; set; }
+        public string PAN { get; set; }
+        public string EmailID { get; set; }
         public bool EmailFlag { get; set; } 
         public string[] DocumentOwners { get; set; }
         public string DocumentOwner { get; set; }
@@ -102,21 +107,16 @@ namespace PilotSmithApp.UserInterface.Models
         public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Customer")]
-        public Guid AdvCustomerID { get; set; }
-        public CustomerViewModel Customer { get; set; }
+        public Guid AdvCustomerID { get; set; }       
         [Display(Name = "Area")]
-        public int? AdvAreaCode { get; set; }
-        public AreaViewModel Area { get; set; }
+        public int? AdvAreaCode { get; set; }       
         [Display(Name = "Branch")]
-        public int? AdvBranchCode { get; set; }
-        public BranchViewModel Branch { get; set; }
+        public int? AdvBranchCode { get; set; }       
         [Display(Name = "Document Status")]
         public int? AdvDocumentStatusCode { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         [Display(Name = "Document owner")]
-        public Guid AdvDocumentOwnerID { get; set; }
-        public PSAUserViewModel PSAUser { get; set; }       
-        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }        
         [Display(Name = "Approval status")]
         public int? AdvApprovalStatusCode { get; set; }
         [Display(Name = "Email Sent (Y/N)")]

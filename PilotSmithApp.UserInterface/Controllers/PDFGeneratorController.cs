@@ -153,7 +153,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             {
                 PSASysCommon pSASSysCommon = new PSASysCommon();
-                Paragraph footer = new Paragraph("Generated on: "+ pSASSysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy h:mm tt"), FontFactory.GetFont(FontFactory.HELVETICA, 8, iTextSharp.text.Font.ITALIC));
+                Paragraph footer = new Paragraph("This is a Computer Generated Document on: " + pSASSysCommon.GetCurrentDateTime().ToString("dd-MMM-yyyy h:mm tt"), FontFactory.GetFont(FontFactory.HELVETICA, 8, iTextSharp.text.Font.ITALIC));
                 footer.Alignment = Element.ALIGN_RIGHT;
                 PdfPTable footerTbl = new PdfPTable(1);
                 footerTbl.TotalWidth = 400;
