@@ -10,6 +10,8 @@ namespace PilotSmithApp.UserInterface.Models
     public class AreaViewModel
     {
         public int Code { get; set; }
+        [Display(Name ="Country")]
+        public int? CountryCode { get; set; }
         [Display(Name ="State")]
         public int? StateCode { get; set; }
         [Display(Name = "District")]
@@ -22,6 +24,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public List<SelectListItem> AreaSelectList { get; set; }
+        public CountryViewModel Country { get; set; }
         public StateViewModel State { get; set; }
         public DistrictViewModel District { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }

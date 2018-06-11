@@ -50,6 +50,12 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string MailContant { get; set; }
         public string MailBodyFooter { get; set; }
         public string MailFrom { get; set; }
+        public string SignatureStamp { get; set; }
+        public string GSTIN { get; set; }
+        public string CIN { get; set; }
+        public string PAN { get; set; }
+        public string EmailID { get; set; }
+
         public string DocumentType { get; set; }
         public string[] DocumentOwners { get; set; }
         public string DocumentOwner { get; set; }
@@ -74,17 +80,12 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string AdvFromDate { get; set; }
         public string AdvToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
-        public Guid AdvCustomerID { get; set; }
-        public Customer Customer { get; set; }
-        public int? AdvAreaCode { get; set; }
-        public Area Area { get; set; }
-        public int? AdvBranchCode { get; set; }
-        public Branch Branch { get; set; }
+        public Guid AdvCustomerID { get; set; }       
+        public int? AdvAreaCode { get; set; }        
+        public int? AdvBranchCode { get; set; }       
         public int? AdvDocumentStatusCode { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
-        public Guid AdvDocumentOwnerID { get; set; }
-        public PSAUser PSAUser { get; set; }
-        public ApprovalStatus ApprovalStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }       
         public int? AdvApprovalStatusCode { get; set; }
         public string AdvEmailSentStatus { get; set; }
     }

@@ -187,6 +187,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.MailFrom = mailfrom.Replace("\n", "<br />");
                                     saleInvoice.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : saleInvoice.EmailSentYN);
                                     saleInvoice.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : saleInvoice.EmailSentTo);
+                                    saleInvoice.GSTIN = (sdr["GSTIN"].ToString() != "" ? sdr["GSTIN"].ToString() : saleInvoice.GSTIN);
+                                    saleInvoice.CIN = (sdr["CIN"].ToString() != "" ? sdr["CIN"].ToString() : saleInvoice.CIN);
+                                    saleInvoice.EmailID = (sdr["EmailID"].ToString() != "" ? sdr["EmailID"].ToString() : saleInvoice.EmailID);
+                                    saleInvoice.PAN = (sdr["PAN"].ToString() != "" ? sdr["PAN"].ToString() : saleInvoice.PAN);
+                                    saleInvoice.SignatureStamp = (sdr["SignatureStamp"].ToString() != "" ? sdr["SignatureStamp"].ToString() : saleInvoice.SignatureStamp);
+
                                 }
                         }
                     }

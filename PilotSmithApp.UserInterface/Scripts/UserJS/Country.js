@@ -1,14 +1,17 @@
 ﻿var _dataTables = {};
-var EmptyGuid = "00000000-0000-0000-0000-000000000000";
+var _emptyGuid = "00000000-0000-0000-0000-000000000000";
 var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+
+//---------------------------------------Docuement Ready--------------------------------------------------//
+
 $(document).ready(function () {
-    try {      
-        BindOrReloadAreaTable('Init');
-        $('#tblArea tbody').on('dblclick', 'td', function () {
-            EditAreaMaster(this);
+    try {
+        BindOrReloadCountryTable('Init');
+        $('#tblCountry tbody').on('dblclick', 'td', function () {
+            EditCountryMaster(this);
         });
     }
     catch (e) {
@@ -16,11 +19,12 @@ $(document).ready(function () {
     }
 });
 
-function BindOrReloadAreaTable(action) {
+//function bind the Country list checking search and filter
+function BindOrReloadCountryTable(action) {
     try {
         debugger;
         //creating advancesearch object
-        AreaAdvanceSearchViewModel = new Object();
+        CountryAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
         //switch case to check the operation
@@ -41,17 +45,17 @@ function BindOrReloadAreaTable(action) {
             default:
                 break;
         }
-        AreaAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        AreaAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        //apply datatable plugin on Area table
-        _dataTables.AreaList = $('#tblArea').DataTable(
+        CountryAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+        CountryAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
+        //apply datatable plugin on Country table
+        _dataTables.CountryList = $('#tblCountry').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [ 1, 2, 3, 4]
+                                     columns: [0]
                                  }
                 }],
                 ordering: false,
@@ -66,36 +70,27 @@ function BindOrReloadAreaTable(action) {
                 serverSide: true,
                 ajax: {
 
-                    url: "Area/GetAllArea",
-                    data: { "AreaAdvanceSearchVM": AreaAdvanceSearchViewModel },
+                    url: "Country/GetAllCountry",
+                    data: { "CountryAdvanceSearchVM": CountryAdvanceSearchViewModel },
                     type: 'POST'
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "Code", "defaultContent": "<i>-</i>" },
-                {"data":"Country.Description","defaultContent":"<i>-</i>"},
-                { "data": "State.Description", "defaultContent": "<i>-</i>" },
-                {"data" :"District.Description","defaultContent":"<i>-</i>"},
                 { "data": "Description", "defaultContent": "<i>-</i>" },
-                { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
                 {
-                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditAreaMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteAreaMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                    "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditCountryMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteCountryMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [4,5] },
-                { "targets": [0], "width": "10%" },
-                { "targets": [1], "width": "10%" },
-                { "targets": [2], "width": "10%" },
-                { "targets": [3], "width": "10%" },
-                { "targets": [4], "width": "30%" },
-                { "targets": [5], "width": "20%" },
-                { "targets": [6], "width": "10%" }
+                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
+                { className: "text-center", "targets": [1] },
+                { className: "text-right", "targets": [] },
+                { "targets": [0], "width": "70%" },
+                { "targets": [1], "width": "30%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblArea').fadeIn(100);
+                    $('#tblCountry').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();
@@ -107,7 +102,7 @@ function BindOrReloadAreaTable(action) {
                             }
                         }
                         $('.buttons-excel').trigger('click');
-                        BindOrReloadAreaTable();
+                        BindOrReloadCountryTable();
                     }
                 }
             });
@@ -117,22 +112,25 @@ function BindOrReloadAreaTable(action) {
         console.log(e.message);
     }
 }
-function ResetAreaList() {
-    BindOrReloadAreaTable('Reset');
+
+//function reset the list to initial
+function ResetCountryList() {
+    BindOrReloadCountryTable('Reset');
 }
 
-function ExportAreaData() {
+//function export data to excel
+function ExportCountryData() {
     $('.excelExport').show();
     OnServerCallBegin();
-    BindOrReloadAreaTable('Export');
+    BindOrReloadCountryTable('Export');
 }
 
-function EditAreaMaster(thisObj) {
+function EditCountryMaster(thisObj) {
     debugger;
-    AreaVM = _dataTables.AreaList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function (responseTxt, statusTxt, xhr) {
+    CountryVM = _dataTables.CountryList.row($(thisObj).parents('tr')).data();
+    $("#divMasterBody").load("Country/MasterPartial?masterCode=" + CountryVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            $('#lblModelMasterContextLabel').text('Edit Area Information')
+            $('#lblModelMasterContextLabel').text('Edit Country Information')
             $('#divModelMasterPopUp').modal('show');
             $('#hdnMasterCall').val('MSTR');
         }
@@ -141,18 +139,18 @@ function EditAreaMaster(thisObj) {
         }
     });
 }
-function DeleteAreaMaster(thisObj) {
+function DeleteCountryMaster(thisObj) {
     debugger;
-    AreaVM = _dataTables.AreaList.row($(thisObj).parents('tr')).data();
-    notyConfirm('Are you sure to delete?', 'DeleteArea("' + AreaVM.Code + '")');
+    CountryVM = _dataTables.CountryList.row($(thisObj).parents('tr')).data();
+    notyConfirm('Are you sure to delete?', 'DeleteCountry("' + CountryVM.Code + '")');
 }
 
-function DeleteArea(code) {
+function DeleteCountry(code) {
     debugger;
     try {
         if (code) {
-            var data = { "code": code };           
-            _jsonData = GetDataFromServer("Area/DeleteArea/", data);
+            var data = { "code": code };
+            _jsonData = GetDataFromServer("Country/DeleteCountry/", data);
             if (_jsonData != '') {
                 _jsonData = JSON.parse(_jsonData);
                 _message = _jsonData.Message;
@@ -162,7 +160,7 @@ function DeleteArea(code) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _result.Message);
-                    BindOrReloadAreaTable('Reset');
+                    BindOrReloadCountryTable('Reset');
                     break;
                 case "ERROR":
                     notyAlert('error', _message);
@@ -175,4 +173,6 @@ function DeleteArea(code) {
     catch (e) {
         console.log(e.message);
     }
+
+
 }

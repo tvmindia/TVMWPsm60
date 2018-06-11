@@ -111,5 +111,9 @@ namespace PilotSmithApp.BusinessService.Service
             return _saleOrderRepository.GetSaleOrderOtherChargesDetailListBySaleOrderID(SaleOrderID);
         }
 
+        public SaleOrderSummary GetSaleOrderSummaryCount()
+        {
+            return _saleOrderRepository.GetSaleOrderSummaryCount();
+        }
     }
 }
