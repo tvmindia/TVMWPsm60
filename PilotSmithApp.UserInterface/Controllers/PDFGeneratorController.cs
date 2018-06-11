@@ -47,7 +47,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 throw ex;
             }
         }
-        public string PrintPDF(PDFTools pDFToolsObj)
+        public string PrintPDF(PDFToolsViewModel pDFToolsObj)
         {
             //string imageURL = Server.MapPath("~/Content/images/logo.png");
             //iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
@@ -218,7 +218,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         [HttpPost]
-        public FileResult Download(PDFTools PDFTools)
+        public FileResult Download(PDFToolsViewModel PDFTools)
         {
             // Footer footobj = new Footer();
 
