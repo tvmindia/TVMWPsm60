@@ -192,7 +192,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.EmailID = (sdr["EmailID"].ToString() != "" ? sdr["EmailID"].ToString() : saleInvoice.EmailID);
                                     saleInvoice.PAN = (sdr["PAN"].ToString() != "" ? sdr["PAN"].ToString() : saleInvoice.PAN);
                                     saleInvoice.SignatureStamp = (sdr["SignatureStamp"].ToString() != "" ? sdr["SignatureStamp"].ToString() : saleInvoice.SignatureStamp);
-
+                                    saleInvoice.SignatureStampLine2 = (sdr["SignatureStampLine2"].ToString() != "" ? sdr["SignatureStampLine2"].ToString() : saleInvoice.SignatureStampLine2);
+                                    string CompanyAddress1 = (sdr["CompanyAddress1"].ToString() != "" ? sdr["CompanyAddress1"].ToString() : saleInvoice.CompanyAddress1);
+                                    saleInvoice.CompanyAddress1 = CompanyAddress1.Replace("\\n", "<br />");
+                                    string CompanyAddress2 = (sdr["CompanyAddress2"].ToString() != "" ? sdr["CompanyAddress2"].ToString() : saleInvoice.CompanyAddress2);
+                                    saleInvoice.CompanyAddress2 = CompanyAddress2.Replace("\\n", "<br />");
+                                    string CompanyAddress3 = (sdr["CompanyAddress3"].ToString() != "" ? sdr["CompanyAddress3"].ToString() : saleInvoice.CompanyAddress3);
+                                    saleInvoice.CompanyAddress3 = CompanyAddress3.Replace("\\n", "<br />");
                                 }
                         }
                     }

@@ -6,24 +6,19 @@ using System.Threading.Tasks;
 
 namespace PilotSmithApp.DataAccessObject.DTO
 {
-    public class Area
+    public class Country
     {
         public int Code { get; set; }
-        public int? CountryCode { get; set; }
-        public int? StateCode { get; set; }
-        public int? DistrictCode { get; set; }
         public string Description { get; set; }
 
+        //additional fields
+        public PSASysCommon PSASysCommon { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public PSASysCommon PSASysCommon { get; set; }
-        public Country Country { get; set; }
-        public State State { get; set; }
-        public District District { get; set; }
     }
 
-    public class AreaAdvanceSearch
+    public class CountryAdvanceSearch
     {
         public string SearchTerm { get; set; }
         public DataTablePaging DataTablePaging { get; set; }

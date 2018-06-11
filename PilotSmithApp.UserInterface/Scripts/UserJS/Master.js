@@ -809,3 +809,45 @@ function SaveSuccessOtherCharge(data, status) {
 }
 
 
+//Add Country
+function AddCountryMaster(flag) {
+    debugger;
+    OnServerCallBegin();
+    $("#divMasterBody").load("Country/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Country Information')
+            $('#divModelMasterPopUp').modal('show');
+
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessCountry(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadCountryTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divPlantSelectList').load('/Country/CountrySelectList?required=');
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}

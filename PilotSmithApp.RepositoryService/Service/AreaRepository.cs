@@ -47,6 +47,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         else
                             cmd.Parameters.Add("@Code", SqlDbType.Int).Value = area.Code;
 
+                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = area.CountryCode;
                         cmd.Parameters.Add("@StateCode", SqlDbType.Int).Value = area.StateCode;
                         cmd.Parameters.Add("@DistrictCode", SqlDbType.Int).Value = area.DistrictCode;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, 200).Value = area.Description;
@@ -121,6 +122,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     Area area = new Area();
                                     {
                                         area.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : area.Code);
+                                        area.Country = new Country();
+                                        area.Country.Description = (sdr["Country"].ToString() != "" ? sdr["Country"].ToString() : area.Country.Description);
                                         area.State = new State();
                                         area.State.Description = (sdr["State"].ToString() != "" ? (sdr["State"].ToString()) : area.State.Description);
                                         area.District = new District();
@@ -172,8 +175,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     area = new Area();
                                     area.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : area.Code);
+                                    area.CountryCode = (sdr["CountryCode"].ToString() != "" ? int.Parse(sdr["CountryCode"].ToString()) : area.CountryCode);
                                     area.StateCode = (sdr["StateCode"].ToString() != "" ? int.Parse(sdr["StateCode"].ToString()) : area.StateCode);
-                                    area.DistrictCode = (sdr["DistrictCode"].ToString() != "" ? int.Parse(sdr["DistrictCode"].ToString()) : area.DistrictCode);
+                                    area.DistrictCode = (sdr["DistrictCode"].ToString() != "" ? int.Parse(sdr["DistrictCode"].ToString()) : area.DistrictCode);                                    
                                     area.State = new State();
                                     area.State.Code= (sdr["StateCode"].ToString() != "" ? int.Parse(sdr["StateCode"].ToString()) : area.State.Code);
                                     area.District = new District();

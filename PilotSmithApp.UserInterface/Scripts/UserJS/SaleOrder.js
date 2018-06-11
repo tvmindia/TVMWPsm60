@@ -283,6 +283,7 @@ function ResetSaleOrder() {
             }
             BindSaleOrderDetailList($('#ID').val(), false, false);
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
+            CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleOrderForm #ID').val());
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
