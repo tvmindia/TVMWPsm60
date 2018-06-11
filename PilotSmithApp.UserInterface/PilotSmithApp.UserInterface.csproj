@@ -264,6 +264,10 @@
     <Content Include="Content\images\email.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
+    <Content Include="Content\images\LetterHead.jpg" />
+    <Content Include="Content\images\LH_Body.jpg" />
+    <Content Include="Content\images\LH_Footer.jpg" />
+    <Content Include="Content\images\LH_Header.jpg" />
     <Content Include="Content\images\mailSend.png" />
     <Content Include="Content\images\organisation.png" />
     <Content Include="Content\images\ownerlock.png" />
