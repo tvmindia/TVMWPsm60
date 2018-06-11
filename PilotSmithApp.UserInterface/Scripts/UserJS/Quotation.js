@@ -792,6 +792,9 @@ function EmailQuotation() {
     });
 }
 function SendQuotationEmail() {
+    var bodyContent = $('#divQuotationEmailcontainer').html();
+    //var headerContent = $('#hdnHeadContent').html();
+    $('#hdnContentEmail').val(bodyContent);
     $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
     $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
     
