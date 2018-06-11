@@ -96,7 +96,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string ReferenceNo { get; set; }
         public QuotationViewModel Quotation { get; set; }
         public SaleOrderViewModel SaleOrder { get; set; }
-        public PDFTools PDFTools { get; set; }
+        public PDFToolsViewModel PDFTools { get; set; }
     }
     public class SaleInvoiceAdvanceSearchViewModel
     {

@@ -466,7 +466,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
             quotationVM.EmailFlag = emailFlag;
             @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
-            quotationVM.PDFTools = new PDFTools();
+            quotationVM.PDFTools = new PDFToolsViewModel();
             return PartialView("_EmailQuotation",quotationVM);
         }
         #endregion Email Quotation
@@ -484,7 +484,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.PSASysCommon = new PSASysCommonViewModel();
                     quotationVM.PSASysCommon.UpdatedBy = appUA.UserName;
                     quotationVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
-
                     bool sendsuccess = await _quotationBusiness.QuoteEmailPush(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
                     if (sendsuccess)
                     {

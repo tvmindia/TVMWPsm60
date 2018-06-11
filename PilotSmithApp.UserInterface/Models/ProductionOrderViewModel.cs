@@ -71,7 +71,7 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> SaleOrderSelectList { get; set; }
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }
-        public PDFTools PDFTools { get; set; }
+        public PDFToolsViewModel PDFTools { get; set; }
         public AreaViewModel Area { get; set; }
         public PSAUserViewModel PSAUser { get; set; }
         public ApprovalStatusViewModel ApprovalStatus { get; set; }

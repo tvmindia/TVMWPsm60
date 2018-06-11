@@ -3,9 +3,12 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.RepositoryService.Contract;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
@@ -16,12 +19,14 @@ namespace PilotSmithApp.BusinessService.Service
         ICommonBusiness _commonBusiness;
         ITaxTypeBusiness _taxTypeBusiness;
         IMailBusiness _mailBusiness;
-        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness, ITaxTypeBusiness taxTypeBusiness, IMailBusiness mailBusiness)
+        IPDFGeneratorBusiness _pDFGeneratorBusiness;
+        public QuotationBusiness(IQuotationRepository quotationRepository, ICommonBusiness commonBusiness, ITaxTypeBusiness taxTypeBusiness, IMailBusiness mailBusiness, IPDFGeneratorBusiness pDFGeneratorBusiness)
         {
             _quotationRepository = quotationRepository;
             _commonBusiness = commonBusiness;
             _taxTypeBusiness = taxTypeBusiness;
             _mailBusiness = mailBusiness;
+            _pDFGeneratorBusiness = pDFGeneratorBusiness;
         }
         public List<Quotation> GetAllQuotation(QuotationAdvanceSearch quotationAdvanceSearch)
         {
@@ -80,15 +85,21 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 if (!string.IsNullOrEmpty(quotation.EmailSentTo))
                 {
-                    string[] EmailList = quotation.EmailSentTo.Split(',');
-                    foreach (string email in EmailList)
-                    {
-                        Mail _mail = new Mail();
-                        _mail.Body = quotation.MailContant;
+                        string[] EmailList = quotation.EmailSentTo.Split(',');
+                        string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
+                        MailMessage _mail = new MailMessage();
+                        PDFTools pDFTools = new PDFTools();
+                        _mail.Body = mailBody.Replace("$Customer$",quotation.Customer.ContactPerson).Replace("$Document$","Quotation").Replace("$DocumentNo$",quotation.QuoteNo);
+                        pDFTools.Content = quotation.MailContant;
+                        _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), quotation.QuoteNo+".pdf"));
+                        
                         _mail.Subject = "Quotation";
-                        _mail.To = email;
-                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
-                    }
+                        _mail.IsBodyHtml = true;
+                        foreach(string email in EmailList)
+                        {
+                            _mail.To.Add(email);
+                        }                        
+                        sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
 
 

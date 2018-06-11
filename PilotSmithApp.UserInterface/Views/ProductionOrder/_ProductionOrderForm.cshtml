@@ -11,8 +11,8 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model=>model.LatestApprovalStatus,htmlAttributes:new { @class=""})
-    @Html.HiddenFor(model=>model.LatestApprovalID,htmlAttributes:new { @class=""})
+    @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
 
@@ -210,7 +210,7 @@
                                 <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
                             }
                         </div>
-                      
+
                         @if (Model.IsUpdate)
                         {
                             <div class="form-group col-md-12">
@@ -276,15 +276,23 @@
 
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">ProductionOrder Details
-            @if (Model.IsDocLocked || !Model.IsUpdate)
-            {
-                <a class="btn btn-openid pull-right" onclick="AddProductionOrderDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-            }
-            else
-            {
-                <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-            } 
+            <div class="col-md-12 headSeperator">
+                ProductionOrder Details
+                @if (Model.IsDocLocked || !Model.IsUpdate)
+                {
+                    if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null)
+                    {
+                        <a class="btn btn-openid pull-right" onclick="AddProductionOrderDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                    }
+                }
+                else
+                {
+                    <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                }
             </div>
 
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })

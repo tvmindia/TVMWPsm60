@@ -412,7 +412,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderVM.ProductionOrderDetailList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderVM.ID));
             productionOrderVM.EmailFlag = emailFlag;
             @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
-            productionOrderVM.PDFTools = new PDFTools();
+            productionOrderVM.PDFTools = new PDFToolsViewModel();
             return PartialView("_EmailProductionOrder", productionOrderVM);
         }
         #endregion Email ProductionOrder

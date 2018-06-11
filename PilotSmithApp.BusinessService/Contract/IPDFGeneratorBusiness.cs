@@ -2,15 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
-    public interface IMailBusiness
+    public interface IPDFGeneratorBusiness
     {
-        Task<bool> MailSendAsync(Mail mailObj);
-        Task<bool> MailMessageSendAsync(MailMessage mailObj);
+        byte[] GetPdfAttachment(PDFTools pDFTools);
     }
 }

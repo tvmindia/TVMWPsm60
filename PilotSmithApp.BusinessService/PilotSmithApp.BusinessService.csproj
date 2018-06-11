@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.13\lib\itextsharp.xmlworker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -70,6 +78,7 @@
     <Compile Include="Contract\IFileUploadBusiness.cs" />
     <Compile Include="Contract\IMailBusiness.cs" />
     <Compile Include="Contract\IOtherChargeBusiness.cs" />
+    <Compile Include="Contract\IPDFGeneratorBusiness.cs" />
     <Compile Include="Contract\IPlantBusiness.cs" />
     <Compile Include="Contract\IPositionBusiness.cs" />
     <Compile Include="Contract\IProductBusiness.cs" />
@@ -117,6 +126,7 @@
     <Compile Include="Service\FileUploadBusiness.cs" />
     <Compile Include="Service\MailBusiness.cs" />
     <Compile Include="Service\OtherChargeBusiness.cs" />
+    <Compile Include="Service\PDFGeneratorBusiness.cs" />
     <Compile Include="Service\PlantBusiness.cs" />
     <Compile Include="Service\PositionBusiness.cs" />
     <Compile Include="Service\ProductBusiness.cs" />
@@ -148,7 +158,9 @@
       <Name>PilotSmithApp.RepositoryService</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -24,56 +24,30 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View();
         }
         [HttpPost]
-        public string SendPDFDoc(string MailBody)
+        public byte[] GetPdfAttachment(PDFToolsViewModel pDFTools)
         { 
             try
             {
-                string imageURL = Server.MapPath("~/Content/images/logo.png");
-                iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
-                //Resize image depend upon your need
-                jpg.ScaleToFit(70f, 60f);
-                jpg.SpacingBefore = 10f;
-                jpg.SpacingAfter = 1f;
-                
-                jpg.Alignment = Element.ALIGN_LEFT;
-                string sw = MailBody.Replace("<br>","<br/>").ToString();
-                StringReader sr = new StringReader(sw.ToString());
-                Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+                string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
+                StringReader reader = new StringReader(htmlBody.ToString());
+                Document pdfDoc = new Document(PageSize.A4, -13f, -4f, 30f, 100f);
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);                    
                     pdfDoc.Open();
-                    jpg.SetAbsolutePosition(pdfDoc.Left, pdfDoc.Top - 60);
-                    pdfDoc.Add(jpg);
-                    
-                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);                    
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);                    
                     pdfDoc.Close();
                     byte[] bytes = memoryStream.ToArray();
                     memoryStream.Close();
-                    MailMessage mm = new MailMessage("gochurchmail@gmail.com", "tom.a4s.son@gmail.com");
-                    mm.Subject = "iTextSharp PDF";
-                    mm.Body = "iTextSharp PDF Attachment";
-                    mm.Attachments.Add(new Attachment(new MemoryStream(bytes), "iTextSharpPDF.pdf"));
-                    mm.IsBodyHtml = true;
-                    SmtpClient smtp = new SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
-                    smtp.EnableSsl = true;
-                    NetworkCredential NetworkCred = new NetworkCredential();
-                    NetworkCred.UserName = "gochurchmail@gmail.com";
-                    NetworkCred.Password = "thri@2015";
-                    smtp.UseDefaultCredentials = true;
-                    smtp.Credentials = NetworkCred;
-                    smtp.Port = 587;
-                    smtp.Send(mm);
-                    return "Email send successfully";
+                    return bytes;
                 }
                 }
             catch(Exception ex)
             {
-                return ex.Message;
+                throw ex;
             }
         }
-        public string PrintPDF(PDFTools pDFToolsObj)
+        public string PrintPDF(PDFToolsViewModel pDFToolsObj)
         {
             //string imageURL = Server.MapPath("~/Content/images/logo.png");
             //iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
@@ -216,7 +190,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
             }
         [HttpPost]
-        public FileResult Download(PDFTools PDFTools)
+        public FileResult Download(PDFToolsViewModel PDFTools)
         {
            // Footer footobj = new Footer();
             

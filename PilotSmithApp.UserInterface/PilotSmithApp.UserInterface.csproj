@@ -276,6 +276,7 @@
     <Content Include="Content\images\saleorder.png" />
     <Content Include="Content\images\SuppPord.png" />
     <Content Include="Content\MailTemplate\DocumentApproved.html" />
+    <Content Include="Content\MailTemplate\DocumentEmailBody.html" />
     <Content Include="Content\MailTemplate\DocumentRejected.html" />
     <Content Include="Content\MailTemplate\SendForApproval.html" />
     <Content Include="Content\PSAForms.css" />

@@ -98,7 +98,7 @@ namespace PilotSmithApp.UserInterface.Models
         public CarrierViewModel Carrier { get; set; }
         public BankViewModel Bank { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
-        public PDFTools PDFTools { get; set; }
+        public PDFToolsViewModel PDFTools { get; set; }
         public List<SelectListItem> QuotationSelectList{ get; set; }
         public List<SelectListItem> EnquirySelectList { get; set; }
         public string SaleOrderAmountWords { get; set; }
