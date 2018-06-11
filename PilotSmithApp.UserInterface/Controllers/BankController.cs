@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +18,15 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         #region Global Declaration
         private IBankBusiness _bankBusiness;
+        IUserBusiness _userBusiness;
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         #endregion Global Declaration
         #region Construction Injection
-        public BankController(IBankBusiness bankBusiness)
+        public BankController(IBankBusiness bankBusiness,IUserBusiness userBusiness)
         {
             _bankBusiness = bankBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion Construction Injection
         // GET: Bank
@@ -129,13 +133,25 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion DeleteBank
         #region BankSelctList
-        public ActionResult BankSelectList(string required)
+        public ActionResult BankSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Bank");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListBankAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             BankViewModel bankVM = new BankViewModel();
-            bankVM.BankCode = bankVM.Code;
-            List<SelectListItem> selectListItem = new List<SelectListItem>();
-            bankVM.SelectList = new List<SelectListItem>();
+            //bankVM.BankCode = bankVM.Code;
+            //List<SelectListItem> selectListItem = new List<SelectListItem>();
+            //bankVM.SelectList = new List<SelectListItem>();
             bankVM.SelectList = _bankBusiness.GetBankForSelectList();
             return PartialView("_BankSelectList", bankVM);
         }

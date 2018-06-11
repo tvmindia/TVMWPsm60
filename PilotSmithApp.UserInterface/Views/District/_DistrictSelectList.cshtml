@@ -1,5 +1,31 @@
 ﻿@model PilotSmithApp.UserInterface.Models.DistrictViewModel
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
 @if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "District is missing", @onchange = "$('#hdnDistrictCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "District is missing", @onchange = "$('#hdnDistrictCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddDistrictMaster('OTR')";
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnDistrictCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnDistrictCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddDistrictMaster('OTR')";
+}
+@if (@ViewBag.HasAddPermission)
+{
+    <div class="input-group">
+        @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select District--", SelectListattributes)
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick=@onclickevent><i class="fa fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select District--", SelectListattributes)
+}
+
+@*@if (@ViewBag.IsRequired == "required")
 {
     <div class="input-group">
         @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select district--", new { @class = "form-control newinput", @style = "width:100%!important", @required = "", @title = "The State is missing", @onchange = "$('#hdnDistrictCode').val(this.value)" })
@@ -12,7 +38,7 @@ else
         @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select district--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnDistrictCode').val(this.value)" })
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDistrictMaster('OTR')"><i class="fa fa-plus-square"></i></span>
     </div>
-}
+}*@
 
 @Html.ValidationMessage("DistrictCode", "", new { @class = "text-danger" })
 

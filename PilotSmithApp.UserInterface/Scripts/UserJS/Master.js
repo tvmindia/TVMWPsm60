@@ -114,7 +114,7 @@ function SaveSuccessState(data, status) {
                 BindOrReloadStateTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divStateSelectList').load('/State/StatSelectList?required=');
+                $('.divStateSelectList').load('/State/StatSelectList?required=' + $('#hdnStateRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -156,7 +156,7 @@ function SaveSuccessDistrict(data, status) {
                 BindOrReloadDistrictTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divDistrictSelectList').load('/District/DistrictSelectList?required=');
+                $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + ('#hdnDistrictRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -198,7 +198,7 @@ function SaveSuccessArea(data, status) {
                 BindOrReloadAreaTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divAreaSelectList').load('/Area/AreaSelectList?required=');
+                $('.divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -838,7 +838,7 @@ function SaveSuccessCountry(data, status) {
                 BindOrReloadCountryTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divPlantSelectList').load('/Country/CountrySelectList?required=');
+                $('.divPlantSelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

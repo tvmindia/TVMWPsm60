@@ -67,6 +67,14 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> CustomerSelectList { get; set; }
         public TitlesViewModel Titles { get; set; }
         public PaymentTermViewModel PaymentTerm { get; set; }
+        [Display(Name ="Area")]
+        public int? AreaCode { get; set; }
+        [Display(Name = "District")]
+        public int? DistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? StateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? CountryCode { get; set; }
 
         //Additional properties
         public int TotalCount { get; set; }
@@ -75,7 +83,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Category")]
         public int[] CustomerCategoryList { get; set; }
         public CustomerCategoryViewModel CustomerCategory { get; set; }
-        //public int CustomerCategoryCode { get; set; }
+        //public int CustomerCategoryCode { get; set; }        
     }
     public class CustomerAdvanceSearchViewModel
     {

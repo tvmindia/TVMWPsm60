@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConstant = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private ICompanyBusiness _companyBusiness;
+        IUserBusiness _userBusiness;
         #region Contructor Injection
-        public CompanyController(ICompanyBusiness companyBusiness)
+        public CompanyController(ICompanyBusiness companyBusiness,IUserBusiness userBusiness)
         {
             _companyBusiness = companyBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion Contructor Injection
         // GET: Company
@@ -87,9 +91,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion MasterPartial
 
         #region CompanySelectList
-        public ActionResult CompanySelectList(string required)
+        public ActionResult CompanySelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Company");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListCompanyAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             CompanyViewModel companyVM = new CompanyViewModel();
             companyVM.CompanySelectList = _companyBusiness.GetCompanyForSelectList();
             return PartialView("_CompanySelectList", companyVM);

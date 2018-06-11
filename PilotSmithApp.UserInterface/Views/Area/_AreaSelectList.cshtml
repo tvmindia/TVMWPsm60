@@ -1,5 +1,31 @@
 ﻿@model PilotSmithApp.UserInterface.Models.AreaViewModel
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
 @if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Area is missing", @onchange = "$('#hdnAreaCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Area is missing", @onchange = "$('#hdnAreaCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddAreaMaster('OTR')";
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnAreaCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnAreaCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddAreaMaster('OTR')";
+}
+@if (@ViewBag.HasAddPermission)
+{
+    <div class="input-group">
+        @Html.DropDownList("AreaCode", Model.AreaSelectList, "--Select Area--", SelectListattributes)
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick=@onclickevent><i class="fa fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    @Html.DropDownList("AreaCode", Model.AreaSelectList, "--Select Area--", SelectListattributes)
+}
+
+@*@if (@ViewBag.IsRequired == "required")
 {
     <div class="input-group">
         @Html.DropDownList("AreaCode", Model.AreaSelectList, "--Select area--", new { @class = "form-control newinput", @style = "width:100%!important", @required = "", @title = "The State is missing", @onchange = "$('#hdnAreaCode').val(this.value)" })
@@ -12,7 +38,7 @@ else
         @Html.DropDownList("AreaCode", Model.AreaSelectList, "--Select area--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnAreaCode').val(this.value)" })
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddAreaMaster('OTR')"><i class="fa fa-plus-square"></i></span>
     </div>
-}
+}*@
 
 @Html.ValidationMessage("AreaCode", "", new { @class = "text-danger" })
 

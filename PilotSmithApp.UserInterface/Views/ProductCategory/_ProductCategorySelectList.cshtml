@@ -1,5 +1,31 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ProductCategoryViewModel
-@if (ViewBag.IsRequired == "required")
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
+@if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Category is missing", @onchange = "$('#hdnProductCategoryCode).val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Category is missing", @onchange = "$('#hdnProductCategoryCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddProductCategoryMaster('OTR')";
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProductCategoryCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProductCategoryCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddProductCategoryMaster('OTR')";
+}
+@if (@ViewBag.HasAddPermission)
+{
+    <div class="input-group">
+        @Html.DropDownList("ProductCategoryCode", Model.ProductCategorySelectList, "--Select Category --", SelectListattributes)
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick=@onclickevent><i class="fa fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    @Html.DropDownList("ProductCategoryCode", Model.ProductCategorySelectList, "--Select Category--", SelectListattributes)
+}
+
+@*@if (ViewBag.IsRequired == "required")
 {
     <div class="input-group">
         @Html.DropDownList("ProductCategoryCode", Model.ProductCategorySelectList, "--Select Category--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Category is missing",@onchange= "$('#hdnProductCategoryCode').val(this.value)" })
@@ -14,7 +40,7 @@ else
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductCategoryMaster('OTR')"><i class="fa fa-plus-square"></i></span>
     </div>
 
-}
+}*@
 @Html.ValidationMessage("ProductCategoryCode", "", new { @class = "text-danger" })
 
 <script>
