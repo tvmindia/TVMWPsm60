@@ -4,12 +4,12 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = ""})
+    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator"> General Details</div>
             <div class="form-group col-md-12">
-                <div class="col-md-6 no-padding">
+                <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
@@ -18,16 +18,79 @@
                         @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divCountrySelectList">
+                            @Html.Action("CountrySelectList", "Country", new { required = "" })
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnCountryRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnCountrydisabled", false)
+                    @Html.HiddenFor(model => model.CountryCode, htmlAttributes: new { @class = "", @id = "hdnCountryCode" })
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.StateCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divStateSelectList">
+                            @Html.Action("StateSelectList", "State", new { required = "" })
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnStateRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnStatedisabled", false)
+                    @Html.HiddenFor(model => model.StateCode, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
+                </div>
             </div>
 
             <div class="form-group col-md-12">
-                <div class="col-md-6 no-padding">
+                <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerCategoryList, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.ListBoxFor(model=>model.CustomerCategoryList, Model.CustomerCategory.CustomerCategorySelectList, new { @class = "form-control newinput", @style = "padding:4px 12px;" })
+                        @Html.ListBoxFor(model => model.CustomerCategoryList, Model.CustomerCategory.CustomerCategorySelectList, new { @class = "form-control newinput", @style = "padding:4px 12px;" })
                     </div>
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DistrictCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDistrictSelectList">
+                            @Html.Action("DistrictSelectList", "District", new { required = "" })
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnDistrictRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnDistrictdisabled", false)
+                    @Html.HiddenFor(model => model.DistrictCode, htmlAttributes: new { @class = "", @id = "hdnDistrictCode" })
+                </div>
+
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AreaCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divAreaSelectList">
+                            @Html.Action("AreaSelectList", "Area", new { required = "" })
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnAreaRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnAreadisabled", false)
+                    @Html.HiddenFor(model => model.AreaCode, htmlAttributes: new { @class = "", @id = "hdnAreaCode" })
                 </div>
             </div>
 
@@ -154,8 +217,8 @@
                         @Html.LabelFor(model => model.PaymentTermCode, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div class="col-md-12">
-                            @Html.DropDownListFor(model => model.PaymentTermCode, Model.PaymentTerm.PaymentTermSelectList, "-- Select Payment Term --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
-                            @Html.ValidationMessageFor(model => model.PaymentTermCode, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.PaymentTermCode, Model.PaymentTerm.PaymentTermSelectList, "-- Select Payment Term --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
+                        @Html.ValidationMessageFor(model => model.PaymentTermCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -163,8 +226,8 @@
                         @Html.LabelFor(model => model.TaxRegNo, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                            @Html.EditorFor(model => model.TaxRegNo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                            @Html.ValidationMessageFor(model => model.TaxRegNo, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.TaxRegNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.TaxRegNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -172,8 +235,8 @@
                         @Html.LabelFor(model => model.PANNO, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                            @Html.EditorFor(model => model.PANNO, new { htmlAttributes = new { @class = "form-control newinput" } })
-                            @Html.ValidationMessageFor(model => model.PANNO, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.PANNO, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.PANNO, "", new { @class = "text-danger" })
                     </div>
 
                 </div>
@@ -184,29 +247,36 @@
                         @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.GeneralNotes, 5, 145, new { @class = "form-control BlockEnter newinput" })
-                            @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                        @Html.TextAreaFor(model => model.GeneralNotes, 5, 145, new { @class = "form-control BlockEnter newinput" })
+                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
                     </div>
 
                 </div>
             </div>
             <div class="col-md-12">&nbsp;</div>
-            </div>
-        </div>
-    <div class="col-md-12">&nbsp;</div>
-    <div class="col-md-12">&nbsp;</div>
-    <div class="col-md-12">&nbsp;</div>
-    <div class="form-group" hidden="hidden">
-        <div class="col-md-offset-2 col-md-10">
-            <input id="btnInsertUpdateCustomer" type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
+        <div class="col-md-12">&nbsp;</div>
+        <div class="col-md-12">&nbsp;</div>
+        <div class="col-md-12">&nbsp;</div>
+        <div class="form-group" hidden="hidden">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnInsertUpdateCustomer" type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
 }
 <script>
     $(document).ready(function () {
+        try {
+            //dropdown bindings
+            LoadCurrentPageDropdowns();
+        }
+        catch (e) {
+            console.log(e.message);
+        }
         $.validator.unobtrusive.parse("#CustomerForm");
-        
-        $('#CustomerCategoryList,#ContactTitle,#PaymentTermCode').select2();
+
+        $('#CustomerCategoryList,#ContactTitle,#PaymentTermCode,#CountryCode,#StateCode,#DistrictCode,#AreaCode').select2();
         $('.select2').addClass('form-control newinput');
     });
 

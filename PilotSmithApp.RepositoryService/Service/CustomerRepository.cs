@@ -199,6 +199,10 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = customer.TaxRegNo;
                         cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = customer.PANNO;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customer.GeneralNotes;
+                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = customer.AreaCode;
+                        cmd.Parameters.Add("@StateCode", SqlDbType.Int).Value = customer.StateCode;
+                        cmd.Parameters.Add("@DistrictCode", SqlDbType.Int).Value = customer.DistrictCode;
+                        cmd.Parameters.Add("@AreadCode", SqlDbType.Int).Value = customer.AreaCode;
                         if(customer.CustomerCategoryList.Count()>0)
                         {
                             cmd.Parameters.Add("@CustomerCategoryList", SqlDbType.VarChar).Value = string.Join(",", customer.CustomerCategoryList);
@@ -308,6 +312,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);
                                         //customer.OutStanding = (sdr["OutStanding"].ToString() != "" ? decimal.Parse(sdr["OutStanding"].ToString()) : customer.OutStanding);
                                         customer.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : customer.GeneralNotes);
+                                        customer.CountryCode = (sdr["CountryCode"].ToString() != "" ? int.Parse(sdr["CountryCode"].ToString()) : customer.CountryCode);
+                                        customer.StateCode = (sdr["StateCode"].ToString() != "" ? int.Parse(sdr["StateCode"].ToString()) : customer.StateCode);
+                                        customer.DistrictCode = (sdr["DistrictCode"].ToString() != "" ? int.Parse(sdr["DistrictCode"].ToString()) : customer.DistrictCode);
+                                        customer.AreaCode = (sdr["AreadCode"].ToString() != "" ? int.Parse(sdr["AreadCode"].ToString()) : customer.AreaCode);
                                         customer.PSASysCommon = new PSASysCommon();
                                         customer.PSASysCommon.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.PSASysCommon.CreatedBy);
                                         customer.PSASysCommon.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.CreatedDateString);
@@ -374,6 +382,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                     customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);
                                     customer.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : customer.GeneralNotes);
                                     customer.CustomerCategoryList = (sdr["CustomerCategoryList"].ToString() != "" ? (sdr["CustomerCategoryList"].ToString()).Split(',').Select(h => int.Parse(h)).ToArray() : customer.CustomerCategoryList);
+                                    customer.CountryCode = (sdr["CountryCode"].ToString() != "" ? int.Parse(sdr["CountryCode"].ToString()) : customer.CountryCode);
+                                    customer.StateCode= (sdr["StateCode"].ToString() != "" ? int.Parse(sdr["StateCode"].ToString()) : customer.StateCode);
+                                    customer.DistrictCode= (sdr["DistrictCode"].ToString() != "" ? int.Parse(sdr["DistrictCode"].ToString()) : customer.DistrictCode);
+                                    customer.AreaCode= (sdr["AreadCode"].ToString() != "" ? int.Parse(sdr["AreadCode"].ToString()) : customer.AreaCode);
                                     customer.PSASysCommon = new PSASysCommon();
                                     customer.PSASysCommon.CreatedBy = (sdr["CreatedBy"].ToString() != "" ? sdr["CreatedBy"].ToString() : customer.PSASysCommon.CreatedBy);
                                     customer.PSASysCommon.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.CreatedDateString);
@@ -381,7 +393,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     customer.PSASysCommon.UpdatedBy = (sdr["UpdatedBy"].ToString() != "" ? sdr["UpdatedBy"].ToString() : customer.PSASysCommon.UpdatedBy);
                                     customer.PSASysCommon.UpdatedDate = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()) : customer.PSASysCommon.UpdatedDate);
                                     customer.PSASysCommon.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.UpdatedDateString);
-
+                                    
                                 }
                         }
                     }

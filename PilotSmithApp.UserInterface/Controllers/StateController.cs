@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private IStateBusiness _stateBusiness;
+        public IUserBusiness _userBusiness;
         #region Constructor Injection
-        public StateController(IStateBusiness stateBusiness)
+        public StateController(IStateBusiness stateBusiness,IUserBusiness userBusiness)
         {
             _stateBusiness = stateBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion
         // GET: State
@@ -129,13 +133,35 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region State SelectList
-        public ActionResult StateSelectList(string required)
+        public ActionResult StateSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            //Permission _permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "State");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListStateAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             StateViewModel stateVM = new StateViewModel();
             stateVM.StateSelectList = _stateBusiness.GetStateForSelectList();
             return PartialView("_StateSelectList", stateVM);
         }
+
+
+        //public ActionResult StateSelectList(string required)
+        //{
+        //    ViewBag.IsRequired = required;
+        //    StateViewModel stateVM = new StateViewModel();
+        //    stateVM.StateSelectList = _stateBusiness.GetStateForSelectList();
+        //    return PartialView("_StateSelectList", stateVM);
+        //}
         #endregion State SelectList
 
         #region ButtonStyling

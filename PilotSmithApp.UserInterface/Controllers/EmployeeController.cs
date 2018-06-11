@@ -120,45 +120,105 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion MasterPartial
         #region Employee SelectList
-        public ActionResult EmployeeSelectList(string required)
+        public ActionResult EmployeeSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListEmployeeAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             EmployeeViewModel employeeVM = new EmployeeViewModel();
             employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             return PartialView("_EmployeeSelectList", employeeVM);
         }
         #endregion Employee SelectList
         #region ResponsiblePerson SelectList
-        public ActionResult ResponsiblePersonSelectList(string required)
+        public ActionResult ResponsiblePersonSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListResponsiblePersonAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             EmployeeViewModel employeeVM = new EmployeeViewModel();
             employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             return PartialView("_ResponsiblePersonSelectList", employeeVM);
         }
         #endregion ResponsiblePerson SelectList
         #region ServicedBy SelectList
-        public ActionResult ServicedBySelectList(string required)
+        public ActionResult ServicedBySelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListServicedByAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             EmployeeViewModel employeeVM = new EmployeeViewModel();
             employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             return PartialView("_ServicedBySelectList", employeeVM);
         }
         #endregion ServicedBy SelectList
         #region AttendedBy SelectList
-        public ActionResult AttendedBySelectList(string required)
+        public ActionResult AttendedBySelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAttendedByAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             EmployeeViewModel employeeVM = new EmployeeViewModel();
             employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             return PartialView("_AttendedBySelectList", employeeVM);
         }
         #endregion AttendedBy SelectList
         #region PreparedBy SelectList
-        public ActionResult PreparedBySelectList(string required)
+        public ActionResult PreparedBySelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListPreparedByAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             EmployeeViewModel employeeVM = new EmployeeViewModel();
             employeeVM.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             return PartialView("_PreparedBySelectList", employeeVM);

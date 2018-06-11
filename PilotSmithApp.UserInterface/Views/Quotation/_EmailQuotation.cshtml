@@ -36,7 +36,7 @@
             <tr>
                 <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
                 <th style="width:30%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
-                <th style="width:9%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QUANTITY</th>
+                <th style="width:9%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
                 <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
                 <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
                 <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
@@ -55,9 +55,9 @@
                 {
                     decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
                     itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                    CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100));
-                    SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100));
-                    IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100));
+                    CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100),2);
+                    SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100),2);
+                    IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100),2);
                     GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                     itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                     itemgrandTotal = itemtaxableAmount + itemgSTAmount;
@@ -101,9 +101,9 @@
                                 foreach (var mp in Model.QuotationOtherChargeList)
                                 {
                                     decimal GSTAmt = 0, CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, Total = 0;
-                                    CGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.CGSTPerc / (decimal)100));
-                                    SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100));
-                                    IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100));
+                                    CGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.CGSTPerc / (decimal)100),2);
+                                    SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100),2);
+                                    IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100),2);
                                     GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                                     Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount, 2);
                                     <tr>
@@ -206,15 +206,15 @@
     }
     else
     {
-        using (Ajax.BeginForm("SendPDFDoc", "PDFGenerator", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotationEmailSend", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormQuotationEmailSend" }))
+        using (Ajax.BeginForm("SendQuotationEmail", "Quotation", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotationEmailSend", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormQuotationEmailSend" }))
         {
             @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentEmail" })
 
             @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
             @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
             @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
-            @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "" })
-            @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "" })
+            @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id= "hdnContactPerson" })
+            @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "" ,@id="hdnQuoteNo"})
             <a class="btn btn-default" style="margin-top:2%" onclick="EmailQuotation()">Back </a>
             if (Model.LatestApprovalStatus == 4)
             {

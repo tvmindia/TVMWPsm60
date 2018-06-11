@@ -2,6 +2,8 @@
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +18,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         ICarrierBusiness _carrierBusiness;
-        public CarrierController(ICarrierBusiness carrierBusiness)
+        IUserBusiness _userBusiness;
+        public CarrierController(ICarrierBusiness carrierBusiness,IUserBusiness userBusiness)
         {
             _carrierBusiness = carrierBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
         // GET: Carrier
@@ -28,9 +32,21 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View();
         }
         #region CarrierSelectList
-        public ActionResult CarrierSelectList(string required)
+        public ActionResult CarrierSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Carrier");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListCarrierAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             CarrierViewModel carrierVM = new CarrierViewModel();
             carrierVM.CarrierSelectList = _carrierBusiness.GetCarrierForSelectList();
             return PartialView("_CarrierSelectList", carrierVM);

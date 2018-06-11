@@ -1,6 +1,32 @@
 ﻿@model PilotSmithApp.UserInterface.Models.BankViewModel
-
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
 @if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Bank is missing", @onchange = "$('#hdnBankCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Bank is missing", @onchange = "$('#hdnBankCode').val(this.value)" };
+    //onclickevent = ViewBag.propertydisable ? "" : "AddBankMaster('OTR')";
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)" };
+    //onclickevent = ViewBag.propertydisable ? "" : "AddBankMaster('OTR')";
+}
+@if (@ViewBag.HasAddPermission)
+{
+    <div class="input-group">
+        @Html.DropDownList("BankCode", Model.SelectList, "--Select Bank--", SelectListattributes)
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick=@onclickevent><i class="fa fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    @Html.DropDownList("BankCode", Model.SelectList, "--Select Bank--", SelectListattributes)
+}
+
+
+@*@if (@ViewBag.IsRequired == "required")
 {
     
         @Html.DropDownList("BankCode", Model.SelectList, "--Select bank--", new { @class = "form-control newinput", @required = "", @title = "The Document status is missing", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)" })
@@ -11,7 +37,7 @@ else
    
         @Html.DropDownList("BankCode", Model.SelectList, "--Select bank--", new { @class = "form-control newinput ", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)" })
     
-}
+}*@
 
 @Html.ValidationMessage("BankCode", "", new { @class = "text-danger" })
 
