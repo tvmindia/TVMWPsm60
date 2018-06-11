@@ -67,6 +67,10 @@ namespace PilotSmithApp.UserInterface.Models
         public string MailBodyFooter { get; set; }
         public string MailContant { get; set; }
         public string SignatureStamp { get; set; }
+        public string SignatureStampLine2 { get; set; }
+        public string CompanyAddress1 { get; set; }
+        public string CompanyAddress2 { get; set; }
+        public string CompanyAddress3 { get; set; }
         public string GSTIN { get; set; }
         public string CIN { get; set; }
         public string PAN { get; set; }
