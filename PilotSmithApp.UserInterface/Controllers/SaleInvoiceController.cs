@@ -553,6 +553,27 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion Delete SaleInvoice Detail
+
+        #region Delete SaleInvoice OtherChargeDetail
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "D")]
+        public string DeleteSaleInvoiceOtherChargeDetail(Guid id)
+        {
+
+            try
+            {
+                object result = _saleInvoiceBusiness.DeleteSaleInvoiceOtherChargeDetail(id);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion Delete SaleInvoice OtherChargeDetail
+
         #region GetAllSaleInvoice
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]

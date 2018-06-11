@@ -86,5 +86,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _saleInvoiceRepository.UpdateSaleInvoiceEmailInfo(saleInvoice);
         }
+
+        public object DeleteSaleInvoiceOtherChargeDetail(Guid id)
+        {
+            return _saleInvoiceRepository.DeleteSaleInvoiceOtherChargeDetail(id);
+        }
     }
 }
