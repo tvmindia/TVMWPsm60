@@ -796,6 +796,8 @@ function SendQuotationEmail() {
     //var headerContent = $('#hdnHeadContent').html();
     $('#hdnContentEmail').val(bodyContent);
     $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
+    $('#hdnQuoteNo').val($('#QuoteNo').val());
+    $('#hdnContactPerson').val($('#ContactPerson').text());
     $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
     
 }

@@ -83,7 +83,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<QuotationDetailViewModel> QuotationDetailList { get; set; }
         public List<QuotationOtherChargeViewModel> QuotationOtherChargeList { get; set; }
-        public PDFTools PDFTools { get; set; }
+        public PDFToolsViewModel PDFTools { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> EstimateSelectList { get; set; }
         public AreaViewModel Area { get; set; }

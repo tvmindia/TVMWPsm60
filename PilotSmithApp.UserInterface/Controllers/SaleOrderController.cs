@@ -606,7 +606,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             saleOrderVM.SaleOrderOtherChargeList= Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderVM.ID));
             saleOrderVM.EmailFlag = emailFlag;
             @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
-            saleOrderVM.PDFTools = new PDFTools();
+            saleOrderVM.PDFTools = new PDFToolsViewModel();
             return PartialView("_EmailSaleOrder", saleOrderVM);
         }
         #endregion Email SaleOrder

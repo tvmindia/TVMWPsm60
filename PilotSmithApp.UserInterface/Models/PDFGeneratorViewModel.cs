@@ -19,7 +19,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string style { get; set; }
         public string text { get; set; }
     }
-    public class PDFTools
+    public class PDFToolsViewModel
     {
         [AllowHtml]
         public string Content { get; set; }
