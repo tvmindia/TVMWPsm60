@@ -30,7 +30,7 @@ function SaveSuccessProductCategory(data, status) {
                 BindOrReloadProductCategoryTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList?required=');
+                $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList?required=' + $('#hdnProductCategoryRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -114,7 +114,7 @@ function SaveSuccessState(data, status) {
                 BindOrReloadStateTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divStateSelectList').load('/State/StatSelectList?required=' + $('#hdnStateRequired').val());
+                $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -156,7 +156,7 @@ function SaveSuccessDistrict(data, status) {
                 BindOrReloadDistrictTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + ('#hdnDistrictRequired').val());
+                $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -838,7 +838,7 @@ function SaveSuccessCountry(data, status) {
                 BindOrReloadCountryTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divPlantSelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val());
+                $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

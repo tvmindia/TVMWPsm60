@@ -47,6 +47,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         else
                             cmd.Parameters.Add("@Code", SqlDbType.Int).Value = state.Code;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, 200).Value = state.Description;
+                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = state.CountryCode;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = state.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = state.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = state.PSASysCommon.UpdatedBy;
@@ -123,6 +124,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         state.PSASysCommon.CreatedDateString = (sdr["CreatedDate"].ToString() != "" ? DateTime.Parse(sdr["CreatedDate"].ToString()).ToString(settings.DateFormat) : state.PSASysCommon.CreatedDateString);
                                         state.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : state.TotalCount);
                                         state.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : state.FilteredCount);
+                                        state.Country = new Country();
+                                        state.Country.Description = (sdr["Country"].ToString() != "" ? sdr["Country"].ToString() : state.Country.Description);
+                                        //state.CountryCode = (sdr["CountryCode"].ToString() != "" ? int.Parse(sdr["CountryCode"].ToString()) : state.CountryCode);
                                     }
                                     stateList.Add(state);
                                 }
@@ -167,6 +171,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     state = new State();
                                     state.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : state.Code);
                                     state.Description = (sdr["Description"].ToString() != "" ? (sdr["Description"].ToString()) : state.Description);
+                                    state.CountryCode = (sdr["CountryCode"].ToString() != "" ? int.Parse(sdr["CountryCode"].ToString()) : state.CountryCode);
                                 }
                             }
                         }

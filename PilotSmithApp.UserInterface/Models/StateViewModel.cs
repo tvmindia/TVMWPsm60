@@ -20,6 +20,9 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsUpdate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> StateSelectList { get; set; }
+        [Display(Name ="Country")]
+        public int? CountryCode { get; set; }
+        public CountryViewModel Country { get; set; } 
     }
 
     public class StateAdvanceSearchViewModel

@@ -8,6 +8,7 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatableButtons")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
 }
 <section class="content" id="main">
     <div class="row">
@@ -46,6 +47,7 @@
                     <tr class="text-center TableHead">
                         <th>Code</th>
                         <th>State</th>
+                        <th>Country</th>
                         <th>Created Date</th>
                         <th>...</th>
                     </tr>
@@ -61,6 +63,7 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableButtons")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/State")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
 }
 
 

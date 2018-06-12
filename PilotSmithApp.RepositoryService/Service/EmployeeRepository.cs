@@ -176,8 +176,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = employeeAdvanceSearch.DataTablePaging.Length;
 
-                        cmd.Parameters.Add("@DepartmentCode", SqlDbType.Int).Value = employeeAdvanceSearch.DepartmentCode;
-                        cmd.Parameters.Add("@PositionCode", SqlDbType.Int).Value = employeeAdvanceSearch.PositionCode;
+                        cmd.Parameters.Add("@DepartmentCode", SqlDbType.Int).Value = employeeAdvanceSearch.AdvDepartmentCode;
+                        cmd.Parameters.Add("@PositionCode", SqlDbType.Int).Value = employeeAdvanceSearch.AdvPositionCode;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

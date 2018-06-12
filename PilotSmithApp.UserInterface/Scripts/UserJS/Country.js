@@ -82,8 +82,7 @@ function BindOrReloadCountryTable(action) {
                 }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [1] },
-                { className: "text-right", "targets": [] },
+                { className: "text-center", "targets": [1] },              
                 { "targets": [0], "width": "70%" },
                 { "targets": [1], "width": "30%" },
                 ],

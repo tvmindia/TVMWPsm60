@@ -44,9 +44,13 @@
                 <div class="col-md-12">
                     <div class="divStateSelectList">
                         @Html.Action("StateSelectList", "State", new { required = "" })
-                    </div>
-                    @Html.HiddenFor(model => model.StateCode, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
+                    </div>                  
                 </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnStateRequired", "")
+                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                @Html.Hidden("hdnStatedisabled", false)
+                @Html.HiddenFor(model => model.StateCode, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
             </div>
         </div>
 
@@ -58,9 +62,13 @@
                 <div class="col-md-12">
                     <div class="divDistrictSelectList">
                         @Html.Action("DistrictSelectList", "District", new { required = "" })
-                    </div>
-                    @Html.HiddenFor(model => model.DistrictCode, htmlAttributes: new { @class = "", @id = "hdnDistrictCode" })
+                    </div>                 
                 </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnDistrictRequired", "")
+                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                @Html.Hidden("hdnDistrictdisabled", false)
+                @Html.HiddenFor(model => model.DistrictCode, htmlAttributes: new { @class = "", @id = "hdnDistrictCode" })
             </div>
         </div>
         <div class="modal-footer d-flex justify-content-center">

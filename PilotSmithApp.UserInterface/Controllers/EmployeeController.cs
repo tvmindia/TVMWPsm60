@@ -35,10 +35,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult Index()
         {
             EmployeeAdvanceSearchViewModel employeeAdvanceSearchVM = new EmployeeAdvanceSearchViewModel();
-            employeeAdvanceSearchVM.Department = new DepartmentViewModel();
-            employeeAdvanceSearchVM.Department.DepartmentSelectList = _departmentBusiness.GetDepartmentSelectList();
-            employeeAdvanceSearchVM.Position = new PositionViewModel();
-            employeeAdvanceSearchVM.Position.PositionSelectList = _positionBusiness.GetPositionSelectList();
+            //employeeAdvanceSearchVM.Department = new DepartmentViewModel();
+            //employeeAdvanceSearchVM.Department.DepartmentSelectList = _departmentBusiness.GetDepartmentSelectList();
+            //employeeAdvanceSearchVM.Position = new PositionViewModel();
+            //employeeAdvanceSearchVM.Position.PositionSelectList = _positionBusiness.GetPositionSelectList();
             return View(employeeAdvanceSearchVM);
         }
         #region InsertUpdateEmployee

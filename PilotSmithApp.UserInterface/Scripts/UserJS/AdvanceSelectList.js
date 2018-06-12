@@ -46,7 +46,22 @@ $(document).ready(function () {
         console.log(e.message);
     }
 
+    try {
+        debugger;
+        BindDepartmentSelectList()
+    }
+    catch (e) {
+        console.log(e.message);
+    }
    
+    try {
+        debugger;
+        BindPositionSelectList()
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+
     $('.select2').addClass('form-control newinput');
 });
 
@@ -202,3 +217,49 @@ function BindPlantSelectList() {
     });
 }
 
+//Department SelectList//
+
+function BindDepartmentSelectList() {
+    debugger;
+    $('#AdvDepartmentCode').select2({
+        ajax: {
+            type: 'POST',
+            dataType: 'json',
+            url: "Department/GetDepartmentForSelectListOnDemand/",
+            delay: 50,
+            data: function (term) {
+                return {
+                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+        }
+    });
+}
+
+//Position SelectList//
+function BindPositionSelectList() {
+    debugger;
+    $('#AdvPositionCode').select2({
+        ajax: {
+            type: 'POST',
+            dataType: 'json',
+            url: "Position/GetPositionForSelectListOnDemand/",
+            delay: 50,
+            data: function (term) {
+                return {
+                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+        }
+    });
+}

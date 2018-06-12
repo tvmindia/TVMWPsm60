@@ -9,6 +9,8 @@ using PilotSmithApp.UserInterface.Models;
 using AutoMapper;
 using Newtonsoft.Json;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
+using SAMTool.BusinessServices.Contracts;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -17,11 +19,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private IProductCategoryBusiness _productCategoryBusiness;
+        IUserBusiness _userBusiness;
         // GET: ProductCategory
         #region Constructor Injection
-        public ProductCategoryController(IProductCategoryBusiness productCategoryBusiness)
+        public ProductCategoryController(IProductCategoryBusiness productCategoryBusiness,IUserBusiness userBusiness)
         {
             _productCategoryBusiness = productCategoryBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion
         [AuthSecurityFilter(ProjectObject = "ProductCategory", Mode = "R")]
@@ -129,9 +133,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         # region ProductCategorySelectList
-        public ActionResult ProductCategorySelectList(string required)
+        public ActionResult ProductCategorySelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "ProductCategory");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             ProductCategoryViewModel productCategoryVM = new ProductCategoryViewModel();
             productCategoryVM.ProductCategorySelectList = _productCategoryBusiness.GetProductCategoryForSelectList();
             return PartialView("_ProductCategorySelectList", productCategoryVM);

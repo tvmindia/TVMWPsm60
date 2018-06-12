@@ -10,6 +10,9 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
 }
+@{
+    List<SelectListItem> EmptySelectList = new List<SelectListItem>();
+}
 <section class="content" id="main">
     <div class="row">
         <div class="form-group col-md-6">
@@ -40,18 +43,18 @@
             <div class="form-group col-md-12">
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.DepartmentCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvDepartmentCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.DepartmentCode, Model.Department.DepartmentSelectList, "Select department", new { @class = "form-control newinput", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvDepartmentCode, EmptySelectList, "Select department", new { @class = "form-control newinput", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.PositionCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvPositionCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.PositionCode, Model.Position.PositionSelectList, "Select position ", new { @class = "form-control newinput", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvPositionCode, EmptySelectList, "Select position ", new { @class = "form-control newinput", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-12">&nbsp;</div>
@@ -93,6 +96,7 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/Employee")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/AdvanceSelectList")
 }
 
 

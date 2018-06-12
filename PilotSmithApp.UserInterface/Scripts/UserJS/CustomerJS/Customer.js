@@ -97,7 +97,7 @@ function BindOrReloadCustomerTable(action) {
             ],
             columnDefs: [{ className: "text-right", "targets": [5] },
                   { className: "text-left", "targets": [0, 1] },
-            { className: "text-center", "targets": [2, 3, 4] }
+            { className: "text-center", "targets": [2, 3, 4,6] }
             ],           
             destroy: true,
             //for performing the import operation after the data loaded
