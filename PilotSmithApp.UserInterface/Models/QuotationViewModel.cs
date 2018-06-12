@@ -43,6 +43,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Final Approval")]
         public bool? IsFinalApproved { get; set; }
         [Required(ErrorMessage = "Please specify at least one recipient.")]
+        [Display(Name = "Email Sent To")]
         public string EmailSentTo { get; set; }
         [Display(Name = "Term Ref. No")]
         [StringLength(25, ErrorMessage = "Term Ref.No Cannot be longer than 25 characters")]

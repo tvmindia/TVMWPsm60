@@ -45,7 +45,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
                 {
                     if (number % pow > 0)
                     {
-                        words += NumberToWords(Math.Floor(number / pow)) + " " + suffixesArr[(power / 3) - 1] + ", ";
+                        words += NumberToWords(Math.Floor(number / pow)) + " " + suffixesArr[(power / 3) - 1] + " ";
                     }
                     else if (number % pow == 0)
                     {
@@ -57,7 +57,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
             }
             if (number >= 1000)
             {
-                if (number % 1000 > 0) words += NumberToWords(Math.Floor(number / 1000)) + " Thousand, ";
+                if (number % 1000 > 0) words += NumberToWords(Math.Floor(number / 1000)) + " Thousand";
                 else words += NumberToWords(Math.Floor(number / 1000)) + " Thousand";
                 number %= 1000;
             }
