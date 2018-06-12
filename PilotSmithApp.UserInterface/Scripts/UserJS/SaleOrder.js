@@ -254,8 +254,8 @@ function EditSaleOrder(this_Obj) {
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
             CalculateTotal();
-            //$('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
-            //});
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
+            });
             clearUploadControl();
             PaintImages(SaleOrder.ID);
         }
@@ -900,6 +900,8 @@ function SendSaleOrderEmail() {
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
     $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
     $('#hdnSaleOrderEMailContent').val($('#divSaleOrderEmailcontainer').html());
+    $('#hdnSaleOrderNo').val($('#SaleOrderNo').val());
+    $('#hdnContactPerson').val($('#ContactPerson').text());
     $('#FormSaleOrderEmailSend #ID').val($('#SaleOrderForm #ID').val());
 }
 function UpdateSaleOrderEmailInfo() {

@@ -3,9 +3,12 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.RepositoryService.Contract;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
@@ -15,11 +18,13 @@ namespace PilotSmithApp.BusinessService.Service
         ISaleOrderRepository _saleOrderRepository;
         ICommonBusiness _commonBusiness;
         IMailBusiness _mailBusiness;
-        public SaleOrderBusiness(ISaleOrderRepository saleOrderRepository, ICommonBusiness commonBusiness, IMailBusiness mailBusiness)
+        IPDFGeneratorBusiness _pDFGeneratorBusiness;
+        public SaleOrderBusiness(ISaleOrderRepository saleOrderRepository, ICommonBusiness commonBusiness, IMailBusiness mailBusiness, IPDFGeneratorBusiness pDFGeneratorBusiness)
         {
             _saleOrderRepository = saleOrderRepository;
             _commonBusiness = commonBusiness;
             _mailBusiness = mailBusiness;
+            _pDFGeneratorBusiness = pDFGeneratorBusiness;
         }
         public List<SaleOrder> GetAllSaleOrder(SaleOrderAdvanceSearch saleOrderAdvanceSearch)
         {
@@ -71,14 +76,19 @@ namespace PilotSmithApp.BusinessService.Service
                 if (!string.IsNullOrEmpty(saleOrder.EmailSentTo))
                 {
                     string[] EmailList = saleOrder.EmailSentTo.Split(',');
+                    string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
+                    MailMessage _mail = new MailMessage();
+                    PDFTools pDFTools = new PDFTools();
+                    _mail.Body = mailBody.Replace("$Customer$", saleOrder.Customer.ContactPerson).Replace("$Document$", "Sale Order").Replace("$DocumentNo$", saleOrder.SaleOrderNo);
+                    pDFTools.Content = saleOrder.MailContant;
+                    _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), saleOrder.SaleOrderNo + ".pdf"));
+                    _mail.Subject = "SaleOrder";
+                    _mail.IsBodyHtml = true;
                     foreach (string email in EmailList)
                     {
-                        Mail _mail = new Mail();
-                        _mail.Body = saleOrder.MailContant;
-                        _mail.Subject = "SaleOrder";
-                        _mail.To = email;
-                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                        _mail.To.Add(email);
                     }
+                    sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
 
 
