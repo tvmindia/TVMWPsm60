@@ -905,7 +905,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeletesaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
              ],
              columnDefs: [
                  //{ "targets": [0], "width": "30%" },
@@ -992,6 +992,48 @@ function EditSaleInvoiceOtherChargesDetail(this_Obj) {
         $('#FormOtherExpenseDetail #IGSTPerc').val(IGSTAmt);
         $('#divModelPopSaleInvoice').modal('show');
     });
+}
+
+function ConfirmDeleteSaleInvoiceOtherChargeDetail(this_Obj) {
+    debugger;
+    _datatablerowindex = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
+    var saleInvoiceOtherChargeDetail = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
+    if (saleInvoiceOtherChargeDetail.ID === _emptyGuid) {
+        var quotationOtherChargeDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
+        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+        ClearCalculatedFields();
+        _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+        CalculateTotal();
+        notyAlert('success', 'Detail Row deleted successfully');
+    }
+    else {
+        notyConfirm('Are you sure to delete?', 'DeleteSaleInvoiceOtherChargeDetail("' + saleInvoiceOtherChargeDetail.ID + '")');
+
+    }
+}
+function DeleteSaleInvoiceOtherChargeDetail(ID) {
+    if (ID != _emptyGuid && ID != null && ID != '') {
+        var data = { "id": ID };
+        var ds = {};
+        _jsonData = GetDataFromServer("SaleInvoice/DeleteSaleInvoiceOtherChargeDetail/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            _result = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            notyAlert('success', _result.Message);
+            var saleInvoiceOtherChargeDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
+            saleInvoiceOtherChargeDetailList.splice(_datatablerowindex, 1);
+            ClearCalculatedFields();
+            _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(saleInvoiceOtherChargeDetailList).draw(false);
+            CalculateTotal();
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
 }
 
 //================================================================================================

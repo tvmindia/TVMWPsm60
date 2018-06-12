@@ -28,6 +28,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal AdvanceAmount { get; set; }
         public decimal OutStanding { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public int? AreaCode { get; set; }
+        public int? DistrictCode { get; set; }
+        public int? StateCode { get; set; }
+        public int? CountryCode { get; set; }
+
         //Additional properties
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }

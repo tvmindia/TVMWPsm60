@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private IDistrictBusiness _districtBusiness;
         private IStateBusiness _stateBusiness;
+        IUserBusiness _userBusiness;
         // GET: District
         #region Constructor Injection
-        public DistrictController(IDistrictBusiness districtBusiness, IStateBusiness stateBusiness)
+        public DistrictController(IDistrictBusiness districtBusiness, IStateBusiness stateBusiness,IUserBusiness userBusiness)
         {
             _districtBusiness = districtBusiness;
             _stateBusiness = stateBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion
         [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]
@@ -131,9 +135,22 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region District SelectList
-        public ActionResult DistrictSelectList(string required)
+        public ActionResult DistrictSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            //Permission _permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "District");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListDistrictAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             DistrictViewModel districtVM = new DistrictViewModel();
             districtVM.DistrictSelectList = _districtBusiness.GetDistrictForSelectList();
             return PartialView("_DistrictSelectList", districtVM);
