@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.SessionState;
@@ -13,7 +14,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string CreatedDateString { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
-        public string UpdatedDateString { get; set; }        
+        public string UpdatedDateString { get; set; }
         public DateTime GetCurrentDateTime()
         {
             string tz = System.Web.Configuration.WebConfigurationManager.AppSettings["TimeZone"];
@@ -86,6 +87,25 @@ namespace PilotSmithApp.DataAccessObject.DTO
             }
 
             return words;
+        }
+        //Reference for country code and and culture code
+        //https://www.c-sharpcorner.com/UploadFile/0f68f2/converting-a-number-in-currency-format-for-different-culture/
+        public string ConvertToCurrencyStandards(double value,string countryCode)
+        {
+            string currencyFormatted = "";
+            double todaysValue = 0;
+            switch (countryCode)
+            {
+                case "IND":
+                    todaysValue = value * 1;
+                    currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-IN"));
+                        break;
+                case "USA":
+                    todaysValue = value * 67.51;
+                    currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"));
+                    break;
+            }
+            return currencyFormatted;
         }
     }
 
@@ -245,7 +265,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
             get { return "App User"; }
         }
         #endregion
-        
+
     }
 
     public class AppConstMessage
