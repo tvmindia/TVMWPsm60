@@ -2,10 +2,12 @@
     <!-- Widget: user widget style 1 -->
     <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header bg-aqua" onclick="OpenQuotationSummaryDashboard('Quotation')">
-            <h3 class="widget-user-username">Enquiries</h3>
-            <h5 class="widget-user-desc">(Last 6 months)</h5>
-        </div>
+        <a href="/Enquiry" class="dash-link-effect">
+            <div class="widget-user-header bg-aqua dash-div-effect" onclick="OpenQuotationSummaryDashboard('Quotation')">
+                <h3 class="widget-user-username"><span>Enquiries</span></h3>
+                <h5 class="widget-user-desc">(Last 6 months)</h5>
+            </div>
+        </a>
         <div class="widget-user-image">
 
             <img class="img-circle" src="~/Content/images/enquiry.png" alt="user">
@@ -41,10 +43,12 @@
     <!-- Widget: user widget style 1 -->
     <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header bg-yellow" onclick="OpenQuotationSummaryDashboard('Quotation')">
-            <h3 class="widget-user-username">Quotations</h3>
-            <h5 class="widget-user-desc">(Last 6 months)</h5>
-        </div>
+        <a href="/Quotation" class="dash-link-effect">
+            <div class="widget-user-header bg-yellow dash-div-effect" onclick="OpenQuotationSummaryDashboard('Quotation')">
+                <h3 class="widget-user-username"><span>Quotations</span></h3>
+                <h5 class="widget-user-desc">(Last 6 months)</h5>
+            </div>
+        </a>
         <div class="widget-user-image">
 
             <img class="img-circle" src="~/Content/images/document.png" alt="user">
@@ -58,7 +62,7 @@
                     </div>
                     <!-- /.description-block -->
                 </div>
-              
+
                 <!-- /.col -->
                 <div class="col-sm-4 border-right">
                     <div class="description-block">
@@ -87,9 +91,9 @@
     <!-- Widget: user widget style 1 -->
     <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <a href="/Requisition/Index">
+        <a href="/SaleOrder" class="dash-link-effect">
             <div class="widget-user-header bg-blue">
-                <h3 class="widget-user-username">Sale Orders</h3>
+                <h3 class="widget-user-username"><span>Sale Orders</span></h3>
                 <h5 class="widget-user-desc">(Last 6 Months)</h5>
             </div>
         </a>
@@ -138,42 +142,44 @@
     <!-- Widget: user widget style 1 -->
     <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
-        <div class="widget-user-header bg-green-gradient"  >
-            <h3 class="widget-user-username">Production Orders</h3>
-            <h5 class="widget-user-desc">(Last 6 Months)</h5>
-        </div>
-        <div class="widget-user-image">
-            <img class="img-circle" src="~/Content/images/production.png" alt="user">
-        </div>
-        <div class="box-footer">
-            <div class="row">
-                <div class="col-sm-4 border-right">
-                    <div class="description-block">
-                        <h5 class="description-header">@ViewBag.OpenProductionOrder</h5>
-                        <span class="description-text">Open</span>
-                    </div>
-                    <!-- /.description-block -->
+            <a href="/ProductionOrder" class="dash-link-effect">
+                <div class="widget-user-header bg-green-gradient dash-div-effect">
+                    <h3 class="widget-user-username"><span>Production Order</span></h3>
+                    <h5 class="widget-user-desc">(Last 6 Months)</h5>
                 </div>
-                <!-- /.col -->
-                <div class="col-sm-4 border-right">
-                    <div class="description-block">
-                        <h5 class="description-header">@ViewBag.InProgressProductionOrder</h5>
-                        <span class="description-text">In Prog.</span>
-                    </div>
-                    <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-4">
-                    <div class="description-block">
-                        <h5 class="description-header">@ViewBag.ClosedProductionOrder</h5>
-                        <span class="description-text">Closed</span>
-                    </div>
-                    <!-- /.description-block -->
-                </div>
-                <!-- /.col -->
+            </a>
+            <div class="widget-user-image">
+                <img class="img-circle" src="~/Content/images/production.png" alt="user">
             </div>
-            <!-- /.row -->
-        </div>
-    </div>
+            <div class="box-footer">
+                <div class="row">
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header">@ViewBag.OpenProductionOrder</h5>
+                            <span class="description-text">Open</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                            <h5 class="description-header">@ViewBag.InProgressProductionOrder</h5>
+                            <span class="description-text">In Prog.</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-4">
+                        <div class="description-block">
+                            <h5 class="description-header">@ViewBag.ClosedProductionOrder</h5>
+                            <span class="description-text">Closed</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+</div>
     <!-- /.widget-user -->
 </div>

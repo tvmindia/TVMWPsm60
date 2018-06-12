@@ -1247,3 +1247,23 @@ select{
 .confirm  {
     background-color: #02a68f!important;
 }
+
+.dash-link-effect a,a.active,a:hover{
+    text-decoration:none;
+}
+.dash-link-effect div.bg-aqua:hover{
+    background-color:#fff!important;
+    color:#00a7d0!important;
+}
+.dash-link-effect div.bg-blue:hover{
+    background-color:#fff!important;
+    color:#357ca5!important;
+}
+.dash-link-effect div.bg-yellow:hover{
+    background-color:#fff!important;
+    color:#db8b0b!important;
+}
+.dash-link-effect div.bg-green-gradient:hover{
+    color:#00a65a!important;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #fff), color-stop(1, #fff)) !important;
+}
