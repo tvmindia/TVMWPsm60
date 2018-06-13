@@ -205,16 +205,19 @@ function AddSaleInvoice() {
 }
 
 function LoadCurrentPageDropdowns() {
-    $('#divAttendedByIDSelectList').load('/Employee/AttendedBySelectList')
-    $('#divBranchSelectList').load('/Branch/BranchSelectList')
-    // $('#divBranchSelectList').load('/Branch/BranchSelectList')
-    $('#divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV')
-    $('#divBillLocationSelectList').load('/BillLocation/BillLocationSelectList')
+    debugger;
+    $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList')
+    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=required')
+    $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=required')
+    $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList')
+    if( $('#IsUpdate').val()=='True')
+        $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=required&disabled=true')
+    else
+        $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=required')
 }
 
 
 function EditSaleInvoice(this_Obj) {
-    debugger;
     OnServerCallBegin();
     var SaleInvoice = _dataTable.SaleInvoiceList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
@@ -342,7 +345,6 @@ function DeleteSaleInvoiceItem(id) {
     }
 }
 function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
-    debugger;
     var data;
     if (id == _emptyGuid && !(IsSaleOrder) && !(IsQuotation)) {
         data = null;
@@ -386,19 +388,20 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Discount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Rate", render: function (data, type, row) { return roundoff(parseFloat(data)) }, "defaultContent": "<i></i>"
+             },
+             { "data": "Discount", render: function (data, type, row) { return roundoff(parseFloat(data)) }, "defaultContent": "<i></i>" },
              {//Taxable
                  "data": "Rate", render: function (data, type, row) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + roundoff(parseFloat(Taxable))
                  }, "defaultContent": "<i></i>"
              },
              {//GST
                  "data": "Rate", render: function (data, type, row) {
-
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
                      var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
                      var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
@@ -435,11 +438,11 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                 "data": null, "orderable": false,render: function(data,type,row){
                     if (row.Product.Code != "" && row.Product.Code != null)
                     {
-                        return '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>'
+                        return '<a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                     }
                     else
                     {
-                        return '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>'
+                        return '<a href="#" class="actionLink"  onclick="EditSaleInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                     }
                 },"defaultContent": "<i></i>"
              },
@@ -541,7 +544,6 @@ function AddSaleInvoiceDetailToList() {
         if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             if (_dataTable.SaleInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
-                debugger;
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
                 saleInvoiceDetailVM.Product = new Object;
                 saleInvoiceDetailVM.ProductModel = new Object;
@@ -571,7 +573,6 @@ function AddSaleInvoiceDetailToList() {
                 $('#divModelPopSaleInvoice').modal('hide');
             }
             else {
-                debugger;
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
                 if (saleInvoiceDetailVM.length > 0) {
                     var checkpoint = 0;
@@ -636,7 +637,6 @@ function EditSaleInvoiceDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceDetail", function () {
-        debugger;
         $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
         $('#FormSaleInvoiceDetail #IsUpdate').val('True');
         $('#FormSaleInvoiceDetail #ID').val(saleInvoiceDetail.ID);
@@ -687,7 +687,6 @@ function EditSaleInvoiceDetail(this_Obj) {
 
 //Delete SaleInvoice Detail
 function ConfirmDeleteSaleInvoiceDetail(this_Obj) {
-    debugger;
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
     if (saleInvoiceDetail.ID === _emptyGuid) {
@@ -735,10 +734,8 @@ function AddOtherExpenseDetailList() {
 function AddOtherExpenseDetailToList() {
     debugger;
     $("#FormOtherExpenseDetail").submit(function () { });
-    debugger;
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
         if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() != "")) {
-            debugger;
             var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
             saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
             saleInvoiceOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelSaleInvoicePopBody #ChargeAmount").val();
@@ -763,7 +760,6 @@ function AddOtherExpenseDetailToList() {
     }
     else {
         if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() != "")) {
-            debugger;
             if (_dataTable.SaleInvoiceOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(GetSaleInvoiceOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
                 var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
@@ -787,7 +783,6 @@ function AddOtherExpenseDetailToList() {
                 $('#divModelPopSaleInvoice').modal('hide');
             }
             else {
-                debugger;
                 var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
                 if (saleInvoiceOtherExpenseDetailList.length > 0) {
                     var checkpoint = 0;
@@ -800,7 +795,6 @@ function AddOtherExpenseDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
-                        debugger;
                         ClearCalculatedFields();
                         _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(saleInvoiceOtherExpenseDetailList).draw(false);
                         CalculateTotal();
@@ -842,7 +836,6 @@ function AddOtherExpenseDetailToList() {
 
 //OtherExpense
 function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
-    debugger;
     var data;
     if (id == _emptyGuid && !(IsQuotation) && !(IsSaleOrder)) {
         data = null;
@@ -894,7 +887,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     var TaxAmt = parseFloat(data) + parseFloat(GSTAmt)
+                     var TaxAmt = parseFloat(GSTAmt)
                      if (row.AddlTaxPerc != undefined || row.AddlTaxPerc != null) {
                          var AddlTax = parseFloat(TaxAmt * row.AddlTaxPerc / 100);
                      }
@@ -980,7 +973,6 @@ function EditSaleInvoiceOtherChargesDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceOtherChargesDetail = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelSaleInvoicePopBody").load("SaleInvoice/SaleInvoiceOtherChargeDetail", function () {
-        debugger;
         $('#lblModelPopQuotation').text('OtherCharges Detail')
         $('#FormOtherExpenseDetail #IsUpdate').val('True');
         $('#FormOtherExpenseDetail #ID').val(saleInvoiceOtherChargesDetail.ID);
@@ -1010,7 +1002,6 @@ function EditSaleInvoiceOtherChargesDetail(this_Obj) {
 }
 
 function ConfirmDeleteSaleInvoiceOtherChargeDetail(this_Obj) {
-    debugger;
     _datatablerowindex = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceOtherChargeDetail = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (saleInvoiceOtherChargeDetail.ID === _emptyGuid) {
@@ -1051,87 +1042,84 @@ function DeleteSaleInvoiceOtherChargeDetail(ID) {
     }
 }
 
-//================================================================================================
-//SaleInvoiceFollowup Section
-function AddSaleInvoiceFollowUp() {
-    debugger;
-    $("#divModelSaleInvoicePopBody").load("SaleInvoiceFollowup/AddSaleInvoiceFollowup?id=" + _emptyGuid + "&saleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val() + "&customerID=" + ($('#SaleInvoiceForm #hdnCustomerID').val() != "" ? $('#SaleInvoiceForm #hdnCustomerID').val() : _emptyGuid), function () {
-        $('#lblModelPopSaleInvoice').text('Add SaleInvoice Followup')
-        $('#btnresetSaleInvoiceFollowup').trigger('click');
-        $('#divModelPopSaleInvoice').modal('show');
+////================================================================================================
+////SaleInvoiceFollowup Section
+//function AddSaleInvoiceFollowUp() {
+//    $("#divModelSaleInvoicePopBody").load("SaleInvoiceFollowup/AddSaleInvoiceFollowup?id=" + _emptyGuid + "&saleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val() + "&customerID=" + ($('#SaleInvoiceForm #hdnCustomerID').val() != "" ? $('#SaleInvoiceForm #hdnCustomerID').val() : _emptyGuid), function () {
+//        $('#lblModelPopSaleInvoice').text('Add SaleInvoice Followup')
+//        $('#btnresetSaleInvoiceFollowup').trigger('click');
+//        $('#divModelPopSaleInvoice').modal('show');
 
-    });
-}
-function SaleInvoiceFollowUpPaging(start) {
-    $("#divSaleInvoiceFollowupboxbody").load("SaleInvoiceFollowup/GetSaleInvoiceFollowupList?ID=" + _emptyGuid + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val() + "&DataTablePaging.Start=" + start, function () {
+//    });
+//}
+//function SaleInvoiceFollowUpPaging(start) {
+//    $("#divSaleInvoiceFollowupboxbody").load("SaleInvoiceFollowup/GetSaleInvoiceFollowupList?ID=" + _emptyGuid + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val() + "&DataTablePaging.Start=" + start, function () {
 
-    });
-}
-function EditSaleInvoiceFollowup(id) {
-    debugger;
-    $("#divModelSaleInvoicePopBody").load("SaleInvoiceFollowup/AddSaleInvoiceFollowup?id=" + id + "&saleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val() + "&customerID=" + _emptyGuid, function () {
-        $('#lblModelPopSaleInvoice').text('Edit SaleInvoice Followup')
-        $('#divModelPopSaleInvoice').modal('show');
-    });
-}
-function SaveSuccessSaleInvoiceFollowup(data, status) {
-    try {
-        debugger;
-        var _jsonData = JSON.parse(data)
-        //message field will return error msg only
-        _message = _jsonData.Message;
-        _status = _jsonData.Status;
-        _result = _jsonData.Record;
-        switch (_status) {
-            case "OK":
-                MasterAlert("success", _result.Message)
-                $("#divModelSaleInvoicePopBody").load("SaleInvoiceFollowup/AddSaleInvoiceFollowup?ID=" + _result.ID + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val(), "&customerID=" + _emptyGuid, function () {
-                    $('#lblModelPopSaleInvoice').text('Edit SaleInvoice Followup')
+//    });
+//}
+//function EditSaleInvoiceFollowup(id) {
+//    $("#divModelSaleInvoicePopBody").load("SaleInvoiceFollowup/AddSaleInvoiceFollowup?id=" + id + "&saleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val() + "&customerID=" + _emptyGuid, function () {
+//        $('#lblModelPopSaleInvoice').text('Edit SaleInvoice Followup')
+//        $('#divModelPopSaleInvoice').modal('show');
+//    });
+//}
+//function SaveSuccessSaleInvoiceFollowup(data, status) {
+//    try {
+//        var _jsonData = JSON.parse(data)
+//        //message field will return error msg only
+//        _message = _jsonData.Message;
+//        _status = _jsonData.Status;
+//        _result = _jsonData.Record;
+//        switch (_status) {
+//            case "OK":
+//                MasterAlert("success", _result.Message)
+//                $("#divModelSaleInvoicePopBody").load("SaleInvoiceFollowup/AddSaleInvoiceFollowup?ID=" + _result.ID + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val(), "&customerID=" + _emptyGuid, function () {
+//                    $('#lblModelPopSaleInvoice').text('Edit SaleInvoice Followup')
 
-                });
-                $("#divFollowupList").load("SaleInvoiceFollowup/GetSaleInvoiceFollowupList?ID=" + _emptyGuid + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val(), function () {
-                });
-                break;
-            case "ERROR":
-                MasterAlert("danger", _message)
-                break;
-            default:
-                console.log(_message);
-                break;
-        }
-    }
-    catch (e) {
-        //this will show the error msg in the browser console(F12) 
-        console.log(e.message);
-    }
-}
-function ConfirmDeleteSaleInvoiceFollowup(ID) {
-    if (ID != _emptyGuid) {
-        notyConfirm('Are you sure to delete?', 'DeleteSaleInvoiceFollowup("' + ID + '")');
-    }
-}
-function DeleteSaleInvoiceFollowup(ID) {
-    if (ID != _emptyGuid && ID != null && ID != '') {
-        var data = { "id": ID };
-        var ds = {};
-        _jsonData = GetDataFromServer("SaleInvoiceFollowup/DeleteSaleInvoiceFollowup/", data);
-        if (_jsonData != '') {
-            _jsonData = JSON.parse(_jsonData);
-            _message = _jsonData.Message;
-            _status = _jsonData.Status;
-            _result = _jsonData.Record;
-        }
-        if (_status == "OK") {
-            notyAlert('success', _result.Message);
-            $("#divFollowupList").load("SaleInvoiceFollowup/GetSaleInvoiceFollowupList?ID=" + _emptyGuid + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val(), function () {
-            });
-        }
-        if (_status == "ERROR") {
-            notyAlert('error', _message);
-        }
-    }
-}
-//================================================================================================
+//                });
+//                $("#divFollowupList").load("SaleInvoiceFollowup/GetSaleInvoiceFollowupList?ID=" + _emptyGuid + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val(), function () {
+//                });
+//                break;
+//            case "ERROR":
+//                MasterAlert("danger", _message)
+//                break;
+//            default:
+//                console.log(_message);
+//                break;
+//        }
+//    }
+//    catch (e) {
+//        //this will show the error msg in the browser console(F12) 
+//        console.log(e.message);
+//    }
+//}
+//function ConfirmDeleteSaleInvoiceFollowup(ID) {
+//    if (ID != _emptyGuid) {
+//        notyConfirm('Are you sure to delete?', 'DeleteSaleInvoiceFollowup("' + ID + '")');
+//    }
+//}
+//function DeleteSaleInvoiceFollowup(ID) {
+//    if (ID != _emptyGuid && ID != null && ID != '') {
+//        var data = { "id": ID };
+//        var ds = {};
+//        _jsonData = GetDataFromServer("SaleInvoiceFollowup/DeleteSaleInvoiceFollowup/", data);
+//        if (_jsonData != '') {
+//            _jsonData = JSON.parse(_jsonData);
+//            _message = _jsonData.Message;
+//            _status = _jsonData.Status;
+//            _result = _jsonData.Record;
+//        }
+//        if (_status == "OK") {
+//            notyAlert('success', _result.Message);
+//            $("#divFollowupList").load("SaleInvoiceFollowup/GetSaleInvoiceFollowupList?ID=" + _emptyGuid + "&SaleInvoiceID=" + $('#SaleInvoiceForm input[type="hidden"]#ID').val(), function () {
+//            });
+//        }
+//        if (_status == "ERROR") {
+//            notyAlert('error', _message);
+//        }
+//    }
+//}
+////================================================================================================
 
 //Calculations Methods
 function CalculateTotal() {
@@ -1197,7 +1185,6 @@ function CalculateGrandTotal(value) {
 //Email SaleInvoice
 //
 function EmailSaleInvoice() {
-    debugger;
     $("#divModelEmailSaleInvoiceBody").load("SaleInvoice/EmailSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val() + "&EmailFlag=True", function () {
         $('#lblModelEmailSaleInvoice').text('Email SaleInvoice')
         $('#divModelEmailSaleInvoice').modal('show');
@@ -1205,20 +1192,17 @@ function EmailSaleInvoice() {
 }
 
 function SendSaleInvoiceEmail() {
-    debugger;
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
     $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
     $('#hdnSaleInvoiceEMailContent').val($('#divSaleInvoiceEmailcontainer').html());
     $('#FormSaleInvoiceEmailSend #ID').val($('#SaleInvoiceForm #ID').val());
 }
 function UpdateSaleInvoiceEmailInfo() {
-    debugger;
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
     $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
     $('#FormUpdateSaleInvoiceEmailInfo #ID').val($('#SaleInvoiceForm #ID').val());
 }
 function DownloadSaleInvoice() {
-    debugger;
     var bodyContent = $('#divSaleInvoiceEmailcontainer').html();
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
@@ -1229,7 +1213,6 @@ function DownloadSaleInvoice() {
 
 function SaveSuccessUpdateSaleInvoiceEmailInfo(data, status) {
     try {
-        debugger;
         var _jsonData = JSON.parse(data)
         //message field will return error msg only
         _message = _jsonData.Message;
@@ -1257,7 +1240,6 @@ function SaveSuccessUpdateSaleInvoiceEmailInfo(data, status) {
 }
 function SaveSuccessSaleInvoiceEmailSend(data, status) {
     try {
-        debugger;
         var _jsonData = JSON.parse(data)
         //message field will return error msg only
         _message = _jsonData.Message;
@@ -1284,8 +1266,8 @@ function SaveSuccessSaleInvoiceEmailSend(data, status) {
 }
 
 
-//---------------------------------------InvocieTypeOnChange-------------------------------
-function InvocieTypeOnChange(curObj)
+//---------------------------------------InvoiCeTypeOnChange-------------------------------
+function InvoiceTypeOnChange(curObj)
 {
     if(curObj=='SB')
     {
@@ -1300,7 +1282,6 @@ function InvocieTypeOnChange(curObj)
 }
 function AddSaleInvoiceServiceBillList()
 {
-    debugger;
     $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill", function () {
         $('#lblModelPopSaleInvoice').text('Service Invoice Detail')
         $('#divModelPopSaleInvoice').modal('show');
@@ -1309,7 +1290,6 @@ function AddSaleInvoiceServiceBillList()
 
  
 function AddSaleInvoiceServiceBillToDetailList() {
-    debugger;
     $("#FormSaleInvoiceServiceBill").submit(function () { });
 
     if ($('#FormSaleInvoiceServiceBill #IsUpdate').val() == 'True') {
@@ -1344,7 +1324,6 @@ function AddSaleInvoiceServiceBillToDetailList() {
         if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             if (_dataTable.SaleInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
-                debugger;
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
                 saleInvoiceDetailVM.OtherCharge = new Object;
                 saleInvoiceDetailVM.Unit = new Object;
@@ -1370,7 +1349,6 @@ function AddSaleInvoiceServiceBillToDetailList() {
                 $('#divModelPopSaleInvoice').modal('hide');
             }
             else {
-                debugger;
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
                 if (saleInvoiceDetailVM.length > 0) {
                     var checkpoint = 0;
@@ -1406,7 +1384,6 @@ function AddSaleInvoiceServiceBillToDetailList() {
                         SaleInvoiceDetailVM.IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
                         SaleInvoiceDetailVM.CessPerc = $('#divModelSaleInvoicePopBody #CessPerc').val() != "" ? $('#divModelSaleInvoicePopBody #CessPerc').val() : 0;
                         SaleInvoiceDetailVM.CessAmt = $('#divModelSaleInvoicePopBody #CessAmt').val();
-                        debugger;
                         _dataTable.SaleInvoiceDetailList.row.add(SaleInvoiceDetailVM).draw(true);
                     }
                     CalculateTotal();
@@ -1423,11 +1400,9 @@ function AddSaleInvoiceServiceBillToDetailList() {
 
 function EditSaleInvoiceServiceBill(this_Obj)
 {
-    debugger;
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill", function () {
-        debugger;
         $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
         $('#FormSaleInvoiceServiceBill #IsUpdate').val('True');
         $('#FormSaleInvoiceServiceBill #ID').val(saleInvoiceDetail.ID);

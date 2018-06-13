@@ -191,6 +191,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Qty = 0,
                         UnitCode = null,
                         Rate = 0,
+                        CessAmt=0,
                         OtherChargeCode=null,
                         OtherCharge=new OtherChargeViewModel()
                         {

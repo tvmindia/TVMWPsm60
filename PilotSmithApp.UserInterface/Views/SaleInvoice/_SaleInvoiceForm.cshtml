@@ -130,10 +130,10 @@
                     </div>
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
                         <div class="col-md-12">
-                            <div id="divDocumentStatusSelectList">
+                            <div class="divDocumentStatusSelectList">
                                 <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
 
                                 @*  @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "SIV" })*@
@@ -157,7 +157,7 @@
                             @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            <div id="divAttendedByIDSelectList">
+                            <div class="divAttendedBySelectList">
                                 <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @* binding from javascript document ready function using div id *@
                                 @*@Html.Action("AttendedBySelectList", "Employee", new { required = "", postingParams = "ResponsiblePersonID" })*@
@@ -169,10 +169,10 @@
                 <div class="form-group col-md-12 no-right-padding">
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
                         <div class="col-md-12">
-                            <div id="divBranchSelectList">
+                            <div class="divBranchSelectList">
                                 <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @* @Html.Action("BranchSelectList", "Branch", new { required = "" })*@
                             </div>
@@ -184,7 +184,7 @@
                             @Html.LabelFor(model => model.BillLocationCode, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            <div id="divBillLocationSelectList">
+                            <div class="divBillLocationSelectList">
                                 <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
                             </div>
                             @Html.HiddenFor(model => model.BillLocationCode, htmlAttributes: new { @class = "", @id = "hdnBillLocationCode" })
@@ -196,10 +196,10 @@
                     <div class="form-group col-md-12 no-right-padding">
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
-                                @Html.LabelFor(model => model.InvocieType, htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.InvoiceType, htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                <div class="divDocumentOwnerSelectList">
+                                <div>
                                     @{
                                         List<SelectListItem> TypeList = new List<SelectListItem>();
                                         TypeList.Add(new SelectListItem
@@ -207,9 +207,9 @@
                                         TypeList.Add(new SelectListItem
                                         { Text = "Service Bill", Value = "SB" });
                                     }
-                                    @Html.DropDownListFor(model => model.InvocieType, TypeList, new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100 %", onchange = "InvocieTypeOnChange(this.value)", })
+                                    @Html.DropDownListFor(model => model.InvoiceType, TypeList, new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100 %", onchange = "InvoiceTypeOnChange(this.value)", })
                                 </div>
-                                @* @Html.HiddenFor(model => model.InvocieType, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })*@
+                                @* @Html.HiddenFor(model => model.InvoiceType, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })*@
                             </div>
                         </div>
                     </div>
@@ -307,18 +307,11 @@
             <div class="form-group col-md-6">
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @if (Model.IsUpdate || Model.SaleOrderID != null || Model.QuoteID != null)
-                            {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
-                            }
-                            else
-                            {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
-                            }
+                          @* load by script *@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -357,8 +350,8 @@
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">
-                SaleInvoice Details
-@if (Model.InvocieType == "SB")
+                Sale Invoice Details
+@if (Model.InvoiceType == "SB")
 {
     <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
     <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>

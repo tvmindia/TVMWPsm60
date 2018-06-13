@@ -67,7 +67,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Customer Customer { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public Branch Branch { get; set; }
-        public string InvocieType { get; set; }
+        public string InvoiceType { get; set; }
         public BillLocation BillLocation { get; set; }
         public List<SaleInvoiceOtherCharge> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SaleInvoiceDetail> SaleInvoiceDetailList { get; set; }
@@ -116,6 +116,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Product Product { get; set; }
         public ProductModel ProductModel { get; set;}
         public Unit Unit { get; set; }
+        public TaxType TaxType { get; set; }
     }
     public class SaleInvoiceOtherCharge
     {
