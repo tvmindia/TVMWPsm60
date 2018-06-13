@@ -138,7 +138,7 @@
                                 <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
                                     <th style="width:7%;text-align: center;padding: 4px;font-size:10px; ">No.</th>
                                     <th style="width:31%; text-align: left;padding: 4px;font-size:10px;">OtherCharge</th>
-                                    <th style="width:17%; text-align: left;padding: 4px;font-size:10px;">Charge Amount</th>
+                                    <th style="width:17%; text-align: right;padding: 4px;font-size:10px;">Charge Amount</th>
                                     <th style="width:15%; text-align: right;padding: 4px;font-size:10px;">GST</th>
                                     <th style="width:15%; text-align: right;padding: 4px;font-size:10px;">Additional Tax</th>
                                     <th style="width:15%; text-align: right;padding: 4px;font-size:10px;">Total</th>
@@ -149,15 +149,15 @@
                                     foreach (var mp in Model.SaleInvoiceOtherChargeDetailList)
                                     {
                                         decimal GSTAmt = 0, CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, Total = 0;
-                                        CGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.CGSTPerc / (decimal)100));
-                                        SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100));
-                                        IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100));
+                                        CGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.CGSTPerc / (decimal)100),2);
+                                        SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100),2);
+                                        IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100),2);
                                         GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                                         Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount + (decimal)mp.AddlTaxAmt, 2);
                                         <tr style="text-align: right;padding: 4px;">
                                             <td style="width:3%;text-align: center;padding: 4px;font-size:10px;vertical-align:top;">@slno</td>
                                             <td style="width:35%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.OtherCharge.Description</td>
-                                            <td style="width:17%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.ChargeAmount</td>
+                                            <td style="width:17%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.ChargeAmount</td>
                                             <td style="width:15%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@GSTAmt</td>
                                             <td style="width:15%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.AddlTaxAmt</td>
                                             <td style="width:15%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@Total</td>
