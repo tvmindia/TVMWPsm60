@@ -35,8 +35,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ToDate { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
         public int? AdvDepartmentCode { get; set; }
-        public Department Department { get; set; }
         public int? AdvPositionCode { get; set; }
-        public Position Position { get; set; }
     }
 }

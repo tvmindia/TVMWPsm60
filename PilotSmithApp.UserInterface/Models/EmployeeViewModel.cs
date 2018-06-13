@@ -46,9 +46,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Department")]
         public int? AdvDepartmentCode { get; set; }
-        public DepartmentViewModel Department { get; set; }
         [Display(Name = "Position")]
         public int? AdvPositionCode { get; set; }
-        public PositionViewModel Position { get; set; }
     }
 }
