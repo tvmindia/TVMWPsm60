@@ -1021,6 +1021,7 @@
     <Content Include="Views\Country\_AddCountry.cshtml" />
     <Content Include="Views\Country\Index.cshtml" />
     <Content Include="Views\Country\_CountrySelectList.cshtml" />
+    <Content Include="Views\SaleInvoice\_SaleInvoiceServiceBill.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
