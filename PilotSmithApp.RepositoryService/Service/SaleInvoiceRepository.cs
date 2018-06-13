@@ -264,6 +264,14 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoiceDetail.Unit = new Unit();
                                         saleInvoiceDetail.Unit.Code = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : saleInvoiceDetail.Unit.Code);
                                         saleInvoiceDetail.Unit.Description = (sdr["UnitDescription"].ToString() != "" ? (sdr["UnitDescription"].ToString()) : saleInvoiceDetail.Unit.Description);
+                                        saleInvoiceDetail.CGSTPerc= (sdr["CGSTPerc"].ToString() != "" ? decimal.Parse(sdr["CGSTPerc"].ToString()) : saleInvoiceDetail.CGSTPerc);
+                                        saleInvoiceDetail.IGSTPerc= (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : saleInvoiceDetail.IGSTPerc);
+                                        saleInvoiceDetail.SGSTPerc= (sdr["SGSTPerc"].ToString() != "" ? decimal.Parse(sdr["SGSTPerc"].ToString()) : saleInvoiceDetail.SGSTPerc);
+                                        saleInvoiceDetail.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleInvoiceDetail.TaxTypeCode);
+                                        saleInvoiceDetail.TaxType = new TaxType();
+                                        saleInvoiceDetail.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleInvoiceDetail.TaxType.ValueText);
+                                        saleInvoiceDetail.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleInvoiceDetail.Discount);
+
                                     }
                                     saleInvoiceDetailList.Add(saleInvoiceDetail);
                                 }

@@ -386,19 +386,20 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "Discount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "Rate", render: function (data, type, row) { return roundoff(parseFloat(data)) }, "defaultContent": "<i></i>"
+             },
+             { "data": "Discount", render: function (data, type, row) { return roundoff(parseFloat(data)) }, "defaultContent": "<i></i>" },
              {//Taxable
                  "data": "Rate", render: function (data, type, row) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + roundoff(parseFloat(Taxable))
                  }, "defaultContent": "<i></i>"
              },
              {//GST
                  "data": "Rate", render: function (data, type, row) {
-
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
                      var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
                      var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
@@ -894,7 +895,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     var TaxAmt = parseFloat(data) + parseFloat(GSTAmt)
+                     var TaxAmt = parseFloat(GSTAmt)
                      if (row.AddlTaxPerc != undefined || row.AddlTaxPerc != null) {
                          var AddlTax = parseFloat(TaxAmt * row.AddlTaxPerc / 100);
                      }
