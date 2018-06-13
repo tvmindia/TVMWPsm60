@@ -83,12 +83,12 @@
                 <th style="width:5%; text-align: left;padding: 4px;font-size:10px;">Qty</th>
                 <th style="width:8%; text-align: right;padding: 4px;font-size:10px;">Rate</th>
                 <th style="width:6%; text-align: right;padding: 4px;font-size:10px;">Disc</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;">Taxable Amt</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;">CGST Amt</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;">SGST Amt</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;">IGST Amt</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;">Cess Amt</th>
-                <th style="width:10%; text-align: right;padding: 4px;font-size:10px;">Total Amt</th>
+                <th style="width:11%; text-align: right;padding: 4px;font-size:10px;">Taxable Amt</th>
+                <th style="width:7%; text-align: right;padding: 4px;font-size:10px;">CGST Amt</th>
+                <th style="width:7%; text-align: right;padding: 4px;font-size:10px;">SGST Amt</th>
+                <th style="width:7%; text-align: right;padding: 4px;font-size:10px;">IGST Amt</th>
+                <th style="width:7%; text-align: right;padding: 4px;font-size:10px;">Cess Amt</th>
+                <th style="width:11%; text-align: right;padding: 4px;font-size:10px;">Total Amt</th>
             </tr>
         </thead>
         <tbody>
@@ -97,25 +97,26 @@
                 int slno = 1;
                 foreach (var mp in Model.SaleInvoiceDetailList)
                 {
-                    decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0;
+                    decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0,CessAmt=0;
                     itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                    CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100));
-                    SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100));
-                    IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100));
+                    CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100),2);
+                    SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100),2);
+                    IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100),2);
                     itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                     itemgrandTotal = itemtaxableAmount + itemgSTAmount + (decimal)mp.CessAmt;
+                    CessAmt = Math.Round((decimal)mp.CessAmt, 2);
                     <tr style="text-align: right;font-family: Arial; color: #000;padding: 4px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
                         <td style="width:3%;text-align: center;padding: 4px;font-size:10px;vertical-align:top;">@slno</td>
                         <td style="width:28%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
                         <td style="width:5%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                         <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.Rate</td>
                         <td style="width:6%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.Discount</td>
-                        <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@CGSTAmt</td>
-                        <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@SGSTAmt</td>
-                        <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@IGSTAmt</td>
-                        <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemgSTAmount</td>
-                        <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.CessAmt</td>
-                        <td style="width:10%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
+                        <td style="width:11%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemtaxableAmount</td>
+                        <td style="width:7%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@CGSTAmt</td>
+                        <td style="width:7%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@SGSTAmt</td>
+                        <td style="width:7%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@IGSTAmt</td>
+                        <td style="width:7%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@CessAmt</td>
+                        <td style="width:11%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
                     </tr>
                     slno = slno + 1;
                     totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
