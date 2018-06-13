@@ -156,6 +156,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.SaleOrderID);
                                     saleInvoice.SaleInvNo = (sdr["SaleInvNo"].ToString() != "" ? sdr["SaleInvNo"].ToString() : saleInvoice.SaleInvNo);
                                     saleInvoice.SaleInvRefNo = (sdr["SaleInvRefNo"].ToString() != "" ? sdr["SaleInvRefNo"].ToString() : saleInvoice.SaleInvRefNo);
+                                    saleInvoice.InvocieType = (sdr["InvocieType"].ToString() != "" ? sdr["InvocieType"].ToString() : saleInvoice.InvocieType);
                                     saleInvoice.SaleInvDate = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()) : saleInvoice.SaleInvDate);
                                     saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString("dd-MMM-yyyy") : saleInvoice.SaleInvDateFormatted);
                                     saleInvoice.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : saleInvoice.ExpectedDelvDate);
@@ -253,6 +254,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoiceDetail.ProductModel = new ProductModel();
                                         saleInvoiceDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         saleInvoiceDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : saleInvoiceDetail.ProductModel.Name);
+
+                                        saleInvoiceDetail.OtherCharge = new OtherCharge();
+                                        saleInvoiceDetail.OtherCharge.Description= (sdr["OtherChargeCodeDesc"].ToString() != "" ? (sdr["OtherChargeCodeDesc"].ToString()) : saleInvoiceDetail.OtherCharge.Description);
+                                        saleInvoiceDetail.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : saleInvoiceDetail.OtherChargeCode);
                                         saleInvoiceDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : saleInvoiceDetail.Qty);
                                         saleInvoiceDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : saleInvoiceDetail.Rate);
                                         saleInvoiceDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : saleInvoiceDetail.UnitCode);

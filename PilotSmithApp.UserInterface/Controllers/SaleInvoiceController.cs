@@ -160,6 +160,17 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion SaleInvoice Detail Add
 
+        #region SaleInvoice Detail Add
+        public ActionResult AddSaleInvoiceServiceBill()
+        {
+            SaleInvoiceDetailViewModel saleInvoiceDetailVM = new SaleInvoiceDetailViewModel();
+            saleInvoiceDetailVM.IsUpdate = false;
+            saleInvoiceDetailVM.Qty = 1;//by default one
+            saleInvoiceDetailVM.UnitCode = 4;////by default select Nos as unit
+            return PartialView("_SaleInvoiceServiceBill", saleInvoiceDetailVM);
+        }
+        #endregion SaleInvoice Detail Add
+
         #region Get SaleInvoice DetailList By SaleInvoiceID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -180,6 +191,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Qty = 0,
                         UnitCode = null,
                         Rate = 0,
+                        OtherChargeCode=null,
+                        OtherCharge=new OtherChargeViewModel()
+                        {
+                        Description=null
+                        },
                         Product = new ProductViewModel()
                         {
                             ID = Guid.Empty,

@@ -154,7 +154,9 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? CessPerc { get; set; }
         [Display(Name = "Cess Amount")]
         public decimal? CessAmt { get; set; }
-        //Additional Fields
+        [Display(Name = "Select Service Item")]
+        public int? OtherChargeCode { get; set; }
+        public OtherChargeViewModel OtherCharge { get; set; }
         public bool IsUpdate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }

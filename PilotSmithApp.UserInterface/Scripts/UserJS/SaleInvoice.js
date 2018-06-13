@@ -372,9 +372,13 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
-                     return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
-                         row.Product.Name +'</br>' + row.ProductModel.Name
+                     if (data != "") {
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
+                                                 row.Product.Name + '</br>' + row.ProductModel.Name
+                     }
+                     else {
+                         return row.OtherCharge.Description
+                     }
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -427,7 +431,18 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                 }, "defaultContent": "<i></i>"
             },
-            { "data": null, "orderable": false, "defaultContent": '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+            {
+                "data": null, "orderable": false,render: function(data,type,row){
+                    if (row.Product.Code != "" && row.Product.Code != null)
+                    {
+                        return '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>'
+                    }
+                    else
+                    {
+                        return '<a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> <a href="#" class="actionLink"  onclick="EditSaleInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>'
+                    }
+                },"defaultContent": "<i></i>"
+             },
              ],
              columnDefs: [
                  { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
@@ -1116,7 +1131,7 @@ function DeleteSaleInvoiceFollowup(ID) {
         }
     }
 }
-
+//================================================================================================
 
 //Calculations Methods
 function CalculateTotal() {
@@ -1266,4 +1281,182 @@ function SaveSuccessSaleInvoiceEmailSend(data, status) {
         //this will show the error msg in the browser console(F12) 
         console.log(e.message);
     }
+}
+
+
+//---------------------------------------InvocieTypeOnChange-------------------------------
+function InvocieTypeOnChange(curObj)
+{
+    if(curObj=='SB')
+    {
+        $('#btnAddServiceBill').css("display", "block")
+        $('#btnAddItems').css("display", "none");
+    }
+    else
+    {
+        $('#btnAddServiceBill').css("display", "none");
+        $('#btnAddItems').css("display", "block")
+    }
+}
+function AddSaleInvoiceServiceBillList()
+{
+    debugger;
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill", function () {
+        $('#lblModelPopSaleInvoice').text('Service Invoice Detail')
+        $('#divModelPopSaleInvoice').modal('show');
+    });
+}
+
+ 
+function AddSaleInvoiceServiceBillToDetailList() {
+    debugger;
+    $("#FormSaleInvoiceServiceBill").submit(function () { });
+
+    if ($('#FormSaleInvoiceServiceBill #IsUpdate').val() == 'True') {
+        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+            var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
+
+            saleInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            saleInvoiceDetailList[_datatablerowindex].OtherChargeCode = $("#OtherChargeCode").val();
+            saleInvoiceDetailList[_datatablerowindex].Qty = $('#Qty').val();
+            saleInvoiceDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
+            saleInvoiceDetailList[_datatablerowindex].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+            //saleInvoiceDetailList[_datatablerowindex].Unit = Unit;
+            saleInvoiceDetailList[_datatablerowindex].Rate = $('#Rate').val();
+            saleInvoiceDetailList[_datatablerowindex].Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
+            if ($('#divModelSaleInvoicePopBody #TaxTypeCode').val() != null)
+                saleInvoiceDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+            saleInvoiceDetailList[_datatablerowindex].TaxType = new Object;
+            saleInvoiceDetailList[_datatablerowindex].TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
+            saleInvoiceDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
+            saleInvoiceDetailList[_datatablerowindex].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
+            saleInvoiceDetailList[_datatablerowindex].IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
+            saleInvoiceDetailList[_datatablerowindex].CessPerc = $('#divModelSaleInvoicePopBody #CessPerc').val() != "" ? $('#divModelSaleInvoicePopBody #CessPerc').val() : 0;
+            saleInvoiceDetailList[_datatablerowindex].CessAmt = $('#divModelSaleInvoicePopBody #CessAmt').val();
+
+            _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailList).draw(false);
+            CalculateTotal();
+            $('#divModelPopSaleInvoice').modal('hide');
+            _datatablerowindex = -1;
+        }
+    }
+    else {
+        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+            if (_dataTable.SaleInvoiceDetailList.rows().data().length === 0) {
+                _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
+                debugger;
+                var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
+                saleInvoiceDetailVM.OtherCharge = new Object;
+                saleInvoiceDetailVM.Unit = new Object;
+                saleInvoiceDetailVM.TaxType = new Object;
+                saleInvoiceDetailVM.Product = new Object;
+                saleInvoiceDetailVM[0].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                saleInvoiceDetailVM[0].OtherChargeCode = $("#OtherChargeCode").val();
+                saleInvoiceDetailVM[0].Qty = $('#divModelSaleInvoicePopBody #Qty').val();
+                saleInvoiceDetailVM[0].UnitCode = $('#divModelSaleInvoicePopBody #UnitCode').val();
+                saleInvoiceDetailVM[0].Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
+                saleInvoiceDetailVM[0].Rate = $('#divModelSaleInvoicePopBody #Rate').val();
+                saleInvoiceDetailVM[0].Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
+                saleInvoiceDetailVM[0].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                saleInvoiceDetailVM[0].TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
+                saleInvoiceDetailVM[0].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
+                saleInvoiceDetailVM[0].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
+                saleInvoiceDetailVM[0].IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
+                saleInvoiceDetailVM[0].CessPerc = $('#divModelSaleInvoicePopBody #CessPerc').val() != "" ? $('#divModelSaleInvoicePopBody #CessPerc').val() : 0;
+                saleInvoiceDetailVM[0].CessAmt = $('#divModelSaleInvoicePopBody #CessAmt').val();
+                ClearCalculatedFields();
+                _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailVM).draw(false);
+                CalculateTotal();
+                $('#divModelPopSaleInvoice').modal('hide');
+            }
+            else {
+                debugger;
+                var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
+                if (saleInvoiceDetailVM.length > 0) {
+                    var checkpoint = 0;
+                    for (var i = 0; i < saleInvoiceDetailVM.length; i++) {
+                        if (saleInvoiceDetailVM[i].OtherChargeCode == $('#OtherChargeCode').val()) {
+                            saleInvoiceDetailVM[i].Qty = parseFloat(saleInvoiceDetailVM[i].Qty) + parseFloat($('#Qty').val());
+                            checkpoint = 1;
+                            break;
+                        }
+                    }
+                    if (checkpoint == 1) {
+                        _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailVM).draw(false);
+                    }
+                    else if (checkpoint == 0) {
+                        var SaleInvoiceDetailVM = new Object();
+                        SaleInvoiceDetailVM.Unit = new Object();
+                        SaleInvoiceDetailVM.TaxType = new Object();
+                        SaleInvoiceDetailVM.OtherCharge = new Object;
+                        SaleInvoiceDetailVM.ID = _emptyGuid;
+                        SaleInvoiceDetailVM.Product = new Object;
+
+                        SaleInvoiceDetailVM.OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                        SaleInvoiceDetailVM.OtherChargeCode = $("#divModelSaleInvoicePopBody #OtherChargeCode").val();
+                        SaleInvoiceDetailVM.Qty = $('#divModelSaleInvoicePopBody #Qty').val();
+                        SaleInvoiceDetailVM.UnitCode = $('#divModelSaleInvoicePopBody #UnitCode').val();
+                        SaleInvoiceDetailVM.Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
+                        SaleInvoiceDetailVM.Rate = $('#divModelSaleInvoicePopBody #Rate').val();
+                        SaleInvoiceDetailVM.Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
+                        SaleInvoiceDetailVM.TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                        SaleInvoiceDetailVM.TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
+                        SaleInvoiceDetailVM.CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
+                        SaleInvoiceDetailVM.SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
+                        SaleInvoiceDetailVM.IGSTPerc = $('#divModelSaleInvoicePopBody #hdnIGSTPerc').val();
+                        SaleInvoiceDetailVM.CessPerc = $('#divModelSaleInvoicePopBody #CessPerc').val() != "" ? $('#divModelSaleInvoicePopBody #CessPerc').val() : 0;
+                        SaleInvoiceDetailVM.CessAmt = $('#divModelSaleInvoicePopBody #CessAmt').val();
+                        debugger;
+                        _dataTable.SaleInvoiceDetailList.row.add(SaleInvoiceDetailVM).draw(true);
+                    }
+                    CalculateTotal();
+                    $('#divModelPopSaleInvoice').modal('hide');
+                }
+            }
+        }
+    }
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover'
+    });
+}
+
+function EditSaleInvoiceServiceBill(this_Obj)
+{
+    debugger;
+    _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
+    var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill", function () {
+        debugger;
+        $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
+        $('#FormSaleInvoiceServiceBill #IsUpdate').val('True');
+        $('#FormSaleInvoiceServiceBill #ID').val(saleInvoiceDetail.ID);
+
+        $("#FormSaleInvoiceServiceBill #OtherChargeCode").val(saleInvoiceDetail.OtherChargeCode)
+        $("#FormSaleInvoiceServiceBill #hdnOtherChargeCode").val(saleInvoiceDetail.OtherChargeCode)
+       
+        $('#FormSaleInvoiceServiceBill #Qty').val(saleInvoiceDetail.Qty);
+        $('#FormSaleInvoiceServiceBill #UnitCode').val(saleInvoiceDetail.UnitCode);
+        $('#FormSaleInvoiceServiceBill #hdnUnitCode').val(saleInvoiceDetail.UnitCode);
+        $('#FormSaleInvoiceServiceBill #Rate').val(saleInvoiceDetail.Rate);
+        $('#FormSaleInvoiceServiceBill #Discount').val(saleInvoiceDetail.Discount);
+        if (saleInvoiceDetail.TaxTypeCode != 0) {
+            $('#FormSaleInvoiceServiceBill #TaxTypeCode').val(saleInvoiceDetail.TaxType.ValueText);
+            $('#FormSaleInvoiceServiceBill #hdnTaxTypeCode').val(saleInvoiceDetail.TaxType.ValueText);
+        }
+        $('#FormSaleInvoiceServiceBill #hdnCGSTPerc').val(saleInvoiceDetail.CGSTPerc);
+        $('#FormSaleInvoiceServiceBill #hdnSGSTPerc').val(saleInvoiceDetail.SGSTPerc);
+        $('#FormSaleInvoiceServiceBill #hdnIGSTPerc').val(saleInvoiceDetail.IGSTPerc);
+        var TaxableAmt = ((parseFloat(saleInvoiceDetail.Rate) * parseInt(saleInvoiceDetail.Qty)) - parseFloat(saleInvoiceDetail.Discount))
+        var CGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.CGSTPerc)) / 100;
+        var SGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.SGSTPerc)) / 100;
+        var IGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.IGSTPerc)) / 100;
+        $('#FormSaleInvoiceServiceBill #CGSTPerc').val(CGSTAmt);
+        $('#FormSaleInvoiceServiceBill #SGSTPerc').val(SGSTAmt);
+        $('#FormSaleInvoiceServiceBill #IGSTPerc').val(IGSTAmt);
+        $('#FormSaleInvoiceServiceBill #CessPerc').val(saleInvoiceDetail.CessPerc);
+        $('#FormSaleInvoiceServiceBill #CessAmt').val(saleInvoiceDetail.CessAmt);
+
+        $('#divModelPopSaleInvoice').modal('show');
+    });
 }
