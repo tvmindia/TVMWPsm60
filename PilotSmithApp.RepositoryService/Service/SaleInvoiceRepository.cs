@@ -156,7 +156,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.SaleOrderID);
                                     saleInvoice.SaleInvNo = (sdr["SaleInvNo"].ToString() != "" ? sdr["SaleInvNo"].ToString() : saleInvoice.SaleInvNo);
                                     saleInvoice.SaleInvRefNo = (sdr["SaleInvRefNo"].ToString() != "" ? sdr["SaleInvRefNo"].ToString() : saleInvoice.SaleInvRefNo);
-                                    saleInvoice.InvocieType = (sdr["InvocieType"].ToString() != "" ? sdr["InvocieType"].ToString() : saleInvoice.InvocieType);
+                                    saleInvoice.InvoiceType = (sdr["InvocieType"].ToString() != "" ? sdr["InvocieType"].ToString() : saleInvoice.InvoiceType);
                                     saleInvoice.SaleInvDate = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()) : saleInvoice.SaleInvDate);
                                     saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString("dd-MMM-yyyy") : saleInvoice.SaleInvDateFormatted);
                                     saleInvoice.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : saleInvoice.ExpectedDelvDate);
@@ -271,7 +271,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoiceDetail.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleInvoiceDetail.TaxTypeCode);
                                         saleInvoiceDetail.TaxType = new TaxType();
                                         saleInvoiceDetail.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleInvoiceDetail.TaxType.ValueText);
-
+                                        saleInvoiceDetail.CessAmt= (sdr["CessAmt"].ToString() != "" ? decimal.Parse(sdr["CessAmt"].ToString()) : saleInvoiceDetail.CessAmt);
+                                        saleInvoiceDetail.CessPerc= (sdr["CessPerc"].ToString() != "" ? decimal.Parse(sdr["CessPerc"].ToString()) : saleInvoiceDetail.CessPerc);
                                     }
                                     saleInvoiceDetailList.Add(saleInvoiceDetail);
                                 }
@@ -327,7 +328,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         if (saleInvoice.PreparedBy != Guid.Empty)
                             cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = saleInvoice.PreparedBy;
                         cmd.Parameters.Add("@PurchaseOrdNo", SqlDbType.VarChar, 20).Value = saleInvoice.PurchaseOrdNo;
-                        cmd.Parameters.Add("@InvocieType", SqlDbType.VarChar, 20).Value = saleInvoice.InvocieType;
+                        cmd.Parameters.Add("@InvocieType", SqlDbType.VarChar, 20).Value = saleInvoice.InvoiceType;
                         cmd.Parameters.Add("@PurchaseOrdDate", SqlDbType.DateTime).Value = saleInvoice.PurchaseOrdDateFormatted;
                         cmd.Parameters.Add("@BillSeriesCode", SqlDbType.Int).Value = saleInvoice.BillSeriesCode;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleInvoice.EmailSentYN;
