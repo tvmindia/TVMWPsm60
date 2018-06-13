@@ -15,6 +15,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public int? CountryCode { get; set; }
+        public Country Country { get; set; }
     }
 
     public class StateAdvanceSearch

@@ -78,7 +78,10 @@ function BindOrReloadCompanyTable(action) {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditCompanyMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteCompanyMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>', "width": "10%"
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false }],
+                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
+                { className: "text-center", "targets": [2] },
+                { "targets": [1], "width": "80%" },
+                { "targets": [2], "width": "20%" }],
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');

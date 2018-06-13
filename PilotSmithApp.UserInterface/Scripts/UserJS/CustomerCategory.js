@@ -84,8 +84,8 @@ function BindOrReloadCustomerCategoryTable(action) {
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [ 1] },
                 { className: "text-right", "targets": [] },
-                { "targets": [0], "width": "20%" },
-                { "targets": [1], "width": "20%" },
+                { "targets": [0], "width": "60%" },
+                { "targets": [1], "width": "40%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

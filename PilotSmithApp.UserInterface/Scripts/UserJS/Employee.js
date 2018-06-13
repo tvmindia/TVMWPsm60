@@ -30,16 +30,16 @@ function BindOrReloadEmployeeTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#DepartmentCode').val('');
-                $('#PositionCode').val('');
+                $('.divboxASearch #AdvDepartmentCode').val('').trigger('change');
+                $('.divboxASearch #AdvPositionCode').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#DepartmentCode').val('');
-                $('#PositionCode').val('');
+                $('.divboxASearch #AdvDepartmentCode').val('');
+                $('.divboxASearch #AdvPositionCode').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#DepartmentCode').val() == "") && ($('#PositionCode').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvDepartmentCode').val() == "") && ($('.divboxASearch #AdvPositionCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -51,8 +51,8 @@ function BindOrReloadEmployeeTable(action) {
         }
         EmployeeAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         EmployeeAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        EmployeeAdvanceSearchViewModel.DepartmentCode = $('#DepartmentCode').val();
-        EmployeeAdvanceSearchViewModel.PositionCode = $('#PositionCode').val();
+        EmployeeAdvanceSearchViewModel.AdvDepartmentCode = $('.divboxASearch #AdvDepartmentCode').val();
+        EmployeeAdvanceSearchViewModel.AdvPositionCode = $('.divboxASearch #AdvPositionCode').val();
         //apply datatable plugin on Employee table
         _dataTable.EmployeeList = $('#tblEmployee').DataTable(
         {
@@ -61,7 +61,7 @@ function BindOrReloadEmployeeTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [0,1,2,3,4]
+                                 columns: [1,2,3,4,5]
                              }
             }],
             ordering: false,
@@ -90,7 +90,9 @@ function BindOrReloadEmployeeTable(action) {
             ],
             columnDefs: [
                   { "targets": [0], "visible": false, "searchable": false },
-                  { className: "text-center", "targets": [6] }
+                  { className: "text-center", "targets": [6] },
+                   { "targets": [1,6], "width": "10%" },
+                   { "targets": [2,3,4,5], "width": "20%" },
          
             ],
             destroy: true,

@@ -789,6 +789,8 @@ function EmailProductionOrder() {
 function SendProductionOrderEmail() {
     debugger;
     $('#hdnProductionOrderEMailContent').val($('#divProductionOrderEmailcontainer').html());
+    $('#hdnProdOrderNo').val($('#ProdOrderNo').val());
+    $('#hdnContactPerson').val($('#ContactPerson').text());
     $('#FormProductionOrderEmailSend #ID').val($('#ProductionOrderForm #ID').val());
 }
 function UpdateProductionOrderEmailInfo() {

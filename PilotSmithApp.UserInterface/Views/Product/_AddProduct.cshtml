@@ -38,9 +38,13 @@
             <div class="col-md-12">
                 <div class="divProductCategorySelectList">
                     @Html.Action("ProductCategorySelectList", "ProductCategory", new { required = "" })
-                </div>
-                @Html.HiddenFor(model => model.ProductCategoryCode, htmlAttributes: new { @class = "", @id = "hdnProductCategoryCode" })
+                </div>             
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductCategoryRequired", "")
+            <!-- This hidden field will keep the information whether the field is disabled or not -->
+            @Html.Hidden("hdnProductCategorydisabled", false)
+            @Html.HiddenFor(model => model.ProductCategoryCode, htmlAttributes: new { @class = "", @id = "hdnProductCategoryCode" })
         </div>
     </div>
         <div class="form-group col-md-12 no-padding">

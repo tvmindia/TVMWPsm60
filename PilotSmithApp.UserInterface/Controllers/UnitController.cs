@@ -3,6 +3,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IUnitBusiness _unitBusiness;
-        public UnitController(IUnitBusiness unitBusiness)
+        IUserBusiness _userBusiness;
+        public UnitController(IUnitBusiness unitBusiness,IUserBusiness userBusiness)
         {
             _unitBusiness = unitBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
         // GET: Unit
@@ -32,9 +36,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #region UnitSelectList
-        public ActionResult UnitSelectList(string required)
+        public ActionResult UnitSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Unit");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             UnitViewModel unitVM = new UnitViewModel();
             unitVM.UnitSelectList = _unitBusiness.GetUnitForSelectList();
             return PartialView("_UnitSelectList", unitVM);

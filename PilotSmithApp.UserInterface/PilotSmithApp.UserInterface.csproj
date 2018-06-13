@@ -754,6 +754,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\DeliveryChallanController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\DocumentApprovalController.cs" />
     <Compile Include="Controllers\DocumentOwnerController.cs" />
@@ -770,6 +771,7 @@
     <Compile Include="Controllers\PaymentTermController.cs" />
     <Compile Include="Controllers\PDFGeneratorController.cs" />
     <Compile Include="Controllers\PlantController.cs" />
+    <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\PrivilegesController.cs" />
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -1032,7 +1034,9 @@
     <Folder Include="Content\ProductImages\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\ApprovalStatus\" />
+    <Folder Include="Views\Department\" />
     <Folder Include="Views\FileUpload\" />
+    <Folder Include="Views\Position\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.BusinessService\PilotSmithApp.BusinessService.csproj">

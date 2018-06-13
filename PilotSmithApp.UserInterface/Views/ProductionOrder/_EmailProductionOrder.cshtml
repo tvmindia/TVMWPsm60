@@ -148,6 +148,8 @@
             @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
             @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
             @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnProductionOrderEMailContent" })
+            @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
+            @Html.HiddenFor(model => model.ProdOrderNo, htmlAttributes: new { @class = "", @id = "hdnProdOrderNo" })
             <a class="btn btn-default" style="margin-top:2%" onclick="EmailProductionOrder()">Back </a>
             if (Model.LatestApprovalStatus == 4)
             {

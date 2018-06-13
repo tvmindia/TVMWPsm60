@@ -202,7 +202,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = customer.AreaCode;
                         cmd.Parameters.Add("@StateCode", SqlDbType.Int).Value = customer.StateCode;
                         cmd.Parameters.Add("@DistrictCode", SqlDbType.Int).Value = customer.DistrictCode;
-                        cmd.Parameters.Add("@AreadCode", SqlDbType.Int).Value = customer.AreaCode;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = customer.AreaCode;
                         if(customer.CustomerCategoryList.Count()>0)
                         {
                             cmd.Parameters.Add("@CustomerCategoryList", SqlDbType.VarChar).Value = string.Join(",", customer.CustomerCategoryList);

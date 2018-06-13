@@ -1,4 +1,5 @@
-﻿function CreateEnquiryFollowupSummary() {
+﻿var _activeColor = "rgb(50,230,127)";
+function CreateEnquiryFollowupSummary() {
     Chart.defaults.global.legend.labels.usePointStyle = true;
     var chrt = document.getElementById("enquiryChart").getContext("2d");
     var colors = [];
@@ -78,6 +79,11 @@
         legend: {
             display: true,
             labels: {
+                generateLabels: function(chart) {//given to change the color of the label dot fill
+                    labels = Chart.defaults.global.legend.labels.generateLabels(chart);
+                    labels[0].fillStyle = _activeColor;
+                    return labels;
+                },
                 fontColor: 'green',
                 boxWidth: 0,
             },
