@@ -31,9 +31,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int? ReferredByCode { get; set; }
         [Display(Name = "Prepared By")]
         public Guid? PreparedBy { get; set; }
-        [Display(Name ="Mail Body Header")]
+        [Display(Name ="Quotation Header")]
         public string MailBodyHeader { get; set; }
-        [Display(Name = "Mail Footer Header")]
+        [Display(Name = "Quotation Footer")]
         public string MailBodyFooter { get; set; }
         [Display(Name = "Email Sent")]
         public bool? EmailSentYN { get; set; }
@@ -42,8 +42,8 @@ namespace PilotSmithApp.UserInterface.Models
         public int? LatestApprovalStatus { get; set; }
         [Display(Name = "Final Approval")]
         public bool? IsFinalApproved { get; set; }
-        [Required(ErrorMessage = "Please specify at least one recipient.")]
-        [Display(Name = "Email Sent To")]
+        [Required(ErrorMessage = "Please specify at least one recipient")]
+        [Display(Name = "Sent To")]
         public string EmailSentTo { get; set; }
         [Display(Name = "Term Ref. No")]
         [StringLength(25, ErrorMessage = "Term Ref.No Cannot be longer than 25 characters")]
@@ -55,7 +55,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
         [Display(Name = "Discount")]
-        public decimal? Discount { get; set; }
+        public decimal Discount { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional fields
 

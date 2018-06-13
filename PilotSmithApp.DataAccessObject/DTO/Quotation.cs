@@ -31,7 +31,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public Guid? DocumentOwnerID { get; set; }
         public int? BranchCode { get; set; }
-        public decimal? Discount { get; set; }
+        public decimal Discount { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
