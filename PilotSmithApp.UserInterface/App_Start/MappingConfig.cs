@@ -122,6 +122,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<QuotationSummaryViewModel, QuotationSummary>().ReverseMap();
                 config.CreateMap<CountryViewModel, Country>().ReverseMap();
                 config.CreateMap<CountryAdvanceSearchViewModel, CountryAdvanceSearch>().ReverseMap();
+                config.CreateMap<TimeLineViewModel, TimeLine>().ReverseMap();
 
             });
         }

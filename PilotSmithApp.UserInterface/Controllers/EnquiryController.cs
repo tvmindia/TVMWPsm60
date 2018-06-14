@@ -357,6 +357,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Text = "Reset";
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetEnquiry();";
+
+                    toolboxVM.TimeLine.Visible = false;
+                    toolboxVM.TimeLine.Text = "TimeLine";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('"+ id.ToString() + "','ENQ');";
+
+
+
                     if (_commonBusiness.CheckDocumentIsDeletable("ENQ", id))
                     {
                         toolboxVM.deletebtn.Visible = true;

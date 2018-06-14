@@ -14,4 +14,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string DocumentDateFormatted { get; set; }
         public string URL { get; set; }
     }
+    public class TimeLineViewModelList {
+        public List<TimeLineViewModel> TimeLineList { get; set; }
+        public String CurrentDocument { get; set; }
+    }
 }

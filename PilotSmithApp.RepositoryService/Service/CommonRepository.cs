@@ -185,7 +185,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         {
                             if ((sdr != null) && (sdr.HasRows))
                             {
-                                if (sdr.Read())
+                                while (sdr.Read())
                                 {
                                     TimeLine timeLine = new TimeLine();
                                     timeLine = new TimeLine();

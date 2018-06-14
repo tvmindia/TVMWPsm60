@@ -1267,3 +1267,21 @@ select{
     color:#00a65a!important;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #fff), color-stop(1, #fff)) !important;
 }
+
+
+
+.timeline > li > .timeline-item > .timeline-header {
+    font-size:14px;
+}
+.timeline > li > .timeline-item > .time-label {
+    font-size:10px;
+    margin-bottom: 8px;
+   
+}
+    .timeline > li > .timeline-item > .time-label span {
+         padding: 2px
+    }
+
+.timeline > li {
+     margin-bottom: 8px;
+}

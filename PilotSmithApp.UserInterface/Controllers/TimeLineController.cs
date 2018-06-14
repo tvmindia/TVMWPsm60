@@ -24,11 +24,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return View();
         }
-        [AuthSecurityFilter(ProjectObject = "TimeLine", Mode = "R")]
+
+        [HttpGet]
         public ActionResult GetTimeLine(String Id, string Type) {
 
             List<TimeLineViewModel> Result= Mapper.Map<List<TimeLine>, List<TimeLineViewModel>>(_commonBusiness.GetTimeLine(Guid.Parse(Id), Type));
-            return PartialView("_TimeLine", Result);
+            TimeLineViewModelList List = new TimeLineViewModelList();
+            List.TimeLineList = Result;
+            List.CurrentDocument = (from A in Result where( A.DocumentID == Guid.Parse(Id)) select A.DocumentNo.ToString()).FirstOrDefault(); 
+            return PartialView("_TimeLine", List);
           
         }
     }
