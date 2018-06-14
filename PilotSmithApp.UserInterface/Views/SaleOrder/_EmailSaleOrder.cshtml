@@ -1,28 +1,39 @@
 ﻿@model PilotSmithApp.UserInterface.Models.SaleOrderViewModel
 @using PilotSmithApp.DataAccessObject.DTO;
+@*<div style="padding:0px 30px 0px 30px;">
+    <table style="width:100%;font-size:12px">
+        <tr>
+            <td colspan="6">
+                @Html.LabelFor(model => model.EmailSentTo, htmlAttributes: new { @class = "control-label lblrequired", @style = "font-weight: bold;font-size:15px" })
+                @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
+            </td>
+        </tr>
+    </table>
+</div>*@
 <div>
     <img style="width:100%;height:180px" src="~/Content/images/LH_Header.jpg" />
 </div>
 <div style="padding:0px 30px 0px 30px;">
     <div id="divSaleOrderEmailcontainer">
-        @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0,CESSTotal=0;
+        @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0, CESSTotal = 0;
             var tot = "";
             PSASysCommon pSASysCommon = new PSASysCommon();}
         <table style="width:100%;font-size:12px">
             <thead>
-                <tr><th colspan="6" style="text-align:center;text-decoration:underline;font-weight:100;">Sale Order</th></tr>
+                <tr><th colspan="6" style="text-align:center;text-decoration:underline;font-weight:100;font-size:16px;">Sale Order</th></tr>
 
             </thead>
             <tbody>
                 <tr><td colspan="6">&nbsp;</td></tr>
-                <tr><td colspan="3" style="padding-left:30px">To,<br /> <span>@Model.Customer.CompanyName<br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px">Delivery Address,<br /><span>@Model.ShippingAddress</span></td></tr>
+                <tr><td colspan="3" style="padding-left:30px"><b>To,</b><br /> <span>@Model.Customer.CompanyName<br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
                 <tr><td colspan="6">&nbsp;</td></tr>
-                <tr><td>SaleOrder No</td><td colspan="2">:@Model.SaleOrderNo</td><td>Ref. SaleOrder No.</td><td colspan="2">:@Model.SaleOrderRefNo</td></tr>
-                <tr><td>SaleOrder Date</td><td colspan="2">:@Model.SaleOrderDateFormatted</td><td>Delivery Date</td><td colspan="2">:@Model.ExpectedDelvDateFormatted</td></tr>
-                <tr><td>Purchase Order No</td><td colspan="2">:@Model.PurchaseOrdNo</td><td>Bank</td><td colspan="2">:@Model.Bank.Name</td></tr>
+                <tr><td>SaleOrder No</td><td colspan="2">: @Model.SaleOrderNo</td><td>Ref. SaleOrder No.</td><td colspan="2">: @Model.SaleOrderRefNo</td></tr>
+                <tr><td>SaleOrder Date</td><td colspan="2">: @Model.SaleOrderDateFormatted</td><td>Delivery Date</td><td colspan="2">: @Model.ExpectedDelvDateFormatted</td></tr>
+                <tr><td>Purchase Order No</td><td colspan="2">: @Model.PurchaseOrdNo</td><td>Bank</td><td colspan="2">: @Model.Bank.Name</td></tr>
                 <tr><td colspan="6">&nbsp;</td></tr>
             </tbody>
         </table>
+        <br />
         <table style="width:100%;padding-top:30px;">
             <thead>
                 <tr>
@@ -53,8 +64,8 @@
                         IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
                         GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                         itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                        
-                        itemgrandTotal = Math.Round(itemtaxableAmount + itemgSTAmount+(decimal)@mp.CessAmt,2);
+
+                        itemgrandTotal = Math.Round(itemtaxableAmount + itemgSTAmount + (decimal)@mp.CessAmt, 2);
                         <tr>
                             <td style="width:4%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
                             <td style="width:21%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
@@ -74,8 +85,8 @@
                         totalIGST = totalIGST + (decimal)IGSTAmt;
                         CESSTotal = Math.Round(CESSTotal + (decimal)@mp.CessAmt, 2);
                     }
-                    grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST+ CESSTotal, 2);
-                    grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
+                    grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST + CESSTotal, 2);
+                    grandTotal = grossAmt - ((decimal)Model.Discount);
                     GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
                 }
                 <tr>
@@ -103,7 +114,7 @@
                                             SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
                                             IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
                                             GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                                            Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount +(decimal)mp.AddlTaxAmt, 2);
+                                            Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount + (decimal)mp.AddlTaxAmt, 2);
                                             <tr>
 
                                                 <td style="width:7%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
@@ -118,7 +129,7 @@
                                             otherChargeAmt = otherChargeAmt + Total;
                                         }
                                         grossAmt = Math.Round(grossAmt + otherChargeAmt, 2);
-                                        grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
+                                        grandTotal = grossAmt - ((decimal)Model.Discount);
                                     }
 
                                 </thead>
@@ -162,10 +173,18 @@
                                 <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px;text-align:left;" valign="top">
                                     Total Other Charge
                                 </td>
-
-                                <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px" align="right" valign="top">
-                                    @otherChargeAmt
-                                </td>
+                                @if (otherChargeAmt != 0)
+                                {
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px" align="right" valign="top">
+                                        @otherChargeAmt
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px" align="right" valign="top">
+                                        0.00
+                                    </td>
+                                }
                             </tr>
                             <tr class="">
                                 <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;font-weight:bold;" valign="top">
@@ -182,7 +201,8 @@
                                 </td>
 
                                 <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px" align="right" valign="top">
-                                    @Model.Discount
+                                    @{decimal discount = Math.Round((decimal)Model.Discount, 2); }
+                                    @discount
                                 </td>
                             </tr>
 
@@ -224,28 +244,31 @@
 <div style="padding-top:20px">
     <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />
 </div>
-<div class="modal-footer d-flex justify-content-center">
+<div class="d-flex justify-content-center" style="padding:0px 30px 0px 30px;">
     @{
-        using (Ajax.BeginForm("SendSaleOrderEmail", "SaleOrder", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessSaleOrderEmailSend", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormSaleOrderEmailSend" }))
+        using (Ajax.BeginForm("SendSaleOrderEmail", "SaleOrder", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessSaleOrderEmailSend", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", @style = "right:5%;", role = "form", id = "FormSaleOrderEmailSend" }))
         {
             @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+            @*@Html.HiddenFor(model => model.EmailSentTo, htmlAttributes: new { @class = "", @id = "hdnEmailSentTo" })*@
+            @Html.LabelFor(model => model.EmailSentTo, htmlAttributes: new { @class = "control-label lblrequired", @style = "font-weight: bold;font-size:15px;text-align:right !imporatnt" })
             @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
             @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnSaleOrderEMailContent" })
             @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
             @Html.HiddenFor(model => model.SaleOrderNo, htmlAttributes: new { @class = "", @id = "hdnSaleOrderNo" })
+            @Html.HiddenFor(model => model.SaleOrderDateFormatted, htmlAttributes: new { @class = "", @id = "hdnSaleOrderDateFormatted" })
             @*<a class="btn btn-default" style="margin-top:2%" onclick="EmailSaleOrder()">Back </a>*@
     if (Model.LatestApprovalStatus == 4)
     {
-        <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendSaleOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        <button type="submit" class="btn btn-openid" style="margin-top:2%;float:right;margin-bottom:1.8%;color:white;text-decoration:none;" onclick="SendSaleOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
     }
     else
     {
-        <button type="submit" disabled class="btn btn-default" style="margin-top:2%" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        <button type="submit" disabled class="btn btn-openid" style="margin-top:2%;float:right;margin-bottom:1.8%;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
         }
 
     }
 
-    using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.3%;right:10%;", role = "form", @id = "PDFForm" }))
+    using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.3%;right:12%;", role = "form", @id = "PDFForm" }))
     {
             @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
             @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
@@ -254,11 +277,11 @@
             @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
             if (Model.LatestApprovalStatus == 4)
             {
-                <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="DownloadSaleOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="DownloadSaleOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
             }
             else
             {
-                <button type="submit" disabled class="btn btn-default" style="margin-top:2%" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                <button type="submit" disabled class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
             }
         }
     }

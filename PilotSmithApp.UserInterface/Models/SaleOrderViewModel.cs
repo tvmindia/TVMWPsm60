@@ -47,6 +47,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Latest Approval Status")]
         public int? LatestApprovalStatus { get; set; }
         public bool? IsFinalApproved { get; set; }
+        [Required(ErrorMessage = "Please specify at least one recipient")]
         [Display(Name = "Sent To")]
         public string EmailSentTo { get; set; }
         [Display(Name = "Term Reference No.")]
@@ -59,7 +60,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? DocumentOwnerID { get; set; }
         [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
-        public decimal? Discount { get; set; }
+        public decimal Discount { get; set; }
         [Display(Name = "Advance Amount")]
         public decimal? AdvanceAmount { get; set; }
 

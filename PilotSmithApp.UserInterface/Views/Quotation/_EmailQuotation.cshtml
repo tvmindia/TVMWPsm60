@@ -28,7 +28,7 @@
                     </tr>
                 </table>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="UpdateQuotationEmailInfo()">Preview <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                    <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="UpdateQuotationEmailInfo()">Preview <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 </div>
             }
         }
@@ -275,19 +275,20 @@
                         @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
                         @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
                         @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "", @id = "hdnQuoteNo" })
-                        <a class="btn btn-default" style="margin-top:2%" onclick="EmailQuotation()">Back </a>
+                        @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
+                        <a class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;margin-right: 1%;" onclick="EmailQuotation()">Back </a>
                         if (Model.LatestApprovalStatus == 4)
                         {
-                            <button type="submit" class="btn btn-default" style="margin-top:2%" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                            <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                         }
                         else
                          {
-                            <button type="submit" disabled class="btn btn-default" style="margin-top:2%" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                            <button type="submit" disabled class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                          }
 
                   }
 
-                  using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.6%;right:17%;", role = "form", @id = "FormQuotationEmailDownload" }))
+                  using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormQuotationEmailDownload" }))
                   {
                       @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
                       @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
@@ -296,11 +297,11 @@
                       @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
                       if (Model.LatestApprovalStatus == 4)
                       {
-                         <button type="submit" class="btn btn-default" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                         <button type="submit" class="btn btn-openid" style="color:white;text-decoration:none;" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                        }
                        else
                        {
-                           <button type="submit" disabled class="btn btn-default" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                           <button type="submit" disabled class="btn btn-openid" style="color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                        }
                     }
                  }
