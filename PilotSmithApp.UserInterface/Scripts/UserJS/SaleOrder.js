@@ -153,9 +153,9 @@ function BindOrReloadSaleOrderTable(action) {
                            { "targets": [2], "width": "12%" },
                            { "targets": [3], "width": "9%" },
                            { "targets": [4], "width": "9%" },
-                           { "targets": [5], "width": "14%" },
-                           { "targets": [6], "width": "24%" },
-                           { "targets": [7], "width": "2%" },
+                           { "targets": [5], "width": "13%" },
+                           { "targets": [6], "width": "22%" },
+                           { "targets": [7], "width": "5%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
