@@ -11,6 +11,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid DocumentID { get; set; }
         public String DocumentNo { get; set; }
         public DateTime DocumentDate { get; set; }
+        public string DocumentDateFormatted { get; set; }
         public string URL { get; set; }
     }
 }

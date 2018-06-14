@@ -537,5 +537,12 @@ namespace PilotSmithApp.BusinessService.Service
             }
 
         }
+
+
+
+        public List<TimeLine> GetTimeLine(Guid Id, String Type) {
+
+            _commonRepository.GetTimeLine(Id, Type);
+        }
     }
 }
