@@ -784,6 +784,10 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool emailFlag = saleInvoiceVM.EmailFlag;
             //SaleInvoiceViewModel saleInvoiceVM = new SaleInvoiceViewModel();
             saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(saleInvoiceVM.ID));
+            if (saleInvoiceVM.ShippingAddress != null && saleInvoiceVM.ShippingAddress != "")
+            saleInvoiceVM.ShippingAddress=saleInvoiceVM.ShippingAddress.ToString().Replace(Environment.NewLine, "<br />");
+            if (saleInvoiceVM.MailingAddress != null && saleInvoiceVM.MailingAddress != "")
+                saleInvoiceVM.MailingAddress = saleInvoiceVM.MailingAddress.ToString().Replace(Environment.NewLine, "<br />");
             saleInvoiceVM.SaleInvoiceDetailList = Mapper.Map<List<SaleInvoiceDetail>, List<SaleInvoiceDetailViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceDetailListBySaleInvoiceID(saleInvoiceVM.ID));
             saleInvoiceVM.SaleInvoiceOtherChargeDetailList = Mapper.Map<List<SaleInvoiceOtherCharge>, List<SaleInvoiceOtherChargeViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(saleInvoiceVM.ID));
             saleInvoiceVM.EmailFlag = emailFlag;

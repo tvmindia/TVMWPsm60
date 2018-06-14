@@ -3,9 +3,13 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.RepositoryService.Contract;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Configuration;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -14,11 +18,13 @@ namespace PilotSmithApp.BusinessService.Service
         ISaleInvoiceRepository _saleInvoiceRepository;
         ICommonBusiness _commonBusiness;
         IMailBusiness _mailBusiness;
-        public SaleInvoiceBusiness(ISaleInvoiceRepository saleInvoiceRepository, ICommonBusiness commonBusiness, IMailBusiness mailBusiness)
+        IPDFGeneratorBusiness _pDFGeneratorBusiness;
+        public SaleInvoiceBusiness(ISaleInvoiceRepository saleInvoiceRepository, ICommonBusiness commonBusiness, IMailBusiness mailBusiness, IPDFGeneratorBusiness pDFGeneratorBusiness)
         {
             _saleInvoiceRepository = saleInvoiceRepository;
             _commonBusiness = commonBusiness;
             _mailBusiness = mailBusiness;
+            _pDFGeneratorBusiness = pDFGeneratorBusiness;
         }
         public List<SaleInvoice> GetAllSaleInvoice(SaleInvoiceAdvanceSearch saleInvoiceAdvanceSearch)
         {
@@ -64,15 +70,22 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 if (!string.IsNullOrEmpty(saleInvoice.EmailSentTo))
                 {
+                    //------------------------
                     string[] EmailList = saleInvoice.EmailSentTo.Split(',');
+                    string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
+                    MailMessage _mail = new MailMessage();
+                    PDFTools pDFTools = new PDFTools();
+                    string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
+                    _mail.Body = mailBody.Replace("$Customer$", saleInvoice.Customer.ContactPerson).Replace("$Document$", "Sale Invoice").Replace("$DocumentNo$", saleInvoice.SaleInvNo).Replace("$DocumentDate$", saleInvoice.SaleInvDateFormatted).Replace("$Logo$", link);
+                    pDFTools.Content = saleInvoice.MailContant;
+                    _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), saleInvoice.SaleInvNo + ".pdf"));
+                    _mail.Subject = "Sale Invoice";
+                    _mail.IsBodyHtml = true;
                     foreach (string email in EmailList)
                     {
-                        Mail _mail = new Mail();
-                        _mail.Body = saleInvoice.MailContant;
-                        _mail.Subject = "Sale Invoice";
-                        _mail.To = email;
-                        sendsuccess = await _mailBusiness.MailSendAsync(_mail);
+                        _mail.To.Add(email);
                     }
+                    sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
             }
             catch (Exception ex)

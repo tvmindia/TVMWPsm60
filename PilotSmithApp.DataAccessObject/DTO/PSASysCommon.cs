@@ -23,70 +23,114 @@ namespace PilotSmithApp.DataAccessObject.DTO
         }
         public string NumberToWords(double number)
         {
-            string[] numbersArr = new string[] { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
-            string[] tensArr = new string[] { "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninty" };
-            string[] suffixesArr = new string[] { "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion", "Septillion", "Octillion", "Nonillion", "Decillion", "Undecillion", "Duodecillion", "Tredecillion", "Quattuordecillion", "Quindecillion", "Sexdecillion", "Septdecillion", "Octodecillion", "Novemdecillion", "Vigintillion" };
             string words = "";
+            if (true)
+            { 
+                int value = Convert.ToInt32(Math.Round(number));
 
-            bool tens = false;
-
-            if (number < 0)
-            {
-                words += "negative ";
-                number *= -1;
-            }
-
-            int power = (suffixesArr.Length + 1) * 3;
-
-            while (power > 3)
-            {
-                double pow = Math.Pow(10, power);
-                if (number >= pow)
+                var unitsMap = new[] {"Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
+                var tensMap = new[]  {"Zero", "Ten", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninty" };
+                if (value == 0) return "Zero";
+                if (value < 0) return "minus " + NumberToWords(Math.Abs(value));
+              
+                if ((value / 10000000) > 0)
                 {
-                    if (number % pow > 0)
+                    words += NumberToWords(value / 10000000) + " Crore ";
+                    value %= 10000000;
+                }
+                if ((value / 100000) > 0)
+                {
+                    words += NumberToWords(value / 100000) + " Lakhs ";
+                    value %= 100000;
+                }
+                if ((value / 1000) > 0)
+                {
+                    words += NumberToWords(value / 1000) + " Thousand ";
+                    value %= 1000;
+                }
+                if ((value / 100) > 0)
+                {
+                    words += NumberToWords(value / 100) + " Hundred ";
+                    value %= 100;
+                }
+                if (value > 0)
+                {
+                    if (words != "") words += "and ";
+                    if (value < 20) words += unitsMap[Convert.ToInt32(value)];
+                    else
                     {
-                        words += NumberToWords(Math.Floor(number / pow)) + " " + suffixesArr[(power / 3) - 1] + " ";
+                        words += tensMap[Convert.ToInt32(value) / 10];
+                        if ((value % 10) > 0) words += " " + unitsMap[Convert.ToInt32(value) % 10];
                     }
-                    else if (number % pow == 0)
+                }
+               
+            }
+            else
+            {
+                string[] numbersArr = new string[] { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
+                string[] tensArr = new string[] { "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninty" };
+                string[] suffixesArr = new string[] { "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion", "Septillion", "Octillion", "Nonillion", "Decillion", "Undecillion", "Duodecillion", "Tredecillion", "Quattuordecillion", "Quindecillion", "Sexdecillion", "Septdecillion", "Octodecillion", "Novemdecillion", "Vigintillion" };
+
+
+                bool tens = false;
+
+                if (number < 0)
+                {
+                    words += "negative ";
+                    number *= -1;
+                }
+
+                int power = (suffixesArr.Length + 1) * 3;
+
+                while (power > 3)
+                {
+                    double pow = Math.Pow(10, power);
+                    if (number >= pow)
                     {
-                        words += NumberToWords(Math.Floor(number / pow)) + " " + suffixesArr[(power / 3) - 1];
+                        if (number % pow > 0)
+                        {
+                            words += NumberToWords(Math.Floor(number / pow)) + " " + suffixesArr[(power / 3) - 1] + " ";
+                        }
+                        else if (number % pow == 0)
+                        {
+                            words += NumberToWords(Math.Floor(number / pow)) + " " + suffixesArr[(power / 3) - 1];
+                        }
+                        number %= pow;
                     }
-                    number %= pow;
+                    power -= 3;
                 }
-                power -= 3;
-            }
-            if (number >= 1000)
-            {
-                if (number % 1000 > 0) words += NumberToWords(Math.Floor(number / 1000)) + " Thousand";
-                else words += NumberToWords(Math.Floor(number / 1000)) + " Thousand";
-                number %= 1000;
-            }
-            if (0 <= number && number <= 999)
-            {
-                if ((int)number / 100 > 0)
+                if (number >= 1000)
                 {
-                    words += NumberToWords(Math.Floor(number / 100)) + " Hundred";
-                    number %= 100;
+                    if (number % 1000 > 0) words += NumberToWords(Math.Floor(number / 1000)) + " Thousand";
+                    else words += NumberToWords(Math.Floor(number / 1000)) + " Thousand";
+                    number %= 1000;
                 }
-                if ((int)number / 10 > 1)
+                if (0 <= number && number <= 999)
                 {
-                    if (words != "")
-                        words += " and ";
-                    words += tensArr[(int)number / 10 - 2];
-                    tens = true;
-                    number %= 10;
-                }
+                    if ((int)number / 100 > 0)
+                    {
+                        words += NumberToWords(Math.Floor(number / 100)) + " Hundred";
+                        number %= 100;
+                    }
+                    if ((int)number / 10 > 1)
+                    {
+                        if (words != "")
+                            words += " and ";
+                        words += tensArr[(int)number / 10 - 2];
+                        tens = true;
+                        number %= 10;
+                    }
 
-                if (number < 20 && number > 0)
-                {
-                    if (words != "" && tens == false)
-                        words += " and ";
-                    words += (tens ? "-" + numbersArr[(int)number - 1] : numbersArr[(int)number - 1]);
-                    number -= Math.Floor(number);
+                    if (number < 20 && number > 0)
+                    {
+                        if (words != "" && tens == false)
+                            words += " and ";
+                        words += (tens ? "-" + numbersArr[(int)number - 1] : numbersArr[(int)number - 1]);
+                        number -= Math.Floor(number);
+                    }
                 }
-            }
-
-            return words;
+            } 
+            return words; 
         }
         //Reference for country code and and culture code
         //https://www.c-sharpcorner.com/UploadFile/0f68f2/converting-a-number-in-currency-format-for-different-culture/
@@ -97,11 +141,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
             switch (countryCode)
             {
                 case "IND":
-                    todaysValue = value * 1;
+                    todaysValue = Math.Round(value) * 1;
                     currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-IN"));
                         break;
                 case "USA":
-                    todaysValue = value * 67.51;
+                    todaysValue = Math.Round(value) * 67.51;
                     currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"));
                     break;
             }
