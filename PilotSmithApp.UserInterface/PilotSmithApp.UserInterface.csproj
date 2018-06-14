@@ -850,6 +850,7 @@
     <Compile Include="Models\ServiceCallViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
+    <Compile Include="Models\TimeLineViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
     <Compile Include="Models\UnitViewModel.cs" />
     <Compile Include="Models\UserInBranchViewModel.cs" />

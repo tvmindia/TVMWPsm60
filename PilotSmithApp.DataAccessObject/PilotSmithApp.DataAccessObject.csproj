@@ -91,6 +91,7 @@
     <Compile Include="DTO\ServiceCall.cs" />
     <Compile Include="DTO\State.cs" />
     <Compile Include="DTO\TaxType.cs" />
+    <Compile Include="DTO\TimeLine.cs" />
     <Compile Include="DTO\Unit.cs" />
     <Compile Include="DTO\PSAUser.cs" />
     <Compile Include="DTO\UserInBranch.cs" />
