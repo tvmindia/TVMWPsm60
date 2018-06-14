@@ -199,7 +199,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region InsertUpdateCustomer
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "Customer", Mode = "W")]
         public string InsertUpdateCustomer(CustomerViewModel customerVM)
         {
             object result = null;
@@ -224,7 +224,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion InsertUpdateCustomer
         #region InsertUpdateCustomer Master
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "Customers", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "Customer", Mode = "W")]
         public string InsertUpdateCustomerMaster(CustomerViewModel customerVM)
         {
             object result = null;
@@ -249,7 +249,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion InsertUpdateCustomer Master
         #region DeleteCustomer
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Customers", Mode = "D")]
+        [AuthSecurityFilter(ProjectObject = "Customer", Mode = "D")]
         public string DeleteCustomer(Guid id)
         {
 
