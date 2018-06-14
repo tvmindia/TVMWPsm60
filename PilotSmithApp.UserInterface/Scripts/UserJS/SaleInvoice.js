@@ -1143,7 +1143,6 @@ function CalculateTotal() {
         GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(GrossTotalAmt))
     }
     for (var i = 0; i < saleInvoiceOtherChargeDetail.length; i++) {
-        debugger;
         var CGST = parseFloat(saleInvoiceOtherChargeDetail[i].CGSTPerc != "" ? saleInvoiceOtherChargeDetail[i].CGSTPerc : 0);
         var SGST = parseFloat(saleInvoiceOtherChargeDetail[i].SGSTPerc != "" ? saleInvoiceOtherChargeDetail[i].SGSTPerc : 0);
         var IGST = parseFloat(saleInvoiceOtherChargeDetail[i].IGSTPerc != "" ? saleInvoiceOtherChargeDetail[i].IGSTPerc : 0);
