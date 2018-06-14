@@ -274,11 +274,11 @@
             <tr>
                 @{
                     PSASysCommon PSASysCommon = new PSASysCommon();
-                    tot = PSASysCommon.NumberToWords(double.Parse(grandTotal.ToString()));
+                    tot = PSASysCommon.NumberToWords(double.Parse(grandTotal.ToString()), "IND");
                 }
                 <td colspan="10" style="font-size:14px;padding-top:10px">
                     <span>Amount(In words)</span><br />
-                    <b><i>@tot only</i> </b>
+                    <b><i>Indian Rupees @tot only</i> </b>
                 </td>
             </tr>
             <tr>
