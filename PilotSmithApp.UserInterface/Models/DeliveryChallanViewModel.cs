@@ -10,9 +10,9 @@ namespace PilotSmithApp.UserInterface.Models
     public class DeliveryChallanViewModel
     {
         public Guid ID { get; set; }
-        [Display(Name = "Delivery challan No.")]
+        [Display(Name = "Challan No.")]
         public string DelvChallanNo { get; set; }
-        [Display(Name = "Delivery challan Ref.No.")]
+        [Display(Name = "Challan Ref.No.")]
         [StringLength(20, ErrorMessage = "Ref.No Cannot be longer than 20 characters")]
         public string DelvChallanRefNo { get; set; }
         public DateTime DelvChallanDate { get; set; }
@@ -46,8 +46,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string DriverName { get; set; }
 
         //Additional Fields
-        [Display(Name ="Delivery challan Date")]
-        [Required(ErrorMessage = "Delivery Challan Date is missing")]
+        [Display(Name ="Challan Date")]
+        [Required(ErrorMessage = "Challan Date is missing")]
         [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
         public string DelvChallanDateFormatted { get; set; }
         public string DetailJSON { get; set; }

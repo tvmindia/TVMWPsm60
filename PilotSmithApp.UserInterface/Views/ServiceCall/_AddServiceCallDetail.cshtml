@@ -14,6 +14,8 @@
                     @Html.Action("ProductSelectList", "Product", new { required = "required" })
                 </div>
                 @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnProductRequired", "required")
             </div>
         </div>
         <div class="col-md-12 no-padding">
@@ -26,6 +28,8 @@
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
                 </div>
                 @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnProductModelRequired", "required")
             </div>
         </div>
         <div id="divProductBasicInfo">
