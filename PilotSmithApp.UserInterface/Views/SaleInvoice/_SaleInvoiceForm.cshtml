@@ -159,7 +159,7 @@
                         <div class="col-md-12">
                             <div class="divAttendedBySelectList">
                                 <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                @* binding from javascript document ready function using div id *@
+                                @* binding from javascript document ready function using div class *@
                                 @*@Html.Action("AttendedBySelectList", "Employee", new { required = "", postingParams = "ResponsiblePersonID" })*@
                             </div>
                             @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
@@ -311,7 +311,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                          @* load by script *@
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            @* binding from javascript document ready function using div class *@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->

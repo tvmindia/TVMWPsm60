@@ -200,6 +200,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.CompanyAddress2 = CompanyAddress2.Replace("\\n", "<br />");
                                     string CompanyAddress3 = (sdr["CompanyAddress3"].ToString() != "" ? sdr["CompanyAddress3"].ToString() : saleInvoice.CompanyAddress3);
                                     saleInvoice.CompanyAddress3 = CompanyAddress3.Replace("\\n", "<br />");
+                                    saleInvoice.PurchaseOrdNo= (sdr["PurchaseOrdNo"].ToString() != "" ? sdr["PurchaseOrdNo"].ToString() : saleInvoice.PurchaseOrdNo);
                                 }
                         }
                     }

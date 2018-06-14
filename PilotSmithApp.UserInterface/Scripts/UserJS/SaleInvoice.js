@@ -907,10 +907,9 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))// + parseFloat(row.AddlTaxAmt))
+                     var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt) + parseFloat(row.AddlTaxAmt))
 
-                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
@@ -1136,7 +1135,7 @@ function CalculateTotal() {
         var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
         var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
         var TaxAmount = TaxableAmt + parseFloat(GSTAmt);
-        var Cess = roundoff(parseFloat(TaxAmount * saleInvoiceDetail[i].CessPerc / 100));
+        var Cess = roundoff(parseFloat(GSTAmt * saleInvoiceDetail[i].CessPerc / 100));
         CessAmt = roundoff(parseFloat(CessAmt) + parseFloat(Cess));
         var GrossTotalAmt = TaxableAmt + GSTAmt
         TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
@@ -1144,6 +1143,7 @@ function CalculateTotal() {
         GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(GrossTotalAmt))
     }
     for (var i = 0; i < saleInvoiceOtherChargeDetail.length; i++) {
+        debugger;
         var CGST = parseFloat(saleInvoiceOtherChargeDetail[i].CGSTPerc != "" ? saleInvoiceOtherChargeDetail[i].CGSTPerc : 0);
         var SGST = parseFloat(saleInvoiceOtherChargeDetail[i].SGSTPerc != "" ? saleInvoiceOtherChargeDetail[i].SGSTPerc : 0);
         var IGST = parseFloat(saleInvoiceOtherChargeDetail[i].IGSTPerc != "" ? saleInvoiceOtherChargeDetail[i].IGSTPerc : 0);
@@ -1152,8 +1152,8 @@ function CalculateTotal() {
         var IGSTAmt = parseFloat(saleInvoiceOtherChargeDetail[i].ChargeAmount * IGST / 100)
         var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
         var TaxAmt = parseFloat(saleInvoiceOtherChargeDetail[i].ChargeAmount) + parseFloat(GSTAmt)
-        //  var AddlTax = parseFloat(TaxAmt * saleInvoiceOtherChargeDetail[i].AddlTaxPerc / 100);
-        var Total = roundoff(parseFloat(saleInvoiceOtherChargeDetail[i].ChargeAmount) + parseFloat(GSTAmt))//+ parseFloat(AddlTax))
+        var AddlTax = parseFloat(GSTAmt * saleInvoiceOtherChargeDetail[i].AddlTaxPerc / 100);
+        var Total = roundoff(parseFloat(saleInvoiceOtherChargeDetail[i].ChargeAmount) + parseFloat(GSTAmt)+ parseFloat(AddlTax))
         OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(Total))
     }
     GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt) + parseFloat(CessAmt))
@@ -1195,6 +1195,9 @@ function SendSaleInvoiceEmail() {
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
     $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
     $('#hdnSaleInvoiceEMailContent').val($('#divSaleInvoiceEmailcontainer').html());
+    $('#hdnSaleInvNo').val($('#SaleInvNo').val());
+    $('#hdnContactPerson').val($('#ContactPerson').text());
+    $('#hdnSaleInvDateFormatted').val($('#SaleInvDateFormatted').val());
     $('#FormSaleInvoiceEmailSend #ID').val($('#SaleInvoiceForm #ID').val());
 }
 function UpdateSaleInvoiceEmailInfo() {
