@@ -9,12 +9,11 @@ namespace PilotSmithApp.UserInterface.Models
 {
     public class PaymentTermViewModel
     {
-        [Required(ErrorMessage = "Code is missing")]
-        [Remote(action: "CheckPaymentTermCodeExist", controller: "PaymentTerm", AdditionalFields = "IsUpdate,Code,Description")]
         public string Code { get; set; }
         [Required(ErrorMessage = "Description is missing")]
         public string Description { get; set; }
         [Display(Name = "No Of Days")]
+        [Remote(action: "CheckPaymentTermNoOfDaysExist", controller: "PaymentTerm", AdditionalFields = "Code")]
         public int? NoOfDays { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> PaymentTermSelectList { set; get; }

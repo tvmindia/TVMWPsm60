@@ -13,7 +13,7 @@ namespace PilotSmithApp.BusinessService.Contract
         object InsertUpdatePaymentTerm(PaymentTerm paymentTerm);
         List<PaymentTerm> GetAllPayTerm(PaymentTermAdvanceSearch paymentTermAdvanceSearch);
         PaymentTerm GetPaymentTerm(string code);
-        bool CheckPaymentTermNameExist(PaymentTerm paymentTerm);
+        bool CheckPaymentTermNoOfDaysExist(PaymentTerm paymentTerm);
         object DeletePaymentTerm(string code);
         List<SelectListItem> GetPaymentTermForSelectList();
     }
