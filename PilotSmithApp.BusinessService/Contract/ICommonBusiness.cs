@@ -22,5 +22,6 @@ namespace PilotSmithApp.BusinessService.Contract
         string GetXMLfromSaleInvoiceOtherChargeObject(List<SaleInvoiceOtherCharge> saleInvoiceOtherChargeDetailList, string mandatoryProperties);
         string SendMessage(string message, string mobileNo,string provider,string type);
         bool CheckDocumentIsDeletable(string docType, Guid? id);
+        List<TimeLine> GetTimeLine(Guid Id, String Type);
     }
 }

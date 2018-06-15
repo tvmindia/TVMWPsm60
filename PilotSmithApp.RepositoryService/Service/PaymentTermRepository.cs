@@ -45,6 +45,10 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar,10).Value = paymentTerm.Code;
                         cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 100).Value = paymentTerm.Description;
                         cmd.Parameters.Add("@NoOfDays", SqlDbType.Int).Value = paymentTerm.NoOfDays;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.VarChar, 250).Value = paymentTerm.PSASyscommon.CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = paymentTerm.PSASyscommon.CreatedDate;
+                        cmd.Parameters.Add("@UpdatedBy", SqlDbType.VarChar, 250).Value = paymentTerm.PSASyscommon.UpdatedBy;
+                        cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = paymentTerm.PSASyscommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputCode = cmd.Parameters.Add("@CodeOut", SqlDbType.VarChar, 10);
@@ -175,8 +179,8 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion
 
-        #region CheckPaymentTermNameExist
-        public bool CheckPaymentTermNameExist(PaymentTerm paymentTerm)
+        #region CheckPaymentTermNoOfDaysExist
+        public bool CheckPaymentTermNoOfDaysExist(PaymentTerm paymentTerm)
         {
             try
             {
@@ -189,9 +193,9 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckPaymentTermCodeExist]";
-                        cmd.Parameters.Add("@Code", SqlDbType.VarChar,10).Value = paymentTerm.Code;
-                        //cmd.Parameters.Add("@Description", SqlDbType.NVarChar,100).Value = paymentTerm.Description==""?null: paymentTerm.Description;
+                        cmd.CommandText = "[PSA].[CheckPaymentTermNoOfDaysExist]";
+                        cmd.Parameters.Add("@Code", SqlDbType.VarChar,10).Value = paymentTerm.Code==null?"": paymentTerm.Code;
+                        cmd.Parameters.Add("@NoOfDays", SqlDbType.Int).Value = paymentTerm.NoOfDays;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);

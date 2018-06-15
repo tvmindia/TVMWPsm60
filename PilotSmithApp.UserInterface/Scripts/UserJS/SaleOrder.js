@@ -153,9 +153,9 @@ function BindOrReloadSaleOrderTable(action) {
                            { "targets": [2], "width": "12%" },
                            { "targets": [3], "width": "9%" },
                            { "targets": [4], "width": "9%" },
-                           { "targets": [5], "width": "14%" },
-                           { "targets": [6], "width": "24%" },
-                           { "targets": [7], "width": "2%" },
+                           { "targets": [5], "width": "13%" },
+                           { "targets": [6], "width": "22%" },
+                           { "targets": [7], "width": "5%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -892,7 +892,7 @@ function CalculateGrandTotal(value) {
 function EmailSaleOrder() {
     debugger;
     $("#divModelEmailSaleOrderBody").load("SaleOrder/EmailSaleOrder?ID=" + $('#SaleOrderForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailSaleOrder').text('Email SaleOrder')
+        $('#lblModelEmailSaleOrder').text('Email Attachment')
         $('#divModelEmailSaleOrder').modal('show');
     });
 }
@@ -902,6 +902,7 @@ function SendSaleOrderEmail() {
     $('#hdnSaleOrderEMailContent').val($('#divSaleOrderEmailcontainer').html());
     $('#hdnSaleOrderNo').val($('#SaleOrderNo').val());
     $('#hdnContactPerson').val($('#ContactPerson').text());
+    $('#hdnSaleOrderDateFormatted').val($('#SaleOrderDateFormatted').val());
     $('#FormSaleOrderEmailSend #ID').val($('#SaleOrderForm #ID').val());
 }
 function UpdateSaleOrderEmailInfo() {
@@ -931,7 +932,7 @@ function SaveSuccessUpdateSaleOrderEmailInfo(data, status) {
             case "OK":
                 MasterAlert("success", _result.Message)
                 $("#divModelEmailSaleOrderBody").load("SaleOrder/EmailSaleOrder?ID=" + $('#SaleOrderForm #ID').val() + "&EmailFlag=False", function () {
-                    $('#lblModelEmailSaleOrder').text('Send Email SaleOrder')
+                    $('#lblModelEmailSaleOrder').text('Email Attachment')
                 });
                 break;
             case "ERROR":
@@ -962,7 +963,7 @@ function SaveSuccessSaleOrderEmailSend(data, status) {
                 ResetSaleOrder();
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                MasterAlert("danger", _message)
                 $('#divModelEmailSaleOrder').modal('hide');
                 break;
             default:

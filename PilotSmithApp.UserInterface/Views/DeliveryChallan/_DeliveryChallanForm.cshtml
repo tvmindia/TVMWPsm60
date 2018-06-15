@@ -225,7 +225,7 @@
 
                             @if (Model.LatestApprovalStatus == null)
                             {
-                                <div class="lblStatusDisplay">DRAFTED DOCUMENT</div>
+                                <div class="lblStatusDisplay">-</div>
                             }
                             else
                             {
@@ -266,7 +266,7 @@
                                 <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.BranchCode)</div>
                             </div>
                             <div class="form-group col-md-12">
-                                <div class="lblStatusDisplay">------</div>
+                                <div class="lblStatusDisplay">-</div>
                             </div>
                         }
                         @if (Model.IsUpdate)
@@ -308,7 +308,7 @@
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">
-                DeliveryChallan Details
+                Challan Details
                 @*@if (Model.IsDocLocked || !Model.IsUpdate)
                     {
                         <a class="btn btn-openid pull-right" onclick="AddDeliveryChallanDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>

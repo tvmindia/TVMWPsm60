@@ -38,6 +38,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Final Approval")]
         public bool? IsFinalApproved{get;set;}
         [Required(ErrorMessage = "Please specify at least one recipient.")]
+        [Display(Name = "Sent To")]
         public string EmailSentTo{get;set;}
         [Display(Name ="Branch")]
         [Required(ErrorMessage ="Branch is missing")]

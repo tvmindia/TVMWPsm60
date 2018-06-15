@@ -804,7 +804,7 @@ function SendQuotationEmail() {
     $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
     $('#hdnQuoteNo').val($('#QuoteNo').val());
     $('#hdnContactPerson').val($('#ContactPerson').text());
-    //$('#hdnEmailSentTo').val($('#EmailSentTo').val());
+    $('#hdnQuoteDate').val($('#QuoteDateFormatted').val());
     $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
     
 }
@@ -868,7 +868,7 @@ function SaveSuccessQuotationEmailSend(data, status) {
                 ResetQuotation();
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                MasterAlert("danger", _message)
                 $('#divModelEmailQuotation').modal('hide');
                 break;
             default:

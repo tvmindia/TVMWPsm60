@@ -35,7 +35,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public Guid? DocumentOwnerID { get; set; }
         public int? BranchCode { get; set; }
-        public decimal? Discount { get; set; }
+        public decimal Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
 
         //Aditional Fields

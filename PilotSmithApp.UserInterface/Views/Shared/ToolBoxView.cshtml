@@ -463,4 +463,24 @@
      }
 
  }
+    @if (Model.TimeLine.Visible && Model.TimeLine.HasAccess)
+    {
+        if (Model.TimeLine.Disable)
+        {
+
+            <a class="thr_disbtn" title="@Model.TimeLine.Title-@Model.TimeLine.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/Notification.png")">
+                <span class="btnText">@Model.TimeLine.Text</span>
+            </a>
+        }
+        else
+        {
+
+            <a href="@Model.TimeLine.Href" title="@Model.TimeLine.Title" class="thr_btn" onclick=@Model.TimeLine.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/Notification.PNG")">
+                <span class="btnText">@Model.TimeLine.Text</span>
+            </a>
+        }
+
+    }
 </div>

@@ -953,3 +953,17 @@ function RedirectSearchClick(e,this_obj){
         $(this_obj).closest('.input-group').find('button').trigger('click')
     }
 }
+
+function GetTimeLine(DocumentID, Type) {
+    try {
+        debugger;
+        var data = { "Id": DocumentID, "Type": Type };
+        ds = GetDataFromServer("TimeLine/GetTimeLine/", data);      
+        $("#divTimeLineBody").empty();
+        $("#divTimeLineBody").html(ds);     
+        $("#divModelTimeLinePopUp").modal('show');
+
+    } catch (e) {
+        
+    }
+}

@@ -210,7 +210,7 @@ function AddDeliveryChallan() {
             OnServerCallComplete();
             //resides in customjs for sliding       
             openNav();
-            $('#lblDeliveryChallanInfo').text('<<DeliveryChallan No.>>');
+            $('#lblDeliveryChallanInfo').text('<<Challan No.>>');
             ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Add");
             BindDeliveryChallanDetailList(_emptyGuid, false, false);
             
@@ -267,7 +267,7 @@ function ResetDeliveryChallan() {
                 $('#hdnCustomerID').val('');
                 $('#hdnSaleOrderID').val('');
                 $('#hdnProdOrderID').val('');
-                $('#lblDeliveryChallanInfo').text('<<DeliveryChallan No.>>');
+                $('#lblDeliveryChallanInfo').text('<<Challan No.>>');
             }
             BindDeliveryChallanDetailList($('#ID').val(), false, false);
             clearUploadControl();

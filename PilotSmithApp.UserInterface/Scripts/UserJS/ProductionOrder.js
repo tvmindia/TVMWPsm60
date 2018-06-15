@@ -782,7 +782,7 @@ function DeleteProductionOrderDetail(ID) {
 function EmailProductionOrder() {
     debugger;
     $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailProductionOrder').text('Email Production Order')
+        $('#lblModelEmailProductionOrder').text('Email Attachment')
         $('#divModelEmailProductionOrder').modal('show');
     });
 }
@@ -791,6 +791,7 @@ function SendProductionOrderEmail() {
     $('#hdnProductionOrderEMailContent').val($('#divProductionOrderEmailcontainer').html());
     $('#hdnProdOrderNo').val($('#ProdOrderNo').val());
     $('#hdnContactPerson').val($('#ContactPerson').text());
+    $('#hdnProdOrderDateFormatted').val($('#ProdOrderDateFormatted').val());
     $('#FormProductionOrderEmailSend #ID').val($('#ProductionOrderForm #ID').val());
 }
 function UpdateProductionOrderEmailInfo() {
@@ -818,7 +819,7 @@ function SaveSuccessUpdateProductionOrderEmailInfo(data, status) {
             case "OK":
                 MasterAlert("success", _result.Message)
                 $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=False", function () {
-                    $('#lblModelEmailProductionOrder').text('Send Email Production Order')
+                    $('#lblModelEmailProductionOrder').text('Email Attachment')
                 });
                 break;
             case "ERROR":
@@ -849,7 +850,7 @@ function SaveSuccessProductionOrderEmailSend(data, status) {
                 ResetProductionOrder();
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                MasterAlert("danger", _message)
                 $('#divModelEmailProductionOrder').modal('hide');
                 break;
             default:

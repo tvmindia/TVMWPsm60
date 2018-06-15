@@ -76,7 +76,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 saleOrderVM.DocumentType = "Quotation";
                 saleOrderVM.DocumentStatus = new DocumentStatusViewModel()
                 {
-                    Description = "OPEN",
+                    Description = "-",
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
@@ -93,7 +93,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 saleOrderVM.DocumentType = "Enquiry";
                 saleOrderVM.DocumentStatus = new DocumentStatusViewModel()
                 {
-                    Description = "OPEN",
+                    Description = "-",
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
@@ -107,7 +107,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 saleOrderVM.DocumentType = "Quotation";
                 saleOrderVM.DocumentStatus = new DocumentStatusViewModel()
                 {
-                    Description = "OPEN",
+                    Description = "-",
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
@@ -248,7 +248,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion GetSaleOrderDetailListBySaleOrderID
-        #region Get SaleOrder DetailList By SaleOrderID with Quotation
+        #region Get SaleOrder DetailList By QuotationID with Quotation
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
         public string GetSaleOrderDetailListByQuotationIDFromQuotation(Guid quoteID)

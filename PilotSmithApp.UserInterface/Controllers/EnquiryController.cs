@@ -82,7 +82,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsUpdate = false;
                     enquiryVM.ID = Guid.Empty;
                     enquiryVM.DocumentStatus = new DocumentStatusViewModel();
-                    enquiryVM.DocumentStatus.Description = "OPEN";
+                    enquiryVM.DocumentStatus.Description = "-";
                     enquiryVM.Branch = new BranchViewModel();
                     enquiryVM.Branch.Description = "-";
                     enquiryVM.IsDocLocked = false;
@@ -357,6 +357,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Text = "Reset";
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetEnquiry();";
+
+                    toolboxVM.TimeLine.Visible = false;
+                    toolboxVM.TimeLine.Text = "TimeLine";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('"+ id.ToString() + "','ENQ');";
+
+
+
                     if (_commonBusiness.CheckDocumentIsDeletable("ENQ", id))
                     {
                         toolboxVM.deletebtn.Visible = true;

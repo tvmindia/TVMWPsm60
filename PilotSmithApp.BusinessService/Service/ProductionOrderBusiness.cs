@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
@@ -87,7 +88,8 @@ namespace PilotSmithApp.BusinessService.Service
                     string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
                     MailMessage _mail = new MailMessage();
                     PDFTools pDFTools = new PDFTools();
-                    _mail.Body = mailBody.Replace("$Customer$", productionOrder.Customer.ContactPerson).Replace("$Document$", "Production Order").Replace("$DocumentNo$", productionOrder.ProdOrderNo);
+                    string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
+                    _mail.Body = mailBody.Replace("$Customer$", productionOrder.Customer.ContactPerson).Replace("$Document$", "Production Order").Replace("$DocumentNo$", productionOrder.ProdOrderNo).Replace("$DocumentDate$",productionOrder.ProdOrderDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = productionOrder.MailContant;
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), productionOrder.ProdOrderNo + ".pdf"));
                     _mail.Subject = "ProductionOrder";

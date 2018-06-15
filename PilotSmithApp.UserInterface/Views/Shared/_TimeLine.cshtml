@@ -1,0 +1,144 @@
+﻿@model PilotSmithApp.UserInterface.Models.TimeLineViewModelList
+@using PilotSmithApp.UserInterface.Models
+<div style="min-height:500px">
+    <section class="content-header">
+        <h1>
+            Timeline
+            <small>of @Model.CurrentDocument </small>
+        </h1>
+        
+    </section><br/>
+    <section class="content">
+        <div class="row" style="max-height:85vh;overflow-y: scroll;">
+            <div class="col-md-12">
+                <!-- The time line -->
+                <ul class="timeline">
+
+                    @{
+                        foreach (string id in Model.TimeLineList.Select(x => x.DocumentDateFormatted).Distinct())
+                        {
+                            <li class="time-label">
+                                <span class="bg-green">
+                                    @id
+                                </span>
+                            </li>
+
+
+                            foreach (TimeLineViewModel T in Model.TimeLineList.Where(X => X.DocumentDateFormatted == id).Select(Z => Z).AsEnumerable())
+                            {
+                                <li>
+                                    @if(T.DocumentType=="ENQ"){
+                                    <i class="fa fa-empire bg-yellow"></i>
+                                    }
+                                    else if(T.DocumentType=="QUO"){
+                                    <i class="fa fa-address-book bg-yellow"></i>
+                                    }
+                                    else if(T.DocumentType=="EST"){
+                                    <i class="fa fa-adjust bg-yellow"></i>
+                                    }
+                                    else if(T.DocumentType=="SOD"){
+                                    <i class="fa fa-anchor bg-yellow"></i>
+                                    }
+                                    else if(T.DocumentType=="SIV"){
+                                    <i class="fa fa-bank bg-yellow"></i>
+                                    }
+                                    else if (T.DocumentType == "PQC")
+                                    {
+                                        <i class="fa fa-bell bg-yellow"></i>
+                                    }
+                                    else if (T.DocumentType == "DLC")
+                                    {
+                                        <i class="fa fa-train bg-yellow"></i>
+                                    }
+                                    else
+                                    {
+                                    <i class="fa fa-envelope bg-yellow"></i>
+                                    }
+                                  
+
+                                    <div class="timeline-item">
+                                        
+                                        @if(Model.CurrentDocument==T.DocumentNo){
+                                        <span class="time"><i class="fa fa-clock-o bg-green-active"></i> [Current Document] </span>
+                                        }
+                                        
+                                       
+
+                                        <h3 class="timeline-header"><a href="#">@T.DocumentNo</a> Created</h3>
+
+                                        
+                                        
+                                    </div>
+                                </li>
+                            }
+
+                        }
+
+                    }
+
+                    @*<!-- row -->
+                    <!-- timeline time label -->
+                  
+                    <!-- /.timeline-label -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-envelope bg-blue"></i>
+
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+
+                            <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                            <div class="timeline-body">
+                                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                                weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                                jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                                quora plaxo ideeli hulu weebly balihoo...
+                            </div>
+                            <div class="timeline-footer">
+                                <a class="btn btn-primary btn-xs">Read more</a>
+                                <a class="btn btn-danger btn-xs">Delete</a>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-user bg-aqua"></i>
+
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+
+                            <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                    <!-- timeline item -->
+                    <li>
+                        <i class="fa fa-comments bg-yellow"></i>
+
+                        <div class="timeline-item">
+                            <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+
+                            <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                            <div class="timeline-body">
+                                Take me to your leader!
+                                Switzerland is small and neutral!
+                                We are more like Germany, ambitious and misunderstood!
+                            </div>
+                            <div class="timeline-footer">
+                                <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                    <!-- timeline time label -->*@
+                  
+                </ul>
+            </div>
+            <!-- /.col -->
+        </div>
+        
+    </section>
+</div>

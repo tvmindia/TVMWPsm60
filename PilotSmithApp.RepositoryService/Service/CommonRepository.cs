@@ -7,12 +7,14 @@ using System.Collections.Specialized;
 using System.Net;
 using System.IO;
 using PilotSmithApp.RepositoryService.Contract;
+using PilotSmithApp.DataAccessObject.DTO;
 
 namespace PilotSmithApp.RepositoryService.Service
 {
     public class CommonRepository : ICommonRepository
     {
         private IDatabaseFactory _databaseFactory;
+        Settings _settings = new Settings();
         public CommonRepository(IDatabaseFactory databaseFactory)
         {
             _databaseFactory = databaseFactory;
@@ -157,6 +159,57 @@ namespace PilotSmithApp.RepositoryService.Service
             }
         }
         #endregion Check Document IsDeletable
+
+
+        #region TimeLine
+        
+        public List<TimeLine> GetTimeLine(Guid Id,String Type)
+        {
+            List<TimeLine> timeLineList = new List<TimeLine>();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetTimeLine]";
+                        cmd.Parameters.Add("@DocumentID", SqlDbType.UniqueIdentifier).Value = Id;
+                        cmd.Parameters.Add("@DocumentType", SqlDbType.NVarChar,10).Value = Type;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    TimeLine timeLine = new TimeLine();
+                                    timeLine = new TimeLine();
+                                    timeLine.DocumentID = (sdr["DocumentID"].ToString() != "" ? Guid.Parse(sdr["DocumentID"].ToString()) : timeLine.DocumentID);
+                                    timeLine.DocumentDate = (sdr["DocumentDate"].ToString() != "" ? DateTime.Parse(sdr["DocumentDate"].ToString()) : timeLine.DocumentDate);
+                                    timeLine.DocumentDateFormatted = (sdr["DocumentDate"].ToString() != "" ? DateTime.Parse(sdr["DocumentDate"].ToString()).ToString(_settings.DateFormat) : timeLine.DocumentDateFormatted);
+                                    timeLine.DocumentNo = (sdr["DocumentNo"].ToString() != "" ?  (sdr["DocumentNo"].ToString()) : timeLine.DocumentNo);
+                                    timeLine.DocumentType = (sdr["DocumentType"].ToString() != "" ? (sdr["DocumentType"].ToString()) : timeLine.DocumentType);
+                                    timeLineList.Add(timeLine);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return timeLineList;
+        }
+        
+
+        #endregion TimeLine
     }
 
 }

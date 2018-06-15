@@ -62,7 +62,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
                     productionQCVM.DocumentStatus = new DocumentStatusViewModel()
                     {
-                        Description="OPEN",
+                        Description="-",
                     };
                     productionQCVM.IsDocLocked = false;
                 }
@@ -77,7 +77,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionQCVM.CustomerID = productioOrderVM.CustomerID;
                     productionQCVM.DocumentStatus = new DocumentStatusViewModel()
                     {
-                        Description = "OPEN",
+                        Description = "-",
                     };
                     productionQCVM.IsDocLocked = false;
                 }
@@ -152,7 +152,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = null;// _productionQCBusiness.DeleteProductionQC(id);
+                object result = _productionQCBusiness.DeleteProductionQC(id);
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }

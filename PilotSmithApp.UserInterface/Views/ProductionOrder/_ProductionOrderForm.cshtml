@@ -195,7 +195,7 @@
 
                             @if (Model.EmailSentYN == null)
                             {
-                                <div class="lblStatusDisplay">EMAIL NOT SEND</div>
+                                <div class="lblStatusDisplay">-</div>
                             }
                             else if (Model.EmailSentYN == true)
                             {
@@ -214,7 +214,7 @@
 
                             @if (Model.LatestApprovalStatus == null)
                             {
-                                <div class="lblStatusDisplay">DRAFTED DOCUMENT</div>
+                                <div class="lblStatusDisplay">-</div>
                             }
                             else
                             {
@@ -237,7 +237,7 @@
                                 <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.BranchCode)</div>
                             </div>
                             <div class="form-group col-md-12">
-                                <div class="lblStatusDisplay">------</div>
+                                <div class="lblStatusDisplay">-</div>
                             </div>
                         }
 

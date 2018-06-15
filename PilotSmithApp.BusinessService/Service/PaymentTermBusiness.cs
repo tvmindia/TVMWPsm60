@@ -30,9 +30,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _paymentTermRepository.GetPaymentTerm(code);
         }
-        public bool CheckPaymentTermNameExist(PaymentTerm paymentTerm)
+        public bool CheckPaymentTermNoOfDaysExist(PaymentTerm paymentTerm)
         {
-            return _paymentTermRepository.CheckPaymentTermNameExist(paymentTerm);
+            return _paymentTermRepository.CheckPaymentTermNoOfDaysExist(paymentTerm);
         }
         public object DeletePaymentTerm(string code)
         {
