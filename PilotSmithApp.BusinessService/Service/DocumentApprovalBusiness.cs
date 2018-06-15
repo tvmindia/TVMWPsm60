@@ -40,14 +40,14 @@ namespace PilotSmithApp.BusinessService.Service
             return _documentApprovalRepository.GetDocumentSummary(DocumentID, DocumentTypeCode);
         }
 
-        public object ApproveDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode)
+        public object ApproveDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode, DateTime approvalDate, string Remarks)
         {
-            return _documentApprovalRepository.ApproveDocument(ApprovalLogID, DocumentID, DocumentTypeCode);
+            return _documentApprovalRepository.ApproveDocument(ApprovalLogID, DocumentID, DocumentTypeCode, approvalDate, Remarks);
         }
 
-        public object RejectDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode, string Remarks)
+        public object RejectDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode, string Remarks, DateTime rejectionDate)
         {
-            return _documentApprovalRepository.RejectDocument(ApprovalLogID, DocumentID, DocumentTypeCode, Remarks);
+            return _documentApprovalRepository.RejectDocument(ApprovalLogID, DocumentID, DocumentTypeCode, Remarks, rejectionDate);
         }
 
         public object ValidateDocumentsApprovalPermission(string LoginName, Guid DocumentID, string DocumentTypeCode)
