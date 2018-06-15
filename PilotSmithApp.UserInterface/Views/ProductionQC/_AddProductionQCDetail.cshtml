@@ -12,10 +12,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
-                    @Html.Action("ProductSelectList", "Product", new { required = "required", disabled=true })
-                </div>
-                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("ProductSelectList", "Product", new { required = "required", disabled=true })*@
+                </div>              
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductRequired", "required")
+            @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -25,9 +28,11 @@
                 <div class="divProductModelSelectList">
                     <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
-                </div>
-                @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
+                </div>              
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductModelRequired", "required")
+            @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
         </div>
         <div id="divProductBasicInfo">
             @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
@@ -67,8 +72,9 @@
                 @Html.LabelFor(model => model.QCBy, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
-                <div class="divCustomerSelectList">
-                    @Html.Action("QCBySelectList", "Employee", new { required = "" })
+                <div class="divQCBySelectList">
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("QCBySelectList", "Employee", new { required = "" })*@
                 </div>
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
@@ -88,6 +94,13 @@
         <script>
             $(document).ready(function () {
                 $.validator.unobtrusive.parse("#FormProductionQCDetail");
+                try {
+                    $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val() + '&disabled=true')                   
+                    $('.divQCBySelectList').load('/Employee/QCBySelectList?required=' + $('#hdnQCByRequired').val())
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
                 try {
                     $('input.datepicker').datepicker({
                         format: "dd-M-yyyy",

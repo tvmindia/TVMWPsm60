@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private ITaxTypeBusiness _taxTypeBusiness;
+        IUserBusiness _userBusiness;
         #region Constructor Injection
-        public TaxTypeController(ITaxTypeBusiness taxTypeBusiness)
+        public TaxTypeController(ITaxTypeBusiness taxTypeBusiness,IUserBusiness userBusiness)
         {
             _taxTypeBusiness = taxTypeBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion
         // GET: TaxType
@@ -126,9 +130,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region TaxType SelectList
-        public ActionResult TaxTypeSelectList(string required)
+        public ActionResult TaxTypeSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Country");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListCountryAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             TaxTypeViewModel taxTypeVM = new TaxTypeViewModel();
             taxTypeVM.TaxTypeSelectList = _taxTypeBusiness.GetTaxTypeForSelectList();
             return PartialView("_TaxTypeSelectList", taxTypeVM);

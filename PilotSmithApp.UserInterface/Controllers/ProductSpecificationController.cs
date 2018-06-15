@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +19,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private IProductSpecificationBusiness _productSpecificationBusiness;
+        IUserBusiness _userBusiness;
         // GET: ProductSpecification
         #region Constructor Injection
-        public ProductSpecificationController(IProductSpecificationBusiness productSpecificationBusiness)
+        public ProductSpecificationController(IProductSpecificationBusiness productSpecificationBusiness,IUserBusiness userBusiness)
         {
             _productSpecificationBusiness = productSpecificationBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion
         [AuthSecurityFilter(ProjectObject = "ProductSpecification", Mode = "R")]
@@ -129,9 +133,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region ProductSpecificationSelectList
-        public ActionResult ProductSpecificationSelectList(string required)
+        public ActionResult ProductSpecificationSelectList(string required,bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Product");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             ProductSpecificationViewModel productSpecificationVM = new ProductSpecificationViewModel();
             productSpecificationVM.ProductSpecificationSelectList = _productSpecificationBusiness.GetProductSpecificationForSelectList();
             return PartialView("_ProductSpecificationSelectList", productSpecificationVM);

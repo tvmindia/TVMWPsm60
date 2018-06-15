@@ -96,11 +96,14 @@
                         @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divEmployeeSelectList">
-                            @Html.Action("PreparedBySelectList", "Employee", new { required = "" })
-                        </div>
-                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
+                        <div class="divPreparedBySelectList">
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                           
+                        </div>                        
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnPreparedByRequired", "")
+                    @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
                 </div>
 
                 @*<div class="form-group col-md-12 ">*@
@@ -111,10 +114,13 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "POD" })
-                        </div>
-                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            
+                        </div>                      
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnDocumentStatusRequired", "required")
+                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                 </div>
 
                 <div class="col-md-12 no-padding">
@@ -125,11 +131,13 @@
                         <div class="divCustomerSelectList">
                             @if (Model.IsUpdate || Model.SaleOrderID != null)
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "", disabled = true })
+                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                               
                             }
                             else
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "" })
+                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                               
                             }
                         </div>
                     </div>
@@ -158,8 +166,11 @@
                     {
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
-                                @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                               
                             </div>
+                            <!-- This hidden field will keep the information whether the field is required or not -->
+                            @Html.Hidden("hdnBranchRequired", "required")
                             @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                         </div>
                     }
@@ -356,6 +367,31 @@
     $(document).ready(function () {
         try {
             $.validator.unobtrusive.parse("#ProductionOrderForm");
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=POD&required=' + $('#hdnDocumentStatusRequired').val())                  
+          @if (Model.IsUpdate)
+          {
+              <text>
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {
+
+            });
+              </text>
+          }
+          else
+          {
+              <text>
+              $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function() {
+
+              });
+              </text>
+          }
+
         }
         catch (e) {
             console.log(e.message);

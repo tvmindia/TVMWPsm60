@@ -10,9 +10,12 @@
             </div>
             <div class="col-md-12">
                 <div class="divOtherChargeSelectList">
-                    @Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })*@
                 </div>
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnOtherChargeRequired", "required")
             @Html.HiddenFor(model => model.OtherChargeCode, htmlAttributes: new { @id = "hdnOtherChargeCode" })
         </div>
         <div class="col-md-12 no-padding">
@@ -30,10 +33,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divTaxTypeSelectList">
-                    @Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })
-                </div>
-                @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })*@
+                </div>               
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnTaxTypeRequired", "")
+            @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
         </div>
         <div class="col-md-12 no-padding" id="divGSTCalculatedFields">
             <div class="col-md-4 no-padding">
@@ -75,6 +81,13 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
+        try {          
+            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val())
+            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
+        }
+        catch (e) {
+            console.log(e.message);
+        }
         $('#divModelPopQuotation #TaxTypeCode').select2({
             dropdownParent: $("#divModelPopQuotation")
         });
