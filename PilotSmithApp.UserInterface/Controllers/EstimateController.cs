@@ -417,6 +417,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetEstimate();";
 
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','EST');";
+
                     if (_commonBusiness.CheckDocumentIsDeletable("EST", id))
                     {
                         toolboxVM.deletebtn.Visible = true;
@@ -469,6 +474,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Disable = true;
                     toolboxVM.deletebtn.DisableReason = "Document Locked";
                     toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','EST');";
+
                     break;
                 case "Add":
 

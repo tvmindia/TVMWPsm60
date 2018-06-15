@@ -960,7 +960,8 @@ function GetTimeLine(DocumentID, Type) {
         var data = { "Id": DocumentID, "Type": Type };
         ds = GetDataFromServer("TimeLine/GetTimeLine/", data);      
         $("#divTimeLineBody").empty();
-        $("#divTimeLineBody").html(ds);     
+        $("#divTimeLineBody").html(ds);
+        $("#divModelTimeLinePopUp").modal({}).draggable();
         $("#divModelTimeLinePopUp").modal('show');
 
     } catch (e) {

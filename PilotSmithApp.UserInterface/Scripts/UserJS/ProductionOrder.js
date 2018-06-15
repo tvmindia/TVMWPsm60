@@ -233,14 +233,14 @@ function EditProductionOrder(this_Obj) {
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
                 }
                 else if ($('#LatestApprovalStatus').val() == 4) {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved");
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
                 }
                 else {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
                 }
             }
             else {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
             }
             BindProductionOrderDetailList(productionOrder.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -276,10 +276,10 @@ function ResetProductionOrder() {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved");
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
             }
             else {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
             }
             BindProductionOrderDetailList($('#ID').val(), false);
             clearUploadControl();

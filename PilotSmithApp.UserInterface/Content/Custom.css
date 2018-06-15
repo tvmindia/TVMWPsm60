@@ -1279,9 +1279,31 @@ select{
    
 }
     .timeline > li > .timeline-item > .time-label span {
-         padding: 2px
+         padding: 2px;
+         color:black!important;
+        
+
+        
     }
 
 .timeline > li {
      margin-bottom: 8px;
 }
+
+.modalTimeLine {
+    margin-right:5px;
+}
+
+@media (min-width: 768px) {
+    .modalTimeLine {
+    width:525px;
+}
+}
+
+
+@media (max-width: 500px) {
+    .modalTimeLine {
+    width:425px;
+}
+}
+

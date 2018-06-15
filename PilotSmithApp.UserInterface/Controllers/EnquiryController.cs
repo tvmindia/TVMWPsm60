@@ -358,8 +358,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetEnquiry();";
 
-                    toolboxVM.TimeLine.Visible = false;
-                    toolboxVM.TimeLine.Text = "TimeLine";
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('"+ id.ToString() + "','ENQ');";
 

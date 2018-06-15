@@ -541,8 +541,42 @@ namespace PilotSmithApp.BusinessService.Service
 
 
         public List<TimeLine> GetTimeLine(Guid Id, String Type) {
+            List<TimeLine> Result = new List<TimeLine>();
+            Result = _commonRepository.GetTimeLine(Id, Type);
+            foreach (TimeLine T in Result) {
+                switch (T.DocumentType)
+                {
+                    case "ENQ":
+                        T.URL = "Enquiry?ID=" + T.DocumentID.ToString();
+                        break;
+                    case "EST":
+                        T.URL = "Estimate?ID=" + T.DocumentID.ToString();
+                        break;
+                    case "QUO":
+                        T.URL = "Quotation?ID=" + T.DocumentID.ToString();
+                        break;
+                    case "SOD":
+                        T.URL = "SaleOrder?ID=" + T.DocumentID.ToString();
+                        break;
+                    case "POD":
+                        T.URL = "ProductionOrder?ID=" + T.DocumentID.ToString();
+                        break;
+                    case "SIV":
+                        T.URL = "SaleInvoice?ID=" + T.DocumentID.ToString();
+                        break;
+                    case "PQC":
+                        T.URL = "ProductionQC?ID=" + T.DocumentID.ToString();
+                        break;
+                    case "DLC":
+                        T.URL = "DeliveryChallan?ID=" + T.DocumentID.ToString();
+                        break;
 
-            return _commonRepository.GetTimeLine(Id, Type);
+                }
+
+
+            }
+         
+            return Result;
         }
     }
 }

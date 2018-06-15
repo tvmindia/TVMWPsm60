@@ -242,14 +242,14 @@ function EditSaleOrder(this_Obj) {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
                 }
                 else if ($('#LatestApprovalStatus').val() == 4) {
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved");
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
                 }
                 else {
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
                 }
             }
             else {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
             }
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
