@@ -14,8 +14,8 @@ namespace PilotSmithApp.BusinessService.Contract
         List<DocumentApproval> GetAllDocumentsPendingForApprovals(DocumentApprovalAdvanceSearch documentApprovalAdvanceSearch);
         DataTable GetDocumentSummary(Guid DocumentID, string DocumentTypeCode);
         
-        object ApproveDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode);
-        object RejectDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode,string Remarks);
+        object ApproveDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode,DateTime approvalDate, string Remarks);
+        object RejectDocument(Guid ApprovalLogID, Guid DocumentID, string DocumentTypeCode,string Remarks, DateTime rejectionDate);
         object ValidateDocumentsApprovalPermission(string LoginName, Guid DocumentID, string DocumentTypeCode);
         List<DocumentApprover> GetApproversByDocType(string docTypeCode);
         object SendDocForApproval(Guid documentID, string documentTypeCode, string approvers, string createdBy, DateTime createdDate);
