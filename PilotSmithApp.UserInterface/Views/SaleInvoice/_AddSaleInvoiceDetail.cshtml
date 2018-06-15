@@ -12,12 +12,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
-                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
-                </div>
-                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
-                <!-- This hidden field will keep the information whether the field is required or not -->
-                @Html.Hidden("hdnProductRequired", "required")
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
+                </div>               
             </div>
+            @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductRequired", "required")
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -51,10 +52,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divUnitSelectList">
-                    @Html.Action("UnitSelectList", "Unit", new { required = "required" })
-                </div>
-                @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                </div>            
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnUnitRequired", "required")
+            @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
         </div>
         <div class="col-md-4 no-padding">
             <div class="col-md-12">
@@ -62,10 +66,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divTaxTypeSelectList">
-                    @Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })
-                </div>
-                @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })*@
+                </div>              
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnTaxTypeRequired", "")
+            @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
         </div>
     </div>
     <div class="form-group col-md-12 no-padding">
@@ -157,6 +164,14 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormSaleInvoiceDetail");
+        try {
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
+            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val())
+        }
+        catch (e) {
+            console.log(e.message);
+        }
         $('#divModelPopSaleInvoice #ProductID,#divModelPopSaleInvoice #UnitCode,#divModelPopSaleInvoice #TaxTypeCode,#divModelPopSaleInvoice #ProductModelID').select2({
             dropdownParent: $("#divModelPopSaleInvoice")
         });

@@ -333,7 +333,7 @@ namespace PilotSmithApp.RepositoryService.Service
             return new
             {
                 ID = productionQC.ID,
-                ProductionQCNo = productionQC.ProdQCNo,
+                ProdQCNo = productionQC.ProdQCNo,
                 Status = outputStatus.Value.ToString(),
                 Message = productionQC.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
             };

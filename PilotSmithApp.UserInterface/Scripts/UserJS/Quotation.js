@@ -259,6 +259,13 @@ function ResetQuotation() {
                     //resides in customjs for sliding
                     openNav();
             }
+            else {
+                debugger;
+                $('#hdnEstimateID').val('');
+                $('#hdnCustomerID').val('');
+                $("#QuotationForm #CustomerID").prop('disabled', false);
+                $('#lblQuotationInfo').text('<<Quotation No.>>');
+            }
             if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
             }

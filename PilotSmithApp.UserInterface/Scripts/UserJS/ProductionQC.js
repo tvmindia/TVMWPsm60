@@ -245,6 +245,19 @@ function EditProductionQC(this_Obj) {
 function ResetProductionQC() {
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() + "&productionOrderID=" + $('#hdnProdOrderID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+                //resides in customjs for sliding
+
+                $("#divProductionQCForm #ProdOrderID").prop('disabled', true);
+                openNav();
+            }
+            else {
+                debugger;
+                $('#hdnProdOrderID').val('');
+                $('#hdnCustomerID').val('');
+                $("#ProductionQCForm #CustomerID").prop('disabled', false);
+                $('#lblProductionQCInfo').text('<<ProductionQC No.>>');
+            }            
             BindProductionQCDetailList($('#ID').val());
             clearUploadControl();
             PaintImages($('#ProductionQCForm #ID').val());
@@ -276,12 +289,12 @@ function SaveSuccessProductionQC(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
+                $('#lblProductionQCInfo').text(_result.ProdQCNo);
                 $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
                     BindProductionQCDetailList(_result.ID);
                     clearUploadControl();
-                    PaintImages(_result.ID);
-                    $('#lblProductionQCInfo').text(_result.ProdQCNo);
+                    PaintImages(_result.ID);                   
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionQCForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");

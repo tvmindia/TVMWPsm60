@@ -286,6 +286,7 @@ function ResetSaleOrder() {
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleOrderForm #ID').val());
+            $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
             });
         }

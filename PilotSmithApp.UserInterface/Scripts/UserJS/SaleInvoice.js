@@ -204,18 +204,6 @@ function AddSaleInvoice() {
     });
 }
 
-function LoadCurrentPageDropdowns() {
-    debugger;
-    $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList')
-    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=required')
-    $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=required')
-    $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList')
-    if( $('#IsUpdate').val()=='True')
-        $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=required&disabled=true')
-    else
-        $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=required')
-}
-
 
 function EditSaleInvoice(this_Obj) {
     OnServerCallBegin();
@@ -251,6 +239,7 @@ function ResetSaleInvoice() {
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleInvoiceForm #ID').val());
+            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
         }
         else {
