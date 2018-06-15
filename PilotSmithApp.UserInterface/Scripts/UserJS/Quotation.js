@@ -229,14 +229,14 @@ function EditQuotation(this_Obj) {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
                 }
                 else if ($('#LatestApprovalStatus').val() == 4) {
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved");
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
                 }
                 else {
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
                 }
             }
             else {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
             }
             BindQuotationDetailList(Quotation.ID);
             BindQuotationOtherChargesDetailList(Quotation.ID);

@@ -14,5 +14,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime DocumentDate { get; set; }
         public string DocumentDateFormatted { get; set; }
         public string URL { get; set; }
+        public string Particulars { get; set; }
     }
 }

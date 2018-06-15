@@ -13,6 +13,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime DocumentDate { get; set; }
         public string DocumentDateFormatted { get; set; }
         public string URL { get; set; }
+        public string Particulars { get; set; }
     }
     public class TimeLineViewModelList {
         public List<TimeLineViewModel> TimeLineList { get; set; }
