@@ -15,7 +15,7 @@
                 <ul class="timeline">
 
                     @{
-                        foreach (string id in Model.TimeLineList.Select(x => x.DocumentDateFormatted).Distinct())
+                        foreach (string id in Model.TimeLineList.OrderBy(x=>x.DocumentDate).Select(x => x.DocumentDateFormatted).Distinct())
                         {
                             <li class="time-label">
                                 <span class="bg-green">
