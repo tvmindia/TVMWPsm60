@@ -694,6 +694,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetSaleOrder();";
 
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SOD');";
+
                     if (_commonBusiness.CheckDocumentIsDeletable("SOD", id))
                     {
                         toolboxVM.deletebtn.Visible = true;
@@ -768,6 +773,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Disable = true;
                     toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
                     toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SOD');";
                     break;
 
                 case "Approved":
@@ -815,6 +825,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Disable = true;
                     toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
                     toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SOD');";
+
                     break;
                 case "Add":
 

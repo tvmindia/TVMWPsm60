@@ -215,7 +215,7 @@ function EditEstimate(this_Obj) {
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", Estimate.ID);
         }
         else {
-            ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument");
+            ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument", Estimate.ID);
         }
         BindEstimateDetailList(Estimate.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());

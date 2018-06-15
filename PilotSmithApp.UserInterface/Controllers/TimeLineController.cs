@@ -28,10 +28,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         [HttpGet]
         public ActionResult GetTimeLine(String Id, string Type) {
 
-            List<TimeLineViewModel> Result= Mapper.Map<List<TimeLine>, List<TimeLineViewModel>>(_commonBusiness.GetTimeLine(Guid.Parse(Id), Type));
+            List<TimeLineViewModel> Result = new List<TimeLineViewModel>();
             TimeLineViewModelList List = new TimeLineViewModelList();
-            List.TimeLineList = Result;
-            List.CurrentDocument = (from A in Result where( A.DocumentID == Guid.Parse(Id)) select A.DocumentNo.ToString()).FirstOrDefault(); 
+            if (Id!=null && Id != "") {
+                Result = Mapper.Map<List<TimeLine>, List<TimeLineViewModel>>(_commonBusiness.GetTimeLine(Guid.Parse(Id), Type));
+                List.TimeLineList = Result;
+                List.CurrentDocument = (from A in Result where (A.DocumentID == Guid.Parse(Id)) select A.DocumentNo.ToString()).FirstOrDefault();
+            }
+                      
             return PartialView("_TimeLine", List);
           
         }
