@@ -94,7 +94,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.CustomerID = quotationVM.CustomerID;
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
                     {
-                        Description = "OPEN",
+                        Description = "-",
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
@@ -113,7 +113,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.CustomerID = saleorderVM.CustomerID;
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
                     {
-                        Description = "OPEN",
+                        Description = "-",
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
@@ -129,7 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
                     {
-                        Description = "OPEN",
+                        Description = "-",
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";

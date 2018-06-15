@@ -77,7 +77,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     serviceCallVM.IsUpdate = false;
                     serviceCallVM.ID = Guid.Empty;
                     serviceCallVM.DocumentStatus = new DocumentStatusViewModel();
-                    serviceCallVM.DocumentStatus.Description = "OPEN";
+                    serviceCallVM.DocumentStatus.Description = "-";
                     serviceCallVM.Branch = new BranchViewModel();
                     serviceCallVM.Branch.Description = "-";
                 }

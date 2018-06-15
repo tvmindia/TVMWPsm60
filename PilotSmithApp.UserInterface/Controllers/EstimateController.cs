@@ -76,7 +76,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.EnquiryID = null;
                     estimateVM.EnquirySelectList = new List<SelectListItem>();
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
-                    estimateVM.DocumentStatus.Description = "OPEN";
+                    estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
                     estimateVM.IsDocLocked = false;
@@ -91,7 +91,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
                     estimateVM.EnquiryID = enquiryID;
                     estimateVM.DocumentStatus = new DocumentStatusViewModel();
-                    estimateVM.DocumentStatus.Description = "OPEN";
+                    estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
                     estimateVM.IsDocLocked = false;

@@ -70,7 +70,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.SaleOrderID = null;
                     productionOrderVM.SaleOrderSelectList = new List<SelectListItem>();
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
-                    productionOrderVM.DocumentStatus.Description = "OPEN";
+                    productionOrderVM.DocumentStatus.Description = "-";
                     productionOrderVM.Branch = new BranchViewModel();
                     productionOrderVM.Branch.Description = "-";
                     productionOrderVM.IsDocLocked = false;
@@ -85,7 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.SaleOrderID = saleOrderID;
                     productionOrderVM.CustomerID = saleOrderVM.CustomerID;
                     productionOrderVM.DocumentStatus = new DocumentStatusViewModel();
-                    productionOrderVM.DocumentStatus.Description = "OPEN";
+                    productionOrderVM.DocumentStatus.Description = "-";
                     productionOrderVM.Branch = new BranchViewModel();
                     productionOrderVM.IsDocLocked = false;
                     productionOrderVM.Branch.Description = "-";

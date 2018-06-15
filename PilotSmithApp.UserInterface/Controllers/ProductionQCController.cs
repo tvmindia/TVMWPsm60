@@ -62,7 +62,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionQCVM.ProdOrderSelectList = new List<SelectListItem>();
                     productionQCVM.DocumentStatus = new DocumentStatusViewModel()
                     {
-                        Description="OPEN",
+                        Description="-",
                     };
                     productionQCVM.IsDocLocked = false;
                 }
@@ -77,7 +77,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionQCVM.CustomerID = productioOrderVM.CustomerID;
                     productionQCVM.DocumentStatus = new DocumentStatusViewModel()
                     {
-                        Description = "OPEN",
+                        Description = "-",
                     };
                     productionQCVM.IsDocLocked = false;
                 }

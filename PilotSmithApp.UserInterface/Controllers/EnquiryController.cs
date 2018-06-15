@@ -82,7 +82,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsUpdate = false;
                     enquiryVM.ID = Guid.Empty;
                     enquiryVM.DocumentStatus = new DocumentStatusViewModel();
-                    enquiryVM.DocumentStatus.Description = "OPEN";
+                    enquiryVM.DocumentStatus.Description = "-";
                     enquiryVM.Branch = new BranchViewModel();
                     enquiryVM.Branch.Description = "-";
                     enquiryVM.IsDocLocked = false;
