@@ -1,5 +1,5 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ServiceCallViewModel
-@{ 
+@{
     List<SelectListItem> TimeSelectList = new List<SelectListItem>();
     DateTime now = DateTime.Now;
     DateTime startTime = new DateTime(now.Year, now.Month, now.Day, 9, 0, 0);
@@ -69,11 +69,11 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnCustomerRequired", "")
+                    @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
                     @Html.Hidden("hdnCustomerdisabled", false)
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
@@ -88,7 +88,7 @@
                         @Html.LabelFor(model => model.ServiceCallTimeFormatted, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.ServiceCallTimeFormatted, TimeSelectList, "--Select Time--", new { @class = "form-control newinput", @style = "width:100%", @id= "ServiceCallTime" } )
+                        @Html.DropDownListFor(model => model.ServiceCallTimeFormatted, TimeSelectList, "--Select Time--", new { @class = "form-control newinput", @style = "width:100%", @id = "ServiceCallTime" })
                         @Html.ValidationMessageFor(model => model.ServiceCallTimeFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -109,11 +109,14 @@
                         @Html.LabelFor(model => model.AttendedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divEmployeeSelectList">
-                            @Html.Action("AttendedBySelectList", "Employee", new { required = "" })
+                        <div class="divAttendedBySelectList">
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                           
                         </div>
-                        @Html.HiddenFor(model => model.AttendedBy, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnAttendedByRequired", "")
+                    @Html.HiddenFor(model => model.AttendedBy, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
                 </div>
 
                 <div class="col-md-6 no-padding">
@@ -122,22 +125,27 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divServicedBySelectList">
-                            @Html.Action("ServicedBySelectList", "Employee", new { required = "" })
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                           
                         </div>
-                        @Html.HiddenFor(model => model.ServicedBy, htmlAttributes: new { @class = "", @id = "hdnServicedByID" })
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnServicedByRequired", "")
+                    @Html.HiddenFor(model => model.ServicedBy, htmlAttributes: new { @class = "", @id = "hdnServicedByID" })
                 </div>
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "", code = "EST" })
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
                         </div>
-                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnDocumentStatusRequired", "required")
+                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                 </div>
 
                 <div class="col-md-6 no-padding">
@@ -152,14 +160,17 @@
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
                         <div class="divBranchSelectList">
-                            @Html.Action("BranchSelectList", "Branch", new { required = "" })
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            
                         </div>
-                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnBranchRequired", "required")
+                    @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                 </div>
 
 
@@ -181,35 +192,35 @@
                             <div class="lblStatusDisplay">@Model.Branch.Description</div>
                         </div>
                         @*@if (Model.IsUpdate)
-                    {
-                        <div class="col-md-12"></div>
-                            <div class="form-group col-md-12">
-                                @if (!Model.IsDocLocked)
-                                {
-                                    <div class="col-md-12 no-padding">
-                                        <div class="col-md-2 no-padding">
-                                            <img src="~/Content/images/ownerlock.png" title="Document Locked" />
-                                        </div>
-                                        <div class="col-md-10 no-padding">
-                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
-                                        </div>
+                            {
+                                <div class="col-md-12"></div>
+                                    <div class="form-group col-md-12">
+                                        @if (!Model.IsDocLocked)
+                                        {
+                                            <div class="col-md-12 no-padding">
+                                                <div class="col-md-2 no-padding">
+                                                    <img src="~/Content/images/ownerlock.png" title="Document Locked" />
+                                                </div>
+                                                <div class="col-md-10 no-padding">
+                                                    <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                                    <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-12 no-padding">
+                                                <div class="col-md-2 no-padding">
+                                                    <img src="~/Content/images/ownerunlock.png" />
+                                                </div>
+                                                <div class="col-md-10 no-padding">
+                                                    <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                                    <span style="font-size:18px;">Holding ownership</span>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
-                                }
-                                else
-                                {
-                                    <div class="col-md-12 no-padding">
-                                        <div class="col-md-2 no-padding">
-                                            <img src="~/Content/images/ownerunlock.png" />
-                                        </div>
-                                        <div class="col-md-10 no-padding">
-                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <span style="font-size:18px;">Holding ownership</span>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                    }*@
+                            }*@
 
                     </div>
 
@@ -218,7 +229,7 @@
 
         </div>
     </div>
-        <div class="col-md-12">&nbsp;</div>
+    <div class="col-md-12">&nbsp;</div>
 
 
         <div class="col-md-11 divbox1">
@@ -354,69 +365,95 @@
 }
 
 <script>
-            $(document).ready(function () {
-                try {
-                    $.validator.unobtrusive.parse("#ServiceCallForm");
-                }
-                catch (e) {
-                    console.log(e.message);
-                }
-                try {
-                    $('input.datepicker').datepicker({
-                        format: "dd-M-yyyy",
-                        maxViewMode: 0,
-                        todayBtn: "linked",
-                        clearBtn: true,
-                        autoclose: true,
-                        todayHighlight: true
-                    });
-                }
-                catch (e) {
-                    console.log(e.message);
-                }
-                try {
-                    //Fileupload
-                    $('#btnUpload').click(function () {
-                        debugger;
-                        //Pass the controller name
-                        var FileObject = new Object;
-                        if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
-                            FileObject.ParentID = (($('#ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#ID').val()) : $('#hdnFileDupID').val());
-                        }
-                        else {
-                            FileObject.ParentID = ($('#ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#ID').val();
-                        }
+    $(document).ready(function () {
+        try {
+            $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList')
+            $('.divServicedBySelectList').load('/Employee/ServicedBySelectList')
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val())
+            @if (Model.IsUpdate)
+                    {
+                        <text>
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
 
-                        FileObject.ParentType = "ServiceCall";
-                        FileObject.Controller = "FileUpload";
-                        UploadFile(FileObject);
-                    });
-                }
-                catch (e) {
-                    console.log(e.message);
-                }
-                try {
-                    $('#CustomerID,#BranchCode,#ServiceCallTime').select2({});
-                    $('.select2').addClass('form-control newinput');
-                }
-                catch (e) {
-                    console.log(e.message);
-                }
-                //try {
-                //    $('#ServiceCallForm #EnquiryID').change(function () {
-                //        debugger;
-                //        OnServerCallBegin();
-                //        $('#divServiceCallForm').load("ServiceCall/ServiceCallForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
-                //            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
-                //            BindServiceCallChargeDetailList("00000000-0000-0000-0000-000000000000");
-                //            BindServiceCallDetailList("00000000-0000-0000-0000-000000000000", true);
-                //            OnServerCallComplete();
-                //        });
-                //    });
-                //}
-                //catch (e) {
-                //    console.log(e.message);
-                //}
             });
+            </text>
+                    }
+                    else
+                    {
+                        <text>
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
+
+            });
+            </text>
+                    }
+
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $.validator.unobtrusive.parse("#ServiceCallForm");
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('input.datepicker').datepicker({
+                format: "dd-M-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            //Fileupload
+            $('#btnUpload').click(function () {
+                debugger;
+                //Pass the controller name
+                var FileObject = new Object;
+                if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
+                    FileObject.ParentID = (($('#ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#ID').val()) : $('#hdnFileDupID').val());
+                }
+                else {
+                    FileObject.ParentID = ($('#ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#ID').val();
+                }
+
+                FileObject.ParentType = "ServiceCall";
+                FileObject.Controller = "FileUpload";
+                UploadFile(FileObject);
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('#CustomerID,#BranchCode,#ServiceCallTime').select2({});
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        //try {
+        //    $('#ServiceCallForm #EnquiryID').change(function () {
+        //        debugger;
+        //        OnServerCallBegin();
+        //        $('#divServiceCallForm').load("ServiceCall/ServiceCallForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
+        //            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
+        //            BindServiceCallChargeDetailList("00000000-0000-0000-0000-000000000000");
+        //            BindServiceCallDetailList("00000000-0000-0000-0000-000000000000", true);
+        //            OnServerCallComplete();
+        //        });
+        //    });
+        //}
+        //catch (e) {
+        //    console.log(e.message);
+        //}
+    });
 </script>
 

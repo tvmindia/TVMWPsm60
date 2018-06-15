@@ -11,10 +11,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
-                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
-                </div>
-                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
+                </div>              
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductRequired", "required")
+            @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -24,9 +27,11 @@
                 <div class="divProductModelSelectList">
                     <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
-                </div>
-                @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
+                </div>              
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductModelRequired", "required")
+            @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
         </div>
         <div id="divProductBasicInfo">
             @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
@@ -69,10 +74,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divDocumentStatusSelectList">
-                    @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "", code = "EST" })
-                </div>
-                @Html.HiddenFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "", code = "EST" })*@
+                </div>               
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnDocumentStatusRequired", "")
+            @Html.HiddenFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
         </div>
 
     </div>       
@@ -84,6 +92,13 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormServiceCallDetail");
+        try {
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val())
+        }
+        catch (e) {
+            console.log(e.message);
+        }
         $('#divModelPopServiceCall #ProductID,#divModelPopServiceCall #UnitCode').select2({
             dropdownParent: $("#divModelPopServiceCall")
         });

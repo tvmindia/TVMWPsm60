@@ -216,6 +216,7 @@ function AddEnquiry() {
         }
     });
 }
+
 function EditEnquiry(this_Obj) {
     OnServerCallBegin();
     var Enquiry = _dataTable.EnquiryList.row($(this_Obj).parents('tr')).data();

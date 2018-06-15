@@ -133,11 +133,14 @@
                         @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        <div class="divEmployeeSelectList">
-                            @Html.Action("PreparedBySelectList", "Employee", new { required = "", postingParams = "ResponsiblePersonID" })
-                        </div>
-                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
+                        <div class="divPreparedBySelectList">
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                           
+                        </div>                      
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnPreparedByRequired", "")
+                    @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
                 </div>
 
 
@@ -149,16 +152,18 @@
                         <div class="divCustomerSelectList">
                             @if (Model.IsUpdate || Model.ProdOrderID != null || Model.SaleOrderID != null)
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })
+                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                              
                             }
                             else
                             {
-                                @Html.Action("CustomerSelectList", "Customer", new { required = "required" })
+                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                
                             }
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnCustomerRequired", "")
+                    @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
                     @Html.Hidden("hdnCustomerdisabled", false)
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
@@ -182,8 +187,11 @@
                     {
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
-                                @Html.Action("BranchSelectList", "Branch", new { required = "required" })
+                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
                             </div>
+                            <!-- This hidden field will keep the information whether the field is required or not -->
+                            @Html.Hidden("hdnBranchRequired", "required")
                             @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                         </div>
                     }
@@ -393,6 +401,32 @@
         debugger;
         try {
             $.validator.unobtrusive.parse("#DeliveryChallanForm");
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        try {
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
+            $('.divPlantSelectList').load('/Plant/PlantSelectList')
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?required=' + $('#hdnDocumentStatusRequired').val())
+       @if (Model.IsUpdate)
+       {
+           <text>
+         $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {
+
+         });
+           </text>
+       }
+       else
+       {
+           <text>
+           $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function() {
+
+           });
+           </text>
+       }
+
         }
         catch (e) {
             console.log(e.message);

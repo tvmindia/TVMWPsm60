@@ -72,7 +72,7 @@ function SaveSuccessProductSpecification(data, status) {
                 BindOrReloadProductSpecificationTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divProductSpecificationSelectList').load('/ProductSpecification/ProductSpecificationSelectList?required=');
+                $('.divProductSpecificationSelectList').load('/ProductSpecification/ProductSpecificationSelectList?required=' + $('#hdnProductSpecificationRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -288,7 +288,7 @@ function SaveSuccessCompany(data, status) {
                 BindOrReloadCompanyTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divCompanySelectList').load('/Company/CompanySelectList?required=');
+                $('.divCompanySelectList').load('/Company/CompanySelectList?required=' + $('#hdnCompanyRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -378,17 +378,17 @@ function SaveSuccessEmployeeMaster(data, status) {
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
                 if ($(".divEmployeeSelectList")[0])
-                    $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required=');
+                    $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required='+$('#hdnEmployeeRequired').val());
                 if ($(".divResponsiblePersonSelectList")[0])
-                    $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=');
+                    $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('$hdnResponsiblePersonRequired').val());
                 if ($(".divAttendedBySelectList")[0])
-                    $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=');
+                    $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val());
                 if ($(".divServicedBySelectList")[0])
-                    $('.divServicedBySelectList').load('/Employee/ServicedBySelectList?required=');
+                    $('.divServicedBySelectList').load('/Employee/ServicedBySelectList?required=' + $('#hdnServicedByRequired').val());
                 if ($(".divPreparedBySelectList")[0])
-                    $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=');
+                    $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val());
                 if ($(".divQCBySelectList")[0])
-                    $('.divQCBySelectList').load('/Employee/QCBySelectList?required=');
+                    $('.divQCBySelectList').load('/Employee/QCBySelectList?required=' + $('#hdnQCByRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -577,7 +577,7 @@ function SaveSuccessReferencePerson(data, status) {
                 BindOrReloadReferencePersonTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=');
+                $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -621,7 +621,7 @@ function SaveSuccessPaymentTerm(data, status) {
                 BindOrReloadPaymentTermTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divPaymentTermSelectList').load('/PaymentTerm/PaymentTermSelectList?required=');
+                $('.divPaymentTermSelectList').load('/PaymentTerm/PaymentTermSelectList?required=' + $('#hdnPaymentTermRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -664,7 +664,7 @@ function SaveSuccessTaxType(data, status) {
                 BindOrReloadTaxTypeTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=');
+                $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -750,7 +750,7 @@ function SaveSuccessPlant(data, status) {
                 BindOrReloadPlantTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divPlantSelectList').load('/Plant/PlantSelectList?required=');
+                $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -794,7 +794,7 @@ function SaveSuccessOtherCharge(data, status) {
                 BindOrReloadOtherChargeTable('Reset');
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
-                $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=');
+                $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

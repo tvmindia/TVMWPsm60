@@ -1,5 +1,31 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ProductSpecificationViewModel
-@if (ViewBag.IsRequired == "required")
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
+@if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Product Specification is missing", @onchange = "$('#hdnProductSpecificationCode).val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Product Specification is missing", @onchange = "$('#hdnProductSpecificationCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddProductspecificationMaster('OTR')";
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProductSpecificationCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProductSpecificationCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddProductspecificationMaster('OTR')";
+}
+@if (@ViewBag.HasAddPermission)
+{
+    <div class="input-group">
+        @Html.DropDownList("ProductSpecificationCode", Model.ProductSpecificationSelectList, "--Select product specification--", SelectListattributes)
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick=@onclickevent><i class="fa fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    @Html.DropDownList("ProductSpecificationCode", Model.ProductSpecificationSelectList, "--Select product specification--", SelectListattributes)
+}
+
+@*@if (ViewBag.IsRequired == "required")
 {
     <div class="input-group">
         @Html.DropDownList("ProductSpecificationCode", Model.ProductSpecificationSelectList, "-- Select specification --", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Category is missing", @onchange = "$('#hdnProductSpecificationCode').val(this.value)" })
@@ -14,7 +40,7 @@ else
         <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddProductspecificationMaster('OTR')"><i class="fas fa-plus-square"></i></span>
     </div>
 
-}
+}*@
 @Html.ValidationMessage("ProductSpecificationCode", "", new { @class = "text-danger" })
 
 <script>

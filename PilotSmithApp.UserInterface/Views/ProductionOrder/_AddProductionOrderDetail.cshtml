@@ -11,10 +11,13 @@
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
-                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
-                </div>
-                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
+                </div>                
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductRequired", "required")
+            @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -24,9 +27,11 @@
                 <div class="divProductModelSelectList">
                     <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
-                </div>
-                @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
+                </div>               
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnProductModelRequired", "required")
+            @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
         </div>
         <div id="divProductBasicInfo">
             @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
@@ -82,10 +87,13 @@
                 </div>
                 <div class="col-md-12">
                     <div class="divUnitSelectList">
-                        @Html.Action("UnitSelectList", "Unit", new { required = "required" })
-                    </div>
-                    @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
+                        <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                    </div>                 
                 </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnUnitRequired", "required")
+                @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
             </div>
 
             <div class="col-md-12 no-padding">
@@ -122,7 +130,8 @@
                 </div>
                 <div class="col-md-12">
                     <div class="divPlantSelectList">
-                        @Html.Action("PlantSelectList", "Plant", new { required = "" })
+                        <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("PlantSelectList", "Plant", new { required = "" })*@
                     </div>
                 </div>
                 <!-- This hidden field will keep the information whether the field is required or not -->
@@ -263,6 +272,14 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProductionOrderDetail");
+        try {
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
+            $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
+        }
+        catch (e) {
+            console.log(e.message);
+        }
         $('#divModelPopProductionOrder #ProductID,#divModelPopProductionOrder #UnitCode', '#divModelPopProductionOrder #PlantCode').select2({
             dropdownParent: $("#divModelPopProductionOrder")
         });
