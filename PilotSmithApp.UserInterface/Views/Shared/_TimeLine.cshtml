@@ -1,6 +1,6 @@
 ﻿@model PilotSmithApp.UserInterface.Models.TimeLineViewModelList
 @using PilotSmithApp.UserInterface.Models
-<div style="min-height:500px">
+<div style="min-height:600px">
     <section class="content-header">
         <h1>
             Timeline
@@ -9,7 +9,7 @@
         
     </section><br/>
     <section class="content">
-        <div class="row" style="max-height:85vh;overflow-y: scroll;">
+        <div class="row" style="max-height:80vh;overflow-y: scroll;">
             <div class="col-md-12">
                 <!-- The time line -->
                 <ul class="timeline">
@@ -28,43 +28,53 @@
                             {
                                 <li>
                                     @if(T.DocumentType=="ENQ"){
-                                    <i class="fa fa-empire bg-yellow"></i>
+                                    <i class="fa fa-phone bg-yellow"></i>
                                     }
                                     else if(T.DocumentType=="QUO"){
-                                    <i class="fa fa-address-book bg-yellow"></i>
+                                    <i class="fa fa-book bg-yellow"></i>
                                     }
                                     else if(T.DocumentType=="EST"){
-                                    <i class="fa fa-adjust bg-yellow"></i>
+                                    <i class="fa fa-newspaper-o bg-yellow"></i>
                                     }
                                     else if(T.DocumentType=="SOD"){
-                                    <i class="fa fa-anchor bg-yellow"></i>
+                                    <i class="fa fa-shopping-bag bg-yellow"></i>
                                     }
                                     else if(T.DocumentType=="SIV"){
-                                    <i class="fa fa-bank bg-yellow"></i>
+                                    <i class="fa fa-print bg-yellow"></i>
                                     }
                                     else if (T.DocumentType == "PQC")
                                     {
-                                        <i class="fa fa-bell bg-yellow"></i>
+                                        <i class="fa fa-thumbs-up bg-yellow"></i>
                                     }
                                     else if (T.DocumentType == "DLC")
                                     {
-                                        <i class="fa fa-train bg-yellow"></i>
+                                        <i class="fa fa-file-text-o bg-yellow"></i>
                                     }
-                                    else
+                                    else if (T.DocumentType == "POD")
                                     {
-                                    <i class="fa fa-envelope bg-yellow"></i>
+                                    <i class="fa fa-cart-arrow-down bg-yellow"></i>
+                                    }
+                                    else 
+                                    {
+                                        <i class="fa fa-navicon bg-yellow"></i>
                                     }
                                   
 
                                     <div class="timeline-item">
                                         
-                                        @if(Model.CurrentDocument==T.DocumentNo){
-                                        <span class="time"><i class="fa fa-clock-o bg-green-active"></i> [Current Document] </span>
-                                        }
-                                        
-                                       
-
+                                        @if (Model.CurrentDocument == T.DocumentNo)
+                                        {
+                                        <span class="time" style="color:orangered" title="Current document"><i class="fa fa-anchor"></i>  </span>
                                         <h3 class="timeline-header"><a href="#">@T.DocumentNo</a> Created</h3>
+                                        }
+                                        else
+                                        {
+                                            <h3 class="timeline-header"><a href="#">@T.DocumentNo</a> Created</h3>
+                                        }
+
+                                        <div class="timeline-body">
+                                            Particulars of this documents will be listed here .  Particulars of this documents will be listed here
+                                        </div>
 
                                         
                                         
