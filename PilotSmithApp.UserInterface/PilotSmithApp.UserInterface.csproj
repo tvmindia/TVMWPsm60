@@ -57,6 +57,10 @@
       <HintPath>..\packages\Unity.5.5.6\lib\net45\CommonServiceLocator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EPPlus, Version=4.5.2.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.2.1\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
       <Private>True</Private>
@@ -106,6 +110,7 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="SAMTool.BusinessServices, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\SAMTool.BusinessServices.dll</HintPath>
@@ -124,6 +129,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -262,12 +268,14 @@
     <Content Include="Content\images\datePicker.png" />
     <Content Include="Content\images\document.png" />
     <Content Include="Content\images\email.png" />
+    <Content Include="Content\images\enquiry.png" />
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
     <Content Include="Content\images\LetterHead.jpg" />
     <Content Include="Content\images\LH_Body.jpg" />
     <Content Include="Content\images\LH_Footer.jpg" />
     <Content Include="Content\images\LH_Header.jpg" />
+    <Content Include="Content\images\mail1.png" />
     <Content Include="Content\images\mailSend.png" />
     <Content Include="Content\images\organisation.png" />
     <Content Include="Content\images\ownerlock.png" />
@@ -766,6 +774,7 @@
     <Compile Include="Controllers\EnquiryController.cs" />
     <Compile Include="Controllers\EnquiryFollowupController.cs" />
     <Compile Include="Controllers\EstimateController.cs" />
+    <Compile Include="Controllers\ExcelExportController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\ManageAccessController.cs" />
     <Compile Include="Controllers\OtherChargeController.cs" />
@@ -820,6 +829,7 @@
     <Compile Include="Models\EnquiryGradeViewModel.cs" />
     <Compile Include="Models\EnquiryViewModel.cs" />
     <Compile Include="Models\EstimateViewModel.cs" />
+    <Compile Include="Models\ExcelExportViewModel.cs" />
     <Compile Include="Models\OtherChargeViewModel.cs" />
     <Compile Include="Models\PDFGeneratorViewModel.cs" />
     <Compile Include="Models\PlantViewModel.cs" />
@@ -1026,6 +1036,8 @@
     <Content Include="Views\Country\_CountrySelectList.cshtml" />
     <Content Include="Views\SaleInvoice\_SaleInvoiceServiceBill.cshtml" />
     <Content Include="Views\Shared\_TimeLine.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\ExcelExport\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
