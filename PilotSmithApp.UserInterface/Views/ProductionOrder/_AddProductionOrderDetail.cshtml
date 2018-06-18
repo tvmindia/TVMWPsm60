@@ -273,7 +273,25 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProductionOrderDetail");
         try {
-            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
+                $('#divModelPopProductionOrder #ProductID').change(function () {
+                    if ($('#divProductBasicInfo') != undefined) {
+                        $('#divModelPopProductionOrder #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                            $('#divModelPopProductionOrder #ProductSpec').val($('#divModelPopProductionOrder #spnProductName').text());
+                        });
+                    }
+                    if ($('.divProductModelSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                        }
+                        else {
+                            $('.divProductModelSelectList').empty();
+                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                        }
+                    }
+                });
+            });
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
             $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
         }
@@ -285,23 +303,7 @@
         });
 
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopProductionOrder #ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined) {
-                $('#divModelPopProductionOrder #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#divModelPopProductionOrder #ProductSpec').val($('#divModelPopProductionOrder #spnProductName').text());
-                });
-            }
-            if ($('.divProductModelSelectList') != undefined) {
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "") {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
-                }
-                else {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                }
-            }
-        });
+        
         try {
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",

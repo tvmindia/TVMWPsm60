@@ -307,7 +307,7 @@
             $('.divPlantSelectList').load('/Plant/PlantSelectList')
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=PQC&required=' + $('#hdnDocumentStatusRequired').val())
-         @if (Model.IsUpdate)
+         @if (Model.IsUpdate || Model.ProdOrderID != null)
          {
              <text>
            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {

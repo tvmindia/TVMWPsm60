@@ -36,8 +36,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();            
             quotationAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");            
@@ -448,13 +449,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion UpdateQuotationEmailInfo
-        #region Calculate GST
-        public ActionResult GSTCalculatedFields(QuotationDetailViewModel quotationDetailVM)
-        {
-            quotationDetailVM = Mapper.Map<QuotationDetail, QuotationDetailViewModel>(_quotationBusiness.CalculateGST(Mapper.Map<QuotationDetailViewModel, QuotationDetail>(quotationDetailVM)));
-            return PartialView("_GSTCalculatedFields", quotationDetailVM);
-        }
-        #endregion Calculate GST
         #region Email Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult EmailQuotation(QuotationViewModel quotationVM)

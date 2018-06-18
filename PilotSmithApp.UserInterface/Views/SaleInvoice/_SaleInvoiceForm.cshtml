@@ -516,7 +516,7 @@ else
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
-         @if (Model.IsUpdate)
+         @if (Model.IsUpdate || Model.QuoteID !=null || Model.SaleOrderID != null)
          {
              <text>
            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {

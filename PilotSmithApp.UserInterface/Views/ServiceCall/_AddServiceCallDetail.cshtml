@@ -93,7 +93,25 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormServiceCallDetail");
         try {
-            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
+                $('#divModelPopServiceCall #ProductID').change(function () {
+                    if ($('#divProductBasicInfo') != undefined) {
+                        $('#divModelPopServiceCall #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                            $('#divModelPopServiceCall #ProductSpec').val($('#divModelPopServiceCall #spnProductName').text());
+                        });
+                    }
+                    if ($('.divProductModelSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                        }
+                        else {
+                            $('.divProductModelSelectList').empty();
+                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                        }
+                    }
+                });
+            });
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val())
         }
         catch (e) {
@@ -104,23 +122,7 @@
         });
 
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopServiceCall #ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined) {
-                $('#divModelPopServiceCall #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#divModelPopServiceCall #ProductSpec').val($('#divModelPopServiceCall #spnProductName').text());
-                });
-            }
-            if ($('.divProductModelSelectList') != undefined) {
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "") {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
-                }
-                else {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                }
-            }
-        });
+        
         try {
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",

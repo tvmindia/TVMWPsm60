@@ -165,9 +165,50 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormSaleInvoiceDetail");
         try {
-            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
+                $('#divModelPopSaleInvoice #ProductID').change(function () {
+                    if ($('#divProductBasicInfo') != undefined) {
+                        $('#divModelPopSaleInvoice #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                            $('#divModelPopSaleInvoice #ProductSpec').val($('#divModelPopSaleInvoice #spnProductName').text());
+                        });
+                    }
+                    if ($('.divProductModelSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                        }
+                        else {
+                            $('.divProductModelSelectList').empty();
+                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                        }
+                    }
+                });
+            });
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
-            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val())
+            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                $('#divModelPopSaleInvoice .CalculateGST').change(function () {
+                    debugger;
+                    var CGST = 0, SGST = 0, IGST = 0;
+                    var qty = parseInt($('#divModelPopSaleInvoice #Qty').val() != "" ? $('#divModelPopSaleInvoice #Qty').val() : 0);
+                    var rate = parseFloat($('#divModelPopSaleInvoice #Rate').val() != "" ? $('#divModelPopSaleInvoice #Rate').val() : 0);
+                    var discount = parseFloat($('#divModelPopSaleInvoice #Discount').val() != "" ? $('#divModelPopSaleInvoice #Discount').val() : 0);
+                    if ($('#divModelPopSaleInvoice #TaxTypeCode').val() != null) {
+                        CGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                        SGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                        IGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                    }
+                    var CessPerc = parseFloat($('#divModelPopSaleInvoice #CessPerc').val() != "" ? $('#divModelPopSaleInvoice #CessPerc').val() : 0);
+                    var taxableAmount = (rate * qty) - discount;
+                    $('#divModelPopSaleInvoice #hdnCGSTPerc').val(CGST);
+                    $('#divModelPopSaleInvoice #hdnSGSTPerc').val(SGST);
+                    $('#divModelPopSaleInvoice #hdnIGSTPerc').val(IGST);
+                    $('#divModelPopSaleInvoice #CGSTPerc').val(taxableAmount * CGST / 100);
+                    $('#divModelPopSaleInvoice #SGSTPerc').val(taxableAmount * SGST / 100);
+                    $('#divModelPopSaleInvoice #IGSTPerc').val(taxableAmount * IGST / 100);
+                    var TaxAmount = parseFloat(taxableAmount * CGST / 100) + parseFloat(taxableAmount * SGST / 100) + parseFloat(taxableAmount * IGST / 100)
+                    $('#divModelPopSaleInvoice #CessAmt').val((TaxAmount * CessPerc) / 100);
+                });
+            });
         }
         catch (e) {
             console.log(e.message);
@@ -176,45 +217,7 @@
             dropdownParent: $("#divModelPopSaleInvoice")
         });
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopSaleInvoice #ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined) {
-                $('#divModelPopSaleInvoice #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#divModelPopSaleInvoice #ProductSpec').val($('#divModelPopSaleInvoice #spnProductName').text());
-                });
-            }
-            if ($('.divProductModelSelectList') != undefined) {
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "") {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
-                }
-                else {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                }
-            }
-        });
-        $('#divModelPopSaleInvoice .CalculateGST').change(function () {
-            debugger;
-            var CGST = 0, SGST = 0, IGST = 0;
-            var qty = parseInt($('#divModelPopSaleInvoice #Qty').val() != "" ? $('#divModelPopSaleInvoice #Qty').val() : 0);
-            var rate = parseFloat($('#divModelPopSaleInvoice #Rate').val() != "" ? $('#divModelPopSaleInvoice #Rate').val() : 0);
-            var discount = parseFloat($('#divModelPopSaleInvoice #Discount').val() != "" ? $('#divModelPopSaleInvoice #Discount').val() : 0);
-            if ($('#divModelPopSaleInvoice #TaxTypeCode').val() != null)
-            {
-                  CGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-                  SGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-                  IGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-            }
-            var CessPerc = parseFloat($('#divModelPopSaleInvoice #CessPerc').val() != "" ? $('#divModelPopSaleInvoice #CessPerc').val() : 0);
-            var taxableAmount = (rate * qty) - discount;
-            $('#divModelPopSaleInvoice #hdnCGSTPerc').val(CGST);
-            $('#divModelPopSaleInvoice #hdnSGSTPerc').val(SGST);
-            $('#divModelPopSaleInvoice #hdnIGSTPerc').val(IGST);
-            $('#divModelPopSaleInvoice #CGSTPerc').val(taxableAmount * CGST / 100);
-            $('#divModelPopSaleInvoice #SGSTPerc').val(taxableAmount * SGST / 100);
-            $('#divModelPopSaleInvoice #IGSTPerc').val(taxableAmount * IGST / 100);
-            var TaxAmount =parseFloat(taxableAmount * CGST / 100) + parseFloat(taxableAmount * SGST / 100) + parseFloat(taxableAmount * IGST / 100)
-            $('#divModelPopSaleInvoice #CessAmt').val((TaxAmount * CessPerc) / 100);
-        });
+        
+        
     });
 </script>
