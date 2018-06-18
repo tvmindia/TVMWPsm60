@@ -17,7 +17,7 @@ $(document).ready(function () {
         debugger;
         if ($('#RedirectToDocument').val() != "")
         {
-            EditRedirectToDocument($('#RedirectToDocument').val(), $('#RedirectToDocumentSaleOrder').val());
+            EditRedirectToDocument($('#RedirectToDocument').val());
         }
     }
     catch (e) {
@@ -257,6 +257,9 @@ function EditProductionOrder(this_Obj) {
 
 function ResetProductionOrder() {
     debugger;
+    if ($('#IsUpdate').val() == 'False') {
+        $('#hdnSaleOrderID').val('');
+    }
     //this will return form body(html)
     $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() + "&saleOrderID=" + $('#hdnSaleOrderID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
@@ -269,7 +272,6 @@ function ResetProductionOrder() {
             }
             else {
                 $('#hdnCustomerID').val('');
-                $('#hdnSaleOrderID').val('');
                 $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             }
             if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {

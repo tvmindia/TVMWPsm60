@@ -243,6 +243,9 @@ function EditProductionQC(this_Obj) {
     });
 }
 function ResetProductionQC() {
+    if ($('#IsUpdate').val() == 'False') {
+        $('#hdnProdOrderID').val('');
+    }
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() + "&productionOrderID=" + $('#hdnProdOrderID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
@@ -253,7 +256,6 @@ function ResetProductionQC() {
             }
             else {
                 debugger;
-                $('#hdnProdOrderID').val('');
                 $('#hdnCustomerID').val('');
                 $("#ProductionQCForm #CustomerID").prop('disabled', false);
                 $('#lblProductionQCInfo').text('<<ProductionQC No.>>');

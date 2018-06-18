@@ -37,10 +37,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
-        public ActionResult Index(string id,string saleOrderID)
+        public ActionResult Index(string id)
         {
             ViewBag.ID = id;
-            ViewBag.SaleOrderID = saleOrderID;
             ProductionOrderAdvanceSearchViewModel productionOrderAdvanceSearchVM = new ProductionOrderAdvanceSearchViewModel();           
             productionOrderAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             productionOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");          

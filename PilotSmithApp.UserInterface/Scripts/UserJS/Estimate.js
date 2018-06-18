@@ -232,6 +232,9 @@ function EditEstimate(this_Obj) {
 
 function ResetEstimate() {
     debugger;
+    if ($('#IsUpdate').val() == 'False') {
+        $('#hdnEnquiryID').val('');
+    }
     //this will return form body(html)
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=" + $('#hdnEnquiryID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
@@ -243,7 +246,6 @@ function ResetEstimate() {
             }
             else {
                 debugger;
-                $('#hdnEnquiryID').val('');
                 $('#hdnCustomerID').val('');
                 $("#EstimateForm #CustomerID").prop('disabled', false);
                 $('#lblEstimateInfo').text('<<Estimate No.>>');

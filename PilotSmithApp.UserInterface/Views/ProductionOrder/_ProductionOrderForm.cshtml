@@ -375,7 +375,7 @@
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=POD&required=' + $('#hdnDocumentStatusRequired').val())                  
-          @if (Model.IsUpdate)
+          @if (Model.IsUpdate || Model.SaleOrderID != null)
           {
               <text>
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {

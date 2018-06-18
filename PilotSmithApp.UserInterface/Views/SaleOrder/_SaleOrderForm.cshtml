@@ -584,7 +584,7 @@
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SOD&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList')
             $('.divBankSelectList').load('/Bank/BankSelectList')
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate || Model.EnquiryID != null || Model.QuoteID != null)
             {
                 <text>
               $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {

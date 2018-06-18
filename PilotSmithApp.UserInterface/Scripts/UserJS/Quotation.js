@@ -13,6 +13,9 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
                 EditQuotation(this);
         });
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -252,6 +255,9 @@ function EditQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
+    if ($('#IsUpdate').val() == 'False') {
+        $('#hdnEstimateID').val('');
+    }
     $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
@@ -261,7 +267,6 @@ function ResetQuotation() {
             }
             else {
                 debugger;
-                $('#hdnEstimateID').val('');
                 $('#hdnCustomerID').val('');
                 $("#QuotationForm #CustomerID").prop('disabled', false);
                 $('#lblQuotationInfo').text('<<Quotation No.>>');
@@ -1170,4 +1175,36 @@ function CalculateTotal()
     $('#lblGrandTotal').text(GrossAmount);
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
     $('#Discount').trigger('onchange');
+}
+function EditRedirectToDocument(id) {
+    debugger;
+    OnServerCallBegin();
+
+    //this will return form body(html)
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblQuotationInfo').text($('#QuoteNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+            }
+            BindQuotationDetailList(id);
+            BindQuotationOtherChargesDetailList(id);
+            CalculateTotal();
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+
+            //resides in customjs for sliding
+            $("#divQuotationForm #EstimateID").prop('disabled', true);
+
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

@@ -13,7 +13,9 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
                 EditSaleOrder(this);
         });
-        
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -1284,4 +1286,36 @@ function CalculateTotal() {
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
     $('#Discount').trigger('onchange');
     $('#lblCessAmount').text(roundoff(CessAmt));
+}
+function EditRedirectToDocument(id) {
+    debugger;
+    OnServerCallBegin();
+
+    //this will return form body(html)
+    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblSaleOrderInfo').text($('#SaleOrderNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+            }
+            BindSaleOrderDetailList(id, false, false);
+            BindSaleOrderOtherChargesDetailList(id, false);
+            CalculateTotal();
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+
+            //resides in customjs for sliding
+            //$("#divQuotationForm #EstimateID").prop('disabled', true);
+
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

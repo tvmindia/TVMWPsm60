@@ -462,17 +462,19 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList')
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate || Model.EstimateID != null)
             {
                 <text>
+            debugger;
               $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {
 
               });
-                </text>
+            </text>
             }
             else
             {
                 <text>
+                debugger;
                 $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function() {
 
                 });
