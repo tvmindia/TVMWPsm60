@@ -134,7 +134,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="divDocumentStatusSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
                                 @*  @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "SIV" })*@
                             </div>                         
@@ -160,7 +160,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="divPreparedBySelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @* binding from javascript document ready function using div class *@
                                 @*@Html.Action("AttendedBySelectList", "Employee", new { required = "", postingParams = "ResponsiblePersonID" })*@
                             </div>                          
@@ -177,7 +177,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @* @Html.Action("BranchSelectList", "Branch", new { required = "" })*@
                             </div>                           
                         </div>
@@ -191,7 +191,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="divBillLocationSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             </div>                          
                         </div>
                         <!-- This hidden field will keep the information whether the field is required or not -->
@@ -323,12 +323,12 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             @* binding from javascript document ready function using div class *@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnCustomerRequired", "")
+                    @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
                     @Html.Hidden("hdnCustomerdisabled", false)
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })

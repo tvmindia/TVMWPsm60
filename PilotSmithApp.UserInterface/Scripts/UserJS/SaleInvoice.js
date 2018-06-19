@@ -232,7 +232,6 @@ function ResetSaleInvoice() {
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleInvoiceForm #ID').val());
-            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
         }
         else {

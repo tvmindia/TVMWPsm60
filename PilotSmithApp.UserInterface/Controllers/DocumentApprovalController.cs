@@ -65,6 +65,45 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_DocumentSummary", documentSummaryVM);
         }
 
+        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        public ActionResult ViewApprovalHistory(string ID, string DocType, string DocID)
+        {
+            ViewBag.DocumentID = DocID;
+            ViewBag.ApprovalLogID = ID;
+            ViewBag.DocumentType = DocType;
+
+            DocumentApprovalAdvanceSearchViewModel documentApprovalAdvanceSearchVM = new DocumentApprovalAdvanceSearchViewModel();
+            documentApprovalAdvanceSearchVM.DocumentType = new DocumentTypeViewModel()
+            {
+                DocumentTypeSelectList = _documentTypeBusiness.GetDocumentTypeSelectList(),
+            };
+            return View(documentApprovalAdvanceSearchVM);
+        }
+
+        #region GetAllApprovalHistory
+        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        public JsonResult GetAllApprovalHistory(DataTableAjaxPostModel model, DocumentApprovalAdvanceSearchViewModel documentApprovalAdvanceSearchVM)
+        {
+            AppUA appUA = Session["AppUA"] as AppUA;
+            documentApprovalAdvanceSearchVM.LoginName = appUA.UserName;
+            documentApprovalAdvanceSearchVM.DataTablePaging.Start = model.start;
+            documentApprovalAdvanceSearchVM.DataTablePaging.Length = (documentApprovalAdvanceSearchVM.DataTablePaging.Length == 0 ? model.length : documentApprovalAdvanceSearchVM.DataTablePaging.Length);
+            List<DocumentApprovalViewModel> documentApprovalList = Mapper.Map<List<DocumentApproval>, List<DocumentApprovalViewModel>>(_documentApprovalBusiness.GetAllApprovalHistory(Mapper.Map<DocumentApprovalAdvanceSearchViewModel, DocumentApprovalAdvanceSearch>(documentApprovalAdvanceSearchVM)));
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.None
+            };
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = documentApprovalList.Count != 0 ? documentApprovalList[0].TotalCount : 0,
+                recordsFiltered = documentApprovalList.Count != 0 ? documentApprovalList[0].FilteredCount : 0,
+                data = documentApprovalList
+
+            });
+        }
+        #endregion GetAllApprovalHistory
+
         #region Approvals
         [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public ActionResult GetApprovers(string documentTypeCode)
@@ -247,18 +286,35 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.PrintBtn.Event = "ExportPendingDocs();";
                     //---------------------------------------
                     break;
+
                 case "Back":
-                    toolboxVM.backbtn.Visible = true;
-                    toolboxVM.backbtn.Text = "Back";
-                    toolboxVM.backbtn.Title = "Back";
-                    toolboxVM.ListBtn.Event = "";
-                    toolboxVM.backbtn.Href = Url.Action("ViewPendingDocuments", "DocumentApproval", new { Code = "APR"});
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "Close();";//need to change function to rebind table
 
                     break;
-              
-              
+                    
+                case "Close":
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
 
-                     
+                    break;
+
+                case "ApprovalHistory":
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset All";
+                    toolboxVM.resetbtn.Event = "ResetApprovalHistory();";
+                    //---------------------------------------
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Export";
+                    toolboxVM.PrintBtn.Title = "Export";
+                    toolboxVM.PrintBtn.Event = "ExportApprovalHistory();";
+                    break;
+
                 default:
                     return Content("Nochange");
             }

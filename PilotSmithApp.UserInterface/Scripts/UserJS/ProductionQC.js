@@ -198,7 +198,7 @@ function AddProductionQC() {
     //this will return form body(html)
     OnServerCallBegin();
     $('#lblProductionQCInfo').text("<<ProductionQC No.>>");
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid + "&productionOrderID=", function (responseTxt, statusTxt, xhr) {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -215,7 +215,7 @@ function EditProductionQC(this_Obj) {
     var ProductionQC = _dataTable.ProductionQCList.row($(this_Obj).parents('tr')).data();
     $('#lblProductionQCInfo').text(ProductionQC.ProdQCNo);
     //this will return form body(html)
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID + "&productionOrderID=" + ProductionQC.ProdOrderID, function (responseTxt, statusTxt, xhr) {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //$('#CustomerID').trigger('change');
             
@@ -239,14 +239,10 @@ function EditProductionQC(this_Obj) {
     });
 }
 function ResetProductionQC() {
-    if ($('#IsUpdate').val() == 'False') {
-        $('#hdnProdOrderID').val('');
-    }
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() + "&productionOrderID=" + $('#hdnProdOrderID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
-
                 $("#divProductionQCForm #ProdOrderID").prop('disabled', true);
                 openNav();
             }

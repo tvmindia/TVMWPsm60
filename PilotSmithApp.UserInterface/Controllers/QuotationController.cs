@@ -348,12 +348,6 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             // action inside a standard controller
             List<QuotationViewModel> QuotationVMList = Mapper.Map<List<Quotation>, List<QuotationViewModel>>(_quotationBusiness.GetAllQuotation(Mapper.Map<QuotationAdvanceSearchViewModel, QuotationAdvanceSearch>(QuotationAdvanceSearchVM)));
-            if (QuotationAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = QuotationVMList.Count != 0 ? QuotationVMList[0].TotalCount : 0;
-                int filteredResult = QuotationVMList.Count != 0 ? QuotationVMList[0].FilteredCount : 0;
-                QuotationVMList = QuotationVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),

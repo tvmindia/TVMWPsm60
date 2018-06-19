@@ -689,6 +689,7 @@
     <Content Include="Scripts\UserJS\AdvanceSelectList.js" />
     <Content Include="Scripts\UserJS\Country.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
+    <Content Include="Scripts\UserJS\DocumentApproval\ViewApprovalHistory.js" />
     <Content Include="Scripts\UserJS\OtherCharge.js" />
     <Content Include="Scripts\UserJS\DeliveryChallan.js" />
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
@@ -1036,8 +1037,8 @@
     <Content Include="Views\Country\_CountrySelectList.cshtml" />
     <Content Include="Views\SaleInvoice\_SaleInvoiceServiceBill.cshtml" />
     <Content Include="Views\Shared\_TimeLine.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\ExcelExport\Index.cshtml" />
+    <Content Include="Views\DocumentApproval\ViewApprovalHistory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
