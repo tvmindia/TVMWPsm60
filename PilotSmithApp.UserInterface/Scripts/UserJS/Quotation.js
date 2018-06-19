@@ -271,7 +271,10 @@ function ResetQuotation() {
                 $("#QuotationForm #CustomerID").prop('disabled', false);
                 $('#lblQuotationInfo').text('<<Quotation No.>>');
             }
-            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            if ($('#LatestApprovalStatus').val() == "") {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
+            }
+            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {

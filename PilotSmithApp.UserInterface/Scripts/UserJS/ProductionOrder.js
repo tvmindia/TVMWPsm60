@@ -274,7 +274,10 @@ function ResetProductionOrder() {
                 $('#hdnCustomerID').val('');
                 $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             }
-            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            if ($('#LatestApprovalStatus').val() == "") {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
+            }
+            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {

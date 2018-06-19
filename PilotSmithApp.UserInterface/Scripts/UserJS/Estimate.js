@@ -187,7 +187,7 @@ function AddEstimate() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=", function (responseTxt, statusTxt, xhr) {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -207,7 +207,7 @@ function EditEstimate(this_Obj) {
     var Estimate = _dataTable.EstimateList.row($(this_Obj).parents('tr')).data();
     $('#lblEstimateInfo').text(Estimate.EstimateNo);
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID + "&enquiryID=" + Estimate.EnquiryID, function (responseTxt, statusTxt, xhr) {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
          OnServerCallComplete();
          openNav();
@@ -236,7 +236,7 @@ function ResetEstimate() {
         $('#hdnEnquiryID').val('');
     }
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=" + $('#hdnEnquiryID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding

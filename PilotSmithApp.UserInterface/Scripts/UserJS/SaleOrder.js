@@ -274,7 +274,11 @@ function ResetSaleOrder() {
                     //resides in customjs for sliding
                     openNav();
             }
-            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            debugger;
+            if ($('#LatestApprovalStatus').val() == "") {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+            }
+            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {
@@ -288,7 +292,6 @@ function ResetSaleOrder() {
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleOrderForm #ID').val());
-            $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
             });
         }
