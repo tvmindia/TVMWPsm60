@@ -256,23 +256,18 @@ function EditDeliveryChallan(this_Obj) {
 
 function ResetDeliveryChallan() {
     //this will return form body(html)
-    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val() + "&prodOrderID=" + $('#hdnProdOrderID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-                $('#divDeliveryChallanForm #ProdOrderID').prop('disabled', true);
+                $('#divDeliveryChallanForm #DelvChallanNo').prop('disabled', true);
                 //resides in customjs for sliding
                 openNav();
-            }
-            else {
-                $('#hdnCustomerID').val('');
-                $('#hdnSaleOrderID').val('');
-                $('#hdnProdOrderID').val('');
-                $('#lblDeliveryChallanInfo').text('<<Challan No.>>');
             }
             BindDeliveryChallanDetailList($('#ID').val(), false, false);
             clearUploadControl();
             PaintImages($('#DeliveryChallanForm #ID').val());
-            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val(), function () {
+            });
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

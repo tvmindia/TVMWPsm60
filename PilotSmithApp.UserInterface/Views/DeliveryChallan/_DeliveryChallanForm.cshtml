@@ -531,6 +531,8 @@
                     BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", false, true);
                     $("input[type=radio][value=ProductionOrder]").attr("disabled", true);
                     $("input[type=radio][value=ProductionOrder]").attr('title', "Sale Order details has been listed, Reset to continue");
+                    //$('#DocumentType').prop('disabled', true);
+                    //$("#DocumentType").attr('title', "Sale Order details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 
@@ -547,8 +549,10 @@
                 $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&prodOrderID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
                     BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true, false);
-                    $("input[type=radio][value=SaleOrder]").attr("disabled", true);
-                    $("input[type=radio][value=SaleOrder]").attr('title', "Production Order details has been listed, Reset to continue");
+                    //$("input[type=radio][value=ProductionOrder]").attr("disabled", true);
+                    //$("input[type=radio][value=ProductionOrder]").attr('title', "Production Order details has been listed, Reset to continue");
+                    $('#DocumentType').prop('disabled', true);
+                    $("#DocumentType").attr('title', "Production Order details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 
@@ -561,12 +565,14 @@
         try {
             $('[name="DocumentType"]').change(function () {
                 if (this.value == "SaleOrder") {
+                    debugger;
                     $('#divSaleOrderSelectList').show();
                     $('#divProductionOrderSelectList').hide();
                     $('#SaleOrderID').prop('disabled', false);
                     $('#ProdOrderID').prop('disabled', true);
                 }
                 else if (this.value == "ProductionOrder") {
+                    debugger;
                     $('#divSaleOrderSelectList').hide();
                     $('#divProductionOrderSelectList').show();
                     $('#SaleOrderID').prop('disabled', true);
