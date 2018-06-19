@@ -35,28 +35,29 @@ namespace PilotSmithApp.UserInterface.Controllers
                 string fileName = "";
                 PSASysCommon pSASysCommon = new PSASysCommon();
                 ExcelPackage excel = new ExcelPackage();
-
+                object ResultFromJS = null;
+                string ReadableFormat = null;
                 switch (excelExportVM.DocumentType)
                 {
                     case "ENQ":
                         fileName = "Enquiry" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
                         EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
-                        object ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
-                        string ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                         enquiryAdvanceSearchVM = JsonConvert.DeserializeObject<EnquiryAdvanceSearchViewModel>(ReadableFormat);
                         List<EnquiryViewModel> enquiryVMList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetAllEnquiry(Mapper.Map<EnquiryAdvanceSearchViewModel, EnquiryAdvanceSearch>(enquiryAdvanceSearchVM)));
-                        var workSheet = excel.Workbook.Worksheets.Add("Enquiry");
+                        var enquiryworkSheet = excel.Workbook.Worksheets.Add("Enquiry");
                         EnquiryViewModel[] enquiryVMListArray = enquiryVMList.ToArray();
-                        workSheet.Cells[1, 1].LoadFromCollection(enquiryVMListArray.Select(x => new { EnquiryNo = x.EnquiryNo, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, RequirementSpecification = x.RequirementSpec, Area = x.Area.Description, ReferencePerson = x.ReferencePerson.Name, DocumentOwner = x.PSAUser.LoginName, DocumentStatus = x.DocumentStatus.Description, Branch = x.Branch.Description }), true,TableStyles.Light1);
-                        workSheet.Column(1).AutoFit();
-                        workSheet.Column(2).AutoFit();
-                        workSheet.Column(3).AutoFit();
-                        workSheet.Column(4).Width = 40;
-                        workSheet.Column(5).AutoFit();
-                        workSheet.Column(6).AutoFit();
-                        workSheet.Column(7).AutoFit();
-                        workSheet.Column(8).AutoFit();
-                        workSheet.Column(9).AutoFit();
+                        enquiryworkSheet.Cells[1, 1].LoadFromCollection(enquiryVMListArray.Select(x => new { EnquiryNo = x.EnquiryNo, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, RequirementSpecification = x.RequirementSpec, Area = x.Area.Description, ReferencePerson = x.ReferencePerson.Name, DocumentOwner = x.PSAUser.LoginName, DocumentStatus = x.DocumentStatus.Description, Branch = x.Branch.Description }), true,TableStyles.Light1);
+                        enquiryworkSheet.Column(1).AutoFit();
+                        enquiryworkSheet.Column(2).AutoFit();
+                        enquiryworkSheet.Column(3).AutoFit();
+                        enquiryworkSheet.Column(4).Width = 40;
+                        enquiryworkSheet.Column(5).AutoFit();
+                        enquiryworkSheet.Column(6).AutoFit();
+                        enquiryworkSheet.Column(7).AutoFit();
+                        enquiryworkSheet.Column(8).AutoFit();
+                        enquiryworkSheet.Column(9).AutoFit();
                         break;
                     case "EST":
                         break;
