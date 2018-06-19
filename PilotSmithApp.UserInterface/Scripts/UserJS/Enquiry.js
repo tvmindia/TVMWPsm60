@@ -80,7 +80,7 @@ function BindOrReloadEnquiryTable(action) {
                 EnquiryAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
                 EnquiryAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
                 $('#AdvanceSearch').val(JSON.stringify(EnquiryAdvanceSearchViewModel));
-                $('#FormExcelExport').submit();
+                $('#FormExcelExport').submit();               
                 return true;
                 break;
             default:
