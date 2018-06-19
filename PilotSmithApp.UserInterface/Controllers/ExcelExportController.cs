@@ -20,14 +20,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IEstimateBusiness _estimateBusiness;
         IQuotationBusiness _quotationBusiness;
         ISaleOrderBusiness _saleOrderBusiness;
-
-        public ExcelExportController(IEnquiryBusiness enquiryBusiness, IEstimateBusiness estimateBusiness, IQuotationBusiness quotationBusiness, ISaleOrderBusiness saleOrderBusiness)
         IProductionOrderBusiness _productionOrderBusiness;
         IProductionQCBusiness _productionQCBusiness;
         ISaleInvoiceBusiness _saleInvoiceBusiness;
         IServiceCallBusiness _serviceCallBusiness;
         IDeliveryChallanBusiness _deliveryChallanBusiness;
-        public ExcelExportController(IEnquiryBusiness enquiryBusiness,IProductionOrderBusiness productionOrderBusiness,IProductionQCBusiness productionQCBusiness,ISaleInvoiceBusiness saleInvoiceBusiness,IServiceCallBusiness serviceCallBusiness,IDeliveryChallanBusiness deliveryChallanBusiness)
+        public ExcelExportController(IEnquiryBusiness enquiryBusiness, IEstimateBusiness estimateBusiness, IQuotationBusiness quotationBusiness, ISaleOrderBusiness saleOrderBusiness,IProductionOrderBusiness productionOrderBusiness,IProductionQCBusiness productionQCBusiness,ISaleInvoiceBusiness saleInvoiceBusiness,IServiceCallBusiness serviceCallBusiness,IDeliveryChallanBusiness deliveryChallanBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _estimateBusiness = estimateBusiness;
