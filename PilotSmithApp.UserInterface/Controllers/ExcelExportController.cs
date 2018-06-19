@@ -58,7 +58,19 @@ namespace PilotSmithApp.UserInterface.Controllers
                         workSheet.Column(8).AutoFit();
                         workSheet.Column(9).AutoFit();
                         break;
+                    case "EST":
+                        break;
                     case "QUO":
+                        break;
+                    case "SOD":
+                        break;
+                    case "POD":
+                        break;
+                    case "PQC":
+                        break;
+                    case "SIV":
+                        break;
+                    case "SRC":
                         break;
                 }
                 using (var memoryStream = new MemoryStream())
