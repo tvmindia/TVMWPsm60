@@ -79,7 +79,7 @@
                     {
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
-                                @Html.Label("Search and select a SaleOrder", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Sale Order", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
                                 @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
@@ -91,7 +91,7 @@
                     {
                         <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
                             <div class="col-md-12">
-                                @Html.Label("Search and select a ProductionOrder", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Production Order", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
                                 @Html.DropDownListFor(model => model.ProdOrderID, Model.ProductionOrderSelectList, "Search ProductionOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)", @disabled = "" })
