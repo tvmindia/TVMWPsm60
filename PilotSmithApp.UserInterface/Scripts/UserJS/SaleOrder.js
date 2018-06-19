@@ -69,6 +69,21 @@ function BindOrReloadSaleOrderTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                SaleOrderAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                SaleOrderAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                SaleOrderAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                SaleOrderAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                SaleOrderAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                SaleOrderAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                SaleOrderAdvanceSearchViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val() == "" ? null : $('.divboxASearch #AdvReferencePersonCode').val();
+                SaleOrderAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                SaleOrderAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                SaleOrderAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                SaleOrderAdvanceSearchViewModel.AdvApprovalStatusCode = $('#AdvApprovalStatusCode').val() == "" ? null : $('#AdvApprovalStatusCode').val();
+                SaleOrderAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
+                $('#AdvanceSearch').val(JSON.stringify(SaleOrderAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -89,13 +104,13 @@ function BindOrReloadSaleOrderTable(action) {
         _dataTable.SaleOrderList = $('#tblSaleOrder').DataTable(
         {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4, 5]
-                             }
-            }],
+            //buttons: [{
+            //    extend: 'excel',
+            //    exportOptions:
+            //                 {
+            //                     columns: [0, 1, 2, 3, 4, 5]
+            //                 }
+            //}],
             ordering: false,
             searching: false,
             paging: true,
@@ -169,20 +184,20 @@ function BindOrReloadSaleOrderTable(action) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
                 }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadSaleOrderTable();
-                }
+                //if (action === 'Export') {
+                //    if (json.data.length > 0) {
+                //        if (json.data[0].TotalCount > 1000) {
+                //            setTimeout(function () {
+                //                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
+                //            }, 10000)
+                //        }
+                //    }
+                //    $(".buttons-excel").trigger('click');
+                //    BindOrReloadSaleOrderTable();
+                //}
             }
         });
-        $(".buttons-excel").hide();
+       // $(".buttons-excel").hide();
     }
     catch (e) {
         console.log(e.message);
@@ -197,8 +212,8 @@ function ResetSaleOrderList() {
 //function export data to excel
 function ExportSaleOrderData() {
     debugger;
-    $('.excelExport').show();
-    OnServerCallBegin();
+    //$('.excelExport').show();
+    //OnServerCallBegin();
     BindOrReloadSaleOrderTable('Export');
 }
 // add SaleOrder section
@@ -206,7 +221,7 @@ function AddSaleOrder() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&saleOrderID=", function (responseTxt, statusTxt, xhr) {
+    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -233,7 +248,7 @@ function EditSaleOrder(this_Obj) {
     OnServerCallBegin();
     var SaleOrder = _dataTable.SaleOrderList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID + "&quoteID=" + SaleOrder.QuoteID + "&enquiryID=" + SaleOrder.EnquiryID, function (responseTxt, statusTxt, xhr) {
+    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -267,14 +282,17 @@ function EditSaleOrder(this_Obj) {
     });
 }
 function ResetSaleOrder() {
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-                    $("#divSaleOrderForm #EstimateID").prop('disabled', true);
                     //resides in customjs for sliding
                     openNav();
             }
-            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            debugger;
+            if ($('#LatestApprovalStatus').val() == "") {
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+            }
+            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {
@@ -288,7 +306,6 @@ function ResetSaleOrder() {
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleOrderForm #ID').val());
-            $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
             });
         }

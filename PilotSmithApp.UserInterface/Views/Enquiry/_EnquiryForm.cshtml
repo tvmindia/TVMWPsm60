@@ -40,16 +40,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @if (Model.IsUpdate)
-                            {
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                @*@Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })*@
-                            }
-                            else
-                            {
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                @*@Html.Action("CustomerSelectList", "Customer", new { required = "required" })*@
-                            }
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -86,7 +77,7 @@
                         </div>
                         <div class="col-md-12 no-right-padding">
                             <div class="divDocumentStatusSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "ENQ" })*@
                             </div>                           
                         </div>
@@ -102,7 +93,7 @@
                         </div>
                         <div class="col-md-12 no-right-padding">
                             <div class="divReferredByCodeSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @*@Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "" })*@
                             </div>                           
                         </div>
@@ -118,7 +109,7 @@
                         </div>
                         <div class="col-md-12 no-right-padding">
                             <div class="divResponsiblePersonSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @*@Html.Action("ResponsiblePersonSelectList", "Employee", new { required = "" })*@
                             </div>                           
                         </div>
@@ -144,7 +135,7 @@
                         {
                             <div class="col-md-12">
                                 <div class="divBranchSelectList">
-                                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                     @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
                                 </div>
                                 <!-- This hidden field will keep the information whether the field is required or not -->
@@ -160,7 +151,7 @@
                         </div>
                         <div class="col-md-12 no-right-padding">
                             <div class="divAttendedBySelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @*@Html.Action("AttendedBySelectList", "Employee", new { required = "" })*@
                             </div>                           
                         </div>
@@ -294,7 +285,7 @@
     $(document).ready(function () {
         try {
             $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList')
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBankRequired').val())
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=ENQ&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList')
             $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList')

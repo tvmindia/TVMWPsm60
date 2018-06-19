@@ -200,7 +200,7 @@ function AddProductionOrder() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid + "&saleOrderID=", function (responseTxt, statusTxt, xhr) {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success")
         {
             OnServerCallComplete();
@@ -208,7 +208,6 @@ function AddProductionOrder() {
             $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
             BindProductionOrderDetailList(_emptyGuid);
-            //BindProductionOrderOtherChargesDetailList(_emptyGuid)
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -223,7 +222,7 @@ function EditProductionOrder(this_Obj) {
     var productionOrder = _dataTable.ProductionOrderList.row($(this_Obj).parents('tr')).data();
     $('#lblProductionOrderInfo').text(productionOrder.ProdOrderNo);
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID + "&saleOrderID=" + productionOrder.SaleOrderID, function (responseTxt, statusTxt, xhr) {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -257,15 +256,11 @@ function EditProductionOrder(this_Obj) {
 
 function ResetProductionOrder() {
     debugger;
-    if ($('#IsUpdate').val() == 'False') {
-        $('#hdnSaleOrderID').val('');
-    }
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() + "&saleOrderID=" + $('#hdnSaleOrderID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
-
                 $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
                 openNav();
 
@@ -274,7 +269,10 @@ function ResetProductionOrder() {
                 $('#hdnCustomerID').val('');
                 $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             }
-            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            if ($('#LatestApprovalStatus').val() == "") {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
+            }
+            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {
