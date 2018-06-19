@@ -162,12 +162,6 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderAdvanceSearchVM.DataTablePaging.Length = (productionOrderAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : productionOrderAdvanceSearchVM.DataTablePaging.Length;
 
             List<ProductionOrderViewModel> productionOrderVMList =Mapper.Map<List<ProductionOrder>, List<ProductionOrderViewModel>>(_productionOrderBusiness.GetAllProductionOrder(Mapper.Map<ProductionOrderAdvanceSearchViewModel, ProductionOrderAdvanceSearch>(productionOrderAdvanceSearchVM)));
-            if (productionOrderAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = productionOrderVMList.Count != 0 ? productionOrderVMList[0].TotalCount : 0;
-                int filteredResult = productionOrderVMList.Count != 0 ? productionOrderVMList[0].FilteredCount : 0;
-                productionOrderVMList = productionOrderVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
