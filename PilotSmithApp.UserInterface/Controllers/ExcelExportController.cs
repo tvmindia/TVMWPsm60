@@ -48,6 +48,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                         var workSheet = excel.Workbook.Worksheets.Add("Enquiry");
                         EnquiryViewModel[] enquiryVMListArray = enquiryVMList.ToArray();
                         workSheet.Cells[1, 1].LoadFromCollection(enquiryVMListArray.Select(x => new { EnquiryNo = x.EnquiryNo, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, RequirementSpecification = x.RequirementSpec, Area = x.Area.Description, ReferencePerson = x.ReferencePerson.Name, DocumentOwner = x.PSAUser.LoginName, DocumentStatus = x.DocumentStatus.Description, Branch = x.Branch.Description }), true,TableStyles.Light1);
+                        workSheet.Column(1).AutoFit();
+                        workSheet.Column(2).AutoFit();
+                        workSheet.Column(3).AutoFit();
+                        workSheet.Column(4).Width = 40;
+                        workSheet.Column(5).AutoFit();
+                        workSheet.Column(6).AutoFit();
+                        workSheet.Column(7).AutoFit();
+                        workSheet.Column(8).AutoFit();
+                        workSheet.Column(9).AutoFit();
                         break;
                     case "QUO":
                         break;
