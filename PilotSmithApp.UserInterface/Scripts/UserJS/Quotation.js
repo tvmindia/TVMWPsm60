@@ -195,7 +195,7 @@ function ExportQuotationData() {
 function AddQuotation() {
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=", function (responseTxt, statusTxt, xhr) {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -214,7 +214,7 @@ function EditQuotation(this_Obj) {
     OnServerCallBegin();
     var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + Quotation.EstimateID, function (responseTxt, statusTxt, xhr) {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             debugger;
             OnServerCallComplete();
@@ -249,10 +249,7 @@ function EditQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
-    if ($('#IsUpdate').val() == 'False') {
-        $('#hdnEstimateID').val('');
-    }
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                     $("#divQuotationForm #EstimateID").prop('disabled', true);
