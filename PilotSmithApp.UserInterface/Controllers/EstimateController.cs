@@ -129,12 +129,6 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             // action inside a standard controller
             List<EstimateViewModel> estimateVMList = Mapper.Map<List<Estimate>, List<EstimateViewModel>>(_estimateBusiness.GetAllEstimate(Mapper.Map<EstimateAdvanceSearchViewModel, EstimateAdvanceSearch>(estimateAdvanceSearchVM)));
-            if (estimateAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = estimateVMList.Count != 0 ? estimateVMList[0].TotalCount : 0;
-                int filteredResult = estimateVMList.Count != 0 ? estimateVMList[0].FilteredCount : 0;
-                estimateVMList = estimateVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
