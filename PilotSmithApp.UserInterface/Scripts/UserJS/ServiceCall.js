@@ -62,6 +62,19 @@ function BindOrReloadServiceCallTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                ServiceCallAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                ServiceCallAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                ServiceCallAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                ServiceCallAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                ServiceCallAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                ServiceCallAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                ServiceCallAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                ServiceCallAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                ServiceCallAdvanceSearchViewModel.AdvServicedBy = $('.divboxASearch #AdvServicedBy').val() == "" ? _emptyGuid : $('.divboxASearch #AdvServicedBy').val();
+                ServiceCallAdvanceSearchViewModel.AdvAttendedBy = $('.divboxASearch #AdvAttendedBy').val() == "" ? _emptyGuid : $('.divboxASearch #AdvAttendedBy').val();
+                $('#AdvanceSearch').val(JSON.stringify(ServiceCallAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -79,14 +92,7 @@ function BindOrReloadServiceCallTable(action) {
         //apply datatable plugin on ServiceCall table
         _dataTable.ServiceCallList = $('#tblServiceCall').DataTable(
         {
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4, 5, 6]
-                             }
-            }],
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',           
             ordering: false,
             searching: false,
             paging: true,
@@ -122,7 +128,7 @@ function BindOrReloadServiceCallTable(action) {
                },//4
                {
                    "data": "DocumentStatus.Description", render: function (data, type, row) {
-                       return "<b>Doc.Status-</b>" + (data == null ? " " : data) + ", </br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
+                       return "<b>Doc.Status-</b>" + (data == null ? " " : data) + " </br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCall(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
@@ -139,23 +145,13 @@ function BindOrReloadServiceCallTable(action) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblServiceCall').fadeIn('slow');
                 if (action == undefined) {
-                    $('.excelExport').hide();
+                    //$('.excelExport').hide();
                     OnServerCallComplete();
                 }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadServiceCallTable();
-                }
+               
             }
         });
-        $(".buttons-excel").hide();
+        
     }
     catch (e) {
         console.log(e.message);
@@ -169,10 +165,7 @@ function ResetServiceCallList() {
 }
 
 //function export data to excel
-function ExportServiceCallData() {
-    debugger;
-    $('.excelExport').show();
-    OnServerCallBegin();
+function ExportServiceCallData() {   
     BindOrReloadServiceCallTable('Export');
 }
 

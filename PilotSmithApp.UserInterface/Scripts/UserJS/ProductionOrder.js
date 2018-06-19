@@ -42,8 +42,8 @@ function BindOrReloadProductionOrderTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');               
-                $('.divboxASearch #AdvFromDate').val('').trigger('change');
-                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvCustomerID').val('').trigger('change');              
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
@@ -70,7 +70,22 @@ function BindOrReloadProductionOrderTable(action) {
                 }
                 break;
             case 'Export':
+                debugger;
                 DataTablePagingViewModel.Length = -1;
+                ProductionOrderAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                ProductionOrderAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                ProductionOrderAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                ProductionOrderAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                ProductionOrderAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                ProductionOrderAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                ProductionOrderAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
+                $('#AdvanceSearch').val(JSON.stringify(ProductionOrderAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -90,14 +105,7 @@ function BindOrReloadProductionOrderTable(action) {
         //apply datatable plugin on ProductionOrder table
         _dataTable.ProductionOrderList = $('#tblProductionOrder').DataTable(
         {
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4]
-                             }
-            }],
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',           
             ordering: false,
             searching: false,
             paging: true,
@@ -160,23 +168,11 @@ function BindOrReloadProductionOrderTable(action) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblProductionOrder').fadeIn('slow');
                 if (action == undefined) {
-                    $('.excelExport').hide();
+                    //$('.excelExport').hide();
                     OnServerCallComplete();
-                }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadProductionOrderTable();
-                }
+                }              
             }
-        });
-        $(".buttons-excel").hide();
+        });        
     }
     catch (e) {
         console.log(e.message);
@@ -189,10 +185,7 @@ function ResetProductionOrderList() {
     BindOrReloadProductionOrderTable('Reset');
 }
 //function export data to excel
-function ExportProductionOrderData() {
-    debugger;
-    $('.excelExport').show();
-    OnServerCallBegin();
+function ExportProductionOrderData() {   
     BindOrReloadProductionOrderTable('Export');
 }
 // add ProductionOrder section

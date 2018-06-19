@@ -60,7 +60,11 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Document Type")]
         public string DocumentTypeCode { get; set; }
         public DocumentTypeViewModel DocumentType { get; set; }
-        
+        [Display(Name = "Approval Status")]
+        public int? ApprovalStatus { get; set; }
+        [Display(Name = "Approval Level")]
+        public int? ApproverLevel { get; set; }
+
         [Display(Name = "Show All Level Documents")]
         public Boolean ShowAll { get; set; }
         public String LoginName { get; set; }

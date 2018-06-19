@@ -605,12 +605,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             // action inside a standard controller
             List<SaleInvoiceViewModel> SaleInvoiceVMList = Mapper.Map<List<SaleInvoice>, List<SaleInvoiceViewModel>>(_saleInvoiceBusiness.GetAllSaleInvoice(Mapper.Map<SaleInvoiceAdvanceSearchViewModel, SaleInvoiceAdvanceSearch>(SaleInvoiceAdvanceSearchVM)));
-            if (SaleInvoiceAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = SaleInvoiceVMList.Count != 0 ? SaleInvoiceVMList[0].TotalCount : 0;
-                int filteredResult = SaleInvoiceVMList.Count != 0 ? SaleInvoiceVMList[0].FilteredCount : 0;
-                SaleInvoiceVMList = SaleInvoiceVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
+           
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),

@@ -42,6 +42,15 @@
 
                             }
                         }
+                        if (i != Model.ApproversCount - 1)
+                        {
+                            approverList.Add(new SelectListItem
+                            {
+                                Text = "--Skip this Level--",
+                                Value = "",
+                                Selected = false
+                            });
+                        }
                     }
                 }
                 @Html.DropDownList("ApproverLevel"+i, approverList, new { @class = "form-control", style = "padding:4px 12px;" })

@@ -79,6 +79,10 @@ namespace PilotSmithApp.BusinessService.Service
         }
 
 
+        public List<DocumentApproval> GetAllApprovalHistory(DocumentApprovalAdvanceSearch documentApprovalAdvanceSearch)
+        {
+            return _documentApprovalRepository.GetAllApprovalHistory(documentApprovalAdvanceSearch);
+        }
 
         public async Task<bool> SendApprolMails(Guid documentID, string documentType) {
             try

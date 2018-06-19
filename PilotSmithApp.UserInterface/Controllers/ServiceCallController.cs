@@ -127,12 +127,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             serviceCallAdvanceSearchVM.DataTablePaging.Length = (serviceCallAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : serviceCallAdvanceSearchVM.DataTablePaging.Length;
 
             List<ServiceCallViewModel> serviceCallVMList = Mapper.Map<List<ServiceCall>, List<ServiceCallViewModel>>(_serviceCallBusiness.GetAllServiceCall(Mapper.Map<ServiceCallAdvanceSearchViewModel, ServiceCallAdvanceSearch>(serviceCallAdvanceSearchVM)));
-            if (serviceCallAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = serviceCallVMList.Count != 0 ? serviceCallVMList[0].TotalCount : 0;
-                int filteredResult = serviceCallVMList.Count != 0 ? serviceCallVMList[0].FilteredCount : 0;
-                serviceCallVMList = serviceCallVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
+            
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),

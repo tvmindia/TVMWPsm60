@@ -179,12 +179,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             deliveryChallanAdvanceSearchVM.DataTablePaging.Length = (deliveryChallanAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : deliveryChallanAdvanceSearchVM.DataTablePaging.Length;
 
             List<DeliveryChallanViewModel> deliveryChallanVMList = Mapper.Map<List<DeliveryChallan>, List<DeliveryChallanViewModel>>(_deliveryChallanBusiness.GetAllDeliveryChallan(Mapper.Map<DeliveryChallanAdvanceSearchViewModel, DeliveryChallanAdvanceSearch>(deliveryChallanAdvanceSearchVM)));
-            if (deliveryChallanAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = deliveryChallanVMList.Count != 0 ? deliveryChallanVMList[0].TotalCount : 0;
-                int filteredResult = deliveryChallanVMList.Count != 0 ? deliveryChallanVMList[0].FilteredCount : 0;
-                deliveryChallanVMList = deliveryChallanVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
+           
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
