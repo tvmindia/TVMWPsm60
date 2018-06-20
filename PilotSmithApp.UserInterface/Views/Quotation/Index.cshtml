@@ -141,7 +141,7 @@
                     </div>
                 </div>
             </div>
-
+            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID })
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -273,10 +273,13 @@
 
     </div>
 </div>
+@using (Html.BeginForm("DownloadExcel", "ExcelExport", FormMethod.Post, new { id = "FormExcelExport" }))
+{
+    @Html.Hidden("AdvanceSearch", null, htmlAttributes: new { @class = "control-label" })
+    @Html.Hidden("DocumentType", null, htmlAttributes: new { @class = "control-label", Value = "QUO" })
+}
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jsZip")
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableButtons")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/AdvanceSelectList")

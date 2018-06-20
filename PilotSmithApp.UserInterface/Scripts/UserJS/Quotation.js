@@ -13,6 +13,9 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
                 EditQuotation(this);
         });
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -72,6 +75,21 @@ function BindOrReloadQuotationTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                QuotationAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                QuotationAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                QuotationAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                QuotationAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                QuotationAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                QuotationAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                QuotationAdvanceSearchViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val() == "" ? null : $('.divboxASearch #AdvReferencePersonCode').val();
+                QuotationAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                QuotationAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                QuotationAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                QuotationAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+                QuotationAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
+                $('#AdvanceSearch').val(JSON.stringify(QuotationAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -92,13 +110,6 @@ function BindOrReloadQuotationTable(action) {
         _dataTable.QuotationList = $('#tblQuotation').DataTable(
         {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4, 5]
-                             }
-            }],
             ordering: false,
             searching: false,
             paging: true,
@@ -164,20 +175,8 @@ function BindOrReloadQuotationTable(action) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
                 }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadQuotationTable();
-                }
             }
         });
-        $(".buttons-excel").hide();
     }
     catch (e) {
         console.log(e.message);
@@ -190,15 +189,13 @@ function ResetQuotationList() {
 }
 //function export data to excel
 function ExportQuotationData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
     BindOrReloadQuotationTable('Export');
 }
 // add Quotation section
 function AddQuotation() {
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=", function (responseTxt, statusTxt, xhr) {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -217,7 +214,7 @@ function EditQuotation(this_Obj) {
     OnServerCallBegin();
     var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID + "&estimateID=" + Quotation.EstimateID, function (responseTxt, statusTxt, xhr) {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             debugger;
             OnServerCallComplete();
@@ -252,7 +249,7 @@ function EditQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() + "&estimateID=" + $('#hdnEstimateID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                     $("#divQuotationForm #EstimateID").prop('disabled', true);
@@ -261,12 +258,14 @@ function ResetQuotation() {
             }
             else {
                 debugger;
-                $('#hdnEstimateID').val('');
                 $('#hdnCustomerID').val('');
                 $("#QuotationForm #CustomerID").prop('disabled', false);
                 $('#lblQuotationInfo').text('<<Quotation No.>>');
             }
-            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            if ($('#LatestApprovalStatus').val() == "") {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
+            }
+            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {
@@ -1170,4 +1169,36 @@ function CalculateTotal()
     $('#lblGrandTotal').text(GrossAmount);
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
     $('#Discount').trigger('onchange');
+}
+function EditRedirectToDocument(id) {
+    debugger;
+    OnServerCallBegin();
+
+    //this will return form body(html)
+    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblQuotationInfo').text($('#QuoteNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+            }
+            BindQuotationDetailList(id);
+            BindQuotationOtherChargesDetailList(id);
+            CalculateTotal();
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+
+            //resides in customjs for sliding
+            $("#divQuotationForm #EstimateID").prop('disabled', true);
+
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

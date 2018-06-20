@@ -31,8 +31,12 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Select Branch")]
         [Required(ErrorMessage = "Branch Code is missing")]
         public int? BranchCode { get; set; }
+        public Guid? DocumentOwnerID { get; set; }
 
         //Additional Fields
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
+        public bool IsDocLocked { get; set; }
         public List<ServiceCallDetailViewModel> ServiceCallDetailList { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         [Display(Name = "Service Call Date")]

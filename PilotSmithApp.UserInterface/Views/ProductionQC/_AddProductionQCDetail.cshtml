@@ -12,7 +12,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("ProductSelectList", "Product", new { required = "required", disabled=true })*@
                 </div>              
             </div>
@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divQCBySelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("QCBySelectList", "Employee", new { required = "" })*@
                 </div>
             </div>
@@ -95,7 +95,25 @@
             $(document).ready(function () {
                 $.validator.unobtrusive.parse("#FormProductionQCDetail");
                 try {
-                    $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val() + '&disabled=true')                   
+                    $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val() + '&disabled=true', function () {
+                        $('#divModelPopProductionQC #ProductID').change(function () {
+                            if ($('#divProductBasicInfo') != undefined) {
+                                $('#divModelPopProductionQC #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                                    $('#divModelPopProductionQC #ProductSpec').val($('#divModelPopProductionQC #spnProductName').text());
+                                });
+                            }
+                            if ($('.divProductModelSelectList') != undefined) {
+                                $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                                if (this.value != "") {
+                                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                                }
+                                else {
+                                    $('.divProductModelSelectList').empty();
+                                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                                }
+                            }
+                        });
+                    });
                     $('.divQCBySelectList').load('/Employee/QCBySelectList?required=' + $('#hdnQCByRequired').val())
                 }
                 catch (e) {
@@ -118,22 +136,5 @@
                     dropdownParent: $("#divModelPopProductionQC")
                 });
                 $('.select2').addClass('form-control newinput');
-                $('#divModelPopProductionQC #ProductID').change(function () {
-                    if ($('#divProductBasicInfo') != undefined) {
-                        $('#divModelPopProductionQC #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                            $('#divModelPopProductionQC #ProductSpec').val($('#divModelPopProductionQC #spnProductName').text());
-                        });
-                    }
-                    if ($('.divProductModelSelectList') != undefined) {
-                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                        if (this.value != "") {
-                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
-                        }
-                        else {
-                            $('.divProductModelSelectList').empty();
-                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                        }
-                    }
-                });
             });
         </script>

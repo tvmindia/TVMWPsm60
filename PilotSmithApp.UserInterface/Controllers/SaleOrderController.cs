@@ -36,8 +36,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion Constructor Injection
         // GET: SaleOrder
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             SaleOrderAdvanceSearchViewModel saleOrderAdvanceSearchVM = new SaleOrderAdvanceSearchViewModel();           
             saleOrderAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             saleOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SOD");           

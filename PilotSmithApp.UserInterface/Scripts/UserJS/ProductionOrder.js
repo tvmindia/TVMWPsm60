@@ -17,7 +17,7 @@ $(document).ready(function () {
         debugger;
         if ($('#RedirectToDocument').val() != "")
         {
-            EditRedirectToDocument($('#RedirectToDocument').val(), $('#RedirectToDocumentSaleOrder').val());
+            EditRedirectToDocument($('#RedirectToDocument').val());
         }
     }
     catch (e) {
@@ -42,8 +42,8 @@ function BindOrReloadProductionOrderTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');               
-                $('.divboxASearch #AdvFromDate').val('').trigger('change');
-                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvCustomerID').val('').trigger('change');              
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
@@ -70,7 +70,22 @@ function BindOrReloadProductionOrderTable(action) {
                 }
                 break;
             case 'Export':
+                debugger;
                 DataTablePagingViewModel.Length = -1;
+                ProductionOrderAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                ProductionOrderAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                ProductionOrderAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                ProductionOrderAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                ProductionOrderAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                ProductionOrderAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                ProductionOrderAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+                ProductionOrderAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
+                $('#AdvanceSearch').val(JSON.stringify(ProductionOrderAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -90,14 +105,7 @@ function BindOrReloadProductionOrderTable(action) {
         //apply datatable plugin on ProductionOrder table
         _dataTable.ProductionOrderList = $('#tblProductionOrder').DataTable(
         {
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4]
-                             }
-            }],
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',           
             ordering: false,
             searching: false,
             paging: true,
@@ -160,23 +168,11 @@ function BindOrReloadProductionOrderTable(action) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblProductionOrder').fadeIn('slow');
                 if (action == undefined) {
-                    $('.excelExport').hide();
+                    //$('.excelExport').hide();
                     OnServerCallComplete();
-                }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadProductionOrderTable();
-                }
+                }              
             }
-        });
-        $(".buttons-excel").hide();
+        });        
     }
     catch (e) {
         console.log(e.message);
@@ -189,10 +185,7 @@ function ResetProductionOrderList() {
     BindOrReloadProductionOrderTable('Reset');
 }
 //function export data to excel
-function ExportProductionOrderData() {
-    debugger;
-    $('.excelExport').show();
-    OnServerCallBegin();
+function ExportProductionOrderData() {   
     BindOrReloadProductionOrderTable('Export');
 }
 // add ProductionOrder section
@@ -200,7 +193,7 @@ function AddProductionOrder() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid + "&saleOrderID=", function (responseTxt, statusTxt, xhr) {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _emptyGuid , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success")
         {
             OnServerCallComplete();
@@ -208,7 +201,6 @@ function AddProductionOrder() {
             $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
             BindProductionOrderDetailList(_emptyGuid);
-            //BindProductionOrderOtherChargesDetailList(_emptyGuid)
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -223,20 +215,25 @@ function EditProductionOrder(this_Obj) {
     var productionOrder = _dataTable.ProductionOrderList.row($(this_Obj).parents('tr')).data();
     $('#lblProductionOrderInfo').text(productionOrder.ProdOrderNo);
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID + "&saleOrderID=" + productionOrder.SaleOrderID, function (responseTxt, statusTxt, xhr) {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
             if ($('#IsDocLocked').val() == "True") {
-
-                if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
-                }
-                else if ($('#LatestApprovalStatus').val() == 4) {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
-                }
-                else {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", productionOrder.ID);
+                        break;
+                    case "3":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
+                        break;
+                    case "4":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
+                        break;
+                    default:
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                        break;
                 }
             }
             else {
@@ -258,21 +255,22 @@ function EditProductionOrder(this_Obj) {
 function ResetProductionOrder() {
     debugger;
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() + "&saleOrderID=" + $('#hdnSaleOrderID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
-
                 $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
                 openNav();
 
             }
             else {
                 $('#hdnCustomerID').val('');
-                $('#hdnSaleOrderID').val('');
                 $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             }
-            if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            if ($('#LatestApprovalStatus').val() == "") {
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
+            }
+            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {

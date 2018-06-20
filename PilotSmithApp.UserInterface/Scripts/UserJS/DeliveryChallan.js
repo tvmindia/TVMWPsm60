@@ -35,8 +35,8 @@ function BindOrReloadDeliveryChallanTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');               
-                $('.divboxASearch #AdvFromDate').val('').trigger('change');
-                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerID').val('').trigger('change');
                 $('.divboxASearch #AdvPlantCode').val('').trigger('change');
@@ -64,6 +64,20 @@ function BindOrReloadDeliveryChallanTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                DeliveryChallanAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                DeliveryChallanAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val() == "" ? null : $('.divboxASearch #AdvPlantCode').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+                DeliveryChallanAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
+                $('#AdvanceSearch').val(JSON.stringify(DeliveryChallanAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -82,14 +96,7 @@ function BindOrReloadDeliveryChallanTable(action) {
         //apply datatable plugin on SaleOrder table
         _dataTable.DeliveryChallanList = $('#tblDeliveryChallan').DataTable(
         {
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4, 5,6]
-                             }
-            }],
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',           
             ordering: false,
             searching: false,
             paging: true,
@@ -163,23 +170,13 @@ function BindOrReloadDeliveryChallanTable(action) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblDeliveryChallan').fadeIn('slow');
                 if (action == undefined) {
-                    $('.excelExport').hide();
+                   // $('.excelExport').hide();
                     OnServerCallComplete();
                 }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadDeliveryChallanTable();
-                }
+                
             }
         });
-        $(".buttons-excel").hide();
+       
     }
     catch (e) {
         console.log(e.message);
@@ -192,9 +189,7 @@ function ResetDeliveryChallanList() {
     BindOrReloadDeliveryChallanTable('Reset');
 }
 //function export data to excel
-function ExportDeliveryChallanData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
+function ExportDeliveryChallanData() {    
     BindOrReloadDeliveryChallanTable('Export');
 }
 
@@ -256,23 +251,18 @@ function EditDeliveryChallan(this_Obj) {
 
 function ResetDeliveryChallan() {
     //this will return form body(html)
-    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val() + "&prodOrderID=" + $('#hdnProdOrderID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + $('#DeliveryChallanForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-                $('#divDeliveryChallanForm #ProdOrderID').prop('disabled', true);
+                $('#divDeliveryChallanForm #DelvChallanNo').prop('disabled', true);
                 //resides in customjs for sliding
                 openNav();
-            }
-            else {
-                $('#hdnCustomerID').val('');
-                $('#hdnSaleOrderID').val('');
-                $('#hdnProdOrderID').val('');
-                $('#lblDeliveryChallanInfo').text('<<Challan No.>>');
             }
             BindDeliveryChallanDetailList($('#ID').val(), false, false);
             clearUploadControl();
             PaintImages($('#DeliveryChallanForm #ID').val());
-            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val(), function () {
+            });
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

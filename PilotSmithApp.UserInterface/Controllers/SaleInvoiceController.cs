@@ -605,12 +605,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             // action inside a standard controller
             List<SaleInvoiceViewModel> SaleInvoiceVMList = Mapper.Map<List<SaleInvoice>, List<SaleInvoiceViewModel>>(_saleInvoiceBusiness.GetAllSaleInvoice(Mapper.Map<SaleInvoiceAdvanceSearchViewModel, SaleInvoiceAdvanceSearch>(SaleInvoiceAdvanceSearchVM)));
-            if (SaleInvoiceAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = SaleInvoiceVMList.Count != 0 ? SaleInvoiceVMList[0].TotalCount : 0;
-                int filteredResult = SaleInvoiceVMList.Count != 0 ? SaleInvoiceVMList[0].FilteredCount : 0;
-                SaleInvoiceVMList = SaleInvoiceVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
+           
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -907,6 +902,47 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    break;
+                case "LockDocument":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Disable = true;
+                    toolboxVM.addbtn.DisableReason = "Document Locked";
+                    toolboxVM.addbtn.Event = "";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Disable = true;
+                    toolboxVM.EmailBtn.DisableReason = "Document Locked";
+                    toolboxVM.EmailBtn.Event = "";
                     break;
                 case "Add":
 

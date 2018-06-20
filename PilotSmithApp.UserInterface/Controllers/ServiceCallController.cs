@@ -70,6 +70,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     serviceCallVM = Mapper.Map<ServiceCall, ServiceCallViewModel>(_serviceCallBusiness.GetServiceCall(id));
                     serviceCallVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    serviceCallVM.IsDocLocked = serviceCallVM.DocumentOwners.Contains(appUA.UserName);
                 }
                 else //(id == Guid.Empty)
                 {
@@ -127,12 +129,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             serviceCallAdvanceSearchVM.DataTablePaging.Length = (serviceCallAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : serviceCallAdvanceSearchVM.DataTablePaging.Length;
 
             List<ServiceCallViewModel> serviceCallVMList = Mapper.Map<List<ServiceCall>, List<ServiceCallViewModel>>(_serviceCallBusiness.GetAllServiceCall(Mapper.Map<ServiceCallAdvanceSearchViewModel, ServiceCallAdvanceSearch>(serviceCallAdvanceSearchVM)));
-            if (serviceCallAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = serviceCallVMList.Count != 0 ? serviceCallVMList[0].TotalCount : 0;
-                int filteredResult = serviceCallVMList.Count != 0 ? serviceCallVMList[0].FilteredCount : 0;
-                serviceCallVMList = serviceCallVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
+            
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -382,6 +379,45 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Title = "Delete";
                     toolboxVM.deletebtn.Event = "DeleteServiceCall();";
                     
+                    //toolboxVM.SendForApprovalBtn.Visible = true;
+                    //toolboxVM.SendForApprovalBtn.Text = "Send";
+                    //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    //toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    break;
+                case "LockDocument":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Disable = true;
+                    toolboxVM.addbtn.DisableReason = "Document Locked";
+                    toolboxVM.addbtn.Event = "";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
                     //toolboxVM.SendForApprovalBtn.Visible = true;
                     //toolboxVM.SendForApprovalBtn.Text = "Send";
                     //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";

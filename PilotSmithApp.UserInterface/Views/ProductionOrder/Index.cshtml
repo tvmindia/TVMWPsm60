@@ -137,7 +137,6 @@
                 </div>
             </div>
             @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID });
-            @Html.Hidden("RedirectToDocumentSaleOrder", "", htmlAttributes: new { @class = "", Value = ViewBag.SaleOrderID });
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -228,7 +227,7 @@
                         }*@
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button class="btn btn-default" id="" onclick="SendForApproval('POD')" style="margin-right:3%;margin-top:2%">Send For Approval <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                    <button class="btn btn-openid pull-right" id="" onclick="SendForApproval('POD')" style="margin-top:2%;margin-bottom:.9%;margin-right: 2.7%;color:white;font-weight:bold;text-decoration:none;">Send For Approval <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 </div>
 
             </div>
@@ -243,14 +242,18 @@
 
     </div>
 </div>
+@using (Html.BeginForm("DownloadExcel", "ExcelExport", FormMethod.Post, new { id = "FormExcelExport" }))
+{
+    @Html.Hidden("AdvanceSearch", null, htmlAttributes: new { @class = "control-label" })
+    @Html.Hidden("DocumentType", null, htmlAttributes: new { @class = "control-label", Value = "POD" })
+}
 @section Scripts {
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jsZip")
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatableButtons")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")   
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/AdvanceSelectList")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/ProductionOrder")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/DocumentApproval/ApprovalHistory")
 }
 
 

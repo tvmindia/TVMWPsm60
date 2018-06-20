@@ -33,8 +33,8 @@ function BindOrReloadSaleInvoiceTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('.divboxASearch #AdvFromDate').val('').trigger('change');
-                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvCustomerID').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
@@ -62,6 +62,20 @@ function BindOrReloadSaleInvoiceTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                SaleInvoiceAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                SaleInvoiceAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+                SaleInvoiceAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
+                $('#AdvanceSearch').val(JSON.stringify(SaleInvoiceAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -80,14 +94,7 @@ function BindOrReloadSaleInvoiceTable(action) {
         //apply datatable plugin on SaleInvoice table
         _dataTable.SaleInvoiceList = $('#tblSaleInvoice').DataTable(
         {
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4, 5]
-                             }
-            }],
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',           
             ordering: false,
             searching: false,
             paging: true,
@@ -149,23 +156,11 @@ function BindOrReloadSaleInvoiceTable(action) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblSaleInvoice').fadeIn(100);
                 if (action == undefined) {
-                    $('.excelExport').hide();
+                   // $('.excelExport').hide();
                     OnServerCallComplete();
-                }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadSaleInvoiceTable();
-                }
+                }              
             }
-        });
-        $(".buttons-excel").hide();
+        });       
     }
     catch (e) {
         console.log(e.message);
@@ -177,9 +172,7 @@ function ResetSaleInvoiceList() {
     BindOrReloadSaleInvoiceTable('Reset');
 }
 //function export data to excel
-function ExportSaleInvoiceData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
+function ExportSaleInvoiceData() {   
     BindOrReloadSaleInvoiceTable('Export');
 }
 // add SaleInvoice section
@@ -212,7 +205,13 @@ function EditSaleInvoice(this_Obj) {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + SaleInvoice.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //$('#CustomerID').trigger('change');
-            ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+            debugger;
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+            }
+            else {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+            }
             BindSaleInvoiceDetailList(SaleInvoice.ID);
             BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
             $('#lblSaleInvoiceInfo').text(SaleInvoice.SaleInvNo);
@@ -234,12 +233,17 @@ function EditSaleInvoice(this_Obj) {
 function ResetSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+            }
+            else {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+            }
             BindSaleInvoiceDetailList($('#ID').val());
             BindSaleInvoiceOtherChargesDetailList($('#ID').val());
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleInvoiceForm #ID').val());
-            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
         }
         else {
@@ -427,11 +431,11 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                 "data": null, "orderable": false,render: function(data,type,row){
                     if (row.Product.Code != "" && row.Product.Code != null)
                     {
-                        return '<a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-"
                     }
                     else
                     {
-                        return '<a href="#" class="actionLink"  onclick="EditSaleInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-"
                     }
                 },"defaultContent": "<i></i>"
              },
@@ -901,7 +905,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-" },
              ],
              columnDefs: [
                  //{ "targets": [0], "width": "30%" },

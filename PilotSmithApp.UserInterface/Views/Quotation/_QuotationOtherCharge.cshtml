@@ -10,7 +10,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divOtherChargeSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })*@
                 </div>
             </div>
@@ -33,7 +33,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divTaxTypeSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })*@
                 </div>               
             </div>
@@ -82,7 +82,21 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
         try {          
-            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val())
+            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                $('#divModelPopQuotation .CalculateGST').change(function () {
+                    debugger;
+                    var ChargeAmount = parseFloat($('#divModelPopQuotation #ChargeAmount').val() != "" ? $('#divModelPopQuotation #ChargeAmount').val() : 0);
+                    var CGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                    var SGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                    var IGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                    $('#divModelPopQuotation #hdnCGSTPerc').val(CGST);
+                    $('#divModelPopQuotation #hdnSGSTPerc').val(SGST);
+                    $('#divModelPopQuotation #hdnIGSTPerc').val(IGST);
+                    $('#divModelPopQuotation #CGSTPerc').val(ChargeAmount * CGST / 100);
+                    $('#divModelPopQuotation #SGSTPerc').val(ChargeAmount * SGST / 100);
+                    $('#divModelPopQuotation #IGSTPerc').val(ChargeAmount * IGST / 100);
+                });
+            });
             $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
         }
         catch (e) {
@@ -92,18 +106,6 @@
             dropdownParent: $("#divModelPopQuotation")
         });
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopQuotation .CalculateGST').change(function () {
-            debugger;
-            var ChargeAmount = parseFloat($('#divModelPopQuotation #ChargeAmount').val() != "" ? $('#divModelPopQuotation #ChargeAmount').val() : 0);
-            var CGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-            var SGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-            var IGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-            $('#divModelPopQuotation #hdnCGSTPerc').val(CGST);
-            $('#divModelPopQuotation #hdnSGSTPerc').val(SGST);
-            $('#divModelPopQuotation #hdnIGSTPerc').val(IGST);
-            $('#divModelPopQuotation #CGSTPerc').val(ChargeAmount * CGST / 100);
-            $('#divModelPopQuotation #SGSTPerc').val(ChargeAmount * SGST / 100);
-            $('#divModelPopQuotation #IGSTPerc').val(ChargeAmount * IGST / 100);
-        });
+        
     });
 </script>

@@ -97,27 +97,30 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
+        $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+            $('#divModelPopSaleOrder .CalculateGST').change(function () {
+                debugger;
+                var ChargeAmount = parseFloat($('#divModelPopSaleOrder #ChargeAmount').val() != "" ? $('#divModelPopSaleOrder #ChargeAmount').val() : 0);
+                var CGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                var SGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                var IGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                var AddlTaxPerc = parseFloat($('#divModelPopSaleOrder #AddlTaxPerc').val() != "" ? $('#divModelPopSaleOrder #AddlTaxPerc').val() : 0);
+                $('#divModelPopSaleOrder #hdnCGSTPerc').val(CGST);
+                $('#divModelPopSaleOrder #hdnSGSTPerc').val(SGST);
+                $('#divModelPopSaleOrder #hdnIGSTPerc').val(IGST);
+                $('#divModelPopSaleOrder #hdnAddlTaxPerc').val(AddlTaxPerc);
+                $('#divModelPopSaleOrder #CGSTPerc').val(ChargeAmount * CGST / 100);
+                $('#divModelPopSaleOrder #SGSTPerc').val(ChargeAmount * SGST / 100);
+                $('#divModelPopSaleOrder #IGSTPerc').val(ChargeAmount * IGST / 100);
+                var TaxAmount = parseFloat($('#divModelPopSaleOrder #CGSTPerc').val()) + parseFloat($('#divModelPopSaleOrder #SGSTPerc').val()) + parseFloat($('#divModelPopSaleOrder #IGSTPerc').val())
+                $('#divModelPopSaleOrder #AddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+                $('#divModelPopSaleOrder #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+            });
+        });
         $('#divModelPopSaleOrder #TaxTypeCode').select2({
             dropdownParent: $("#divModelPopSaleOrder")
         });
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopSaleOrder .CalculateGST').change(function () {
-            debugger;
-            var ChargeAmount = parseFloat($('#divModelPopSaleOrder #ChargeAmount').val() != "" ? $('#divModelPopSaleOrder #ChargeAmount').val() : 0);
-            var CGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-            var SGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-            var IGST = parseFloat($('#divModelPopSaleOrder #TaxTypeCode').val() != "" ? $('#divModelPopSaleOrder #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-            var AddlTaxPerc = parseFloat($('#divModelPopSaleOrder #AddlTaxPerc').val() != "" ? $('#divModelPopSaleOrder #AddlTaxPerc').val() : 0);
-            $('#divModelPopSaleOrder #hdnCGSTPerc').val(CGST);
-            $('#divModelPopSaleOrder #hdnSGSTPerc').val(SGST);
-            $('#divModelPopSaleOrder #hdnIGSTPerc').val(IGST);
-            $('#divModelPopSaleOrder #hdnAddlTaxPerc').val(AddlTaxPerc);
-            $('#divModelPopSaleOrder #CGSTPerc').val(ChargeAmount * CGST / 100);
-            $('#divModelPopSaleOrder #SGSTPerc').val(ChargeAmount * SGST / 100);
-            $('#divModelPopSaleOrder #IGSTPerc').val(ChargeAmount * IGST / 100);
-            var TaxAmount = parseFloat($('#divModelPopSaleOrder #CGSTPerc').val()) + parseFloat($('#divModelPopSaleOrder #SGSTPerc').val()) + parseFloat($('#divModelPopSaleOrder #IGSTPerc').val())
-            $('#divModelPopSaleOrder #AddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
-            $('#divModelPopSaleOrder #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
-        });
+        
     });
 </script>

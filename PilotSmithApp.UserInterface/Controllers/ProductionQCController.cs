@@ -200,12 +200,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             // action inside a standard controller
             List<ProductionQCViewModel> ProductionQCVMList = Mapper.Map<List<ProductionQC>, List<ProductionQCViewModel>>(_productionQCBusiness.GetAllProductionQC(Mapper.Map<ProductionQCAdvanceSearchViewModel, ProductionQCAdvanceSearch>(ProductionQCAdvanceSearchVM)));
-            if (ProductionQCAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = ProductionQCVMList.Count != 0 ? ProductionQCVMList[0].TotalCount : 0;
-                int filteredResult = ProductionQCVMList.Count != 0 ? ProductionQCVMList[0].FilteredCount : 0;
-                ProductionQCVMList = ProductionQCVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
+           
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),

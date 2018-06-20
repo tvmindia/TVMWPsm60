@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divProductSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
                 </div>             
             </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divUnitSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
                 </div>              
             </div>
@@ -96,7 +96,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divTaxTypeSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })*@
                 </div>              
             </div>
@@ -146,9 +146,44 @@
 <script>
     $(document).ready(function () {
         try {
-            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
+                $('#divModelPopQuotation #ProductID').change(function () {
+                    if ($('#divProductBasicInfo') != undefined) {
+                        $('#divModelPopQuotation #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                            $('#divModelPopQuotation #ProductSpec').val($('#divModelPopQuotation #spnProductName').text());
+                        });
+                    }
+                    if ($('.divProductModelSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                        }
+                        else {
+                            $('.divProductModelSelectList').empty();
+                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                        }
+                    }
+                });
+            });
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
-            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val())
+            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                $('#divModelPopQuotation .CalculateGST').change(function () {
+                    debugger;
+                    var qty = parseInt($('#divModelPopQuotation #Qty').val() != "" ? $('#divModelPopQuotation #Qty').val() : 1);
+                    var rate = parseFloat($('#divModelPopQuotation #Rate').val() != "" ? $('#divModelPopQuotation #Rate').val() : 0);
+                    var discount = parseFloat($('#divModelPopQuotation #Discount').val() != "" ? $('#divModelPopQuotation #Discount').val() : 0);
+                    var CGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                    var SGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                    var IGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                    var taxableAmount = rate * qty - discount;
+                    $('#divModelPopQuotation #hdnCGSTPerc').val(CGST);
+                    $('#divModelPopQuotation #hdnSGSTPerc').val(SGST);
+                    $('#divModelPopQuotation #hdnIGSTPerc').val(IGST);
+                    $('#divModelPopQuotation #CGSTPerc').val(taxableAmount * CGST / 100);
+                    $('#divModelPopQuotation #SGSTPerc').val(taxableAmount * SGST / 100);
+                    $('#divModelPopQuotation #IGSTPerc').val(taxableAmount * IGST / 100);
+                });
+            })
         }
         catch (e) {
             console.log(e.message);
@@ -158,44 +193,5 @@
             dropdownParent: $("#divModelPopQuotation")
         });
         $('.select2').addClass('form-control newinput');
-        $('#divModelPopQuotation #ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined)
-            {
-                $('#divModelPopQuotation #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                    $('#divModelPopQuotation #ProductSpec').val($('#divModelPopQuotation #spnProductName').text());
-                });
-            }
-            if ($('.divProductModelSelectList') != undefined) {
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "")
-                {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
-                }
-                else
-                {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                }
-            }
-        });
-        //$('#divModelPopQuotation #TaxTypeCode').change(function () {
-        //    $('#divGSTCalculatedFields').load("Quotation/GSTCalculatedFields?TaxTypeCode=" + this.value + "&Discount=" + $('#divModelPopQuotation #Discount').val() + "&Qty=" + $('#divModelPopQuotation #Qty').val() + "&Rate=" + $('#divModelPopQuotation #Rate').val())
-        //});
-        $('#divModelPopQuotation .CalculateGST').change(function () {
-            debugger;
-            var qty = parseInt($('#divModelPopQuotation #Qty').val() != "" ? $('#divModelPopQuotation #Qty').val() : 1);
-            var rate = parseFloat($('#divModelPopQuotation #Rate').val()!=""?$('#divModelPopQuotation #Rate').val():0);
-            var discount = parseFloat($('#divModelPopQuotation #Discount').val()!=""?$('#divModelPopQuotation #Discount').val():0);
-            var CGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-            var SGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-            var IGST = parseFloat($('#divModelPopQuotation #TaxTypeCode').val() != "" ? $('#divModelPopQuotation #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-            var taxableAmount = rate * qty - discount;
-            $('#divModelPopQuotation #hdnCGSTPerc').val(CGST);
-            $('#divModelPopQuotation #hdnSGSTPerc').val(SGST);
-            $('#divModelPopQuotation #hdnIGSTPerc').val(IGST);
-            $('#divModelPopQuotation #CGSTPerc').val(taxableAmount * CGST / 100);
-            $('#divModelPopQuotation #SGSTPerc').val(taxableAmount * SGST / 100);
-            $('#divModelPopQuotation #IGSTPerc').val(taxableAmount * IGST / 100);
-        });
     });
 </script>

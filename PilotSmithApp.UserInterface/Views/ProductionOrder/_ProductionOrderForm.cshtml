@@ -41,7 +41,7 @@
                     {
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
-                                @Html.Label("Search and select a Sale Order", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Sale Order", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
                                 @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
@@ -97,7 +97,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divPreparedBySelectList">
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                            
                         </div>                        
                     </div>
@@ -114,7 +114,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             
                         </div>                      
                     </div>
@@ -129,16 +129,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @if (Model.IsUpdate || Model.SaleOrderID != null)
-                            {
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                               
-                            }
-                            else
-                            {
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                               
-                            }
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -166,7 +157,7 @@
                     {
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                
                             </div>
                             <!-- This hidden field will keep the information whether the field is required or not -->
@@ -373,23 +364,28 @@
         }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=POD&required=' + $('#hdnDocumentStatusRequired').val())                  
-          @if (Model.IsUpdate)
+            @if (!Model.IsDocLocked && Model.IsUpdate) { }
+            else {
+                <text>
+                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+                </text>
+                    }
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=POD&required=' + $('#hdnDocumentStatusRequired').val())
+            @if (Model.IsUpdate || Model.SaleOrderID != null)
           {
               <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
 
             });
-              </text>
+            </text>
           }
           else
           {
               <text>
-              $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function() {
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
-              });
-              </text>
+            });
+            </text>
           }
 
         }

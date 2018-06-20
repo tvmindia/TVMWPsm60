@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divOtherChargeSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })*@
                 </div>              
             </div>
@@ -25,7 +25,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divUnitSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
                 </div>                
             </div>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-12">
                 <div class="divTaxTypeSelectList">
-                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })*@
                 </div>              
             </div>
@@ -140,7 +140,30 @@
         try {
             $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
-            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val())
+            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                $('#divModelPopSaleInvoice .CalculateGST').change(function () {
+                    debugger;
+                    var CGST = 0, SGST = 0, IGST = 0;
+                    var qty = parseInt($('#divModelPopSaleInvoice #Qty').val() != "" ? $('#divModelPopSaleInvoice #Qty').val() : 0);
+                    var rate = parseFloat($('#divModelPopSaleInvoice #Rate').val() != "" ? $('#divModelPopSaleInvoice #Rate').val() : 0);
+                    var discount = parseFloat($('#divModelPopSaleInvoice #Discount').val() != "" ? $('#divModelPopSaleInvoice #Discount').val() : 0);
+                    if ($('#divModelPopSaleInvoice #TaxTypeCode').val() != null) {
+                        CGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                        SGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                        IGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                    }
+                    var CessPerc = parseFloat($('#divModelPopSaleInvoice #CessPerc').val() != "" ? $('#divModelPopSaleInvoice #CessPerc').val() : 0);
+                    var taxableAmount = (rate * qty) - discount;
+                    $('#divModelPopSaleInvoice #hdnCGSTPerc').val(CGST);
+                    $('#divModelPopSaleInvoice #hdnSGSTPerc').val(SGST);
+                    $('#divModelPopSaleInvoice #hdnIGSTPerc').val(IGST);
+                    $('#divModelPopSaleInvoice #CGSTPerc').val(taxableAmount * CGST / 100);
+                    $('#divModelPopSaleInvoice #SGSTPerc').val(taxableAmount * SGST / 100);
+                    $('#divModelPopSaleInvoice #IGSTPerc').val(taxableAmount * IGST / 100);
+                    var TaxAmount = parseFloat(taxableAmount * CGST / 100) + parseFloat(taxableAmount * SGST / 100) + parseFloat(taxableAmount * IGST / 100)
+                    $('#divModelPopSaleInvoice #CessAmt').val((TaxAmount * CessPerc) / 100);
+                });
+            });
         }
         catch (e) {
             console.log(e.message);
@@ -150,29 +173,7 @@
         });
         $('.select2').addClass('form-control newinput');
 
-        $('#divModelPopSaleInvoice .CalculateGST').change(function () {
-            debugger;
-            var CGST = 0, SGST = 0, IGST = 0;
-            var qty = parseInt($('#divModelPopSaleInvoice #Qty').val() != "" ? $('#divModelPopSaleInvoice #Qty').val() : 0);
-            var rate = parseFloat($('#divModelPopSaleInvoice #Rate').val() != "" ? $('#divModelPopSaleInvoice #Rate').val() : 0);
-            var discount = parseFloat($('#divModelPopSaleInvoice #Discount').val() != "" ? $('#divModelPopSaleInvoice #Discount').val() : 0);
-            if ($('#divModelPopSaleInvoice #TaxTypeCode').val() != null)
-            {
-                  CGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
-                  SGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
-                  IGST = parseFloat($('#divModelPopSaleInvoice #TaxTypeCode').val() != "" ? $('#divModelPopSaleInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
-            }
-            var CessPerc = parseFloat($('#divModelPopSaleInvoice #CessPerc').val() != "" ? $('#divModelPopSaleInvoice #CessPerc').val() : 0);
-            var taxableAmount = (rate * qty) - discount;
-            $('#divModelPopSaleInvoice #hdnCGSTPerc').val(CGST);
-            $('#divModelPopSaleInvoice #hdnSGSTPerc').val(SGST);
-            $('#divModelPopSaleInvoice #hdnIGSTPerc').val(IGST);
-            $('#divModelPopSaleInvoice #CGSTPerc').val(taxableAmount * CGST / 100);
-            $('#divModelPopSaleInvoice #SGSTPerc').val(taxableAmount * SGST / 100);
-            $('#divModelPopSaleInvoice #IGSTPerc').val(taxableAmount * IGST / 100);
-            var TaxAmount =parseFloat(taxableAmount * CGST / 100) + parseFloat(taxableAmount * SGST / 100) + parseFloat(taxableAmount * IGST / 100)
-            $('#divModelPopSaleInvoice #CessAmt').val((TaxAmount * CessPerc) / 100);
-        });
+        
     });
 </script>
 

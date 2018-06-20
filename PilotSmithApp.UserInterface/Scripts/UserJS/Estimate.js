@@ -62,6 +62,19 @@ function BindOrReloadEstimateTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                EstimateAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                EstimateAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                EstimateAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                EstimateAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                EstimateAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                EstimateAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                EstimateAdvanceSearchViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val() == "" ? null : $('.divboxASearch #AdvReferencePersonCode').val();
+                EstimateAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                EstimateAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                EstimateAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                $('#AdvanceSearch').val(JSON.stringify(EstimateAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -81,13 +94,6 @@ function BindOrReloadEstimateTable(action) {
         _dataTable.EstimateList = $('#tblEstimate').DataTable(
             {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0 ,1, 2, 3, 4, 5,6]
-                             }
-            }],
             ordering: false,
             searching: false,
             paging: true,
@@ -147,23 +153,10 @@ function BindOrReloadEstimateTable(action) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblEstimate').fadeIn(100);
                 if (action == undefined) {
-                    $('.excelExport').hide();
                     OnServerCallComplete();
-                }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadEstimateTable();
                 }
             }
         });
-        $(".buttons-excel").hide();
     }
     catch (e) {
         console.log(e.message);
@@ -177,8 +170,6 @@ function ResetEstimateList() {
 }
 //function export data to excel
 function ExportEstimateData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
     BindOrReloadEstimateTable('Export');
 }
 
@@ -187,7 +178,7 @@ function AddEstimate() {
     debugger;
     //this will return form body(html)
     OnServerCallBegin();
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid + "&enquiryID=", function (responseTxt, statusTxt, xhr) {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -207,7 +198,7 @@ function EditEstimate(this_Obj) {
     var Estimate = _dataTable.EstimateList.row($(this_Obj).parents('tr')).data();
     $('#lblEstimateInfo').text(Estimate.EstimateNo);
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID + "&enquiryID=" + Estimate.EnquiryID, function (responseTxt, statusTxt, xhr) {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + Estimate.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
          OnServerCallComplete();
          openNav();
@@ -232,8 +223,11 @@ function EditEstimate(this_Obj) {
 
 function ResetEstimate() {
     debugger;
+    if ($('#IsUpdate').val() == 'False') {
+        $('#hdnEnquiryID').val('');
+    }
     //this will return form body(html)
-    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() + "&enquiryID=" + $('#hdnEnquiryID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
@@ -243,7 +237,6 @@ function ResetEstimate() {
             }
             else {
                 debugger;
-                $('#hdnEnquiryID').val('');
                 $('#hdnCustomerID').val('');
                 $("#EstimateForm #CustomerID").prop('disabled', false);
                 $('#lblEstimateInfo').text('<<Estimate No.>>');

@@ -1,19 +1,19 @@
-﻿var DataTables = {};
-var EmptyGuid = "00000000-0000-0000-0000-000000000000";
+﻿var _dataTables = {};
+var _emptyGuid = "00000000-0000-0000-0000-000000000000";
 
 $(document).ready(function () {
     debugger;
     try {
-       
-        BindOrReloadDocumentApprovals('Init');
-        $('#tblPendingDocuments tbody').on('dblclick', 'td', function () {
+        BindOrReloadApprovalHistory('Init');
+        $('#tblApprovalHistoryList tbody').on('dblclick', 'td', function () {
             Edit(this);
         });
         debugger;
         if ($('#DocID').val() != "") {
             EditRedirectFromDocument($('#DocID').val(), $('#ApprLogID').val(), $('#DocType').val());
         }
-        $('#DocumentTypeCode,#ShowAll').select2({
+
+        $('#DocumentTypeCode,#ApproverLevel,#ApprovalStatus').select2({
             dropdownParent: $(".divboxASearch")
         });
 
@@ -25,8 +25,9 @@ $(document).ready(function () {
     }
 });
 
+
 //bind Pending list
-function BindOrReloadDocumentApprovals(action) {
+function BindOrReloadApprovalHistory(action) {
     try {
         //creating advancesearch object
         debugger;
@@ -42,7 +43,9 @@ function BindOrReloadDocumentApprovals(action) {
                 $('#FromDate').val('');
                 $('#ToDate').val('');
                 $('#DocumentTypeCode').val('');
-                $('#ShowAll').val('false');
+                $('#ApprovalStatus').val('');
+                $('#ApproverLevel').val('');
+                //$('#ShowAll').val('false');
                 break;
             case 'Init':
                 break;
@@ -57,11 +60,13 @@ function BindOrReloadDocumentApprovals(action) {
         DocumentApprovalAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
         DocumentApprovalAdvanceSearchViewModel.FromDate = $('#FromDate').val();
         DocumentApprovalAdvanceSearchViewModel.ToDate = $('#ToDate').val();
-        DocumentTypeViewModel.Code = $('#DocumentTypeCode').val();      
-        DocumentApprovalAdvanceSearchViewModel.ShowAll = $('#ShowAll').val();
+        DocumentTypeViewModel.Code = $('#DocumentTypeCode').val();
+        //DocumentApprovalAdvanceSearchViewModel.ShowAll = $('#ShowAll').val();
         DocumentApprovalAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         DocumentApprovalAdvanceSearchViewModel.DocumentType = DocumentTypeViewModel;
-        DataTables.PurchaseOrderList = $('#tblPendingDocuments').DataTable(
+        DocumentApprovalAdvanceSearchViewModel.ApprovalStatus = $('#ApprovalStatus').val();
+        DocumentApprovalAdvanceSearchViewModel.ApproverLevel = $('#ApproverLevel').val();
+        DataTables.ApprovalHistoryList = $('#tblApprovalHistoryList').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
                 buttons: [{
@@ -79,7 +84,7 @@ function BindOrReloadDocumentApprovals(action) {
                 proccessing: true,
                 serverSide: true,
                 ajax: {
-                    url: "GetAllDocumentApproval/",
+                    url: "GetAllApprovalHistory/",
                     data: { "documentApprovalAdvanceSearchVM": DocumentApprovalAdvanceSearchViewModel },
                     type: 'POST'
                 },
@@ -89,6 +94,7 @@ function BindOrReloadDocumentApprovals(action) {
                     { "data": "DocumentNo", "defaultContent": "<i>-</i>" },
                     { "data": "DocumentDateFormatted", "defaultContent": "<i>-</i>" },
                     { "data": "ApproverLevel", "defaultContent": "<i>-</i>" },
+                    { "data": "DocumentStatus", "defaultContent": "<i>-</i>" },
                     { "data": "DocumentCreatedBy", "defaultContent": "<i>-</i>" },
                     {
                         "data": "ApprovalLogID", "orderable": false, render: function (data, type, row) {
@@ -98,13 +104,13 @@ function BindOrReloadDocumentApprovals(action) {
                     }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
-                    { className: "text-left", "targets": [2,3] },
-                    { className: "text-center", "targets": [4,5] }],
+                    { className: "text-left", "targets": [0, 1, 3, 4] },
+                    { className: "text-center", "targets": [2, 5, 6] }],
                 destroy: true,
                 //for performing the import operation after the data loaded
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                    $('#tblPendingDocuments').fadeIn(100);
+                    $('#tblApprovalHistoryList').fadeIn(100);
                     if (action == undefined) {
                         $('.excelExport').hide();
                         OnServerCallComplete();
@@ -118,7 +124,7 @@ function BindOrReloadDocumentApprovals(action) {
                             }
                         }
                         $(".buttons-excel").trigger('click');
-                        BindOrReloadQuotationTable();
+                        BindOrReloadApprovalHistory();
                     }
                 }
             });
@@ -129,54 +135,46 @@ function BindOrReloadDocumentApprovals(action) {
     }
 }
 
-
-function ResetPendingDocList() {
+function ResetApprovalHistory() {
     $(".searchicon").removeClass('filterApplied');
-    BindOrReloadDocumentApprovals('Reset');
+    BindOrReloadApprovalHistory('Reset');
 }
 //function export data to excel
-function ExportPendingDocs() {
+function ExportApprovalHistory() {
     $('.excelExport').show();
     OnServerCallBegin();
-    BindOrReloadDocumentApprovals('Export');
-}
-
-//closes nav and rebinds table
-function Close() {
-    BindOrReloadDocumentApprovals('Init');
-    closeNav();
+    BindOrReloadApprovalHistory('Export');
 }
 
 //ApplyFilterThenSearch
 function ApplyFilterThenSearch() {
     $(".searchicon").addClass('filterApplied');
     CloseAdvanceSearch();
-    BindOrReloadDocumentApprovals('Search');
+    BindOrReloadApprovalHistory('Search');
 }
 
 function Edit(curObj) {
 
     OnServerCallBegin();
     debugger;
-    var rowData = DataTables.PurchaseOrderList.row($(curObj).parents('tr')).data();
-    $("#divPendingDocumentForm").load("/DocumentApproval/ApproveDocument?ID=" + rowData.ApprovalLogID + "&DocType=" + rowData.DocumentTypeCode + '&DocID=' + rowData.DocumentID, function () {
-        ChangeButtonPatchView("DocumentApproval", "btnPatchPendingDocumentNew", "Back"/*, documentApprovalVM.ID*/);
+    var documentApprovalVM = DataTables.ApprovalHistoryList.row($(curObj).parents('tr')).data();
+    $("#divApprovalHistoryForm").load("/DocumentApproval/ApproveDocument?ID=" + documentApprovalVM.ApprovalLogID + "&DocType=" + documentApprovalVM.DocumentTypeCode + '&DocID=' + documentApprovalVM.DocumentID, function () {
         OnServerCallComplete();
+        debugger;
+        ChangeButtonPatchView("DocumentApproval", "btnPatchApprovalHistoryNew", "Close"/*, documentApprovalVM.ID*/);
         setTimeout(function () {
             //resides in customjs for sliding
             openNav();
         }, 100);
     });
-    //window.location.replace("ApproveDocument?code=APR&ID=" + rowData.ApprovalLogID + '&DocType=' + rowData.DocumentTypeCode + '&DocID=' + rowData.DocumentID);
 }
 
-function EditRedirectFromDocument(DocumentID, ApprovalLogID, DocumentType)
-{
-     OnServerCallBegin();
-    debugger;   
-    $("#divPendingDocumentForm").load("/DocumentApproval/ApproveDocument?ID=" + ApprovalLogID + "&DocType=" + DocumentType + '&DocID=' + DocumentID, function () {
-        ChangeButtonPatchView("DocumentApproval", "btnPatchPendingDocumentNew", "Back"/*, documentApprovalVM.ID*/);
+function EditRedirectFromDocument(DocumentID, ApprovalLogID, DocumentType) {
+    OnServerCallBegin();
+    debugger;
+    $("#divApprovalHistoryForm").load("/DocumentApproval/ApproveDocument?ID=" + ApprovalLogID + "&DocType=" + DocumentType + '&DocID=' + DocumentID, function () {
         OnServerCallComplete();
+        ChangeButtonPatchView("DocumentApproval", "btnPatchApprovalHistoryNew", "Close");
         setTimeout(function () {
             //resides in customjs for sliding
             openNav();

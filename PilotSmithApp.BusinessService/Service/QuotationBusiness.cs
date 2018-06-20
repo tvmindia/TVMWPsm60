@@ -65,14 +65,6 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _quotationRepository.DeleteQuotationDetail(id);
         }
-        public QuotationDetail CalculateGST(QuotationDetail quotationDetail)
-        {
-            TaxType taxType = _taxTypeBusiness.GetTaxType((int)quotationDetail.TaxTypeCode);
-            quotationDetail.CGSTPerc = ((quotationDetail.Rate*quotationDetail.Qty-quotationDetail.Discount)*(taxType.CGSTPercentage))/100;
-            quotationDetail.SGSTPerc = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.SGSTPercentage)) / 100;
-            quotationDetail.IGSTPerc = ((quotationDetail.Rate * quotationDetail.Qty - quotationDetail.Discount) * (taxType.IGSTPercentage)) / 100;
-            return quotationDetail;
-        }
         public object UpdateQuotationEmailInfo(Quotation quotation)
         {
             return _quotationRepository.UpdateQuotationEmailInfo(quotation);

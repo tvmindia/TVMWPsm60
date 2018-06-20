@@ -23,5 +23,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object ReSendDocForApproval(Guid documentID, string documentTypeCode, Guid latestApprovalID, string createdBy, DateTime createdDate);
         DocumentApprovalMailDetail GetApprovalMailDetails(Guid DocumentID, string DocumentTypeCode);
         List<DocumentApproval> GetStockAdjApprovalSummary();
+        List<DocumentApproval> GetAllApprovalHistory(DocumentApprovalAdvanceSearch documentApprovalAdvanceSearch);
     }
 }

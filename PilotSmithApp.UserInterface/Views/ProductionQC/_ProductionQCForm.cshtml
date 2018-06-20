@@ -16,23 +16,37 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
-                <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
-                    <div class="col-md-12">
-                        @Html.Label("Search and select a Production Order", htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @if (Model.IsUpdate)
+                        @if (!Model.IsUpdate)
                         {
-                            @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                            <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
+                                <div class="col-md-12">
+                                    @Html.Label("Search and select a Production Order", htmlAttributes: new { @class = "control-label lblrequired" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                                    @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
+                            </div>
+
                         }
                         else
                         {
-                            @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                            if (Model.ProdOrderID != null)
+                            {
+                            <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
+                                <div class="col-md-12">
+                                    @Html.Label("Production Order", htmlAttributes: new { @class = "control-label lblrequired" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                                    @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
+                            </div>
+                            }
                         }
-                        @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
-                    </div>
-                    @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
-                </div>
+
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.ProdQCNo, htmlAttributes: new { @class = "control-label" })
@@ -66,7 +80,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divPlantSelectList">
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             @*@Html.Action("PlantSelectList", "Plant", new { required = "" })*@
                         </div>
                     </div>
@@ -82,16 +96,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                           @if (Model.IsUpdate || Model.ProdOrderID != null)
-                           {
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            @*@Html.Action("CustomerSelectList", "Customer", new { required = "required", disabled = true })*@
-                           }
-                           else
-                           {
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            @*@Html.Action("CustomerSelectList", "Customer", new { required = "required" })*@
-                           }
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -117,7 +122,7 @@
                     {
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
                             </div>
                             <!-- This hidden field will keep the information whether the field is required or not -->
@@ -132,7 +137,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "PQC" })*@
                         </div>                      
                     </div>
@@ -305,23 +310,28 @@
         }
         try {
             $('.divPlantSelectList').load('/Plant/PlantSelectList')
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            @if (!Model.IsDocLocked && Model.IsUpdate) { }
+            else {
+                <text>
+                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+                </text>
+                    }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=PQC&required=' + $('#hdnDocumentStatusRequired').val())
-         @if (Model.IsUpdate)
+            @if (Model.IsUpdate || Model.ProdOrderID != null)
          {
              <text>
-           $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
 
-           });
-             </text>
+            });
+            </text>
          }
          else
          {
              <text>
-             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function() {
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
-             });
-             </text>
+            });
+            </text>
          }
 
         }

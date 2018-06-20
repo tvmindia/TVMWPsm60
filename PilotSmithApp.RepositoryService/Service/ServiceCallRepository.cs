@@ -195,6 +195,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     serviceCall.CalledPersonName = (sdr["CalledPersonName"].ToString() != "" ? (sdr["CalledPersonName"].ToString()) : serviceCall.CalledPersonName);
                                     serviceCall.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : serviceCall.GeneralNotes);
                                     serviceCall.ServiceComments = (sdr["ServiceComments"].ToString() != "" ? sdr["ServiceComments"].ToString() : serviceCall.ServiceComments);
+                                    serviceCall.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : serviceCall.DocumentOwnerID);
+                                    serviceCall.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : serviceCall.DocumentOwners);
+                                    serviceCall.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : serviceCall.DocumentOwner);
                                 }
                         }
                     }

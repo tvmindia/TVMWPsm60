@@ -222,12 +222,6 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             // action inside a standard controller
             List<EnquiryViewModel> EnquiryVMList = Mapper.Map<List<Enquiry>, List<EnquiryViewModel>>(_enquiryBusiness.GetAllEnquiry(Mapper.Map<EnquiryAdvanceSearchViewModel, EnquiryAdvanceSearch>(EnquiryAdvanceSearchVM)));
-            if (EnquiryAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = EnquiryVMList.Count != 0 ? EnquiryVMList[0].TotalCount : 0;
-                int filteredResult = EnquiryVMList.Count != 0 ? EnquiryVMList[0].FilteredCount : 0;
-                EnquiryVMList = EnquiryVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),

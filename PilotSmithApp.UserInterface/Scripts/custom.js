@@ -968,3 +968,20 @@ function GetTimeLine(DocumentID, Type) {
         
     }
 }
+
+function ApprovalHistoryList(DocumentID, Type) {
+    try{
+        debugger;
+        $("#divApprovalHistoryBody").load("DocumentApproval/ApprovalHistoryList?DocID=" + DocumentID + "&DocType=" + Type, function (responseTxt, statusTxt, xhr) {
+            if (statusTxt == "success") {
+                OnServerCallComplete();
+                $('#divModelApprovalHistoryPopUp').modal('show');
+            }
+            else {
+                console.log("Error: " + xhr.status + ": " + xhr.statusText);
+            }
+        });
+    } catch (e) {
+        //console.log(e.message);
+    }
+}

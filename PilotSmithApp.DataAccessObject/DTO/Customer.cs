@@ -32,6 +32,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? DistrictCode { get; set; }
         public int? StateCode { get; set; }
         public int? CountryCode { get; set; }
+        public string AadharNo { get; set; }
 
         //Additional properties
         public int TotalCount { get; set; }

@@ -36,8 +36,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();            
             quotationAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");            
@@ -347,12 +348,6 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             // action inside a standard controller
             List<QuotationViewModel> QuotationVMList = Mapper.Map<List<Quotation>, List<QuotationViewModel>>(_quotationBusiness.GetAllQuotation(Mapper.Map<QuotationAdvanceSearchViewModel, QuotationAdvanceSearch>(QuotationAdvanceSearchVM)));
-            if (QuotationAdvanceSearchVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = QuotationVMList.Count != 0 ? QuotationVMList[0].TotalCount : 0;
-                int filteredResult = QuotationVMList.Count != 0 ? QuotationVMList[0].FilteredCount : 0;
-                QuotationVMList = QuotationVMList.Skip(0).Take(filteredResult > 1000 ? 1000 : filteredResult).ToList();
-            }
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -448,13 +443,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion UpdateQuotationEmailInfo
-        #region Calculate GST
-        public ActionResult GSTCalculatedFields(QuotationDetailViewModel quotationDetailVM)
-        {
-            quotationDetailVM = Mapper.Map<QuotationDetail, QuotationDetailViewModel>(_quotationBusiness.CalculateGST(Mapper.Map<QuotationDetailViewModel, QuotationDetail>(quotationDetailVM)));
-            return PartialView("_GSTCalculatedFields", quotationDetailVM);
-        }
-        #endregion Calculate GST
         #region Email Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult EmailQuotation(QuotationViewModel quotationVM)

@@ -35,8 +35,8 @@ function BindOrReloadProductionQCTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');                
-                $('.divboxASearch #AdvFromDate').val('').trigger('change');
-                $('.divboxASearch #AdvToDate').val('').trigger('change');
+                $('.divboxASearch #AdvFromDate').val('');
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerID').val('').trigger('change');
                 $('.divboxASearch #AdvPlantCode').val('').trigger('change');
@@ -66,6 +66,21 @@ function BindOrReloadProductionQCTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                ProductionQCAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                ProductionQCAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                ProductionQCAdvanceSearchViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                ProductionQCAdvanceSearchViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                ProductionQCAdvanceSearchViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                ProductionQCAdvanceSearchViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                ProductionQCAdvanceSearchViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val() == "" ? null : $('.divboxASearch #AdvPlantCode').val();
+                ProductionQCAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                ProductionQCAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                ProductionQCAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                ProductionQCAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+                ProductionQCAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
+                $('#AdvanceSearch').val(JSON.stringify(ProductionQCAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -86,14 +101,7 @@ function BindOrReloadProductionQCTable(action) {
         _dataTable.ProductionQCList = $('#tblProductionQC').DataTable(
        
         {           
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [0, 1, 2, 3, 4, 5,6]
-                             }
-            }],
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',           
             ordering: false,
             searching: false,
             paging: true,
@@ -163,23 +171,13 @@ function BindOrReloadProductionQCTable(action) {
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblProductionQC').fadeIn(100);
                 if (action == undefined) {
-                    $('.excelExport').hide();
+                    //$('.excelExport').hide();
                     OnServerCallComplete();
                 }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () {
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            }, 10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadProductionQCTable();
-                }
+               
             }
         });
-        $(".buttons-excel").hide();
+        
     }
     catch (e) {
         console.log(e.message);
@@ -191,9 +189,7 @@ function ResetProductionQCList() {
     BindOrReloadProductionQCTable('Reset');
 }
 //function export data to excel
-function ExportProductionQCData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
+function ExportProductionQCData() { 
     BindOrReloadProductionQCTable('Export');
 }
 
@@ -202,7 +198,7 @@ function AddProductionQC() {
     //this will return form body(html)
     OnServerCallBegin();
     $('#lblProductionQCInfo').text("<<ProductionQC No.>>");
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid + "&productionOrderID=", function (responseTxt, statusTxt, xhr) {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _emptyGuid , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -219,7 +215,7 @@ function EditProductionQC(this_Obj) {
     var ProductionQC = _dataTable.ProductionQCList.row($(this_Obj).parents('tr')).data();
     $('#lblProductionQCInfo').text(ProductionQC.ProdQCNo);
     //this will return form body(html)
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID + "&productionOrderID=" + ProductionQC.ProdOrderID, function (responseTxt, statusTxt, xhr) {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //$('#CustomerID').trigger('change');
             
@@ -243,17 +239,15 @@ function EditProductionQC(this_Obj) {
     });
 }
 function ResetProductionQC() {
-    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() + "&productionOrderID=" + $('#hdnProdOrderID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
-
                 $("#divProductionQCForm #ProdOrderID").prop('disabled', true);
                 openNav();
             }
             else {
                 debugger;
-                $('#hdnProdOrderID').val('');
                 $('#hdnCustomerID').val('');
                 $("#ProductionQCForm #CustomerID").prop('disabled', false);
                 $('#lblProductionQCInfo').text('<<ProductionQC No.>>');

@@ -97,16 +97,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @if (Model.IsUpdate || Model.EnquiryID != null)
-                            {
-                               
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            }
-                            else
-                            {
-                               
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            }
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -124,7 +115,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divPreparedBySelectList">
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                            
                         </div>                       
                     </div>
@@ -139,7 +130,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
-                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             
                         </div>                       
                     </div>
@@ -162,7 +153,7 @@
                     {
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 
                             </div>
                             <!-- This hidden field will keep the information whether the field is required or not -->
@@ -306,25 +297,32 @@
         }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBankRequired').val())
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=EST&required=' + $('#hdnDocumentStatusRequired').val())           
-            @if (Model.IsUpdate)
+            @if (!Model.IsDocLocked && Model.IsUpdate)
+            {
+            }
+            else {
+                <text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+                </text>
+                    }
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=EST&required=' + $('#hdnDocumentStatusRequired').val())
+            @if (Model.IsUpdate || Model.EnquiryID != null)
             {
                 <text>
-              $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val()+'&disabled=true', function() {
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
 
-              });
-                </text>
+            });
+            </text>
             }
             else
             {
                 <text>
-                $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function() {
+            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
-                });
-                </text>
+            });
+            </text>
             }
-    
+
         }
         catch (e) {
             console.log(e.message);
