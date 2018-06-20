@@ -18,22 +18,22 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage ="Customer is missing")]
         [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }
-        [Display(Name = "Grade")]
+        [Display(Name = "Select Grade")]
         public int? EnquiryGradeCode { get; set; }
-        [Display(Name = "Status")]
+        [Display(Name = "Select Document Status")]
         public int? DocumentStatusCode { get; set; }
-        [Display(Name = "Referred By")]
+        [Display(Name = "Select Referred By")]
         public int? ReferredByCode { get; set; }
-        [Display(Name = "Responsible Person")]
+        [Display(Name = "Select Responsible Person")]
         public Guid? ResponsiblePersonID { get; set; }
-        [Display(Name = "Attended By")]
+        [Display(Name = "Select Attended By")]
         public Guid? AttendedByID { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
         [Display(Name = "Owner")]
         public Guid? DocumentOwnerID { get; set; }
         [Required(ErrorMessage ="Branch Code is missing")]
-        [Display(Name = "Branch")]
+        [Display(Name = "Select Branch")]
         public int? BranchCode { get; set; }
         //Additional properties
         public string DetailJSON { get; set; }
@@ -90,16 +90,16 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid EnquiryID { get; set; }
-        [Display(Name ="Product")]
+        [Display(Name = "Select Product")]
         public Guid? ProductID { get; set; }
-        [Display(Name = "Model")]
+        [Display(Name = "Select Product Model")]
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Specification")]
         public string ProductSpec { get; set; }
-        [Display(Name = "Quantity")]
+        [Display(Name = "Select Quantity")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }
-        [Display(Name = "Unit")]
+        [Display(Name = "Select Unit")]
         [Required(ErrorMessage = "Unit is missing")]
         public int? UnitCode { get; set; }
         [Required(ErrorMessage = "Rate is missing")]

@@ -37,10 +37,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _districtRepository.DeleteDistrict(code);
         }
-        public List<SelectListItem> GetDistrictForSelectList()
+        public List<SelectListItem> GetDistrictForSelectList(int? stateCode)
         {
             List<SelectListItem> selectListItem = null;
-            List<District> districtList = _districtRepository.GetDistrictForSelectList();
+            List<District> districtList = _districtRepository.GetDistrictForSelectList(stateCode);
             return selectListItem = districtList!=null?(from district in districtList
                                      select new SelectListItem
                                      {

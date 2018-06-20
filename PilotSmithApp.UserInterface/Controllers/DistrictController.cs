@@ -135,7 +135,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region District SelectList
-        public ActionResult DistrictSelectList(string required,bool? disabled)
+        public ActionResult DistrictSelectList(string required,bool? disabled, int? stateCode)
         {
             ViewBag.IsRequired = required;
             ViewBag.IsDisabled = disabled;
@@ -152,7 +152,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
             }
             DistrictViewModel districtVM = new DistrictViewModel();
-            districtVM.DistrictSelectList = _districtBusiness.GetDistrictForSelectList();
+            districtVM.DistrictSelectList = _districtBusiness.GetDistrictForSelectList(stateCode);
             return PartialView("_DistrictSelectList", districtVM);
         }
         #endregion District SelectList

@@ -24,9 +24,9 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? ProdOrderID { get; set; }
         [Display(Name ="Select Customer")]
         public Guid? CustomerID { get; set; }
-        [Display(Name ="Plant")]
+        [Display(Name = "Select Plant")]
         public int? PlantCode { get; set; }
-        [Display(Name ="Prepared By")]
+        [Display(Name = "Select Prepared By")]
         public Guid? PreparedBy { get; set; }
         [Display(Name ="General Notes")]
         public string GeneralNotes { get; set; }
@@ -37,7 +37,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int? LatestApprovalStatus { get; set; }
         public bool? IsFinalApproved { get; set; }
         public string EmailSentTo { get; set; }
-        [Display(Name ="Branch")]
+        [Display(Name = "Select Branch")]
         [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode { get; set; }
         [Display(Name ="Vehicle Plate No.")]
@@ -115,7 +115,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Select Product")]
         [Required(ErrorMessage ="Product is missing")]
         public Guid? ProductID { get; set; }
-        [Display(Name ="Product Model")]
+        [Display(Name = "Select Product Model")]
         [Required(ErrorMessage = "Product Model is missing")]
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Product Specification")]
@@ -125,7 +125,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? OrderQty { get; set; }
         [Display(Name ="Delivery Qty")]
         public decimal? DelvQty { get; set; }
-        [Display(Name ="Unit")]
+        [Display(Name = "Select Unit")]
         [Required(ErrorMessage ="Unit is missing")]
         public int? UnitCode { get; set; }
         public Guid SpecTag { get; set; }

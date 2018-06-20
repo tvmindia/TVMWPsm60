@@ -226,6 +226,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ProducedQty=0,
                         PrevProducedQty=0,
                         PrevDelQty=0,
+                        SaleOrderQty=0,
                         Unit=new UnitViewModel()
                         {
                             Code=0,
@@ -288,9 +289,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             ProductID = saleOrderDetailVM.ProductID,
                                                             ProductModelID = saleOrderDetailVM.ProductModelID,
                                                             ProductSpec = saleOrderDetailVM.ProductSpec,
-                                                            OrderQty = saleOrderDetailVM.Qty,
+                                                            SaleOrderQty = saleOrderDetailVM.Qty,
                                                             UnitCode = saleOrderDetailVM.UnitCode,
-                                                            ProducedQty = saleOrderDetailVM.Qty-saleOrderDetailVM.PrevProduceQty,
+                                                            ProducedQty = 0,    //saleOrderDetailVM.Qty-saleOrderDetailVM.PrevProduceQty,
+                                                            OrderQty=saleOrderDetailVM.Qty-saleOrderDetailVM.PrevProduceQty,
                                                             PrevProducedQty = saleOrderDetailVM.PrevProduceQty,
                                                             Rate = saleOrderDetailVM.Rate == null ? 0 : saleOrderDetailVM.Rate,
                                                             Amount = 0,

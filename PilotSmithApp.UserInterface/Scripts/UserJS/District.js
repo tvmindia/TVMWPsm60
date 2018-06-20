@@ -76,6 +76,7 @@ function BindOrReloadDistrictTable(action) {
                 pageLength: 10,
                 columns: [
                 { "data": "Code", "defaultContent": "<i>-</i>" },
+                { "data": "Country.Description", "defaultContent": "<i>-</i>" },
                 {"data" :"State.Description","defaultContent":"<i>-</i>"},
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
@@ -84,12 +85,13 @@ function BindOrReloadDistrictTable(action) {
                 }
                 ],
                 columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [3,4] },
-                { "targets": [0], "width": "10%" },
-                {"targets":[1],"width":"10%"},
-                { "targets": [2], "width": "50%" },
-                { "targets": [3], "width": "20%" },
-                { "targets": [4], "width": "10%" }
+                { className: "text-center", "targets": [4,5] },
+                //{ "targets": [0], "width": "10%" },
+                { "targets": [1], "width": "10%" },
+                {"targets":  [2],"width":"10%"},
+                { "targets": [3], "width": "50%" },
+                { "targets": [4], "width": "20%" },
+                { "targets": [5], "width": "10%" }
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

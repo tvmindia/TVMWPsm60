@@ -39,7 +39,9 @@ else
 <script>
     $(document).ready(function () {
         $('#UnitCode').val($('#hdnUnitCode').val());
-        $('#UnitCode').select2({});
+        $('#UnitCode').select2({
+            dropdownParent: $('.divUnitSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

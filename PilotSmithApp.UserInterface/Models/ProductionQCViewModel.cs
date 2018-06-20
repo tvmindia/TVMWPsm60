@@ -16,16 +16,16 @@ namespace PilotSmithApp.UserInterface.Models
         [StringLength(20, ErrorMessage = "Ref.No Cannot be longer than 20 characters")]
         public string ProdQCRefNo { get; set; }
         public DateTime ProdQCDate { get; set; }
-        [Required(ErrorMessage ="Product order is missing")]
+        [Required(ErrorMessage ="Production order is missing")]
         public Guid? ProdOrderID { get; set; }
         [Display(Name = "Select Customer")]
-        [Required(ErrorMessage = "Customer is missing")]
+        //[Required(ErrorMessage = "Customer is missing")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Select Plant")]
         public int? PlantCode { get; set; }
-        [Display(Name = "Prepared By")]
+        [Display(Name = "Select Prepared By")]
         public Guid? PreparedBy { get; set; }
-        [Display(Name = "Select Status")]
+        [Display(Name = "Select Document Status")]
         public int? DocumentStatusCode { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
@@ -99,9 +99,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid ProdQCID { get; set; }
-        [Display(Name ="Product")]
+        [Display(Name = "Select Product")]
         public Guid? ProductID { get; set; }
-        [Display(Name = "Product Model")]
+        [Display(Name = "Select Product Model")]
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Product Specification")]
         public string ProductSpec { get; set; }

@@ -37,10 +37,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _stateRepository.DeleteState(code);
         }
-        public List<SelectListItem> GetStateForSelectList()
+        public List<SelectListItem> GetStateForSelectList(int? countryCode)
         {
             List<SelectListItem> selectListItem = null;
-            List<State> stateList = _stateRepository.GetStateForSelectList();
+            List<State> stateList = _stateRepository.GetStateForSelectList(countryCode);
             return selectListItem = stateList!=null?(from state in stateList
                                      select new SelectListItem
                                      {

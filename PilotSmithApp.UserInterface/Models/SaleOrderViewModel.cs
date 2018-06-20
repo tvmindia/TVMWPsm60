@@ -20,26 +20,26 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? QuoteID { get; set; }
         [Display(Name = "Enquiry")]
         public Guid? EnquiryID { get; set; }
-        [Display(Name = "Customer")]
+        [Display(Name = "Select Customer")]
         [Required(ErrorMessage = "Customer is missing")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Mailing Address")]
         public string MailingAddress { get; set; }
         [Display(Name = "Shipping Address")]
         public string ShippingAddress { get; set; }
-        [Display(Name = "Status")]
+        [Display(Name = "Select Document Status")]
         public int? DocumentStatusCode { get; set; }
         public DateTime ExpectedDelvDate { get; set; }
-        [Display(Name = "Reffered By")]
+        [Display(Name = "Select Reffered By")]
         public int? ReferredByCode { get; set; }
-        [Display(Name = "Prepared By")]
+        [Display(Name = "Select Prepared By")]
         public Guid? PreparedBy { get; set; }
         [Display(Name = "Purchase Order No.")]
         public string PurchaseOrdNo { get; set; }
         public DateTime PurchaseOrdDate { get; set; }
-        [Display(Name = "Bank")]
+        [Display(Name = "Select Bank")]
         public int? BankCode { get; set; }
-        [Display(Name = "Carrier")]
+        [Display(Name = "Select Carrier")]
         public int? CarrierCode { get; set; }
         public bool? EmailSentYN { get; set; }
         [Display(Name = "Latest Approval")]
@@ -56,9 +56,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Print Remark")]
         public string PrintRemark { get; set; }
         public string GeneralNotes { get; set; }
-        [Display(Name = "Document Owner")]
+        [Display(Name = "Select Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
-        [Display(Name = "Branch")]
+        [Display(Name = "Select Branch")]
         public int? BranchCode { get; set; }
         public decimal Discount { get; set; }
         [Display(Name = "Advance Amount")]
@@ -142,21 +142,21 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid SaleOrderID { get; set; }
-        [Display(Name = "Product")]
+        [Display(Name = "Select Product")]
         public Guid? ProductID { get; set; }
-        [Display(Name = "Product Model")]
+        [Display(Name = "Select Product Model")]
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Product Specification")]
         public string ProductSpec { get; set; }
         [Display(Name = "Quantity")]
         [Required(ErrorMessage = "Quantity is missing")]
         public decimal? Qty { get; set; }
-        [Display(Name = "Unit")]
+        [Display(Name = "Select Unit")]
         public int? UnitCode { get; set; }
         [Required(ErrorMessage ="Rate is missing")]
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
-        [Display(Name = "Tax Type")]
+        [Display(Name = "Select Tax Type")]
         public int? TaxTypeCode { get; set; }
         [Display(Name = "CGST")]
         public decimal? CGSTPerc { get; set; }
@@ -185,12 +185,12 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid SaleOrderID { get; set; }
-        [Display(Name = "Other Charge")]
+        [Display(Name = "Select Other Charge")]
         public int? OtherChargeCode { get; set; }
         [Display(Name = "Amount")]
         [Required(ErrorMessage = "Charge Amount is missing")]
         public decimal? ChargeAmount { get; set; }
-        [Display(Name = "Tax Type")]
+        [Display(Name = "Select Tax Type")]
         public int? TaxTypeCode { get; set; }
         [Display(Name = "CGST Amount")]
         public decimal CGSTPerc { get; set; }

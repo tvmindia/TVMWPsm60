@@ -102,6 +102,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Unit Unit { get; set; }
         public decimal? PrevProducedQty { get; set; }
         public Plant Plant { get; set; }
+        public SaleOrderDetail SaleOrderDetail { get; set; }
+        public decimal? SaleOrderQty { get; set; }
         public decimal? PrevDelQty { get; set; }
         public decimal? DelvQty { get; set; }
     }

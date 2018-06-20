@@ -22,9 +22,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Select Customer")]       
         public Guid? CustomerID{get;set;}
         public DateTime? ExpectedDelvDate{get;set;}
-        [Display(Name = "Prepared By")]
+        [Display(Name = "Select Prepared By")]
         public Guid? PreparedBy{get;set;}
-        [Display(Name = "Status")]
+        [Display(Name = "Select Document Status")]
         [Required(ErrorMessage = "Documentstatus is missing")]
         public int? DocumentStatusCode{get;set;}
         [Display(Name = "General Notes")]
@@ -40,7 +40,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Please specify at least one recipient.")]
         [Display(Name = "Sent To")]
         public string EmailSentTo{get;set;}
-        [Display(Name ="Branch")]
+        [Display(Name = "Select Branch")]
         [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode{get;set;}
 
@@ -107,9 +107,9 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID{get;set;}        
         public Guid ProdOrderID{get;set;}
-        [Display(Name = "Product")]
+        [Display(Name = "Select Product")]
         public Guid? ProductID{get;set;}
-        [Display(Name = "Product Model")]
+        [Display(Name = "Select Product Model")]
         public Guid? ProductModelID{get;set;}
         [Display(Name = "Product Specification")]
         [Required(ErrorMessage = "Product Specfication is missing")]
@@ -118,7 +118,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? OrderQty{get;set;}
         [Display(Name = "Produced Qty")]
         public decimal? ProducedQty{get;set;}       
-        [Display(Name = "Unit")]
+        [Display(Name = "Select Unit")]
         public int? UnitCode{get;set;}
         [Display(Name = "Rate")]
         public decimal? Rate{get;set;}
@@ -130,6 +130,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime? MileStone3AcTFinishDt{get;set;}
         public DateTime? MileStone4FcFinishDt{get;set;}
         public DateTime? MileStone4AcTFinishDt{get;set;}
+        [Display(Name ="Select Plant")]
         public int? PlantCode{get;set;}
         public Guid SpecTag { get; set; }
         //Additional Fields
@@ -164,9 +165,10 @@ namespace PilotSmithApp.UserInterface.Models
         public ProductViewModel Product { get; set; }
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
+        public SaleOrderDetailViewModel SaleOrderDetail { get; set; }
         public decimal? PrevProducedQty { get; set; }
         public decimal? Amount { get; set; }
-        public decimal? CurProducedQty { get; set; }
+        public decimal? SaleOrderQty { get; set; }
         public PlantViewModel Plant { get; set; }
         public decimal? PrevDelQty { get; set; }
         public decimal? DelvQty { get; set; }

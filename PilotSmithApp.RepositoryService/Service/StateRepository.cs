@@ -266,7 +266,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region GetStateForSelectList
-        public List<State> GetStateForSelectList()
+        public List<State> GetStateForSelectList(int? countryCode)
         {
             List<State> stateList = null;
             try
@@ -282,6 +282,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetStateForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        //if (countryCode != 0)
+                            cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = countryCode;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))

@@ -37,10 +37,10 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _areaRepository.DeleteArea(code);
         }
-        public List<SelectListItem> GetAreaForSelectList()
+        public List<SelectListItem> GetAreaForSelectList(int? districtCode)
         {
             List<SelectListItem> selectListItem = null;
-            List<Area> areaList = _areaRepository.GetAreaForSelectList();
+            List<Area> areaList = _areaRepository.GetAreaForSelectList(districtCode);
             return selectListItem = areaList!=null?(from area in areaList
                               select new SelectListItem
                               {

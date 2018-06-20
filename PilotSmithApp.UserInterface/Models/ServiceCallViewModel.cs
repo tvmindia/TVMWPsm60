@@ -15,19 +15,21 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime? ServiceCallTime { get; set; }
         [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }
-        [Display(Name = "Attended By")]
+        [Display(Name = "Select Attended By")]
         public Guid? AttendedBy { get; set; }
         [Display(Name = "Caller Name")]
         public string CalledPersonName { get; set; }
-        [Display(Name = "Document Status")]
+        [Display(Name = "Select Document Status")]
         public int? DocumentStatusCode { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
-        [Display(Name = "Serviced By")]
+        [Display(Name = "Select Serviced By")]
         public Guid? ServicedBy { get; set; }
         public DateTime? ServiceDate { get; set; }
         [Display(Name = "Service Comments")]
         public string ServiceComments { get; set; }
+        [Display(Name = "Select Branch")]
+        [Required(ErrorMessage = "Branch Code is missing")]
         public int? BranchCode { get; set; }
 
         //Additional Fields
@@ -93,16 +95,16 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid ServiceCallID{get;set;}
-        [Display(Name ="Product")]
+        [Display(Name ="Select Product")]
         public Guid? ProductID { get;set;}
-        [Display(Name = "Model")]
+        [Display(Name = "Select Product Model")]
         public Guid? ProductModelID { get;set;}
         [Display(Name = "Specification")]
         public string ProductSpec { get;set;}
         [Display(Name = "Guarantee Y/N")]
         public bool? GuaranteeYN { get;set;}
         public DateTime? InstalledDate { get;set;}
-        [Display(Name = "Service Status")]
+        [Display(Name = "Select Service Status")]
         public int? ServiceStatusCode { get;set;}
         public bool IsUpdate { get; set; }
 
@@ -119,11 +121,11 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid? ServiceCallID { get; set; }
-        [Display(Name = "Other Charge")]
+        [Display(Name = "Select Other Charge")]
         public int? OtherChargeCode { get; set; }
         [Required(ErrorMessage = "Charge Amount is missing")]
         public decimal? ChargeAmount { get; set; }
-        [Display(Name = "Tax Type")]
+        [Display(Name = "Select Tax Type")]
         public int? TaxTypeCode { get; set; }
         [Display(Name = "CGST Amount")]
         public decimal? CGSTPerc { get; set; }

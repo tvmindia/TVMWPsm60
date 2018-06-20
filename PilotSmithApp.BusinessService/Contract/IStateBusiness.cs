@@ -15,6 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         State GetState(int code);
         bool CheckStateNameExist(State state);
         object DeleteState(int code);
-        List<SelectListItem> GetStateForSelectList();
+        List<SelectListItem> GetStateForSelectList(int? countryCode);
     }
 }

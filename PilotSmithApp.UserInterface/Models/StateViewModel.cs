@@ -21,6 +21,7 @@ namespace PilotSmithApp.UserInterface.Models
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public List<SelectListItem> StateSelectList { get; set; }
         [Display(Name ="Country")]
+        [Required(ErrorMessage ="Country is mising")]
         public int? CountryCode { get; set; }
         public CountryViewModel Country { get; set; } 
     }

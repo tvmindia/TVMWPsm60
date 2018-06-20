@@ -402,7 +402,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "OrderQty", render: function (data, type, row) {
+                 "data": "SaleOrderQty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
@@ -417,9 +417,10 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              },
              {
                  "data": "OrderQty", render: function (data, type, row) {
-                     var CurProducedQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.PrevProducedQty));
-                     if (CurProducedQty > 0) {
-                         return CurProducedQty + " " + row.Unit.Description
+                     debugger;
+                      //roundoff(parseFloat(row.SaleOrderQty) - parseFloat(row.PrevProducedQty));
+                      if (data > 0) {
+                         return data + " " + row.Unit.Description
                      }
                      else
                          return 0 + " " + row.Unit.Description
@@ -444,7 +445,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                  "data": "Amount", render: function (data, type, row) {
                      if (row.Rate != null) {
                          debugger;
-                         var Amount = roundoff(parseFloat(row.OrderQty) * parseFloat(row.Rate));
+                         var Amount = roundoff(parseFloat(row.SaleOrderQty) * parseFloat(row.Rate));
                          return Amount
                      }
                      else

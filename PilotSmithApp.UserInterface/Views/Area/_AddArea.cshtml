@@ -22,15 +22,16 @@
 
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divCountrySelectList">
-                    @Html.Action("CountrySelectList", "Country", new { required = "" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("CountrySelectList", "Country", new { required = "" })*@
                 </div>
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
-            @Html.Hidden("hdnCountryRequired", "")
+            @Html.Hidden("hdnCountryRequired", "required")
             <!-- This hidden field will keep the information whether the field is disabled or not -->
             @Html.Hidden("hdnCountrydisabled", false)
             @Html.HiddenFor(model => model.CountryCode, htmlAttributes: new { @class = "", @id = "hdnCountryCode" })
@@ -39,15 +40,16 @@
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.StateCode, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.StateCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     <div class="divStateSelectList">
-                        @Html.Action("StateSelectList", "State", new { required = "" })
+                        <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("StateSelectList", "State", new { required = "" })*@
                     </div>                  
                 </div>
                 <!-- This hidden field will keep the information whether the field is required or not -->
-                @Html.Hidden("hdnStateRequired", "")
+                @Html.Hidden("hdnStateRequired", "required")
                 <!-- This hidden field will keep the information whether the field is disabled or not -->
                 @Html.Hidden("hdnStatedisabled", false)
                 @Html.HiddenFor(model => model.StateCode, htmlAttributes: new { @class = "", @id = "hdnStateCode" })
@@ -57,15 +59,16 @@
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.DistrictCode, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.DistrictCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     <div class="divDistrictSelectList">
-                        @Html.Action("DistrictSelectList", "District", new { required = "" })
+                        <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("DistrictSelectList", "District", new { required = "" })*@
                     </div>                 
                 </div>
                 <!-- This hidden field will keep the information whether the field is required or not -->
-                @Html.Hidden("hdnDistrictRequired", "")
+                @Html.Hidden("hdnDistrictRequired", "required")
                 <!-- This hidden field will keep the information whether the field is disabled or not -->
                 @Html.Hidden("hdnDistrictdisabled", false)
                 @Html.HiddenFor(model => model.DistrictCode, htmlAttributes: new { @class = "", @id = "hdnDistrictCode" })
@@ -79,11 +82,45 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormArea");
         $('#AreaCode').val($('#hdnAreaCode').val());
-        try {
-            $('#StateCode,#DistrictCode,#CountryCode').select2({
-                dropdownParent: $("#divModelMasterPopUp")
+        debugger;
+        try{
+            $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+                try {
+                    $('.divCountrySelectList #CountryCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp")
+                    });
+
+                    $('.select2').addClass('form-control newinput');
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
             });
-            $('.select2').addClass('form-control newinput');
+            $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+                try {
+                    $('.divStateSelectList #StateCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp")
+                    });
+
+                    $('.select2').addClass('form-control newinput');
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+            });
+
+            $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val(), function () {
+                try {
+                    $('.divDistrictSelectList #DistrictCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp")
+                    });
+
+                    $('.select2').addClass('form-control newinput');
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+            });
         }
         catch (e) {
             console.log(e.message);

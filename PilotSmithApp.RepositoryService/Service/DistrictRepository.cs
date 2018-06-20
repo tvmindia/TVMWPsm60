@@ -46,6 +46,7 @@ namespace PilotSmithApp.RepositoryService.Service
 
                         else
                             cmd.Parameters.Add("@Code", SqlDbType.Int).Value = district.Code;
+                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = district.CountryCode;
                         cmd.Parameters.Add("@StateCode", SqlDbType.Int).Value = district.StateCode;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, 200).Value = district.Description;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = district.PSASysCommon.CreatedBy;
@@ -119,6 +120,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     District district = new District();
                                     {
                                         district.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : district.Code);
+                                        district.Country = new Country();
+                                        district.Country.Description= (sdr["Country"].ToString() != "" ? (sdr["Country"].ToString()) : district.Country.Description);
                                         district.State = new State();                                 
                                         district.State.Description = (sdr["State"].ToString() != "" ? (sdr["State"].ToString()) : district.State.Description);
                                         district.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : district.Description);
@@ -170,7 +173,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     district = new District();
                                     district.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : district.Code);
                                     district.StateCode = (sdr["StateCode"].ToString() != "" ? int.Parse(sdr["StateCode"].ToString()) : district.StateCode);
-                                   district.State = new State();
+                                    district.CountryCode= (sdr["CountryCode"].ToString() != "" ? int.Parse(sdr["CountryCode"].ToString()) : district.CountryCode);
+                                    district.State = new State();
                                     district.State.Code = (sdr["StateCode"].ToString() != "" ? int.Parse(sdr["StateCode"].ToString()) : district.State.Code);
                                    // district.State.Description = (sdr["State"].ToString() != "" ? (sdr["State"].ToString()) : district.State.Description);
                                     district.Description = (sdr["Description"].ToString() != "" ? (sdr["Description"].ToString()) : district.Description);
@@ -268,7 +272,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region GetDistrictForSelectList
-        public List<District> GetDistrictForSelectList()
+        public List<District> GetDistrictForSelectList(int? stateCode)
         {
             List<District> districtList = null;
             try
@@ -284,6 +288,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetDistrictForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@StateCode", SqlDbType.Int).Value = stateCode;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))
@@ -294,6 +299,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     District district = new District();
                                     {
                                         district.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : district.Code);
+                                        district.CountryCode= (sdr["CountryCode"].ToString() != "" ? int.Parse(sdr["CountryCode"].ToString()) : district.CountryCode);
                                         district.StateCode = (sdr["StateCode"].ToString() != "" ? int.Parse(sdr["StateCode"].ToString()) : district.StateCode);
                                         district.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : district.Description);
                                     }

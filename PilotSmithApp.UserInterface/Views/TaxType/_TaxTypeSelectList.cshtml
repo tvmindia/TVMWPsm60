@@ -44,7 +44,9 @@ else
 <script>
     $(document).ready(function () {
         $('#TaxTypeCode').val($('#hdnTaxTypeCode').val());
-        $('#TaxTypeCode').select2({});
+        $('#TaxTypeCode').select2({
+            dropdownParent: $('.divTaxTypeSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

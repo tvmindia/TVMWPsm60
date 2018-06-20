@@ -24,7 +24,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCountrySelectList">
-                            @Html.Action("CountrySelectList", "Country", new { required = "" })
+                            <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            @*@Html.Action("CountrySelectList", "Country", new { required = "" })*@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -40,7 +41,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divStateSelectList">
-                            @Html.Action("StateSelectList", "State", new { required = "" })
+                            <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                            @*@Html.Action("StateSelectList", "State", new { required = "" })*@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -67,7 +69,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divDistrictSelectList">
-                            @Html.Action("DistrictSelectList", "District", new { required = "" })
+                            <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                            @*@Html.Action("DistrictSelectList", "District", new { required = "" })*@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -83,7 +86,8 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divAreaSelectList">
-                            @Html.Action("AreaSelectList", "Area", new { required = "" })
+                            <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                            @*@Html.Action("AreaSelectList", "Area", new { required = "" })*@
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -267,17 +271,62 @@
 }
 <script>
     $(document).ready(function () {
-        try {
-            //dropdown bindings
-            LoadCurrentPageDropdowns();
-        }
-        catch (e) {
-            console.log(e.message);
-        }
+       
         $.validator.unobtrusive.parse("#CustomerForm");
-
+        try{
+            $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+                $('#divCustomerForm #CountryCode').change(function () {
+                    debugger;
+                    if ($('.divStateSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value)
+                        }
+                        else {
+                            $('.divStateSelectList').empty();
+                            $('.divStateSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                       
+                        }                      
+                    }                  
+                });                 
+            });
+           
+            //$('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+            //    $('#divCustomerForm #StateCode').change(function () {
+            //        debugger;
+            //        if ($('.divDistrictSelectList') != undefined) {
+            //            $('#dropLoad').addClass('fa fa-spinner fa-spin');
+            //            if (this.value != "") {
+            //                $('.divDistrictSelectList').load('District/DistrictSelectList?stateCode=' + this.value)
+            //            }
+            //            else {
+            //                $('.divDistrictSelectList').empty();
+            //                $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //            }
+            //        }
+            //    });
+            //});
+            //$('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val(), function () {
+            //    $('#divCustomerForm #DistrictCode').change(function () {
+            //        if ($('.divAreaSelectList') != undefined) {
+            //            debugger;
+            //            $('#dropLoad').addClass('fa fa-spinner fa-spin');
+            //            if (this.value != "") {
+            //                $('.divAreaSelectList').load('Area/AreaSelectList?districtCode=' + this.value)
+            //            }
+            //            else {
+            //                $('.divAreaSelectList').empty();
+            //                $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //            }
+            //        }
+            //    });
+            //});
+        }
+    catch(e){
+        console.log(e.message);
+        }
         $('#CustomerCategoryList,#ContactTitle,#PaymentTermCode,#CountryCode,#StateCode,#DistrictCode,#AreaCode').select2();
-        $('.select2').addClass('form-control newinput');
+        $('.select2').addClass('form-control newinput');     
     });
 
 </script>

@@ -133,7 +133,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region State SelectList
-        public ActionResult StateSelectList(string required,bool? disabled)
+        public ActionResult StateSelectList(string required,bool? disabled, int? countryCode)
         {
             ViewBag.IsRequired = required;
             ViewBag.IsDisabled = disabled;
@@ -150,7 +150,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
             }
             StateViewModel stateVM = new StateViewModel();
-            stateVM.StateSelectList = _stateBusiness.GetStateForSelectList();
+            stateVM.StateSelectList = _stateBusiness.GetStateForSelectList(countryCode);
             return PartialView("_StateSelectList", stateVM);
         }
 

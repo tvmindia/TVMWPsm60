@@ -18,20 +18,20 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime EstimateDate { get; set; }
         [Display(Name = "Enquiry")]
         public Guid? EnquiryID { get; set; }
-        [Display(Name = "Customer")]
+        [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }
-        [Display(Name = "Document Status")]
+        [Display(Name = "Select Document Status")]
         [Required(ErrorMessage = "Documentstatus is missing")]
         public int? DocumentStatusCode { get; set; }
         [Display(Name = "Valid upto")]
         public DateTime ValidUpToDate { get; set; }
-        [Display(Name = "Prepared By")]
+        [Display(Name = "Select Prepared By")]
         public Guid? PreparedBy { get; set; }
         [Display(Name = "General notes")]
         public string GeneralNotes { get; set; }
         [Display(Name = "Document Owner")]
         public Guid? DocumentOwnerID { get; set; }
-        [Display(Name = "Branch")]
+        [Display(Name = "Select Branch")]
         [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode { get; set; }
 
@@ -95,15 +95,16 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         public Guid EstimateID { get; set; }
-        [Display(Name ="Product")]
+        [Display(Name = "Select Product")]
         public Guid? ProductID { get; set; }
-        [Display(Name = "Product Model")]
+        [Display(Name = "Select Product Model")]
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Product Specification")]
         public string ProductSpec { get; set; }
+        [Display(Name = "Quantity")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }
-        [Display(Name = "Unit")]
+        [Display(Name = "Select Unit")]
         [Required(ErrorMessage = "Unit is missing")]
         public int? UnitCode { get; set; }
         [Display(Name = "Cost Rate")]

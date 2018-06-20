@@ -150,15 +150,6 @@ function AddCustomer() {
     });
 }
 
-function LoadCurrentPageDropdowns() {
-    $('#divCountrySelectList').load('/Country/CountrySelectList?required='+$('#hdnCountryRequired').val())
-    $('#divStateSelectList').load('/State/StateSelectList?required='+$('#hdnStateRequired').val())
-    // $('#divBranchSelectList').load('/Branch/BranchSelectList')
-    $('#divDistrictSelectList').load('/District/DistrictSelectList?required='+$('#hdnDistrictRequired').val())
-    $('#divAreaSelectList').load('/Area/AreaSelectList?required='+$('#hdnAreaRequired').val())
-}
-
-
 function EditCustomer(this_Obj)
 {
     var customer = _dataTable.customerList.row($(this_Obj).parents('tr')).data();
