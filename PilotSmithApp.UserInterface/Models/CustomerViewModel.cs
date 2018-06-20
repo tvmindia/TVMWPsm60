@@ -75,6 +75,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int? StateCode { get; set; }
         [Display(Name = "Country")]
         public int? CountryCode { get; set; }
+        [Display(Name = "Aadhar Number")]
+        [MaxLength(12)]
+        public string AadharNo { get; set; }
 
         //Additional properties
         public int TotalCount { get; set; }
