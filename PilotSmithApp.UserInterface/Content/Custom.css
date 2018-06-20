@@ -1268,7 +1268,11 @@ select{
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #fff), color-stop(1, #fff)) !important;
 }
 
-
+.timeline > li > .timeline-item {
+    margin-right:-5px;
+    border-radius:10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.38);
+}
 
 .timeline > li > .timeline-item > .timeline-header {
     font-size:14px;
@@ -1285,6 +1289,14 @@ select{
 
         
     }
+
+
+.timeline > li > .timeline-item > .timeline-body {
+    padding-top:5px;
+    padding-bottom:5px;
+    font-size:11px;
+      color:#666;
+}
 
 .timeline > li {
      margin-bottom: 8px;
