@@ -269,10 +269,10 @@ function ResetQuotation() {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved");
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
             }
             else {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", $('#ID').val());
             }
             BindQuotationDetailList($('#ID').val(), false);
             BindQuotationOtherChargesDetailList($('#ID').val());
@@ -310,7 +310,7 @@ function SaveSuccessQuotation(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _result.ID + "&estimateID="+ _result.EstimateID, function () {
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                     $('#lblQuotationInfo').text(_result.QuotationNo);
                     BindQuotationDetailList(_result.ID);
                     BindQuotationOtherChargesDetailList(_result.ID);
@@ -319,7 +319,7 @@ function SaveSuccessQuotation(data, status) {
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
                 });
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit");
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                 BindOrReloadQuotationTable('Init');
                 notyAlert('success', _result.Message);
                 break;
@@ -1184,7 +1184,7 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument");
+                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
             }
             BindQuotationDetailList(id);
             BindQuotationOtherChargesDetailList(id);

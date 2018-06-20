@@ -275,14 +275,14 @@ function SaveSuccessEstimate(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _result.ID+"&enquiryID="+_result.EnquiryID, function () {
-                    ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
+                    ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", _result.ID);
                     BindEstimateDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblEstimateInfo').text(_result.EstimateNo);
 
                 });
-                ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit");
+                ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", _result.ID);
                 BindOrReloadEstimateTable('Init');
                 notyAlert('success', _result.Message);
                 break;
