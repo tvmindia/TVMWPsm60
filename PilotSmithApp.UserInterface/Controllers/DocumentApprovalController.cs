@@ -80,6 +80,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View(documentApprovalAdvanceSearchVM);
         }
 
+        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        public ActionResult ApprovalHistoryList(string DocType, string DocID)
+        {
+            ViewBag.DocumentID = DocID;
+            ViewBag.DocumentType = DocType;
+            return PartialView("_ApprovalHistoryList");
+        }
+
         #region GetAllApprovalHistory
         [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public JsonResult GetAllApprovalHistory(DataTableAjaxPostModel model, DocumentApprovalAdvanceSearchViewModel documentApprovalAdvanceSearchVM)
