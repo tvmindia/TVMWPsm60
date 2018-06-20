@@ -28,9 +28,14 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime? ServiceDate { get; set; }
         [Display(Name = "Service Comments")]
         public string ServiceComments { get; set; }
+        [Display(Name = "Branch")]
         public int? BranchCode { get; set; }
+        public Guid? DocumentOwnerID { get; set; }
 
         //Additional Fields
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
+        public bool IsDocLocked { get; set; }
         public List<ServiceCallDetailViewModel> ServiceCallDetailList { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         [Display(Name = "Service Call Date")]

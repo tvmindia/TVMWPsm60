@@ -23,6 +23,7 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
 
     <div class="col-md-11 divbox1">
@@ -111,7 +112,7 @@
                     <div class="col-md-12">
                         <div class="divAttendedBySelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                           
+
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -126,7 +127,7 @@
                     <div class="col-md-12">
                         <div class="divServicedBySelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                           
+
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -162,15 +163,24 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divBranchSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            
+                    @if (!Model.IsDocLocked && Model.IsUpdate)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput">@Model.Branch.Description</span>
                         </div>
-                    </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnBranchRequired", "required")
-                    @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divBranchSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                            </div>
+                            <!-- This hidden field will keep the information whether the field is required or not -->
+                            @Html.Hidden("hdnBranchRequired", "required")
+                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                        </div>
+                    }
                 </div>
 
 
@@ -191,36 +201,36 @@
                         <div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.Branch.Description</div>
                         </div>
-                        @*@if (Model.IsUpdate)
-                            {
-                                <div class="col-md-12"></div>
-                                    <div class="form-group col-md-12">
-                                        @if (!Model.IsDocLocked)
-                                        {
-                                            <div class="col-md-12 no-padding">
-                                                <div class="col-md-2 no-padding">
-                                                    <img src="~/Content/images/ownerlock.png" title="Document Locked" />
-                                                </div>
-                                                <div class="col-md-10 no-padding">
-                                                    <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                                    <a href="#"><span style="font-size:18px;">Take ownership</span></a>
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="col-md-12 no-padding">
-                                                <div class="col-md-2 no-padding">
-                                                    <img src="~/Content/images/ownerunlock.png" />
-                                                </div>
-                                                <div class="col-md-10 no-padding">
-                                                    <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                                    <span style="font-size:18px;">Holding ownership</span>
-                                                </div>
-                                            </div>
-                                        }
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="col-md-12"></div>
+                            <div class="form-group col-md-12">
+                                @if (!Model.IsDocLocked)
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerlock.png" title="Document Locked" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                        </div>
                                     </div>
-                            }*@
+                                }
+                                else
+                                {
+                                    <div class="col-md-12 no-padding">
+                                        <div class="col-md-2 no-padding">
+                                            <img src="~/Content/images/ownerunlock.png" />
+                                        </div>
+                                        <div class="col-md-10 no-padding">
+                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                            <span style="font-size:18px;">Holding ownership</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
 
                     </div>
 
@@ -232,124 +242,144 @@
     <div class="col-md-12">&nbsp;</div>
 
 
-        <div class="col-md-11 divbox1">
-            <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">Service Call Details<a class="btn btn-openid pull-right" onclick="AddServiceCallDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a></div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">
+                Service Call Details
+                @{
+                    if (Model.IsDocLocked || !Model.IsUpdate)
+                    {
+                        <a class="btn btn-openid pull-right" onclick="AddServiceCallDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                    }
+                }
+            </div>
 
-                @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
-                <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
-                    <table id="tblServiceCallDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                        <thead>
-                            <tr class="text-center TableHead">
-                                <th style="width:50%">Product</th>
-                                <th style="width:15%">Guarantee</th>
-                                <th style="width:15%">Installed Date</th>
-                                <th style="width:15%">Service Status</th>
-                                <th style="width:5%">...</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+            @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+            <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
+                <table id="tblServiceCallDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                    <thead>
+                        <tr class="text-center TableHead">
+                            <th style="width:50%">Product</th>
+                            <th style="width:15%">Guarantee</th>
+                            <th style="width:15%">Installed Date</th>
+                            <th style="width:15%">Service Status</th>
+                            <th style="width:5%">...</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-11 divbox1">
-            <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">
-                    Service Call Charges Details
-                    <a class="btn btn-openid pull-right" onclick="AddServiceCallChargeDetailList()" id="btnServiceCallCharge" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Service Call Charge</a>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">
+                Service Call Charges Details
+                @{
+                    if (Model.IsDocLocked || !Model.IsUpdate)
+                    {
+                        <a class="btn btn-openid pull-right" onclick="AddServiceCallChargeDetailList()" id="btnServiceCallCharge" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Service Call Charge</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-openid pull-right" disabled id="btnServiceCallCharge" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Service Call Charge</a>
+                    }
+                }
+            </div>
 
-                </div>
-
-                @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
-                @Html.HiddenFor(model => model.CallChargeJSON, htmlAttributes: new { @class = "" })
-                <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
-                    <table id="tblServiceCallChargeDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                        <thead>
-                            <tr class="text-center TableHead">
-                                <th style="width:30%">Other Charge</th>
-                                <th style="width:14%">Charge Amount(₹)</th>
-                                <th style="width:14%">GST(₹)</th>
-                                @*<th style="width:15%">Additional Tax(%)</th>*@
-                                <th style="width:14%">Additional Tax(₹)</th>
-                                <th style="width:14%">Total(₹)</th>
-                                <th style="width:14%">...</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <div class="col-md-7">&nbsp;</div>
-                <div class="col-md-5" style="padding-right:3.5%">
-                    <table class="table dataTable no-footer DetailSummerybox">
-                        <tbody>
-                            <tr>
-                                <td style="text-align: right">
-                                    <label class="control-label" for="lblTaxTotal">Total Additional Tax</label>
-                                </td>
-                                <td class="ApplyCurrency" style="text-align: right">
-                                    <label class="control-label " for="" id="lblAddlTaxTotal">00.00</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right">
-                                    <label class="control-label" for="lblTaxTotal">GST Amount</label>
-                                </td>
-                                <td class="ApplyCurrency" style="text-align: right">
-                                    <label class="control-label " for="" id="lblTaxTotal">00.00</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: right">
-                                    <label class="control-label" for="lblGrossAmount">Other Charge Amount</label>
-                                </td>
-                                <td class="ApplyCurrency" style="text-align: right">
-                                    <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
-                                </td>
-                            </tr>
-                            <tr class="odd">
-                                <td style="text-align: right">
-                                    <label class="control-label " for="lblGrandTotal">Grand Total</label>
-                                </td>
-                                <td class="ApplyCurrency" style="text-align: right">
-                                    <label class="control-label " for="" id="lblGrandTotal" style="font-weight: bold !important;">00.00</label>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+            @Html.HiddenFor(model => model.CallChargeJSON, htmlAttributes: new { @class = "" })
+            <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
+                <table id="tblServiceCallChargeDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                    <thead>
+                        <tr class="text-center TableHead">
+                            <th style="width:30%">Other Charge</th>
+                            <th style="width:14%">Charge Amount(₹)</th>
+                            <th style="width:14%">GST(₹)</th>
+                            @*<th style="width:15%">Additional Tax(%)</th>*@
+                            <th style="width:14%">Additional Tax(₹)</th>
+                            <th style="width:14%">Total(₹)</th>
+                            <th style="width:14%">...</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-md-7">&nbsp;</div>
+            <div class="col-md-5" style="padding-right:3.5%">
+                <table class="table dataTable no-footer DetailSummerybox">
+                    <tbody>
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label" for="lblTaxTotal">Total Additional Tax</label>
+                            </td>
+                            <td class="ApplyCurrency" style="text-align: right">
+                                <label class="control-label " for="" id="lblAddlTaxTotal">00.00</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label" for="lblTaxTotal">GST Amount</label>
+                            </td>
+                            <td class="ApplyCurrency" style="text-align: right">
+                                <label class="control-label " for="" id="lblTaxTotal">00.00</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label" for="lblGrossAmount">Other Charge Amount</label>
+                            </td>
+                            <td class="ApplyCurrency" style="text-align: right">
+                                <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
+                            </td>
+                        </tr>
+                        <tr class="odd">
+                            <td style="text-align: right">
+                                <label class="control-label " for="lblGrandTotal">Grand Total</label>
+                            </td>
+                            <td class="ApplyCurrency" style="text-align: right">
+                                <label class="control-label " for="" id="lblGrandTotal" style="font-weight: bold !important;">00.00</label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 
-        <div class="col-md-11 divbox1">
-            <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">Notes</div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Notes</div>
 
-                <div class="form-group col-md-12">
+            <div class="form-group col-md-12">
 
-                    <div class="col-md-12 no-padding ">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.ServiceComments, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.ServiceComments, 5, 0, new { @class = "form-control newinput" })
-                            @Html.ValidationMessageFor(model => model.ServiceComments, "", new { @class = "text-danger" })
-                        </div>
+                <div class="col-md-12 no-padding ">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ServiceComments, htmlAttributes: new { @class = "control-label" })
                     </div>
-
-                    <div class="col-md-12 no-padding ">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
-                            @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
-                        </div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.ServiceComments, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.ServiceComments, "", new { @class = "text-danger" })
                     </div>
-
-                    <div class="col-md-12">&nbsp;</div>
                 </div>
+
+                <div class="col-md-12 no-padding ">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-12">&nbsp;</div>
             </div>
         </div>
+    </div>
 
         <div class="col-md-11 divbox1">
             <div class="col-md-12 divbox2">
@@ -362,14 +392,19 @@
                 <input id="btnInsertUpdateServiceCall" type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
-}
+                    }
 
 <script>
     $(document).ready(function () {
         try {
             $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList')
             $('.divServicedBySelectList').load('/Employee/ServicedBySelectList')
+            @if (!Model.IsDocLocked && Model.IsUpdate) { }
+             else {
+                 <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            </text>
+                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val())
             @if (Model.IsUpdate)
                     {

@@ -205,7 +205,13 @@ function EditSaleInvoice(this_Obj) {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + SaleInvoice.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //$('#CustomerID').trigger('change');
-            ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+            debugger;
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+            }
+            else {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+            }
             BindSaleInvoiceDetailList(SaleInvoice.ID);
             BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
             $('#lblSaleInvoiceInfo').text(SaleInvoice.SaleInvNo);
@@ -227,6 +233,12 @@ function EditSaleInvoice(this_Obj) {
 function ResetSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+            }
+            else {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+            }
             BindSaleInvoiceDetailList($('#ID').val());
             BindSaleInvoiceOtherChargesDetailList($('#ID').val());
             CalculateTotal();
@@ -419,11 +431,11 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                 "data": null, "orderable": false,render: function(data,type,row){
                     if (row.Product.Code != "" && row.Product.Code != null)
                     {
-                        return '<a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-"
                     }
                     else
                     {
-                        return '<a href="#" class="actionLink"  onclick="EditSaleInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-"
                     }
                 },"defaultContent": "<i></i>"
              },
@@ -893,7 +905,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
                      return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-" },
              ],
              columnDefs: [
                  //{ "targets": [0], "width": "30%" },
