@@ -972,7 +972,7 @@ function GetTimeLine(DocumentID, Type) {
 function ApprovalHistoryList(DocumentID, Type) {
     try{
         debugger;
-        $("#divApprovalHistoryBody").load("DocumentApproval/ApprovalHistoryList?DocID=" + DocumentID + ",DocType=" + Type, function (responseTxt, statusTxt, xhr) {
+        $("#divApprovalHistoryBody").load("DocumentApproval/ApprovalHistoryList?DocID=" + DocumentID + "&DocType=" + Type, function (responseTxt, statusTxt, xhr) {
             if (statusTxt == "success") {
                 OnServerCallComplete();
                 $('#divModelApprovalHistoryPopUp').modal('show');
