@@ -215,6 +215,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = customer.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = customer.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = customer.PSASysCommon.UpdatedDate;
+                        cmd.Parameters.Add("@AadharNo", SqlDbType.VarChar, 50).Value = customer.AadharNo;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);
@@ -325,7 +326,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         customer.PSASysCommon.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.UpdatedDateString);
                                         customer.FilteredCount= (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : customer.FilteredCount);
                                         customer.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : customer.FilteredCount);
-
+                                        customer.AadharNo = (sdr["AadharNo"].ToString() != "" ? sdr["AadharNo"].ToString() : customer.AadharNo);
                                     }
                                     customerList.Add(customer);
                                 }
@@ -393,7 +394,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     customer.PSASysCommon.UpdatedBy = (sdr["UpdatedBy"].ToString() != "" ? sdr["UpdatedBy"].ToString() : customer.PSASysCommon.UpdatedBy);
                                     customer.PSASysCommon.UpdatedDate = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()) : customer.PSASysCommon.UpdatedDate);
                                     customer.PSASysCommon.UpdatedDateString = (sdr["UpdatedDate"].ToString() != "" ? DateTime.Parse(sdr["UpdatedDate"].ToString()).ToString(_settings.DateFormat) : customer.PSASysCommon.UpdatedDateString);
-                                    
+                                    customer.AadharNo= (sdr["AadharNo"].ToString() != "" ? sdr["AadharNo"].ToString() : customer.AadharNo);
                                 }
                         }
                     }
