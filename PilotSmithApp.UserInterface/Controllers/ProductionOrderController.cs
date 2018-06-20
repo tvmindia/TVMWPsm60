@@ -473,6 +473,61 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Event = "ResetProductionOrderList();";
 
                     break;
+
+                case "Draft":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProductionOrder();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Event = "SaveProductionOrder();";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Event = "ResetProductionOrder();";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','POD');";
+
+                    if (_commonBusiness.CheckDocumentIsDeletable("POD", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteProductionOrder();";
+                    }
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Event = "EmailProductionOrder();";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('POD');";
+                    break;
+
                 case "Edit":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
@@ -525,6 +580,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('POD');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
                     break;
 
                 case "LockDocument":
@@ -631,6 +691,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','POD');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
                     break;
 
                 case "Add":
