@@ -231,10 +231,10 @@ function EditDeliveryChallan(this_Obj) {
             //$("#divDeliveryChallanForm #ProdOrderID").prop('disabled', true);
             openNav();
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit");
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit", DeliveryChallan.ID);
             }
             else {
-                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument");
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument", DeliveryChallan.ID);
             }
             BindDeliveryChallanDetailList(DeliveryChallan.ID, false, false);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -292,14 +292,14 @@ function SaveSuccessDeliveryChallan(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _result.ID +"&prodOrderID="+_result.ProdOrderID, function () {
-                    ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit");
+                    ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit", _result.ID);
                     BindDeliveryChallanDetailList(_result.ID,false,false);
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblDeliveryChallanInfo').text(_result.DeliveryChallanNo);
 
                 });
-                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit");
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit", _result.ID);
                 BindOrReloadDeliveryChallanTable('Init');
                 notyAlert('success', _result.Message);
                 break;
