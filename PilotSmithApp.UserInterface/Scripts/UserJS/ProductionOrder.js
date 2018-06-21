@@ -443,8 +443,16 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                  "data": "Amount", render: function (data, type, row) {
                      if (row.Rate != null) {
                          debugger;
-                         var Amount = roundoff(parseFloat(row.SaleOrderQty) * parseFloat(row.Rate));
-                         return Amount
+                         if (row.SaleOrderQty != 0) {
+                             var Amount = roundoff(parseFloat(row.SaleOrderQty) * parseFloat(row.Rate));
+                             return Amount
+                         }
+                         else if (row.OrderQty != 0) {
+                             var Amount = roundoff(parseFloat(row.OrderQty) * parseFloat(row.Rate));
+                             return Amount
+                         }
+                         else 
+                             return 0
                      }
                      else
                          return 0
@@ -561,6 +569,7 @@ function AddProductionOrderDetailToList() {
             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
             productionOrderDetailList[_datatablerowindex].ProductModel = ProductModel;
             productionOrderDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
+            productionOrderDetailList[_datatablerowindex].SaleOrderQty = 0;
             productionOrderDetailList[_datatablerowindex].OrderQty = $('#OrderQty').val();
             productionOrderDetailList[_datatablerowindex].ProducedQty = $('#ProducedQty').val();
             productionOrderDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
@@ -601,6 +610,7 @@ function AddProductionOrderDetailToList() {
                 ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 productionOrderDetailList[0].ProductModel = ProductModel;
                 productionOrderDetailList[0].ProductSpec = $('#ProductSpec').val();
+                productionOrderDetailList[0].SaleOrderQty = 0;
                 productionOrderDetailList[0].OrderQty = $('#OrderQty').val();
                 productionOrderDetailList[0].ProducedQty = $('#ProducedQty').val();
                 productionOrderDetailList[0].UnitCode = $('#UnitCode').val();
@@ -656,6 +666,7 @@ function AddProductionOrderDetailToList() {
                             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                             ProductionOrderDetailVM.ProductModel = ProductModel;
                             ProductionOrderDetailVM.ProductSpec = $('#ProductSpec').val();
+                            ProductionOrderDetailVM.SaleOrderQty = 0;
                             ProductionOrderDetailVM.OrderQty = $('#OrderQty').val();
                             ProductionOrderDetailVM.ProducedQty = $('#ProducedQty').val();
                             Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";

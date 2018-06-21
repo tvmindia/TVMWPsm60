@@ -58,7 +58,14 @@
                     {
 
                         //curProductionQty = Math.Round((decimal)mp.SaleOrderQty - (decimal)mp.PrevProducedQty);
-                        amount = Math.Round((decimal)mp.SaleOrderQty * (decimal)mp.Rate);
+                        if (mp.SaleOrderQty != 0)
+                        {
+                            amount = Math.Round((decimal)mp.SaleOrderQty * (decimal)mp.Rate);
+                        }
+                        else
+                        {
+                            amount = Math.Round((decimal)mp.OrderQty * (decimal)mp.Rate);
+                        }
 
                         totMilestone = "";
                         if ((mp.MileStone1FcFinishDtFormatted != "") && (mp.MileStone1AcTFinishDtFormatted != ""))
