@@ -267,17 +267,23 @@ function ResetProductionOrder() {
                 $('#hdnCustomerID').val('');
                 $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             }
-            if ($('#LatestApprovalStatus').val() == "") {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
-            }
-            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
-            }
-            else if ($('#LatestApprovalStatus').val() == 4) {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
-            }
-            else {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+
+            switch ($('#LatestApprovalStatus').val()) {
+                case "":
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
+                    break;
+                case "0":
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", $('#ID').val());
+                    break;
+                case "3":
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
+                    break;
+                case "4":
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
+                    break;
+                default:
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+                    break;
             }
             BindProductionOrderDetailList($('#ID').val(), false);
             clearUploadControl();

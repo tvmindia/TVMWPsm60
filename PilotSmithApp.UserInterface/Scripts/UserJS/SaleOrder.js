@@ -255,14 +255,20 @@ function EditSaleOrder(this_Obj) {
             $('#lblSaleOrderInfo').text(SaleOrder.SaleOrderNo);
             //$('#CustomerID').trigger('change');
             if ($('#IsDocLocked').val() == "True") {
-                if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
-                }
-                else if ($('#LatestApprovalStatus').val() == 4) {
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
-                }
-                else {
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
+                        break;
+                    case "3":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+                        break;
+                    case "4":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                        break;
+                    default:
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                        break;
                 }
             }
             else {
@@ -289,6 +295,23 @@ function ResetSaleOrder() {
                     openNav();
             }
             debugger;
+            switch ($('#LatestApprovalStatus').val()) {
+                case "":
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+                    break;
+                case "0":
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
+                    break;
+                case "3":
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+                    break;
+                case "4":
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                    break;
+                default:
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                    break;
+            }
             if ($('#LatestApprovalStatus').val() == "") {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
             }

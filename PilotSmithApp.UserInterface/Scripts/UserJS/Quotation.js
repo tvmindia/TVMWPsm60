@@ -222,14 +222,21 @@ function EditQuotation(this_Obj) {
             $('#lblQuotationInfo').text(Quotation.QuoteNo);
             //$('#CustomerID').trigger('change');
             if ($('#IsDocLocked').val() == "True") {
-                if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
-                }
-                else if ($('#LatestApprovalStatus').val() == 4) {
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
-                }
-                else {
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
+
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", Quotation.ID);
+                        break;
+                    case "3":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
+                        break;
+                    case "4":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                        break;
+                    default:
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
+                        break;
                 }
             }
             else {
@@ -262,17 +269,23 @@ function ResetQuotation() {
                 $("#QuotationForm #CustomerID").prop('disabled', false);
                 $('#lblQuotationInfo').text('<<Quotation No.>>');
             }
-            if ($('#LatestApprovalStatus').val() == "") {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
-            }
-            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
-            }
-            else if ($('#LatestApprovalStatus').val() == 4) {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
-            }
-            else {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", $('#ID').val());
+
+            switch ($('#LatestApprovalStatus').val()) {
+                case "":
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
+                    break;
+                case "0":
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", $('#ID').val());
+                    break;
+                case "3":
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
+                    break;
+                case "4":
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
+                    break;
+                default:
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", $('#ID').val());
+                    break;
             }
             BindQuotationDetailList($('#ID').val(), false);
             BindQuotationOtherChargesDetailList($('#ID').val());
