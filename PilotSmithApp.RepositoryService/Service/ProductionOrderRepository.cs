@@ -260,7 +260,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : Guid.Empty);
                                         productionOrderDetail.PrevProducedQty = (sdr["PrevProduceQty"].ToString() != "" ? decimal.Parse(sdr["PrevProduceQty"].ToString()) : productionOrderDetail.PrevProducedQty);
                                         productionOrderDetail.PrevDelQty = (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : productionOrderDetail.PrevDelQty);
-                                        //productionOrderDetail.DelvQty= (sdr["DelvQty"].ToString() != "" ? decimal.Parse(sdr["DelvQty"].ToString()) : productionOrderDetail.DelvQty);
+                                       // productionOrderDetail.SaleOrderDetail = new SaleOrderDetail();
+                                        productionOrderDetail.SaleOrderQty= (sdr["SaleOrderQty"].ToString() != "" ? decimal.Parse(sdr["SaleOrderQty"].ToString()) : productionOrderDetail.SaleOrderDetail.Qty);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
                                 }

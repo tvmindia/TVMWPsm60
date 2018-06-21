@@ -21,8 +21,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime? ServiceDate { get; set; }
         public string ServiceComments { get; set; }
         public int? BranchCode { get; set; }
+        public Guid? DocumentOwnerID { get; set; }
 
         //Additional Fields
+        public string[] DocumentOwners { get; set; }
+        public string DocumentOwner { get; set; }
         public List<ServiceCallDetail> ServiceCallDetailList { get; set; }
         public List<ServiceCallCharge> ServiceCallChargeList { get; set; }
         public PSASysCommon PSASysCommon { get; set; }

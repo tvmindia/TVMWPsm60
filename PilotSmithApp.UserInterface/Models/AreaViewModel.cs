@@ -11,10 +11,13 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public int Code { get; set; }
         [Display(Name ="Country")]
+        [Required(ErrorMessage ="Country is missing")]
         public int? CountryCode { get; set; }
         [Display(Name ="State")]
+        [Required(ErrorMessage ="State is missing")]
         public int? StateCode { get; set; }
         [Display(Name = "District")]
+        [Required(ErrorMessage ="District is missing")]
         public int? DistrictCode { get; set; }
         [Required(ErrorMessage = "Description is missing")]
         [Remote(action: "CheckAreaNameExist", controller: "Area", AdditionalFields = "IsUpdate,Code")]

@@ -22,15 +22,16 @@
 
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divCountrySelectList">
-                    @Html.Action("CountrySelectList", "Country", new { required = "" })
+                    <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("CountrySelectList", "Country", new { required = "" })*@
                 </div>
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
-            @Html.Hidden("hdnCountryRequired", "")
+            @Html.Hidden("hdnCountryRequired", "required")
             <!-- This hidden field will keep the information whether the field is disabled or not -->
             @Html.Hidden("hdnCountrydisabled", false)
             @Html.HiddenFor(model => model.CountryCode, htmlAttributes: new { @class = "", @id = "hdnCountryCode" })
@@ -42,17 +43,35 @@
 }
 <script>
     $(document).ready(function () {
+        debugger;
         $.validator.unobtrusive.parse("#FormState");
-        $('#StateCode').val($('#hdnStateCode').val());
         try {
-            $('#CountryCode').select2({
-                dropdownParent: $("#divModelMasterPopUp")
+            $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+                try {
+                    $('.divCountrySelectList #CountryCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp")
+                    });
+                    $('.select2').addClass('form-control newinput');
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
             });
-            $('.select2').addClass('form-control newinput');
         }
         catch (e) {
             console.log(e.message);
         }
+        $('#StateCode').val($('#hdnStateCode').val());
+        //try {
+        //    $('#CountryCode').select2({
+        //        dropdownParent: $("#divModelMasterPopUp")
+        //    });
+        //    $('.select2').addClass('form-control newinput');
+        //}
+        //catch (e) {
+        //    console.log(e.message);
+        //}
+        
     });
 </script>
 

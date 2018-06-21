@@ -296,10 +296,10 @@ function ResetSaleOrder() {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
             }
             else if ($('#LatestApprovalStatus').val() == 4) {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved");
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
             }
             else {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
             }
             BindSaleOrderDetailList($('#ID').val(), false, false);
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
@@ -338,7 +338,7 @@ function SaveSuccessSaleOrder(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID, function () {
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit");
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
                     BindSaleOrderDetailList(_result.ID, false, false);
                     BindSaleOrderOtherChargesDetailList(_result.ID, false);
                     CalculateTotal();
@@ -347,7 +347,7 @@ function SaveSuccessSaleOrder(data, status) {
                     $('#lblSaleOrderInfo').text(_result.SaleOrderNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
                 });
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit");
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
                 BindOrReloadSaleOrderTable('Init');
                 notyAlert('success', _result.Message);
                 break;
@@ -1318,7 +1318,7 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument");
+                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
             }
             BindSaleOrderDetailList(id, false, false);
             BindSaleOrderOtherChargesDetailList(id, false);

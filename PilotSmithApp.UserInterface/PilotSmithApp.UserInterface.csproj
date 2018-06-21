@@ -1040,6 +1040,7 @@
     <Content Include="Views\Shared\_TimeLine.cshtml" />
     <Content Include="Views\ExcelExport\Index.cshtml" />
     <Content Include="Views\DocumentApproval\ViewApprovalHistory.cshtml" />
+    <Content Include="Views\Shared\_ApprovalHistoryList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -15,6 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         Area GetArea(int code);
         bool CheckAreaNameExist(Area area);
         object DeleteArea(int code);
-        List<SelectListItem> GetAreaForSelectList();
+        List<SelectListItem> GetAreaForSelectList(int? districtCode=null);
     }
 }

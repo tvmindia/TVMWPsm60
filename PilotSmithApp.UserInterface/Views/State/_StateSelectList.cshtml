@@ -45,9 +45,31 @@ else
 @Html.ValidationMessage("StateCode", "", new { @class = "text-danger" })
 
 <script>
-    $(document).ready(function () {      
+    $(document).ready(function () {             
+        try{
+            //$('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+                $('.divStateSelectList #StateCode').change(function () {
+                    debugger;
+                    if ($('.divDistrictSelectList') != undefined) {
+                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                        if (this.value != "") {
+                            $('.divDistrictSelectList').load('District/DistrictSelectList?stateCode=' + this.value)
+                        }
+                        else {
+                            $('.divDistrictSelectList').empty();
+                            $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                        }
+                    }
+                });
+            //});
+        }
+        catch (e) {
+            console.log(e.message);
+        }
         $('#StateCode').val($('#hdnStateCode').val());
-        $('#StateCode').select2({});
+        $('#StateCode').select2({
+            dropdownParent: $('.divCountrySelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

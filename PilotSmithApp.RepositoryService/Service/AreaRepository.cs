@@ -277,7 +277,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region GetAreaForSelectList
-        public List<Area> GetAreaForSelectList()
+        public List<Area> GetAreaForSelectList(int? districtCode)
         {
             List<Area> areaList = null;
             try
@@ -293,6 +293,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetAreaForSelectList]";
                         cmd.CommandType = CommandType.StoredProcedure;
+                                                   
+                        cmd.Parameters.Add("@DistrictCode", SqlDbType.Int).Value = districtCode;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
                             if ((sdr != null) && (sdr.HasRows))

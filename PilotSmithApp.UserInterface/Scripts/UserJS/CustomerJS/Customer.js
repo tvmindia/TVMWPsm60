@@ -92,12 +92,13 @@ function BindOrReloadCustomerTable(action) {
                { "data": "Mobile", "defaultContent": "<i>-</i>" },
                { "data": "TaxRegNo", "defaultContent": "<i>-</i>" },
                { "data": "PANNO", "defaultContent": "<i>-</i>" },
+               { "data": "AadharNo", "defaultContent": "<i>-</i>" },
                { "data": "OutStanding", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditCustomer(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },               
             ],
-            columnDefs: [{ className: "text-right", "targets": [5] },
+            columnDefs: [{ className: "text-right", "targets": [6] },
                   { className: "text-left", "targets": [0, 1] },
-            { className: "text-center", "targets": [2, 3, 4,6] }
+            { className: "text-center", "targets": [2, 3, 4,5] }
             ],           
             destroy: true,
             //for performing the import operation after the data loaded
@@ -149,15 +150,6 @@ function AddCustomer() {
         openNav();
     });
 }
-
-function LoadCurrentPageDropdowns() {
-    $('#divCountrySelectList').load('/Country/CountrySelectList?required='+$('#hdnCountryRequired').val())
-    $('#divStateSelectList').load('/State/StateSelectList?required='+$('#hdnStateRequired').val())
-    // $('#divBranchSelectList').load('/Branch/BranchSelectList')
-    $('#divDistrictSelectList').load('/District/DistrictSelectList?required='+$('#hdnDistrictRequired').val())
-    $('#divAreaSelectList').load('/Area/AreaSelectList?required='+$('#hdnAreaRequired').val())
-}
-
 
 function EditCustomer(this_Obj)
 {

@@ -310,7 +310,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -358,6 +358,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Title = "Delete";
                     toolboxVM.deletebtn.Event = "DeleteProductionQC();";
 
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PQC');";
+
                     break;
 
                 case "LockDocument":
@@ -393,6 +398,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Disable = true;
                     toolboxVM.deletebtn.DisableReason = "Document Locked";
                     toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PQC');";
                     break;
 
                 case "Add":

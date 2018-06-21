@@ -220,15 +220,20 @@ function EditProductionOrder(this_Obj) {
             OnServerCallComplete();
             openNav();
             if ($('#IsDocLocked').val() == "True") {
-
-                if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
-                }
-                else if ($('#LatestApprovalStatus').val() == 4) {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
-                }
-                else {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", productionOrder.ID);
+                        break;
+                    case "3":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
+                        break;
+                    case "4":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
+                        break;
+                    default:
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                        break;
                 }
             }
             else {
@@ -310,13 +315,13 @@ function SaveSuccessProductionOrder(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID+"&saleOrderID="+_result.SaleOrderID, function () {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                     BindProductionOrderDetailList(_result.ID);                   
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblProductionOrderInfo').text(_result.ProductionOrderNo);
                 });
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                 BindOrReloadProductionOrderTable('Init');
                 notyAlert('success', _result.Message);
                 break;
@@ -395,7 +400,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "OrderQty", render: function (data, type, row) {
+                 "data": "SaleOrderQty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
@@ -410,9 +415,10 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              },
              {
                  "data": "OrderQty", render: function (data, type, row) {
-                     var CurProducedQty = roundoff(parseFloat(row.OrderQty) - parseFloat(row.PrevProducedQty));
-                     if (CurProducedQty > 0) {
-                         return CurProducedQty + " " + row.Unit.Description
+                     debugger;
+                      //roundoff(parseFloat(row.SaleOrderQty) - parseFloat(row.PrevProducedQty));
+                      if (data > 0) {
+                         return data + " " + row.Unit.Description
                      }
                      else
                          return 0 + " " + row.Unit.Description
@@ -437,7 +443,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                  "data": "Amount", render: function (data, type, row) {
                      if (row.Rate != null) {
                          debugger;
-                         var Amount = roundoff(parseFloat(row.OrderQty) * parseFloat(row.Rate));
+                         var Amount = roundoff(parseFloat(row.SaleOrderQty) * parseFloat(row.Rate));
                          return Amount
                      }
                      else
@@ -907,7 +913,7 @@ function EditRedirectToDocument(id)
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
             }
             BindProductionOrderDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());

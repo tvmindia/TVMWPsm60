@@ -137,7 +137,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region Area SelectList
-        public ActionResult AreaSelectList(string required,bool? disabled)
+        public ActionResult AreaSelectList(string required,bool? disabled,int? districtCode)
         {
             ViewBag.IsRequired = required;
             ViewBag.IsDisabled = disabled;
@@ -154,7 +154,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
             }
             AreaViewModel areaVM = new AreaViewModel();
-            areaVM.AreaSelectList = _areaBusiness.GetAreaForSelectList();
+            areaVM.AreaSelectList = _areaBusiness.GetAreaForSelectList(districtCode);
             return PartialView("_AreaSelectList", areaVM);
         }
         #endregion Area SelectList

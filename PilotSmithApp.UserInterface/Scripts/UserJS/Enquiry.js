@@ -221,7 +221,7 @@ function EditEnquiry(this_Obj) {
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", Enquiry.ID);
             }
             else {
-                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", Enquiry.ID);
             }
             BindEnquiryDetailList(Enquiry.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -273,11 +273,11 @@ function SaveSuccessEnquiry(data, status) {
                 $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + _result.ID, function () {
                     if ($('#IsDocLocked').val() == "True")
                     {
-                        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+                        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", _result.ID);
                     }
                     else
                     {
-                        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+                        ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", _result.ID);
                     }
                     
                     BindEnquiryDetailList(_result.ID);
@@ -285,7 +285,7 @@ function SaveSuccessEnquiry(data, status) {
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
                 });
-                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit");
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", _result.ID);
                 BindOrReloadEnquiryTable('Init');
                 notyAlert('success', _result.Message);
                 break;

@@ -45,7 +45,9 @@ else
 <script>
     $(document).ready(function () {        
         $('#AreaCode').val($('#hdnAreaCode').val());
-        $('#AreaCode').select2({});
+        $('#AreaCode').select2({
+            dropdownParent: $('.divAreaSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

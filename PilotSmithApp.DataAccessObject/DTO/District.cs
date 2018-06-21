@@ -9,6 +9,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
     public class District
     {
         public int Code { get; set; }
+        public int? CountryCode { get; set; }
         public int? StateCode { get; set; }
         public string Description { get; set; }
 
@@ -17,6 +18,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool IsUpdate { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public State State { get; set; }
+        public Country Country { get; set; }
     }
 
     public class DistrictAdvanceSearch

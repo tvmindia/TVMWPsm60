@@ -205,7 +205,12 @@ function EditServiceCall(this_Obj) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
-            ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
+            }
+            else {
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
+            }
             BindServiceCallDetailList(ServiceCall.ID);
             BindServiceCallChargeDetailList(ServiceCall.ID)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -381,7 +386,7 @@ function BindServiceCallDetailList(id) {
              { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "true" || data === true) { return "Yes" } else if (data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "InstalledDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DocumentStatus.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCallDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditServiceCallDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
              ],
              columnDefs: [
                  { "targets": [1, 4], "width": "10%" },
@@ -588,7 +593,7 @@ function BindServiceCallChargeDetailList(id) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCallChargeDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditServiceCallChargeDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"},
              ],
              columnDefs: [
                  //{ "targets": [0], "width": "30%" },

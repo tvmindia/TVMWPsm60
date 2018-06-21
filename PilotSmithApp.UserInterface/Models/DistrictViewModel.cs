@@ -11,7 +11,11 @@ namespace PilotSmithApp.UserInterface.Models
     {
         [Required]
         public int Code { get; set; }
+        [Display(Name ="Country")]
+        [Required(ErrorMessage ="Country Code is missing")]
+        public int? CountryCode { get; set; }
         [Display(Name ="State")]
+        [Required(ErrorMessage ="State is missing")]
         public int? StateCode { get; set; }
         [Required(ErrorMessage ="Description is missing")]
         [Remote(action: "CheckDistrictNameExist", controller: "District", AdditionalFields = "IsUpdate,Code")]
@@ -23,6 +27,7 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> DistrictSelectList { get; set; }
         public StateViewModel State { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public CountryViewModel Country { get; set; }
     }
 
     public class DistrictAdvanceSearchViewModel

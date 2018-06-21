@@ -99,9 +99,10 @@ namespace PilotSmithApp.BusinessService.Service
 
                         string mailBody= File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/SendForApproval.html"));
 
+                        string imgLink = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
 
                         Mail mail = new Mail();
-                        mail.Body = mailBody.Replace("$DocumentType$", docAprovalMailDetail.DocumentType).Replace("$DocumentNo$", docAprovalMailDetail.DocumentNo).Replace("$DocumentOwner$", docAprovalMailDetail.DocumentOwner).Replace("$Name$", docAprovalMailDetail.NextApprover).Replace("$ApproveLink$", link).Replace("$Date$", _pSASysCommon.GetCurrentDateTime().ToString(settings.DateFormat)).Replace("$LoginLink$",loginLink);
+                        mail.Body = mailBody.Replace("$DocumentType$", docAprovalMailDetail.DocumentType).Replace("$DocumentNo$", docAprovalMailDetail.DocumentNo).Replace("$DocumentOwner$", docAprovalMailDetail.DocumentOwner).Replace("$Name$", docAprovalMailDetail.NextApprover).Replace("$ApproveLink$", link).Replace("$Date$", _pSASysCommon.GetCurrentDateTime().ToString(settings.DateFormat)).Replace("$LoginLink$",loginLink).Replace("$Logo$",imgLink);
                         mail.Subject = "Document Pending For Approval (" + docAprovalMailDetail.DocumentNo + ")";
                         mail.To = docAprovalMailDetail.NextApproverEmail;
                         sendsuccess = await _mailBusiness.MailSendAsync(mail);
@@ -110,8 +111,9 @@ namespace PilotSmithApp.BusinessService.Service
                     if (docAprovalMailDetail.Status == "REJECTED")
                     {
                         string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentRejected.html"));
+                        string imgLink = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
                         Mail mail = new Mail();
-                        mail.Body = mailBody.Replace("$DocumentType$", docAprovalMailDetail.DocumentType).Replace("$DocumentNo$", docAprovalMailDetail.DocumentNo).Replace("$Name$", docAprovalMailDetail.DocumentOwner).Replace("$Date$", _pSASysCommon.GetCurrentDateTime().ToString(settings.DateFormat)).Replace("$LoginLink$", loginLink).Replace("$Approver$", docAprovalMailDetail.NextApprover).Replace("$Remarks$", docAprovalMailDetail.Remarks);
+                        mail.Body = mailBody.Replace("$DocumentType$", docAprovalMailDetail.DocumentType).Replace("$DocumentNo$", docAprovalMailDetail.DocumentNo).Replace("$Name$", docAprovalMailDetail.DocumentOwner).Replace("$Date$", _pSASysCommon.GetCurrentDateTime().ToString(settings.DateFormat)).Replace("$LoginLink$", loginLink).Replace("$Approver$", docAprovalMailDetail.NextApprover).Replace("$Remarks$", docAprovalMailDetail.Remarks).Replace("$Logo$", imgLink);
                         mail.Subject = "Document Rejected for ammedment (" + docAprovalMailDetail.DocumentNo + ")";
                         mail.To = docAprovalMailDetail.DocumnetOwnerMail;
                         sendsuccess = await _mailBusiness.MailSendAsync(mail);
@@ -120,8 +122,9 @@ namespace PilotSmithApp.BusinessService.Service
                     if (docAprovalMailDetail.Status == "APPROVED")
                     {
                         string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentApproved.html"));
+                        string imgLink = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
                         Mail mail = new Mail();
-                        mail.Body =  mailBody.Replace("$DocumentType$", docAprovalMailDetail.DocumentType).Replace("$DocumentNo$", docAprovalMailDetail.DocumentNo).Replace("$Name$", docAprovalMailDetail.DocumentOwner).Replace("$Date$", _pSASysCommon.GetCurrentDateTime().ToString(settings.DateFormat)).Replace("$LoginLink$", loginLink).Replace("$Remarks$", docAprovalMailDetail.Remarks);
+                        mail.Body =  mailBody.Replace("$DocumentType$", docAprovalMailDetail.DocumentType).Replace("$DocumentNo$", docAprovalMailDetail.DocumentNo).Replace("$Name$", docAprovalMailDetail.DocumentOwner).Replace("$Date$", _pSASysCommon.GetCurrentDateTime().ToString(settings.DateFormat)).Replace("$LoginLink$", loginLink).Replace("$Remarks$", docAprovalMailDetail.Remarks).Replace("$Logo$", imgLink);
                         mail.Subject = "Document Approved (" + docAprovalMailDetail.DocumentNo + ")";
                         mail.To = docAprovalMailDetail.DocumnetOwnerMail;
                         sendsuccess = await _mailBusiness.MailSendAsync(mail);

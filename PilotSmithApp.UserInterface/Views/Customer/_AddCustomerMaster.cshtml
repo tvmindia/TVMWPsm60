@@ -24,7 +24,7 @@
                             @Html.LabelFor(model => model.ContactTitle, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            @Html.DropDownListFor(model => model.ContactTitle, Model.Titles.TitlesSelectList, "-- select title --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
+                            @Html.DropDownListFor(model => model.ContactTitle, Model.Titles.TitlesSelectList, "-- select title --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100%;" })
                             @Html.ValidationMessageFor(model => model.ContactTitle, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -67,5 +67,7 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormCustomerMaster");
+        $('#ContactTitle').select2({});
+        $('.select2').addClass('form-control newinput');
     });
 </script>
