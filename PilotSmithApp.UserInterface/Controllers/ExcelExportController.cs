@@ -251,6 +251,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     memoryStream.WriteTo(Response.OutputStream);
                     Response.Flush();
                     Response.End();
+                    memoryStream.Close();
+                    memoryStream.Dispose();
                 }
             }
             catch (Exception ex)
