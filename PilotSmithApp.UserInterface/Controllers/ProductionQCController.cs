@@ -31,8 +31,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: ProductionQ
         [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             ProductionQCAdvanceSearchViewModel productionQCVM = new ProductionQCAdvanceSearchViewModel();                   
             productionQCVM.DocumentStatus = new DocumentStatusViewModel();
             productionQCVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("PQC");        

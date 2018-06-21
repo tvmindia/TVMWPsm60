@@ -13,6 +13,9 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
                 EditEstimate(this);
         });
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -615,4 +618,29 @@ function DeleteEstimateDetail(ID) {
             notyAlert('error', _message);
         }
     }
+}
+function EditRedirectToDocument(id) {
+
+    OnServerCallBegin();
+
+    $("#divEstimateForm").load("Estimate/EstimateForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblEstimateInfo').text($('#EstimateNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument");
+            }
+            BindEstimateDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

@@ -44,8 +44,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: Estimate
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EstimateAdvanceSearchViewModel estimateAdvanceSearchVM = new EstimateAdvanceSearchViewModel();
             estimateAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();

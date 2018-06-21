@@ -45,8 +45,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
@@ -404,6 +405,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Disable = true;
                     toolboxVM.resetbtn.DisableReason = "Document Locked";
                     toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','ENQ');";
 
                     toolboxVM.deletebtn.Visible = true;
                     toolboxVM.deletebtn.Text = "Delete";

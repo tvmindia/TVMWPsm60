@@ -12,6 +12,9 @@ $(document).ready(function () {
         $('#tblSaleInvoice tbody').on('dblclick', 'td', function () {
             EditSaleInvoice(this);
         });
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -233,7 +236,11 @@ function EditSaleInvoice(this_Obj) {
 function ResetSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            if ($('#IsDocLocked').val() == "True") {
+            debugger;
+            if ($('#IsUpdate').val() == "False") {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add", $('#SaleInvoiceForm #ID').val());
+            }
+            else if ($('#IsDocLocked').val() == "True") {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", $('#SaleInvoiceForm #ID').val());
             }
             else {
@@ -1428,5 +1435,31 @@ function EditSaleInvoiceServiceBill(this_Obj)
         $('#FormSaleInvoiceServiceBill #CessAmt').val(saleInvoiceDetail.CessAmt);
 
         $('#divModelPopSaleInvoice').modal('show');
+    });
+}
+function EditRedirectToDocument(id) {
+
+    OnServerCallBegin();
+
+    $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblSaleInvoiceInfo').text($('#SaleInvNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+            }
+            BindSaleInvoiceDetailList(id);
+            BindSaleInvoiceOtherChargesDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }

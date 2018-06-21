@@ -34,8 +34,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: DeliveryChallan
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             DeliveryChallanAdvanceSearchViewModel deliveryChallanVM = new DeliveryChallanAdvanceSearchViewModel();            
             return View(deliveryChallanVM);
         }

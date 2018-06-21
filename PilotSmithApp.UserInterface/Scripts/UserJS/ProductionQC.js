@@ -13,6 +13,9 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
             EditProductionQC(this);
         });
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -522,4 +525,29 @@ function DeleteProductionQCDetail(ID) {
             notyAlert('error', _message);
         }
     }
+}
+function EditRedirectToDocument(id) {
+
+    OnServerCallBegin();
+
+    $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblProductionQCInfo').text($('#ProdQCNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument");
+            }
+            BindProductionQCDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

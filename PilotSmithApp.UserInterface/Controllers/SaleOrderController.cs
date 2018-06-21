@@ -73,6 +73,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 saleOrderVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quoteID);
                 saleOrderVM.CustomerID = quotationVM.CustomerID;
                 saleOrderVM.QuoteID = quoteID;
+                saleOrderVM.Discount = quotationVM.Discount;
                 saleOrderVM.EnquirySelectList = new List<SelectListItem>();
                 saleOrderVM.DocumentType = "Quotation";
                 saleOrderVM.DocumentStatus = new DocumentStatusViewModel()

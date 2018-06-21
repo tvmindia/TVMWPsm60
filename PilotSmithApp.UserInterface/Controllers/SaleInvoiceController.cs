@@ -37,8 +37,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         // GET: SaleInvoice
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             SaleInvoiceAdvanceSearchViewModel saleInvoiceAdvanceSearchVM = new SaleInvoiceAdvanceSearchViewModel();            
             saleInvoiceAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             saleInvoiceAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SIV");           
@@ -90,6 +91,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.DocumentType = "Quotation";
                     saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
                     saleInvoiceVM.QuoteID = quotationID;
+                    saleInvoiceVM.Discount = quotationVM.Discount;
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
                     saleInvoiceVM.CustomerID = quotationVM.CustomerID;
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
@@ -110,6 +112,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
                     saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
                     saleInvoiceVM.SaleOrderID = saleorderID;
+                    saleInvoiceVM.Discount = saleorderVM.Discount;
                     saleInvoiceVM.CustomerID = saleorderVM.CustomerID;
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
                     {

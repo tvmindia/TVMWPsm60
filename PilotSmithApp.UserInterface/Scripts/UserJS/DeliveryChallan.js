@@ -12,6 +12,9 @@ $(document).ready(function () {
         $('#tblDeliveryChallan tbody').on('dblclick', 'td', function () {
             EditDeliveryChallan(this);
         });
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -676,4 +679,29 @@ function DeleteDeliveryChallanDetail(ID) {
             notyAlert('error', _message);
         }
     }
+}
+function EditRedirectToDocument(id) {
+
+    OnServerCallBegin();
+
+    $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblDeliveryChallanInfo').text($('#DelvChallanNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument");
+            }
+            BindDeliveryChallanDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

@@ -13,11 +13,9 @@ $(document).ready(function () {
             if (this.textContent !== "No data available in table")
             EditEnquiry(this);
         });
-        //======================Disabled(Funcyion for redirection from email)
-        //if ($('#RedirectToDocument').val() != "")
-        //{           
-        //    EditRedirectFromDocument($('#RedirectToDocument').val());
-        //}
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
             
     }
     catch (e) {
@@ -680,29 +678,30 @@ function DeleteEnquiryFollowup(ID) {
 }
 //=====================Disabled functions===================================
 //==========================================================================
-//function EditRedirectFromDocument(id)
-//{
+function EditRedirectToDocument(id)
+{
     
-//    OnServerCallBegin();
+    OnServerCallBegin();
    
-//    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
-//        if (statusTxt == "success") {
-//            OnServerCallComplete();
-//            openNav();
-//            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
-//            if ($('#IsDocLocked').val() == "True") {
-//                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
-//            }
-//            else {
-//                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
-//            }
-//            BindEnquiryDetailList(id);
-//            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
-//            clearUploadControl();
-//            PaintImages(id);
-//        }
-//        else {
-//            console.log("Error: " + xhr.status + ": " + xhr.statusText);
-//        }
-//    });
-//}
+    $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblEnquiryInfo').text($('#EnquiryNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+            }
+            BindEnquiryDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+}
+
