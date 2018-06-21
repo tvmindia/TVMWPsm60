@@ -194,6 +194,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     timeLine.DocumentDateFormatted = (sdr["DocumentDate"].ToString() != "" ? DateTime.Parse(sdr["DocumentDate"].ToString()).ToString(_settings.DateFormat) : timeLine.DocumentDateFormatted);
                                     timeLine.DocumentNo = (sdr["DocumentNo"].ToString() != "" ?  (sdr["DocumentNo"].ToString()) : timeLine.DocumentNo);
                                     timeLine.DocumentType = (sdr["DocumentType"].ToString() != "" ? (sdr["DocumentType"].ToString()) : timeLine.DocumentType);
+                                    timeLine.Particulars = (sdr["Particulars"].ToString() != "" ? (sdr["Particulars"].ToString()) : timeLine.Particulars);
                                     timeLineList.Add(timeLine);
                                 }
                             }

@@ -207,10 +207,10 @@ function EditSaleInvoice(this_Obj) {
             //$('#CustomerID').trigger('change');
             debugger;
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", SaleInvoice.ID);
             }
             else {
-                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", SaleInvoice.ID);
             }
             BindSaleInvoiceDetailList(SaleInvoice.ID);
             BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
@@ -234,10 +234,10 @@ function ResetSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", $('#SaleInvoiceForm #ID').val());
             }
             else {
-                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", $('#SaleInvoiceForm #ID').val());
             }
             BindSaleInvoiceDetailList($('#ID').val());
             BindSaleInvoiceOtherChargesDetailList($('#ID').val());
@@ -276,7 +276,7 @@ function SaveSuccessSaleInvoice(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _result.ID, function () {
-                    ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+                    ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", _result.ID);
                     BindSaleInvoiceDetailList(_result.ID);
                     BindSaleInvoiceOtherChargesDetailList(_result.ID);
                     CalculateTotal();
@@ -285,7 +285,7 @@ function SaveSuccessSaleInvoice(data, status) {
                     $('#lblSaleInvoiceInfo').text(_result.SaleInvoiceNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
                 });
-                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit");
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", _result.ID);
                 BindOrReloadSaleInvoiceTable('Init');
                 notyAlert('success', _result.Message);
                 break;

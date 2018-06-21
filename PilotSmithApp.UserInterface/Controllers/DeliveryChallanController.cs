@@ -426,7 +426,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
@@ -483,6 +483,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     //toolboxVM.SendForApprovalBtn.Text = "Send";
                     //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     //toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','DLC');";
                     break;
 
                 case "LockDocument":
@@ -518,6 +522,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Disable = true;
                     toolboxVM.deletebtn.DisableReason = "Document Locked";
                     toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','DLC');";
                     break;
 
                 case "Add":

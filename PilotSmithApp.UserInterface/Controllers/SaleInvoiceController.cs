@@ -876,6 +876,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetSaleInvoice();";
 
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SIV');";
+
                     if (_commonBusiness.CheckDocumentIsDeletable("SIV", id))
                     {
                         toolboxVM.deletebtn.Visible = true;
@@ -943,6 +948,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Disable = true;
                     toolboxVM.EmailBtn.DisableReason = "Document Locked";
                     toolboxVM.EmailBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SIV');";
                     break;
                 case "Add":
 
