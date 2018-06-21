@@ -315,13 +315,13 @@ function SaveSuccessProductionOrder(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID+"&saleOrderID="+_result.SaleOrderID, function () {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                     BindProductionOrderDetailList(_result.ID);                   
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblProductionOrderInfo').text(_result.ProductionOrderNo);
                 });
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit");
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                 BindOrReloadProductionOrderTable('Init');
                 notyAlert('success', _result.Message);
                 break;
@@ -913,7 +913,7 @@ function EditRedirectToDocument(id)
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument");
+                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
             }
             BindProductionOrderDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());

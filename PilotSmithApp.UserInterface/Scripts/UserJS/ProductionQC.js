@@ -223,10 +223,10 @@ function EditProductionQC(this_Obj) {
             OnServerCallComplete();
             openNav();
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", ProductionQC.ID);
             }
             else {
-                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument");
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument", ProductionQC.ID);
             }
             BindProductionQCDetailList(ProductionQC.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -285,13 +285,13 @@ function SaveSuccessProductionQC(data, status) {
                 $('#IsUpdate').val('True');
                 $('#lblProductionQCInfo').text(_result.ProdQCNo);
                 $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _result.ID, function () {
-                    ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
+                    ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", _result.ID);
                     BindProductionQCDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);                   
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionQCForm #hdnCustomerID').val());
                 });
-                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit");
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", _result.ID);
                 BindOrReloadProductionQCTable('Init');
                 notyAlert('success', _result.Message);
                 break;

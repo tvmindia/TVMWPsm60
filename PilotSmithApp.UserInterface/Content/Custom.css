@@ -1272,6 +1272,7 @@ select{
     margin-right:-5px;
     border-radius:10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.38);
+    padding-bottom:2px;
 }
 
 .timeline > li > .timeline-item > .timeline-header {
