@@ -216,6 +216,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                 headerSectionTbl.AddCell(cell1);
                 headerSectionTbl.WriteSelectedRows(0, -1, 0, document.PageSize.Height, writer.DirectContent);
             }
+            //public override void OnCloseDocument(PdfWriter writer, Document document)
+            //{
+            //    //if (numPages > 0 && numPages % 2 == 1)
+            //    //{
+            //   document.NewPage();
+            //    document.Add(new Chunk());
+            //    //}
+            //}
         }
         [HttpPost]
         public FileResult Download(PDFToolsViewModel PDFTools)
@@ -236,8 +244,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                 pdfDoc.Open();
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
                 pdfDoc.Close();
+                //MemoryStream stream = new MemoryStream(System.IO.File.ReadAllBytes(Path.Combine(Server.MapPath("~/Content/images/Terms&Conditions.pdf"))));
+                //memoryStream.Write(stream.GetBuffer(), 0, (int)stream.Length);
                 bytes = memoryStream.ToArray();
                 memoryStream.Close();
+
             }
             string contentFileName = PDFTools.ContentFileName.ToString() == null ? "Report.pdf" : (PDFTools.ContentFileName.ToString() + " - " + PDFTools.CustomerName.ToString() + ".pdf");
             string fname = Path.Combine(Server.MapPath("~/Content/Uploads/"), contentFileName);

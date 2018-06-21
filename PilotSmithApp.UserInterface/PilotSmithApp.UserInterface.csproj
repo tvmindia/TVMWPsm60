@@ -670,6 +670,7 @@
     <Content Include="fonts\Liquidrom-Italic.ttf" />
     <Content Include="fonts\Liquidrom.ttf" />
     <Content Include="fonts\OpenSans-Regular.ttf" />
+    <Content Include="Content\images\Terms&amp;Conditions.pdf" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
