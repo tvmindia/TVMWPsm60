@@ -3,6 +3,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +33,38 @@ namespace PilotSmithApp.UserInterface.Controllers
 
 
         // GET: DashBoard
-        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
         public ActionResult Index()
+        {
+            Permission _permission = Session["UserRights"] as Permission;
+            if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "AdminView").AccessCode : string.Empty).Contains("R"))
+            {
+                return View("AdminDashboard");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
+        public ActionResult RecentDocument()
+        {
+            RecentDocumentViewModel recentDocument = new RecentDocumentViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            return PartialView("_RecentDocument", recentDocument);
+        }
+
+        [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
+        public ActionResult SearchDocument()
+        {
+            RecentDocumentViewModel recentDocument = new RecentDocumentViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            return PartialView("_SearchDocument", recentDocument);
+        }
+
+        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
+        public ActionResult AdminDashboard()
         {
             return View();
         }

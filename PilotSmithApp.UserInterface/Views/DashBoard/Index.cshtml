@@ -3,36 +3,41 @@
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
- <div class="col-md-12"></div>
-<div class="col-md-12 DashboardContainer" id="salessummarydiv">
+<section class="DashboardContainer">
+    <div class="col-md-12"></div>
 
-    @{
+    <div class="col-md-6">
 
-        @Html.Action("DocumentSummary", "DashBoard");
-
-    }
-
-</div>
-
-<div class="col-md-12 DashboardContainer" id="salessummarydiv">
-  
         @{
 
-            @Html.Action("SalesSummary", "DashBoard");
+            @Html.Action("RecentDocument", "DashBoard");
 
         }
 
-</div>
-<div class="col-md-12 DashboardContainer" id="enqsummaryDiv">
 
-    @{
+    </div>
 
-        @Html.Action("EnquiryValueVsFollowupCountSummary", "DashBoard");
+    <div class="col-md-6">
 
-    }
+        <div class="col-md-12 input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search..." style="padding:16px;">
+            <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-openid">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
 
-</div>
-    @section scripts{
-        @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/DashBoard")
+        @*<div class="box col-md-12">&nbsp;</div>*@
 
-    }
+        <div class="box" id="divSearchResults">
+            @{
+
+                @Html.Action("SearchDocument", "DashBoard");
+
+            }
+
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,42 @@
+﻿@using PilotSmithApp.UserInterface.App_Start
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+
+<div class="col-md-12"></div>
+<div class="col-md-12 DashboardContainer" id="salessummarydiv">
+
+    @{
+
+        @Html.Action("DocumentSummary", "DashBoard");
+
+    }
+
+</div>
+
+<div class="col-md-12 DashboardContainer" id="salessummarydiv">
+
+    @{
+
+        @Html.Action("SalesSummary", "DashBoard");
+
+    }
+
+</div>
+<div class="col-md-12 DashboardContainer" id="enqsummaryDiv">
+
+    @{
+
+        @Html.Action("EnquiryValueVsFollowupCountSummary", "DashBoard");
+
+    }
+
+</div>
+
+@section scripts{
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/DashBoard")
+
+}
