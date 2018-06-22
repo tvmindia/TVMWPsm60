@@ -337,4 +337,14 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
     }
 
+    public class RecentDocument
+    {
+        public Guid DocumentID { get; set; }
+        public string DocumentNo { get; set; }
+        public DateTime DocumentDate { get; set; }
+        public string DocumentDateFormatted { get; set; }
+        public string DocumentLink { get; set; }
+        public string Particulars { get; set; }
+        public List<RecentDocument> RecentDocumentList { get; set; }
+    }
 }
