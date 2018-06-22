@@ -259,6 +259,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Qty = saleOrderDetailVM.Qty,
                             UnitCode = saleOrderDetailVM.UnitCode,
                             Rate = saleOrderDetailVM.Rate,
+                            TaxTypeCode = saleOrderDetailVM.TaxTypeCode,
                             CGSTPerc = saleOrderDetailVM.CGSTPerc,
                             SGSTPerc = saleOrderDetailVM.SGSTPerc,
                             IGSTPerc = saleOrderDetailVM.IGSTPerc,
@@ -282,7 +283,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             },
                             TaxType = new TaxTypeViewModel()
                             {
-                                ValueText = "",
+                                Description = saleOrderDetailVM.TaxType.Description,
+                                ValueText = saleOrderDetailVM.TaxType.ValueText
                             }
                         };
                         saleInvoiceItemViewModelList.Add(saleInvoiceDetailVM);
