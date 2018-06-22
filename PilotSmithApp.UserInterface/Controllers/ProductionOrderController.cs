@@ -290,21 +290,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             Rate = saleOrderDetailVM.Rate == null ? 0 : saleOrderDetailVM.Rate,
                                                             Amount = 0,
                                                             SpecTag=saleOrderDetailVM.SpecTag,
-                                                            Product = new ProductViewModel()
-                                                            {
-                                                                ID = (Guid)saleOrderDetailVM.ProductID,
-                                                                Code = saleOrderDetailVM.Product.Code,
-                                                                Name = saleOrderDetailVM.Product.Name,
-                                                            },
-                                                            ProductModel = new ProductModelViewModel()
-                                                            {
-                                                                ID = (Guid)saleOrderDetailVM.ProductModelID,
-                                                                Name = saleOrderDetailVM.ProductModel.Name
-                                                            },
-                                                            Unit = new UnitViewModel()
-                                                            {
-                                                                Description = saleOrderDetailVM.Unit.Description
-                                                            },
+                                                            Product = saleOrderDetailVM.Product,
+                                                            ProductModel = saleOrderDetailVM.ProductModel,
+                                                            Unit = saleOrderDetailVM.Unit,
                                                         }).ToList();
                              
                         }
