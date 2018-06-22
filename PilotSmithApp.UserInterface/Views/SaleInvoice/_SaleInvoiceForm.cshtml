@@ -663,7 +663,7 @@
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
                     BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false)
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true)
                     CalculateTotal();
                     $('#DocumentType').prop('disabled', true);
                     $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
@@ -683,7 +683,7 @@
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
                     BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true)
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false)
                     CalculateTotal();
                     $("input[type=radio][value=SaleOrder]").attr("disabled", true);
                     $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");

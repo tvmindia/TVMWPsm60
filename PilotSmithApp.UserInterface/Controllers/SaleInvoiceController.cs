@@ -259,31 +259,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Qty = saleOrderDetailVM.Qty,
                             UnitCode = saleOrderDetailVM.UnitCode,
                             Rate = saleOrderDetailVM.Rate,
+                            TaxTypeCode = saleOrderDetailVM.TaxTypeCode,
                             CGSTPerc = saleOrderDetailVM.CGSTPerc,
                             SGSTPerc = saleOrderDetailVM.SGSTPerc,
                             IGSTPerc = saleOrderDetailVM.IGSTPerc,
                             Discount = saleOrderDetailVM.Discount,
                             CessAmt = saleOrderDetailVM.CessAmt,
                             CessPerc = saleOrderDetailVM.CessPerc,
-                            Product = new ProductViewModel()
-                            {
-                                ID = (Guid)saleOrderDetailVM.ProductID,
-                                Code = saleOrderDetailVM.Product.Code,
-                                Name = saleOrderDetailVM.Product.Name,
-                            },
-                            ProductModel = new ProductModelViewModel()
-                            {
-                                ID = (Guid)saleOrderDetailVM.ProductModelID,
-                                Name = saleOrderDetailVM.ProductModel.Name
-                            },
-                            Unit = new UnitViewModel()
-                            {
-                                Description = saleOrderDetailVM.Unit.Description,
-                            },
-                            TaxType = new TaxTypeViewModel()
-                            {
-                                ValueText = "",
-                            }
+                            Product = saleOrderDetailVM.Product,
+                            ProductModel = saleOrderDetailVM.ProductModel,
+                            Unit = saleOrderDetailVM.Unit,
+                            TaxType = saleOrderDetailVM.TaxType
                         };
                         saleInvoiceItemViewModelList.Add(saleInvoiceDetailVM);
                     }

@@ -934,12 +934,13 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
 function GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder) {
     try {
         var SaleInvoiceOtherChargesDetailList = [];
+        debugger;
         if (IsQuotation) {
             var data = { "quoteID": $('#SaleInvoiceForm #hdnQuoteID').val() };
             _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceOtherChargesDetailListByQuotationIDFromQuotation/", data);
         }
         else if (IsSaleOrder) {
-            var data = { "saleOrderID": $('#SaleInvoiceForm #hdnsaleOrderID').val() };
+            var data = { "saleOrderID": $('#SaleInvoiceForm #hdnSaleOrderID').val() };
             _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceOtherChargesDetailListBySaleOrderIDFromSaleOrder/", data);
         }
         else {
