@@ -25,31 +25,14 @@ else
     @Html.DropDownList("CompanyID", Model.CompanySelectList, "--Select Carrier--", SelectListattributes)
 }
 
-
-
-
-@*@if (ViewBag.IsRequired == "required")
-{
-    <div class="input-group">
-        @Html.DropDownList("CompanyID", Model.CompanySelectList, "--Select company--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Company is missing", @onchange = "$('#hdnCompanyID').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCompanyMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
-
-}
-else
-{
-    <div class="input-group">
-        @Html.DropDownList("CompanyID", Model.CompanySelectList, "--Select company--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnCompanyID').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddCompanyMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
-
-}*@
 @Html.ValidationMessage("CompanyID", "", new { @class = "text-danger" })
 
 <script>
     $(document).ready(function () {        
         $('#CompanyID').val($('#hdnCompanyID').val());
-        $('#CompanyID').select2({});
+        $('#CompanyID').select2({
+            dropdownParent: $('.divCompanySelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

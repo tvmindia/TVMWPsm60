@@ -101,7 +101,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Company");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListCompanyAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }

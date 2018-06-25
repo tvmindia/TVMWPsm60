@@ -972,6 +972,23 @@ function SaveSuccessCountry(data, status) {
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val());
+                if ($('#CustomerForm')[0])
+                    $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+                        $('#divCustomerForm #CountryCode').change(function () {
+                            debugger;
+                            if ($('.divStateSelectList') != undefined) {
+                                $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                                if (this.value != "") {
+                                    $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value)
+                                }
+                                else {
+                                    $('.divStateSelectList').empty();
+                                    $('.divStateSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+
+                                }
+                            }
+                        });
+                    });
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
