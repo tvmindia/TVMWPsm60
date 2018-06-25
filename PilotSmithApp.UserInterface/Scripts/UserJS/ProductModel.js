@@ -51,12 +51,13 @@ function BindOrReloadProductModelTable(action) {
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [1, 2, 3, 4, 5, 6,7,8]
+                                     columns: [0,1, 2, 3, 4, 5, 6,7]
                                  }
                 }],
                 ordering: false,
                 searching: false,
                 paging: true,
+                autoWidth: false,
                 lengthChange: false,
                 processing: true,
                 language: {
@@ -72,7 +73,6 @@ function BindOrReloadProductModelTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "ID", "defaultContent": "<i>-</i>" },
                 { "data": "Product.Name", "defaultContent": "<i>-</i>" },
                 { "data": "Name", "defaultContent": "<i>-</i>" },
                 { "data": "Unit.Description", "defaultContent": "<i>-</i>" },
@@ -85,17 +85,16 @@ function BindOrReloadProductModelTable(action) {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditProductModelMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteProductModelMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [7] },
-                { className: "text-right", "targets": [5, 6] },                
-                 { "targets": [1], "width": "10%" },
-                { "targets": [2], "width": "10%" },
-                { "targets": [3], "width": "5%" },
-               { "targets": [4], "width": "25%" },
-                { "targets": [5, 6], "width": "10%" },
+                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
+                { className: "text-center", "targets": [6,8] },
+                { className: "text-right", "targets": [4, 5] },                
+                 { "targets": [0], "width": "10%" },
+                { "targets": [1], "width": "10%" },
+                { "targets": [2], "width": "5%" },
+               { "targets": [3], "width": "25%" },
+                { "targets": [4, 5], "width": "10%" },
+                { "targets": [6], "width": "10%" },
                 { "targets": [7], "width": "10%" },
-                { "targets": [8], "width": "10%" },
-                { "targets": [9], "width": "10%" }
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
