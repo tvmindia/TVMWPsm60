@@ -124,6 +124,10 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<CountryAdvanceSearchViewModel, CountryAdvanceSearch>().ReverseMap();
                 config.CreateMap<TimeLineViewModel, TimeLine>().ReverseMap();
 
+                //Proforma Invoice
+                config.CreateMap<ProformaInvoiceViewModel, ProformaInvoice>().ReverseMap();
+                config.CreateMap<ProformaInvoiceAdvanceSearchViewModel, ProformaInvoiceAdvanceSearch>().ReverseMap();
+                config.CreateMap<ProformaInvoiceDetailViewModel, ProformaInvoiceDetail>().ReverseMap();
             });
         }
     }

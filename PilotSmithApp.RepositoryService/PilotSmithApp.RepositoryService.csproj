@@ -77,6 +77,7 @@
     <Compile Include="Contract\IProductModelRepository.cs" />
     <Compile Include="Contract\IProductRepository.cs" />
     <Compile Include="Contract\IProductSpecificationRepository.cs" />
+    <Compile Include="Contract\IProformaInvoiceRepository.cs" />
     <Compile Include="Contract\IQuotationRepository.cs" />
     <Compile Include="Contract\IReferencePersonRepository.cs" />
     <Compile Include="Contract\IReferenceTypeRepository.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Service\ProductModelRepository.cs" />
     <Compile Include="Service\ProductRepository.cs" />
     <Compile Include="Service\ProductSpecificationRepository.cs" />
+    <Compile Include="Service\ProformaInvoiceRepository.cs" />
     <Compile Include="Service\QuotationRepository.cs" />
     <Compile Include="Service\ReferencePersonRepository.cs" />
     <Compile Include="Service\ReferenceTypeRepository.cs" />
