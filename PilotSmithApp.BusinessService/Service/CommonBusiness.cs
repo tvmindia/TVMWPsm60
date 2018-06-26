@@ -649,5 +649,11 @@ namespace PilotSmithApp.BusinessService.Service
          
             return Result;
         }
+
+        public List<RecentDocument> GetRecentDocument(string username, string searchTerm=null)
+        {
+            return _commonRepository.GetRecentDocument(username, searchTerm);
+        }
+
     }
 }

@@ -1,0 +1,38 @@
+﻿@model PilotSmithApp.UserInterface.Models.PaymentTermViewModel
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
+@if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Payment Term is missing", @onchange = "$('#hdnPaymentTermCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Plant is missing", @onchange = "$('#hdnPaymentTermCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddPaymentTermMaster('OTR')";
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnPaymentTermCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnPaymentTermCode').val(this.value)" };
+    onclickevent = ViewBag.propertydisable ? "" : "AddPaymentTermMaster('OTR')";
+}
+@if (@ViewBag.HasAddPermission)
+{
+    <div class="input-group">
+        @Html.DropDownList("PaymentTermCode", Model.PaymentTermSelectList, "--Select Payment Term--", SelectListattributes)
+        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick=@onclickevent><i class="fa fa-plus-square"></i></span>
+    </div>
+}
+else
+{
+    @Html.DropDownList("PaymentTermCode", Model.PaymentTermSelectList, "--Select Payment Term--", SelectListattributes)
+}
+@Html.ValidationMessage("PaymentTermCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        $('#PaymentTermCode').val($('#hdnPaymentTermCode').val());
+        $('#PaymentTermCode').select2({
+            dropdownParent: $('.divPaymentTermSelectList')
+        });
+        $('.select2').addClass('form-control newinput');
+
+    });
+</script>

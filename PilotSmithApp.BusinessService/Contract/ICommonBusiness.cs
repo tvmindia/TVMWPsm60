@@ -25,5 +25,6 @@ namespace PilotSmithApp.BusinessService.Contract
         string GetXMLfromProformaInvoiceObject(List<ProformaInvoiceDetail> proformaInvoiceDetailList, string mandatoryProperties);
         string GetXMLfromProformaInvoiceOtherChargeObject(List<ProformaInvoiceOtherCharge> proformaInvoiceOtherChargeDetailList, string mandatoryProperties);
         List<TimeLine> GetTimeLine(Guid Id, String Type);
+        List<RecentDocument> GetRecentDocument(string username, string searchTerm=null);
     }
 }

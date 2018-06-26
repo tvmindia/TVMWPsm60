@@ -13,6 +13,10 @@ $(document).ready(function () {
         $('#tblServiceCall tbody').on('dblclick', 'td', function () {
             EditServiceCall(this);
         });
+
+        if ($('#RedirectToDocument').val() != "") {
+            EditRedirectToDocument($('#RedirectToDocument').val());
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -407,7 +411,7 @@ function BindServiceCallDetailList(id) {
 function AddServiceCallDetailList() {
     debugger;
     $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail", function () {
-        $('#lblModelServiceCall').text('ServiceCall Detail')
+        $('#lblModelPopServiceCall').text('Service Call Detail')
         $('#divModelPopServiceCall').modal('show');
     });
 }
@@ -419,7 +423,8 @@ function AddServiceCallDetailToList() {
         $("#FormServiceCallDetail").submit(function () { });
 
         if ($('#FormServiceCallDetail #IsUpdate').val() == 'True') {
-            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').val() != "")) {
+            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != "")))
+            {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                 serviceCallDetailList[_datatablerowindex].Product = new Object();
@@ -443,15 +448,23 @@ function AddServiceCallDetailToList() {
                 _datatablerowindex = -1;
             }
             else {
-                $('#msgInstalledDate').show();
-                $('#msgInstalledDate').change(function () {
-                    if ($('#msgInstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
-                });
+                if (($('#InstalledDate').val() != "")) {
+                    $('#msgInstalledDate').show();
+                    $('#msgInstalledDate').change(function () {
+                        if ($('#InstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
+                    });
+                }
+                if ($('#ProductModelID').length > 1 && $('#ProductModelID').val() != "") {
+                    $('#msgProductModel').show();
+                    $('#msgProductModel').change(function () {
+                        if ($('#ProductModelID').val !== "") { $('#msgProductModel').hide(); }
+                    });
+                }
             }
         }
         else {
-            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').val() != "")) {
-                if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
+                if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != ""))) {
+                    if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                     serviceCallDetailList[0].Product = new Object();
@@ -502,10 +515,18 @@ function AddServiceCallDetailToList() {
                 }
             }
             else {
-                $('#msgInstalledDate').show();
-                $('#msgInstalledDate').change(function () {
-                    if ($('#msgInstalledDate').val() !== "") { $('#msgInstalledDate').hide(); }
-                });
+                if (($('#InstalledDate').val() != "")) {
+                    $('#msgInstalledDate').show();
+                    $('#msgInstalledDate').change(function () {
+                        if ($('#InstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
+                    });
+                }
+                if ($('#ProductModelID').length > 1 && $('#ProductModelID').val() != "") {
+                    $('#msgProductModel').show();
+                    $('#msgProductModel').change(function () {
+                        if ($('#ProductModelID').val !== "") { $('#msgProductModel').hide(); }
+                    });
+                }
             }
         }
         $('[data-toggle="popover"]').popover({
@@ -930,4 +951,31 @@ function DeleteServiceCallChargeDetail(ID) {
             notyAlert('error', _message);
         }
     }
+}
+
+//==============Redirect to nav=================//
+function EditRedirectToDocument(id) {
+
+    OnServerCallBegin();
+
+    $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblServiceCallInfo').text($('#ServiceCallNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
+            }
+            BindServiceCallDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

@@ -1,17 +1,13 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ReferenceTypeViewModel
 @if (@ViewBag.IsRequired == "required")
 {
-    <div class="input-group">
+    
         @Html.DropDownList("ReferenceTypeCode", Model.ReferenceTypeSelectList, "--Select reference type--", new { @class = "form-control newinput", @required = "", @title = "The Reference type is missing", @style = "width:100%!important", @onchange = "$('#hdnReferenceTypeCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b"></span>
-    </div>
 }
 else
 {
-    <div class="input-group">
+    
         @Html.DropDownList("ReferenceTypeCode", Model.ReferenceTypeSelectList, "--Select reference type--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnReferenceTypeCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b"></span>
-    </div>
 }
 
 @Html.ValidationMessage("ReferenceTypeCode", "", new { @class = "text-danger" })
@@ -19,7 +15,9 @@ else
 <script>
     $(document).ready(function () {
         $('#ReferenceTypeCode').val($('#hdnReferenceTypeCode').val());
-        $('#ReferenceTypeCode').select2({});
+        $('#ReferenceTypeCode').select2({
+            dropdownParent: $('.divReferenceTypeSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

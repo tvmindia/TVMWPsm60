@@ -98,6 +98,8 @@
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnReferredByRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnReferredBydisabled", false)
                     @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
                 </div>
                 <div class="col-md-6 no-padding">
@@ -156,6 +158,8 @@
                             </div>
                             <!-- This hidden field will keep the information whether the field is required or not -->
                             @Html.Hidden("hdnBranchRequired", "required")
+                            <!-- This hidden field will keep the information whether the field is disabled or not -->
+                            @Html.Hidden("hdnBranchdisabled", false)
                             @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                         </div>
                     }
@@ -457,7 +461,7 @@
                 </text>
                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val())
-            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList')
+            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
             @if (Model.IsUpdate || Model.EstimateID != null)
             {
                 <text>

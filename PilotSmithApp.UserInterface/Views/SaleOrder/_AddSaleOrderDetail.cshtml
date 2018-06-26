@@ -57,6 +57,8 @@
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnUnitRequired", "required")
+            <!-- This hidden field will keep the information whether the field is disabled or not -->
+            @Html.Hidden("hdnUnitdisabled", false)
             @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
         </div>
         <div class="col-md-4 no-padding">
@@ -71,6 +73,8 @@
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnTaxTypeRequired", "")
+            <!-- This hidden field will keep the information whether the field is disabled or not -->
+            @Html.Hidden("hdnTaxTypedisabled", false)
             @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
         </div>
     </div>

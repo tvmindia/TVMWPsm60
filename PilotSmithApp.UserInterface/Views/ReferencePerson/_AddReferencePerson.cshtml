@@ -33,9 +33,19 @@
                     @Html.LabelFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
+                    <div class="divReferenceTypeSelectList">
+                        <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                    </div>
+                </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnReferenceTypeRequired", "")
+                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                @Html.Hidden("hdnReferenceTypedisabled", false)
+                @Html.HiddenFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "", @id = "hdnReferenceTypeCode" })
+                @*<div class="col-md-12">
                     @Html.DropDownListFor(model => model.ReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList, "-- Select reference type --", new { @class = "form-control",@style="width:100%!important" })
                     @Html.HiddenFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "", @id = "hdnReferenceTypeCode" })
-                </div>
+                </div>*@
             </div>
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
@@ -112,6 +122,7 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormReferencePerson");
+        $('.divReferenceTypeSelectList').load('/ReferenceType/ReferenceTypeSelectList?required=' + $('#hdnReferenceTypeRequired').val())
         $('.divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val(), function () {
             $('#FormReferencePerson #AreaCode').select2({
                 dropdownParent: $("#divModelMasterPopUp")

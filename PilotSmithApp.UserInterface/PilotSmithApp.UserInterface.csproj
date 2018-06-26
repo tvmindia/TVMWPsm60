@@ -687,6 +687,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\UserJS\AdvanceSelectList.js" />
+    <Content Include="Scripts\UserJS\Bank.js" />
     <Content Include="Scripts\UserJS\Country.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\DocumentApproval\ViewApprovalHistory.js" />
@@ -694,6 +695,7 @@
     <Content Include="Scripts\UserJS\DeliveryChallan.js" />
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
     <Content Include="Scripts\UserJS\Plant.js" />
+    <Content Include="Scripts\UserJS\RecentDocument.js" />
     <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
@@ -1053,6 +1055,10 @@
     <Content Include="Views\ProformaInvoice\_ProformaInvoiceForm.cshtml" />
     <Content Include="Views\ProformaInvoice\_ProformaInvoiceOtherCharge.cshtml" />
     <Content Include="Views\ProformaInvoice\_ProformaInvoiceServiceBill.cshtml" />
+    <Content Include="Views\Bank\Index.cshtml" />
+    <Content Include="Views\Bank\_AddBank.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\PaymentTerm\_PaymentTermSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

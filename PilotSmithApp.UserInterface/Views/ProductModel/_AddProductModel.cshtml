@@ -39,9 +39,16 @@
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
-                <div class="col-md-12 divUnitSelectList">
-                    @Html.Action("UnitSelectList", "Unit", new { required = "required" })
+                <div class="col-md-12">
+                    <div class="divUnitSelectList">
+                        <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                    </div>
                 </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnUnitRequired", "required")
+                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                @Html.Hidden("hdnUnitdisabled", false)
                 @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
             </div>
         </div>
@@ -128,6 +135,7 @@
     $(document).ready(function () {
         $('#divModelMasterPopUp #ProductModelID').val($('#divModelMasterPopUp #hdnProductModelID').val());
         try {
+            $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
             $('#divModelMasterPopUp #ProductID,#divModelMasterPopUp #UnitCode').select2({
                 dropdownParent: $("#divModelMasterPopUp")
             });
