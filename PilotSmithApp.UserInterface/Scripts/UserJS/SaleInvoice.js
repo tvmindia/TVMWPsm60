@@ -247,7 +247,7 @@ function ResetSaleInvoice() {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", $('#SaleInvoiceForm #ID').val());
             }
             BindSaleInvoiceDetailList($('#ID').val());
-            BindSaleInvoiceOtherChargesDetailList($('#ID').val());
+            BindSaleInvoiceOtherChargesDetailList($('#ID').val());           
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleInvoiceForm #ID').val());
@@ -329,6 +329,7 @@ function DeleteSaleInvoiceItem(id) {
                     $('#ID').val(_emptyGuid);
                     ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
                     ResetSaleInvoice();
+                    $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
                     BindOrReloadSaleInvoiceTable('Init');
                     break;
                 case "ERROR":

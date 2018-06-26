@@ -1,1 +1,143 @@
 ﻿
+@model PilotSmithApp.UserInterface.Models.ProformaInvoiceOtherChargeViewModel
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormOtherExpenseDetail" }))
+{
+    @Html.HiddenFor(model => model.ProfInvID, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    <div class="form-group col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.OtherChargeCode, htmlAttributes: new { @class = "control-label lblrequired" })
+            </div>
+            <div class="col-md-12">
+                <div class="divOtherChargeSelectList">
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })*@
+                </div>
+            </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnOtherChargeRequired", "required")
+            @Html.HiddenFor(model => model.OtherChargeCode, htmlAttributes: new { @id = "hdnOtherChargeCode" })
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.ChargeAmount, htmlAttributes: new { @class = "control-label lblrequired" })
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.ChargeAmount, new { htmlAttributes = new { @class = "form-control ApplyCurrency  newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                @Html.ValidationMessageFor(model => model.ChargeAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-12 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "control-label " })
+            </div>
+            <div class="col-md-12">
+                <div class="divTaxTypeSelectList">
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("TaxTypeSelectList", "TaxType", new { required = "" })*@
+                </div>
+            </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnTaxTypeRequired", "")
+            @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
+        </div>
+        <div class="col-md-12 no-padding" id="divGSTCalculatedFields">
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.SGSTPerc, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.HiddenFor(model => model.SGSTPerc, htmlAttributes: new { @id = "hdnSGSTPerc" })
+                    @Html.EditorFor(model => model.SGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
+                    @Html.ValidationMessageFor(model => model.SGSTPerc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.CGSTPerc, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.HiddenFor(model => model.CGSTPerc, htmlAttributes: new { @id = "hdnCGSTPerc" })
+                    @Html.EditorFor(model => model.CGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
+                    @Html.ValidationMessageFor(model => model.CGSTPerc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.IGSTPerc, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.HiddenFor(model => model.IGSTPerc, htmlAttributes: new { @id = "hdnIGSTPerc" })
+                    @Html.EditorFor(model => model.IGSTPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
+                    @Html.ValidationMessageFor(model => model.IGSTPerc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div id="divCessCalculatedFields">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.AddlTaxPerc, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.AddlTaxPerc, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyPercentage CalculateGST", @onkeypress = "return isNumber(event)" } })
+                    @Html.ValidationMessageFor(model => model.AddlTaxPerc, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.AddlTaxPerc, htmlAttributes: new { @id = "hdnAddlTaxPerc" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.AddlTaxAmt, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.AddlTaxAmt, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)", @readonly = "" } })
+                    @Html.ValidationMessageFor(model => model.AddlTaxAmt, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.AddlTaxAmt, htmlAttributes: new { @id = "hdnAddlTaxAmt" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-default" id="btnAddOtherExpenseDetail" onclick="AddOtherExpenseDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
+        try {
+            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
+            $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                $('#divModelPopProformaInvoice .CalculateGST').change(function () {
+                    debugger;
+                    var CGST = 0, SGST = 0, IGST = 0;
+                    var ChargeAmount = parseFloat($('#divModelPopProformaInvoice #ChargeAmount').val() != "" ? $('#divModelPopProformaInvoice #ChargeAmount').val() : 0);
+                    if ($('#divModelPopProformaInvoice #TaxTypeCode').val() != null) {
+                        CGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                        SGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                        IGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                    }
+                    var AddlTaxPerc = parseFloat($('#divModelPopProformaInvoice #AddlTaxPerc').val() != "" ? $('#divModelPopProformaInvoice #AddlTaxPerc').val() : 0);
+                    $('#divModelPopProformaInvoice #hdnCGSTPerc').val(CGST);
+                    $('#divModelPopProformaInvoice #hdnSGSTPerc').val(SGST);
+                    $('#divModelPopProformaInvoice #hdnIGSTPerc').val(IGST);
+                    $('#divModelPopProformaInvoice #hdnAddlTaxPerc').val(AddlTaxPerc);
+                    $('#divModelPopProformaInvoice #CGSTPerc').val(ChargeAmount * CGST / 100);
+                    $('#divModelPopProformaInvoice #SGSTPerc').val(ChargeAmount * SGST / 100);
+                    $('#divModelPopProformaInvoice #IGSTPerc').val(ChargeAmount * IGST / 100);
+                    var TaxAmount = parseFloat($('#divModelPopProformaInvoice #CGSTPerc').val()) + parseFloat($('#divModelPopProformaInvoice #SGSTPerc').val()) + parseFloat($('#divModelPopProformaInvoice #IGSTPerc').val())
+                    $('#divModelPopProformaInvoice #AddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+                    $('#divModelPopProformaInvoice #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+                });
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+        $('#divModelPopProformaInvoice #TaxTypeCode').select2({
+            dropdownParent: $("#divModelPopProformaInvoice")
+        });
+        $('.select2').addClass('form-control newinput');
+
+    });
+</script>
+

@@ -262,6 +262,7 @@ function ResetDeliveryChallan() {
                 openNav();
             }
             BindDeliveryChallanDetailList($('#ID').val(), false, false);
+            $('#lblDeliveryChallanInfo').text('<<Challan No.>>');
             clearUploadControl();
             PaintImages($('#DeliveryChallanForm #ID').val());
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val(), function () {

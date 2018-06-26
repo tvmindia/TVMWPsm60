@@ -70,7 +70,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string InvoiceType { get; set; }
         public BillLocation BillLocation { get; set; }
         public List<ProformaInvoiceOtherCharge> ProformaInvoiceOtherChargeDetailList { get; set; }
-        public List<ProformaInvoiceDetail> SaleInvoiceDetailList { get; set; }
+        public List<ProformaInvoiceDetail> ProformaInvoiceDetailList { get; set; }
         public Area Area { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
         public PSAUser PSAUser { get; set; }
@@ -113,6 +113,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal CessPerc { get; set; }
         public decimal CessAmt { get; set; }
         public int? OtherChargeCode { get; set; }
+        public Guid SpecTag { get; set; }
         public OtherCharge OtherCharge { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public Product Product { get; set; }
