@@ -208,9 +208,58 @@ namespace PilotSmithApp.RepositoryService.Service
             }
             return timeLineList;
         }
-        
+
 
         #endregion TimeLine
+
+        #region GetRecentDocuments
+        public List<RecentDocument> GetRecentDocument(string username,string searchTerm)
+        {
+            List<RecentDocument> recentDocumentList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetRecentDocument]";
+                        cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar,-1).Value = searchTerm;
+                        cmd.Parameters.Add("@LoginName", SqlDbType.NVarChar, 250).Value = username;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                recentDocumentList = new List<RecentDocument>();
+                                while (sdr.Read())
+                                {
+                                    RecentDocument recentDocument = new RecentDocument();
+                                    recentDocument.DocumentID = (sdr["DocumentID"].ToString() != "" ? Guid.Parse(sdr["DocumentID"].ToString()) : recentDocument.DocumentID);
+                                    recentDocument.DocumentDate = (sdr["DocumentDate"].ToString() != "" ? DateTime.Parse(sdr["DocumentDate"].ToString()) : recentDocument.DocumentDate);
+                                    recentDocument.DocumentDateFormatted = (sdr["DocumentDate"].ToString() != "" ? DateTime.Parse(sdr["DocumentDate"].ToString()).ToString(_settings.DateFormat) : recentDocument.DocumentDateFormatted);
+                                    recentDocument.DocumentNo = (sdr["DocumentNo"].ToString() != "" ? (sdr["DocumentNo"].ToString()) : recentDocument.DocumentNo);
+                                    recentDocument.Icon = (sdr["Icon"].ToString() != "" ? (sdr["Icon"].ToString()) : recentDocument.Icon);
+                                    recentDocument.DocumentLink = (sdr["DocumentLink"].ToString() != "" ? (sdr["DocumentLink"].ToString()) : recentDocument.DocumentLink);
+                                    recentDocument.Particulars = (sdr["Particulars"].ToString() != "" ? (sdr["Particulars"].ToString()) : recentDocument.Particulars);
+                                    recentDocumentList.Add(recentDocument);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return recentDocumentList;
+        }
+        #endregion GetRecentDocuments
     }
 
 }

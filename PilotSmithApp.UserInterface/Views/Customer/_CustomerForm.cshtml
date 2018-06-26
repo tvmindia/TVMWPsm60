@@ -292,7 +292,7 @@
                     if ($('.divStateSelectList') != undefined) {
                         $('#dropLoad').addClass('fa fa-spinner fa-spin');
                         if (this.value != "") {
-                            $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value)
+                            $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value + '&required=' + $('#hdnStateRequired').val())
                         }
                         else {
                             $('.divStateSelectList').empty();
@@ -300,7 +300,11 @@
                        
                         }                      
                     }                  
-                });                 
+                });
+                //$('#CountryCode').select2({
+                //    dropdownParent: $('.divCountrySelectList')
+                //});
+                //$('.select2').addClass('form-control newinput');
             });
            
             //$('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {

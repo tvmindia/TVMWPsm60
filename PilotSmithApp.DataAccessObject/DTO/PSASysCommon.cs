@@ -345,6 +345,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DocumentDateFormatted { get; set; }
         public string DocumentLink { get; set; }
         public string Particulars { get; set; }
+        public string Icon { get; set; }
         public List<RecentDocument> RecentDocumentList { get; set; }
     }
 }

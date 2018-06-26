@@ -19,10 +19,10 @@
 
     <div class="col-md-6">
 
-        <div class="col-md-12 input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search..." style="padding:16px;">
+        <div class="col-md-12 input-group" style="margin-top:10px;">
+            <input type="text" name="q" id="SearchTerm" class="form-control" placeholder="Search..." style="padding:16px;">
             <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-openid">
+                <button type="submit" name="search" id="btnSearch" onclick="SearchDocument()" class="btn btn-openid">
                     <i class="fa fa-search"></i>
                 </button>
             </span>
@@ -31,13 +31,26 @@
         @*<div class="box col-md-12">&nbsp;</div>*@
 
         <div class="box" id="divSearchResults">
-            @{
-
-                @Html.Action("SearchDocument", "DashBoard");
-
-            }
-
+            <div class="box-header"></div>
+            <div class="with-border bg-gray" style="height:2px!important;"></div>
+            <div class="box-body no-padding">
+                <table class="table table-striped" style="height:450px;">
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;color:#BBBBBB !important;height:90%;">
+                                <i class="fa fa-search" style="font-size:300px; padding:20px;"></i><br />
+                                <span style="font-size:20px; padding:20px;">Search Results</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
 </section>
+
+@section Scripts {
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/RecentDocument")
+}

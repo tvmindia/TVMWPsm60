@@ -191,6 +191,8 @@
                                 </div>
                                 <!-- This hidden field will keep the information whether the field is required or not -->
                                 @Html.Hidden("hdnBranchRequired", "required")
+                                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                                @Html.Hidden("hdnBranchdisabled", false)
                                 @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                             </div>
                         }
@@ -532,7 +534,7 @@
 <script>
     $(document).ready(function () {
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             @if (!Model.IsDocLocked && Model.IsUpdate) { }
             else {
                 <text>

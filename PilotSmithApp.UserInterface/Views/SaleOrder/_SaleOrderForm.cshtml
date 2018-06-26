@@ -150,6 +150,8 @@
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnBankRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnBankdisabled", false)
                     @Html.HiddenFor(model => model.BankCode, htmlAttributes: new { @class = "", @id = "hdnBankCode" })
                 </div>
                 <div class="col-md-6 no-padding">
@@ -178,6 +180,8 @@
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnReferredByRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnReferredBydisabled", false)
                     @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
                 </div>
                 <div class="col-md-6 no-padding">
@@ -213,6 +217,8 @@
                             </div>
                             <!-- This hidden field will keep the information whether the field is required or not -->
                             @Html.Hidden("hdnBranchRequired", "required")
+                            <!-- This hidden field will keep the information whether the field is disabled or not -->
+                            @Html.Hidden("hdnBranchdisabled", false)
                             @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                         </div>
                     }
@@ -567,10 +573,10 @@
             $.validator.unobtrusive.parse("#SaleOrderForm");
         }
         catch (e) {
-            console.log(e.message);
+            console.log(e.message); 
         }
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             @if (!Model.IsDocLocked && Model.IsUpdate) { }
             else {
                 <text>
@@ -578,8 +584,8 @@
                 </text>
                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SOD&required=' + $('#hdnDocumentStatusRequired').val())
-            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList')
-            $('.divBankSelectList').load('/Bank/BankSelectList')
+            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
+            $('.divBankSelectList').load('/Bank/BankSelectList?required=' + $('#hdnBankRequired').val())
             @if (Model.IsUpdate || Model.EnquiryID != null || Model.QuoteID != null)
             {
                 <text>

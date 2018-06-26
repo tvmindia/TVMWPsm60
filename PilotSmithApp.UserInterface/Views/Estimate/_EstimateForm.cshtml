@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-12">
                             @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
-                            
+
                             @Html.ValidationMessageFor(model => model.EnquiryID, "", new { @class = "text-danger" })
                         </div>
                         @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
@@ -97,11 +97,11 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnCustomerRequired", "required")                  
+                    @Html.Hidden("hdnCustomerRequired", "required")
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
                 </div>
 
@@ -116,11 +116,11 @@
                     <div class="col-md-12">
                         <div class="divPreparedBySelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                           
-                        </div>                       
+
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnPreparedByRequired", "")                   
+                    @Html.Hidden("hdnPreparedByRequired", "")
                     @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
                 </div>
 
@@ -131,11 +131,11 @@
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            
-                        </div>                       
+
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnDocumentStatusRequired", "required")                 
+                    @Html.Hidden("hdnDocumentStatusRequired", "required")
                     @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                 </div>
 
@@ -154,10 +154,12 @@
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                
+
                             </div>
                             <!-- This hidden field will keep the information whether the field is required or not -->
-                            @Html.Hidden("hdnBranchRequired", "required")                            
+                            @Html.Hidden("hdnBranchRequired", "required")
+                            <!-- This hidden field will keep the information whether the field is disabled or not -->
+                            @Html.Hidden("hdnBranchdisabled", false)
                             @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                         </div>
                     }
@@ -221,16 +223,17 @@
 
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Estimate Details
-            @if (Model.IsDocLocked || !Model.IsUpdate)
-            {
-                <a class="btn btn-openid pull-right" onclick="AddEstimateDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-            }
-            else
-            {
-                <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-            }
-            
+            <div class="col-md-12 headSeperator">
+                Estimate Details
+                @if (Model.IsDocLocked || !Model.IsUpdate)
+                {
+                    <a class="btn btn-openid pull-right" onclick="AddEstimateDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                }
+                else
+                {
+                    <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                }
+
             </div>
 
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
@@ -296,14 +299,14 @@
             console.log(e.message);
         }
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             @if (!Model.IsDocLocked && Model.IsUpdate)
             {
             }
             else {
                 <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-                </text>
+            </text>
                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=EST&required=' + $('#hdnDocumentStatusRequired').val())
             @if (Model.IsUpdate || Model.EnquiryID != null)
