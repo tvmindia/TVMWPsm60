@@ -104,7 +104,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetAllPlant]";
-                        cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(plantAdvanceSearch.SearchTerm) ? "" : plantAdvanceSearch.SearchTerm;
+                        cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(plantAdvanceSearch.SearchTerm) ? "" : plantAdvanceSearch.SearchTerm.Trim();
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = plantAdvanceSearch.DataTablePaging.Start;
                         if (plantAdvanceSearch.DataTablePaging.Length == -1)
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);

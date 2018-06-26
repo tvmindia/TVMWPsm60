@@ -221,9 +221,15 @@
                         @Html.LabelFor(model => model.PaymentTermCode, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.PaymentTermCode, Model.PaymentTerm.PaymentTermSelectList, "-- Select Payment Term --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
-                        @Html.ValidationMessageFor(model => model.PaymentTermCode, "", new { @class = "text-danger" })
+                        <div class="divPaymentTermSelectList">
+                            <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                        </div>
                     </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnPaymentTermRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnPaymentTermdisabled", false)
+                    @Html.HiddenFor(model => model.PaymentTermCode, htmlAttributes: new { @class = "", @id = "hdnPaymentTermCode" })
                 </div>
                 <div class="col-md-3">
                     <div class="col-md-12">
@@ -292,7 +298,7 @@
                     if ($('.divStateSelectList') != undefined) {
                         $('#dropLoad').addClass('fa fa-spinner fa-spin');
                         if (this.value != "") {
-                            $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value)
+                            $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value + '&required=' + $('#hdnStateRequired').val())
                         }
                         else {
                             $('.divStateSelectList').empty();
@@ -300,9 +306,13 @@
                        
                         }                      
                     }                  
-                });                 
+                });
+                //$('#CountryCode').select2({
+                //    dropdownParent: $('.divCountrySelectList')
+                //});
+                //$('.select2').addClass('form-control newinput');
             });
-           
+            $('.divPaymentTermSelectList').load('/PaymentTerm/PaymentTermSelectList?required=' + $('#hdnPaymentTermRequired').val())
             //$('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
             //    $('#divCustomerForm #StateCode').change(function () {
             //        debugger;

@@ -43,10 +43,10 @@ namespace PilotSmithApp.UserInterface.Models
         public string SearchTerm { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Reference Type")]
-        public int? ReferenceTypeCode { get; set; }
+        public int? AdvReferenceTypeCode { get; set; }
         public ReferenceTypeViewModel ReferenceType { get; set; }
         [Display(Name = "Area")]
-        public int? AreaCode { get; set; }
+        public int? AdvAreaCode { get; set; }
         public AreaViewModel Area { get; set; }
 
     }

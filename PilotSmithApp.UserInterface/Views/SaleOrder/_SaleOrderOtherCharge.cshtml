@@ -10,9 +10,14 @@
             </div>
             <div class="col-md-12">
                 <div class="divOtherChargeSelectList">
-                    @Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @*@Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })*@
                 </div>
             </div>
+            <!-- This hidden field will keep the information whether the field is required or not -->
+            @Html.Hidden("hdnOtherChargeRequired", "required")
+            <!-- This hidden field will keep the information whether the field is disabled or not -->
+            @Html.Hidden("hdnOtherChargedisabled", false)
             @Html.HiddenFor(model => model.OtherChargeCode, htmlAttributes: new { @id = "hdnOtherChargeCode" })
         </div>
         <div class="col-md-12 no-padding">
@@ -117,6 +122,7 @@
                 $('#divModelPopSaleOrder #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
             });
         });
+        $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
         $('#divModelPopSaleOrder #TaxTypeCode').select2({
             dropdownParent: $("#divModelPopSaleOrder")
         });

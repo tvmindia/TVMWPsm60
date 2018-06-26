@@ -12,10 +12,14 @@
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.DocumentTypeCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.DocumentTypeCode, Model.DocumentType.DocumentTypeSelectList, "--- Select Document Type ---", new { @class = "form-control newinput", @style = "width:100%" })
-                        @Html.ValidationMessageFor(model => model.DocumentTypeCode, "", new { @class = "text-danger" })
+                <div class="col-md-12">
+                    <div class="divDocumentTypeSelectList">
+                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     </div>
+                </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnDocumentTypeRequired", "required")
+                @Html.HiddenFor(model => model.DocumentTypeCode, htmlAttributes: new { @class = "", @id = "hdnDocumentTypeCode" })
                 </div>
             </div>
 
@@ -74,6 +78,7 @@
         <script>
             $(document).ready(function () {
                 $.validator.unobtrusive.parse("#FormApprover");
+                $('.divDocumentTypeSelectList').load('/DocumentType/DocumentTypeSelectList?required=' + $('#hdnDocumentTypeRequired').val())
                 $('#FormApprover #DocumentTypeCode,#FormApprover #UserID').select2({
                     dropdownParent: $("#FormApprover")
                 });

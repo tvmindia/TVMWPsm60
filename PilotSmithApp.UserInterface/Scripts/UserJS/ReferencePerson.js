@@ -17,7 +17,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-    $("#AreaCode,#ReferenceTypeCode").select2({
+    $("#AdvAreaCode,#AdvReferenceTypeCode").select2({
         dropdownParent: $(".divboxASearch")
     });
    
@@ -36,13 +36,13 @@ function BindOrReloadReferencePersonTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#AreaCode').val('').trigger('change');
-                $('#ReferenceTypeCode').val('').trigger('change');
+                $('#AdvAreaCode').val('').trigger('change');
+                $('#AdvReferenceTypeCode').val('').trigger('change');
                 break;
             case 'Init':
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#AreaCode').val() == "") && ($('#ReferenceTypeCode').val() == ""))
+                if (($('#SearchTerm').val() == "") && ($('#AdvAreaCode').val() == "") && ($('#AdvReferenceTypeCode').val() == ""))
                 {
                     return true;
                 }
@@ -55,8 +55,8 @@ function BindOrReloadReferencePersonTable(action) {
         }
         ReferencePersonAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
         ReferencePersonAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
-        ReferencePersonAdvanceSearchViewModel.AreaCode = $('#AreaCode').val();
-        ReferencePersonAdvanceSearchViewModel.ReferenceTypeCode = $('#ReferenceTypeCode').val();
+        ReferencePersonAdvanceSearchViewModel.AdvAreaCode = $('#AdvAreaCode').val();
+        ReferencePersonAdvanceSearchViewModel.AdvReferenceTypeCode = $('#AdvReferenceTypeCode').val();
         //apply datatable plugin on ReferencePerson table
         _dataTables.ReferencePersonList = $('#tblReferencePerson').DataTable(
             {

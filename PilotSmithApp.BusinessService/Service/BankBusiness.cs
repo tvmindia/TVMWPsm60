@@ -25,7 +25,7 @@ namespace PilotSmithApp.BusinessService.Service
                                      select new SelectListItem
                                      {
                                          Text=bank.Name,
-                                         Value=bank.Code,
+                                         Value=bank.Code.ToString(),
                                          Selected=false,
                                      }).ToList():new List<SelectListItem>();
         }
@@ -37,15 +37,15 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _bankRepository.InsertUpdateBank(bank);
         }
-        public Bank GetBank(string code)
+        public Bank GetBank(int code)
         {
             return _bankRepository.GetBank(code);
         }
-        public bool CheckCodeExist(string code)
+        public bool CheckBankExist(Bank bank)
         {
-            return _bankRepository.CheckCodeExist(code);
+            return _bankRepository.CheckBankExist(bank);
         }
-        public object DeleteBank(string code)
+        public object DeleteBank(int code)
         {
             return _bankRepository.DeleteBank(code);
         }

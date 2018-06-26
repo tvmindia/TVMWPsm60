@@ -1,17 +1,17 @@
 ﻿@model PilotSmithApp.UserInterface.Models.DocumentTypeViewModel
 @if (@ViewBag.IsRequired == "required")
 {
-    <div class="input-group">
+    
         @Html.DropDownList("DocumentTypeCode", Model.DocumentTypeSelectList, "--Select type--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The Document Type is missing", @onchange = "$('#hdnDocumentTypeCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDocumentMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
+        @*<span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDocumentMaster('OTR')"><i class="fa fa-plus-square"></i></span>*@
+    
 }
 else
 {
-    <div class="input-group">
+    
         @Html.DropDownList("DocumentTypeCode", Model.DocumentTypeSelectList, "--Select type--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnDocumentTypeCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDocumentMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
+        @*<span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDocumentMaster('OTR')"><i class="fa fa-plus-square"></i></span>*@
+    
 }
 
 @Html.ValidationMessage("DocumentTypeCode", "", new { @class = "text-danger" })
@@ -19,7 +19,9 @@ else
 <script>
     $(document).ready(function () {
         $('#DocumentTypeCode').val($('#hdnDocumentTypeCode').val());
-        $('#DocumentTypeCode').select2({});
+        $('#DocumentTypeCode').select2({
+            dropdownParent: $('.divDocumentTypeSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

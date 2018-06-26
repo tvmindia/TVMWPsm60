@@ -55,7 +55,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = approverAdvanceSearch.DataTablePaging.Length;
                         //cmd.Parameters.Add("@OrderDir", SqlDbType.NVarChar, 5).Value = model.order[0].dir;
                         //cmd.Parameters.Add("@OrderColumn", SqlDbType.NVarChar, -1).Value = model.order[0].column;
-                        cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.VarChar,5).Value = approverAdvanceSearch.DocumentTypeCode;
+                        cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.VarChar,5).Value = approverAdvanceSearch.AdvDocumentTypeCode;
                         //cmd.Parameters.Add("@Level", SqlDbType.Int).Value = approverAdvanceSearch.Approver.Level;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())

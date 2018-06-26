@@ -23,7 +23,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
     public class ApproverAdvanceSearch
     {
         public string SearchTerm { get; set; }
-        public string DocumentTypeCode { get; set; }
+        public string AdvDocumentTypeCode { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
         public DocumentType DocumentType { get; set; }
         public Approver Approver { get; set; }

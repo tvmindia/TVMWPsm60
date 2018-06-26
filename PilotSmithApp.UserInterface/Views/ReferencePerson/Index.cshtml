@@ -41,18 +41,18 @@
             <div class="form-group col-md-12">
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.AreaCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvAreaCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AreaCode, Model.Area.AreaSelectList, "Select area", new { @class = "form-control newinput", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvAreaCode, Model.Area.AreaSelectList, "Select area", new { @class = "form-control newinput", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.ReferenceTypeCode, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvReferenceTypeCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.ReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList, "Select reference type", new { @class = "form-control newinput", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList, "Select reference type", new { @class = "form-control newinput", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-12">&nbsp;</div>

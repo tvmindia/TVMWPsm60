@@ -94,7 +94,6 @@
                         <div class="col-md-12 no-right-padding">
                             <div class="divReferredByCodeSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                @*@Html.Action("ReferencePersonSelectList", "ReferencePerson", new { required = "" })*@
                             </div>                           
                         </div>
                         <!-- This hidden field will keep the information whether the field is required or not -->
@@ -140,6 +139,8 @@
                                 </div>
                                 <!-- This hidden field will keep the information whether the field is required or not -->
                                 @Html.Hidden("hdnBranchRequired", "required")
+                                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                                @Html.Hidden("hdnBranchdisabled", false)
                                 @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                             </div>
                         }
@@ -283,11 +284,19 @@
                 }
 <script>
     $(document).ready(function () {
+        
         try {
             $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
+             @if (!Model.IsDocLocked && Model.IsUpdate)
+            {
+            }
+            else {
+                <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+                </text>
+            }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=ENQ&required=' + $('#hdnDocumentStatusRequired').val())
-            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList')
+            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
             $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('#hdnResponsiblePersonRequired').val())
             @if (Model.IsUpdate)
             {
