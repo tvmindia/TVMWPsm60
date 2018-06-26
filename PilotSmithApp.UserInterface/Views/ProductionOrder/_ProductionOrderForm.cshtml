@@ -360,10 +360,10 @@
             $.validator.unobtrusive.parse("#ProductionOrderForm");
         }
         catch (e) {
-            console.log(e.message);
+            console.log(e.message); 
         }
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             @if (!Model.IsDocLocked && Model.IsUpdate) { }
             else {
                 <text>

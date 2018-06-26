@@ -397,8 +397,9 @@
 <script>
     $(document).ready(function () {
         try {
-            $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList')
-            $('.divServicedBySelectList').load('/Employee/ServicedBySelectList')
+            
+            $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
+            $('.divServicedBySelectList').load('/Employee/ServicedBySelectList?required=' + $('#hdnServicedByRequired').val())
             @if (!Model.IsDocLocked && Model.IsUpdate) { }
              else {
                  <text>

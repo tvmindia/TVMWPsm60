@@ -695,6 +695,7 @@
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
     <Content Include="Scripts\UserJS\Plant.js" />
     <Content Include="Scripts\UserJS\RecentDocument.js" />
+    <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
     <Content Include="Scripts\sweetalert.min.js" />
@@ -791,6 +792,7 @@
     <Compile Include="Controllers\ProductModelController.cs" />
     <Compile Include="Controllers\ProductionOrderController.cs" />
     <Compile Include="Controllers\ProductSpecificationController.cs" />
+    <Compile Include="Controllers\ProformaInvoiceController.cs" />
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\ReferencePersonController.cs" />
     <Compile Include="Controllers\ReferenceTypeController.cs" />
@@ -844,6 +846,7 @@
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\PaymentTermViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\ProformaInvoiceViewModel.cs" />
     <Compile Include="Models\PSASysMenuViewModel.cs" />
     <Compile Include="Models\ApplicationViewModel.cs" />
     <Compile Include="Models\AppObjectViewModel.cs" />
@@ -1045,6 +1048,12 @@
     <Content Include="Views\DashBoard\AdminDashboard.cshtml" />
     <Content Include="Views\DashBoard\_RecentDocument.cshtml" />
     <Content Include="Views\DashBoard\_SearchDocument.cshtml" />
+    <Content Include="Views\ProformaInvoice\Index.cshtml" />
+    <Content Include="Views\ProformaInvoice\_AddProformaInvoiceDetail.cshtml" />
+    <Content Include="Views\ProformaInvoice\_EmailProformaInvoiceForm.cshtml" />
+    <Content Include="Views\ProformaInvoice\_ProformaInvoiceForm.cshtml" />
+    <Content Include="Views\ProformaInvoice\_ProformaInvoiceOtherCharge.cshtml" />
+    <Content Include="Views\ProformaInvoice\_ProformaInvoiceServiceBill.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
