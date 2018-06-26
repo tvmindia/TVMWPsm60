@@ -40,8 +40,9 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         // GET: ServiceCall
         [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "W")]
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             ServiceCallAdvanceSearchViewModel serviceCallAdvanceSearchVM = new ServiceCallAdvanceSearchViewModel();
             serviceCallAdvanceSearchVM.AdvArea = new AreaViewModel();
             serviceCallAdvanceSearchVM.AdvArea.AreaSelectList = _areaBusiness.GetAreaForSelectList();
