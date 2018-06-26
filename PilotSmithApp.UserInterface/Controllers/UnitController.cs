@@ -42,15 +42,6 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.IsDisabled = disabled;
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
-            AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Unit");
-            if (permission.SubPermissionList != null)
-            {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
-                {
-                    ViewBag.HasAddPermission = true;
-                }
-            }
             UnitViewModel unitVM = new UnitViewModel();
             unitVM.UnitSelectList = _unitBusiness.GetUnitForSelectList();
             return PartialView("_UnitSelectList", unitVM);
