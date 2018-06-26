@@ -798,6 +798,23 @@ function SaveSuccessTaxType(data, status) {
                             });
                         });
                 }
+                if ($('#divModelPopServiceCall')[0]) {
+                    $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                        $('#divModelPopCallCharges .CalculateGST').change(function () {
+                            debugger;
+                            var ChargeAmount = parseFloat($('#divModelPopCallCharges #ChargeAmount').val() != "" ? $('#divModelPopCallCharges #ChargeAmount').val() : 0);
+                            var CGST = parseFloat($('#divModelPopCallCharges #TaxTypeCode').val() != "" ? $('#divModelPopCallCharges #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                            var SGST = parseFloat($('#divModelPopCallCharges #TaxTypeCode').val() != "" ? $('#divModelPopCallCharges #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                            var IGST = parseFloat($('#divModelPopCallCharges #TaxTypeCode').val() != "" ? $('#divModelPopCallCharges #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                            $('#divModelPopCallCharges #hdnCGSTPerc').val(CGST);
+                            $('#divModelPopCallCharges #hdnSGSTPerc').val(SGST);
+                            $('#divModelPopCallCharges #hdnIGSTPerc').val(IGST);
+                            $('#divModelPopCallCharges #CGSTPerc').val(ChargeAmount * CGST / 100);
+                            $('#divModelPopCallCharges #SGSTPerc').val(ChargeAmount * SGST / 100);
+                            $('#divModelPopCallCharges #IGSTPerc').val(ChargeAmount * IGST / 100);
+                        });
+                    });
+                }
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
