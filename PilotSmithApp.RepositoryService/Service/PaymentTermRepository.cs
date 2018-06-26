@@ -98,7 +98,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetAllPaymentTerm]";
-                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(paymentTermAdvanceSearch.SearchTerm) ? "" : paymentTermAdvanceSearch.SearchTerm;
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(paymentTermAdvanceSearch.SearchTerm) ? "" : paymentTermAdvanceSearch.SearchTerm.Trim();
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = paymentTermAdvanceSearch.DataTablePaging.Start;
                         if (paymentTermAdvanceSearch.DataTablePaging.Length == -1)
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);

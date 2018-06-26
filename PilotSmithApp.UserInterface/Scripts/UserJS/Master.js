@@ -984,3 +984,46 @@ function SaveSuccessCountry(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+
+//Add Bank
+function AddBankMaster(flag) {
+    debugger;
+    OnServerCallBegin();
+    $("#divMasterBody").load("Bank/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Bank Information')
+            $('#divModelMasterPopUp').modal('show');
+
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessBank(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadBankTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divBankSelectList').load('/Bank/BankSelectList?required=' + $('#hdnBankRequired').val());
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}

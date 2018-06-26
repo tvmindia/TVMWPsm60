@@ -100,7 +100,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetAllOtherCharge]";
-                        cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(otherChargeAdvanceSearch.SearchTerm) ? "" : otherChargeAdvanceSearch.SearchTerm;
+                        cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(otherChargeAdvanceSearch.SearchTerm) ? "" : otherChargeAdvanceSearch.SearchTerm.Trim();
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = otherChargeAdvanceSearch.DataTablePaging.Start;
                         if (otherChargeAdvanceSearch.DataTablePaging.Length == -1)
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);

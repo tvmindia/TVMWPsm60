@@ -110,6 +110,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ApprovalStatusViewModel, ApprovalStatus>().ReverseMap();
                 config.CreateMap<ServiceCallChargeViewModel, ServiceCallCharge>().ReverseMap();
                 config.CreateMap<BankViewModel, Bank>().ReverseMap();
+                config.CreateMap<BankAdvanceSearchViewModel, BankAdvanceSearch>().ReverseMap();
                 //Sale Invoice
                 config.CreateMap<SaleInvoiceViewModel, SaleInvoice>().ReverseMap();
                 config.CreateMap<SaleInvoiceAdvanceSearchViewModel, SaleInvoiceAdvanceSearch>().ReverseMap();

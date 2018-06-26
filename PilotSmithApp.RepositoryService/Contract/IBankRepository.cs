@@ -11,9 +11,9 @@ namespace PilotSmithApp.RepositoryService.Contract
     {
         List<Bank> GetBankForSelectList();
         List<Bank> GetAllBank(BankAdvanceSearch bankAdvanceSearch);
-        Bank GetBank(string code);
-        bool CheckCodeExist(string code);
+        Bank GetBank(int code);
+        bool CheckBankExist(Bank bank);
         object InsertUpdateBank(Bank bank);
-        object DeleteBank(string code);
+        object DeleteBank(int code);
     }
 }
