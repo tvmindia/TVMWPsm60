@@ -4,6 +4,8 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private IPaymentTermBusiness _paymentTermBusiness;
-        public PaymentTermController(IPaymentTermBusiness paymentTermBusiness)
+        IUserBusiness _userBusiness;
+        public PaymentTermController(IPaymentTermBusiness paymentTermBusiness, IUserBusiness userBusiness)
         {
             _paymentTermBusiness = paymentTermBusiness;
+            _userBusiness = userBusiness;
         }
         // GET: PaymentTerm
         [AuthSecurityFilter(ProjectObject = "PaymentTerm", Mode = "W")]
@@ -124,9 +128,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region PaymentTerm SelectList
-        public ActionResult PaymentTermSelectList(string required)
+        public ActionResult PaymentTermSelectList(string required, bool? disabled)
         {
             ViewBag.IsRequired = required;
+            ViewBag.IsDisabled = disabled;
+            ViewBag.HasAddPermission = false;
+            ViewBag.propertydisable = disabled == null ? false : disabled;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "PaymentTerm");
+            if (permission.SubPermissionList != null)
+            {
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
+                {
+                    ViewBag.HasAddPermission = true;
+                }
+            }
             PaymentTermViewModel paymentTermVM = new PaymentTermViewModel();
             paymentTermVM.PaymentTermSelectList = _paymentTermBusiness.GetPaymentTermForSelectList(); 
             return PartialView("_PaymentTermSelectList", paymentTermVM);

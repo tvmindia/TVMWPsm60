@@ -70,6 +70,8 @@
                 </div>
                 <!-- This hidden field will keep the information whether the field is required or not -->
                 @Html.Hidden("hdnUnitRequired", "required")
+                <!-- This hidden field will keep the information whether the field is disabled or not -->
+                @Html.Hidden("hdnUnitdisabled", false)
                 @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
             </div>
         </div>
