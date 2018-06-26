@@ -118,8 +118,8 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = referencePersonAdvanceSearch.DataTablePaging.Length;
-                        cmd.Parameters.Add("@ReferenceTypeCode", SqlDbType.Int).Value = referencePersonAdvanceSearch.ReferenceTypeCode;
-                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = referencePersonAdvanceSearch.AreaCode;
+                        cmd.Parameters.Add("@ReferenceTypeCode", SqlDbType.Int).Value = referencePersonAdvanceSearch.AdvReferenceTypeCode;
+                        cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = referencePersonAdvanceSearch.AdvAreaCode;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

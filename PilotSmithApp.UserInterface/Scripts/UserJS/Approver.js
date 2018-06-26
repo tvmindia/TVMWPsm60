@@ -23,7 +23,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-    $("#DocumentTypeCode").select2({
+    $("#AdvDocumentTypeCode").select2({
         dropdownParent: $(".divboxASearch")
     });
     $('.select2').addClass('form-control newinput');
@@ -46,14 +46,14 @@ function BindOrReloadApproverTable(action) {
         switch (action) {
             case 'Reset':
                 $('#SearchTerm').val('');
-                $('#DocumentTypeCode').val('').trigger('change');
+                $('#AdvDocumentTypeCode').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
-                $('#DocumentTypeCode').val('');
+                $('#AdvDocumentTypeCode').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('#DocumentTypeCode').val() == "") ) {
+                if (($('#SearchTerm').val() == "") && ($('#AdvDocumentTypeCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -64,7 +64,7 @@ function BindOrReloadApproverTable(action) {
                 break;
         }
         ApproverAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
-        ApproverAdvanceSearchViewModel.DocumentTypeCode = $('#DocumentTypeCode').val();
+        ApproverAdvanceSearchViewModel.AdvDocumentTypeCode = $('#AdvDocumentTypeCode').val();
         ApproverAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val();
 
         //apply datatable plugin on Approver table
