@@ -78,7 +78,7 @@
                 </div>
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
-            @Html.Hidden("hdnQCByRequired", "")
+            @Html.Hidden("hdnQCByRequired", "required")
             <!-- This hidden field will keep the information whether the field is disabled or not -->
             @Html.Hidden("hdnQCBydisabled", false)
             @Html.HiddenFor(model => model.QCBy, htmlAttributes: new { @class = "", @id = "hdnQCBy" })

@@ -137,10 +137,10 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Country");
+            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "TaxType");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListCountryAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }

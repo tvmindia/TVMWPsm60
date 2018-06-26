@@ -130,7 +130,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListEmployeeAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }
@@ -151,7 +151,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListEmployeeAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }
@@ -172,7 +172,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListEmployeeAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }
@@ -193,7 +193,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListEmployeeAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }
@@ -214,7 +214,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListEmployeeAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }
@@ -235,7 +235,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListEmployeeAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }

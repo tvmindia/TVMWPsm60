@@ -97,7 +97,7 @@
                     if ($('.divProductModelSelectList') != undefined) {
                         $('#dropLoad').addClass('fa fa-spinner fa-spin');
                         if (this.value != "") {
-                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=" + $('hdnProductModelRequired').val() + "&productID=" + this.value)
                         }
                         else {
                             $('.divProductModelSelectList').empty();

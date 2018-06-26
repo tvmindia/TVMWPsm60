@@ -284,11 +284,11 @@
 <script>
     $(document).ready(function () {
         try {
-            $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList')
+            $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=ENQ&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList')
-            $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList')
+            $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('#hdnResponsiblePersonRequired').val())
             @if (Model.IsUpdate)
             {
               <text>

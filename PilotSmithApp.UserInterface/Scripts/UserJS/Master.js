@@ -380,7 +380,7 @@ function SaveSuccessEmployeeMaster(data, status) {
                 if ($(".divEmployeeSelectList")[0])
                     $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required='+$('#hdnEmployeeRequired').val());
                 if ($(".divResponsiblePersonSelectList")[0])
-                    $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('$hdnResponsiblePersonRequired').val());
+                    $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('hdnResponsiblePersonRequired').val());
                 if ($(".divAttendedBySelectList")[0])
                     $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val());
                 if ($(".divServicedBySelectList")[0])

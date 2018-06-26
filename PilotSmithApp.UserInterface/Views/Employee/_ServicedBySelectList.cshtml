@@ -31,7 +31,9 @@ else
     $(document).ready(function () {
         debugger;
         $('#ServicedByID').val($('#hdnServicedByID').val());
-        $('#ServicedByID').select2({});
+        $('#ServicedByID').select2({
+            dropdownParent: $('.divServicedBySelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>
