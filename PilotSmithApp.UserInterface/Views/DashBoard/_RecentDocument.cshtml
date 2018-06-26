@@ -1,35 +1,72 @@
-﻿@model PilotSmithApp.UserInterface.Models.RecentDocumentViewModel
+﻿@using PilotSmithApp.DataAccessObject.DTO
+@model PilotSmithApp.UserInterface.Models.RecentDocumentViewModel
 @using PilotSmithApp.UserInterface.App_Start
 
 <div class="box">
-    <div class="box-header" style="margin:7.5px;">
-        <h3 class="box-title">Top 50 Recent Documents</h3>
+    <div class="box-header" style="margin:12px;">
+        @if (Session["AppUA"] != null)
+        {
+            AppUA _appUA = Session["AppUA"] as AppUA;
+            <h3 class="box-title">Top 50 Recent Documents</h3><span style="font-size:1.2em;color:grey;"> of @_appUA.UserName</span>
+        }
     </div>
     <div class="with-border bg-green-active" style="height:2px!important"></div>
     <!-- /.box-header -->
     <div class="box-body no-padding">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th style="width: 5%;text-align:center;"></th>
-                    <th style="width: 20%">Document No#</th>
-                    <th style="width: 15%;text-align:center;">Date</th>
-                    <th style="width: 60%">Particulars</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th style="text-align:center;"></th>
-                    <td>Update software</td>
-                    <td style="text-align:center;">25-May-2018</td>
-                    <td>
-                        <div class="progress progress-xs">
-                            <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        @{
+            if (Model.RecentDocumentList != null)
+            {
+                if (Model.RecentDocumentList.Count > 0)
+                {
+                    <table class="table table-striped" style="display:block;overflow-y:scroll;max-height:450px;height:450px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 3%;text-align:center;"></th>
+                                <th style="width: 22%">Document No#</th>
+                                <th style="width: 20%;text-align:center;">Date</th>
+                                <th style="width: 55%">Particulars</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+
+                                for (int i = 0; i < Model.RecentDocumentList.Count; i++)
+                                {
+                                    <tr>
+                                        <td style="text-align:center;"><i class="@Model.RecentDocumentList[i].Icon"></i></td>
+                                        <td><a href=@Model.RecentDocumentList[i].DocumentLink>@Model.RecentDocumentList[i].DocumentNo</a></td>
+                                        <td style="text-align:center;">@Model.RecentDocumentList[i].DocumentDateFormatted</td>
+                                        <td>@Html.Raw(@Model.RecentDocumentList[i].Particulars)</td>
+                                    </tr>
+                                }
+                                for (int i = Model.RecentDocumentList.Count; i <= 50; i++)
+                                {
+
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                                }
+                                else
+                                {
+                                    <table class="table table-striped">
+                                        <tr><td style="width:100%;text-align:center;">No documents made by User</td></tr>
+                                        @for (int i = Model.RecentDocumentList.Count; i < 25; i++)
+                                        {
+                                            <tr><td style="width:100%;text-align:center;"></td></tr>
+                                        }
+                                    </table>
+                                }
+                          }
+        }
+        
     </div>
     <!-- /.box-body -->
 </div>

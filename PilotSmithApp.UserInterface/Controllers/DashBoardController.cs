@@ -34,12 +34,19 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         // GET: DashBoard
         [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
-        public ActionResult Index()
+        public ActionResult Index(bool isUser = false)
         {
             Permission _permission = Session["UserRights"] as Permission;
             if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "AdminView").AccessCode : string.Empty).Contains("R"))
             {
-                return View("AdminDashboard");
+                if (isUser)
+                {
+                    return View();
+                }
+                else
+                {
+                    return View("AdminDashboard");
+                }
             }
             else
             {
@@ -52,14 +59,18 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             RecentDocumentViewModel recentDocument = new RecentDocumentViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
+            recentDocument.RecentDocumentList = Mapper.Map<List<RecentDocument>, List<RecentDocumentViewModel>>(_commonBusiness.GetRecentDocument(appUA.UserName));
             return PartialView("_RecentDocument", recentDocument);
         }
 
         [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
-        public ActionResult SearchDocument()
+        public ActionResult SearchDocument(string searchTerm = null)
         {
             RecentDocumentViewModel recentDocument = new RecentDocumentViewModel();
-            AppUA appUA = Session["AppUA"] as AppUA;
+            if (searchTerm != null)
+            {
+                recentDocument.RecentDocumentList = Mapper.Map<List<RecentDocument>, List<RecentDocumentViewModel>>(_commonBusiness.GetRecentDocument(null,searchTerm));
+            }
             return PartialView("_SearchDocument", recentDocument);
         }
 
