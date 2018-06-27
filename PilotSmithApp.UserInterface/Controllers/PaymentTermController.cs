@@ -26,7 +26,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness = userBusiness;
         }
         // GET: PaymentTerm
-        [AuthSecurityFilter(ProjectObject = "PaymentTerm", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "PaymentTerm", Mode = "R")]
         public ActionResult Index()
         {
             PaymentTermAdvanceSearchViewModel paymentTermAdvanceSearchVM = new PaymentTermAdvanceSearchViewModel();

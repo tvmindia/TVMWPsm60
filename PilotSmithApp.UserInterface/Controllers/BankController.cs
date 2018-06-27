@@ -95,7 +95,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region InsertUpdateBank
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "W")]
         public string InsertUpdateBank(BankViewModel bankVM)
         {
             try
@@ -122,7 +122,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region DeleteBank
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "D")]
         public string DeleteBank(int code)
         {
             try

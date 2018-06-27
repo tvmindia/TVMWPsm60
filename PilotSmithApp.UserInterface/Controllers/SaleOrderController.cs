@@ -485,7 +485,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion Delete SaleOrder OtherCharge
         #region InsertUpdateSaleOrder
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "W")]
         public string InsertUpdateSaleOrder(SaleOrderViewModel saleOrderVM)
         {
             //object resultFromBusiness = null;

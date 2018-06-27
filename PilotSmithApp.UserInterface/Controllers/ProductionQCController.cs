@@ -219,7 +219,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllProductionQC
         #region InsertUpdateProductionQC
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "W")]
         public string InsertUpdateProductionQC(ProductionQCViewModel productionQCVM)
         {
             //object resultFromBusiness = null;

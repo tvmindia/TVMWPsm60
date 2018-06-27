@@ -240,7 +240,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllEnquiry
         #region InsertUpdateEnquiry
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "W")]
         public string InsertUpdateEnquiry(EnquiryViewModel enquiryVM)
         {
             //object resultFromBusiness = null;

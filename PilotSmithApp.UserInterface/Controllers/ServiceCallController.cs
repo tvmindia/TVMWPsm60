@@ -39,7 +39,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion Constructor Injection 
 
         // GET: ServiceCall
-        [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "W")]
+        [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.ID = id;

@@ -583,7 +583,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region InsertUpdateProformaInvoice
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "W")]
         public string InsertUpdateProformaInvoice(ProformaInvoiceViewModel proformaInvoiceVM)
         {
             //object resultFromBusiness = null;

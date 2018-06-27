@@ -582,7 +582,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllSaleInvoice
         #region InsertUpdateSaleInvoice
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "W")]
         public string InsertUpdateSaleInvoice(SaleInvoiceViewModel saleInvoiceVM)
         {
             //object resultFromBusiness = null;

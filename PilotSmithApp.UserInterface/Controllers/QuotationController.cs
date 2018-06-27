@@ -353,7 +353,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllQuotation
         #region InsertUpdateQuotation
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "W")]
         public string InsertUpdateQuotation(QuotationViewModel quotationVM)
         {
             //object resultFromBusiness = null;
