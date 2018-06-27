@@ -542,7 +542,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Delete Proforma Invoice Detail
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "D")]
-        public string DeleteSaleInvoiceDetail(Guid id)
+        public string DeleteProformaInvoiceDetail(Guid id)
         {
 
             try
@@ -564,7 +564,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Delete ProformaInvoice OtherChargeDetail
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "D")]
-        public string DeleteSaleInvoiceOtherChargeDetail(Guid id)
+        public string DeleteProformaInvoiceOtherChargeDetail(Guid id)
         {
 
             try
