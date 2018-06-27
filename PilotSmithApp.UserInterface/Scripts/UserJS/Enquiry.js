@@ -682,10 +682,11 @@ function DeleteEnquiryFollowup(ID) {
 //==========================================================================
 function EditRedirectToDocument(id)
 {
-    
+    debugger;
     OnServerCallBegin();
    
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        debugger;
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
