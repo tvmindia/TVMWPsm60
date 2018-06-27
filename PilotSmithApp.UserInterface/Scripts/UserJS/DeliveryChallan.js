@@ -428,7 +428,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> ':'-' },   //<a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : '-' },
              ],
              columnDefs: [
                   { className: "text-left", "targets": [0] },
@@ -491,7 +491,7 @@ function GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder, IsSale
 function AddDeliveryChallanDetailList() {
     debugger;
     $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function () {
-        $('#lblModelPopDeliveryChallan').text('DeliveryChallan Detail')
+        $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
         $('#divModelPopDeliveryChallan').modal('show');
     });
 }
@@ -623,7 +623,7 @@ function EditDeliveryChallanDetail(this_Obj) {
     _datatablerowindex = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).index();
     var deliveryChallanDetail = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function () {
-        $('#lblModelPopDeliveryChallan').text('DeliveryChallan Detail')
+        $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
         $('#FormDeliveryChallanDetail #IsUpdate').val('True');
         $('#FormDeliveryChallanDetail #ID').val(deliveryChallanDetail.ID);
         $("#FormDeliveryChallanDetail #ProductID").val(deliveryChallanDetail.ProductID)
