@@ -174,7 +174,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = null;// _productionQCBusiness.DeleteProductionQCDetail(id);
+                object result = _productionQCBusiness.DeleteProductionQCDetail(id);
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }

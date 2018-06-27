@@ -228,6 +228,9 @@ function EditQuotation(this_Obj) {
                     case "0":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", Quotation.ID);
                         break;
+                    case "1":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                        break;
                     case "3":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
                         break;
@@ -276,6 +279,9 @@ function ResetQuotation() {
                     break;
                 case "0":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", $('#ID').val());
+                    break;
+                case "1":
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
                     break;
                 case "3":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());

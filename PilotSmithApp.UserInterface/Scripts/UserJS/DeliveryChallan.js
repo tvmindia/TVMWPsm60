@@ -428,7 +428,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
                      //return  data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> ':'-' },   //<a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : '-' },
              ],
              columnDefs: [
                   { className: "text-left", "targets": [0] },

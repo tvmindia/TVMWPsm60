@@ -260,6 +260,9 @@ function EditSaleOrder(this_Obj) {
                     case "0":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
                         break;
+                    case "1":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                        break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
                         break;
@@ -300,16 +303,19 @@ function ResetSaleOrder() {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
                     break;
                 case "0":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
+                    break;
+                case "1":
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
                     break;
                 case "3":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
                     break;
                 case "4":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
                     break;
                 default:
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
                     break;
             }
             if ($('#LatestApprovalStatus').val() == "") {
