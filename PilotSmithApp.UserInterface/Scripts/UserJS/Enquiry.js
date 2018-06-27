@@ -423,7 +423,7 @@ function AddEnquiryDetailToList() {
         
         if($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
-            if (($('#ProductID').val() != "" )&& ($('#Rate').val() != "" )&& ($('#Qty').val() != "" )&& ($('#UnitCode').val() != ""))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
             {
                 
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
@@ -448,7 +448,7 @@ function AddEnquiryDetailToList() {
         }
         else
         {
-            if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
             {
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
@@ -680,10 +680,11 @@ function DeleteEnquiryFollowup(ID) {
 //==========================================================================
 function EditRedirectToDocument(id)
 {
-    
+    debugger;
     OnServerCallBegin();
    
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        debugger;
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();

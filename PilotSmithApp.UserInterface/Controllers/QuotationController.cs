@@ -241,21 +241,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                     SGSTPerc = 0,
                                                     Discount = 0,
                                                     SpecTag = estimateDetailVM.SpecTag,
-                                                    Product = new ProductViewModel()
-                                                    {
-                                                        ID = (Guid)estimateDetailVM.ProductID,
-                                                        Code = estimateDetailVM.Product.Code,
-                                                        Name = estimateDetailVM.Product.Name,
-                                                    },
-                                                    ProductModel = new ProductModelViewModel()
-                                                    {
-                                                        ID = (Guid)estimateDetailVM.ProductModelID,
-                                                        Name = estimateDetailVM.ProductModel.Name
-                                                    },
-                                                    Unit = new UnitViewModel()
-                                                    {
-                                                        Description = estimateDetailVM.Unit.Description,
-                                                    },
+                                                    Product = estimateDetailVM.Product,
+                                                    ProductModel = estimateDetailVM.ProductModel,
+                                                    Unit = estimateDetailVM.Unit,
                                                     TaxType = new TaxTypeViewModel()
                                                     {
                                                         ValueText = "",

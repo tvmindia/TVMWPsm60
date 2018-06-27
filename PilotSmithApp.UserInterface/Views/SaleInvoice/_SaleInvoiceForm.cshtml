@@ -208,6 +208,8 @@
                         </div>
                         <!-- This hidden field will keep the information whether the field is required or not -->
                         @Html.Hidden("hdnBillLocationRequired", "")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBillLocationdisabled", false)
                         @Html.HiddenFor(model => model.BillLocationCode, htmlAttributes: new { @class = "", @id = "hdnBillLocationCode" })
                     </div>
                 </div>
@@ -542,7 +544,7 @@
                 </text>
                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
-            $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
+            $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=' + $('#hdnBillLocationRequired').val())
             @if (Model.IsUpdate || Model.QuoteID !=null || Model.SaleOrderID != null)
          {
              <text>

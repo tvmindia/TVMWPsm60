@@ -21,7 +21,9 @@ else
         {
             $('#BillLocationCode').val($('#hdnBillLocationCode').val());
         }
-        $('#BillLocationCode').select2({});
+        $('#BillLocationCode').select2({
+            dropdownParent: $('.divBillLocationSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

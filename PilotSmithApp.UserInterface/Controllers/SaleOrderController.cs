@@ -280,26 +280,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       IGSTPerc = quotationDetailVM.IGSTPerc,
                                                       CessAmt = 0,
                                                       CessPerc = 0,
-                                                      Product = new ProductViewModel()
-                                                      {
-                                                          ID = (Guid)quotationDetailVM.ProductID,
-                                                          Code = quotationDetailVM.Product.Code,
-                                                          Name = quotationDetailVM.Product.Name,
-                                                      },
-                                                      ProductModel = new ProductModelViewModel()
-                                                      {
-                                                          ID = (Guid)quotationDetailVM.ProductModelID,
-                                                          Name = quotationDetailVM.ProductModel.Name
-                                                      },
-                                                      Unit = new UnitViewModel()
-                                                      {
-                                                          Description = quotationDetailVM.Unit.Description
-                                                      },
-                                                      TaxType = new TaxTypeViewModel()
-                                                      {
-                                                          Code=quotationDetailVM.TaxType.Code,
-                                                          ValueText = quotationDetailVM.TaxType.ValueText
-                                                      },
+                                                      Product = quotationDetailVM.Product,
+                                                      ProductModel = quotationDetailVM.ProductModel,
+                                                      Unit = quotationDetailVM.Unit,
+                                                      TaxType = quotationDetailVM.TaxType,
                                                   }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderItemViewModelList, Message = "Success" });
@@ -341,21 +325,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       CessAmt = 0,
                                                       CessPerc = 0,
                                                       Discount = 0,
-                                                      Product = new ProductViewModel()
-                                                      {
-                                                          ID = (Guid)enquiryDetailVM.ProductID,
-                                                          Code = enquiryDetailVM.Product.Code,
-                                                          Name = enquiryDetailVM.Product.Name,
-                                                      },
-                                                      ProductModel = new ProductModelViewModel()
-                                                      {
-                                                          ID = (Guid)enquiryDetailVM.ProductModelID,
-                                                          Name = enquiryDetailVM.ProductModel.Name
-                                                      },
-                                                      Unit = new UnitViewModel()
-                                                      {
-                                                          Description = enquiryDetailVM.Unit.Description
-                                                      },
+                                                      Product = enquiryDetailVM.Product,
+                                                      ProductModel = enquiryDetailVM.ProductModel,
+                                                      Unit = enquiryDetailVM.Unit,
                                                       TaxType = new TaxTypeViewModel() { },
                                                   }).ToList();
 
@@ -434,15 +406,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       IGSTPerc = quotationOtherChargeVM.IGSTPerc,
                                                       AddlTaxPerc = 0,
                                                       AddlTaxAmt = 0,
-                                                      OtherCharge = new OtherChargeViewModel()
-                                                      {
-                                                          Description = quotationOtherChargeVM.OtherCharge.Description
-                                                      },
-                                                      TaxType = new TaxTypeViewModel()
-                                                      {
-                                                          Code= quotationOtherChargeVM.TaxType.Code,
-                                                          ValueText = quotationOtherChargeVM.TaxType.ValueText
-                                                      },
+                                                      OtherCharge = quotationOtherChargeVM.OtherCharge,
+                                                      TaxType = quotationOtherChargeVM.TaxType,
                                                   }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderOtherChargeViewModelList, Message = "Success" });

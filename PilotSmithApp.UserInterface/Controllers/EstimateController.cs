@@ -297,23 +297,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                               CostRate = enquiryDetailVM.ProductModel.CostPrice,
                                               SellingRate = enquiryDetailVM.Rate,
                                               SpecTag = enquiryDetailVM.SpecTag,
-
-
-                                              Product = new ProductViewModel()
-                                              {
-                                                  ID = (Guid)enquiryDetailVM.ProductID,
-                                                  Code = enquiryDetailVM.Product.Code,
-                                                  Name = enquiryDetailVM.Product.Name,
-                                              },
-                                              ProductModel = new ProductModelViewModel()
-                                              {
-                                                  ID = (Guid)enquiryDetailVM.ProductModelID,
-                                                  Name = enquiryDetailVM.ProductModel.Name
-                                              },
-                                              Unit = new UnitViewModel()
-                                              {
-                                                  Description = enquiryDetailVM.Unit.Description
-                                              },
+                                              Product = enquiryDetailVM.Product,
+                                              ProductModel = enquiryDetailVM.ProductModel,
+                                              Unit = enquiryDetailVM.Unit,
                                           }).ToList();
 
                 }

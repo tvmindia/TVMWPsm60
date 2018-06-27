@@ -1057,7 +1057,6 @@
     <Content Include="Views\ProformaInvoice\_ProformaInvoiceServiceBill.cshtml" />
     <Content Include="Views\Bank\Index.cshtml" />
     <Content Include="Views\Bank\_AddBank.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\PaymentTerm\_PaymentTermSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
