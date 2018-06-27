@@ -382,7 +382,7 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      if (data != "") {
-                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' +
                                                  row.Product.Name + '</br>' + row.ProductModel.Name
                      }
                      else {
@@ -694,22 +694,26 @@ function EditProformaInvoiceDetail(this_Obj) {
 
 //Delete ProformaInvoice Detail
 function ConfirmDeleteProformaInvoiceDetail(this_Obj) {
+    debugger;
     _datatablerowindex = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceDetail = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).data();
     if (proformaInvoiceDetail.ID === _emptyGuid) {
-        var proformaInvoiceDetail = _dataTable.ProformaInvoiceDetailList.rows().data();
-        proformaInvoiceDetail.splice(_datatablerowindex, 1);
-        _dataTable.ProformaInvoiceDetailList.clear().rows.add(proformaInvoiceDetail).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentPerformaInvoiceDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteProformaInvoiceDetail("' + proformaInvoiceDetail.ID + '")');
 
     }
 }
-
+function DeleteCurrentPerformaInvoiceDetail(_datatablerowindex) {
+    var proformaInvoiceDetail = _dataTable.ProformaInvoiceDetailList.rows().data();
+    proformaInvoiceDetail.splice(_datatablerowindex, 1);
+    _dataTable.ProformaInvoiceDetailList.clear().rows.add(proformaInvoiceDetail).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
+}
 function DeleteProformaInvoiceDetail(ID) {
+    debugger;
     if (ID != _emptyGuid && ID != null && ID != '') {
         var data = { "id": ID };
         var ds = {};
@@ -1014,17 +1018,20 @@ function ConfirmDeleteProformaInvoiceOtherChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.ProformaInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceOtherChargesDetail = _dataTable.ProformaInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (proformaInvoiceOtherChargesDetail.ID === _emptyGuid) {
-        var quotationOtherChargeDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
-        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.ProformaInvoiceOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentPerformaInvoiceOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteProformaInvoiceOtherChargeDetail("' + proformaInvoiceOtherChargesDetail.ID + '")');
 
     }
+}
+function DeleteCurrentPerformaInvoiceOtherChargeDetail(_datatablerowindex) {
+    var quotationOtherChargeDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
+    quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.ProformaInvoiceOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteProformaInvoiceOtherChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {

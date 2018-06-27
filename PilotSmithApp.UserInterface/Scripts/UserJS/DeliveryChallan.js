@@ -658,15 +658,18 @@ function ConfirmDeleteDeliveryChallanDetail(this_Obj) {
     _datatablerowindex = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).index();
     var deliveryChallanDetail = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).data();
     if (deliveryChallanDetail.ID === _emptyGuid) {
-        var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
-        deliveryChallanDetailList.splice(_datatablerowindex, 1);
-        _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentDeliveryChallanDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteDeliveryChallanDetail("' + deliveryChallanDetail.ID + '")');
 
     }
+}
+function DeleteCurrentDeliveryChallanDetail(_datatablerowindex) {
+    var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
+    deliveryChallanDetailList.splice(_datatablerowindex, 1);
+    _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 
 function DeleteDeliveryChallanDetail(ID) {

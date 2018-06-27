@@ -759,15 +759,18 @@ function ConfirmDeleteProductionOrderDetail(this_Obj) {
     _datatablerowindex = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).index();
     var productionOrderDetail = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).data();
     if (productionOrderDetail.ID === _emptyGuid) {
-        var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
-        productionOrderDetailList.splice(_datatablerowindex, 1);
-        _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentProductionOrderDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteProductionOrderDetail("' + productionOrderDetail.ID + '")');
 
     }
+}
+function DeleteCurrentProductionOrderDetail(_datatablerowindex) {
+    var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
+    productionOrderDetailList.splice(_datatablerowindex, 1);
+    _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 
 function DeleteProductionOrderDetail(ID) {
