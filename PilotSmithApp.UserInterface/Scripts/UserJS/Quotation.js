@@ -753,17 +753,21 @@ function ConfirmDeleteQuotationDetail(this_Obj) {
     _datatablerowindex = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).index();
     var quotationDetail = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationDetail.ID === _emptyGuid) {
-        var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
-        quotationDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentQuotationDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteQuotationDetail("' + quotationDetail.ID + '")');
 
     }
+}
+function DeleteCurrentQuotationDetail(_datatablerowindex)
+{
+    var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
+    quotationDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteQuotationDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -1109,17 +1113,21 @@ function ConfirmDeleteQuotationOtherChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationOtherChargeDetail.ID === _emptyGuid) {
-        var quotationOtherChargeDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
-        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentQuotationOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteQuotationOtherChargeDetail("' + quotationOtherChargeDetail.ID + '")');
 
     }
+}
+function DeleteCurrentQuotationOtherChargeDetail(_datatablerowindex)
+{
+    var quotationOtherChargeDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
+    quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteQuotationOtherChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {

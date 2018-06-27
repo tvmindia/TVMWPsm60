@@ -691,16 +691,19 @@ function ConfirmDeleteSaleInvoiceDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
     if (saleInvoiceDetail.ID === _emptyGuid) {
-        var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
-        saleInvoiceDetailList.splice(_datatablerowindex, 1);
-        _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentSaleInvoiceDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteSaleInvoiceDetail("' + saleInvoiceDetail.ID + '")');
 
     }
+}
+function DeleteCurrentSaleInvoiceDetail(_datatablerowindex) {
+    var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
+    saleInvoiceDetailList.splice(_datatablerowindex, 1);
+    _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteSaleInvoiceDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -1006,17 +1009,20 @@ function ConfirmDeleteSaleInvoiceOtherChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceOtherChargeDetail = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (saleInvoiceOtherChargeDetail.ID === _emptyGuid) {
-        var quotationOtherChargeDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
-        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentSaleInvoiceOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteSaleInvoiceOtherChargeDetail("' + saleInvoiceOtherChargeDetail.ID + '")');
 
     }
+}
+function DeleteCurrentSaleInvoiceOtherChargeDetail(_datatablerowindex) {
+    var quotationOtherChargeDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
+    quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteSaleInvoiceOtherChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {

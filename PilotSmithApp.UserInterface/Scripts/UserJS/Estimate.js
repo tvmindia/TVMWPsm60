@@ -586,15 +586,19 @@ function ConfirmDeleteEstimateDetail(this_Obj) {
     _datatablerowindex = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).index();
     var estimateDetail = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).data();
     if (estimateDetail.ID === _emptyGuid) {
-        var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
-        estimateDetailList.splice(_datatablerowindex, 1);
-        _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentEstimateDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteEstimateDetail("' + estimateDetail.ID + '")');
 
     }
+}
+function DeleteCurrentEstimateDetail(_datatablerowindex)
+{
+    var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
+    estimateDetailList.splice(_datatablerowindex, 1);
+    _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteEstimateDetail(ID) {
     debugger;
