@@ -29,8 +29,9 @@ else
 
 <script>
     $(document).ready(function () {             
-        try{
-            //$('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+        try {
+            $('#StateCode').val($('#hdnStateCode').val());
+           
                 $('.divStateSelectList #StateCode').change(function () {
                     debugger;
                     if ($('.divDistrictSelectList') != undefined) {
@@ -40,19 +41,24 @@ else
                         }
                         else {
                             $('.divDistrictSelectList').empty();
-                            $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                            $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
                         }
+                        $('.divAreaSelectList').empty();
+                        $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
+                        $('#hdnDistrictCode').val('');
+                        $('#hdnAreaCode').val('');
                     }
                 });
-            //});
+                $('#StateCode').select2({
+                    dropdownParent: $('.divCountrySelectList')
+                });
+                $('.select2').addClass('form-control newinput');
         }
         catch (e) {
             console.log(e.message);
         }
-        $('#StateCode').val($('#hdnStateCode').val());
-        $('#StateCode').select2({
-            dropdownParent: $('.divCountrySelectList')
-        });
-        $('.select2').addClass('form-control newinput');
+        
+       
+        
     });
 </script>

@@ -289,66 +289,18 @@
 }
 <script>
     $(document).ready(function () {
-       
         $.validator.unobtrusive.parse("#CustomerForm");
-        try{
+        try {
+            $('#CustomerCategoryList,#ContactTitle').select2();
             $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
-                $('#divCustomerForm #CountryCode').change(function () {
-                    debugger;
-                    if ($('.divStateSelectList') != undefined) {
-                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                        if (this.value != "") {
-                            $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value + '&required=' + $('#hdnStateRequired').val())
-                        }
-                        else {
-                            $('.divStateSelectList').empty();
-                            $('.divStateSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                       
-                        }                      
-                    }                  
-                });
-                //$('#CountryCode').select2({
-                //    dropdownParent: $('.divCountrySelectList')
-                //});
-                //$('.select2').addClass('form-control newinput');
+                
             });
             $('.divPaymentTermSelectList').load('/PaymentTerm/PaymentTermSelectList?required=' + $('#hdnPaymentTermRequired').val())
-            //$('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
-            //    $('#divCustomerForm #StateCode').change(function () {
-            //        debugger;
-            //        if ($('.divDistrictSelectList') != undefined) {
-            //            $('#dropLoad').addClass('fa fa-spinner fa-spin');
-            //            if (this.value != "") {
-            //                $('.divDistrictSelectList').load('District/DistrictSelectList?stateCode=' + this.value)
-            //            }
-            //            else {
-            //                $('.divDistrictSelectList').empty();
-            //                $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-            //            }
-            //        }
-            //    });
-            //});
-            //$('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val(), function () {
-            //    $('#divCustomerForm #DistrictCode').change(function () {
-            //        if ($('.divAreaSelectList') != undefined) {
-            //            debugger;
-            //            $('#dropLoad').addClass('fa fa-spinner fa-spin');
-            //            if (this.value != "") {
-            //                $('.divAreaSelectList').load('Area/AreaSelectList?districtCode=' + this.value)
-            //            }
-            //            else {
-            //                $('.divAreaSelectList').empty();
-            //                $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-            //            }
-            //        }
-            //    });
-            //});
+            $('.select2').addClass('form-control newinput');
         }
     catch(e){
         console.log(e.message);
         }
-        $('#CustomerCategoryList,#ContactTitle,#PaymentTermCode,#CountryCode,#StateCode,#DistrictCode,#AreaCode').select2();
-        $('.select2').addClass('form-control newinput');     
     });
 
 </script>
