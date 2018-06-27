@@ -158,6 +158,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? CessAmt { get; set; }
         [Display(Name = "Select Service Item")]
         public int? OtherChargeCode { get; set; }
+        public Guid SpecTag { get; set; }
         public OtherChargeViewModel OtherCharge { get; set; }
         public bool IsUpdate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
