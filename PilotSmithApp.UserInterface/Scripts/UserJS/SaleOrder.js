@@ -704,7 +704,7 @@ function AddSaleOrderDetailToList() {
     $("#FormSaleOrderDetail").submit(function () { });
     debugger;
     if ($('#FormSaleOrderDetail #IsUpdate').val() == 'True') {
-        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
+        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
             saleOrderDetailList[_datatablerowindex].Product.Code = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -739,7 +739,7 @@ function AddSaleOrderDetailToList() {
         }
     }
     else {
-        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
+        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             if (_dataTable.SaleOrderDetailList.rows().data().length === 0) {
                 _dataTable.SaleOrderDetailList.clear().rows.add(GetSaleOrderDetailListBySaleOrderID(_emptyGuid, false)).draw(false);

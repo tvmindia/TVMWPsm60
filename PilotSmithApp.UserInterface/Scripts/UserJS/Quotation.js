@@ -577,7 +577,7 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () { });
         debugger;
         if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
-            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "" )&& ($('#divModelQuotationPopBody #Qty').val() != "" )&& ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -610,7 +610,7 @@ function AddQuotationDetailToList() {
             }
         }
         else {
-            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
             {
                 debugger;
                 if (_dataTable.QuotationDetailList.rows().data().length === 0) {

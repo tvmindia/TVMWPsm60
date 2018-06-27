@@ -298,21 +298,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             DelvQty = productionOrderDetailVM.OrderQty-productionOrderDetailVM.PrevDelQty,
                                                             SpecTag = productionOrderDetailVM.SpecTag,
                                                             PrevDelQty=productionOrderDetailVM.PrevDelQty,
-                                                            Product = new ProductViewModel()
-                                                            {
-                                                                ID = (Guid)productionOrderDetailVM.ProductID,
-                                                                Code = productionOrderDetailVM.Product.Code,
-                                                                Name = productionOrderDetailVM.Product.Name,
-                                                            },
-                                                            ProductModel = new ProductModelViewModel()
-                                                            {
-                                                                ID = (Guid)productionOrderDetailVM.ProductModelID,
-                                                                Name = productionOrderDetailVM.ProductModel.Name
-                                                            },
-                                                            Unit = new UnitViewModel()
-                                                            {
-                                                                Description = productionOrderDetailVM.Unit.Description
-                                                            },
+                                                            Product = productionOrderDetailVM.Product,
+                                                            ProductModel = productionOrderDetailVM.ProductModel,
+                                                            Unit = productionOrderDetailVM.Unit,
                                                         }).ToList();
 
                 }
@@ -351,21 +339,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             DelvQty = saleOrderDetailVM.Qty-saleOrderDetailVM.PrevDelQty,
                                                             SpecTag = saleOrderDetailVM.SpecTag,
                                                             PrevDelQty=saleOrderDetailVM.PrevDelQty,
-                                                            Product = new ProductViewModel()
-                                                            {
-                                                                ID = (Guid)saleOrderDetailVM.ProductID,
-                                                                Code = saleOrderDetailVM.Product.Code,
-                                                                Name = saleOrderDetailVM.Product.Name,
-                                                            },
-                                                            ProductModel = new ProductModelViewModel()
-                                                            {
-                                                                ID = (Guid)saleOrderDetailVM.ProductModelID,
-                                                                Name = saleOrderDetailVM.ProductModel.Name
-                                                            },
-                                                            Unit = new UnitViewModel()
-                                                            {
-                                                                Description = saleOrderDetailVM.Unit.Description
-                                                            },
+                                                            Product = saleOrderDetailVM.Product,
+                                                            ProductModel = saleOrderDetailVM.ProductModel,
+                                                            Unit = saleOrderDetailVM.Unit,
                                                         }).ToList();
 
 

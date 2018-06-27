@@ -509,7 +509,7 @@ function AddSaleInvoiceDetailToList() {
     $("#FormSaleInvoiceDetail").submit(function () { });
 
     if ($('#FormSaleInvoiceDetail #IsUpdate').val() == 'True') {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
             saleInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
             saleInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
@@ -542,7 +542,7 @@ function AddSaleInvoiceDetailToList() {
         }
     }
     else {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             if (_dataTable.SaleInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();

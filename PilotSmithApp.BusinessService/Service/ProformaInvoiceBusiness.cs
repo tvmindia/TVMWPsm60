@@ -39,7 +39,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (proformaInvoice.ProformaInvoiceDetailList.Count > 0)
             {
-                proformaInvoice.DetailXML = _commonBusiness.GetXMLfromProformaInvoiceObject(proformaInvoice.ProformaInvoiceDetailList, "ProductID, UnitCode, Qty, Rate");
+                proformaInvoice.DetailXML = _commonBusiness.GetXMLfromProformaInvoiceObject(proformaInvoice.ProformaInvoiceDetailList, "ProductID, ProductModelID, UnitCode, Qty, Rate");
             }
             if (proformaInvoice.ProformaInvoiceOtherChargeDetailList.Count > 0)
             {
