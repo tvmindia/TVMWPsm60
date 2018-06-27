@@ -878,15 +878,18 @@ function ConfirmDeleteServiceCallDetail(this_Obj) {
     _datatablerowindex = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).index();
     var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
     if (serviceCallDetail.ID === _emptyGuid) {
-        var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
-        serviceCallDetailList.splice(_datatablerowindex, 1);
-        _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentServiceCallDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteServiceCallDetail("' + serviceCallDetail.ID + '")');
 
     }
+}
+function DeleteCurrentServiceCallDetail(_datatablerowindex) {
+    var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
+    serviceCallDetailList.splice(_datatablerowindex, 1);
+    _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteServiceCallDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -916,17 +919,20 @@ function ConfirmDeleteServiceCallChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).index();
     var serviceCallChargeDetail = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).data();
     if (serviceCallChargeDetail.ID === _emptyGuid) {
-        var serviceCallChargeDetailList = _dataTable.ServiceCallChargeDetailList.rows().data();
-        serviceCallChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.ServiceCallChargeDetailList.clear().rows.add(serviceCallChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentServiceCallOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteServiceCallChargeDetail("' + serviceCallChargeDetail.ID + '")');
 
     }
+}
+function DeleteCurrentServiceCallOtherChargeDetail(_datatablerowindex) {
+    var serviceCallChargeDetailList = _dataTable.ServiceCallChargeDetailList.rows().data();
+    serviceCallChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.ServiceCallChargeDetailList.clear().rows.add(serviceCallChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteServiceCallChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
