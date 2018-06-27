@@ -38,7 +38,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             Permission _permission = Session["UserRights"] as Permission;
             if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "AdminView").AccessCode : string.Empty).Contains("R"))
-            {
+            {//AdminView subObject given to check if user has admin access.
                 if (isUser)
                 {
                     return View();

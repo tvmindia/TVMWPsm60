@@ -43,7 +43,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
-                $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
+               // $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
                 $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
@@ -55,7 +55,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 $('.divboxASearch #AdvBranchCode').val('');
                 $('.divboxASearch #AdvDocumentStatusCode').val('');
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
-                $('.divboxASearch #AdvApprovalStatusCode').val('');
+               // $('.divboxASearch #AdvApprovalStatusCode').val('');
                 $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
@@ -74,7 +74,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 SaleInvoiceAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
                 SaleInvoiceAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
                 SaleInvoiceAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
-                SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+               // SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
                 SaleInvoiceAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
                 $('#AdvanceSearch').val(JSON.stringify(SaleInvoiceAdvanceSearchViewModel));
                 $('#FormExcelExport').submit();
@@ -92,7 +92,7 @@ function BindOrReloadSaleInvoiceTable(action) {
         SaleInvoiceAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
         SaleInvoiceAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
         SaleInvoiceAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
-        SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+       // SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
         SaleInvoiceAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val();
         //apply datatable plugin on SaleInvoice table
         _dataTable.SaleInvoiceList = $('#tblSaleInvoice').DataTable(
@@ -376,7 +376,8 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      if (data != "") {
-                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
+                         debugger;
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' +
                                                  row.Product.Name + '</br>' + row.ProductModel.Name
                      }
                      else {

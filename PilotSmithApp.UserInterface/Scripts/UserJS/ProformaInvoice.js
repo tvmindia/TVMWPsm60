@@ -382,7 +382,7 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      if (data != "") {
-                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' +
                                                  row.Product.Name + '</br>' + row.ProductModel.Name
                      }
                      else {
@@ -694,6 +694,7 @@ function EditProformaInvoiceDetail(this_Obj) {
 
 //Delete ProformaInvoice Detail
 function ConfirmDeleteProformaInvoiceDetail(this_Obj) {
+    debugger;
     _datatablerowindex = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceDetail = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).data();
     if (proformaInvoiceDetail.ID === _emptyGuid) {
@@ -712,6 +713,7 @@ function DeleteCurrentPerformaInvoiceDetail(_datatablerowindex) {
     notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteProformaInvoiceDetail(ID) {
+    debugger;
     if (ID != _emptyGuid && ID != null && ID != '') {
         var data = { "id": ID };
         var ds = {};

@@ -395,7 +395,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null? row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
 
@@ -491,7 +491,7 @@ function GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder, IsSale
 function AddDeliveryChallanDetailList() {
     debugger;
     $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function () {
-        $('#lblModelPopDeliveryChallan').text('DeliveryChallan Detail')
+        $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
         $('#divModelPopDeliveryChallan').modal('show');
     });
 }
@@ -623,7 +623,7 @@ function EditDeliveryChallanDetail(this_Obj) {
     _datatablerowindex = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).index();
     var deliveryChallanDetail = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function () {
-        $('#lblModelPopDeliveryChallan').text('DeliveryChallan Detail')
+        $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
         $('#FormDeliveryChallanDetail #IsUpdate').val('True');
         $('#FormDeliveryChallanDetail #ID').val(deliveryChallanDetail.ID);
         $("#FormDeliveryChallanDetail #ProductID").val(deliveryChallanDetail.ProductID)
