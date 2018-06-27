@@ -423,7 +423,7 @@ function AddEnquiryDetailToList() {
         
         if($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
-            if (($('#ProductID').val() != "" )&& ($('#Rate').val() != "" )&& ($('#Qty').val() != "" )&& ($('#UnitCode').val() != ""))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
             {
                 
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
@@ -448,7 +448,7 @@ function AddEnquiryDetailToList() {
         }
         else
         {
-            if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
             {
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
@@ -560,15 +560,17 @@ function ConfirmDeleteEnquiryDetail(this_Obj) {
     _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
     var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
     if (enquiryDetail.ID === _emptyGuid) {
-        var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
-        enquiryDetailList.splice(_datatablerowindex, 1);
-        _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentEnquiryDetail("' +_datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteEnquiryDetail("' + enquiryDetail.ID + '")');
-
     }
+}
+function DeleteCurrentEnquiryDetail(_datatablerowindex) {
+    var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
+    enquiryDetailList.splice(_datatablerowindex, 1);
+    _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteEnquiryDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID !='') {
@@ -680,10 +682,11 @@ function DeleteEnquiryFollowup(ID) {
 //==========================================================================
 function EditRedirectToDocument(id)
 {
-    
+    debugger;
     OnServerCallBegin();
    
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        debugger;
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();

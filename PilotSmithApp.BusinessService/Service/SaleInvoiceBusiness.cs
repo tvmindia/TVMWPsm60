@@ -38,7 +38,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (saleInvoice.SaleInvoiceDetailList.Count > 0)
             {
-                saleInvoice.DetailXML = _commonBusiness.GetXMLfromSaleInvoiceObject(saleInvoice.SaleInvoiceDetailList, "ProductID, UnitCode, Qty, Rate");
+                saleInvoice.DetailXML = _commonBusiness.GetXMLfromSaleInvoiceObject(saleInvoice.SaleInvoiceDetailList, "ProductID, ProductModelID, UnitCode, Qty, Rate");
             }
             if (saleInvoice.SaleInvoiceOtherChargeDetailList.Count > 0)
             {
