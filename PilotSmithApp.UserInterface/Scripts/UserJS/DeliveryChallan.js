@@ -500,102 +500,112 @@ function AddDeliveryChallanDetailToList() {
     //$("#FormProductionOrderDetail").submit(function () { });
     if ($('#FormDeliveryChallanDetail #IsUpdate').val() == 'True') {
         if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "")) {
-            debugger;
-            var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
-            deliveryChallanDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-            deliveryChallanDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-            deliveryChallanDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-            deliveryChallanDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-            ProductModel = new Object;
-            Unit = new Object;
-            Plant = new Object;
-            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-            deliveryChallanDetailList[_datatablerowindex].ProductModel = ProductModel;
-            deliveryChallanDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
-            deliveryChallanDetailList[_datatablerowindex].OrderQty = $('#OrderQty').val();
-            deliveryChallanDetailList[_datatablerowindex].DelvQty = $('#DelvQty').val();
-            deliveryChallanDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
-            Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-            deliveryChallanDetailList[_datatablerowindex].Unit = Unit;
-            
-            _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
-            $('#divModelPopDeliveryChallan').modal('hide');
-            _datatablerowindex = -1;
-        }
-    }
-    else {
-        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "")) {
-            debugger;
-            if (_dataTable.DeliveryChallanDetailList.rows().data().length === 0) {
-                _dataTable.DeliveryChallanDetailList.clear().rows.add(GetDeliveryChallanDetailListByDeliveryChallanID(_emptyGuid)).draw(false);
+            if (parseInt($('#DelvQty').val()) <= parseInt($('#OrderQty').val())) {
                 debugger;
                 var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
-                deliveryChallanDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                deliveryChallanDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                deliveryChallanDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                deliveryChallanDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                deliveryChallanDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                deliveryChallanDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                deliveryChallanDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                deliveryChallanDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
                 Unit = new Object;
                 Plant = new Object;
                 ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                deliveryChallanDetailList[0].ProductModel = ProductModel;
-                deliveryChallanDetailList[0].ProductSpec = $('#ProductSpec').val();
-                deliveryChallanDetailList[0].OrderQty = $('#OrderQty').val();
-                deliveryChallanDetailList[0].DelvQty = $('#DelvQty').val();
-                deliveryChallanDetailList[0].UnitCode = $('#UnitCode').val();
+                deliveryChallanDetailList[_datatablerowindex].ProductModel = ProductModel;
+                deliveryChallanDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
+                deliveryChallanDetailList[_datatablerowindex].OrderQty = $('#OrderQty').val();
+                deliveryChallanDetailList[_datatablerowindex].DelvQty = $('#DelvQty').val();
+                deliveryChallanDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
                 Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                deliveryChallanDetailList[0].Unit = Unit;               
+                deliveryChallanDetailList[_datatablerowindex].Unit = Unit;
+
                 _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
                 $('#divModelPopDeliveryChallan').modal('hide');
+                _datatablerowindex = -1;
             }
             else {
-                //if ($('#ProductID').val() != "") {
+                $('#msgDelvQty').append('Cancelled Qty cannot be less than Order Qty: ' + $('#OrderQty').val())
+            }
+    }
+    }
+    else {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "")) {
+            if (parseInt($('#DelvQty').val()) <= parseInt($('#OrderQty').val())) {
                 debugger;
-                //if (ProductionOrderDetailVM != null) {
-                var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
-                if (deliveryChallanDetailList.length > 0) {
-                    var checkpoint = 0;
-                    var productSpec = $('#ProductSpec').val();
-                    productSpec = productSpec.replace(/\n/g, ' ');
-                    for (var i = 0; i < deliveryChallanDetailList.length; i++) {
-                        if ((deliveryChallanDetailList[i].ProductID == $('#ProductID').val()) && (deliveryChallanDetailList[i].ProductModelID == $('#ProductModelID').val()
-                            && (deliveryChallanDetailList[i].ProductSpec.replace(/\n/g,' ') == productSpec && (deliveryChallanDetailList[i].OrderQty == $('#OrderQty').val())))) {
-                            deliveryChallanDetailList[i].DelvQty = parseFloat(deliveryChallanDetailList[i].DelvQty) + parseFloat($('#DelvQty').val());
-                            checkpoint = 1;
-                            break;
+                if (_dataTable.DeliveryChallanDetailList.rows().data().length === 0) {
+                    _dataTable.DeliveryChallanDetailList.clear().rows.add(GetDeliveryChallanDetailListByDeliveryChallanID(_emptyGuid)).draw(false);
+                    debugger;
+                    var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
+                    deliveryChallanDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                    deliveryChallanDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    deliveryChallanDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                    deliveryChallanDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                    ProductModel = new Object;
+                    Unit = new Object;
+                    Plant = new Object;
+                    ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                    deliveryChallanDetailList[0].ProductModel = ProductModel;
+                    deliveryChallanDetailList[0].ProductSpec = $('#ProductSpec').val();
+                    deliveryChallanDetailList[0].OrderQty = $('#OrderQty').val();
+                    deliveryChallanDetailList[0].DelvQty = $('#DelvQty').val();
+                    deliveryChallanDetailList[0].UnitCode = $('#UnitCode').val();
+                    Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                    deliveryChallanDetailList[0].Unit = Unit;
+                    _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
+                    $('#divModelPopDeliveryChallan').modal('hide');
+                }
+                else {
+                    //if ($('#ProductID').val() != "") {
+                    debugger;
+                    //if (ProductionOrderDetailVM != null) {
+                    var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
+                    if (deliveryChallanDetailList.length > 0) {
+                        var checkpoint = 0;
+                        var productSpec = $('#ProductSpec').val();
+                        productSpec = productSpec.replace(/\n/g, ' ');
+                        for (var i = 0; i < deliveryChallanDetailList.length; i++) {
+                            if ((deliveryChallanDetailList[i].ProductID == $('#ProductID').val()) && (deliveryChallanDetailList[i].ProductModelID == $('#ProductModelID').val()
+                                && (deliveryChallanDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (deliveryChallanDetailList[i].OrderQty == $('#OrderQty').val())))) {
+                                deliveryChallanDetailList[i].DelvQty = parseFloat(deliveryChallanDetailList[i].DelvQty) + parseFloat($('#DelvQty').val());
+                                checkpoint = 1;
+                                break;
+                            }
+                        }
+                        if (checkpoint == 1) {
+                            debugger;
+                            _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
+                            $('#divModelPopDeliveryChallan').modal('hide');
+                        }
+                        else if (checkpoint == 0) {
+                            var DeliveryChallanDetailVM = new Object();
+                            var Product = new Object;
+                            var ProductModel = new Object()
+                            var Unit = new Object();
+
+                            DeliveryChallanDetailVM.ID = _emptyGuid;
+                            DeliveryChallanDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                            Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                            Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                            DeliveryChallanDetailVM.Product = Product;
+                            DeliveryChallanDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                            DeliveryChallanDetailVM.ProductModel = ProductModel;
+                            DeliveryChallanDetailVM.ProductSpec = $('#ProductSpec').val();
+                            DeliveryChallanDetailVM.OrderQty = $('#OrderQty').val();
+                            DeliveryChallanDetailVM.DelvQty = $('#DelvQty').val();
+                            Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                            DeliveryChallanDetailVM.Unit = Unit;
+                            DeliveryChallanDetailVM.UnitCode = $('#UnitCode').val();
+                            _dataTable.DeliveryChallanDetailList.row.add(DeliveryChallanDetailVM).draw(false);
+                            $('#divModelPopDeliveryChallan').modal('hide');
                         }
                     }
-                    if (checkpoint == 1) {
-                        debugger;
-                        _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
-                        $('#divModelPopDeliveryChallan').modal('hide');
-                    }
-                    else if (checkpoint == 0) {
-                        var DeliveryChallanDetailVM = new Object();
-                        var Product = new Object;
-                        var ProductModel = new Object()
-                        var Unit = new Object();
-                     
-                        DeliveryChallanDetailVM.ID = _emptyGuid;
-                        DeliveryChallanDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                        Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                        Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                        DeliveryChallanDetailVM.Product = Product;
-                        DeliveryChallanDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                        ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                        DeliveryChallanDetailVM.ProductModel = ProductModel;
-                        DeliveryChallanDetailVM.ProductSpec = $('#ProductSpec').val();
-                        DeliveryChallanDetailVM.OrderQty = $('#OrderQty').val();
-                        DeliveryChallanDetailVM.DelvQty = $('#DelvQty').val();
-                        Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                        DeliveryChallanDetailVM.Unit = Unit;
-                        DeliveryChallanDetailVM.UnitCode = $('#UnitCode').val();                      
-                        _dataTable.DeliveryChallanDetailList.row.add(DeliveryChallanDetailVM).draw(false);
-                        $('#divModelPopDeliveryChallan').modal('hide');
-                    }
-                }
-                //}
+                    //}
 
+                }
+            }
+            else {
+                $('#msgDelvQty').append('Cancelled Qty cannot be less than Order Qty: ' + $('#OrderQty').val())
             }
         }
     }
