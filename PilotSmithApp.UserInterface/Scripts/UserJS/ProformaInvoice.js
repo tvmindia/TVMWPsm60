@@ -515,7 +515,7 @@ function AddProformaInvoiceDetailToList() {
     $("#FormProformaInvoiceDetail").submit(function () { });
 
     if ($('#FormProformaInvoiceDetail #IsUpdate').val() == 'True') {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             var proformaInvoiceDetailList = _dataTable.ProformaInvoiceDetailList.rows().data();
             proformaInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
             proformaInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
@@ -548,7 +548,7 @@ function AddProformaInvoiceDetailToList() {
         }
     }
     else {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             if (_dataTable.ProformaInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.ProformaInvoiceDetailList.clear().rows.add(GetProformaInvoiceDetailListByProformaInvoiceID(_emptyGuid)).draw(false);
                 var proformaInvoiceDetailVM = _dataTable.ProformaInvoiceDetailList.rows().data();

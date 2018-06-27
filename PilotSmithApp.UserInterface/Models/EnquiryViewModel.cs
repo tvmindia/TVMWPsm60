@@ -96,7 +96,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Specification")]
         public string ProductSpec { get; set; }
-        [Display(Name = "Select Quantity")]
+        [Display(Name = "Quantity")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }
         [Display(Name = "Select Unit")]

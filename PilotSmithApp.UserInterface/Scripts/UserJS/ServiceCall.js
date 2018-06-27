@@ -423,7 +423,7 @@ function AddServiceCallDetailToList() {
         $("#FormServiceCallDetail").submit(function () { });
 
         if ($('#FormServiceCallDetail #IsUpdate').val() == 'True') {
-            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != "")))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != "")))
             {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
@@ -463,7 +463,7 @@ function AddServiceCallDetailToList() {
             }
         }
         else {
-                if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != ""))) {
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != ""))) {
                     if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
