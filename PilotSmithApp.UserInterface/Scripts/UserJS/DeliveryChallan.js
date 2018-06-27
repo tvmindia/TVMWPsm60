@@ -491,7 +491,7 @@ function GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder, IsSale
 function AddDeliveryChallanDetailList() {
     debugger;
     $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function () {
-        $('#lblModelPopDeliveryChallan').text('DeliveryChallan Detail')
+        $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
         $('#divModelPopDeliveryChallan').modal('show');
     });
 }
@@ -623,7 +623,7 @@ function EditDeliveryChallanDetail(this_Obj) {
     _datatablerowindex = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).index();
     var deliveryChallanDetail = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function () {
-        $('#lblModelPopDeliveryChallan').text('DeliveryChallan Detail')
+        $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
         $('#FormDeliveryChallanDetail #IsUpdate').val('True');
         $('#FormDeliveryChallanDetail #ID').val(deliveryChallanDetail.ID);
         $("#FormDeliveryChallanDetail #ProductID").val(deliveryChallanDetail.ProductID)
