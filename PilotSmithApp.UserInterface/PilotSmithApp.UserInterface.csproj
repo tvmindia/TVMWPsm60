@@ -1045,7 +1045,6 @@
     <Content Include="Views\ExcelExport\Index.cshtml" />
     <Content Include="Views\DocumentApproval\ViewApprovalHistory.cshtml" />
     <Content Include="Views\Shared\_ApprovalHistoryList.cshtml" />
-    <Content Include="Views\DashBoard\UserDashboard.cshtml" />
     <Content Include="Views\DashBoard\AdminDashboard.cshtml" />
     <Content Include="Views\DashBoard\_RecentDocument.cshtml" />
     <Content Include="Views\DashBoard\_SearchDocument.cshtml" />
