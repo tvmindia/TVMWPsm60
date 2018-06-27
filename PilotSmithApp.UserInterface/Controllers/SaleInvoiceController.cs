@@ -269,7 +269,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Product = saleOrderDetailVM.Product,
                             ProductModel = saleOrderDetailVM.ProductModel,
                             Unit = saleOrderDetailVM.Unit,
-                            TaxType = saleOrderDetailVM.TaxType
+                            TaxType = saleOrderDetailVM.TaxType,
+                            SpecTag=saleOrderDetailVM.SpecTag
                         };
                         saleInvoiceItemViewModelList.Add(saleInvoiceDetailVM);
                     }
@@ -306,7 +307,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       Qty = quotationDetailVM.Qty,
                                                       UnitCode = quotationDetailVM.UnitCode,
                                                       Rate = quotationDetailVM.Rate,
-                                                     // SpecTag = quotationDetailVM.SpecTag,
+                                                      SpecTag = quotationDetailVM.SpecTag,
                                                       Discount = quotationDetailVM.Discount,
                                                       TaxTypeCode = quotationDetailVM.TaxTypeCode,
                                                       CGSTPerc = quotationDetailVM.CGSTPerc,
