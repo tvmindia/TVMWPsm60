@@ -562,7 +562,7 @@ function AddSaleInvoiceDetailToList() {
                 saleInvoiceDetailVM[0].Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
                 saleInvoiceDetailVM[0].Rate = $('#divModelSaleInvoicePopBody #Rate').val();
                 saleInvoiceDetailVM[0].Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
-                saleInvoiceDetailVM[0].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                saleInvoiceDetailVM[0].TaxTypeCode =$('#divModelSaleInvoicePopBody #TaxTypeCode').val()!=null? $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0]:"";
                 saleInvoiceDetailVM[0].TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
                 saleInvoiceDetailVM[0].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
                 saleInvoiceDetailVM[0].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
@@ -612,7 +612,7 @@ function AddSaleInvoiceDetailToList() {
                         SaleInvoiceDetailVM.Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
                         SaleInvoiceDetailVM.Rate = $('#divModelSaleInvoicePopBody #Rate').val();
                         SaleInvoiceDetailVM.Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
-                        SaleInvoiceDetailVM.TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                        SaleInvoiceDetailVM.TaxTypeCode =$('#divModelSaleInvoicePopBody #TaxTypeCode').val()!=null? $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0]:"";
                         SaleInvoiceDetailVM.TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
                         SaleInvoiceDetailVM.CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
                         SaleInvoiceDetailVM.SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
@@ -984,10 +984,10 @@ function EditSaleInvoiceOtherChargesDetail(this_Obj) {
         $("#FormOtherExpenseDetail #OtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #ChargeAmount").val(saleInvoiceOtherChargesDetail.ChargeAmount);
-        if (saleInvoiceOtherChargesDetail.TaxType.Code != 0) {
+       // if (saleInvoiceOtherChargesDetail.TaxType.Code != 0) {
             $('#FormOtherExpenseDetail #TaxTypeCode').val(saleInvoiceOtherChargesDetail.TaxType.ValueText);
             $('#FormOtherExpenseDetail #hdnTaxTypeCode').val(saleInvoiceOtherChargesDetail.TaxType.ValueText);
-        }
+       // }
         $('#FormOtherExpenseDetail #hdnCGSTPerc').val(saleInvoiceOtherChargesDetail.CGSTPerc);
         $('#FormOtherExpenseDetail #hdnSGSTPerc').val(saleInvoiceOtherChargesDetail.SGSTPerc);
         $('#FormOtherExpenseDetail #hdnIGSTPerc').val(saleInvoiceOtherChargesDetail.IGSTPerc);

@@ -602,7 +602,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[_datatablerowindex].Unit = Unit;
                 quotationDetailList[_datatablerowindex].Rate = $('#divModelQuotationPopBody #Rate').val();
                 quotationDetailList[_datatablerowindex].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
-                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                 TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                 quotationDetailList[_datatablerowindex].TaxType = TaxType;
                 quotationDetailList[_datatablerowindex].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
@@ -634,7 +634,7 @@ function AddQuotationDetailToList() {
                     quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
                     quotationDetailList[0].Rate = $('#divModelQuotationPopBody #Rate').val();
                     quotationDetailList[0].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
-                    quotationDetailList[0].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                    quotationDetailList[0].TaxTypeCode =$('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                     quotationDetailList[0].TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                     quotationDetailList[0].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
                     quotationDetailList[0].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
@@ -687,7 +687,7 @@ function AddQuotationDetailToList() {
                             QuotationDetailVM.UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                             QuotationDetailVM.Rate = $('#divModelQuotationPopBody #Rate').val();
                             QuotationDetailVM.Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
-                            QuotationDetailVM.TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                            QuotationDetailVM.TaxTypeCode =$('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                             var TaxType = new Object();
                             TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                             QuotationDetailVM.TaxType = TaxType;

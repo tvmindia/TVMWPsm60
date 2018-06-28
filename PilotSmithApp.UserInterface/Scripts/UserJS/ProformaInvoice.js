@@ -567,7 +567,7 @@ function AddProformaInvoiceDetailToList() {
                 proformaInvoiceDetailVM[0].Unit.Description = $("#divModelProformaInvoicePopBody #UnitCode").val() != "" ? $("#divModelProformaInvoicePopBody #UnitCode option:selected").text().trim() : "";
                 proformaInvoiceDetailVM[0].Rate = $('#divModelProformaInvoicePopBody #Rate').val();
                 proformaInvoiceDetailVM[0].Discount = $('#divModelProformaInvoicePopBody #Discount').val() != "" ? $('#divModelProformaInvoicePopBody #Discount').val() : 0;
-                proformaInvoiceDetailVM[0].TaxTypeCode = $('#divModelProformaInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                proformaInvoiceDetailVM[0].TaxTypeCode =$('#divModelProformaInvoicePopBody #TaxTypeCode').val()!=null? $('#divModelProformaInvoicePopBody #TaxTypeCode').val().split('|')[0]:"";
                 proformaInvoiceDetailVM[0].TaxType.ValueText = $('#divModelProformaInvoicePopBody #TaxTypeCode').val();
                 proformaInvoiceDetailVM[0].CGSTPerc = $('#divModelProformaInvoicePopBody #hdnCGSTPerc').val();
                 proformaInvoiceDetailVM[0].SGSTPerc = $('#divModelProformaInvoicePopBody #hdnSGSTPerc').val();
@@ -616,7 +616,7 @@ function AddProformaInvoiceDetailToList() {
                         ProformaInvoiceDetailVM.Unit.Description = $("#divModelProformaInvoicePopBody #UnitCode").val() != "" ? $("#divModelProformaInvoicePopBody #UnitCode option:selected").text().trim() : "";
                         ProformaInvoiceDetailVM.Rate = $('#divModelProformaInvoicePopBody #Rate').val();
                         ProformaInvoiceDetailVM.Discount = $('#divModelProformaInvoicePopBody #Discount').val() != "" ? $('#divModelProformaInvoicePopBody #Discount').val() : 0;
-                        ProformaInvoiceDetailVM.TaxTypeCode = $('#divModelProformaInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                        ProformaInvoiceDetailVM.TaxTypeCode =$('#divModelProformaInvoicePopBody #TaxTypeCode').val()!=null? $('#divModelProformaInvoicePopBody #TaxTypeCode').val().split('|')[0]:"";
                         ProformaInvoiceDetailVM.TaxType.ValueText = $('#divModelProformaInvoicePopBody #TaxTypeCode').val();
                         ProformaInvoiceDetailVM.CGSTPerc = $('#divModelProformaInvoicePopBody #hdnCGSTPerc').val();
                         ProformaInvoiceDetailVM.SGSTPerc = $('#divModelProformaInvoicePopBody #hdnSGSTPerc').val();
@@ -749,6 +749,7 @@ function AddOtherExpenseDetailToList() {
     debugger;
     $("#FormOtherExpenseDetail").submit(function () { });
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
+        debugger;
         if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() != "")) {
             var proformaInvoiceOtherExpenseDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
             proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
@@ -773,6 +774,7 @@ function AddOtherExpenseDetailToList() {
         }
     }
     else {
+        debugger;
         if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() != "")) {
             if (_dataTable.ProformaInvoiceOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.ProformaInvoiceOtherChargesDetailList.clear().rows.add(GetProformaInvoiceOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
@@ -797,6 +799,7 @@ function AddOtherExpenseDetailToList() {
                 $('#divModelPopProformaInvoice').modal('hide');
             }
             else {
+                debugger;
                 var proformaInvoiceOtherExpenseDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
                 if (proformaInvoiceOtherExpenseDetailList.length > 0) {
                     var checkpoint = 0;
@@ -850,6 +853,7 @@ function AddOtherExpenseDetailToList() {
 
 //OtherExpense
 function BindProformaInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
+    debugger;
     var data;
     if (id == _emptyGuid && !(IsQuotation) && !(IsSaleOrder)) {
         data = null;
@@ -986,16 +990,17 @@ function EditProformaInvoiceOtherChargesDetail(this_Obj) {
     _datatablerowindex = _dataTable.ProformaInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceOtherChargesDetail = _dataTable.ProformaInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelProformaInvoicePopBody").load("ProformaInvoice/ProformaInvoiceOtherChargeDetail", function () {
+        debugger;
         $('#lblModelPopQuotation').text('OtherCharges Detail')
         $('#FormOtherExpenseDetail #IsUpdate').val('True');
         $('#FormOtherExpenseDetail #ID').val(proformaInvoiceOtherChargesDetail.ID);
         $("#FormOtherExpenseDetail #OtherChargeCode").val(proformaInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(proformaInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #ChargeAmount").val(proformaInvoiceOtherChargesDetail.ChargeAmount);
-        if (proformaInvoiceOtherChargesDetail.TaxType.Code != 0) {
+       // if (proformaInvoiceOtherChargesDetail.TaxType.Code != 0) {
             $('#FormOtherExpenseDetail #TaxTypeCode').val(proformaInvoiceOtherChargesDetail.TaxType.ValueText);
             $('#FormOtherExpenseDetail #hdnTaxTypeCode').val(proformaInvoiceOtherChargesDetail.TaxType.ValueText);
-        }
+        //}
         $('#FormOtherExpenseDetail #hdnCGSTPerc').val(proformaInvoiceOtherChargesDetail.CGSTPerc);
         $('#FormOtherExpenseDetail #hdnSGSTPerc').val(proformaInvoiceOtherChargesDetail.SGSTPerc);
         $('#FormOtherExpenseDetail #hdnIGSTPerc').val(proformaInvoiceOtherChargesDetail.IGSTPerc);

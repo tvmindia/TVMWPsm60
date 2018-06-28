@@ -413,6 +413,7 @@ function DeleteSaleOrderItem(id) {
                     $('#ID').val(_emptyGuid);
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
                     ResetSaleOrder();
+                    $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
                     BindOrReloadSaleOrderTable('Init');
                     break;
                 case "ERROR":
@@ -729,7 +730,7 @@ function AddSaleOrderDetailToList() {
             saleOrderDetailList[_datatablerowindex].Unit = Unit;
             saleOrderDetailList[_datatablerowindex].Rate = $('#divModelSaleOrderPopBody #Rate').val();
             saleOrderDetailList[_datatablerowindex].Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
-            saleOrderDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+            saleOrderDetailList[_datatablerowindex].TaxTypeCode =$('#divModelSaleOrderPopBody #TaxTypeCode').val()!=null? $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0]:"";
             TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
             saleOrderDetailList[_datatablerowindex].TaxType = TaxType;
             saleOrderDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
@@ -762,7 +763,7 @@ function AddSaleOrderDetailToList() {
                 saleOrderDetailList[0].Unit.Description = $("#divModelSaleOrderPopBody #UnitCode").val() != "" ? $("#divModelSaleOrderPopBody #UnitCode option:selected").text().trim() : "";
                 saleOrderDetailList[0].Rate = $('#divModelSaleOrderPopBody #Rate').val();
                 saleOrderDetailList[0].Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
-                saleOrderDetailList[0].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+                saleOrderDetailList[0].TaxTypeCode =$('#divModelSaleOrderPopBody #TaxTypeCode').val()!=null? $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0]:"";
                 saleOrderDetailList[0].TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
                 saleOrderDetailList[0].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
                 saleOrderDetailList[0].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
@@ -816,7 +817,7 @@ function AddSaleOrderDetailToList() {
                         SaleOrderDetailVM.UnitCode = $('#divModelSaleOrderPopBody #UnitCode').val();
                         SaleOrderDetailVM.Rate = $('#divModelSaleOrderPopBody #Rate').val();
                         SaleOrderDetailVM.Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
-                        SaleOrderDetailVM.TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+                        SaleOrderDetailVM.TaxTypeCode =$('#divModelSaleOrderPopBody #TaxTypeCode').val()!=null? $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0]:"";
                         var TaxType = new Object();
                         TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
                         SaleOrderDetailVM.TaxType = TaxType;

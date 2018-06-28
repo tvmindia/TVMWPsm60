@@ -628,7 +628,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[DeleteProformaInvoiceOtherChargeDetail]";
+                        cmd.CommandText = "[PSA].[DeleteProformaInvoiceOtherCharge]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
