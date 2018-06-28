@@ -291,3 +291,7 @@ src: url(/fonts/Liquidrom.ttf);
 .col-md-4 .select2-container .select2-selection--single .select2-selection__rendered{
     width:110px!important;
 }
+.input-group-addon[onclick=""]{
+    cursor:not-allowed!important;
+    background:lightgrey!important;
+}
