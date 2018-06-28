@@ -3,6 +3,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.BusinessServices.Contracts;
 using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         IProductionOrderBusiness _productionOrderBusiness;
         IQuotationBusiness _quotationBusiness;
         ICommonBusiness _commonBusiness;
+        IUserBusiness _userBusiness;
         public DashBoardController(ISalesInvoieBusiness salesInvoiceBusiness, ICommonBusiness commonBusiness, IEnquiryBusiness enquiryBusiness,
-            ISaleOrderBusiness saleOrderBusiness,IProductionOrderBusiness productionOrderBusiness,IQuotationBusiness quotationBusiness) {
+            ISaleOrderBusiness saleOrderBusiness,IProductionOrderBusiness productionOrderBusiness,IQuotationBusiness quotationBusiness, IUserBusiness userBusiness) {
             _salesInvoiceBusiness = salesInvoiceBusiness;
             _commonBusiness = commonBusiness;
             _enquiryBusiness = enquiryBusiness;
             _quotationBusiness = quotationBusiness;
             _saleOrderBusiness = saleOrderBusiness;
             _productionOrderBusiness = productionOrderBusiness;
+            _userBusiness = userBusiness;
         }
 
 
@@ -36,8 +39,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
         public ActionResult Index(bool isUser = false)
         {
-            Permission _permission = Session["UserRights"] as Permission;
-            if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "AdminView").AccessCode : string.Empty).Contains("R"))
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission _permission = _userBusiness.GetSecurityCode(appUA.UserName, "AdminDashBoard");
+            if (_permission.AccessCode.Contains("R"))
             {//AdminView subObject given to check if user has admin access.
                 if (isUser)
                 {
