@@ -14,7 +14,12 @@ $(document).ready(function () {
             EditProductionQC(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddProductionQC();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {
@@ -384,7 +389,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              },
              { "data": "QCDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i>__</i>" },
              { "data": "Employee.Name", render: function (data, type, row) { return data }, "defaultContent": "<i>__</i>" },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>':'-' },
+             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionQCDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : '-' },
              ],
              columnDefs: [
                  { "targets": [0], "width": "30%" },
@@ -494,15 +499,19 @@ function ConfirmDeleteProductionQCDetail(this_Obj) {
     _datatablerowindex = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).index();
     var productionQCDetail = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).data();
     if (productionQCDetail.ID === _emptyGuid) {
-        var productionQCDetailList = _dataTable.ProductionQCDetailList.rows().data();
-        productionQCDetailList.splice(_datatablerowindex, 1);
-        _dataTable.ProductionQCDetailList.clear().rows.add(productionQCDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentProductQCDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteProductionQCDetail("' + productionQCDetail.ID + '")');
 
     }
+}
+function DeleteCurrentProductQCDetail(_datatablerowindex)
+{
+    var productionQCDetailList = _dataTable.ProductionQCDetailList.rows().data();
+    productionQCDetailList.splice(_datatablerowindex, 1);
+    _dataTable.ProductionQCDetailList.clear().rows.add(productionQCDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteProductionQCDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {

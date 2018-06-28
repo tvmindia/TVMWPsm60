@@ -538,6 +538,75 @@ namespace PilotSmithApp.BusinessService.Service
 
         }
 
+        //Proforma invoice
+        public string GetXMLfromProformaInvoiceObject(List<ProformaInvoiceDetail> proformaInvoiceDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(proformaInvoiceDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in proformaInvoiceDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        // Proforma invoice other charge
+        public string GetXMLfromProformaInvoiceOtherChargeObject(List<ProformaInvoiceOtherCharge> proformaInvoiceOtherChargeDetailList, string mandatoryProperties)
+        {
+            string result = "<Details>";
+            int totalRows = 0;
+            try
+            {
+                //-------------------------//
+                int[] mandIndx = getMAndatoryIndex(proformaInvoiceOtherChargeDetailList[0], mandatoryProperties); //int mandIndx = 0;                
+
+                foreach (object some_object in proformaInvoiceOtherChargeDetailList)
+                {
+                    XML(some_object, mandIndx, ref result, ref totalRows);
+
+                }
+
+                result = result + "</Details>";
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            if (totalRows > 0)
+            {
+                return result;
+            }
+            else
+            {
+                return "";
+            }
+
+        }
+
 
 
         public List<TimeLine> GetTimeLine(Guid Id, String Type) {
@@ -570,7 +639,9 @@ namespace PilotSmithApp.BusinessService.Service
                     case "DLC":
                         T.URL = "DeliveryChallan?ID=" + T.DocumentID.ToString();
                         break;
-
+                    case "PIV":
+                        T.URL = "ProformaInvoice?ID=" + T.DocumentID.ToString();
+                        break;
                 }
 
 
@@ -578,5 +649,11 @@ namespace PilotSmithApp.BusinessService.Service
          
             return Result;
         }
+
+        public List<RecentDocument> GetRecentDocument(string username, string searchTerm=null)
+        {
+            return _commonRepository.GetRecentDocument(username, searchTerm);
+        }
+
     }
 }

@@ -14,7 +14,12 @@ $(document).ready(function () {
                 EditSaleOrder(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddSaleOrder();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {
@@ -260,6 +265,9 @@ function EditSaleOrder(this_Obj) {
                     case "0":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
                         break;
+                    case "1":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                        break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
                         break;
@@ -300,30 +308,33 @@ function ResetSaleOrder() {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
                     break;
                 case "0":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
+                    break;
+                case "1":
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
                     break;
                 case "3":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
                     break;
                 case "4":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
                     break;
                 default:
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
                     break;
             }
-            if ($('#LatestApprovalStatus').val() == "") {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
-            }
-            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
-            }
-            else if ($('#LatestApprovalStatus').val() == 4) {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
-            }
-            else {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-            }
+            //if ($('#LatestApprovalStatus').val() == "") {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+            //}
+            //else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
+            //}
+            //else if ($('#LatestApprovalStatus').val() == 4) {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
+            //}
+            //else {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+            //}
             BindSaleOrderDetailList($('#ID').val(), false, false);
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
             CalculateTotal();
@@ -407,6 +418,7 @@ function DeleteSaleOrderItem(id) {
                     $('#ID').val(_emptyGuid);
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
                     ResetSaleOrder();
+                    $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
                     BindOrReloadSaleOrderTable('Init');
                     break;
                 case "ERROR":
@@ -704,7 +716,7 @@ function AddSaleOrderDetailToList() {
     $("#FormSaleOrderDetail").submit(function () { });
     debugger;
     if ($('#FormSaleOrderDetail #IsUpdate').val() == 'True') {
-        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
+        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
             saleOrderDetailList[_datatablerowindex].Product.Code = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -723,7 +735,7 @@ function AddSaleOrderDetailToList() {
             saleOrderDetailList[_datatablerowindex].Unit = Unit;
             saleOrderDetailList[_datatablerowindex].Rate = $('#divModelSaleOrderPopBody #Rate').val();
             saleOrderDetailList[_datatablerowindex].Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
-            saleOrderDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+            saleOrderDetailList[_datatablerowindex].TaxTypeCode =$('#divModelSaleOrderPopBody #TaxTypeCode').val()!=null? $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0]:"";
             TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
             saleOrderDetailList[_datatablerowindex].TaxType = TaxType;
             saleOrderDetailList[_datatablerowindex].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
@@ -739,7 +751,7 @@ function AddSaleOrderDetailToList() {
         }
     }
     else {
-        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
+        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             if (_dataTable.SaleOrderDetailList.rows().data().length === 0) {
                 _dataTable.SaleOrderDetailList.clear().rows.add(GetSaleOrderDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
@@ -756,7 +768,7 @@ function AddSaleOrderDetailToList() {
                 saleOrderDetailList[0].Unit.Description = $("#divModelSaleOrderPopBody #UnitCode").val() != "" ? $("#divModelSaleOrderPopBody #UnitCode option:selected").text().trim() : "";
                 saleOrderDetailList[0].Rate = $('#divModelSaleOrderPopBody #Rate').val();
                 saleOrderDetailList[0].Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
-                saleOrderDetailList[0].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+                saleOrderDetailList[0].TaxTypeCode =$('#divModelSaleOrderPopBody #TaxTypeCode').val()!=null? $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0]:"";
                 saleOrderDetailList[0].TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
                 saleOrderDetailList[0].CGSTPerc = $('#divModelSaleOrderPopBody #hdnCGSTPerc').val();
                 saleOrderDetailList[0].SGSTPerc = $('#divModelSaleOrderPopBody #hdnSGSTPerc').val();
@@ -810,7 +822,7 @@ function AddSaleOrderDetailToList() {
                         SaleOrderDetailVM.UnitCode = $('#divModelSaleOrderPopBody #UnitCode').val();
                         SaleOrderDetailVM.Rate = $('#divModelSaleOrderPopBody #Rate').val();
                         SaleOrderDetailVM.Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
-                        SaleOrderDetailVM.TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
+                        SaleOrderDetailVM.TaxTypeCode =$('#divModelSaleOrderPopBody #TaxTypeCode').val()!=null? $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0]:"";
                         var TaxType = new Object();
                         TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
                         SaleOrderDetailVM.TaxType = TaxType;
@@ -889,17 +901,20 @@ function ConfirmDeleteSaleOrderDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderDetail = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).data();
     if (saleOrderDetail.ID === _emptyGuid) {
-        var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
-        saleOrderDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentSaleOrderDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteSaleOrderDetail("' + saleOrderDetail.ID + '")');
 
     }
+}
+function DeleteCurrentSaleOrderDetail(_datatablerowindex) {
+    var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
+    saleOrderDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteSaleOrderDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -1248,17 +1263,20 @@ function ConfirmDeleteSaleOrderOtherChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderOtherChargeDetail = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (saleOrderOtherChargeDetail.ID === _emptyGuid) {
-        var quotationOtherChargeDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
-        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentSaleOrderOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteSaleOrderOtherChargeDetail("' + saleOrderOtherChargeDetail.ID + '")');
 
     }
+}
+function DeleteCurrentSaleOrderOtherChargeDetail(_datatablerowindex) {
+    var quotationOtherChargeDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
+    quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteSaleOrderOtherChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {

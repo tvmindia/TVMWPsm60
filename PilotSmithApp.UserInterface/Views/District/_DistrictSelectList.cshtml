@@ -25,27 +25,11 @@ else
     @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select District--", SelectListattributes)
 }
 
-@*@if (@ViewBag.IsRequired == "required")
-{
-    <div class="input-group">
-        @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select district--", new { @class = "form-control newinput", @style = "width:100%!important", @required = "", @title = "The State is missing", @onchange = "$('#hdnDistrictCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDistrictMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
-}
-else
-{
-    <div class="input-group">
-        @Html.DropDownList("DistrictCode", Model.DistrictSelectList, "--Select district--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnDistrictCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddDistrictMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
-}*@
-
 @Html.ValidationMessage("DistrictCode", "", new { @class = "text-danger" })
 
 <script>
     $(document).ready(function () {             
         try{
-            //$('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val(), function () {
                 $('.divDistrictSelectList #DistrictCode').change(function () {
                     if ($('.divAreaSelectList') != undefined) {
                         debugger;
@@ -55,21 +39,18 @@ else
                         }
                         else {
                             $('.divAreaSelectList').empty();
-                            $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                            $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
                         }
                     }
                 });
-                $('#DistrictCode').select2({});
+                $('#DistrictCode').val($('#hdnDistrictCode').val());
+                $('#DistrictCode').select2({
+                    dropdownParent: $('.divDistrictSelectList')
+                });
                 $('.select2').addClass('form-control newinput');
-            //});
         }
         catch (e) {
             console.log(e.message);
         }
-        $('#DistrictCode').val($('#hdnDistrictCode').val());
-        $('#DistrictCode').select2({
-            dropdownParent: $('.divDistrictSelectList')
-        });
-        $('.select2').addClass('form-control newinput');
     });
 </script>

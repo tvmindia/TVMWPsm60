@@ -86,7 +86,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #region InsertUpdate EnquiryFollowup
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "EnquiryFollowup", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "EnquiryFollowup", Mode = "W")]
         public string InsertUpdateEnquiryFollowup(EnquiryFollowupViewModel enquiryFollowupVM)
         {
 

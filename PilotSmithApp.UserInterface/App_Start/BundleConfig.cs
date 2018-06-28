@@ -92,6 +92,7 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJS/CustomerCategory").Include("~/Scripts/UserJS/CustomerCategory.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Plant").Include("~/Scripts/UserJS/Plant.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/OtherCharge").Include("~/Scripts/UserJS/OtherCharge.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/Bank").Include("~/Scripts/UserJS/Bank.js"));
             
             bundles.Add(new ScriptBundle("~/bundles/UserJS/SaleInvoice").Include("~/Scripts/UserJS/SaleInvoice.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/DeliveryChallan").Include("~/Scripts/UserJS/DeliveryChallan.js"));
@@ -101,6 +102,8 @@ namespace PilotSmithApp.UserInterface.App_Start
             //bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/PendingSaleOrderProductionReport").Include("~/Scripts/UserJS/Report/PendingSaleOrderProductionReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/EnquiryReport").Include("~/Scripts/UserJS/Report/EnquiryReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/ReportAdvanceSelectList").Include("~/Scripts/UserJS/Report/ReportAdvanceSelectList.js"));            
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/RecentDocument").Include("~/Scripts/UserJS/RecentDocument.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/ProformaInvoice").Include("~/Scripts/UserJS/ProformaInvoice.js"));
         }
     }
 }

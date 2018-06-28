@@ -6,12 +6,12 @@
 @if (@ViewBag.IsRequired == "required")
 {
     SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Bank is missing", @onchange = "$('#hdnBankCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Bank is missing", @onchange = "$('#hdnBankCode').val(this.value)" };
-    //onclickevent = ViewBag.propertydisable ? "" : "AddBankMaster('OTR')";
+    onclickevent = ViewBag.propertydisable ? "" : "AddBankMaster('OTR')";
 }
 else
 {
     SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnBankCode').val(this.value)" };
-    //onclickevent = ViewBag.propertydisable ? "" : "AddBankMaster('OTR')";
+    onclickevent = ViewBag.propertydisable ? "" : "AddBankMaster('OTR')";
 }
 @if (@ViewBag.HasAddPermission)
 {
@@ -44,7 +44,9 @@ else
 <script>
     $(document).ready(function () {
         $('#BankCode').val($('#hdnBankCode').val());
-        $('#BankCode').select2({});
+        $('#BankCode').select2({
+            dropdownParent: $('.divBankSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

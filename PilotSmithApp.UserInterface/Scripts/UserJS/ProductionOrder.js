@@ -15,9 +15,13 @@ $(document).ready(function () {
             EditProductionOrder(this);
         });
         debugger;
-        if ($('#RedirectToDocument').val() != "")
-        {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+        if ($('#RedirectToDocument').val() != "") {
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddProductionOrder();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {
@@ -225,6 +229,9 @@ function EditProductionOrder(this_Obj) {
                     case "0":
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", productionOrder.ID);
                         break;
+                    case "1":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
+                        break;
                     case "3":
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
                         break;
@@ -274,6 +281,9 @@ function ResetProductionOrder() {
                     break;
                 case "0":
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", $('#ID').val());
+                    break;
+                case "1":
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
                     break;
                 case "3":
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
@@ -759,15 +769,18 @@ function ConfirmDeleteProductionOrderDetail(this_Obj) {
     _datatablerowindex = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).index();
     var productionOrderDetail = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).data();
     if (productionOrderDetail.ID === _emptyGuid) {
-        var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
-        productionOrderDetailList.splice(_datatablerowindex, 1);
-        _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentProductionOrderDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteProductionOrderDetail("' + productionOrderDetail.ID + '")');
 
     }
+}
+function DeleteCurrentProductionOrderDetail(_datatablerowindex) {
+    var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
+    productionOrderDetailList.splice(_datatablerowindex, 1);
+    _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 
 function DeleteProductionOrderDetail(ID) {

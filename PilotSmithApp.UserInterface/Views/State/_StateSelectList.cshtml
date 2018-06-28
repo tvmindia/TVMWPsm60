@@ -25,29 +25,13 @@ else
     @Html.DropDownList("StateCode", Model.StateSelectList, "--Select State--", SelectListattributes)
 }
 
-
-
-@*@if (@ViewBag.IsRequired == "required")
-{
-    <div class="input-group">
-        @Html.DropDownList("StateCode", Model.StateSelectList, "--Select state--", new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "The State is missing", @onchange = "$('#hdnStateCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddStateMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
-}
-else
-{
-    <div class="input-group">
-        @Html.DropDownList("StateCode", Model.StateSelectList, "--Select state--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnStateCode').val(this.value)" })
-        <span class="input-group-addon" style="cursor:pointer;color:#4bd24b;box-shadow:0px 1px 3px 0px #4bd24b" onclick="AddStateMaster('OTR')"><i class="fa fa-plus-square"></i></span>
-    </div>
-}*@
-
 @Html.ValidationMessage("StateCode", "", new { @class = "text-danger" })
 
 <script>
     $(document).ready(function () {             
-        try{
-            //$('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+        try {
+            $('#StateCode').val($('#hdnStateCode').val());
+           
                 $('.divStateSelectList #StateCode').change(function () {
                     debugger;
                     if ($('.divDistrictSelectList') != undefined) {
@@ -57,19 +41,24 @@ else
                         }
                         else {
                             $('.divDistrictSelectList').empty();
-                            $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                            $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
                         }
+                        $('.divAreaSelectList').empty();
+                        $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
+                        $('#hdnDistrictCode').val('');
+                        $('#hdnAreaCode').val('');
                     }
                 });
-            //});
+                $('#StateCode').select2({
+                    dropdownParent: $('.divCountrySelectList')
+                });
+                $('.select2').addClass('form-control newinput');
         }
         catch (e) {
             console.log(e.message);
         }
-        $('#StateCode').val($('#hdnStateCode').val());
-        $('#StateCode').select2({
-            dropdownParent: $('.divCountrySelectList')
-        });
-        $('.select2').addClass('form-control newinput');
+        
+       
+        
     });
 </script>

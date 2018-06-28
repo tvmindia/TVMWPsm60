@@ -101,10 +101,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     TitlesSelectList = _customerBusiness.GetTitleSelectList()
                 };
-                customerVM.PaymentTerm = new PaymentTermViewModel()
-                {
-                    PaymentTermSelectList = _paymentTermBusiness.GetPaymentTermForSelectList()
-                };
+                //customerVM.PaymentTerm = new PaymentTermViewModel()
+                //{
+                //    PaymentTermSelectList = _paymentTermBusiness.GetPaymentTermForSelectList()
+                //};
                 customerVM.CustomerCategory = new CustomerCategoryViewModel()
                 {
                     CustomerCategorySelectList = _customerCategoryBusiness.GetCustomerCategoryForSelectList()

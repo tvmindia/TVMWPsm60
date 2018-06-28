@@ -25,7 +25,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         ISaleInvoiceBusiness _saleInvoiceBusiness;
         IServiceCallBusiness _serviceCallBusiness;
         IDeliveryChallanBusiness _deliveryChallanBusiness;
-        public ExcelExportController(IEnquiryBusiness enquiryBusiness, IEstimateBusiness estimateBusiness, IQuotationBusiness quotationBusiness, ISaleOrderBusiness saleOrderBusiness,IProductionOrderBusiness productionOrderBusiness,IProductionQCBusiness productionQCBusiness,ISaleInvoiceBusiness saleInvoiceBusiness,IServiceCallBusiness serviceCallBusiness,IDeliveryChallanBusiness deliveryChallanBusiness)
+        IProformaInvoiceBusiness _proformaInvoiceBusiness;
+        public ExcelExportController(IEnquiryBusiness enquiryBusiness, 
+            IEstimateBusiness estimateBusiness, IQuotationBusiness quotationBusiness, 
+            ISaleOrderBusiness saleOrderBusiness,IProductionOrderBusiness productionOrderBusiness,
+            IProductionQCBusiness productionQCBusiness,ISaleInvoiceBusiness saleInvoiceBusiness,
+            IServiceCallBusiness serviceCallBusiness,IDeliveryChallanBusiness deliveryChallanBusiness,
+            IProformaInvoiceBusiness proformaInvoiceBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _estimateBusiness = estimateBusiness;
@@ -36,6 +42,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _saleInvoiceBusiness = saleInvoiceBusiness;
             _serviceCallBusiness = serviceCallBusiness;
             _deliveryChallanBusiness = deliveryChallanBusiness;
+            _proformaInvoiceBusiness = proformaInvoiceBusiness;
         }
         // GET: ExcelExport
         public ActionResult Index()
@@ -241,6 +248,26 @@ namespace PilotSmithApp.UserInterface.Controllers
                         deliveryChallanworkSheet.Column(11).AutoFit();
                         deliveryChallanworkSheet.Column(12).AutoFit();
 
+                        break;
+                    case "PIV":
+                        fileName = "ProformaInvoice" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        ProformaInvoiceAdvanceSearchViewModel proformaInvoiceAdvanceSearchVM = new ProformaInvoiceAdvanceSearchViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        proformaInvoiceAdvanceSearchVM = JsonConvert.DeserializeObject<ProformaInvoiceAdvanceSearchViewModel>(ReadableFormat);
+                        List<ProformaInvoiceViewModel> proformaInvoiceVMList = Mapper.Map<List<ProformaInvoice>, List<ProformaInvoiceViewModel>>(_proformaInvoiceBusiness.GetAllProformaInvoice(Mapper.Map<ProformaInvoiceAdvanceSearchViewModel, ProformaInvoiceAdvanceSearch>(proformaInvoiceAdvanceSearchVM)));
+                        var proformaInvoiceworkSheet = excel.Workbook.Worksheets.Add("ProformaInvoice");
+                        ProformaInvoiceViewModel[] proformaInvoiceVMListArray = proformaInvoiceVMList.ToArray();
+                        proformaInvoiceworkSheet.Cells[1, 1].LoadFromCollection(proformaInvoiceVMListArray.Select(x => new { ProfInvoiceNo = x.ProfInvNo, ProfInvoiceDate = x.ProfInvDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, SaleOrderNo = x.SaleOrder.SaleOrderNo, QuotationNo = x.Quotation.QuoteNo, Area = x.Area.Description, DocumentOwner = x.PSAUser.LoginName, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description, ApprovalStatus = x.ApprovalStatus.Description, EmailSent = x.EmailSentYN == true ? "YES" : "NO" }), true, TableStyles.Light1);
+                        proformaInvoiceworkSheet.Column(1).AutoFit();
+                        proformaInvoiceworkSheet.Column(2).AutoFit();
+                        proformaInvoiceworkSheet.Column(3).AutoFit();
+                        proformaInvoiceworkSheet.Column(4).Width = 40;
+                        proformaInvoiceworkSheet.Column(5).AutoFit();
+                        proformaInvoiceworkSheet.Column(6).AutoFit();
+                        proformaInvoiceworkSheet.Column(7).AutoFit();
+                        proformaInvoiceworkSheet.Column(8).AutoFit();
+                        proformaInvoiceworkSheet.Column(9).AutoFit();
                         break;
                 }
                 using (var memoryStream = new MemoryStream())

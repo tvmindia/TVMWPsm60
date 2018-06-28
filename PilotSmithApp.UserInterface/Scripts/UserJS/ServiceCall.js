@@ -13,6 +13,15 @@ $(document).ready(function () {
         $('#tblServiceCall tbody').on('dblclick', 'td', function () {
             EditServiceCall(this);
         });
+
+        if ($('#RedirectToDocument').val() != "") {
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddServiceCall();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
+        }
     }
     catch (e) {
         console.log(e.message);
@@ -407,7 +416,7 @@ function BindServiceCallDetailList(id) {
 function AddServiceCallDetailList() {
     debugger;
     $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail", function () {
-        $('#lblModelServiceCall').text('ServiceCall Detail')
+        $('#lblModelPopServiceCall').text('Service Call Detail')
         $('#divModelPopServiceCall').modal('show');
     });
 }
@@ -419,7 +428,8 @@ function AddServiceCallDetailToList() {
         $("#FormServiceCallDetail").submit(function () { });
 
         if ($('#FormServiceCallDetail #IsUpdate').val() == 'True') {
-            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').val() != "")) {
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != "")))
+            {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                 serviceCallDetailList[_datatablerowindex].Product = new Object();
@@ -443,15 +453,23 @@ function AddServiceCallDetailToList() {
                 _datatablerowindex = -1;
             }
             else {
-                $('#msgInstalledDate').show();
-                $('#msgInstalledDate').change(function () {
-                    if ($('#msgInstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
-                });
+                if (($('#InstalledDate').val() != "")) {
+                    $('#msgInstalledDate').show();
+                    $('#msgInstalledDate').change(function () {
+                        if ($('#InstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
+                    });
+                }
+                if ($('#ProductModelID').length > 1 && $('#ProductModelID').val() != "") {
+                    $('#msgProductModel').show();
+                    $('#msgProductModel').change(function () {
+                        if ($('#ProductModelID').val !== "") { $('#msgProductModel').hide(); }
+                    });
+                }
             }
         }
         else {
-            if (($('#ProductID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').val() != "")) {
-                if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != ""))) {
+                    if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                     serviceCallDetailList[0].Product = new Object();
@@ -502,10 +520,18 @@ function AddServiceCallDetailToList() {
                 }
             }
             else {
-                $('#msgInstalledDate').show();
-                $('#msgInstalledDate').change(function () {
-                    if ($('#msgInstalledDate').val() !== "") { $('#msgInstalledDate').hide(); }
-                });
+                if (($('#InstalledDate').val() != "")) {
+                    $('#msgInstalledDate').show();
+                    $('#msgInstalledDate').change(function () {
+                        if ($('#InstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
+                    });
+                }
+                if ($('#ProductModelID').length > 1 && $('#ProductModelID').val() != "") {
+                    $('#msgProductModel').show();
+                    $('#msgProductModel').change(function () {
+                        if ($('#ProductModelID').val !== "") { $('#msgProductModel').hide(); }
+                    });
+                }
             }
         }
         $('[data-toggle="popover"]').popover({
@@ -857,15 +883,18 @@ function ConfirmDeleteServiceCallDetail(this_Obj) {
     _datatablerowindex = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).index();
     var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
     if (serviceCallDetail.ID === _emptyGuid) {
-        var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
-        serviceCallDetailList.splice(_datatablerowindex, 1);
-        _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentServiceCallDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteServiceCallDetail("' + serviceCallDetail.ID + '")');
 
     }
+}
+function DeleteCurrentServiceCallDetail(_datatablerowindex) {
+    var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
+    serviceCallDetailList.splice(_datatablerowindex, 1);
+    _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteServiceCallDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -895,17 +924,20 @@ function ConfirmDeleteServiceCallChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).index();
     var serviceCallChargeDetail = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).data();
     if (serviceCallChargeDetail.ID === _emptyGuid) {
-        var serviceCallChargeDetailList = _dataTable.ServiceCallChargeDetailList.rows().data();
-        serviceCallChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.ServiceCallChargeDetailList.clear().rows.add(serviceCallChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentServiceCallOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteServiceCallChargeDetail("' + serviceCallChargeDetail.ID + '")');
 
     }
+}
+function DeleteCurrentServiceCallOtherChargeDetail(_datatablerowindex) {
+    var serviceCallChargeDetailList = _dataTable.ServiceCallChargeDetailList.rows().data();
+    serviceCallChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.ServiceCallChargeDetailList.clear().rows.add(serviceCallChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteServiceCallChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -930,4 +962,31 @@ function DeleteServiceCallChargeDetail(ID) {
             notyAlert('error', _message);
         }
     }
+}
+
+//==============Redirect to nav=================//
+function EditRedirectToDocument(id) {
+
+    OnServerCallBegin();
+
+    $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblServiceCallInfo').text($('#ServiceCallNo').val());
+            if ($('#IsDocLocked').val() == "True") {
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", id);
+            }
+            else {
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
+            }
+            BindServiceCallDetailList(id);
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            clearUploadControl();
+            PaintImages(id);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
 }

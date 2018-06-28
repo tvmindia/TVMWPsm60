@@ -174,7 +174,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = null;// _productionQCBusiness.DeleteProductionQCDetail(id);
+                object result = _productionQCBusiness.DeleteProductionQCDetail(id);
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }
@@ -219,7 +219,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllProductionQC
         #region InsertUpdateProductionQC
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "W")]
         public string InsertUpdateProductionQC(ProductionQCViewModel productionQCVM)
         {
             //object resultFromBusiness = null;

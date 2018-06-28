@@ -14,7 +14,12 @@ $(document).ready(function () {
                 EditQuotation(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddQuotation();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {
@@ -228,6 +233,9 @@ function EditQuotation(this_Obj) {
                     case "0":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", Quotation.ID);
                         break;
+                    case "1":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                        break;
                     case "3":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
                         break;
@@ -276,6 +284,9 @@ function ResetQuotation() {
                     break;
                 case "0":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", $('#ID').val());
+                    break;
+                case "1":
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
                     break;
                 case "3":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
@@ -466,7 +477,7 @@ function BindQuotationDetailList(id, IsEstimated) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -577,7 +588,7 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () { });
         debugger;
         if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
-            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "" )&& ($('#divModelQuotationPopBody #Qty').val() != "" )&& ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -596,7 +607,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[_datatablerowindex].Unit = Unit;
                 quotationDetailList[_datatablerowindex].Rate = $('#divModelQuotationPopBody #Rate').val();
                 quotationDetailList[_datatablerowindex].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
-                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                 TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                 quotationDetailList[_datatablerowindex].TaxType = TaxType;
                 quotationDetailList[_datatablerowindex].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
@@ -610,7 +621,7 @@ function AddQuotationDetailToList() {
             }
         }
         else {
-            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
             {
                 debugger;
                 if (_dataTable.QuotationDetailList.rows().data().length === 0) {
@@ -628,7 +639,7 @@ function AddQuotationDetailToList() {
                     quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
                     quotationDetailList[0].Rate = $('#divModelQuotationPopBody #Rate').val();
                     quotationDetailList[0].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
-                    quotationDetailList[0].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                    quotationDetailList[0].TaxTypeCode =$('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                     quotationDetailList[0].TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                     quotationDetailList[0].CGSTPerc = $('#divModelQuotationPopBody #hdnCGSTPerc').val();
                     quotationDetailList[0].SGSTPerc = $('#divModelQuotationPopBody #hdnSGSTPerc').val();
@@ -681,7 +692,7 @@ function AddQuotationDetailToList() {
                             QuotationDetailVM.UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                             QuotationDetailVM.Rate = $('#divModelQuotationPopBody #Rate').val();
                             QuotationDetailVM.Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
-                            QuotationDetailVM.TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
+                            QuotationDetailVM.TaxTypeCode =$('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                             var TaxType = new Object();
                             TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
                             QuotationDetailVM.TaxType = TaxType;
@@ -753,17 +764,21 @@ function ConfirmDeleteQuotationDetail(this_Obj) {
     _datatablerowindex = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).index();
     var quotationDetail = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationDetail.ID === _emptyGuid) {
-        var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
-        quotationDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentQuotationDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteQuotationDetail("' + quotationDetail.ID + '")');
 
     }
+}
+function DeleteCurrentQuotationDetail(_datatablerowindex)
+{
+    var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
+    quotationDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteQuotationDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -1109,17 +1124,21 @@ function ConfirmDeleteQuotationOtherChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationOtherChargeDetail.ID === _emptyGuid) {
-        var quotationOtherChargeDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
-        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentQuotationOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteQuotationOtherChargeDetail("' + quotationOtherChargeDetail.ID + '")');
 
     }
+}
+function DeleteCurrentQuotationOtherChargeDetail(_datatablerowindex)
+{
+    var quotationOtherChargeDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
+    quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteQuotationOtherChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {

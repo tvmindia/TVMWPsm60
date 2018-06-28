@@ -88,6 +88,7 @@
     <Compile Include="Contract\IProductionQCBusiness.cs" />
     <Compile Include="Contract\IProductModelBusiness.cs" />
     <Compile Include="Contract\IProductSpecificationBusiness.cs" />
+    <Compile Include="Contract\IProformaInvoiceBusiness.cs" />
     <Compile Include="Contract\IQuotationBusiness.cs" />
     <Compile Include="Contract\IReferencePersonBusiness.cs" />
     <Compile Include="Contract\IReferenceTypeBusiness.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Service\ProductionQCBusiness.cs" />
     <Compile Include="Service\ProductModelBusiness.cs" />
     <Compile Include="Service\ProductSpecificationBusiness.cs" />
+    <Compile Include="Service\ProformaInvoiceBusiness.cs" />
     <Compile Include="Service\QuotationBusiness.cs" />
     <Compile Include="Service\ReferencePersonBusiness.cs" />
     <Compile Include="Service\ReferenceTypeBusiness.cs" />

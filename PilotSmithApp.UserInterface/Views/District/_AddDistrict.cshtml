@@ -69,7 +69,7 @@
             $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
                 try {
                     $('.divCountrySelectList #CountryCode').select2({
-                        dropdownParent: $("#divModelMasterPopUp")
+                        dropdownParent: $(".divCountrySelectList")
                     });
 
                     $('.select2').addClass('form-control newinput');
@@ -82,7 +82,7 @@
             $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
                 try {
                     $('.divStateSelectList #StateCode').select2({
-                        dropdownParent: $("#divModelMasterPopUp")
+                        dropdownParent: $(".divStateSelectList")
                     });
 
                     $('.select2').addClass('form-control newinput');

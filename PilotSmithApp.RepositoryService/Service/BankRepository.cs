@@ -50,7 +50,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     Bank bank = new Bank();
                                     {
-                                        bank.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : bank.Code);
+                                        bank.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : bank.Code);
                                         bank.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : bank.Name);
                                     }
                                     bankList.Add(bank);
@@ -85,14 +85,12 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetAllBank]";
-                        cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(bankAdvanceSearch.SearchTerm) ? "" : bankAdvanceSearch.SearchTerm;
+                        cmd.Parameters.Add("@SearchValue", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(bankAdvanceSearch.SearchTerm) ? "" : bankAdvanceSearch.SearchTerm.Trim();
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = bankAdvanceSearch.DataTablePaging.Start;
                         if (bankAdvanceSearch.DataTablePaging.Length == -1)
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = bankAdvanceSearch.DataTablePaging.Length;
-                        //cmd.Parameters.Add("@OrderDir", SqlDbType.NVarChar, 5).Value = model.order[0].dir;
-                        //cmd.Parameters.Add("@OrderColumn", SqlDbType.NVarChar, -1).Value = model.order[0].column;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -103,11 +101,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     Bank bank = new Bank();
                                     {
-                                        bank.Code = (sdr["Code"].ToString() != "" ? sdr["Code"].ToString() : bank.Code);
+                                        bank.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : bank.Code);
                                         bank.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : bank.Name);
-                                        bank.Opening = (sdr["Opening"].ToString() != "" ? decimal.Parse(sdr["Opening"].ToString()) : bank.Opening);
-                                        bank.ActualODLimit = (sdr["ActualODLimit"].ToString() != "" ? decimal.Parse(sdr["ActualODLimit"].ToString()) : bank.ActualODLimit);
-                                        bank.DisplayODLimit = (sdr["DisplayODLimit"].ToString() != "" ? decimal.Parse(sdr["DisplayODLimit"].ToString()) : bank.DisplayODLimit);
                                         bank.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : bank.TotalCount);
                                         bank.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : bank.FilteredCount);
                                     }
@@ -129,7 +124,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region GetBank
-        public Bank GetBank(string code)
+        public Bank GetBank(int code)
         {
             Bank bank = null;
             try
@@ -152,11 +147,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                 if (sdr.Read())
                                 {
                                     bank = new Bank();
-                                    bank.Code = (sdr["Code"].ToString() != "" ? (sdr["Code"].ToString()) : bank.Code);
+                                    bank.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : bank.Code);
                                     bank.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : bank.Name);
-                                    bank.Opening = (sdr["Opening"].ToString() != "" ? decimal.Parse(sdr["Opening"].ToString()) : bank.Opening);
-                                    bank.ActualODLimit = (sdr["ActualODLimit"].ToString() != "" ? decimal.Parse(sdr["ActualODLimit"].ToString()) : bank.ActualODLimit);
-                                    bank.DisplayODLimit = (sdr["DisplayODLimit"].ToString() != "" ? decimal.Parse(sdr["DisplayODLimit"].ToString()) : bank.DisplayODLimit);
                                 }
                         }
                     }
@@ -172,8 +164,8 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion
 
-        #region CheckCodeExist
-        public bool CheckCodeExist(string code)
+        #region CheckBankExist
+        public bool CheckBankExist(Bank bank)
         {
             try
             {
@@ -186,8 +178,9 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckCodeExist]";
-                        cmd.Parameters.Add("@Code", SqlDbType.NVarChar).Value = code;
+                        cmd.CommandText = "[PSA].[CheckBankExist]";
+                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = bank.Code;
+                        cmd.Parameters.Add("@Name", SqlDbType.VarChar,50).Value = bank.Name;
                         cmd.CommandType = CommandType.StoredProcedure;
                         Object res = cmd.ExecuteScalar();
                         return (res.ToString() == "Exists" ? true : false);
@@ -220,18 +213,15 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[InsertUpdateBank]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = bank.IsUpdate;
-                        cmd.Parameters.Add("@Code", SqlDbType.VarChar, 5).Value = bank.Code;
-                        cmd.Parameters.Add("@Name", SqlDbType.VarChar, 100).Value = bank.Name;
-                        cmd.Parameters.Add("@ActualODLimit", SqlDbType.Decimal).Value = bank.ActualODLimit;
-                        cmd.Parameters.Add("@DisplayODLimit", SqlDbType.Decimal).Value = bank.DisplayODLimit;
-                        cmd.Parameters.Add("@Opening", SqlDbType.Decimal).Value = bank.Opening;
+                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = bank.Code;
+                        cmd.Parameters.Add("@Name", SqlDbType.VarChar, 50).Value = bank.Name;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = bank.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = bank.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = bank.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = bank.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
-                        outputCode = cmd.Parameters.Add("@CodeOut", SqlDbType.VarChar, 5);
+                        outputCode = cmd.Parameters.Add("@CodeOut", SqlDbType.Int);
                         outputCode.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }
@@ -242,7 +232,7 @@ namespace PilotSmithApp.RepositoryService.Service
                     case "0":
                         throw new Exception(bank.IsUpdate ? _appConst.UpdateFailure : _appConst.InsertFailure);
                     case "1":
-                        bank.Code = outputCode.Value.ToString();
+                        bank.Code = int.Parse(outputCode.Value.ToString());
                         return new
                         {
                             Code = outputCode.Value.ToString(),
@@ -266,7 +256,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion
 
         #region DeleteBank
-        public object DeleteBank(string code)
+        public object DeleteBank(int code)
         {
             SqlParameter outputStatus = null;
             try
@@ -283,7 +273,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[DeleteBank]";
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("@Code", SqlDbType.VarChar, 15).Value = code;
+                        cmd.Parameters.Add("@Code", SqlDbType.Int).Value = code;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();

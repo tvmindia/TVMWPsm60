@@ -22,6 +22,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         #endregion Global Declaration
+
         #region Construction Injection
         public BankController(IBankBusiness bankBusiness,IUserBusiness userBusiness)
         {
@@ -29,6 +30,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness = userBusiness;
         }
         #endregion Construction Injection
+
         // GET: Bank
         #region Index
         [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
@@ -39,19 +41,21 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View(bankAdvanceSearchVM);
         }
         #endregion Index
-        #region CheckBankCodeExist
+
+        #region CheckBankExist
         [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckCodeExist(BankViewModel bankVM)
+        public ActionResult CheckBankExist(BankViewModel bankVM)
         {
-            bool exists = bankVM.IsUpdate ? false : _bankBusiness.CheckCodeExist(bankVM.Code);
+            bool exists = _bankBusiness.CheckBankExist(Mapper.Map<BankViewModel, Bank>(bankVM));
+
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Bank code already in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Bank already in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-        #endregion CheckBankCodeExist
+        #endregion CheckBankExist
         #region GetAllBank
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
@@ -87,10 +91,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetAllBank
+
         #region InsertUpdateBank
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "W")]
         public string InsertUpdateBank(BankViewModel bankVM)
         {
             try
@@ -104,20 +109,21 @@ namespace PilotSmithApp.UserInterface.Controllers
                     UpdatedDate = _psaSysCommon.GetCurrentDateTime(),
                 };
                 var result = _bankBusiness.InsertUpdateBank(Mapper.Map<BankViewModel, Bank>(bankVM));
-                return JsonConvert.SerializeObject(new { Result = "OK", Records = result });
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result });
             }
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConst.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Message = cm.Message });
             }
 
         }
         #endregion InsertUpdateBank
+
         #region DeleteBank
         [HttpGet]
-        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
-        public string DeleteBank(string code)
+        [AuthSecurityFilter(ProjectObject = "Bank", Mode = "D")]
+        public string DeleteBank(int code)
         {
             try
             {
@@ -132,6 +138,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion DeleteBank
+
         #region BankSelctList
         public ActionResult BankSelectList(string required,bool? disabled)
         {
@@ -143,7 +150,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Bank");
             if (permission.SubPermissionList != null)
             {
-                if (permission.SubPermissionList.First(s => s.Name == "SelectListBankAddButton").AccessCode.Contains("R"))
+                if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
                     ViewBag.HasAddPermission = true;
                 }
@@ -156,14 +163,15 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_BankSelectList", bankVM);
         }
         #endregion BankSelectList
+
         #region MasterPartial
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Bank", Mode = "R")]
-        public ActionResult MasterPartial(string masterCode)
+        public ActionResult MasterPartial(int masterCode)
         {
-            BankViewModel bankVM = string.IsNullOrEmpty(masterCode) ? new BankViewModel() : Mapper.Map<Bank, BankViewModel>(_bankBusiness.GetBank(masterCode));
-            bankVM.IsUpdate = string.IsNullOrEmpty(masterCode) ? false : true;
-            return PartialView("_AddBankPartial", bankVM);
+            BankViewModel bankVM = masterCode == 0 ? new BankViewModel() : Mapper.Map<Bank, BankViewModel>(_bankBusiness.GetBank(masterCode));
+            bankVM.IsUpdate = masterCode == 0 ? false : true;
+            return PartialView("_AddBank", bankVM);
         }
 
         #endregion

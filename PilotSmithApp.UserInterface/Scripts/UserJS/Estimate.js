@@ -14,7 +14,12 @@ $(document).ready(function () {
                 EditEstimate(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddEstimate();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {
@@ -358,7 +363,8 @@ function BindEstimateDetailList(id,IsEnquiry) {
              columns: [ 
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
+                     debugger;
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
             
@@ -586,15 +592,19 @@ function ConfirmDeleteEstimateDetail(this_Obj) {
     _datatablerowindex = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).index();
     var estimateDetail = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).data();
     if (estimateDetail.ID === _emptyGuid) {
-        var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
-        estimateDetailList.splice(_datatablerowindex, 1);
-        _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentEstimateDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteEstimateDetail("' + estimateDetail.ID + '")');
 
     }
+}
+function DeleteCurrentEstimateDetail(_datatablerowindex)
+{
+    var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
+    estimateDetailList.splice(_datatablerowindex, 1);
+    _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteEstimateDetail(ID) {
     debugger;

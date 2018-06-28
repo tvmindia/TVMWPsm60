@@ -17,6 +17,9 @@ else
             $('#DocumentStatusCode').val($('#hdnDocumentStatusCode').val());
         }
         $('#DocumentStatusCode').select2({});
+        $('#DocumentStatusCode').select2({
+            dropdownParent: $('.divDocumentStatusSelectList')
+        });
         $('.select2').addClass('form-control newinput');
     });
 </script>

@@ -18,7 +18,7 @@
             <div class="form-group col-md-6">
                 @if (!Model.IsUpdate)
                 {
-                    <div class="col-md-12" style="font-size:14px">
+                    @*<div class="col-md-12" style="font-size:14px">
                         @Html.Label("Create Document From: ", new { @class = "lblrequired" })
                         <span style="margin-left:10px">
                             @Html.RadioButtonFor(model => model.DocumentType, "SaleOrder", new { @checked = true }) @Html.Label("SaleOrder")
@@ -29,18 +29,19 @@
                     </div>
 
                     if (Model.DocumentType == "SaleOrder")
-                    {
+                    {*@
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
-                                @Html.Label("Search and select a SaleOrder", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Search and select a SaleOrder", htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
                             <div class="col-md-12">
                                 @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @required = "required" })
+                                @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
 
-                        <div class="col-md-12 no-padding" id="divProductionOrderSelectList" style="display:none;">
+                        @*<div class="col-md-12 no-padding" id="divProductionOrderSelectList" style="display:none;">
                             <div class="col-md-12">
                                 @Html.Label("Search and select a ProductionOrder", htmlAttributes: new { @class = "control-label" })
                             </div>
@@ -71,7 +72,7 @@
                             </div>
                             @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
                         </div>
-                    }
+                    }*@
                 }
                 else
                 {
@@ -79,15 +80,16 @@
                     {
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
-                                @Html.Label("Sale Order", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Sale Order", htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
                             <div class="col-md-12">
                                 @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
+                                @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
                     }
-                    if (Model.ProdOrderID != null)
+                    @*if (Model.ProdOrderID != null)
                     {
                         <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
                             <div class="col-md-12">
@@ -98,8 +100,9 @@
                             </div>
                             @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
                         </div>
-                    }
+                    }*@
                 }
+                @Html.Hidden("hdnSaleOrderRequired", "required")
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -150,16 +153,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="divCustomerSelectList">
-                            @if (Model.IsUpdate || Model.ProdOrderID != null || Model.SaleOrderID != null)
-                            {
                                 <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                              
-                            }
-                            else
-                            {
-                                <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                
-                            }
                         </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -192,6 +186,8 @@
                             </div>
                             <!-- This hidden field will keep the information whether the field is required or not -->
                             @Html.Hidden("hdnBranchRequired", "required")
+                            <!-- This hidden field will keep the information whether the field is disabled or not -->
+                            @Html.Hidden("hdnBranchdisabled", false)
                             @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                         </div>
                     }
@@ -328,9 +324,9 @@
                     <thead>
                         <tr class="text-center TableHead">
                             <th>Product</th>
-                            <th>Ord. Qty</th>
-                            <th>Prev.Deliv.Qty</th>
-                            <th>Curr.Deliv.Qty</th>
+                            <th>Sale Ord. Qty</th>
+                            <th>Prev.Canceled.Qty</th>
+                            <th>Curr.Canceled.Qty</th>
                             <th>...</th>
                         </tr>
                     </thead>
@@ -406,9 +402,14 @@
             console.log(e.message);
         }
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
-            $('.divPlantSelectList').load('/Plant/PlantSelectList')
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
+            $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
+            @if (!Model.IsDocLocked && Model.IsUpdate) { }
+            else {
+                <text>
+                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+                </text>
+            }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?required=' + $('#hdnDocumentStatusRequired').val())
        @if (Model.IsUpdate || Model.SaleOrderID != null || Model.ProdOrderID !=null)
        {
@@ -542,25 +543,25 @@
             console.log(e.message);
         }
 
-        try {
-            $('#DeliveryChallanForm #ProdOrderID').change(function () {
-                debugger;
-                OnServerCallBegin();
-                $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&prodOrderID=" + this.value, function () {
-                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
-                    BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true, false);
-                    //$("input[type=radio][value=ProductionOrder]").attr("disabled", true);
-                    //$("input[type=radio][value=ProductionOrder]").attr('title', "Production Order details has been listed, Reset to continue");
-                    $('#DocumentType').prop('disabled', true);
-                    $("#DocumentType").attr('title', "Production Order details has been listed, Reset to continue");
-                    OnServerCallComplete();
-                });
+        //try {
+        //    $('#DeliveryChallanForm #ProdOrderID').change(function () {
+        //        debugger;
+        //        OnServerCallBegin();
+        //        $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _emptyGuid + "&prodOrderID=" + this.value, function () {
+        //            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#DeliveryChallanForm #hdnCustomerID').val());
+        //            BindDeliveryChallanDetailList("00000000-0000-0000-0000-000000000000", true, false);
+        //            //$("input[type=radio][value=ProductionOrder]").attr("disabled", true);
+        //            //$("input[type=radio][value=ProductionOrder]").attr('title', "Production Order details has been listed, Reset to continue");
+        //            $('#DocumentType').prop('disabled', true);
+        //            $("#DocumentType").attr('title', "Production Order details has been listed, Reset to continue");
+        //            OnServerCallComplete();
+        //        });
 
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
+        //    });
+        //}
+        //catch (e) {
+        //    console.log(e.message);
+        //}
 
         try {
             $('[name="DocumentType"]').change(function () {

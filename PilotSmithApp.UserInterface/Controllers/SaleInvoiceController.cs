@@ -269,7 +269,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Product = saleOrderDetailVM.Product,
                             ProductModel = saleOrderDetailVM.ProductModel,
                             Unit = saleOrderDetailVM.Unit,
-                            TaxType = saleOrderDetailVM.TaxType
+                            TaxType = saleOrderDetailVM.TaxType,
+                            SpecTag=saleOrderDetailVM.SpecTag
                         };
                         saleInvoiceItemViewModelList.Add(saleInvoiceDetailVM);
                     }
@@ -306,7 +307,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       Qty = quotationDetailVM.Qty,
                                                       UnitCode = quotationDetailVM.UnitCode,
                                                       Rate = quotationDetailVM.Rate,
-                                                     // SpecTag = quotationDetailVM.SpecTag,
+                                                      SpecTag = quotationDetailVM.SpecTag,
                                                       Discount = quotationDetailVM.Discount,
                                                       TaxTypeCode = quotationDetailVM.TaxTypeCode,
                                                       CGSTPerc = quotationDetailVM.CGSTPerc,
@@ -314,27 +315,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       IGSTPerc = quotationDetailVM.IGSTPerc,
                                                       CessAmt = 0,
                                                       CessPerc = 0,
-                                                      Product = new ProductViewModel()
-                                                      {
-                                                          ID = (Guid)quotationDetailVM.ProductID,
-                                                          Code = quotationDetailVM.Product.Code,
-                                                          Name = quotationDetailVM.Product.Name,
-                                                      },
-                                                      ProductModel = new ProductModelViewModel()
-                                                      {
-                                                          ID = (Guid)quotationDetailVM.ProductModelID,
-                                                          Name = quotationDetailVM.ProductModel.Name
-                                                      }, 
-                                                      Unit = new UnitViewModel()
-                                                      {
-                                                          Description = quotationDetailVM.Unit.Description
-                                                      },
-                                                      TaxType = new TaxTypeViewModel()
-                                                      {
-                                                          //Code=(int)quotationDetailVM.TaxTypeCode,
-                                                          Description = quotationDetailVM.TaxType.Description,
-                                                          ValueText = quotationDetailVM.TaxType.ValueText
-                                                      },
+                                                      Product = quotationDetailVM.Product,
+                                                      ProductModel = quotationDetailVM.ProductModel, 
+                                                      Unit = quotationDetailVM.Unit,
+                                                      TaxType = quotationDetailVM.TaxType,
                                                   }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceItemViewModelList, Message = "Success" });
@@ -451,15 +435,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                              IGSTPerc = quotationOtherChargeVM.IGSTPerc,
                                                              AddlTaxPerc = 0,
                                                              AddlTaxAmt = 0,
-                                                             OtherCharge = new OtherChargeViewModel()
-                                                             {
-                                                                 Description = quotationOtherChargeVM.OtherCharge.Description
-                                                             },
-                                                             TaxType = new TaxTypeViewModel()
-                                                             {
-                                                                 Code = quotationOtherChargeVM.TaxType.Code,
-                                                                 ValueText = quotationOtherChargeVM.TaxType.ValueText
-                                                             },
+                                                             OtherCharge = quotationOtherChargeVM.OtherCharge,
+                                                             TaxType = quotationOtherChargeVM.TaxType,
                                                          }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceOtherChargeViewModelList, Message = "Success" });
@@ -496,15 +473,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                                IGSTPerc = quotationOtherChargeVM.IGSTPerc,
                                                                AddlTaxPerc = 0,
                                                                AddlTaxAmt = 0,
-                                                               OtherCharge = new OtherChargeViewModel()
-                                                               {
-                                                                   Description = quotationOtherChargeVM.OtherCharge.Description
-                                                               },
-                                                               TaxType = new TaxTypeViewModel()
-                                                               {
-                                                                   Code = quotationOtherChargeVM.TaxType.Code,
-                                                                   ValueText = quotationOtherChargeVM.TaxType.ValueText
-                                                               },
+                                                               OtherCharge = quotationOtherChargeVM.OtherCharge,
+                                                               TaxType = quotationOtherChargeVM.TaxType,
                                                            }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceOtherChargeViewModelList, Message = "Success" });
@@ -612,7 +582,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllSaleInvoice
         #region InsertUpdateSaleInvoice
         [HttpPost]
-        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "W")]
         public string InsertUpdateSaleInvoice(SaleInvoiceViewModel saleInvoiceVM)
         {
             //object resultFromBusiness = null;

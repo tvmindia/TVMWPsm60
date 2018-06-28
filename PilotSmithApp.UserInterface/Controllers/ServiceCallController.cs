@@ -39,9 +39,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion Constructor Injection 
 
         // GET: ServiceCall
-        [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "W")]
-        public ActionResult Index()
+        [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "R")]
+        public ActionResult Index(string id)
         {
+            ViewBag.ID = id;
             ServiceCallAdvanceSearchViewModel serviceCallAdvanceSearchVM = new ServiceCallAdvanceSearchViewModel();
             serviceCallAdvanceSearchVM.AdvArea = new AreaViewModel();
             serviceCallAdvanceSearchVM.AdvArea.AreaSelectList = _areaBusiness.GetAreaForSelectList();

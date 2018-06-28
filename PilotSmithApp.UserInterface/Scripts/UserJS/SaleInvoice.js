@@ -13,7 +13,12 @@ $(document).ready(function () {
             EditSaleInvoice(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddSaleInvoice();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {
@@ -43,7 +48,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
-                $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
+               // $('.divboxASearch #AdvApprovalStatusCode').val('').trigger('change');
                 $('#AdvEmailSentStatus').val('').trigger('change');
                 break;
             case 'Init':
@@ -55,7 +60,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 $('.divboxASearch #AdvBranchCode').val('');
                 $('.divboxASearch #AdvDocumentStatusCode').val('');
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
-                $('.divboxASearch #AdvApprovalStatusCode').val('');
+               // $('.divboxASearch #AdvApprovalStatusCode').val('');
                 $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
@@ -74,7 +79,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 SaleInvoiceAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
                 SaleInvoiceAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
                 SaleInvoiceAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
-                SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+               // SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
                 SaleInvoiceAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val() == "" ? null : $('#AdvEmailSentStatus').val();
                 $('#AdvanceSearch').val(JSON.stringify(SaleInvoiceAdvanceSearchViewModel));
                 $('#FormExcelExport').submit();
@@ -92,7 +97,7 @@ function BindOrReloadSaleInvoiceTable(action) {
         SaleInvoiceAdvanceSearchViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
         SaleInvoiceAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
         SaleInvoiceAdvanceSearchViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
-        SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+       // SaleInvoiceAdvanceSearchViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
         SaleInvoiceAdvanceSearchViewModel.AdvEmailSentStatus = $('#AdvEmailSentStatus').val();
         //apply datatable plugin on SaleInvoice table
         _dataTable.SaleInvoiceList = $('#tblSaleInvoice').DataTable(
@@ -247,7 +252,7 @@ function ResetSaleInvoice() {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", $('#SaleInvoiceForm #ID').val());
             }
             BindSaleInvoiceDetailList($('#ID').val());
-            BindSaleInvoiceOtherChargesDetailList($('#ID').val());
+            BindSaleInvoiceOtherChargesDetailList($('#ID').val());           
             CalculateTotal();
             clearUploadControl();
             PaintImages($('#SaleInvoiceForm #ID').val());
@@ -329,6 +334,7 @@ function DeleteSaleInvoiceItem(id) {
                     $('#ID').val(_emptyGuid);
                     ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
                     ResetSaleInvoice();
+                    $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
                     BindOrReloadSaleInvoiceTable('Init');
                     break;
                 case "ERROR":
@@ -375,7 +381,8 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      if (data != "") {
-                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' +
+                         debugger;
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' +
                                                  row.Product.Name + '</br>' + row.ProductModel.Name
                      }
                      else {
@@ -508,7 +515,7 @@ function AddSaleInvoiceDetailToList() {
     $("#FormSaleInvoiceDetail").submit(function () { });
 
     if ($('#FormSaleInvoiceDetail #IsUpdate').val() == 'True') {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
             saleInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
             saleInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
@@ -541,7 +548,7 @@ function AddSaleInvoiceDetailToList() {
         }
     }
     else {
-        if (($('#ProductID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             if (_dataTable.SaleInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
@@ -560,7 +567,7 @@ function AddSaleInvoiceDetailToList() {
                 saleInvoiceDetailVM[0].Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
                 saleInvoiceDetailVM[0].Rate = $('#divModelSaleInvoicePopBody #Rate').val();
                 saleInvoiceDetailVM[0].Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
-                saleInvoiceDetailVM[0].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                saleInvoiceDetailVM[0].TaxTypeCode =$('#divModelSaleInvoicePopBody #TaxTypeCode').val()!=null? $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0]:"";
                 saleInvoiceDetailVM[0].TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
                 saleInvoiceDetailVM[0].CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
                 saleInvoiceDetailVM[0].SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
@@ -610,7 +617,7 @@ function AddSaleInvoiceDetailToList() {
                         SaleInvoiceDetailVM.Unit.Description = $("#divModelSaleInvoicePopBody #UnitCode").val() != "" ? $("#divModelSaleInvoicePopBody #UnitCode option:selected").text().trim() : "";
                         SaleInvoiceDetailVM.Rate = $('#divModelSaleInvoicePopBody #Rate').val();
                         SaleInvoiceDetailVM.Discount = $('#divModelSaleInvoicePopBody #Discount').val() != "" ? $('#divModelSaleInvoicePopBody #Discount').val() : 0;
-                        SaleInvoiceDetailVM.TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
+                        SaleInvoiceDetailVM.TaxTypeCode =$('#divModelSaleInvoicePopBody #TaxTypeCode').val()!=null? $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0]:"";
                         SaleInvoiceDetailVM.TaxType.ValueText = $('#divModelSaleInvoicePopBody #TaxTypeCode').val();
                         SaleInvoiceDetailVM.CGSTPerc = $('#divModelSaleInvoicePopBody #hdnCGSTPerc').val();
                         SaleInvoiceDetailVM.SGSTPerc = $('#divModelSaleInvoicePopBody #hdnSGSTPerc').val();
@@ -690,16 +697,19 @@ function ConfirmDeleteSaleInvoiceDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
     if (saleInvoiceDetail.ID === _emptyGuid) {
-        var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
-        saleInvoiceDetailList.splice(_datatablerowindex, 1);
-        _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentSaleInvoiceDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteSaleInvoiceDetail("' + saleInvoiceDetail.ID + '")');
 
     }
+}
+function DeleteCurrentSaleInvoiceDetail(_datatablerowindex) {
+    var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
+    saleInvoiceDetailList.splice(_datatablerowindex, 1);
+    _dataTable.SaleInvoiceDetailList.clear().rows.add(saleInvoiceDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteSaleInvoiceDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {
@@ -979,10 +989,10 @@ function EditSaleInvoiceOtherChargesDetail(this_Obj) {
         $("#FormOtherExpenseDetail #OtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #ChargeAmount").val(saleInvoiceOtherChargesDetail.ChargeAmount);
-        if (saleInvoiceOtherChargesDetail.TaxType.Code != 0) {
+       // if (saleInvoiceOtherChargesDetail.TaxType.Code != 0) {
             $('#FormOtherExpenseDetail #TaxTypeCode').val(saleInvoiceOtherChargesDetail.TaxType.ValueText);
             $('#FormOtherExpenseDetail #hdnTaxTypeCode').val(saleInvoiceOtherChargesDetail.TaxType.ValueText);
-        }
+       // }
         $('#FormOtherExpenseDetail #hdnCGSTPerc').val(saleInvoiceOtherChargesDetail.CGSTPerc);
         $('#FormOtherExpenseDetail #hdnSGSTPerc').val(saleInvoiceOtherChargesDetail.SGSTPerc);
         $('#FormOtherExpenseDetail #hdnIGSTPerc').val(saleInvoiceOtherChargesDetail.IGSTPerc);
@@ -1005,17 +1015,20 @@ function ConfirmDeleteSaleInvoiceOtherChargeDetail(this_Obj) {
     _datatablerowindex = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceOtherChargeDetail = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (saleInvoiceOtherChargeDetail.ID === _emptyGuid) {
-        var quotationOtherChargeDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
-        quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
-        ClearCalculatedFields();
-        _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
-        CalculateTotal();
-        notyAlert('success', 'Detail Row deleted successfully');
+        notyConfirm('Are you sure to delete?', 'DeleteCurrentSaleInvoiceOtherChargeDetail("' + _datatablerowindex + '")');
     }
     else {
         notyConfirm('Are you sure to delete?', 'DeleteSaleInvoiceOtherChargeDetail("' + saleInvoiceOtherChargeDetail.ID + '")');
 
     }
+}
+function DeleteCurrentSaleInvoiceOtherChargeDetail(_datatablerowindex) {
+    var quotationOtherChargeDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
+    quotationOtherChargeDetailList.splice(_datatablerowindex, 1);
+    ClearCalculatedFields();
+    _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(quotationOtherChargeDetailList).draw(false);
+    CalculateTotal();
+    notyAlert('success', 'Detail Row deleted successfully');
 }
 function DeleteSaleInvoiceOtherChargeDetail(ID) {
     if (ID != _emptyGuid && ID != null && ID != '') {

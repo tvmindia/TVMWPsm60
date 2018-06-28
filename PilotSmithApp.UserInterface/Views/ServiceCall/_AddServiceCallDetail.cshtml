@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
             <div class="col-md-12">
                 <div class="divProductModelSelectList">
@@ -30,7 +30,8 @@
                 </div>              
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
-            @Html.Hidden("hdnProductModelRequired", "required")
+            @*@Html.Hidden("hdnProductModelRequired", "required")*@
+            @Html.ValidationMessage("ProductModelID", "Product Model Required", new { @class = "text-danger", @style = "display:none;", @id = "msgProductModel" })
             @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
         </div>
         <div id="divProductBasicInfo">
@@ -64,7 +65,7 @@
             <div class="col-md-12">
                 @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id= "InstalledDate" } })
                 @*@Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })*@
-                @Html.ValidationMessage("InstalledDateFormatted", "InstalledDate Required", new { @class = "text-danger", @style="display:none;", @id= "msgInstalledDate" })
+                @Html.ValidationMessage("InstalledDateFormatted", "Installed Date Required", new { @class = "text-danger", @style="display:none;", @id= "msgInstalledDate" })
             </div>
         </div>
 
@@ -103,7 +104,7 @@
                     if ($('.divProductModelSelectList') != undefined) {
                         $('#dropLoad').addClass('fa fa-spinner fa-spin');
                         if (this.value != "") {
-                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=" + $('hdnProductModelRequired').val() + "&productID=" + this.value)
                         }
                         else {
                             $('.divProductModelSelectList').empty();

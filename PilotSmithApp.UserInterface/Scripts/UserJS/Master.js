@@ -380,7 +380,7 @@ function SaveSuccessEmployeeMaster(data, status) {
                 if ($(".divEmployeeSelectList")[0])
                     $('.divEmployeeSelectList').load('/Employee/EmployeeSelectList?required='+$('#hdnEmployeeRequired').val());
                 if ($(".divResponsiblePersonSelectList")[0])
-                    $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('$hdnResponsiblePersonRequired').val());
+                    $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('hdnResponsiblePersonRequired').val());
                 if ($(".divAttendedBySelectList")[0])
                     $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val());
                 if ($(".divServicedBySelectList")[0])
@@ -798,6 +798,74 @@ function SaveSuccessTaxType(data, status) {
                             });
                         });
                 }
+                if ($('#divModelPopServiceCall')[0]) {
+                    $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                        $('#divModelPopCallCharges .CalculateGST').change(function () {
+                            debugger;
+                            var ChargeAmount = parseFloat($('#divModelPopCallCharges #ChargeAmount').val() != "" ? $('#divModelPopCallCharges #ChargeAmount').val() : 0);
+                            var CGST = parseFloat($('#divModelPopCallCharges #TaxTypeCode').val() != "" ? $('#divModelPopCallCharges #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                            var SGST = parseFloat($('#divModelPopCallCharges #TaxTypeCode').val() != "" ? $('#divModelPopCallCharges #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                            var IGST = parseFloat($('#divModelPopCallCharges #TaxTypeCode').val() != "" ? $('#divModelPopCallCharges #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                            $('#divModelPopCallCharges #hdnCGSTPerc').val(CGST);
+                            $('#divModelPopCallCharges #hdnSGSTPerc').val(SGST);
+                            $('#divModelPopCallCharges #hdnIGSTPerc').val(IGST);
+                            $('#divModelPopCallCharges #CGSTPerc').val(ChargeAmount * CGST / 100);
+                            $('#divModelPopCallCharges #SGSTPerc').val(ChargeAmount * SGST / 100);
+                            $('#divModelPopCallCharges #IGSTPerc').val(ChargeAmount * IGST / 100);
+                        });
+                    });
+                }
+                if ($('#divModelPopProformaInvoice')[0]) {
+                    if ($('.divOtherChargeSelectList')[0])
+                        $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                            $('#divModelPopProformaInvoice .CalculateGST').change(function () {
+                                debugger;
+                                var CGST = 0, SGST = 0, IGST = 0;
+                                var ChargeAmount = parseFloat($('#divModelPopProformaInvoice #ChargeAmount').val() != "" ? $('#divModelPopProformaInvoice #ChargeAmount').val() : 0);
+                                if ($('#divModelPopProformaInvoice #TaxTypeCode').val() != null) {
+                                    CGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                                    SGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                                    IGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                                }
+                                var AddlTaxPerc = parseFloat($('#divModelPopProformaInvoice #AddlTaxPerc').val() != "" ? $('#divModelPopProformaInvoice #AddlTaxPerc').val() : 0);
+                                $('#divModelPopProformaInvoice #hdnCGSTPerc').val(CGST);
+                                $('#divModelPopProformaInvoice #hdnSGSTPerc').val(SGST);
+                                $('#divModelPopProformaInvoice #hdnIGSTPerc').val(IGST);
+                                $('#divModelPopProformaInvoice #hdnAddlTaxPerc').val(AddlTaxPerc);
+                                $('#divModelPopProformaInvoice #CGSTPerc').val(ChargeAmount * CGST / 100);
+                                $('#divModelPopProformaInvoice #SGSTPerc').val(ChargeAmount * SGST / 100);
+                                $('#divModelPopProformaInvoice #IGSTPerc').val(ChargeAmount * IGST / 100);
+                                var TaxAmount = parseFloat($('#divModelPopProformaInvoice #CGSTPerc').val()) + parseFloat($('#divModelPopProformaInvoice #SGSTPerc').val()) + parseFloat($('#divModelPopProformaInvoice #IGSTPerc').val())
+                                $('#divModelPopProformaInvoice #AddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+                                $('#divModelPopProformaInvoice #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
+                            });
+                        });
+                    else
+                        $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
+                            $('#divModelPopProformaInvoice .CalculateGST').change(function () {
+                                debugger;
+                                var CGST = 0, SGST = 0, IGST = 0;
+                                var qty = parseInt($('#divModelPopProformaInvoice #Qty').val() != "" ? $('#divModelPopProformaInvoice #Qty').val() : 0);
+                                var rate = parseFloat($('#divModelPopProformaInvoice #Rate').val() != "" ? $('#divModelPopProformaInvoice #Rate').val() : 0);
+                                var discount = parseFloat($('#divModelPopProformaInvoice #Discount').val() != "" ? $('#divModelPopProformaInvoice #Discount').val() : 0);
+                                if ($('#divModelPopProformaInvoice #TaxTypeCode').val() != null) {
+                                    CGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[0].split('-')[1] : 0);
+                                    SGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[1].split('-')[1] : 0);
+                                    IGST = parseFloat($('#divModelPopProformaInvoice #TaxTypeCode').val() != "" ? $('#divModelPopProformaInvoice #TaxTypeCode').val().split('|')[1].split(',')[2].split('-')[1] : 0);
+                                }
+                                var CessPerc = parseFloat($('#divModelPopProformaInvoice #CessPerc').val() != "" ? $('#divModelPopProformaInvoice #CessPerc').val() : 0);
+                                var taxableAmount = (rate * qty) - discount;
+                                $('#divModelPopProformaInvoice #hdnCGSTPerc').val(CGST);
+                                $('#divModelPopProformaInvoice #hdnSGSTPerc').val(SGST);
+                                $('#divModelPopProformaInvoice #hdnIGSTPerc').val(IGST);
+                                $('#divModelPopProformaInvoice #CGSTPerc').val(taxableAmount * CGST / 100);
+                                $('#divModelPopProformaInvoice #SGSTPerc').val(taxableAmount * SGST / 100);
+                                $('#divModelPopProformaInvoice #IGSTPerc').val(taxableAmount * IGST / 100);
+                                var TaxAmount = parseFloat(taxableAmount * CGST / 100) + parseFloat(taxableAmount * SGST / 100) + parseFloat(taxableAmount * IGST / 100)
+                                $('#divModelPopProformaInvoice #CessAmt').val((TaxAmount * CessPerc) / 100);
+                            });
+                        });
+                }
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -972,6 +1040,66 @@ function SaveSuccessCountry(data, status) {
             }
             else if ($('#hdnMasterCall').val() == "OTR") {
                 $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val());
+                if ($('#CustomerForm')[0])
+                    $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+                        $('#divCustomerForm #CountryCode').change(function () {
+                            debugger;
+                            if ($('.divStateSelectList') != undefined) {
+                                $('#dropLoad').addClass('fa fa-spinner fa-spin');
+                                if (this.value != "") {
+                                    $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value)
+                                }
+                                else {
+                                    $('.divStateSelectList').empty();
+                                    $('.divStateSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+
+                                }
+                            }
+                        });
+                    });
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+
+//Add Bank
+function AddBankMaster(flag) {
+    debugger;
+    OnServerCallBegin();
+    $("#divMasterBody").load("Bank/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#lblModelMasterContextLabel').text('Add Bank Information')
+            $('#divModelMasterPopUp').modal('show');
+
+            $('#hdnMasterCall').val(flag);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessBank(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadBankTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divBankSelectList').load('/Bank/BankSelectList?required=' + $('#hdnBankRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
