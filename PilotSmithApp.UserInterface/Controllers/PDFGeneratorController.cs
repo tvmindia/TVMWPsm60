@@ -11,21 +11,22 @@ using Newtonsoft.Json;
 using iTextSharp.tool.xml.pipeline;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
+using System.Collections.Generic;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
     public class PDFGeneratorController : Controller
     {
         // GET: PDFGenerator
-       
+
         public ActionResult Index()
         {
-           //string result= SendPDFDoc("");
+            //string result= SendPDFDoc("");
             return View();
         }
         [HttpPost]
         public byte[] GetPdfAttachment(PDFToolsViewModel pDFTools)
-        { 
+        {
             try
             {
                 string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
@@ -33,16 +34,16 @@ namespace PilotSmithApp.UserInterface.Controllers
                 Document pdfDoc = new Document(PageSize.A4, -13f, -4f, 30f, 100f);
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
-                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);                    
+                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
                     pdfDoc.Open();
-                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);                    
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
                     pdfDoc.Close();
                     byte[] bytes = memoryStream.ToArray();
                     memoryStream.Close();
                     return bytes;
                 }
-                }
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -216,7 +217,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 //headerSectionTbl.AddCell(cell1);
                 //headerSectionTbl.WriteSelectedRows(0, -1, 0, document.PageSize.Height, writer.DirectContent);
                 iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
-                jpg.ScaleToFit(document.PageSize.Width,document.PageSize.Height);
+                jpg.ScaleToFit(document.PageSize.Width, document.PageSize.Height);
                 jpg.SetAbsolutePosition(0, 0);
                 document.Add(jpg);
                 //jpg.SetAbsolutePosition(pdfDoc.Left, pdfDoc.Top - 60);
@@ -238,7 +239,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             //jpg.Alignment = Element.ALIGN_LEFT;
             string htmlBody = PDFTools.Content == null ? "" : PDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
             StringReader reader = new StringReader(htmlBody.ToString());
-            Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 141.732f, 141.732f);
+            Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
             byte[] bytes = null;
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -249,19 +250,53 @@ namespace PilotSmithApp.UserInterface.Controllers
                 pdfDoc.Open();
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
                 pdfDoc.Close();
-                //MemoryStream stream = new MemoryStream(System.IO.File.ReadAllBytes(Path.Combine(Server.MapPath("~/Content/images/Terms&Conditions.pdf"))));
-                //memoryStream.Write(stream.GetBuffer(), 0, (int)stream.Length);
                 bytes = memoryStream.ToArray();
                 memoryStream.Close();
 
             }
             string contentFileName = PDFTools.ContentFileName.ToString() == null ? "Report.pdf" : (PDFTools.ContentFileName.ToString() + " - " + PDFTools.CustomerName.ToString() + ".pdf");
-            string fname = Path.Combine(Server.MapPath("~/Content/Uploads/"), contentFileName);
-            System.IO.File.WriteAllBytes(fname, bytes);
-            string contentType = "application/pdf";
-            return File(fname, contentType, contentFileName);
+            string filename = Path.Combine(Server.MapPath("~/Content/Uploads/"), contentFileName);
+            if (PDFTools.ContentFileName.ToString() == "Quotation"|| PDFTools.ContentFileName.ToString() == "ProformaInvoice" || PDFTools.ContentFileName.ToString() == "SaleInvoice")
+            {
+                string demo = Path.Combine(Server.MapPath("~/Content/Uploads/"), "Demo"+ contentFileName);
+                System.IO.File.WriteAllBytes(demo, bytes);
+                MergePDFs(filename, demo, Server.MapPath("~/Content/images/Terms&Cond.pdf"));                
+                string contentType = "application/pdf";
+                return File(filename, contentType, contentFileName);
+            }
+            else
+            {                
+                System.IO.File.WriteAllBytes(filename, bytes);
+                string contentType = "application/pdf";
+                return File(filename, contentType, contentFileName);
+            }
         }
+        private void MergePDFs(string outPutFilePath, params string[] filesPath)
+        {
+            List<PdfReader> readerList = new List<PdfReader>();
+            foreach (string filePath in filesPath)
+            {
+                PdfReader pdfReader = new PdfReader(filePath);
+                readerList.Add(pdfReader);
+            }
 
+            //Define a new output document and its size, type
+            Document document = new Document(PageSize.A4, 0, 0, 0, 0);
+            //Create blank output pdf file and get the stream to write on it.
+            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outPutFilePath, FileMode.Create));
+            document.Open();
+
+            foreach (PdfReader reader in readerList)
+            {
+                for (int i = 1; i <= reader.NumberOfPages; i++)
+                {
+                    PdfImportedPage page = writer.GetImportedPage(reader, i);
+                    document.Add(iTextSharp.text.Image.GetInstance(page));
+                }
+            }
+            document.Close();
+           
+        }
 
 
     }

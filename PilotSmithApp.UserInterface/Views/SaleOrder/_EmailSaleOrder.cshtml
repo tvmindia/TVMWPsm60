@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 <tr><td colspan="6">&nbsp;</td></tr>
-                <tr><td colspan="3" style="padding-left:30px"><b>To,</b><br /> <span>@Model.Customer.CompanyName<br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
+                <tr><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>To,</b><br /> <span>@Model.Customer.CompanyName<br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
                 <tr><td colspan="6">&nbsp;</td></tr>
                 <tr><td>SaleOrder No</td><td colspan="2">: @Model.SaleOrderNo</td><td>Ref. SaleOrder No.</td><td colspan="2">: @Model.SaleOrderRefNo</td></tr>
                 <tr><td>SaleOrder Date</td><td colspan="2">: @Model.SaleOrderDateFormatted</td><td>Delivery Date</td><td colspan="2">: @Model.ExpectedDelvDateFormatted</td></tr>
@@ -90,7 +90,7 @@
                     GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
                 }
                 <tr>
-                    <td colspan="7" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
+                    <td colspan="6" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
                         @if (Model.SaleOrderOtherChargeList.Count != 0)
                         {
                             <table id="OtherChargeDetailsTable" style="font-family: arial, sans-serif;width: 90%;padding:8px;" cellspacing="0">
@@ -227,12 +227,13 @@
                         <b><i>Indian Rupees @tot only </i></b>
                     </td>
                 </tr>
-                <tr><td>&nbsp;</td></tr>
+                <tr><td colspan="10">&nbsp;</td></tr>
                 <tr>
                    @{ 
                        var mailbodyFooter = @Model.MailBodyFooter;
                        mailbodyFooter = mailbodyFooter.Replace("\r\n", "<br />");
-                        <td colspan="6" style="font-size:12px;">@Html.Raw(@mailbodyFooter)</td>
+                        <td colspan="5" style="font-size:12px;">@Html.Raw(@mailbodyFooter)</td>
+                        <td colspan="5"></td>
                        }
                 </tr>
             </tbody>
