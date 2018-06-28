@@ -26,7 +26,7 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
                 StringReader reader = new StringReader(htmlBody.ToString());
-                Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 141.732f, 141.732f);
+                Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
