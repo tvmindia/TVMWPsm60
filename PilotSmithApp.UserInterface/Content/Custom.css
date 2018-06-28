@@ -1366,9 +1366,9 @@ select{
   top: 50%;
   transform: translateY(-50%);
   height: 100%;
-  width: 1200px;
+  width: 900px;
   list-style: none;
-  text-align: right;
+  text-align: center;
 }
 
 .zoom-menu li {
