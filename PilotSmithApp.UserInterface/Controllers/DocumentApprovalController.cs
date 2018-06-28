@@ -113,7 +113,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllApprovalHistory
 
         #region Approvals
-        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        //[AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public ActionResult GetApprovers(string documentTypeCode)
         {
             DocumentApproverViewModel SendForApprovalVM = new DocumentApproverViewModel();
@@ -225,7 +225,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion ValidateDocumentsApprovalPermission
 
         #region SendDocForApproval
-        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        //[AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public async Task <string> SendDocForApproval(string documentID, string documentTypeCode,string approvers)
         {
             try
@@ -250,7 +250,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion SendDocForApproval
 
         #region ReSendDocForApproval
-        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+       // [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public async Task<string> ReSendDocForApproval(string documentID, string documentTypeCode, string latestApprovalID)
         {
             try

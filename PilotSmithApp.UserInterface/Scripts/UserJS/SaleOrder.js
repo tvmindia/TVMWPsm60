@@ -318,18 +318,18 @@ function ResetSaleOrder() {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
                     break;
             }
-            if ($('#LatestApprovalStatus').val() == "") {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
-            }
-            else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
-            }
-            else if ($('#LatestApprovalStatus').val() == 4) {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
-            }
-            else {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-            }
+            //if ($('#LatestApprovalStatus').val() == "") {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+            //}
+            //else if ($('#LatestApprovalStatus').val() == 3 || $('#LatestApprovalStatus').val() == 0) {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
+            //}
+            //else if ($('#LatestApprovalStatus').val() == 4) {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
+            //}
+            //else {
+            //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+            //}
             BindSaleOrderDetailList($('#ID').val(), false, false);
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
             CalculateTotal();
