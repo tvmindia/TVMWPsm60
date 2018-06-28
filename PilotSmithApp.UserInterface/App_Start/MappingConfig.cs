@@ -124,6 +124,10 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<CountryAdvanceSearchViewModel, CountryAdvanceSearch>().ReverseMap();
                 config.CreateMap<TimeLineViewModel, TimeLine>().ReverseMap();
 
+                //Reports
+                config.CreateMap<PSASysReportViewModel, PSASysReport>().ReverseMap();
+                //config.CreateMap<PendingSaleOrderProductionReportViewModel, PendingSaleOrderProductionReport>().ReverseMap();
+                config.CreateMap<EnquiryReportViewModel, EnquiryReport>().ReverseMap();
             });
         }
     }

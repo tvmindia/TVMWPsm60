@@ -91,6 +91,7 @@
     <Compile Include="Contract\IQuotationBusiness.cs" />
     <Compile Include="Contract\IReferencePersonBusiness.cs" />
     <Compile Include="Contract\IReferenceTypeBusiness.cs" />
+    <Compile Include="Contract\IReportBusiness.cs" />
     <Compile Include="Contract\ISaleInvoiceBusiness.cs" />
     <Compile Include="Contract\ISaleOrderBusiness.cs" />
     <Compile Include="Contract\ISalesInvoieBusiness.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Service\QuotationBusiness.cs" />
     <Compile Include="Service\ReferencePersonBusiness.cs" />
     <Compile Include="Service\ReferenceTypeBusiness.cs" />
+    <Compile Include="Service\ReportBusiness.cs" />
     <Compile Include="Service\SaleInvoiceBusiness.cs" />
     <Compile Include="Service\SaleOrderBusiness.cs" />
     <Compile Include="Service\SalesInvoieBusiness.cs" />

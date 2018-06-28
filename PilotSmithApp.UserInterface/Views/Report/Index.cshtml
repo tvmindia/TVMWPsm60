@@ -1,0 +1,85 @@
+﻿@*model PilotSmithApp.UserInterface.Models.PSASysReportViewModel*@
+
+@using PilotSmithApp.UserInterface.App_Start
+@using PilotSmithApp.UserInterface.Models;
+@model PSASysReportViewModel
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+@Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
+<style>
+    .headSeperator{
+        color: #00a65a;
+    }
+</style>
+<div class="row">
+    <div class="form-group col-md-8">
+        <div class="col-md-12">&nbsp;</div>
+        <div class="col-md-12">
+            <div class="input-group">
+                @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onkeypress = "RedirectSearchClick(event,this)" } })
+                <div class="input-group-btn">
+                    <button class="btn searchbtn" type="submit" onclick="RefreshReportSummary()"><i class="fa fa-search" style="font-size:18px;"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div>
+
+                <br />
+                <br />
+                <div class="col-md-12" style="padding-left:0px;">
+                    @{
+                        if (Model.PSASysReportList != null)
+                        {
+                            foreach (PSASysReportViewModel svm in Model.PSASysReportList.GroupBy(elem => elem.GroupOrder).Select(group => group.First()))
+                            {
+
+                                <div class="col-md-12">
+                                    <div class="col-md-12 headSeperator" style="margin-left:0%;width:100%;">@svm.ReportGroup</div>
+                                    @foreach (PSASysReportViewModel subsvm in Model.PSASysReportList.Where(s => s.GroupOrder == svm.GroupOrder).OrderBy(os => os.ReportOrder))
+                                    {
+                                        <div class="col-md-12 ReportRows" title="@subsvm.ReportDescription">
+                                            <div class="col-md-5 " style="padding-left:0px;">
+                                             <h5><a href="/@subsvm.Controller/@subsvm.Action" style="color:black"> @subsvm.ReportName</a></h5>
+                                                @*<p>
+                                                        @subsvm.ReportDescription
+                                                    </p>*@
+
+
+                                                @*<a href="/@svm.Controller/@subsvm.Action" class="btn btn-link">Run </a>*@
+
+
+                                            </div>
+                                            <div class="col-md-7 ">
+                                                <ul class="pager">
+                                                    <li style="font-size:12px;" class="next"><a href="/@subsvm.Controller/@subsvm.Action">Run <span aria-hidden="true">&rarr;</span></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            }
+
+                        }
+
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/Report/Report")
+
+
+
+
+
+

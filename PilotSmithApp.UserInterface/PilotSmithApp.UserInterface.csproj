@@ -695,6 +695,10 @@
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
     <Content Include="Scripts\UserJS\Plant.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
+    <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
+    <Content Include="Scripts\UserJS\Report\Report.js" />
+    <Content Include="Scripts\UserJS\Report\ReportAdvanceSelectList.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\tether.js" />
@@ -793,6 +797,7 @@
     <Compile Include="Controllers\QuotationController.cs" />
     <Compile Include="Controllers\ReferencePersonController.cs" />
     <Compile Include="Controllers\ReferenceTypeController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SaleInvoiceController.cs" />
     <Compile Include="Controllers\SaleOrderController.cs" />
@@ -852,6 +857,7 @@
     <Compile Include="Models\DynamicUIViewModel.cs" />
     <Compile Include="Models\ManageAccessViewModel.cs" />
     <Compile Include="Models\PrivilegesViewModel.cs" />
+    <Compile Include="Models\PSASysReportViewModel.cs" />
     <Compile Include="Models\PSAUserViewModel.cs" />
     <Compile Include="Models\QuotationViewModel.cs" />
     <Compile Include="Models\ReferencePersonViewModel.cs" />
@@ -1044,6 +1050,9 @@
     <Content Include="Views\DashBoard\AdminDashboard.cshtml" />
     <Content Include="Views\DashBoard\_RecentDocument.cshtml" />
     <Content Include="Views\DashBoard\_SearchDocument.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Report\PendingSaleOrderProductionReport.cshtml" />
+    <Content Include="Views\Report\EnquiryReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
