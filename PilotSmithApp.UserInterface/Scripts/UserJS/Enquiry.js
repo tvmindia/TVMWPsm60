@@ -14,7 +14,12 @@ $(document).ready(function () {
             EditEnquiry(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddEnquiry();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
             
     }

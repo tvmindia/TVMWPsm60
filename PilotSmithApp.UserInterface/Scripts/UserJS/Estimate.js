@@ -14,7 +14,12 @@ $(document).ready(function () {
                 EditEstimate(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddEstimate();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {

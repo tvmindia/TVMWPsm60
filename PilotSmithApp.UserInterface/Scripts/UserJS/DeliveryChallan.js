@@ -13,7 +13,12 @@ $(document).ready(function () {
             EditDeliveryChallan(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddDeliveryChallan();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {

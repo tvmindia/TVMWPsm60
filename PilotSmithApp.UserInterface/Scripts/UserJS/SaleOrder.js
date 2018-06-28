@@ -14,7 +14,12 @@ $(document).ready(function () {
                 EditSaleOrder(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddSaleOrder();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {

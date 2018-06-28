@@ -14,7 +14,12 @@ $(document).ready(function () {
                 EditQuotation(this);
         });
         if ($('#RedirectToDocument').val() != "") {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddQuotation();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {

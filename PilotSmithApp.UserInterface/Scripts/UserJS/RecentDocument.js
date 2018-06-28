@@ -16,6 +16,13 @@ $(document).ready(function () {
             }
         });
 
+        $('#zoomBtn').click(function () {
+            $('.zoom-btn-sm').toggleClass('scale-out');
+            $('.zoom-fab-label').toggleClass('scale-out');
+            $('#zoomBtn>i').toggleClass("fa-plus");
+            $('#zoomBtn>i').toggleClass("fa-close");
+        });
+
     } catch (ex) {
         console.log(ex.message);
     }

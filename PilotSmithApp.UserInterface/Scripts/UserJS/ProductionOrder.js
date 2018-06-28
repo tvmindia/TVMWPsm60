@@ -15,9 +15,13 @@ $(document).ready(function () {
             EditProductionOrder(this);
         });
         debugger;
-        if ($('#RedirectToDocument').val() != "")
-        {
-            EditRedirectToDocument($('#RedirectToDocument').val());
+        if ($('#RedirectToDocument').val() != "") {
+            if ($('#RedirectToDocument').val() === _emptyGuid) {
+                AddProductionOrder();
+            }
+            else {
+                EditRedirectToDocument($('#RedirectToDocument').val());
+            }
         }
     }
     catch (e) {
