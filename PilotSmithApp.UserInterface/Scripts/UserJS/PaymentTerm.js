@@ -63,6 +63,7 @@ function BindOrReloadPaymentTermTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -76,20 +77,18 @@ function BindOrReloadPaymentTermTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "NoOfDays", "defaultContent": "<i>-</i>" },
                 {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditPaymentTermMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeletePaymentTermMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [2,3] },
+                columnDefs: [
+                { className: "text-center", "targets": [1,2] },
                 { className: "text-right", "targets": [] },
-                { "targets": [0], "width": "10%" },
-                { "targets": [1], "width": "50%" },
+                { "targets": [0], "width": "60%" },
+                { "targets": [1], "width": "10%" },
                 { "targets": [2], "width": "10%" },
-                { "targets": [3], "width": "10%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

@@ -113,7 +113,12 @@
                     }
                 });
             });
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val(), function () {
+                $('#DocumentStatusCode').select2({
+                    dropdownParent: $('#divModelPopServiceCall')
+                });
+                $('.select2').addClass('form-control newinput');
+            })
         }
         catch (e) {
             console.log(e.message);

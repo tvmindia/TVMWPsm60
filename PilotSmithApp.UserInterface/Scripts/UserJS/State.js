@@ -58,6 +58,7 @@ function BindOrReloadStateTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -71,7 +72,6 @@ function BindOrReloadStateTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "Country.Description", "defaultContent": "<i>-</i>" },
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
@@ -79,12 +79,12 @@ function BindOrReloadStateTable(action) {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditStateMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteStateMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [ 3,4] },                
-                { "targets": [1], "width": "60%" },
-                { "targets": [2], "width": "20%" },
+                columnDefs: [
+                { className: "text-center", "targets": [ 2,3] },                
+                { "targets": [0], "width": "60%" },
+                { "targets": [1], "width": "20%" },
+                { "targets": [2], "width": "10%" },
                 { "targets": [3], "width": "10%" },
-                { "targets": [4], "width": "10%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
