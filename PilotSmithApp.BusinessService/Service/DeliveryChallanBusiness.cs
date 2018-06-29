@@ -35,7 +35,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (deliveryChallan.DeliveryChallanDetailList.Count > 0)
             {
-                deliveryChallan.DetailXML = _commonBusiness.GetXMLfromDeliveryChallanObject(deliveryChallan.DeliveryChallanDetailList, "ProductID, ProductModelID, ProductSpec, UnitCode");
+                deliveryChallan.DetailXML = _commonBusiness.GetXMLfromDeliveryChallanObject(deliveryChallan.DeliveryChallanDetailList, "ProductID,ProductModelID,ProductSpec,UnitCode");
             }
             return _deliveryChallanRepository.InsertUpdateDeliveryChallan(deliveryChallan);
         }
