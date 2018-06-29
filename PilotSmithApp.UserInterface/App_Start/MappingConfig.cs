@@ -130,6 +130,10 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ProformaInvoiceViewModel, ProformaInvoice>().ReverseMap();
                 config.CreateMap<ProformaInvoiceAdvanceSearchViewModel, ProformaInvoiceAdvanceSearch>().ReverseMap();
                 config.CreateMap<ProformaInvoiceDetailViewModel, ProformaInvoiceDetail>().ReverseMap();
+                //Reports
+                config.CreateMap<PSASysReportViewModel, PSASysReport>().ReverseMap();
+                //config.CreateMap<PendingSaleOrderProductionReportViewModel, PendingSaleOrderProductionReport>().ReverseMap();
+                config.CreateMap<EnquiryReportViewModel, EnquiryReport>().ReverseMap();
             });
         }
     }

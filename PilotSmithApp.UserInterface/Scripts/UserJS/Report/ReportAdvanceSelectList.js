@@ -32,7 +32,7 @@ $(document).ready(function () {
         console.log(e.message);
     }
     try {
-       
+
         BindApprovalStatusSelectList();
     }
     catch (e) {
@@ -54,7 +54,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-   
+
     try {
         debugger;
         BindPositionSelectList()
@@ -72,11 +72,11 @@ function BindCustomerSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "Customer/GetCustomerForSelectListOnDemand/",
+            url: "/Customer/GetCustomerForSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
-                    'searchTerm': term.term = (term.term == null ? "" : term.term )//search term
+                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
                 };
             },
             processResults: function (data) {
@@ -94,7 +94,7 @@ function BindAreaSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "Area/GetAreaForSelectListOnDemand/",
+            url: "/Area/GetAreaForSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
@@ -115,7 +115,7 @@ function BindReferenceSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "ReferencePerson/GetReferencePersonForSelectListOnDemand/",
+            url: "/ReferencePerson/GetReferencePersonForSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
@@ -136,7 +136,7 @@ function BindBranchSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "Branch/GetBranchForSelectListOnDemand/",
+            url: "/Branch/GetBranchForSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
@@ -157,7 +157,7 @@ function BindDocumentOwnerSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "DocumentOwner/GetDocumentOwnerForSelectListOnDemand/",
+            url: "/DocumentOwner/GetDocumentOwnerForSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
@@ -180,7 +180,7 @@ function BindApprovalStatusSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "ApprovalStatus/GetApprovalStatusSelectListOnDemand/",
+            url: "/ApprovalStatus/GetApprovalStatusSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
@@ -203,7 +203,7 @@ function BindPlantSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "Plant/GetPlantSelectListOnDemand/",
+            url: "/Plant/GetPlantSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
@@ -227,7 +227,7 @@ function BindDepartmentSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "Department/GetDepartmentForSelectListOnDemand/",
+            url: "/Department/GetDepartmentForSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {
@@ -250,7 +250,7 @@ function BindPositionSelectList() {
         ajax: {
             type: 'POST',
             dataType: 'json',
-            url: "Position/GetPositionForSelectListOnDemand/",
+            url: "/Position/GetPositionForSelectListOnDemand/",
             delay: 50,
             data: function (term) {
                 return {

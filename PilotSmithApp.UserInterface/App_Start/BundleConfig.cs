@@ -98,6 +98,10 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJS/DeliveryChallan").Include("~/Scripts/UserJS/DeliveryChallan.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Country").Include("~/Scripts/UserJS/Country.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/DocumentApproval/ViewApprovalHistory").Include("~/Scripts/UserJS/DocumentApproval/ViewApprovalHistory.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/Report").Include("~/Scripts/UserJS/Report/Report.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/PendingSaleOrderProductionReport").Include("~/Scripts/UserJS/Report/PendingSaleOrderProductionReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/EnquiryReport").Include("~/Scripts/UserJS/Report/EnquiryReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/ReportAdvanceSelectList").Include("~/Scripts/UserJS/Report/ReportAdvanceSelectList.js"));            
             bundles.Add(new ScriptBundle("~/bundles/UserJs/RecentDocument").Include("~/Scripts/UserJS/RecentDocument.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/ProformaInvoice").Include("~/Scripts/UserJS/ProformaInvoice.js"));
         }
