@@ -286,10 +286,10 @@ src: url(/fonts/Liquidrom.ttf);
     font-size: 20px;
 }
 .col-md-6 .select2-container .select2-selection--single .select2-selection__rendered{
-    width:175px!important;
+    width:145px!important;
 }
 .col-md-4 .select2-container .select2-selection--single .select2-selection__rendered{
-    width:110px!important;
+    width:85px!important;
 }
 .input-group-addon[onclick=""]{
     cursor:not-allowed!important;

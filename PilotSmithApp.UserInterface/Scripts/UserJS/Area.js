@@ -59,6 +59,7 @@ function BindOrReloadAreaTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -72,25 +73,23 @@ function BindOrReloadAreaTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "Code", "defaultContent": "<i>-</i>" },
+                { "data": "Description", "defaultContent": "<i>-</i>" },
                 {"data":"Country.Description","defaultContent":"<i>-</i>"},
                 { "data": "State.Description", "defaultContent": "<i>-</i>" },
                 {"data" :"District.Description","defaultContent":"<i>-</i>"},
-                { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
                 {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditAreaMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteAreaMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [4,5,6] },
-                { "targets": [0], "width": "10%" },
-                { "targets": [1], "width": "10%" },
-                { "targets": [2], "width": "10%" },
-                { "targets": [3], "width": "10%" },
-                { "targets": [4], "width": "30%" },
-                { "targets": [5], "width": "20%" },
-                { "targets": [6], "width": "10%" }
+                columnDefs: [
+                { className: "text-center", "targets": [4,5] },
+                { "targets": [0], "width": "20%" },
+                { "targets": [1], "width": "16%" },
+                { "targets": [2], "width": "16%" },
+                { "targets": [3], "width": "16%" },
+                { "targets": [4], "width": "22%" },
+                { "targets": [5], "width": "10%" }
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

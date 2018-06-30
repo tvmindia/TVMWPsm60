@@ -408,7 +408,12 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
             </text>
                      }
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val(), function () {
+                $('#DocumentStatusCode').select2({
+                    dropdownParent: $('#ServiceCallForm')
+                });
+                $('.select2').addClass('form-control newinput');
+            })
             @if (Model.IsUpdate)
                     {
                         <text>
@@ -472,6 +477,7 @@
         }
         try {
             $('#CustomerID,#BranchCode,#ServiceCallTime').select2({});
+            
             $('.select2').addClass('form-control newinput');
         }
         catch (e) {
@@ -492,6 +498,7 @@
         //catch (e) {
         //    console.log(e.message);
         //}
+       
     });
 </script>
 

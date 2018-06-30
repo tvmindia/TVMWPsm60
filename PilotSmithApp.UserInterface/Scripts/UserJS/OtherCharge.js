@@ -63,6 +63,7 @@ function BindOrReloadOtherChargeTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -89,7 +90,6 @@ function BindOrReloadOtherChargeTable(action) {
                 { "targets": [0], "width": "80%" },
                 { "targets": [1], "width": "10%" },
                 { "targets": [2], "width": "10%" },
-                //{ "targets": [3], "width": "10%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

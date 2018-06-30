@@ -63,6 +63,7 @@ function BindOrReloadTaxTypeTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -76,7 +77,6 @@ function BindOrReloadTaxTypeTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                //{ "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "CGSTPercentage", "defaultContent": "<i>-</i>" },
                 { "data": "SGSTPercentage", "defaultContent": "<i>-</i>" },
@@ -93,7 +93,6 @@ function BindOrReloadTaxTypeTable(action) {
                 { "targets": [2], "width": "20%" },
                 { "targets": [3], "width": "20%" },
                 { "targets": [4], "width": "10%" },
-                //{ "targets": [5], "width": "10%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
