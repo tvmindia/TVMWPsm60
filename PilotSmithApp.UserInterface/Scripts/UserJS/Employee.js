@@ -69,6 +69,7 @@ function BindOrReloadEmployeeTable(action) {
             paging: true,
             lengthChange: false,
             processing: true,
+            autoWidth: false,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
             },
@@ -80,7 +81,6 @@ function BindOrReloadEmployeeTable(action) {
             },
             pageLength: 13,
             columns: [
-                {"data":"ID","defaultContent": "<i>-</i>"},
                { "data": "Code", "defaultContent": "<i>-</i>" },
                { "data": "Name", "defaultContent": "<i>-</i>" },
                { "data": "MobileNo", "defaultContent": "<i>-</i>" },
@@ -89,10 +89,9 @@ function BindOrReloadEmployeeTable(action) {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditEmployeeMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteEmployeeMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
-                  { "targets": [0], "visible": false, "searchable": false },
-                  { className: "text-center", "targets": [6] },
-                   { "targets": [1,6], "width": "10%" },
-                   { "targets": [2,3,4,5], "width": "20%" },
+                  { className: "text-center", "targets": [5] },
+                   { "targets": [0,5], "width": "10%" },
+                   { "targets": [1,2,3,4], "width": "20%" },
          
             ],
             destroy: true,

@@ -16,5 +16,6 @@ namespace PilotSmithApp.BusinessService.Contract
         bool CheckProductCodeExist(Product product);
         object DeleteProduct(Guid id);
         List<SelectListItem> GetProductForSelectList();
+        string GetProductCode();
     }
 }

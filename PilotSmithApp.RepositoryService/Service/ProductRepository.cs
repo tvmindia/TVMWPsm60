@@ -328,5 +328,39 @@ namespace PilotSmithApp.RepositoryService.Service
             return productList;
         }
         #endregion
+
+        #region GetProductCode
+        public string GetProductCode()
+        {
+            SqlParameter outputCode = null;
+            string code;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProductCode]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        outputCode = cmd.Parameters.Add("@CodeOut", SqlDbType.VarChar, 50);
+                        outputCode.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                        code = outputCode.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return code;
+        }
+        #endregion GetProductCode
+
     }
 }

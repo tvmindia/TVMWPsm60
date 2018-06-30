@@ -119,13 +119,6 @@ namespace PilotSmithApp.UserInterface.Controllers
             enquiryReportVM.DataTablePaging.Length = (enquiryReportVM.DataTablePaging.Length == 0 ? model.length : enquiryReportVM.DataTablePaging.Length);
 
             List<EnquiryReportViewModel> enquiryReportList = Mapper.Map<List<EnquiryReport>, List<EnquiryReportViewModel>>(_reportBusiness.GetEnquiryReport(Mapper.Map<EnquiryReportViewModel, EnquiryReport>(enquiryReportVM)));
-
-            if (enquiryReportVM.DataTablePaging.Length == -1)
-            {
-                int totalResult = enquiryReportList.Count != 0 ? enquiryReportList[0].TotalCount : 0;
-                int filteredResult = enquiryReportList.Count != 0 ? enquiryReportList[0].FilteredCount : 0;
-                enquiryReportList = enquiryReportList.Skip(0).Take(filteredResult > 10000 ? 10000 : filteredResult).ToList();
-            }
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -141,6 +134,39 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetEnquiryReport
+        [HttpGet]
+
+        [AuthSecurityFilter(ProjectObject = "EnquiryFollowupReport", Mode = "R")]
+        public ActionResult EnquiryFollowupReport()
+        {
+            EnquiryFollowupReportViewModel EnquiryFollowupReportVM = new EnquiryFollowupReportViewModel();          
+            return View(EnquiryFollowupReportVM);
+        }
+
+        #region GetEnquiryFollowupReport
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "EnquiryFollowupReport", Mode = "R")]
+        public JsonResult GetEnquiryFollowupReport(DataTableAjaxPostModel model, EnquiryFollowupReportViewModel enquiryFollowupReportVM)
+        {
+            enquiryFollowupReportVM.DataTablePaging.Start = model.start;
+            enquiryFollowupReportVM.DataTablePaging.Length = (enquiryFollowupReportVM.DataTablePaging.Length == 0 ? model.length : enquiryFollowupReportVM.DataTablePaging.Length);
+
+            List<EnquiryFollowupReportViewModel> enquiryFollowupReportList = Mapper.Map<List<EnquiryFollowupReport>, List<EnquiryFollowupReportViewModel>>(_reportBusiness.GetEnquiryFollowupReport(Mapper.Map<EnquiryFollowupReportViewModel, EnquiryFollowupReport>(enquiryFollowupReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = enquiryFollowupReportList.Count != 0 ? enquiryFollowupReportList[0].TotalCount : 0,
+                recordsFiltered = enquiryFollowupReportList.Count != 0 ? enquiryFollowupReportList[0].FilteredCount : 0,
+                data = enquiryFollowupReportList
+            });
+        }
+        #endregion GetEnquiryFollowupReport
 
         public void DownloadExcel(ExcelExportViewModel excelExportVM)
         {
@@ -180,6 +206,40 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryreportworkSheet.Column(11).AutoFit();
                         enquiryreportworkSheet.Column(12).AutoFit();
                         enquiryreportworkSheet.Column(13).AutoFit();                      
+                        break;
+                    case "EnquiryFollowUp":
+                        fileName = "EnquiryFollowupReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        EnquiryFollowupReportViewModel enquiryFollowupReportVM = new EnquiryFollowupReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        enquiryFollowupReportVM = JsonConvert.DeserializeObject<EnquiryFollowupReportViewModel>(ReadableFormat);
+                        List<EnquiryFollowupReportViewModel> enquiryFollowupReportList = Mapper.Map<List<EnquiryFollowupReport>, List<EnquiryFollowupReportViewModel>>(_reportBusiness.GetEnquiryFollowupReport(Mapper.Map<EnquiryFollowupReportViewModel, EnquiryFollowupReport>(enquiryFollowupReportVM)));
+                        var enquiryfollowupreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryFollowUp");
+                        EnquiryFollowupReportViewModel[] enquiryFollowupReportVMListArray = enquiryFollowupReportList.ToArray();
+                        enquiryfollowupreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryFollowupReportVMListArray.Select(x => new {
+                           Followupdate = x.FollowupDateFormatted,
+                           FollowupTime = x.FollowupTimeFormatted,
+                           Priority =x.Priority,
+                           Status =x.Status,
+                           EnquiryNo =x.EnquiryNo,
+                           EnquiryDate = x.EnquiryDateFormatted,
+                           ContactPerson = x.Customer.ContactPerson,
+                           CompanyName = x.Customer.CompanyName,
+                           ContactNo = x.ContactNo,
+                           Remarks=x.FollowupRemarks                            
+                            
+                        }), true, TableStyles.Light1);
+                        enquiryfollowupreportworkSheet.Column(1).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(2).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(3).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(4).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(5).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(6).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(7).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(8).Width = 40;
+                        enquiryfollowupreportworkSheet.Column(9).AutoFit();   
+                        enquiryfollowupreportworkSheet.Column(10).AutoFit();
+
                         break;
                     default:break;
                 }

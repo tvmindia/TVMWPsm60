@@ -58,6 +58,7 @@ function BindOrReloadProductSpecificationTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -71,7 +72,6 @@ function BindOrReloadProductSpecificationTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Description", "defaultContent": "<i>-</i>" },
                 { "data": "PSASysCommon.CreatedDateString", "defaultContent": "<i>-</i>" },
                 {
@@ -79,11 +79,10 @@ function BindOrReloadProductSpecificationTable(action) {
                 }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [2,3] },
-                { "targets": [0], "width": "10%" },
-                { "targets": [1], "width": "50%" },
-                { "targets": [2], "width": "30%" },
-                { "targets": [3], "width": "10%" }
+                { className: "text-center", "targets": [1,2] },
+                { "targets": [0], "width": "60%" },
+                { "targets": [1], "width": "30%" },
+                { "targets": [2], "width": "10%" }
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {

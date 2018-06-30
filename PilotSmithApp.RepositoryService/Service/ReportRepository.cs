@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace PilotSmithApp.RepositoryService.Service
 {
-   public class ReportRepository:IReportRepository
+    public class ReportRepository : IReportRepository
     {
         Settings _settings = new Settings();
-        AppConst _appConstant = new AppConst();      
+        AppConst _appConstant = new AppConst();
         private IDatabaseFactory _databaseFactory;
         public ReportRepository(IDatabaseFactory databaseFactory)
         {
@@ -173,9 +173,13 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(enquiryReport.SearchTerm) ? "" : enquiryReport.SearchTerm;
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = enquiryReport.DataTablePaging.Start;
                         if (enquiryReport.DataTablePaging.Length == -1)
+                        {
                             cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
                         else
+                        {
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = enquiryReport.DataTablePaging.Length;
+                        }
                         cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = enquiryReport.AdvFromDate;
                         cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryReport.AdvToDate;
                         if (enquiryReport.AdvCustomerID != Guid.Empty)
@@ -186,7 +190,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@ReferencePersonCode", SqlDbType.NVarChar, 50).Value = enquiryReport.AdvReferencePersonCode;
                         cmd.Parameters.Add("@ReferenceTypeCode", SqlDbType.NVarChar, 50).Value = enquiryReport.AdvReferenceTypeCode;
                         cmd.Parameters.Add("@CustAreaCode", SqlDbType.NVarChar, 50).Value = enquiryReport.AdvAreaCode;
-                        cmd.Parameters.Add("@BranchCode", SqlDbType.NVarChar, 50).Value = enquiryReport.AdvBranchCode;                        
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.NVarChar, 50).Value = enquiryReport.AdvBranchCode;
                         cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = enquiryReport.AdvAmountFrom;
                         cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = enquiryReport.AdvAmountTo;
                         cmd.Parameters.Add("@GradeCode", SqlDbType.Int).Value = enquiryReport.AdvEnquiryGradeCode;
@@ -207,25 +211,25 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryReportObj.EnquiryDateFormatted = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiryReportObj.EnquiryDateFormatted);
                                         enquiryReportObj.Customer = new Customer();
                                         enquiryReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiryReportObj.Customer.CompanyName);
-                                        enquiryReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiryReportObj.Customer.ContactPerson);                                       
+                                        enquiryReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiryReportObj.Customer.ContactPerson);
                                         enquiryReportObj.RequirementSpec = (sdr["RequirementSpec"].ToString() != "" ? sdr["RequirementSpec"].ToString() : enquiryReportObj.RequirementSpec);
                                         enquiryReportObj.Area = new Area();
                                         enquiryReportObj.Area.Description = (sdr["AreaName"].ToString() != "" ? sdr["AreaName"].ToString() : enquiryReportObj.Area.Description);
                                         enquiryReportObj.Branch = new Branch();
                                         enquiryReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : enquiryReportObj.Branch.Description);
                                         enquiryReportObj.ReferencePerson = new ReferencePerson();
-                                        enquiryReportObj.ReferencePerson.Name = (sdr["ReferredBy"].ToString() != "" ? sdr["ReferredBy"].ToString() : enquiryReportObj.ReferencePerson.Name);                                       
+                                        enquiryReportObj.ReferencePerson.Name = (sdr["ReferredBy"].ToString() != "" ? sdr["ReferredBy"].ToString() : enquiryReportObj.ReferencePerson.Name);
                                         enquiryReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : enquiryReportObj.Amount);
                                         enquiryReportObj.PSAUser = new PSAUser();
-                                        enquiryReportObj.PSAUser.LoginName= (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : enquiryReportObj.PSAUser.LoginName);
+                                        enquiryReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : enquiryReportObj.PSAUser.LoginName);
                                         enquiryReportObj.DocumentStatus = new DocumentStatus();
                                         enquiryReportObj.DocumentStatus.Description = (sdr["DocumentStatus"].ToString() != "" ? sdr["DocumentStatus"].ToString() : enquiryReportObj.DocumentStatus.Description);
                                         enquiryReportObj.EnquiryGrade = new EnquiryGrade();
                                         enquiryReportObj.EnquiryGrade.Description = (sdr["GradeName"].ToString() != "" ? sdr["GradeName"].ToString() : enquiryReportObj.EnquiryGrade.Description);
-                                        enquiryReportObj.TotalCount= (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryReportObj.TotalCount);
-                                        enquiryReportObj.FilteredCount= (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryReportObj.FilteredCount);
+                                        enquiryReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryReportObj.TotalCount);
+                                        enquiryReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryReportObj.FilteredCount);
                                         enquiryReportObj.Employee = new Employee();
-                                        enquiryReportObj.Employee.Name= (sdr["EmployeeName"].ToString() != "" ? sdr["EmployeeName"].ToString() : enquiryReportObj.Employee.Name);
+                                        enquiryReportObj.Employee.Name = (sdr["EmployeeName"].ToString() != "" ? sdr["EmployeeName"].ToString() : enquiryReportObj.Employee.Name);
                                     }
                                     enquiryReportList.Add(enquiryReportObj);
                                 }
@@ -242,5 +246,87 @@ namespace PilotSmithApp.RepositoryService.Service
             return enquiryReportList;
         }
         #endregion GetEnquiryReport
+
+
+        #region GetEnquiryFollowupReport
+        /// <summary>
+        /// To  Get Enquiry FollowupReport
+        /// </summary>
+        /// <param name="enquiryFollowupReport"></param>
+        /// <returns></returns>
+        public List<EnquiryFollowupReport> GetEnquiryFollowupReport(EnquiryFollowupReport enquiryFollowupReport)
+        {
+            List<EnquiryFollowupReport> enquiryFollwupReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnqueryFollowUpReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(enquiryFollowupReport.SearchTerm) ? "" : enquiryFollowupReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = enquiryFollowupReport.DataTablePaging.Start;
+                        if (enquiryFollowupReport.DataTablePaging.Length == -1)
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        else
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = enquiryFollowupReport.DataTablePaging.Length;
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvToDate;
+                        if (enquiryFollowupReport.AdvCustomerID != Guid.Empty)
+                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = enquiryFollowupReport.AdvCustomerID;
+                        cmd.Parameters.Add("@PriorityCode", SqlDbType.Int).Value = enquiryFollowupReport.AdvFollowupPriority;
+                        cmd.Parameters.Add("@Status", SqlDbType.NVarChar).Value = enquiryFollowupReport.AdvStatus;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                enquiryFollwupReportList = new List<EnquiryFollowupReport>();
+                                while (sdr.Read())
+                                {
+                                    EnquiryFollowupReport enquiryFollowupReportObj = new EnquiryFollowupReport();
+                                    {
+
+                                        enquiryFollowupReportObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()) : enquiryFollowupReportObj.EnquiryDate);
+                                        enquiryFollowupReportObj.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? (sdr["EnquiryNo"].ToString()) : enquiryFollowupReportObj.EnquiryNo);
+                                        enquiryFollowupReportObj.EnquiryDateFormatted = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiryFollowupReportObj.EnquiryDateFormatted);
+                                        
+                                        enquiryFollowupReportObj.Priority = (sdr["Priority"].ToString() != "" ? sdr["Priority"].ToString() : enquiryFollowupReportObj.Priority);
+
+                                        enquiryFollowupReportObj.FollowupDate = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()) : enquiryFollowupReportObj.FollowupDate);
+                                        enquiryFollowupReportObj.FollowupDateFormatted = (sdr["FollowupDate"].ToString() != "" ? DateTime.Parse(sdr["FollowupDate"].ToString()).ToString(_settings.DateFormat) : enquiryFollowupReportObj.FollowupDateFormatted);
+                                        enquiryFollowupReportObj.FollowupTimeFormatted = (sdr["FollowupTime"].ToString() != "" ? DateTime.Parse(sdr["FollowUpTime"].ToString()).ToString("h:mm tt") : enquiryFollowupReportObj.FollowupTimeFormatted);
+                                        enquiryFollowupReportObj.PriorityCode = (sdr["PriorityCode"].ToString() != "" ? int.Parse(sdr["PriorityCode"].ToString()) : enquiryFollowupReportObj.PriorityCode);
+                                        enquiryFollowupReportObj.FollowupRemarks = (sdr["Subject"].ToString() != "" ? sdr["Subject"].ToString() : enquiryFollowupReportObj.FollowupRemarks);
+                                        enquiryFollowupReportObj.ContactName = (sdr["ContactName"].ToString() != "" ? sdr["ContactName"].ToString() : enquiryFollowupReportObj.ContactName);
+                                        enquiryFollowupReportObj.ContactNo = (sdr["ContactNo"].ToString() != "" ? (sdr["ContactNo"].ToString()) : enquiryFollowupReportObj.ContactNo);
+                                        enquiryFollowupReportObj.Status = (sdr["Status"].ToString() != "" ? sdr["Status"].ToString() : enquiryFollowupReportObj.Status);
+                                        enquiryFollowupReportObj.Customer = new Customer();
+                                        enquiryFollowupReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiryFollowupReportObj.Customer.CompanyName);
+                                        enquiryFollowupReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiryFollowupReportObj.Customer.ContactPerson);
+                                        enquiryFollowupReportObj.TotalCount=(sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryFollowupReportObj.TotalCount);
+                                        enquiryFollowupReportObj.FilteredCount=(sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryFollowupReportObj.FilteredCount);
+                                    }
+                                    enquiryFollwupReportList.Add(enquiryFollowupReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return enquiryFollwupReportList;
+        }
+            #endregion GetEnquiryFollowupReport
+       
     }
 }

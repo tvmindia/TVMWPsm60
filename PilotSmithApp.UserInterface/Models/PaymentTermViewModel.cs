@@ -13,6 +13,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Description is missing")]
         public string Description { get; set; }
         [Display(Name = "No Of Days")]
+        [Required(ErrorMessage = "No Of Days is missing")]
         [Remote(action: "CheckPaymentTermNoOfDaysExist", controller: "PaymentTerm", AdditionalFields = "Code")]
         public int? NoOfDays { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }

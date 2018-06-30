@@ -59,6 +59,7 @@ function BindOrReloadCompanyTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -72,16 +73,15 @@ function BindOrReloadCompanyTable(action) {
                 },
                 pageLength: 10,
                 columns: [
-                { "data": "ID", "defaultContent": "<i>-</i>" },
                 { "data": "Name", "defaultContent": "<i>-</i>"},
                 {
                     "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="EditCompanyMaster(this)"<i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>  <a href="#" onclick="DeleteCompanyMaster(this)"<i class="fa fa-trash-o" aria-hidden="true"></i></a>', "width": "10%"
                 }
                 ],
-                columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                { className: "text-center", "targets": [2] },
-                { "targets": [1], "width": "80%" },
-                { "targets": [2], "width": "20%" }],
+                columnDefs: [
+                { className: "text-center", "targets": [1] },
+                { "targets": [0], "width": "80%" },
+                { "targets": [1], "width": "20%" }],
                 destroy: true,
                 initComplete: function (settings, json) {
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
