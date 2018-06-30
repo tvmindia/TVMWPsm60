@@ -33,6 +33,9 @@ namespace PilotSmithApp.UserInterface.SecurityFilter
                     toolbar.LimitBtn = setAccess(toolbar.LimitBtn, _permission);
                     toolbar.AssignBtn = setAccess(toolbar.AssignBtn, _permission);
                     toolbar.HistoryBtn = setAccess(toolbar.HistoryBtn, _permission);
+                    toolbar.SendForApprovalBtn = setAccess(toolbar.SendForApprovalBtn, _permission);
+                    toolbar.TimeLine = setAccess(toolbar.TimeLine, _permission);
+                    toolbar.EmailBtn = setAccess(toolbar.EmailBtn, _permission);
                 }
 
                 return toolbar;

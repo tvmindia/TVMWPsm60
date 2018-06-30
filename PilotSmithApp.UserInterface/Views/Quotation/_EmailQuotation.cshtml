@@ -100,7 +100,7 @@
                                             itemgrandTotal = itemtaxableAmount + itemgSTAmount;
                                             <tr>
                                                 <td style="width:4%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
-                                                <td style="width:30%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                                                <td style="width:30%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
                                                 <td style="width:9%; text-align: left;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                                                 <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Rate</td>
                                                 <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Discount</td>

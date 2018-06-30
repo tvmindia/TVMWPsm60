@@ -477,7 +477,8 @@ function BindQuotationDetailList(id, IsEstimated) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
+                     debugger;
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpecHtml!==null?row.ProductSpecHtml.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -600,7 +601,7 @@ function AddQuotationDetailToList() {
                 TaxType = new Object;
                 ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[_datatablerowindex].ProductModel = ProductModel;
-                quotationDetailList[_datatablerowindex].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
+                quotationDetailList[_datatablerowindex].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
                 quotationDetailList[_datatablerowindex].Qty = $('#divModelQuotationPopBody #Qty').val();
                 quotationDetailList[_datatablerowindex].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                 Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -633,7 +634,7 @@ function AddQuotationDetailToList() {
                     quotationDetailList[0].ProductID = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID").val() : _emptyGuid;
                     quotationDetailList[0].ProductModelID = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid;
                     quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
-                    quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
+                    quotationDetailList[0].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
                     quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val();
                     quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                     quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -684,7 +685,7 @@ function AddQuotationDetailToList() {
                             var ProductModel = new Object()
                             ProductModel.Name = ($("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "");
                             QuotationDetailVM.ProductModel = ProductModel;
-                            QuotationDetailVM.ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
+                            QuotationDetailVM.ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
                             QuotationDetailVM.Qty = $('#divModelQuotationPopBody #Qty').val();
                             var Unit = new Object();
                             Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -738,7 +739,7 @@ function EditQuotationDetail(this_Obj) {
             $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
             });
         }
-        $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpec);
+        $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
         $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
         $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
         $('#FormQuotationDetail #hdnUnitCode').val(quotationDetail.UnitCode);
@@ -757,6 +758,11 @@ function EditQuotationDetail(this_Obj) {
         $('#FormQuotationDetail #SGSTPerc').val(SGSTAmt);
         $('#FormQuotationDetail #IGSTPerc').val(IGSTAmt);
         $('#divModelPopQuotation').modal('show');
+        var editor = new wysihtml5.Editor("ProductSpec", {
+            toolbar: "toolbar",
+            //stylesheets: "css/stylesheet.css",
+            parserRules: wysihtml5ParserRules
+        });
     });
 }
 function ConfirmDeleteQuotationDetail(this_Obj) {

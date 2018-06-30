@@ -16,7 +16,7 @@
             <li style="border-bottom: 1px solid grey">
                 <span class="control-label">@Html.DisplayNameFor(Model => Model.Specification):</span>
                 <!-- todo text -->
-                <span id="spnProductName">@Model.Specification</span>
+                <span id="spnProductName">@Html.Raw(Model.Specification)</span>
             </li>
         </ul>
         @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "",@id="hdnProductModelUnitCode" })

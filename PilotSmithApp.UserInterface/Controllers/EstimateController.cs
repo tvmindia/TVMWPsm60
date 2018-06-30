@@ -5,6 +5,7 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IReferencePersonBusiness _referencePersonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
         private IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;
 
         public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
-            IAreaBusiness areaBusiness,IReferencePersonBusiness referencePersonBusiness,
-            IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness)
+            IAreaBusiness areaBusiness, IReferencePersonBusiness referencePersonBusiness,
+            IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _estimateBusiness = estimateBusiness;
             _customerBusiness = customerBusiness;
@@ -41,6 +43,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             _referencePersonBusiness = referencePersonBusiness;
             _documentStatusBusiness = documentStatusBusiness;
             _userBusiness = userBusiness;
+            _tool = tool;
+
         }
         // GET: Estimate
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
@@ -358,6 +362,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            Permission permission = Session["UserRights"] as Permission;
             switch (actionType)
             {
                 case "List":
@@ -492,6 +497,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

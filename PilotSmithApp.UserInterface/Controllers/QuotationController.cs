@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,18 +21,20 @@ namespace PilotSmithApp.UserInterface.Controllers
         IQuotationBusiness _quotationBusiness;       
         IEstimateBusiness _estimateBusiness;
         ICommonBusiness _commonBusiness;       
-        IDocumentStatusBusiness _documentStatusBusiness;          
+        IDocumentStatusBusiness _documentStatusBusiness;
+        SecurityFilter.ToolBarAccess _tool;
 
         public QuotationController(IQuotationBusiness quotationBusiness,           
             IEstimateBusiness estimateBusiness,
             ICommonBusiness commonBusiness,            
-            IDocumentStatusBusiness documentStatusBusiness          
+            IDocumentStatusBusiness documentStatusBusiness, SecurityFilter.ToolBarAccess tool
             )
         {
             _quotationBusiness = quotationBusiness;           
             _estimateBusiness = estimateBusiness;
             _commonBusiness = commonBusiness;            
-            _documentStatusBusiness = documentStatusBusiness;       
+            _documentStatusBusiness = documentStatusBusiness;
+            _tool = tool;   
            
         }
         // GET: Quotation
@@ -39,9 +42,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult Index(string id)
         {
             ViewBag.ID = id;
-            QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();            
+            QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();
             quotationAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");            
+            quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");         
             return View(quotationAdvanceSearchVM);           
         }
         #region Quotation Form
@@ -55,9 +58,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(id));
                     quotationVM.IsUpdate = true;
+                    
                     AppUA appUA = Session["AppUA"] as AppUA;
                     quotationVM.IsDocLocked = quotationVM.DocumentOwners.Contains(appUA.UserName);
                     quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
+                   
                 }
                 else if(id==Guid.Empty&&estimateID==null)
                 {
@@ -93,7 +98,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     //{
                     //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                     //},
-                };
+                };               
+
             }
             catch (Exception ex)
             {
@@ -507,6 +513,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            Permission permission = Session["UserRights"] as Permission;
             switch (actionType)
             {
                 case "List":
@@ -583,6 +590,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Text = "History";
                     toolboxVM.HistoryBtn.Title = "Approval History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
+
+                   
                     break;
                 case "Draft":
                     toolboxVM.addbtn.Visible = true;
@@ -769,6 +778,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetQuotation();";
 
+                                    
+                   
                     break;
                 case "AddSub":
 
@@ -782,6 +793,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

@@ -65,6 +65,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsDocLocked { get; set; }
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }
+        [AllowHtml]
         public string DetailJSON { get; set; }
         public string OtherChargesDetailJSON { get; set; }
         public Guid hdnFileID { get; set; }
@@ -128,6 +129,8 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Product Specification")]
         public string ProductSpec { get; set; }
+        [AllowHtml]
+        public string ProductSpecHtml { get; set; }
         [Display(Name = "Quantity")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }

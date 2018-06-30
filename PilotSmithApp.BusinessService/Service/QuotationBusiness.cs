@@ -45,11 +45,11 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (quotation.QuotationDetailList.Count > 0)
             {
-                quotation.DetailXML = _commonBusiness.GetXMLfromQuotationObject(quotation.QuotationDetailList, "ProductID, ProductModelID, Qty, Rate, UnitCode");
+                quotation.DetailXML = _commonBusiness.GetXMLfromQuotationObject(quotation.QuotationDetailList, "ProductID,ProductModelID,Qty,Rate,UnitCode");
             }
             if(quotation.QuotationOtherChargeList.Count>0)
             {
-                quotation.OtherChargeDetailXML= _commonBusiness.GetXMLfromQuotationOtherChargeObject(quotation.QuotationOtherChargeList, "OtherChargeCode , ChargeAmount");
+                quotation.OtherChargeDetailXML= _commonBusiness.GetXMLfromQuotationOtherChargeObject(quotation.QuotationOtherChargeList, "OtherChargeCode,ChargeAmount");
             }
             return _quotationRepository.InsertUpdateQuotation(quotation);
         }

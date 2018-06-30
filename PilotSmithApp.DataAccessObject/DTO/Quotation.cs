@@ -80,6 +80,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid? ProductID { get; set; }
         public Guid? ProductModelID { get; set; }
         public string ProductSpec { get; set; }
+        public string ProductSpecHtml { get; set; }
         public decimal? Qty { get; set; }
         public int? UnitCode { get; set; }
         public decimal? Rate { get; set; }

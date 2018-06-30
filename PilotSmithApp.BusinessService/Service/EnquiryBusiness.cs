@@ -31,7 +31,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if(enquiry.EnquiryDetailList.Count>0)
             {
-                enquiry.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(enquiry.EnquiryDetailList, "ProductID, ProductModelID, Qty, UnitCode, Rate");
+                enquiry.DetailXML = _commonBusiness.GetXMLfromEnquiryObject(enquiry.EnquiryDetailList, "ProductID,ProductModelID,Qty,UnitCode,Rate");
             }
             return _enquiryRepository.InsertUpdateEnquiry(enquiry);
         }
