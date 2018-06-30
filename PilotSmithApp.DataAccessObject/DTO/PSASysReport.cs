@@ -92,4 +92,32 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
     }
+    
+    public class EnquiryFollowupReport
+    {        
+        public DateTime FollowupDate { get; set; }
+        public DateTime FollowupTime { get; set; }
+        public string Priority { get; set; }
+        public int PriorityCode { get; set; }  
+        public string EnquiryNo { get; set; }
+        public DateTime EnquiryDate { get; set; }
+        public string EnquiryDateFormatted { get; set; }
+        public string ContactName { get; set; }
+        public string ContactNo { get; set; }      
+        public string Status { get; set; }        
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }       
+        public string FollowupDateFormatted { get; set; }
+        public string FollowupTimeFormatted { get; set; }
+        public string SearchTerm { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
+        public Guid AdvCustomerID { get; set; }
+        public Customer Customer { get; set; }
+        public string AdvStatus { get; set; }
+        public int? AdvFollowupPriority { get; set; }
+        public string FollowupRemarks { get; set; }
+        public List<EnquiryFollowupReport> EnquiryFollowupReportList { get; set;}
+    }
 }

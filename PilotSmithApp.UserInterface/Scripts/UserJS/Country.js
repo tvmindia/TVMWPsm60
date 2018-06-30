@@ -63,6 +63,7 @@ function BindOrReloadCountryTable(action) {
                 paging: true,
                 lengthChange: false,
                 processing: true,
+                autoWidth: false,
                 language: {
 
                     "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -83,8 +84,8 @@ function BindOrReloadCountryTable(action) {
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                 { className: "text-center", "targets": [1] },              
-                { "targets": [0], "width": "70%" },
-                { "targets": [1], "width": "30%" },
+                { "targets": [0], "width": "90%" },
+                { "targets": [1], "width": "10%" },
                 ],
                 destroy: true,
                 initComplete: function (settings, json) {
