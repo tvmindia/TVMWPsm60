@@ -273,6 +273,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleOrder.CustomerID);
                                     saleOrder.Customer = new Customer();
                                     saleOrder.Customer.CompanyName = (sdr["CustomerCompanyName"].ToString() != "" ? (sdr["CustomerCompanyName"].ToString()) : saleOrder.Customer.CompanyName);
+                                    saleOrder.Customer.AadharNo= (sdr["AadharNo"].ToString() != "" ? (sdr["AadharNo"].ToString()) : saleOrder.Customer.AadharNo);
+                                    saleOrder.Customer.PANNO= (sdr["PANNO"].ToString() != "" ? (sdr["PANNO"].ToString()) : saleOrder.Customer.PANNO);
+                                    saleOrder.Customer.TaxRegNo= (sdr["TaxRegNo"].ToString() != "" ? (sdr["TaxRegNo"].ToString()) : saleOrder.Customer.TaxRegNo);
                                     saleOrder.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : saleOrder.MailingAddress);
                                     saleOrder.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : saleOrder.ShippingAddress);
                                     saleOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleOrder.DocumentStatusCode);

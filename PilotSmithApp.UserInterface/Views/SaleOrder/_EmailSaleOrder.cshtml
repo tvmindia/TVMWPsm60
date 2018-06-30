@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 <tr><td colspan="6">&nbsp;</td></tr>
-                <tr><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>To,</b><br /> <span>@Model.Customer.CompanyName<br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
+                <tr><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>To,</b><br /> <span>@Model.Customer.CompanyName<br />@{if(@Model.MailingAddress != null) { @Model.MailingAddress<br />}} PAN : @Model.Customer.PANNO<br />Adhar : @Model.Customer.AadharNo<br />GSTIN/UIN : @Model.Customer.TaxRegNo<br /></span></td><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
                 <tr><td colspan="6">&nbsp;</td></tr>
                 <tr><td>SaleOrder No</td><td colspan="2">: @Model.SaleOrderNo</td><td>Ref. SaleOrder No.</td><td colspan="2">: @Model.SaleOrderRefNo</td></tr>
                 <tr><td>SaleOrder Date</td><td colspan="2">: @Model.SaleOrderDateFormatted</td><td>Delivery Date</td><td colspan="2">: @Model.ExpectedDelvDateFormatted</td></tr>
