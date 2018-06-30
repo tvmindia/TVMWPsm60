@@ -47,11 +47,11 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (serviceCall.ServiceCallDetailList.Count > 0)
             {
-                serviceCall.DetailXML = _commonBusiness.GetXMLfromServiceCallObject(serviceCall.ServiceCallDetailList, "ProductID, ProductModelID, InstalledDateFormatted");
+                serviceCall.DetailXML = _commonBusiness.GetXMLfromServiceCallObject(serviceCall.ServiceCallDetailList, "ProductID,ProductModelID,InstalledDateFormatted");
             }
             if (serviceCall.ServiceCallChargeList.Count > 0)
             {
-                serviceCall.CallChargeXML = _commonBusiness.GetXMLfromServiceCallChargeObject(serviceCall.ServiceCallChargeList, "OtherChargeCode , ChargeAmount");
+                serviceCall.CallChargeXML = _commonBusiness.GetXMLfromServiceCallChargeObject(serviceCall.ServiceCallChargeList, "OtherChargeCode,ChargeAmount");
             }
             return _ServiceCallRepository.InsertUpdateServiceCall(serviceCall);
         }

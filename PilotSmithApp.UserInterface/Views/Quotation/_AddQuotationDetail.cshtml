@@ -41,8 +41,13 @@
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductSpec, htmlAttributes: new { @class = "control-label " })
+                <div id="toolbar" class="pull-right" style="display: none;margin-top:1%;">
+                    <a data-wysihtml5-command="bold" class="btn badge btn-default" style="color:black;" title="CTRL+B">B</a>
+                    <a data-wysihtml5-command="italic" class="btn badge btn-default" style="color:black;" title="CTRL+I"><i>I&nbsp;</i></a>
+                </div>
             </div>
             <div class="col-md-12">
+                    
                 @Html.TextAreaFor(model => model.ProductSpec, 4, 0, new { @class = "form-control newinput" })
                 @Html.ValidationMessageFor(model => model.ProductSpec, "", new { @class = "text-danger" })
             </div>
@@ -150,20 +155,27 @@
         <button class="btn btn-default" id="btnAddQuotationDetail" onclick="AddQuotationDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
     </div>
 }
+<script src="~/Scripts/wysihtml5-0.3.0.js"></script>
+<script src="~/Scripts/wysihtml5-advanced.js"></script>
 <script>
     $(document).ready(function () {
         try {
+            
             $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
                 $('#divModelPopQuotation #ProductID').change(function () {
                     if ($('#divProductBasicInfo') != undefined) {
                         $('#divModelPopQuotation #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                            $('#divModelPopQuotation #ProductSpec').val($('#divModelPopQuotation #spnProductName').text());
+                           
+                            $('#FormQuotationDetail #ProductSpec').val($('#FormQuotationDetail #spnProductName').text());
+                            
                         });
                     }
                     if ($('.divProductModelSelectList') != undefined) {
                         $('#dropLoad').addClass('fa fa-spinner fa-spin');
                         if (this.value != "") {
-                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=" + $('hdnProductModelRequired').val() + "&productID=" + this.value)
+                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=" + $('hdnProductModelRequired').val() + "&productID=" + this.value, function () {
+                                
+                            })
                         }
                         else {
                             $('.divProductModelSelectList').empty();

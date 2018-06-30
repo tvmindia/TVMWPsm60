@@ -39,11 +39,11 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (saleOrder.SaleOrderDetailList.Count > 0)
             {
-                saleOrder.DetailXML = _commonBusiness.GetXMLfromSaleOrderObject(saleOrder.SaleOrderDetailList, "ProductID, ProductModelID, UnitCode, Qty, Rate");
+                saleOrder.DetailXML = _commonBusiness.GetXMLfromSaleOrderObject(saleOrder.SaleOrderDetailList, "ProductID,ProductModelID,UnitCode,Qty,Rate");
             }
             if (saleOrder.SaleOrderOtherChargeList.Count > 0)
             {
-                saleOrder.OtherChargeDetailXML = _commonBusiness.GetXMLfromSaleOrderOtherChargeObject(saleOrder.SaleOrderOtherChargeList, "OtherChargeCode , ChargeAmount");
+                saleOrder.OtherChargeDetailXML = _commonBusiness.GetXMLfromSaleOrderOtherChargeObject(saleOrder.SaleOrderOtherChargeList, "OtherChargeCode,ChargeAmount");
             }
             return _saleOrderRepository.InsertUpdateSaleOrder(saleOrder);
         }

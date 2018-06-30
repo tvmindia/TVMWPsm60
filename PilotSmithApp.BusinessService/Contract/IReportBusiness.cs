@@ -11,7 +11,6 @@ namespace PilotSmithApp.BusinessService.Contract
         List<PSASysReport> GetAllReport(string searchTerm);
         //List<PendingSaleOrderProductionReport> GetPendingSaleOrderProductionReport(PendingSaleOrderProductionReport pendingSaleOrderProductionReport);
         List<EnquiryReport> GetEnquiryReport(EnquiryReport enquiryReport);
-
-        
+        List<EnquiryFollowupReport> GetEnquiryFollowupReport(EnquiryFollowupReport enquiryFollowupReport);        
     }
 }

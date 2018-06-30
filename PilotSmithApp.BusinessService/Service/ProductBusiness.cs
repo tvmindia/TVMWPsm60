@@ -48,5 +48,9 @@ namespace PilotSmithApp.BusinessService.Service
                                   Selected = false
                               }).ToList():new List<SelectListItem>();       
         }
+        public string GetProductCode()
+        {
+            return _productRepository.GetProductCode();
+        }
     }
 }

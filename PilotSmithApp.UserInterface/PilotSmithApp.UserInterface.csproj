@@ -700,6 +700,7 @@
     <Content Include="Scripts\UserJS\RecentDocument.js" />
     <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
+    <Content Include="Scripts\UserJS\Report\EnquiryFollowupReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
     <Content Include="Scripts\UserJS\Report\Report.js" />
@@ -745,6 +746,8 @@
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
     <Content Include="Scripts\UserJS\UserBranch.js" />
+    <Content Include="Scripts\wysihtml5-0.3.0.js" />
+    <Content Include="Scripts\wysihtml5-advanced.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1068,6 +1071,8 @@
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Report\PendingSaleOrderProductionReport.cshtml" />
     <Content Include="Views\Report\EnquiryReport.cshtml" />
+    <Content Include="Views\Report\EnquiryFollowupReport.cshtml" />
+    <Content Include="Views\DocumentStatus\_ServiceStatusSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -21,7 +21,7 @@
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-12 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.NoOfDays, htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.NoOfDays, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.NoOfDays, new { htmlAttributes = new { @class = "form-control newinput", @min = "0" } })
