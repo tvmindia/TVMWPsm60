@@ -745,6 +745,8 @@
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
     <Content Include="Scripts\UserJS\UserBranch.js" />
+    <Content Include="Scripts\wysihtml5-0.3.0.js" />
+    <Content Include="Scripts\wysihtml5-advanced.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
