@@ -5,6 +5,7 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         IReferencePersonBusiness _referencePersonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
         private IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;
 
         public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
             ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
-            IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness)
+            IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, 
+            IUserBusiness userBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
@@ -41,6 +44,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _referencePersonBusiness = referencePersonBusiness;
             _documentStatusBusiness = documentStatusBusiness;
             _userBusiness = userBusiness;
+            _tool = tool;
 
         }
         // GET: Enquiry
@@ -313,6 +317,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            Permission permission = Session["UserRights"] as Permission;
             switch (actionType)
             {
                 case "List":
@@ -448,6 +453,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

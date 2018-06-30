@@ -380,9 +380,9 @@
         }
 
     }
-   @if (Model.SendForApprovalBtn.Visible && Model.SendForApprovalBtn.HasAccess)
+   @if (Model.SendForApprovalBtn.Visible)
    {
-       if (Model.SendForApprovalBtn.Disable)
+       if (Model.SendForApprovalBtn.Disable || Model.SendForApprovalBtn.HasAccess == false)
        {
 
         <a class="thr_disbtn" title="@Model.SendForApprovalBtn.Title-@Model.SendForApprovalBtn.DisableReason">
@@ -400,9 +400,9 @@
        }
 
    }
- @if (Model.EmailBtn.Visible && Model.EmailBtn.HasAccess)
+ @if (Model.EmailBtn.Visible)
  {
-     if (Model.EmailBtn.Disable)
+     if (Model.EmailBtn.Disable || Model.EmailBtn.HasAccess == false)
      {
 
         <a class="thr_disbtn" title="@Model.EmailBtn.Title-@Model.EmailBtn.DisableReason">
@@ -420,9 +420,9 @@
      }
 
  }
-    @if (Model.TimeLine.Visible && Model.TimeLine.HasAccess)
+    @if (Model.TimeLine.Visible )
     {
-        if (Model.TimeLine.Disable)
+        if (Model.TimeLine.Disable || Model.TimeLine.HasAccess == false)
         {
 
             <a class="thr_disbtn" title="@Model.TimeLine.Title-@Model.TimeLine.DisableReason">
@@ -444,7 +444,7 @@
 
     @if (Model.HistoryBtn.Visible)
     {
-        if (Model.HistoryBtn.Disable)
+        if (Model.HistoryBtn.Disable || Model.HistoryBtn.HasAccess == false)
         {
 
             <a class="thr_disbtn" title="@Model.HistoryBtn.Title-@Model.HistoryBtn.DisableReason">
