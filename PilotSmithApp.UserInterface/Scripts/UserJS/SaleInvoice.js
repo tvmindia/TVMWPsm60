@@ -212,6 +212,8 @@ function EditSaleInvoice(this_Obj) {
     //this will return form body(html)
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + SaleInvoice.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
             //$('#CustomerID').trigger('change');
             debugger;
             if ($('#IsDocLocked').val() == "True") {
@@ -227,11 +229,6 @@ function EditSaleInvoice(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(SaleInvoice.ID);
-            OnServerCallComplete();
-            //setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-            //}, 100);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -1464,10 +1461,11 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument");
+                ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", id);
             }
             BindSaleInvoiceDetailList(id);
             BindSaleInvoiceOtherChargesDetailList(id);
+            CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);

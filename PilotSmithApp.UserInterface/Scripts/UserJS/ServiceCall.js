@@ -984,11 +984,11 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
             }
             BindServiceCallDetailList(id);
-            BindServiceCallChargeDetailList(id);
-            CalculateTotal();
+            BindServiceCallChargeDetailList(id)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
+            CalculateTotal();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

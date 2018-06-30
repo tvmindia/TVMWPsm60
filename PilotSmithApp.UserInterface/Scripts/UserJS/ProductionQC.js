@@ -226,8 +226,6 @@ function EditProductionQC(this_Obj) {
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + ProductionQC.ID , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //$('#CustomerID').trigger('change');
-            
-            
             OnServerCallComplete();
             openNav();
             if ($('#IsDocLocked').val() == "True") {
@@ -548,7 +546,7 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument");
+                ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument", id);
             }
             BindProductionQCDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
