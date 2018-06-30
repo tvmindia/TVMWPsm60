@@ -43,5 +43,13 @@ namespace PilotSmithApp.BusinessService.Service
         }
         #endregion GetEnquiryReport
 
+
+        #region GetEnquiryFollowupReport
+        public List<EnquiryFollowupReport> GetEnquiryFollowupReport(EnquiryFollowupReport enquiryFollowupReport)
+        {
+            return _reportRepository.GetEnquiryFollowupReport(enquiryFollowupReport);
+        }
+        #endregion GetEnquiryFollowupReport
+
     }
 }

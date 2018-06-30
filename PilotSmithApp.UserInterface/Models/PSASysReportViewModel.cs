@@ -113,4 +113,38 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
     }
+
+    public class EnquiryFollowupReportViewModel
+    {
+        public DateTime FollowupDate { get; set; }
+        public DateTime FollowupTime { get; set; }
+        public int PriorityCode { get; set; }
+        public string Priority { get; set; }
+        public string EnquiryNo { get; set; }
+        public DateTime EnquiryDate { get; set; }
+        public string EnquiryDateFormatted { get; set; }
+        public string ContactName { get; set; }
+        public string ContactNo { get; set; }
+        public string Status { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public string FollowupDateFormatted { get; set; }
+        public string FollowupTimeFormatted { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
+        [Display(Name = "Followup From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Followup To")]
+        public string AdvToDate { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public Guid AdvCustomerID { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Status")]
+        public string AdvStatus { get; set; }
+        [Display(Name = "Priority")]
+        public int? AdvFollowupPriority { get; set; }
+        public string FollowupRemarks { get; set; }
+        public List<EnquiryFollowupReportViewModel> EnquiryFollowupReportList { get; set; }
+    }
 }
