@@ -32,5 +32,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion DocumentStatus SelectList
 
+        #region ServiceStatus SelectList
+        public ActionResult ServiceStatusSelectList(string required, string code)
+        {
+            ViewBag.IsRequired = required;
+            DocumentStatusViewModel documentStatusVM = new DocumentStatusViewModel();
+            documentStatusVM.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus(code);
+            return PartialView("_ServiceStatusSelectList", documentStatusVM);
+        }
+        #endregion ServiceStatus SelectList
+
     }
 }
