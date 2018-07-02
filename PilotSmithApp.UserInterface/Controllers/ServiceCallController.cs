@@ -24,9 +24,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         IAreaBusiness _areaBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
         IEmployeeBusiness _employeeBusiness;
+        ISaleInvoiceBusiness _saleInvoiceBusiness;
         public ServiceCallController(IServiceCallBusiness serviceCallBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
-            IDocumentStatusBusiness documentStatusBusiness,IEmployeeBusiness employeeBusiness)
+            IDocumentStatusBusiness documentStatusBusiness,IEmployeeBusiness employeeBusiness, ISaleInvoiceBusiness saleInvoiceBusiness)
         {
             _serviceCallBusiness = serviceCallBusiness;
             _customerBusiness = customerBusiness;
@@ -35,6 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _areaBusiness = areaBusiness;
             _documentStatusBusiness = documentStatusBusiness;
             _employeeBusiness = employeeBusiness;
+            _saleInvoiceBusiness = saleInvoiceBusiness;
         }
         #endregion Constructor Injection 
 
@@ -274,6 +276,28 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get serviceCall OtherChargeList By serviceCallID
+
+        #region GetSaleInvoiceSummaryByCustomer
+        public ActionResult GetSaleInvoiceByCustomerID(Guid? customerID)
+        {
+            ServiceCallViewModel serviceCallVM = new ServiceCallViewModel();
+            serviceCallVM.SaleInvoiceList = new List<SaleInvoiceViewModel>();
+            if (customerID != null && customerID != Guid.Empty)
+            {
+                SaleInvoiceAdvanceSearchViewModel saleInvoiceAdvanceSearchVM = new SaleInvoiceAdvanceSearchViewModel()
+                {
+                    AdvCustomerID = (Guid)customerID,
+                    DataTablePaging = new DataTablePagingViewModel()
+                    {
+                        Start = 0,
+                        Length = 50
+                    }
+                };
+                serviceCallVM.SaleInvoiceList = Mapper.Map<List<SaleInvoice>, List<SaleInvoiceViewModel>>(_saleInvoiceBusiness.GetAllSaleInvoice(Mapper.Map<SaleInvoiceAdvanceSearchViewModel, SaleInvoiceAdvanceSearch>(saleInvoiceAdvanceSearchVM)));
+            }
+            return PartialView("_GetSaleInvoiceByCustomerID", serviceCallVM);
+        }
+        #endregion GetSaleInvoiceByCustomer
 
         #region Delete ServiceCall
         [HttpGet]

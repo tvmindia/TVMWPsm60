@@ -1071,6 +1071,7 @@
     <Content Include="Views\Report\EnquiryReport.cshtml" />
     <Content Include="Views\Report\EnquiryFollowupReport.cshtml" />
     <Content Include="Views\DocumentStatus\_ServiceStatusSelectList.cshtml" />
+    <Content Include="Views\ServiceCall\_GetSaleInvoiceByCustomerID.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

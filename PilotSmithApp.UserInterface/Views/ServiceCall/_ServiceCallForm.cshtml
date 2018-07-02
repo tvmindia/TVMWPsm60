@@ -203,6 +203,12 @@
                         <div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.Branch.Description</div>
                         </div>
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">Invoices</div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="lblStatusDisplay" id="lblTotalInvoices">_</div>
+                        </div>
                         @if (Model.IsUpdate)
                         {
                             <div class="col-md-12"></div>
@@ -418,7 +424,7 @@
                     {
                         <text>
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
-
+                $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#hdnCustomerID').val());
             });
             </text>
                     }
@@ -426,7 +432,10 @@
                     {
                         <text>
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
-
+                $('#CustomerID').change(function () {
+                    debugger;
+                    $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#CustomerID').val());
+                });
             });
             </text>
                     }

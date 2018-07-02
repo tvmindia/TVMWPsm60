@@ -103,6 +103,7 @@ namespace PilotSmithApp.UserInterface.Models
         public QuotationViewModel Quotation { get; set; }
         public SaleOrderViewModel SaleOrder { get; set; }
         public PDFToolsViewModel PDFTools { get; set; }
+        public string ProductDetail { get; set; }
     }
     public class SaleInvoiceAdvanceSearchViewModel
     {
