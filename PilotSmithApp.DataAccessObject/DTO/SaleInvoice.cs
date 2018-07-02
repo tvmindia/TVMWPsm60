@@ -78,6 +78,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ReferenceNo { get; set; }
         public Quotation Quotation { get; set; }
         public SaleOrder SaleOrder { get; set; }
+        public string ProductDetail { get; set; }
         public ProformaInvoice ProformaInvoice { get; set; }
     }
     public class SaleInvoiceAdvanceSearch

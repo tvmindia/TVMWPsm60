@@ -1356,7 +1356,24 @@ function EditRedirectToDocument(id) {
             openNav();
             $('#lblSaleOrderInfo').text($('#SaleOrderNo').val());
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", id);
+                        break;
+                    case "1":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
+                        break;
+                    case "3":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);
+                        break;
+                    case "4":
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
+                        break;
+                    default:
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+                        break;
+                }
             }
             else {
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
@@ -1364,13 +1381,10 @@ function EditRedirectToDocument(id) {
             BindSaleOrderDetailList(id, false, false);
             BindSaleOrderOtherChargesDetailList(id, false);
             CalculateTotal();
-            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
+            });
             clearUploadControl();
             PaintImages(id);
-
-            //resides in customjs for sliding
-            //$("#divQuotationForm #EstimateID").prop('disabled', true);
-
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

@@ -106,6 +106,7 @@ namespace PilotSmithApp.UserInterface.Models
         public SaleOrderViewModel SaleOrder { get; set; }
         public ProformaInvoiceViewModel ProformaInvoice { get; set; }
         public PDFToolsViewModel PDFTools { get; set; }
+        public string ProductDetail { get; set; }
     }
     public class SaleInvoiceAdvanceSearchViewModel
     {

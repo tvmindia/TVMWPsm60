@@ -112,6 +112,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.SaleOrder = new SaleOrder();
                                         saleInvoice.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.SaleOrderID);
                                         saleInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : saleInvoice.SaleOrder.SaleOrderNo);
+                                        saleInvoice.ProductDetail = (sdr["ProductDetail"].ToString() != "" ? sdr["ProductDetail"].ToString() : saleInvoice.ProductDetail);
                                         saleInvoice.ProformaInvoice = new ProformaInvoice();
                                         saleInvoice.ProfInvID= (sdr["ProfInvID"].ToString() != "" ? Guid.Parse(sdr["ProfInvID"].ToString()) : saleInvoice.ProfInvID);
                                         saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? sdr["ProfInvNo"].ToString() : saleInvoice.ProformaInvoice.ProfInvNo);

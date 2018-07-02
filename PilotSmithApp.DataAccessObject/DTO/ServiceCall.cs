@@ -44,6 +44,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ServicedByName { get; set; }
         public Branch Branch { get; set; }
         public Area Area { get; set; }
+        public List<SaleInvoice> SaleInvoiceList { get; set; }
     }
 
     public class ServiceCallAdvanceSearch

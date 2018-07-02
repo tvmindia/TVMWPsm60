@@ -34,7 +34,9 @@ function LoadApprovalDocument() {
     }
     
 
-
+function ConfirmApproveDocument() {
+    notyConfirm('Are you sure to Approve Document?', 'ApproveDocument()', '', 'Yes, approve it!');
+}
 
     function ApproveDocument() {
         try {
@@ -65,6 +67,10 @@ function LoadApprovalDocument() {
             notyAlert('error', e.message);
         }
     }
+    function ConfirmRejectDocument() {
+        notyConfirm('Are you sure to Reject Document?', 'RejectDocument()', '', 'Yes, reject it!');
+    }
+
     function RejectDocument() {
         try {
             debugger;

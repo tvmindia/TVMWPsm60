@@ -984,14 +984,27 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
             }
             BindServiceCallDetailList(id);
-            BindServiceCallChargeDetailList(id);
-            CalculateTotal();
+            BindServiceCallChargeDetailList(id)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
+            CalculateTotal();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
     });
+}
+
+//=============== Sale Invoice List By Customer ID ==================//
+function GetSaleInvoiceByCustomerID() {
+    try {
+        debugger;
+        $('#lblModelPopInvoices').text('Sale Invoices for Customer');
+        $('#lblModelPopCustomer').text($("#CustomerID").val() != "" ? $("#CustomerID option:selected").text().trim() : "");
+        $('#divModelPopInvoices').modal('show');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }

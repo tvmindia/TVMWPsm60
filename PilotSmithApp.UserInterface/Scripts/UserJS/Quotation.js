@@ -1219,7 +1219,25 @@ function EditRedirectToDocument(id) {
             openNav();
             $('#lblQuotationInfo').text($('#QuoteNo').val());
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);
+
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", id);
+                        break;
+                    case "1":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
+                        break;
+                    case "3":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);
+                        break;
+                    case "4":
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
+                        break;
+                    default:
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
+                        break;
+                }
             }
             else {
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
@@ -1230,8 +1248,6 @@ function EditRedirectToDocument(id) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
-
-            //resides in customjs for sliding
             $("#divQuotationForm #EstimateID").prop('disabled', true);
 
         }

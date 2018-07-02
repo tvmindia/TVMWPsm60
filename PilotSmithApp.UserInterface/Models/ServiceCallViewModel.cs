@@ -61,6 +61,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string ServicedByName { get; set; }
         public BranchViewModel Branch { get; set; }
         public AreaViewModel Area { get; set; }
+        public List<SaleInvoiceViewModel> SaleInvoiceList { get; set; }
     }
 
     public class ServiceCallAdvanceSearchViewModel

@@ -642,12 +642,13 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument");
+                ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument", id);
             }
             BindEstimateDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
+            $("#divEstimateForm #EnquiryID").prop('disabled', true);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
