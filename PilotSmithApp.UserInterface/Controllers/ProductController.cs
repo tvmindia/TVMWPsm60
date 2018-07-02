@@ -85,7 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool exists = _productBusiness.CheckProductCodeExist(Mapper.Map<ProductViewModel, Product>(productVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Prouct name is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Prouct code is in use </span> <i class='fa fa-close' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);
@@ -98,7 +98,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult MasterPartial(Guid masterCode)
         {
             ProductViewModel productVM = masterCode == Guid.Empty ? new ProductViewModel() : Mapper.Map<Product, ProductViewModel>(_productBusiness.GetProduct(masterCode));
-            productVM.IsUpdate = masterCode == Guid.Empty ? false : true;          
+            productVM.IsUpdate = masterCode == Guid.Empty ? false : true; 
+            if (productVM.IsUpdate==false)
+            {
+                productVM.Code = _productBusiness.GetProductCode();
+            }       
             return PartialView("_AddProduct", productVM);
         }
         #endregion MasterPartial

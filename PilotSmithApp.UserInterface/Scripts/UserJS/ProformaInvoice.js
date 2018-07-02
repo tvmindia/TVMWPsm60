@@ -216,6 +216,8 @@ function EditProformaInvoice(this_Obj) {
     //this will return form body(html)
     $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + ProformaInvoice.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
             //$('#CustomerID').trigger('change');
             debugger;
             if ($('#IsDocLocked').val() == "True") {
@@ -230,11 +232,7 @@ function EditProformaInvoice(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(ProformaInvoice.ID);
-            OnServerCallComplete();
-            //setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-            //}, 100);
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -1394,10 +1392,11 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument");
+                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
             }
             BindProformaInvoiceDetailList(id);
             BindProformaInvoiceOtherChargesDetailList(id);
+            CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);

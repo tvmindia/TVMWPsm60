@@ -39,7 +39,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (productionOrder.ProductionOrderDetailList.Count > 0)
             {
-                productionOrder.DetailXML = _commonBusiness.GetXMLfromProductionOrderObject(productionOrder.ProductionOrderDetailList, "ProductID, ProductModelID, ProductSpec, UnitCode");
+                productionOrder.DetailXML = _commonBusiness.GetXMLfromProductionOrderObject(productionOrder.ProductionOrderDetailList, "ProductID,ProductModelID,ProductSpec,UnitCode");
             }
             return _productionOrderRepository.InsertUpdateProductionOrder(productionOrder);
         }

@@ -712,9 +712,9 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument");
+                ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument", id);
             }
-            BindDeliveryChallanDetailList(id);
+            BindDeliveryChallanDetailList(id, false, false);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);

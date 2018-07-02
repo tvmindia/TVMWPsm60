@@ -114,6 +114,7 @@ namespace PilotSmithApp.UserInterface.Models
 
         //Additional Field
         [Display(Name = "Installed Date")]
+        [Required(ErrorMessage ="Installed Date is missing")]
         public string InstalledDateFormatted { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }

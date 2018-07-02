@@ -940,7 +940,24 @@ function EditRedirectToDocument(id)
             openNav();
             $('#lblProductionOrderInfo').text($('#ProdOrderNo').val());
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", id);
+                        break;
+                    case "1":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
+                        break;
+                    case "3":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);
+                        break;
+                    case "4":
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
+                        break;
+                    default:
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+                        break;
+                }
             }
             else {
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
@@ -949,10 +966,7 @@ function EditRedirectToDocument(id)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
-            
-            //resides in customjs for sliding
             $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
-            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
