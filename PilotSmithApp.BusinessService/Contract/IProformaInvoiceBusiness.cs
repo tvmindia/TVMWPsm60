@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
@@ -19,5 +20,7 @@ namespace PilotSmithApp.BusinessService.Contract
         Task<bool> ProformaInvoiceEmailPush(ProformaInvoice proformaInvoice);
         List<ProformaInvoiceOtherCharge> GetProformaInvoiceOtherChargesDetailListByProformaInvoiceID(Guid proformaInvoiceID);
         object UpdateProformaInvoiceEmailInfo(ProformaInvoice proformaInvoice);
+        List<ProformaInvoice> GetProformaInvoiceForSelectListOnDemand(string searchTerm);
+        List<SelectListItem> GetProformaInvoiceForSelectList(Guid? proformaInvoiceID);
     }
 }

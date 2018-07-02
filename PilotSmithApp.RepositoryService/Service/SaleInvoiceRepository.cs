@@ -110,8 +110,11 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.QuoteID= (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleInvoice.QuoteID);
                                         saleInvoice.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : saleInvoice.Quotation.QuoteNo);
                                         saleInvoice.SaleOrder = new SaleOrder();
-                                        saleInvoice.QuoteID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.QuoteID);
+                                        saleInvoice.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.SaleOrderID);
                                         saleInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : saleInvoice.SaleOrder.SaleOrderNo);
+                                        saleInvoice.ProformaInvoice = new ProformaInvoice();
+                                        saleInvoice.ProfInvID= (sdr["ProfInvID"].ToString() != "" ? Guid.Parse(sdr["ProfInvID"].ToString()) : saleInvoice.ProfInvID);
+                                        saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? sdr["ProfInvNo"].ToString() : saleInvoice.ProformaInvoice.ProfInvNo);
                                     }
                                     saleInvoiceList.Add(saleInvoice);
                                 }
@@ -154,6 +157,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleInvoice.ID);
                                     saleInvoice.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleInvoice.QuoteID);
                                     saleInvoice.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.SaleOrderID);
+                                    saleInvoice.ProfInvID = (sdr["ProfInvID"].ToString() != "" ? Guid.Parse(sdr["ProfInvID"].ToString()) : saleInvoice.ProfInvID);
                                     saleInvoice.SaleInvNo = (sdr["SaleInvNo"].ToString() != "" ? sdr["SaleInvNo"].ToString() : saleInvoice.SaleInvNo);
                                     saleInvoice.SaleInvRefNo = (sdr["SaleInvRefNo"].ToString() != "" ? sdr["SaleInvRefNo"].ToString() : saleInvoice.SaleInvRefNo);
                                     saleInvoice.InvoiceType = (sdr["InvocieType"].ToString() != "" ? sdr["InvocieType"].ToString() : saleInvoice.InvoiceType);
@@ -318,6 +322,8 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@QuoteID", SqlDbType.UniqueIdentifier).Value = saleInvoice.QuoteID;
                         if (saleInvoice.SaleOrderID != Guid.Empty)
                             cmd.Parameters.Add("@SaleOrderID", SqlDbType.UniqueIdentifier).Value = saleInvoice.SaleOrderID;
+                        if (saleInvoice.ProfInvID != Guid.Empty)
+                            cmd.Parameters.Add("@ProfInvID", SqlDbType.UniqueIdentifier).Value = saleInvoice.ProfInvID;
                         if (saleInvoice.CustomerID != Guid.Empty)
                             cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = saleInvoice.CustomerID;
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = saleInvoice.MailingAddress;

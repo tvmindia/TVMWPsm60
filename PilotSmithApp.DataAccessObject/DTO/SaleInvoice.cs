@@ -14,6 +14,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime SaleInvDate { get; set; }
         public Guid QuoteID { get; set; }
         public Guid SaleOrderID { get; set; }
+        public Guid? ProfInvID { get; set; }
         public Guid CustomerID { get; set; }
         public string MailingAddress { get; set; }
         public string ShippingAddress { get; set; }
@@ -77,6 +78,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ReferenceNo { get; set; }
         public Quotation Quotation { get; set; }
         public SaleOrder SaleOrder { get; set; }
+        public ProformaInvoice ProformaInvoice { get; set; }
     }
     public class SaleInvoiceAdvanceSearch
     {

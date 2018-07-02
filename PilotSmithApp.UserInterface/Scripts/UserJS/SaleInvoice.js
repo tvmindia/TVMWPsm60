@@ -130,8 +130,19 @@ function BindOrReloadSaleInvoiceTable(action) {
                    }, "defaultContent": "<i>-</i>"
                  },
                  {
-                 "data": "ReferenceNo", render: function (data, type, row) {         
-                     return (row.SaleOrder.SaleOrderNo == null ? row.Quotation.QuoteNo : row.SaleOrder.SaleOrderNo);
+                     "data": "ReferenceNo", render: function (data, type, row) {
+                         debugger;
+                         if(row.SaleOrder.SaleOrderNo!=null)
+                         {
+                             return row.SaleOrder.SaleOrderNo;
+                         }
+                         else if(row.Quotation.QuoteNo!=null){
+                             return row.Quotation.QuoteNo;
+                         }
+                         else if (row.ProformaInvoice.ProfInvNo != null) {
+                             return row.ProformaInvoice.ProfInvNo;
+                         }
+                     //return (row.SaleOrder.SaleOrderNo == null ? row.Quotation.QuoteNo : row.SaleOrder.SaleOrderNo);
                  }, "defaultContent": "<i>-</i>"
                  },
                  { "data": "Area.Description", "defaultContent": "<i>-</i>" },
@@ -185,6 +196,7 @@ function ExportSaleInvoiceData() {
 }
 // add SaleInvoice section
 function AddSaleInvoice() {
+    debugger;
     //this will return form body(html)
     OnServerCallBegin();
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
@@ -207,6 +219,7 @@ function AddSaleInvoice() {
 
 
 function EditSaleInvoice(this_Obj) {
+    debugger;
     OnServerCallBegin();
     var SaleInvoice = _dataTable.SaleInvoiceList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
@@ -350,19 +363,22 @@ function DeleteSaleInvoiceItem(id) {
         console.log(e.message);
     }
 }
-function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
+function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation,IsProformaInvoice) {
     var data;
-    if (id == _emptyGuid && !(IsSaleOrder) && !(IsQuotation)) {
+    if (id == _emptyGuid && !(IsSaleOrder) && !(IsQuotation) && !(IsProformaInvoice)) {
         data = null;
     }
     else if (id == _emptyGuid && (IsSaleOrder)) {
-        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation)
+        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, IsProformaInvoice)
     }
     else if (id == _emptyGuid && (IsQuotation)) {
-        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation)
+        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, IsProformaInvoice)
+    }
+    else if (id == _emptyGuid && (IsProformaInvoice)) {
+        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, IsProformaInvoice)
     }
     else {
-        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation)
+        data = GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, IsProformaInvoice)
     }
     _dataTable.SaleInvoiceDetailList = $('#tblSaleInvoiceDetails').DataTable(
          {
@@ -465,7 +481,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
         'trigger': 'hover'        
     });
 }
-function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation) {
+function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, IsProformaInvoice) {
     try {
         ;
         var saleInvoiceDetailList = [];
@@ -476,6 +492,10 @@ function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation) {
         else if (IsQuotation) {
             var data = { "quoteID": $('#SaleInvoiceForm #hdnQuoteID').val() };
             _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceDetailListByQuotationIDFromQuotation/", data);
+        }
+        else if (IsProformaInvoice) {
+            var data = { "proformaInvoiceID": $('#SaleInvoiceForm #hdnProfInvID').val() };
+            _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceDetailListByProfInvIDFromProformaInvoice/", data);
         }
         else {
             var data = { "saleInvoiceID": id };
@@ -845,19 +865,22 @@ function AddOtherExpenseDetailToList() {
 }
 
 //OtherExpense
-function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
+function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsProformaInvoice) {
     var data;
-    if (id == _emptyGuid && !(IsQuotation) && !(IsSaleOrder)) {
+    if (id == _emptyGuid && !(IsQuotation) && !(IsSaleOrder) && !(IsProformaInvoice)) {
         data = null;
     }
     else if (id == _emptyGuid && (IsQuotation)) {
-        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder)
+        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder, IsProformaInvoice)
     }
     else if (id == _emptyGuid && (IsSaleOrder)) {
-        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder)
+        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder, IsProformaInvoice)
+    }
+    else if (id == _emptyGuid && (IsProformaInvoice)) {
+        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder, IsProformaInvoice)
     }
     else {
-        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder)
+        data = GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder, IsProformaInvoice)
     }
 
     _dataTable.SaleInvoiceOtherChargesDetailList = $('#tblSaleInvoiceOtherChargesDetailList').DataTable(
@@ -941,7 +964,8 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder) {
     });
 }
 
-function GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder) {
+function GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSaleOrder, IsProformaInvoice) {
+    debugger;
     try {
         var SaleInvoiceOtherChargesDetailList = [];
         debugger;
@@ -952,6 +976,10 @@ function GetSaleInvoiceOtherChargesDetailListBySaleOrderID(id, IsQuotation, IsSa
         else if (IsSaleOrder) {
             var data = { "saleOrderID": $('#SaleInvoiceForm #hdnSaleOrderID').val() };
             _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceOtherChargesDetailListBySaleOrderIDFromSaleOrder/", data);
+        }
+        else if (IsProformaInvoice) {
+            var data = { "proformaInvoiceID": $('#SaleInvoiceForm #hdnProfInvID').val() };
+            _jsonData = GetDataFromServer("SaleInvoice/GetProformaInvoiceOtherChargesDetailListByProfInvIDFromProformaInvoice/", data);
         }
         else {
             var data = { "saleInvoiceID": id };
