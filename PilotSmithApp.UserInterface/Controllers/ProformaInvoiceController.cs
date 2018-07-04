@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IQuotationBusiness _quotationBusiness;
         ICommonBusiness _commonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         public ProformaInvoiceController(IProformaInvoiceBusiness proformaInvoiceBusiness,
             ISaleOrderBusiness saleOrderBusiness,
             IQuotationBusiness quotationBusiness,
             ICommonBusiness commonBusiness,
-            IDocumentStatusBusiness documentBusiness
+            IDocumentStatusBusiness documentBusiness,SecurityFilter.ToolBarAccess tool
             )
         {
             _proformaInvoiceBusiness = proformaInvoiceBusiness;
@@ -34,6 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _quotationBusiness = quotationBusiness;
             _commonBusiness = commonBusiness;
             _documentStatusBusiness = documentBusiness;
+            _tool = tool;
         }
         // GET: ProformaInvoice
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
@@ -686,12 +689,33 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion EmailSent
 
+        #region GetProformaInvoiceForSelectListOnDemand
+        public ActionResult GetProformaInvoiceForSelectListOnDemand(string searchTerm)
+        {
+            List<ProformaInvoice> proformaInvoiceList = string.IsNullOrEmpty(searchTerm) ? null : _proformaInvoiceBusiness.GetProformaInvoiceForSelectListOnDemand(searchTerm);
+            var list = new List<Select2Model>();
+            if (proformaInvoiceList != null)
+            {
+                foreach (ProformaInvoice proformaInvoice in proformaInvoiceList)
+                {
+                    list.Add(new Select2Model()
+                    {
+                        text = proformaInvoice.ProfInvNo,
+                        id = proformaInvoice.ID.ToString()
+                    });
+                }
+            }
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        # endregion GetProformaInvoiceForSelectListOnDemand
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            Permission permission = Session["UserRights"] as Permission;
             switch (actionType)
             {
                 case "List":
@@ -840,6 +864,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

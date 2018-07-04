@@ -61,6 +61,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string ServicedByName { get; set; }
         public BranchViewModel Branch { get; set; }
         public AreaViewModel Area { get; set; }
+        public List<SaleInvoiceViewModel> SaleInvoiceList { get; set; }
     }
 
     public class ServiceCallAdvanceSearchViewModel
@@ -113,6 +114,7 @@ namespace PilotSmithApp.UserInterface.Models
 
         //Additional Field
         [Display(Name = "Installed Date")]
+        [Required(ErrorMessage ="Installed Date is missing")]
         public string InstalledDateFormatted { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }

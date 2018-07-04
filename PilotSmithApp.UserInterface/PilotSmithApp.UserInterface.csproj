@@ -272,6 +272,9 @@
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
     <Content Include="Content\images\LetterHead.jpg" />
+    <Content Include="Content\images\LetterHeadSelect.jpg" />
+    <Content Include="Content\images\LetterHeadSelect_Blank.jpg" />
+    <Content Include="Content\images\LetterHead_Blank.jpg" />
     <Content Include="Content\images\LH_Body.jpg" />
     <Content Include="Content\images\LH_Footer.jpg" />
     <Content Include="Content\images\LH_Header.jpg" />
@@ -743,11 +746,14 @@
     <Content Include="Scripts\UserJS\SaleInvoice.js" />
     <Content Include="Scripts\UserJS\SaleOrder.js" />
     <Content Include="Scripts\UserJS\SalesSummary.js" />
+    <Content Include="Scripts\UserJS\Spare.js" />
     <Content Include="Scripts\UserJS\State.js" />
     <Content Include="Scripts\UserJS\TaxType.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
     <Content Include="Scripts\UserJS\UserBranch.js" />
+    <Content Include="Scripts\wysihtml5-0.3.0.js" />
+    <Content Include="Scripts\wysihtml5-advanced.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -812,6 +818,7 @@
     <Compile Include="Controllers\SaleOrderController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\ServiceCallController.cs" />
+    <Compile Include="Controllers\SpareController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\TimeLineController.cs" />
@@ -877,6 +884,7 @@
     <Compile Include="Models\SaleOrderViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\ServiceCallViewModel.cs" />
+    <Compile Include="Models\SpareViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\TimeLineViewModel.cs" />
@@ -1072,6 +1080,12 @@
     <Content Include="Views\Report\PendingSaleOrderProductionReport.cshtml" />
     <Content Include="Views\Report\EnquiryReport.cshtml" />
     <Content Include="Views\Report\EnquiryFollowupReport.cshtml" />
+    <Content Include="Views\DocumentStatus\_ServiceStatusSelectList.cshtml" />
+    <Content Include="Views\ServiceCall\_GetSaleInvoiceByCustomerID.cshtml" />
+    <Content Include="Views\Quotation\_PrintQuotation.cshtml" />
+    <Content Include="Views\Spare\Index.cshtml" />
+    <Content Include="Views\Spare\_AddSpare.cshtml" />
+    <Content Include="Views\Spare\_SpareSelectList.cshtml" />
     <Content Include="Views\Report\EstimateReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <None Include="Web.Debug.config">

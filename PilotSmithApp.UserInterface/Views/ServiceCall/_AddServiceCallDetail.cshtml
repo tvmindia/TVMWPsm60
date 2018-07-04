@@ -1,5 +1,15 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ServiceCallDetailViewModel
 
+@{
+    List<SelectListItem> yesNoList = new List<SelectListItem>();
+    yesNoList.Add(new SelectListItem
+    { Text = "Yes", Value = "True" });
+    yesNoList.Add(new SelectListItem
+    { Text = "No", Value = "False" });
+    yesNoList.Add(new SelectListItem
+    { Text = "Not Set", Value = "", Selected = true });
+}
+
 @using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormServiceCallDetail" }))
 {
     @Html.HiddenFor(model => model.ServiceCallID, htmlAttributes: new { @class = "" })
@@ -13,7 +23,7 @@
                 <div class="divProductSelectList">
                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
-                </div>              
+                </div>
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductRequired", "required")
@@ -27,7 +37,7 @@
                 <div class="divProductModelSelectList">
                     <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
-                </div>              
+                </div>
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
             @*@Html.Hidden("hdnProductModelRequired", "required")*@
@@ -47,44 +57,49 @@
             </div>
         </div>
 
-        <div class="col-md-6 no-padding">
+        <div class="col-md-12 no-padding">
+
+            <div class="col-md-6 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.GuaranteeYN, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.DropDownListFor(model => model.GuaranteeYN, yesNoList, htmlAttributes: new { @class = "form-control newinput" })
                     @Html.HiddenFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "" })
                 </div>
             </div>
 
-            
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.InstalledDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.InstalledDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id = "InstalledDate" } })
+                    @Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })
+                    @*@Html.ValidationMessage("InstalledDateFormatted", "Installed Date Required", new { @class = "text-danger", @style = "display:none;", @id = "msgInstalledDate" })*@
+                </div>
             </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id= "InstalledDate" } })
-                @*@Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })*@
-                @Html.ValidationMessage("InstalledDateFormatted", "Installed Date Required", new { @class = "text-danger", @style="display:none;", @id= "msgInstalledDate" })
+        </div>
+        <div class="col-md-12 no-padding">
+
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    <div class="divServiceStatusSelectList">
+                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("ServiceStatusSelectList", "DocumentStatus", new { required = "", code = "SRC" })*@
+                    </div>
+                </div>
+                <!-- This hidden field will keep the information whether the field is required or not -->
+                @Html.Hidden("hdnServiceStatusRequired", "")
+                @Html.HiddenFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "", @id = "hdnServiceStatusCode" })
             </div>
         </div>
 
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "control-label" })
-            </div>
-            <div class="col-md-12">
-                <div class="divDocumentStatusSelectList">
-                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                    @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "", code = "EST" })*@
-                </div>               
-            </div>
-            <!-- This hidden field will keep the information whether the field is required or not -->
-            @Html.Hidden("hdnDocumentStatusRequired", "")
-            @Html.HiddenFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-        </div>
-
-    </div>       
+    </div>
         @*</div>*@
         <div class="modal-footer d-flex justify-content-center">
             <button class="btn btn-default" id="btnAddServiceCallDetail" onclick="AddServiceCallDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
@@ -113,22 +128,12 @@
                     }
                 });
             });
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val(), function () {
-                $('#DocumentStatusCode').select2({
-                    dropdownParent: $('#divModelPopServiceCall')
-                });
-                $('.select2').addClass('form-control newinput');
-            })
+            $('.divServiceStatusSelectList').load('/DocumentStatus/ServiceStatusSelectList?code=SRC&required=' + $('#hdnServiceStatusRequired').val())
         }
         catch (e) {
             console.log(e.message);
         }
-        $('#divModelPopServiceCall #ProductID,#divModelPopServiceCall #UnitCode').select2({
-            dropdownParent: $("#divModelPopServiceCall")
-        });
 
-        $('.select2').addClass('form-control newinput');
-        
         try {
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",
@@ -142,16 +147,13 @@
         catch (e) {
             console.log(e.message);
         }
+
+        $('#divModelPopServiceCall #GuaranteeYN').select2({
+            dropdownParent: $("#divModelPopServiceCall"),
+            width: "100%"
+        });
+
+        $('.select2').addClass('form-control newinput');
+
     });
 </script>
-
-@*<style>
-    .rcorners2 {
-        border-radius: 25px;
-        border: 1px solid #068a78;
-        /*padding: 20px;*/
-        width: 500px;
-        height: 243px;
-    }
-</style>*@
-

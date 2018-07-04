@@ -235,6 +235,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationDetail.ID);
                                         quotationDetail.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : quotationDetail.QuoteID);
                                         quotationDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : quotationDetail.ProductSpec);
+                                        quotationDetail.ProductSpecHtml = (sdr["ProductSpecHtml"].ToString() != "" ? sdr["ProductSpecHtml"].ToString() : quotationDetail.ProductSpecHtml);
                                         quotationDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : quotationDetail.SpecTag);
                                         quotationDetail.Product = new Product()
                                         {

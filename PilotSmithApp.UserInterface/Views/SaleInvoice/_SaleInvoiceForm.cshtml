@@ -27,6 +27,9 @@
                         <span style="margin-left:10px">
                             @Html.RadioButtonFor(model => model.DocumentType, "SaleOrder") @Html.Label("Sale Order")
                         </span>
+                        <span style="margin-left:10px">
+                            @Html.RadioButtonFor(model => model.DocumentType, "ProformaInvoice") @Html.Label("Proforma Invoice")
+                        </span>
                     </div>
                     if (Model.DocumentType == "Quotation")
                     {
@@ -48,6 +51,15 @@
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
+                        <div class="col-md-12 no-padding" id="divProformaInvoiceSelectList" style="display:none;">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Proforma Invoice", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.ProfInvID, Model.ProformaInvoiceSelectList, "Search Proforma Invoice", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProfInvID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.ProfInvID, htmlAttributes: new { @class = "", @id = "hdnProfInvID" })
+                        </div>
                     }
                     if (Model.DocumentType == "SaleOrder")
                     {
@@ -68,6 +80,45 @@
                                 @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
+                        </div>
+                        <div class="col-md-12 no-padding" id="divProformaInvoiceSelectList" style="display:none;">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Proforma Invoice", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.ProfInvID, Model.ProformaInvoiceSelectList, "Search Proforma Invoice", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProfInvID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.ProfInvID, htmlAttributes: new { @class = "", @id = "hdnProfInvID" })
+                        </div>
+                    }
+                    if (Model.DocumentType == "ProformaInvoice")
+                    {
+                        <div class="col-md-12 no-padding" id="divQuotationSelectList" style="display:none;">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Quotation", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
+                        </div>
+                        <div class="col-md-12 no-padding" id="divSaleOrderSelectList" style="display:none;">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Sale Order", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
+                        </div>
+                        <div class="col-md-12 no-padding" id="divProformaInvoiceSelectList">
+                            <div class="col-md-12">
+                                @Html.Label("Search and select a Proforma Invoice", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.ProfInvID, Model.ProformaInvoiceSelectList, "Search Proforma Invoice", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProfInvID').val(this.value)" })
+                            </div>
+                            @Html.HiddenFor(model => model.ProfInvID, htmlAttributes: new { @class = "", @id = "hdnProfInvID" })
                         </div>
                     }
                 }
@@ -95,6 +146,18 @@
                                 @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
+                        </div>
+                    }
+                    if (Model.ProfInvID != null && Model.ProfInvID != Guid.Empty)
+                    {
+                        <div class="col-md-12 no-padding" id="divProformaInvoiceSelectList">
+                            <div class="col-md-12">
+                                @Html.Label("ProformaInvoice", htmlAttributes: new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.ProfInvID, Model.ProformaInvoiceSelectList, "Search Proforma Invoice", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProfInvID').val(this.value)", @disabled = "" })
+                            </div>
+                            @Html.HiddenFor(model => model.ProfInvID, htmlAttributes: new { @class = "", @id = "hdnProfInvID" })
                         </div>
                     }
                 }
@@ -378,31 +441,31 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">
                 Sale Invoice Details
-                @{ 
+                @{
                     if (Model.IsDocLocked || !Model.IsUpdate)
                     {
                         if (Model.InvoiceType == "SB")
                         {
-                        <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                        <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                            <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
 
                         }
                         else
                         {
-                        <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                        <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                            <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddSaleInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
 
                         }
                     }
                     else
                     {
-                    <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                    <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                    <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        }
+                        <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                        <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
                     }
+                }
             </div>
 
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
@@ -532,7 +595,7 @@
             <input id="btnInsertUpdateSaleInvoice" type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
-                                        }
+                    }
 <script>
     $(document).ready(function () {
         try {
@@ -540,12 +603,12 @@
             @if (!Model.IsDocLocked && Model.IsUpdate) { }
             else {
                 <text>
-                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-                </text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            </text>
                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=' + $('#hdnBillLocationRequired').val())
-            @if (Model.IsUpdate || Model.QuoteID !=null || Model.SaleOrderID != null)
+            @if (Model.IsUpdate || Model.QuoteID !=null || Model.SaleOrderID != null || Model.ProfInvID!=null)
          {
              <text>
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
@@ -653,6 +716,30 @@
                     },
                 }
             });
+            $('#ProfInvID').val($('#hdnProfInvID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnProfInvID').val());
+            $('#ProfInvID').select2({
+                language: {
+                    noResults: function (params) {
+                        return "Search result will shows here";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "ProformaInvoice/GetProformaInvoiceForSelectListOnDemand/",
+                    delay: 250,
+                    data: function (term) {
+                        return {
+                            'searchTerm': term.term //search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    },
+                }
+            });
             $('.select2').addClass('form-control newinput');
         }
         catch (e) {
@@ -666,8 +753,8 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true)
+                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false,false);
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true,false)
                     CalculateTotal();
                     $('#DocumentType').prop('disabled', true);
                     $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
@@ -686,8 +773,8 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false)
+                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true,false);
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false,false)
                     CalculateTotal();
                     $("input[type=radio][value=SaleOrder]").attr("disabled", true);
                     $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
@@ -698,28 +785,63 @@
         catch (e) {
             console.log(e.message);
         }
+        try{
+            $('#SaleInvoiceForm #ProfInvID').change(function () {
+                debugger;
+                OnServerCallBegin();
+                $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid + "&proformaInvoiceID=" + this.value, function () {
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val(), function () {
+                        $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                        $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+                        BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, false,true);
+                        BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, false,true)
+                        CalculateTotal();
+                        $("input[type=radio][value=SaleOrder]").attr("disabled", true);
+                        $("input[type=radio][value=Quotation]").attr("disabled", true);
+                        $("input[type=radio][value=ProformaInvoice]").attr('title', "Proforma Invoice  details has been listed, Reset to continue");
+                        OnServerCallComplete();
+                    });
+                });
+                   
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
         try {
             $('[name="DocumentType"]').change(function () {
                 if (this.value == "Quotation") {
                     $('#divSaleOrderSelectList').hide();
                     $('#divQuotationSelectList').show();
+                    $('#divProformaInvoiceSelectList').hide();
                     $('#QuoteID').prop('disabled', false);
                     $('#SaleOrderID').prop('disabled', true);
+                    $('#ProfInvID').prop('disabled', true);
                 }
                 else if (this.value == "SaleOrder") {
                     $('#divSaleOrderSelectList').show();
                     $('#divQuotationSelectList').hide();
+                    $('#divProformaInvoiceSelectList').hide();
                     $('#QuoteID').prop('disabled', true);
                     $('#SaleOrderID').prop('disabled', false);
+                    $('#ProfInvID').prop('disabled', true);
+                }
+                else if (this.value == "ProformaInvoice") {                  
+                    $('#divSaleOrderSelectList').hide();
+                    $('#divQuotationSelectList').hide();
+                    $('#divProformaInvoiceSelectList').show();
+                    $('#QuoteID').prop('disabled', true);
+                    $('#SaleOrderID').prop('disabled', true);
+                    $('#ProfInvID').prop('disabled', false);
                 }
             });
         }
         catch (e) {
             console.log(e.message);
         }
-        try{
+        try {
             $('#InvoiceType').select2({
-               
+
             });
             $('.select2').addClass('form-control newinput');
         }

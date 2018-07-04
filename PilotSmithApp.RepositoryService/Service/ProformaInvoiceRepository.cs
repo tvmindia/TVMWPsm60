@@ -111,7 +111,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         proformaInvoice.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : proformaInvoice.QuoteID);
                                         proformaInvoice.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : proformaInvoice.Quotation.QuoteNo);
                                         proformaInvoice.SaleOrder = new SaleOrder();
-                                        proformaInvoice.QuoteID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : proformaInvoice.QuoteID);
+                                        proformaInvoice.SaleOrderID= (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : proformaInvoice.SaleOrderID);
                                         proformaInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : proformaInvoice.SaleOrder.SaleOrderNo);
                                     }
                                     proformaInvoiceList.Add(proformaInvoice);
@@ -657,5 +657,110 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Delete Proforma Invoice OtherCharge Detail
+
+        #region GetProformaInvoiceForSelectListOnDemand
+        public List<ProformaInvoice> GetProformaInvoiceForSelectListOnDemand(string searchTerm)
+        {
+            List<ProformaInvoice> proformaInvoiceList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProformaInvoiceForSelectListOnDemand]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (string.IsNullOrEmpty(searchTerm))
+                        {
+                            cmd.Parameters.AddWithValue("@SearchTerm", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@SearchTerm", SqlDbType.VarChar, 250).Value = searchTerm;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                proformaInvoiceList = new List<ProformaInvoice>();
+                                while (sdr.Read())
+                                {
+                                    ProformaInvoice proformaInvoice = new ProformaInvoice();
+                                    {
+                                        proformaInvoice.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : proformaInvoice.ID);
+                                        proformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? sdr["ProfInvNo"].ToString() : proformaInvoice.ProfInvNo);
+                                    }
+                                    proformaInvoiceList.Add(proformaInvoice);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return proformaInvoiceList;
+        }
+        #endregion GetProformaInvoiceForSelectListOnDemand
+
+        #region GetProformaInvoiceForSelectList
+        public List<ProformaInvoice> GetProformaInvoiceForSelectList(Guid? proformaInvoiceID)
+        {
+            List<ProformaInvoice> proformaInvoiceList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProformaInvoiceForSelectList]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (proformaInvoiceID!=null)
+                        {
+                            cmd.Parameters.AddWithValue("@ID", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@ID", SqlDbType.VarChar, 250).Value = proformaInvoiceID;
+                        }
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                proformaInvoiceList = new List<ProformaInvoice>();
+                                while (sdr.Read())
+                                {
+                                    ProformaInvoice proformaInvoice = new ProformaInvoice();
+                                    {
+                                        proformaInvoice.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : proformaInvoice.ID);
+                                        proformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? sdr["ProfInvNo"].ToString() : proformaInvoice.ProfInvNo);
+                                    }
+                                    proformaInvoiceList.Add(proformaInvoice);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return proformaInvoiceList;
+        }
+        #endregion GetProformaInvoiceForSelectList
+
     }
 }

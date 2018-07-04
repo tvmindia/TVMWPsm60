@@ -39,11 +39,11 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (saleOrder.SaleOrderDetailList.Count > 0)
             {
-                saleOrder.DetailXML = _commonBusiness.GetXMLfromSaleOrderObject(saleOrder.SaleOrderDetailList, "ProductID, ProductModelID, UnitCode, Qty, Rate");
+                saleOrder.DetailXML = _commonBusiness.GetXMLfromSaleOrderObject(saleOrder.SaleOrderDetailList, "ProductID,ProductModelID,UnitCode,Qty,Rate");
             }
             if (saleOrder.SaleOrderOtherChargeList.Count > 0)
             {
-                saleOrder.OtherChargeDetailXML = _commonBusiness.GetXMLfromSaleOrderOtherChargeObject(saleOrder.SaleOrderOtherChargeList, "OtherChargeCode , ChargeAmount");
+                saleOrder.OtherChargeDetailXML = _commonBusiness.GetXMLfromSaleOrderOtherChargeObject(saleOrder.SaleOrderOtherChargeList, "OtherChargeCode,ChargeAmount");
             }
             return _saleOrderRepository.InsertUpdateSaleOrder(saleOrder);
         }
@@ -83,6 +83,7 @@ namespace PilotSmithApp.BusinessService.Service
                     string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
                     _mail.Body = mailBody.Replace("$Customer$", saleOrder.Customer.ContactPerson).Replace("$Document$", "Sale Order").Replace("$DocumentNo$", saleOrder.SaleOrderNo).Replace("$DocumentDate$",saleOrder.SaleOrderDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = saleOrder.MailContant;
+                    pDFTools.ContentFileName = "SaleOrder";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), saleOrder.SaleOrderNo + ".pdf"));
                     _mail.Subject = "SaleOrder";
                     _mail.IsBodyHtml = true;

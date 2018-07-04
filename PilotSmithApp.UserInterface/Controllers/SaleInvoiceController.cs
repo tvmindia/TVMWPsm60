@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,21 +20,26 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         ISaleInvoiceBusiness _saleInvoiceBusiness;      
         ISaleOrderBusiness _saleOrderBusiness;
-        IQuotationBusiness _quotationBusiness;
+        IQuotationBusiness _quotationBusiness;       
         ICommonBusiness _commonBusiness;       
         IDocumentStatusBusiness _documentStatusBusiness;
+        SecurityFilter.ToolBarAccess _tool;
+        IProformaInvoiceBusiness _proformaInvoiceBusiness;
         public SaleInvoiceController(ISaleInvoiceBusiness saleInvoiceBusiness,
            IQuotationBusiness quotationBusiness,
            ISaleOrderBusiness saleOrderBusiness, 
            ICommonBusiness commonBusiness,
-           IDocumentStatusBusiness documenStatusBusiness           
+           IDocumentStatusBusiness documenStatusBusiness,
+           SecurityFilter.ToolBarAccess tool,IProformaInvoiceBusiness proformaInvoiceBusiness           
             )
         {
             _saleInvoiceBusiness = saleInvoiceBusiness;            
             _quotationBusiness = quotationBusiness;
             _saleOrderBusiness = saleOrderBusiness;
             _commonBusiness = commonBusiness;
-            _documentStatusBusiness = documenStatusBusiness;            
+            _documentStatusBusiness = documenStatusBusiness;
+            _tool = tool;
+            _proformaInvoiceBusiness = proformaInvoiceBusiness;       
         }
         // GET: SaleInvoice
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -59,7 +65,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region SaleInvoice Form
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
-        public ActionResult SaleInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID)
+        public ActionResult SaleInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID,Guid? proformaInvoiceID)
         {
             SaleInvoiceViewModel saleInvoiceVM = null;
             try
@@ -81,6 +87,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                         saleInvoiceVM.DocumentType = "SaleOrder";
                         saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
                     }
+                    if (saleInvoiceVM.ProfInvID != null && saleInvoiceVM.ProfInvID != Guid.Empty)
+                    {
+                        saleInvoiceVM.DocumentType = "ProformaInvoice";
+                        saleInvoiceVM.ProformaInvoiceSelectList = _proformaInvoiceBusiness.GetProformaInvoiceForSelectList(proformaInvoiceID);
+                    }
                 }
                 else if (id == Guid.Empty && quotationID != null)
                 {
@@ -93,6 +104,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.QuoteID = quotationID;
                     saleInvoiceVM.Discount = quotationVM.Discount;
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.ProformaInvoiceSelectList = new List<SelectListItem>();
                     saleInvoiceVM.CustomerID = quotationVM.CustomerID;
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
                     {
@@ -110,6 +122,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.ID = Guid.Empty;
                     saleInvoiceVM.DocumentType = "SaleOrder";
                     saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.ProformaInvoiceSelectList = new List<SelectListItem>();
                     saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
                     saleInvoiceVM.SaleOrderID = saleorderID;
                     saleInvoiceVM.Discount = saleorderVM.Discount;
@@ -117,6 +130,27 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
                     {
                         Description = "-",
+                    };
+                    saleInvoiceVM.Branch = new BranchViewModel();
+                    saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.IsDocLocked = false;
+                }
+                else if(id==Guid.Empty && proformaInvoiceID!=null)
+                {
+                    ProformaInvoiceViewModel proformaInvoiceVM = Mapper.Map<ProformaInvoice, ProformaInvoiceViewModel>(_proformaInvoiceBusiness.GetProformaInvoice((Guid)proformaInvoiceID));
+                    saleInvoiceVM = new SaleInvoiceViewModel();
+                    saleInvoiceVM.IsUpdate = false;
+                    saleInvoiceVM.ID = Guid.Empty;
+                    saleInvoiceVM.DocumentType = "ProformaInvoice";
+                    saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.ProformaInvoiceSelectList = _proformaInvoiceBusiness.GetProformaInvoiceForSelectList(proformaInvoiceID);
+                    saleInvoiceVM.ProfInvID = proformaInvoiceID;
+                    saleInvoiceVM.Discount = proformaInvoiceVM.Discount;
+                    saleInvoiceVM.CustomerID = proformaInvoiceVM.CustomerID;
+                    saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "-"
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
@@ -130,6 +164,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.DocumentType = "Quotation";
                     saleInvoiceVM.QuotationSelectList = new List<SelectListItem>();
                     saleInvoiceVM.SaleOrderSelectList = new List<SelectListItem>();
+                    saleInvoiceVM.ProformaInvoiceSelectList = new List<SelectListItem>();
                     saleInvoiceVM.DocumentStatus = new DocumentStatusViewModel()
                     {
                         Description = "-",
@@ -331,6 +366,52 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get SaleInvoice DetailList By QuotationID From Quotation
 
+        #region GetSaleInvoiceDetailListByProfInvIDFromProformaInvoice
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetSaleInvoiceDetailListByProfInvIDFromProformaInvoice(Guid proformaInvoiceID)
+        {
+            try
+            {
+                List<SaleInvoiceDetailViewModel> saleInvoiceItemViewModelList = new List<SaleInvoiceDetailViewModel>();
+                if (proformaInvoiceID != Guid.Empty)
+                {
+                    List<ProformaInvoiceDetailViewModel> proformaInvoiceDetailVMList = Mapper.Map<List<ProformaInvoiceDetail>, List<ProformaInvoiceDetailViewModel>>(_proformaInvoiceBusiness.GetProformaInvoiceDetailListByProformaInvoiceID(proformaInvoiceID));
+                    saleInvoiceItemViewModelList = (from proformaInvoiceDetailVM in proformaInvoiceDetailVMList
+                                                    select new SaleInvoiceDetailViewModel
+                                                    {
+                                                        ID = Guid.Empty,
+                                                        SaleInvID = Guid.Empty,
+                                                        ProductID = proformaInvoiceDetailVM.ProductID,
+                                                        ProductModelID = proformaInvoiceDetailVM.ProductModelID,
+                                                        ProductSpec = proformaInvoiceDetailVM.ProductSpec,
+                                                        Qty = proformaInvoiceDetailVM.Qty,
+                                                        UnitCode = proformaInvoiceDetailVM.UnitCode,
+                                                        Rate = proformaInvoiceDetailVM.Rate,
+                                                        SpecTag = proformaInvoiceDetailVM.SpecTag,
+                                                        Discount = proformaInvoiceDetailVM.Discount,
+                                                        TaxTypeCode = proformaInvoiceDetailVM.TaxTypeCode,
+                                                        CGSTPerc = proformaInvoiceDetailVM.CGSTPerc,
+                                                        SGSTPerc = proformaInvoiceDetailVM.SGSTPerc,
+                                                        IGSTPerc = proformaInvoiceDetailVM.IGSTPerc,
+                                                        CessAmt = 0,
+                                                        CessPerc = 0,
+                                                        Product = proformaInvoiceDetailVM.Product,
+                                                        ProductModel = proformaInvoiceDetailVM.ProductModel,
+                                                        Unit = proformaInvoiceDetailVM.Unit,
+                                                        TaxType = proformaInvoiceDetailVM.TaxType,
+                                                    }).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceItemViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion GetSaleInvoiceDetailListByProfInvIDFromProformaInvoice
+
         #region Get Quotation OtherChargeList By QuotationID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -486,6 +567,44 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get SaleOrder DetailList By SaleOrderID with Quotation
+
+        #region GetProformaInvoiceOtherChargesDetailListByProfInvIDFromProformaInvoice
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetProformaInvoiceOtherChargesDetailListByProfInvIDFromProformaInvoice(Guid proformaInvoiceID)
+        {
+            try
+            {
+                List<SaleInvoiceOtherChargeViewModel> saleInvoiceOtherChargeViewModelList = new List<SaleInvoiceOtherChargeViewModel>();
+                if (proformaInvoiceID != Guid.Empty)
+                {
+                    List<ProformaInvoiceOtherChargeViewModel> proformaInvoiceOtherChargeVMList = Mapper.Map<List<ProformaInvoiceOtherCharge>, List<ProformaInvoiceOtherChargeViewModel>>(_proformaInvoiceBusiness.GetProformaInvoiceOtherChargesDetailListByProformaInvoiceID(proformaInvoiceID));
+                    saleInvoiceOtherChargeViewModelList = (from proformaInvoiceOtherChargeVM in proformaInvoiceOtherChargeVMList
+                                                           select new SaleInvoiceOtherChargeViewModel
+                                                           {
+                                                               ID = Guid.Empty,
+                                                               SaleInvID = Guid.Empty,
+                                                               OtherChargeCode = proformaInvoiceOtherChargeVM.OtherChargeCode,
+                                                               ChargeAmount = proformaInvoiceOtherChargeVM.ChargeAmount,
+                                                               TaxTypeCode = proformaInvoiceOtherChargeVM.TaxTypeCode,
+                                                               CGSTPerc = proformaInvoiceOtherChargeVM.CGSTPerc,
+                                                               SGSTPerc = proformaInvoiceOtherChargeVM.SGSTPerc,
+                                                               IGSTPerc = proformaInvoiceOtherChargeVM.IGSTPerc,
+                                                               AddlTaxPerc = 0,
+                                                               AddlTaxAmt = 0,
+                                                               OtherCharge = proformaInvoiceOtherChargeVM.OtherCharge,
+                                                               TaxType = proformaInvoiceOtherChargeVM.TaxType,
+                                                           }).ToList();
+                }
+                return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceOtherChargeViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion GetProformaInvoiceOtherChargesDetailListByProfInvIDFromProformaInvoice
 
         #region Delete SaleInvoice
         [HttpGet]
@@ -795,6 +914,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            Permission permission = Session["UserRights"] as Permission;
             switch (actionType)
             {
                 case "List":
@@ -943,6 +1063,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

@@ -700,7 +700,7 @@ function EditRedirectToDocument(id)
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument");
+                ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", id);
             }
             BindEnquiryDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());

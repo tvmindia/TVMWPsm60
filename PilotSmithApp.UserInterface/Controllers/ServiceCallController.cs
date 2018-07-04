@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IAreaBusiness _areaBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
         IEmployeeBusiness _employeeBusiness;
+        SecurityFilter.ToolBarAccess _tool;
+        ISaleInvoiceBusiness _saleInvoiceBusiness;
         public ServiceCallController(IServiceCallBusiness serviceCallBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
-            IDocumentStatusBusiness documentStatusBusiness,IEmployeeBusiness employeeBusiness)
+            IDocumentStatusBusiness documentStatusBusiness,IEmployeeBusiness employeeBusiness, 
+            ISaleInvoiceBusiness saleInvoiceBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _serviceCallBusiness = serviceCallBusiness;
             _customerBusiness = customerBusiness;
@@ -35,6 +39,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             _areaBusiness = areaBusiness;
             _documentStatusBusiness = documentStatusBusiness;
             _employeeBusiness = employeeBusiness;
+            _tool = tool;
+            _saleInvoiceBusiness = saleInvoiceBusiness;
         }
         #endregion Constructor Injection 
 
@@ -275,6 +281,28 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get serviceCall OtherChargeList By serviceCallID
 
+        #region GetSaleInvoiceSummaryByCustomer
+        public ActionResult GetSaleInvoiceByCustomerID(Guid? customerID)
+        {
+            ServiceCallViewModel serviceCallVM = new ServiceCallViewModel();
+            serviceCallVM.SaleInvoiceList = new List<SaleInvoiceViewModel>();
+            if (customerID != null && customerID != Guid.Empty)
+            {
+                SaleInvoiceAdvanceSearchViewModel saleInvoiceAdvanceSearchVM = new SaleInvoiceAdvanceSearchViewModel()
+                {
+                    AdvCustomerID = (Guid)customerID,
+                    DataTablePaging = new DataTablePagingViewModel()
+                    {
+                        Start = 0,
+                        Length = 50
+                    }
+                };
+                serviceCallVM.SaleInvoiceList = Mapper.Map<List<SaleInvoice>, List<SaleInvoiceViewModel>>(_saleInvoiceBusiness.GetAllSaleInvoice(Mapper.Map<SaleInvoiceAdvanceSearchViewModel, SaleInvoiceAdvanceSearch>(saleInvoiceAdvanceSearchVM)));
+            }
+            return PartialView("_GetSaleInvoiceByCustomerID", serviceCallVM);
+        }
+        #endregion GetSaleInvoiceByCustomer
+
         #region Delete ServiceCall
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "D")]
@@ -335,6 +363,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            Permission permission = Session["UserRights"] as Permission;
             switch (actionType)
             {
                 case "List":
@@ -454,6 +483,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

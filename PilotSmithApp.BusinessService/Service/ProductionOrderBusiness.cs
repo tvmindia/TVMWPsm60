@@ -39,7 +39,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (productionOrder.ProductionOrderDetailList.Count > 0)
             {
-                productionOrder.DetailXML = _commonBusiness.GetXMLfromProductionOrderObject(productionOrder.ProductionOrderDetailList, "ProductID, ProductModelID, ProductSpec, UnitCode");
+                productionOrder.DetailXML = _commonBusiness.GetXMLfromProductionOrderObject(productionOrder.ProductionOrderDetailList, "ProductID,ProductModelID,ProductSpec,UnitCode");
             }
             return _productionOrderRepository.InsertUpdateProductionOrder(productionOrder);
         }
@@ -91,6 +91,7 @@ namespace PilotSmithApp.BusinessService.Service
                     string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
                     _mail.Body = mailBody.Replace("$Customer$", productionOrder.Customer.ContactPerson).Replace("$Document$", "Production Order").Replace("$DocumentNo$", productionOrder.ProdOrderNo).Replace("$DocumentDate$",productionOrder.ProdOrderDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = productionOrder.MailContant;
+                    pDFTools.ContentFileName = "ProductionOrder";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), productionOrder.ProdOrderNo + ".pdf"));
                     _mail.Subject = "ProductionOrder";
                     _mail.IsBodyHtml = true;

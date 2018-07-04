@@ -241,6 +241,7 @@ function ResetServiceCall() {
             BindServiceCallDetailList($('#ID').val());
             BindServiceCallChargeDetailList($('#ID').val());
             clearUploadControl();
+            CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
             PaintImages($('#ServiceCallForm #ID').val());
         }
@@ -257,6 +258,7 @@ function EditServiceCallDetail(this_Obj) {
         _datatablerowindex = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).index();
         var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
         $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail", function () {
+            debugger;
             $('#lblModelPopServiceCall').text('Service Call Detail')
             $('#FormServiceCallDetail #IsUpdate').val('True');
             $('#FormServiceCallDetail #ID').val(serviceCallDetail.ID);
@@ -281,10 +283,10 @@ function EditServiceCallDetail(this_Obj) {
             $('#FormServiceCallDetail #ProductSpec').val(serviceCallDetail.ProductSpec);
             switch (serviceCallDetail.GuaranteeYN) {
                 case true:
-                    serviceCallDetail.GuaranteeYN = 'true'
+                    serviceCallDetail.GuaranteeYN = 'True'
                     break;
-                case true:
-                    serviceCallDetail.GuaranteeYN = 'true'
+                case false:
+                    serviceCallDetail.GuaranteeYN = 'False'
                     break;
                 default:
                     serviceCallDetail.GuaranteeYN = ''
@@ -292,6 +294,7 @@ function EditServiceCallDetail(this_Obj) {
             }
             $('#FormServiceCallDetail #GuaranteeYN').val(serviceCallDetail.GuaranteeYN);
             $('#FormServiceCallDetail #ServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
+            $('#FormServiceCallDetail #hdnServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
             $('#FormServiceCallDetail #InstalledDate').val(serviceCallDetail.InstalledDateFormatted);
             $('#divModelPopServiceCall').modal('show');
         });
@@ -442,9 +445,9 @@ function AddServiceCallDetailToList() {
                 ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 serviceCallDetailList[_datatablerowindex].ProductModel = ProductModel;
                 serviceCallDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
-                serviceCallDetailList[_datatablerowindex].GuaranteeYN = $('#GuaranteeYN').val();
-                serviceCallDetailList[_datatablerowindex].ServiceStatusCode = $('#DocumentStatusCode').val();
-                DocumentStatus.Description = $("#divModelServiceCallPopBody #DocumentStatusCode").val() != "" ? $("#divModelServiceCallPopBody #DocumentStatusCode option:selected").text().trim() : "";
+                serviceCallDetailList[_datatablerowindex].GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
+                serviceCallDetailList[_datatablerowindex].ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
+                DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
                 serviceCallDetailList[_datatablerowindex].DocumentStatus = DocumentStatus;
                 serviceCallDetailList[_datatablerowindex].InstalledDate = $('#InstalledDate').val();
                 serviceCallDetailList[_datatablerowindex].InstalledDateFormatted = $('#InstalledDate').val();
@@ -482,9 +485,9 @@ function AddServiceCallDetailToList() {
                     ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                     serviceCallDetailList[0].ProductModel = ProductModel;
                     serviceCallDetailList[0].ProductSpec = $('#ProductSpec').val();
-                    serviceCallDetailList[0].GuaranteeYN = $('#GuaranteeYN').val();
-                    serviceCallDetailList[0].ServiceStatusCode = $('#divModelServiceCallPopBody #DocumentStatusCode').val();
-                    DocumentStatus.Description = $("#divModelServiceCallPopBody #DocumentStatusCode").val() != "" ? $("#divModelServiceCallPopBody #DocumentStatusCode option:selected").text().trim() : "";
+                    serviceCallDetailList[0].GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
+                    serviceCallDetailList[0].ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
+                    DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
                     serviceCallDetailList[0].DocumentStatus = DocumentStatus;
                     serviceCallDetailList[0].InstalledDate = $('#InstalledDate').val();
                     serviceCallDetailList[0].InstalledDateFormatted = $('#InstalledDate').val();
@@ -508,9 +511,9 @@ function AddServiceCallDetailToList() {
                             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                             serviceCallDetailVM.ProductModel = ProductModel;
                             serviceCallDetailVM.ProductSpec = $('#ProductSpec').val();
-                            serviceCallDetailVM.GuaranteeYN = $('#GuaranteeYN').val();
-                            serviceCallDetailVM.ServiceStatusCode = $('#DocumentStatusCode').val();
-                            DocumentStatus.Description = $("#DocumentStatusCode").val() != "" ? $("#DocumentStatusCode option:selected").text().trim() : "";
+                            serviceCallDetailVM.GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
+                            serviceCallDetailVM.ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
+                            DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
                             serviceCallDetailVM.DocumentStatus = DocumentStatus;
                             serviceCallDetailVM.InstalledDate = $('#InstalledDate').val();
                             serviceCallDetailVM.InstalledDateFormatted = $('#InstalledDate').val();
@@ -981,12 +984,27 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
             }
             BindServiceCallDetailList(id);
+            BindServiceCallChargeDetailList(id)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
+            CalculateTotal();
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
     });
+}
+
+//=============== Sale Invoice List By Customer ID ==================//
+function GetSaleInvoiceByCustomerID() {
+    try {
+        debugger;
+        $('#lblModelPopInvoices').text('Sale Invoices for Customer');
+        $('#lblModelPopCustomer').text($("#CustomerID").val() != "" ? $("#CustomerID option:selected").text().trim() : "");
+        $('#divModelPopInvoices').modal('show');
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }

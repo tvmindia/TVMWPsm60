@@ -1,0 +1,25 @@
+﻿@model PilotSmithApp.UserInterface.Models.DocumentStatusViewModel
+@if (@ViewBag.IsRequired == "required")
+{
+    @Html.DropDownList("ServiceStatusCode", Model.DocumentStatusSelectList, "--Select document status--", new { @class = "form-control newinput", @required = "", @title = "The Document status is missing", @style = "width:100%!important", @onchange = "$('#hdnServiceStatusCode').val(this.value)" })
+}
+else
+{
+    @Html.DropDownList("ServiceStatusCode", Model.DocumentStatusSelectList, "--Select document status--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnServiceStatusCode').val(this.value)" })
+}
+
+@Html.ValidationMessage("ServiceStatusCode", "", new { @class = "text-danger" })
+
+<script>
+    $(document).ready(function () {
+        if ($('#hdnServiceStatusCode').val())
+        {
+            $('#ServiceStatusCode').val($('#hdnServiceStatusCode').val());
+        }
+        $('#ServiceStatusCode').select2({});
+        $('#ServiceStatusCode').select2({
+            dropdownParent: $('.divServiceStatusSelectList')
+        });
+        $('.select2').addClass('form-control newinput');
+    });
+</script>

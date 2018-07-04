@@ -38,7 +38,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (saleInvoice.SaleInvoiceDetailList.Count > 0)
             {
-                saleInvoice.DetailXML = _commonBusiness.GetXMLfromSaleInvoiceObject(saleInvoice.SaleInvoiceDetailList, "ProductID, ProductModelID, UnitCode, Qty, Rate");
+                saleInvoice.DetailXML = _commonBusiness.GetXMLfromSaleInvoiceObject(saleInvoice.SaleInvoiceDetailList, "ProductID,ProductModelID,UnitCode,Qty,Rate");
             }
             if (saleInvoice.SaleInvoiceOtherChargeDetailList.Count > 0)
             {
@@ -78,6 +78,7 @@ namespace PilotSmithApp.BusinessService.Service
                     string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
                     _mail.Body = mailBody.Replace("$Customer$", saleInvoice.Customer.ContactPerson).Replace("$Document$", "Sale Invoice").Replace("$DocumentNo$", saleInvoice.SaleInvNo).Replace("$DocumentDate$", saleInvoice.SaleInvDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = saleInvoice.MailContant;
+                    pDFTools.ContentFileName = "SaleInvoice";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), saleInvoice.SaleInvNo + ".pdf"));
                     _mail.Subject = "Sale Invoice";
                     _mail.IsBodyHtml = true;
