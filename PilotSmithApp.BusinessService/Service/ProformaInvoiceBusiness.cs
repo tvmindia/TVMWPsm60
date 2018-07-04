@@ -82,6 +82,7 @@ namespace PilotSmithApp.BusinessService.Service
                     string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
                     _mail.Body = mailBody.Replace("$Customer$", proformaInvoice.Customer.ContactPerson).Replace("$Document$", "Proforma Invoice").Replace("$DocumentNo$", proformaInvoice.ProfInvNo).Replace("$DocumentDate$", proformaInvoice.ProfInvDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = proformaInvoice.MailContant;
+                    pDFTools.ContentFileName = "ProformaInvoice";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pdfGeneratorBusiness.GetPdfAttachment(pDFTools)), proformaInvoice.ProfInvNo + ".pdf"));
                     _mail.Subject = "Proforma Invoice";
                     _mail.IsBodyHtml = true;

@@ -275,6 +275,7 @@
                         @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
                         @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
                         @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "", @id = "hdnQuoteNo" })
+                        @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnEmailContentFileName" })
                         @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
                         <a class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;margin-right: 1%;" onclick="EmailQuotation()">Back </a>
                         if (Model.LatestApprovalStatus == 4)
@@ -288,7 +289,7 @@
 
                   }
 
-                  using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormQuotationEmailDownload" }))
+                  using (Html.BeginForm("DownloadWithTerms", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormQuotationEmailDownload" }))
                   {
                       @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
                       @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
