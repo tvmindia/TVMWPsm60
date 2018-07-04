@@ -106,6 +106,8 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJs/RecentDocument").Include("~/Scripts/UserJS/RecentDocument.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/ProformaInvoice").Include("~/Scripts/UserJS/ProformaInvoice.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/EnquiryFollowupReport").Include("~/Scripts/UserJS/Report/EnquiryFollowupReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/EstimateReport").Include("~/Scripts/UserJS/Report/EstimateReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/QuotationReport").Include("~/Scripts/UserJS/Report/QuotationReport.js"));
 
         }
     }

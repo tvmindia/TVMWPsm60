@@ -272,6 +272,9 @@
     <Content Include="Content\images\excel_export.png" />
     <Content Include="Content\images\frame.png" />
     <Content Include="Content\images\LetterHead.jpg" />
+    <Content Include="Content\images\LetterHeadSelect.jpg" />
+    <Content Include="Content\images\LetterHeadSelect_Blank.jpg" />
+    <Content Include="Content\images\LetterHead_Blank.jpg" />
     <Content Include="Content\images\LH_Body.jpg" />
     <Content Include="Content\images\LH_Footer.jpg" />
     <Content Include="Content\images\LH_Header.jpg" />
@@ -702,7 +705,9 @@
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryFollowupReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\Report\EstimateReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
+    <Content Include="Scripts\UserJS\Report\QuotationReport.js" />
     <Content Include="Scripts\UserJS\Report\Report.js" />
     <Content Include="Scripts\UserJS\Report\ReportAdvanceSelectList.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
@@ -1077,9 +1082,12 @@
     <Content Include="Views\Report\EnquiryFollowupReport.cshtml" />
     <Content Include="Views\DocumentStatus\_ServiceStatusSelectList.cshtml" />
     <Content Include="Views\ServiceCall\_GetSaleInvoiceByCustomerID.cshtml" />
+    <Content Include="Views\Quotation\_PrintQuotation.cshtml" />
     <Content Include="Views\Spare\Index.cshtml" />
     <Content Include="Views\Spare\_AddSpare.cshtml" />
     <Content Include="Views\Spare\_SpareSelectList.cshtml" />
+    <Content Include="Views\Report\EstimateReport.cshtml" />
+    <Content Include="Views\Report\QuotationReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -269,7 +269,7 @@
 
     }
 
-    using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.3%;right:12%;", role = "form", @id = "PDFForm" }))
+    using (Html.BeginForm("DownloadWithTerms", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.3%;right:12%;", role = "form", @id = "PDFForm" }))
     {
             @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
             @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })

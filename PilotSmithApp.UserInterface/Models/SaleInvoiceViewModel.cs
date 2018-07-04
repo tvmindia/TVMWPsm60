@@ -18,6 +18,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime SaleInvDate { get; set; }
         public Guid? QuoteID { get; set; }
         public Guid? SaleOrderID { get; set; }
+        public Guid? ProfInvID { get; set; }
         [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }
         [Display(Name = "Mailing Address")]
@@ -96,12 +97,14 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SaleInvoiceOtherChargeViewModel> SaleInvoiceOtherChargeDetailList { get; set; }
         public List<SelectListItem> QuotationSelectList { get; set; }
         public List<SelectListItem> SaleOrderSelectList { get; set; }
+        public List<SelectListItem> ProformaInvoiceSelectList { get; set; }
         public AreaViewModel Area { get; set; }
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
         public PSAUserViewModel PSAUser { get; set; }
         public string ReferenceNo { get; set; }
         public QuotationViewModel Quotation { get; set; }
         public SaleOrderViewModel SaleOrder { get; set; }
+        public ProformaInvoiceViewModel ProformaInvoice { get; set; }
         public PDFToolsViewModel PDFTools { get; set; }
         public string ProductDetail { get; set; }
     }

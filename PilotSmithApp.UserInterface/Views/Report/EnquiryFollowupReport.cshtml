@@ -63,10 +63,10 @@
 
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.AdvCustomerID, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvCustomer, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvCustomerID, EmptySelectList, "Select customer", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvCustomer, Model.Customer.CustomerList, "Select customer and contact person", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>               
                 
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID });
+            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID })
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -125,14 +125,14 @@
             <table id="tblEnquiryFollowupReport" class="table table-striped" cellspacing="0" style="width:100%;display:none;">
                 <thead>
                     <tr class="text-center TableHead">
-                        <th>Follow.Date</th>
-                        <th>Follow. Time</th>
+                        <th>Followup Date</th>
+                        <th>Followup Time</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Enq. No</th>
-                        <th>Enq. Date</th>
+                        <th>Enquiry No</th>
+                        <th>Enquiry Date</th>
                         <th>Customer</th>
-                        <th>Cont.Person</th>
+                        <th>Contact Person</th>
                         <th>Contact No</th>
                         <th>Remarks</th>                        
                     </tr>
