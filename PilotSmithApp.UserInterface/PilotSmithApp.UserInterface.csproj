@@ -818,6 +818,7 @@
     <Compile Include="Controllers\SaleOrderController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\ServiceCallController.cs" />
+    <Compile Include="Controllers\ServiceTypeController.cs" />
     <Compile Include="Controllers\SpareController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
@@ -884,6 +885,7 @@
     <Compile Include="Models\SaleOrderViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\ServiceCallViewModel.cs" />
+    <Compile Include="Models\ServiceTypeViewModel.cs" />
     <Compile Include="Models\SpareViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
@@ -1088,6 +1090,7 @@
     <Content Include="Views\Spare\_SpareSelectList.cshtml" />
     <Content Include="Views\Report\EstimateReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
+    <Content Include="Views\ServiceType\_ServiceTypeSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
