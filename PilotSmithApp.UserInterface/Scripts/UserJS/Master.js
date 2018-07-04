@@ -1112,3 +1112,46 @@ function SaveSuccessBank(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+
+//Add Spare
+function AddSpareMaster(flag) {
+    debugger;
+    OnServerCallBegin();
+    $("#divMasterBody").load("Spare/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Spare')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessSpare(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadSpareTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divSpareSelectList').load('/Spare/SpareSelectList?required=' + $('#hdnSpareRequired').val());
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}

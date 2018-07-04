@@ -11,7 +11,7 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public Guid ID { get; set; }
         [Required(ErrorMessage = "Spare Code is missing")]
-        //[Remote(action: "CheckSpareCodeExist", controller: "Spare", AdditionalFields = "IsUpdate,ID")]
+        [Remote(action: "CheckSpareCodeExist", controller: "Spare", AdditionalFields = "IsUpdate,ID")]
         public string Code { get; set; }
         [Required(ErrorMessage = "Spare Name is missing")]
         public string Name { get; set; }
@@ -23,6 +23,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
         public Guid hdnFileID { get; set; }
+        public List<SelectListItem> SpareSelectList { get; set; }
     }
 
     public class SpareAdvanceSearchViewModel
