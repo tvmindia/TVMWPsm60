@@ -689,6 +689,26 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion EmailSent
 
+        #region GetProformaInvoiceForSelectListOnDemand
+        public ActionResult GetProformaInvoiceForSelectListOnDemand(string searchTerm)
+        {
+            List<ProformaInvoice> proformaInvoiceList = string.IsNullOrEmpty(searchTerm) ? null : _proformaInvoiceBusiness.GetProformaInvoiceForSelectListOnDemand(searchTerm);
+            var list = new List<Select2Model>();
+            if (proformaInvoiceList != null)
+            {
+                foreach (ProformaInvoice proformaInvoice in proformaInvoiceList)
+                {
+                    list.Add(new Select2Model()
+                    {
+                        text = proformaInvoice.ProfInvNo,
+                        id = proformaInvoice.ID.ToString()
+                    });
+                }
+            }
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        # endregion GetProformaInvoiceForSelectListOnDemand
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]

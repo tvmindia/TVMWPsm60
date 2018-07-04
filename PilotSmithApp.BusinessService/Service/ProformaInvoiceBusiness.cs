@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -103,6 +104,23 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _proforaInvoiceRepository.UpdateProformaInvoiceEmailInfo(proformaInvoice);
         }
+        public List<ProformaInvoice> GetProformaInvoiceForSelectListOnDemand(string searchTerm)
+        {
+            return _proforaInvoiceRepository.GetProformaInvoiceForSelectListOnDemand(searchTerm);
+        }
+        public List<SelectListItem> GetProformaInvoiceForSelectList(Guid? proformaInvoiceID)
+        {
+            List<SelectListItem> selectListItem = null;
+            List<ProformaInvoice> proformaInvoiceList = _proforaInvoiceRepository.GetProformaInvoiceForSelectList(proformaInvoiceID);
+            return selectListItem = proformaInvoiceList != null ? (from proformaInvoice in proformaInvoiceList
+                                                                   select new SelectListItem
+                                                                   {
+                                                                       Text = proformaInvoice.ProfInvNo,
+                                                                       Value = proformaInvoice.ID.ToString(),
+                                                                       Selected = false
+                                                                   }).ToList() : new List<SelectListItem>();
 
+
+        }
     }
 }

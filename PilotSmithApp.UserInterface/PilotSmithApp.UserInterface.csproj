@@ -744,6 +744,7 @@
     <Content Include="Scripts\UserJS\SaleInvoice.js" />
     <Content Include="Scripts\UserJS\SaleOrder.js" />
     <Content Include="Scripts\UserJS\SalesSummary.js" />
+    <Content Include="Scripts\UserJS\Spare.js" />
     <Content Include="Scripts\UserJS\State.js" />
     <Content Include="Scripts\UserJS\TaxType.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
@@ -815,6 +816,7 @@
     <Compile Include="Controllers\SaleOrderController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\ServiceCallController.cs" />
+    <Compile Include="Controllers\SpareController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\TimeLineController.cs" />
@@ -880,6 +882,7 @@
     <Compile Include="Models\SaleOrderViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\ServiceCallViewModel.cs" />
+    <Compile Include="Models\SpareViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\TimeLineViewModel.cs" />
@@ -1078,6 +1081,9 @@
     <Content Include="Views\DocumentStatus\_ServiceStatusSelectList.cshtml" />
     <Content Include="Views\ServiceCall\_GetSaleInvoiceByCustomerID.cshtml" />
     <Content Include="Views\Quotation\_PrintQuotation.cshtml" />
+    <Content Include="Views\Spare\Index.cshtml" />
+    <Content Include="Views\Spare\_AddSpare.cshtml" />
+    <Content Include="Views\Spare\_SpareSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
