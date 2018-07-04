@@ -702,7 +702,9 @@
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryFollowupReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\Report\EstimateReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
+    <Content Include="Scripts\UserJS\Report\QuotationReport.js" />
     <Content Include="Scripts\UserJS\Report\Report.js" />
     <Content Include="Scripts\UserJS\Report\ReportAdvanceSelectList.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
@@ -1070,6 +1072,8 @@
     <Content Include="Views\Report\PendingSaleOrderProductionReport.cshtml" />
     <Content Include="Views\Report\EnquiryReport.cshtml" />
     <Content Include="Views\Report\EnquiryFollowupReport.cshtml" />
+    <Content Include="Views\Report\EstimateReport.cshtml" />
+    <Content Include="Views\Report\QuotationReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

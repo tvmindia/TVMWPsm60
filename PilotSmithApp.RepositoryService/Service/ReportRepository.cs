@@ -181,9 +181,8 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = enquiryReport.DataTablePaging.Length;
                         }
                         cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = enquiryReport.AdvFromDate;
-                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryReport.AdvToDate;
-                        if (enquiryReport.AdvCustomerID != Guid.Empty)
-                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = enquiryReport.AdvCustomerID;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryReport.AdvToDate;                       
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar,100).Value = enquiryReport.AdvCustomer;
                         if (enquiryReport.AdvDocumentOwnerID != Guid.Empty)
                             cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiryReport.AdvDocumentOwnerID;
                         cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = enquiryReport.AdvDocumentStatusCode;
@@ -196,6 +195,10 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@GradeCode", SqlDbType.Int).Value = enquiryReport.AdvEnquiryGradeCode;
                         if (enquiryReport.AdvAttendedByID != Guid.Empty)
                             cmd.Parameters.Add("@AttendedByID", SqlDbType.UniqueIdentifier).Value = enquiryReport.AdvAttendedByID;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = enquiryReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = enquiryReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = enquiryReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = enquiryReport.AdvCustomerCategoryCode;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {
@@ -206,7 +209,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     EnquiryReport enquiryReportObj = new EnquiryReport();
                                     {
-                                        enquiryReportObj.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? (sdr["EnquiryNo"].ToString()) : enquiryReportObj.EnquiryNo);
+                                        enquiryReportObj.EnquiryNo = (sdr["EnqNo"].ToString() != "" ? (sdr["EnqNo"].ToString()) : enquiryReportObj.EnquiryNo);
+                                        enquiryReportObj.EnqNo = (sdr["EnquiryNo"].ToString() != "" ? (sdr["EnquiryNo"].ToString()) : enquiryReportObj.EnqNo);
+
                                         enquiryReportObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()) : enquiryReportObj.EnquiryDate);
                                         enquiryReportObj.EnquiryDateFormatted = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiryReportObj.EnquiryDateFormatted);
                                         enquiryReportObj.Customer = new Customer();
@@ -276,9 +281,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         else
                             cmd.Parameters.Add("@Length", SqlDbType.Int).Value = enquiryFollowupReport.DataTablePaging.Length;
                         cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvFromDate;
-                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvToDate;
-                        if (enquiryFollowupReport.AdvCustomerID != Guid.Empty)
-                            cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = enquiryFollowupReport.AdvCustomerID;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvToDate;                       
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar,100).Value = enquiryFollowupReport.AdvCustomer;
                         cmd.Parameters.Add("@PriorityCode", SqlDbType.Int).Value = enquiryFollowupReport.AdvFollowupPriority;
                         cmd.Parameters.Add("@Status", SqlDbType.NVarChar).Value = enquiryFollowupReport.AdvStatus;
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -293,7 +297,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
 
                                         enquiryFollowupReportObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()) : enquiryFollowupReportObj.EnquiryDate);
-                                        enquiryFollowupReportObj.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? (sdr["EnquiryNo"].ToString()) : enquiryFollowupReportObj.EnquiryNo);
+                                        enquiryFollowupReportObj.EnquiryNo = (sdr["EnqNo"].ToString() != "" ? (sdr["EnqNo"].ToString()) : enquiryFollowupReportObj.EnquiryNo);
+                                        enquiryFollowupReportObj.EnqNo = (sdr["EnquiryNo"].ToString() != "" ? (sdr["EnquiryNo"].ToString()) : enquiryFollowupReportObj.EnqNo);
+
                                         enquiryFollowupReportObj.EnquiryDateFormatted = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiryFollowupReportObj.EnquiryDateFormatted);
                                         
                                         enquiryFollowupReportObj.Priority = (sdr["Priority"].ToString() != "" ? sdr["Priority"].ToString() : enquiryFollowupReportObj.Priority);
@@ -311,6 +317,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryFollowupReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiryFollowupReportObj.Customer.ContactPerson);
                                         enquiryFollowupReportObj.TotalCount=(sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryFollowupReportObj.TotalCount);
                                         enquiryFollowupReportObj.FilteredCount=(sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryFollowupReportObj.FilteredCount);
+
                                     }
                                     enquiryFollwupReportList.Add(enquiryFollowupReportObj);
                                 }
@@ -326,7 +333,212 @@ namespace PilotSmithApp.RepositoryService.Service
 
             return enquiryFollwupReportList;
         }
-            #endregion GetEnquiryFollowupReport
-       
+        #endregion GetEnquiryFollowupReport
+
+
+        #region GetEstimateReport
+        /// <summary>
+        /// To Get Estimate Report
+        /// </summary>
+        /// <param name="estimateReport"></param>
+        /// <returns></returns>
+        public List<EstimateReport> GetEstimateReport(EstimateReport estimateReport)
+        {
+
+            List<EstimateReport> estimateReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEstimateReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(estimateReport.SearchTerm) ? "" : estimateReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = estimateReport.DataTablePaging.Start;
+                        if (estimateReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = estimateReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = estimateReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = estimateReport.AdvToDate;                       
+                            cmd.Parameters.Add("@Customer", SqlDbType.UniqueIdentifier).Value = estimateReport.AdvCustomer;
+                        if (estimateReport.AdvPreparedBy != Guid.Empty)
+                            cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = estimateReport.AdvPreparedBy;
+                        if (estimateReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = estimateReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = estimateReport.AdvDocumentStatusCode;                      
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = estimateReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = estimateReport.AdvBranchCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = estimateReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = estimateReport.AdvAmountTo;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = estimateReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = estimateReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = estimateReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = estimateReport.AdvCustomerCategoryCode;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                estimateReportList = new List<EstimateReport>();
+                                while (sdr.Read())
+                                {
+                                    EstimateReport estimateReportObj = new EstimateReport();
+                                    {
+                                        estimateReportObj.EstimateNo = (sdr["EstNo"].ToString() != "" ? (sdr["EstNo"].ToString()) : estimateReportObj.EstimateNo);
+                                        estimateReportObj.EstNo = (sdr["EstimateNo"].ToString() != "" ? (sdr["EstimateNo"].ToString()) : estimateReportObj.EstNo);
+
+                                        estimateReportObj.EstimateDate = (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()) : estimateReportObj.EstimateDate);
+                                      
+                                        estimateReportObj.EstimateDateFormatted= (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()).ToString(_settings.DateFormat) : estimateReportObj.EstimateDateFormatted);
+                                        estimateReportObj.Customer = new Customer();
+                                        estimateReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : estimateReportObj.Customer.CompanyName);
+                                        estimateReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : estimateReportObj.Customer.ContactPerson);
+                                      
+                                        estimateReportObj.Area = new Area();
+                                        estimateReportObj.Area.Description = (sdr["AreaName"].ToString() != "" ? sdr["AreaName"].ToString() : estimateReportObj.Area.Description);
+                                        estimateReportObj.Branch = new Branch();
+                                        estimateReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : estimateReportObj.Branch.Description);
+                                      
+                                        estimateReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : estimateReportObj.Amount);
+                                        estimateReportObj.PSAUser = new PSAUser();
+                                        estimateReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : estimateReportObj.PSAUser.LoginName);
+                                        estimateReportObj.DocumentStatus = new DocumentStatus();
+                                        estimateReportObj.DocumentStatus.Description = (sdr["DocumentStatusName"].ToString() != "" ? sdr["DocumentStatusName"].ToString() : estimateReportObj.DocumentStatus.Description);                                       
+                                        estimateReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : estimateReportObj.TotalCount);
+                                        estimateReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : estimateReportObj.FilteredCount);
+                                        estimateReportObj.Notes= (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : estimateReportObj.Notes);
+                                        estimateReportObj.PreparedBy = (sdr["PreparedByName"].ToString() != "" ? sdr["PreparedByName"].ToString() : estimateReportObj.PreparedBy);
+                                    }
+                                    estimateReportList.Add(estimateReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return estimateReportList;
+        }
+        #endregion GetEstimateReport
+
+
+        #region GetQuotationReport
+        /// <summary>
+        /// To  Get Quotation Report
+        /// </summary>
+        /// <param name="quotationReport"></param>
+        /// <returns></returns>
+        public List<QuotationReport> GetQuotationReport(QuotationReport quotationReport)
+        {
+
+            List<QuotationReport> quotationReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetQuotationReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(quotationReport.SearchTerm) ? "" : quotationReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = quotationReport.DataTablePaging.Start;
+                        if (quotationReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = quotationReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = quotationReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = quotationReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar,100).Value = quotationReport.AdvCustomer;
+                        if (quotationReport.AdvPreparedBy != Guid.Empty)
+                            cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = quotationReport.AdvPreparedBy;                       
+                            cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = quotationReport.AdvReferencePersonCode;
+                        if (quotationReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = quotationReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = quotationReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = quotationReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = quotationReport.AdvBranchCode;                       
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = quotationReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = quotationReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = quotationReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = quotationReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@ApprovalStatus", SqlDbType.Int).Value = quotationReport.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = quotationReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = quotationReport.AdvAmountTo;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                quotationReportList = new List<QuotationReport>();
+                                while (sdr.Read())
+                                {
+                                    QuotationReport quotationReportObj = new QuotationReport();
+                                    {
+                                        quotationReportObj.QuoteNo = (sdr["QuotationNo"].ToString() != "" ? (sdr["QuotationNo"].ToString()) : quotationReportObj.QuoteNo);
+                                        quotationReportObj.QuotationNo = (sdr["QuoteNo"].ToString() != "" ? (sdr["QuoteNo"].ToString()) : quotationReportObj.QuotationNo);
+
+                                        quotationReportObj.QuoteDate = (sdr["QuoteDate"].ToString() != "" ? DateTime.Parse(sdr["QuoteDate"].ToString()) : quotationReportObj.QuoteDate);
+                                        quotationReportObj.QuoteDateFormatted = (sdr["QuoteDate"].ToString() != "" ? DateTime.Parse(sdr["QuoteDate"].ToString()).ToString(_settings.DateFormat) : quotationReportObj.QuoteDateFormatted);
+                                        quotationReportObj.Customer = new Customer();
+                                        quotationReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : quotationReportObj.Customer.CompanyName);
+                                        quotationReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : quotationReportObj.Customer.ContactPerson);
+
+                                        quotationReportObj.Area = new Area();
+                                        quotationReportObj.Area.Description = (sdr["AreaName"].ToString() != "" ? sdr["AreaName"].ToString() : quotationReportObj.Area.Description);
+                                        quotationReportObj.Branch = new Branch();
+                                        quotationReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : quotationReportObj.Branch.Description);
+
+                                        quotationReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : quotationReportObj.Amount);
+                                        quotationReportObj.PSAUser = new PSAUser();
+                                        quotationReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : quotationReportObj.PSAUser.LoginName);
+                                        quotationReportObj.DocumentStatus = new DocumentStatus();
+                                        quotationReportObj.DocumentStatus.Description = (sdr["DocumentStatusName"].ToString() != "" ? sdr["DocumentStatusName"].ToString() : quotationReportObj.DocumentStatus.Description);
+                                        quotationReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : quotationReportObj.TotalCount);
+                                        quotationReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : quotationReportObj.FilteredCount);
+                                        quotationReportObj.Notes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotationReportObj.Notes);
+                                        quotationReportObj.PreparedBy = (sdr["PreparedByName"].ToString() != "" ? sdr["PreparedByName"].ToString() : quotationReportObj.PreparedBy);
+                                        quotationReportObj.ReferencePerson = new ReferencePerson();
+                                        quotationReportObj.ReferencePerson.Name = (sdr["ReferredByName"].ToString() != "" ? sdr["ReferredByName"].ToString() : quotationReportObj.ReferencePerson.Name);
+                                        quotationReportObj.ApprovalStatus = new ApprovalStatus();
+                                        quotationReportObj.ApprovalStatus.Description = (sdr["LatestApprovalStatusName"].ToString() != "" ? sdr["LatestApprovalStatusName"].ToString() : quotationReportObj.ApprovalStatus.Description);
+                                    }
+                                    quotationReportList.Add(quotationReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return quotationReportList;
+        }
+        #endregion GetQuotationReport
+
     }
 }

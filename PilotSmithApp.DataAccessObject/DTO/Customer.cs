@@ -41,6 +41,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int[] CustomerCategoryList { get; set; }
         public CustomerCategory CustomerCategory { get; set; }
         // public int CustomerCategoryCode { get; set; }
+        public string CustomerSelect { get; set; }      
+
     }
     public class CustomerAdvanceSearch
     {

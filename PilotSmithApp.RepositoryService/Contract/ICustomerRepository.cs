@@ -18,5 +18,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<Customer> GetAllCustomer(CustomerAdvanceSearch customerAdvanceSearch);
         object DeleteCustomer(Guid id);
         List<Customer> GetCustomerSelectList();
+        List<Customer> GetCustomerSelectListOnDemand();
+
     }
 }

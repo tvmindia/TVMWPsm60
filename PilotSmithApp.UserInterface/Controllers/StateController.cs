@@ -164,6 +164,22 @@ namespace PilotSmithApp.UserInterface.Controllers
         //}
         #endregion State SelectList
 
+        #region Get State SelectList On Demand
+        [HttpPost]
+        public ActionResult GetStateForSelectListOnDemand(string searchTerm, int? countryCode)
+        {
+            List<SelectListItem> stateSelectList = _stateBusiness.GetStateForSelectList(countryCode);
+            var list = stateSelectList != null ? (from SelectListItem in stateSelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                    select new Select2Model
+                                                    {
+                                                        text = SelectListItem.Text,
+                                                        id = SelectListItem.Value,
+                                                    }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get State SelectList On Demand
+
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "State", Mode = "R")]

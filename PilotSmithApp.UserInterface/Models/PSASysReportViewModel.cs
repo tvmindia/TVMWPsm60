@@ -56,6 +56,7 @@ namespace PilotSmithApp.UserInterface.Models
     public class EnquiryReportViewModel   
     {
         public string EnquiryNo { get; set; }
+        public string EnqNo { get; set; }
         public DateTime EnquiryDate { get; set; }
         public string EnquiryDateFormatted { get; set; }
         public string RequirementSpec { get; set; }
@@ -77,10 +78,13 @@ namespace PilotSmithApp.UserInterface.Models
         public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Customer")]
-        public Guid AdvCustomerID { get; set; }
+        public string AdvCustomer { get; set; }
         public CustomerViewModel Customer { get; set; }
+        [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
         public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
         public int? AdvCountryCode { get; set; }
         [Display(Name = "Area")]
         public int? AdvAreaCode { get; set; }
@@ -121,6 +125,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int PriorityCode { get; set; }
         public string Priority { get; set; }
         public string EnquiryNo { get; set; }
+        public string EnqNo { get; set; }
         public DateTime EnquiryDate { get; set; }
         public string EnquiryDateFormatted { get; set; }
         public string ContactName { get; set; }
@@ -138,7 +143,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string AdvToDate { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         [Display(Name = "Customer")]
-        public Guid AdvCustomerID { get; set; }
+        public string AdvCustomer { get; set; }
         public CustomerViewModel Customer { get; set; }
         [Display(Name = "Status")]
         public string AdvStatus { get; set; }
@@ -147,4 +152,114 @@ namespace PilotSmithApp.UserInterface.Models
         public string FollowupRemarks { get; set; }
         public List<EnquiryFollowupReportViewModel> EnquiryFollowupReportList { get; set; }
     }
+
+    public class EstimateReportViewModel
+    {
+        public string EstimateNo { get; set; }
+        public string EstNo { get; set; }
+        public DateTime EstimateDate { get; set; }
+        public string EstimateDateFormatted { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        public decimal? Amount { get; set; }
+        [Display(Name = "Estimate From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Estimate To")]
+        public string AdvToDate { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public string AdvCustomer { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "District")]
+        public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? AdvCountryCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        [Display(Name ="Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
+        public decimal? AdvAmountTo { get; set; }
+        public CustomerCategoryViewModel CustomerCategory { get; set; }
+        [Display(Name = "Customer Category")]
+        public int? AdvCustomerCategoryCode { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
+        [Display(Name = "Prepared By")]
+        public Guid AdvPreparedBy { get; set; }
+        public string Notes { get; set; }
+        public string PreparedBy { get; set; }
+        public List<EstimateReportViewModel> EstimateReportList { get; set; }
+    }
+
+    public class QuotationReportViewModel
+    {
+        public string QuoteNo { get; set; }
+        public string QuotationNo { get; set; }
+        public DateTime QuoteDate { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        [Display(Name = "Quotation From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Quotation To")]
+        public string AdvToDate { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Customer")]
+        public string AdvCustomer { get; set; }
+        [Display(Name = "District")]
+        public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? AdvCountryCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Referred By")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        [Display(Name = "Customer Category")]
+        public int? AdvCustomerCategoryCode { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
+        [Display(Name = "Prepared By")]
+        public Guid AdvPreparedBy { get; set; }
+        public string Notes { get; set; }
+        public List<QuotationReportViewModel> QuotationReportList { get; set; }
+        public string PreparedBy { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        public decimal? Amount { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public string QuoteDateFormatted { get; set; }
+        [Display(Name = "Amount <=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount >=")]
+        public decimal? AdvAmountTo { get; set; }
+    }
+
 }

@@ -28,7 +28,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICustomerCategoryBusiness _customerCategoryBusiness;
         IEnquiryGradeBusiness _enquiryGradeBusiness;
         IEmployeeBusiness _employeeBusiness;
-        public ReportController(IReportBusiness reportBusiness,IProductBusiness productBusiness,IDocumentStatusBusiness documentStatusBusiness,IReferenceTypeBusiness referenceTypeBusiness, ICustomerCategoryBusiness customerCategoryBusiness, IEnquiryGradeBusiness enquiryGradeBusiness, IEmployeeBusiness employeeBusiness)
+        ICustomerBusiness _customerBusiness;
+        public ReportController(IReportBusiness reportBusiness, IProductBusiness productBusiness, IDocumentStatusBusiness documentStatusBusiness, IReferenceTypeBusiness referenceTypeBusiness,
+        ICustomerCategoryBusiness customerCategoryBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
+        IEmployeeBusiness employeeBusiness, ICustomerBusiness customerBusiness)
         {
             _reportBusiness = reportBusiness;
             _productBusiness = productBusiness;
@@ -37,11 +40,12 @@ namespace PilotSmithApp.UserInterface.Controllers
             _customerCategoryBusiness = customerCategoryBusiness;
             _enquiryGradeBusiness = enquiryGradeBusiness;
             _employeeBusiness = employeeBusiness;
+            _customerBusiness = customerBusiness;
         }
         #endregion Constructor Injection  
-            // GET: Report
+        // GET: Report
         public ActionResult Index(string searchTerm)
-        {           
+        {
             PSASysReportViewModel PSASysReport = new PSASysReportViewModel();
             PSASysReport.PSASysReportList = Mapper.Map<List<PSASysReport>, List<PSASysReportViewModel>>(_reportBusiness.GetAllReport(searchTerm));
             PSASysReport.PSASysReportList = PSASysReport.PSASysReportList != null ? PSASysReport.PSASysReportList.OrderBy(s => s.GroupOrder).ToList() : null;
@@ -107,6 +111,9 @@ namespace PilotSmithApp.UserInterface.Controllers
             EnquiryReportVM.EnquiryGrade.EnquiryGradeSelectList = _enquiryGradeBusiness.GetEnquiryGradeSelectList();
             EnquiryReportVM.Employee = new EmployeeViewModel();
             EnquiryReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            EnquiryReportVM.Customer = new CustomerViewModel();
+            EnquiryReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+
             return View(EnquiryReportVM);
         }
 
@@ -139,7 +146,9 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "EnquiryFollowupReport", Mode = "R")]
         public ActionResult EnquiryFollowupReport()
         {
-            EnquiryFollowupReportViewModel EnquiryFollowupReportVM = new EnquiryFollowupReportViewModel();          
+            EnquiryFollowupReportViewModel EnquiryFollowupReportVM = new EnquiryFollowupReportViewModel();
+            EnquiryFollowupReportVM.Customer = new CustomerViewModel();
+            EnquiryFollowupReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
             return View(EnquiryFollowupReportVM);
         }
 
@@ -168,6 +177,87 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion GetEnquiryFollowupReport
 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "EstimateReport", Mode = "R")]
+        public ActionResult EstimateReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            EstimateReportViewModel EstimateReportVM = new EstimateReportViewModel();
+            EstimateReportVM.DocumentStatus = new DocumentStatusViewModel();
+            EstimateReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST");
+            EstimateReportVM.CustomerCategory = new CustomerCategoryViewModel();
+            EstimateReportVM.CustomerCategory.CustomerCategorySelectList = _customerCategoryBusiness.GetCustomerCategoryForSelectList();
+            EstimateReportVM.Employee = new EmployeeViewModel();
+            EstimateReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            EstimateReportVM.Customer = new CustomerViewModel();
+            EstimateReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            return View(EstimateReportVM);       
+    }
+        #region GetEstimateReport      
+        public JsonResult GetEstimateReport(DataTableAjaxPostModel model, EstimateReportViewModel estimateReportVM)
+        {
+            estimateReportVM.DataTablePaging.Start = model.start;
+            estimateReportVM.DataTablePaging.Length = (estimateReportVM.DataTablePaging.Length == 0 ? model.length : estimateReportVM.DataTablePaging.Length);
+
+            List<EstimateReportViewModel> estimateReportList = Mapper.Map<List<EstimateReport>, List<EstimateReportViewModel>>(_reportBusiness.GetEstimateReport(Mapper.Map<EstimateReportViewModel, EstimateReport>(estimateReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = estimateReportList.Count != 0 ? estimateReportList[0].TotalCount : 0,
+                recordsFiltered = estimateReportList.Count != 0 ? estimateReportList[0].FilteredCount : 0,
+                data = estimateReportList
+            });
+        }
+
+
+        #endregion GetEstimateReport
+
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "QuotationReport", Mode = "R")]
+        public ActionResult QuotationReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            QuotationReportViewModel QuotationReportVM = new QuotationReportViewModel();
+            QuotationReportVM.DocumentStatus = new DocumentStatusViewModel();
+            QuotationReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");           
+            QuotationReportVM.Employee = new EmployeeViewModel();
+            QuotationReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            QuotationReportVM.Customer = new CustomerViewModel();
+            QuotationReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            return View(QuotationReportVM);
+        }
+
+        #region GetQuotationReport
+        public JsonResult GetQuotationReport(DataTableAjaxPostModel model, QuotationReportViewModel quotationReportVM)
+        {
+            quotationReportVM.DataTablePaging.Start = model.start;
+            quotationReportVM.DataTablePaging.Length = (quotationReportVM.DataTablePaging.Length == 0 ? model.length : quotationReportVM.DataTablePaging.Length);
+
+            List<QuotationReportViewModel> quotationReportList = Mapper.Map<List<QuotationReport>, List<QuotationReportViewModel>>(_reportBusiness.GetQuotationReport(Mapper.Map<QuotationReportViewModel, QuotationReport>(quotationReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = quotationReportList.Count != 0 ? quotationReportList[0].TotalCount : 0,
+                recordsFiltered = quotationReportList.Count != 0 ? quotationReportList[0].FilteredCount : 0,
+                data = quotationReportList
+            });
+        }
+
+        #endregion GetQuotationReport
+
         public void DownloadExcel(ExcelExportViewModel excelExportVM)
         {
             try
@@ -188,11 +278,21 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<EnquiryReportViewModel> enquiryReportList = Mapper.Map<List<EnquiryReport>, List<EnquiryReportViewModel>>(_reportBusiness.GetEnquiryReport(Mapper.Map<EnquiryReportViewModel, EnquiryReport>(enquiryReportVM)));
                         var enquiryreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryReport");
                         EnquiryReportViewModel[] enquiryReportVMListArray = enquiryReportList.ToArray();
-                        enquiryreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryReportVMListArray.Select(x => new { EnquiryNo = x.EnquiryNo,EnquiryDate=x.EnquiryDateFormatted,
-                        ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, RequirementSpecification = x.RequirementSpec, Area = x.Area.Description,
-                        ReferredBy = x.ReferencePerson.Name,DocumentOwner = x.PSAUser.LoginName, DocumentStatus = x.DocumentStatus.Description, Branch = x.Branch.Description,
+                        enquiryreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryReportVMListArray.Select(x => new {
+                        EnquiryNo = x.EnqNo,
+                        EnquiryDate=x.EnquiryDateFormatted,
+                        ContactPerson = x.Customer.ContactPerson,
+                        CompanyName = x.Customer.CompanyName,
+                        RequirementSpecification = x.RequirementSpec,
+                        Area = x.Area.Description,
+                        ReferredBy = x.ReferencePerson.Name,
+                        DocumentOwner = x.PSAUser.LoginName,
+                        DocumentStatus = x.DocumentStatus.Description,
+                        Branch = x.Branch.Description,
                         AttendedBy =x.Employee.Name,
-                            Grade =x.EnquiryGrade.Description,Amount=x.Amount }), true, TableStyles.Light1);
+                        Grade =x.EnquiryGrade.Description,
+                        Amount =x.Amount
+                        }), true, TableStyles.Light1);
                         enquiryreportworkSheet.Column(1).AutoFit();
                         enquiryreportworkSheet.Column(2).AutoFit();
                         enquiryreportworkSheet.Column(3).AutoFit();
@@ -221,7 +321,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                            FollowupTime = x.FollowupTimeFormatted,
                            Priority =x.Priority,
                            Status =x.Status,
-                           EnquiryNo =x.EnquiryNo,
+                           EnquiryNo =x.EnqNo,
                            EnquiryDate = x.EnquiryDateFormatted,
                            ContactPerson = x.Customer.ContactPerson,
                            CompanyName = x.Customer.CompanyName,
@@ -239,6 +339,79 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryfollowupreportworkSheet.Column(8).Width = 40;
                         enquiryfollowupreportworkSheet.Column(9).AutoFit();   
                         enquiryfollowupreportworkSheet.Column(10).AutoFit();
+
+                        break;
+                    case "EstimateReport":
+                        fileName = "EstimateReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        EstimateReportViewModel estimateReportVM = new EstimateReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        estimateReportVM = JsonConvert.DeserializeObject<EstimateReportViewModel>(ReadableFormat);
+                        List<EstimateReportViewModel> estimateReportList = Mapper.Map<List<EstimateReport>, List<EstimateReportViewModel>>(_reportBusiness.GetEstimateReport(Mapper.Map<EstimateReportViewModel, EstimateReport>(estimateReportVM)));
+                        var estimatereportworkSheet = excel.Workbook.Worksheets.Add("EstimateReport");
+                        EstimateReportViewModel[] estimateReportVMListArray = estimateReportList.ToArray();
+                        estimatereportworkSheet.Cells[1, 1].LoadFromCollection(estimateReportVMListArray.Select(x => new {
+                           EstimateNo=x.EstNo,
+                           EstimateDate=x.EstimateDateFormatted,
+                           CompanyName =x.Customer.CompanyName ,
+                           ContactPerson =x.Customer.ContactPerson,
+                           Area = x.Area.Description,
+                           PreparedBy =x.PreparedBy,
+                           DocumentStatus=x.DocumentStatus.Description,
+                           Branch = x.Branch.Description,
+                           DocumentOwner=x.PSAUser.LoginName,
+                           Amount = x.Amount,
+                           Notes = x.Notes
+                        }), true, TableStyles.Light1);
+                        estimatereportworkSheet.Column(1).AutoFit();
+                        estimatereportworkSheet.Column(2).AutoFit();
+                        estimatereportworkSheet.Column(3).AutoFit();
+                        estimatereportworkSheet.Column(4).Width = 40;
+                        estimatereportworkSheet.Column(5).Width = 40;
+                        estimatereportworkSheet.Column(6).AutoFit();
+                        estimatereportworkSheet.Column(7).AutoFit();
+                        estimatereportworkSheet.Column(8).AutoFit();
+                        estimatereportworkSheet.Column(9).AutoFit();
+                        estimatereportworkSheet.Column(10).AutoFit();
+                        estimatereportworkSheet.Column(11).AutoFit();                       
+                        break;
+                    case "QuotationReport":
+                        fileName = "QuotationReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        QuotationReportViewModel quotationReportVM = new QuotationReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        quotationReportVM = JsonConvert.DeserializeObject<QuotationReportViewModel>(ReadableFormat);
+                        List<QuotationReportViewModel> quotationReportList = Mapper.Map<List<QuotationReport>, List<QuotationReportViewModel>>(_reportBusiness.GetQuotationReport(Mapper.Map<QuotationReportViewModel, QuotationReport>(quotationReportVM)));
+                        var quotationreportworkSheet = excel.Workbook.Worksheets.Add("QuotationReport");
+                        QuotationReportViewModel[] quotationReportVMListArray = quotationReportList.ToArray();
+                        quotationreportworkSheet.Cells[1, 1].LoadFromCollection(quotationReportVMListArray.Select(x => new {
+                            QuotationNo = x.QuotationNo,
+                            QuotationDate = x.QuoteDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            Area = x.Area.Description,
+                            ReferredBy = x.ReferencePerson.Name,
+                            PreparedBy = x.PreparedBy,
+                            Branch = x.Branch.Description,                          
+                            DocumentOwner = x.PSAUser.LoginName,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            ApprovalStatus = x.ApprovalStatus.Description,
+                            Amount = x.Amount,
+                            Notes = x.Notes
+                        }), true, TableStyles.Light1);
+                        quotationreportworkSheet.Column(1).AutoFit();
+                        quotationreportworkSheet.Column(2).AutoFit();
+                        quotationreportworkSheet.Column(3).AutoFit();
+                        quotationreportworkSheet.Column(4).Width = 40;
+                        quotationreportworkSheet.Column(5).Width = 40;
+                        quotationreportworkSheet.Column(6).AutoFit();
+                        quotationreportworkSheet.Column(7).AutoFit();
+                        quotationreportworkSheet.Column(8).AutoFit();
+                        quotationreportworkSheet.Column(9).AutoFit();
+                        quotationreportworkSheet.Column(10).AutoFit();
+                        quotationreportworkSheet.Column(11).AutoFit();
+                        quotationreportworkSheet.Column(12).AutoFit();
+                        quotationreportworkSheet.Column(13).AutoFit();
 
                         break;
                     default:break;
@@ -273,11 +446,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             switch (actionType)
             {
                 case "List":
-                    //toolboxVM.ListBtn.Visible = true;
-                    //toolboxVM.ListBtn.Text = "List";
-                    //toolboxVM.ListBtn.Title = "List";
-                    //toolboxVM.ListBtn.Event = "GoToList();";
-
+                 
                     toolboxVM.ExportBtn.Visible = true;
                     toolboxVM.ExportBtn.Text = "Export";
                     toolboxVM.ExportBtn.Title = "Export to excel";

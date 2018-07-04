@@ -149,6 +149,24 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion CustomerCategorySelectList
 
+
+
+        #region Get CustomerCategory SelectList On Demand
+        [HttpPost]
+        public ActionResult GetCustomerCategoryForSelectListOnDemand(string searchTerm)
+        {
+            List<SelectListItem> customerCategorySelectList = _customerCategoryBusiness.GetCustomerCategoryForSelectList();
+            var list = customerCategorySelectList != null ? (from SelectListItem in customerCategorySelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                     select new Select2Model
+                                                     {
+                                                         text = SelectListItem.Text,
+                                                         id = SelectListItem.Value,
+                                                     }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get CustomerCategory SelectList On Demand
+
+
         #region ButtonStyling
         [HttpGet]
          [AuthSecurityFilter(ProjectObject = "CustomerCategory", Mode = "R")]
