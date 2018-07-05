@@ -1091,6 +1091,7 @@
     <Content Include="Views\Report\EstimateReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <Content Include="Views\ServiceType\_ServiceTypeSelectList.cshtml" />
+    <Content Include="Views\ServiceCall\_AddServiceCallDetailSpare.cshtml" />
     <Content Include="Views\SaleOrder\_PrintSaleOrder.cshtml" />
     <Content Include="Views\ProformaInvoice\_PrintProformaInvoice.cshtml" />
     <Content Include="Views\ProductionOrder\_PrintProductionOrder.cshtml" />
