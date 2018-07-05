@@ -5,7 +5,7 @@ var _message = "";
 var _status = "";
 var _result = "";
 $(document).ready(function () {
-    try {     
+    try {
         BindOrReloadProductModelTable('Init');
         $('#tblProductModel tbody').on('dblclick', 'td', function () {
             EditProductModelMaster(this);
@@ -123,7 +123,7 @@ function BindOrReloadProductModelTable(action) {
 }
 
 function ResetProductModelList() {
-    try{
+    try {
         BindOrReloadProductModelTable('Reset');
     }
     catch (e) {
@@ -204,4 +204,44 @@ function DeleteProductModel(id) {
 }
 
 //file upload
+function imageUpload() {
+    debugger;
+    if (window.FormData !== undefined) {
+        debugger;
+        var fileUpload = $("#fileUpload").get(0);
+        var files = fileUpload.files;
+        if (files.length > 0) {
+            // Create FormData object
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            $.ajax({
+                url: '/' + 'ProductModel' + '/UploadImages',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    debugger;
+                    result = JSON.parse(result)
+                    if (result.Result == "OK") {
+                        debugger;
+                        $('#ImageURL').val(result.Record.AttachmentURL);
+                        //$('#FormProductModel').submit();
+                        //.not(':button, :submit, :reset, :hidden')
+                        //.val('');
+
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+
+    }
+}
 
