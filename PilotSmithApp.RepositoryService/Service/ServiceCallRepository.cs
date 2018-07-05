@@ -71,10 +71,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.AddWithValue("@AttendedBy", DBNull.Value);
                         else
                             cmd.Parameters.Add("@AttendedBy", SqlDbType.UniqueIdentifier).Value = serviceCallAdvanceSearch.AdvAttendedBy;
-                        if (serviceCallAdvanceSearch.AdvServiceTypeCode == null)
-                            cmd.Parameters.AddWithValue("@ServiceTypeCode", DBNull.Value);
-                        else
-                            cmd.Parameters.Add("@ServiceTypeCode", SqlDbType.Int).Value = serviceCallAdvanceSearch.AdvServiceTypeCode;
+
                         if (serviceCallAdvanceSearch.AdvServicedBy == Guid.Empty)
                             cmd.Parameters.AddWithValue("@ServicedBy", DBNull.Value);
                         else
@@ -130,9 +127,6 @@ namespace PilotSmithApp.RepositoryService.Service
                                             serviceCall.Area.Code = (sdr["AreaCode"].ToString() != "" ? int.Parse(sdr["AreaCode"].ToString()) : serviceCall.Area.Code);
                                             serviceCall.Area.Description = (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : serviceCall.Area.Description);
                                         }
-                                        serviceCall.ServiceTypeCode = (sdr["ServiceTypeCode"].ToString() != "" ? int.Parse(sdr["ServiceTypeCode"].ToString()) : serviceCall.ServiceTypeCode);
-                                        serviceCall.ServiceType = new ServiceType();
-                                        serviceCall.ServiceType.Name = (sdr["ServiceType"].ToString() != "" ? sdr["ServiceType"].ToString() : serviceCall.ServiceType.Name);
                                         serviceCall.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : serviceCall.FilteredCount);
                                         serviceCall.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : serviceCall.FilteredCount);
                                     }
@@ -194,12 +188,6 @@ namespace PilotSmithApp.RepositoryService.Service
                                     serviceCall.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : serviceCall.BranchCode);
                                     serviceCall.Branch = new Branch();
                                     serviceCall.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : serviceCall.Branch.Description);
-                                    serviceCall.ServiceTypeCode= (sdr["ServiceTypeCode"].ToString() != "" ? int.Parse(sdr["ServiceTypeCode"].ToString()) : serviceCall.ServiceTypeCode);
-                                    //serviceCall.ServiceType = new ServiceType();
-                                    //serviceCall.ServiceType.Name = (sdr["ServiceType"].ToString() != "" ? sdr["ServiceType"].ToString() : serviceCall.ServiceType.Name);
-                                    serviceCall.ReferenceInvoice= (sdr["ReferenceInvoice"].ToString() != "" ? sdr["ReferenceInvoice"].ToString() : serviceCall.ReferenceInvoice);
-                                    serviceCall.ReferenceInvoiceDate = (sdr["ReferenceInvoiceDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallDate"].ToString()) : serviceCall.ReferenceInvoiceDate);
-                                    serviceCall.ReferenceInvoiceDateFormatted = (sdr["ReferenceInvoiceDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceCallDate"].ToString()).ToString(_settings.DateFormat) : serviceCall.ReferenceInvoiceDateFormatted);
                                     //2 Employee Problem
                                     serviceCall.ServicedBy = (sdr["ServicedBy"].ToString() != "" ? Guid.Parse(sdr["ServicedBy"].ToString()) : serviceCall.ServicedBy);
                                     serviceCall.ServiceDate = (sdr["ServiceDate"].ToString() != "" ? DateTime.Parse(sdr["ServiceDate"].ToString()) : serviceCall.ServiceDate);
@@ -380,9 +368,6 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = serviceCall.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = serviceCall.GeneralNotes;
                         cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = serviceCall.BranchCode;
-                        cmd.Parameters.Add("@ServiceTypeCode", SqlDbType.Int).Value = serviceCall.ServiceTypeCode;
-                        cmd.Parameters.Add("@ReferenceInvoice", SqlDbType.VarChar, 20).Value = serviceCall.ReferenceInvoice;
-                        cmd.Parameters.Add("@ReferenceInvoiceDate", SqlDbType.DateTime).Value = serviceCall.ReferenceInvoiceDateFormatted;
                         //-----------------------//
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = serviceCall.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = serviceCall.PSASysCommon.CreatedDate;
