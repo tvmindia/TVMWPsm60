@@ -32,7 +32,12 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Branch Code is missing")]
         public int? BranchCode { get; set; }
         public Guid? DocumentOwnerID { get; set; }
-
+        [Display(Name = "Service Type Code")]
+        public int? ServiceTypeCode { get; set; }
+        [Display(Name = "Reference Invoice")]
+        public string ReferenceInvoice { get; set; }
+        public DateTime? ReferenceInvoiceDate { get; set; }
+         
         //Additional Fields
         public string[] DocumentOwners { get; set; }
         public string DocumentOwner { get; set; }
@@ -62,6 +67,10 @@ namespace PilotSmithApp.UserInterface.Models
         public BranchViewModel Branch { get; set; }
         public AreaViewModel Area { get; set; }
         public List<SaleInvoiceViewModel> SaleInvoiceList { get; set; }
+        [Display(Name = "Reference Invoice Date")]
+        [RegularExpression("(^(((([1-9])|([0][1-9])|([1-2][0-9])|(30))\\-([A,a][P,p][R,r]|[J,j][U,u][N,n]|[S,s][E,e][P,p]|[N,n][O,o][V,v]))|((([1-9])|([0][1-9])|([1-2][0-9])|([3][0-1]))\\-([J,j][A,a][N,n]|[M,m][A,a][R,r]|[M,m][A,a][Y,y]|[J,j][U,u][L,l]|[A,a][U,u][G,g]|[O,o][C,c][T,t]|[D,d][E,e][C,c])))\\-[0-9]{4}$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-8]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][1235679])|([13579][01345789]))$)|(^(([1-9])|([0][1-9])|([1][0-9])|([2][0-9]))\\-([F,f][E,e][B,b])\\-[0-9]{2}(([02468][048])|([13579][26]))$)", ErrorMessage = "Date format not accepted")]
+        public string ReferenceInvoiceDateFormatted { get; set; }
+        public ServiceTypeViewModel ServiceType { get; set; }
     }
 
     public class ServiceCallAdvanceSearchViewModel
@@ -85,6 +94,8 @@ namespace PilotSmithApp.UserInterface.Models
         public int? AdvAreaCode { get; set; }
         [Display(Name = "Branch")]
         public int? AdvBranchCode { get; set; }
+        [Display(Name = "Service Type")]
+        public int? AdvServiceTypeCode { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
 
         public CustomerViewModel AdvCustomer { get; set; }
@@ -93,6 +104,7 @@ namespace PilotSmithApp.UserInterface.Models
         public EmployeeViewModel AdvServicedEmployee { get; set; }
         public DocumentStatusViewModel AdvDocumentStatus { get; set; }
         public BranchViewModel AdvBranch { get; set; }
+        public ServiceTypeViewModel AdvServiceType { get; set; }
     }
 
     public class ServiceCallDetailViewModel

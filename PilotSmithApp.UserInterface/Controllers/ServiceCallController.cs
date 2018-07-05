@@ -27,10 +27,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IEmployeeBusiness _employeeBusiness;
         SecurityFilter.ToolBarAccess _tool;
         ISaleInvoiceBusiness _saleInvoiceBusiness;
+        IServiceTypeBusiness _serviceTypeBusiness;
         public ServiceCallController(IServiceCallBusiness serviceCallBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
             IDocumentStatusBusiness documentStatusBusiness,IEmployeeBusiness employeeBusiness, 
-            ISaleInvoiceBusiness saleInvoiceBusiness,SecurityFilter.ToolBarAccess tool)
+            ISaleInvoiceBusiness saleInvoiceBusiness,SecurityFilter.ToolBarAccess tool,
+            IServiceTypeBusiness serviceTypeBusiness)
         {
             _serviceCallBusiness = serviceCallBusiness;
             _customerBusiness = customerBusiness;
@@ -41,6 +43,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _employeeBusiness = employeeBusiness;
             _tool = tool;
             _saleInvoiceBusiness = saleInvoiceBusiness;
+            _serviceTypeBusiness = serviceTypeBusiness;
         }
         #endregion Constructor Injection 
 
@@ -63,6 +66,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             serviceCallAdvanceSearchVM.AdvEmployee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             serviceCallAdvanceSearchVM.AdvServicedEmployee = new EmployeeViewModel();
             serviceCallAdvanceSearchVM.AdvServicedEmployee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            serviceCallAdvanceSearchVM.AdvServiceType = new ServiceTypeViewModel();
+            serviceCallAdvanceSearchVM.AdvServiceType.ServiceTypeSelectList = _serviceTypeBusiness.GetServiceTypeSelectList();
             return View(serviceCallAdvanceSearchVM);
         }
 

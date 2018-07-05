@@ -22,6 +22,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ServiceComments { get; set; }
         public int? BranchCode { get; set; }
         public Guid? DocumentOwnerID { get; set; }
+        public int? ServiceTypeCode { get; set; }
+        public string ReferenceInvoice { get; set; }
+        public DateTime? ReferenceInvoiceDate { get; set; }
 
         //Additional Fields
         public string[] DocumentOwners { get; set; }
@@ -45,6 +48,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Branch Branch { get; set; }
         public Area Area { get; set; }
         public List<SaleInvoice> SaleInvoiceList { get; set; }
+        public string ReferenceInvoiceDateFormatted { get; set; }
+        public ServiceType ServiceType { get; set; }
     }
 
     public class ServiceCallAdvanceSearch
@@ -58,6 +63,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? AdvDocumentStatusCode { get; set; }
         public int? AdvAreaCode { get; set; }
         public int? AdvBranchCode { get; set; }
+        public int? AdvServiceTypeCode { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
 
         public Customer AdvCustomer { get; set; }
@@ -66,6 +72,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Employee AdvServicedEmployee { get; set; }
         public DocumentStatus AdvDocumentStatus { get; set; }
         public Branch AdvBranch { get; set; }
+        public ServiceType AdvServiceType { get; set; }
     }
 
     public class ServiceCallDetail

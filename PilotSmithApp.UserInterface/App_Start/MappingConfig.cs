@@ -139,7 +139,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<SpareViewModel, Spare>().ReverseMap();
                 config.CreateMap<EstimateReportViewModel, EstimateReport>().ReverseMap();
                 config.CreateMap<QuotationReportViewModel, QuotationReport>().ReverseMap();
-
+                config.CreateMap<ServiceTypeViewModel, ServiceType>().ReverseMap();
             });
         }
     }
