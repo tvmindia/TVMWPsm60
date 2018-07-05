@@ -19,5 +19,6 @@ namespace PilotSmithApp.BusinessService.Contract
         object InsertUpdateCustomer(Customer customer);
         object DeleteCustomer(Guid id);
         List<SelectListItem> GetCustomerSelectList();
+        List<SelectListItem> GetCustomerSelectListOnDemand();
     }
 }

@@ -10,7 +10,7 @@ $(document).ready(function () {
     try {
 
         BindOrReloadEnquiryFollowupReportTable('Init');
-        $('#AdvStatus,#AdvFollowupPriority').select2({
+        $('#AdvStatus,#AdvFollowupPriority,#AdvCustomer').select2({
             dropdownParent: $(".divboxASearch")
         });
 
@@ -35,7 +35,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                 $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');               
-                $('.divboxASearch #AdvCustomerID').val('').trigger('change');              
+                $('.divboxASearch #AdvCustomer').val('').trigger('change');              
                 $('.divboxASearch #AdvStatus').val('').trigger('change');              
                 $('.divboxASearch #AdvFollowupPriority').val('').trigger('change');
                
@@ -47,7 +47,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                 $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');               
-                $('.divboxASearch #AdvCustomerID').val('');              
+                $('.divboxASearch #AdvCustomer').val('');              
                 $('.divboxASearch #AdvStatus');              
                 $('.divboxASearch #AdvFollowupPriority').val('');
 
@@ -55,7 +55,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
             case 'Search':
                 if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&                   
-                    ($('.divboxASearch #AdvCustomerID').val() == "") &&                   
+                    ($('.divboxASearch #AdvCustomer').val() == "") &&                   
                     ($('.divboxASearch #AdvStatus').val() == "") &&
                     ($('.divboxASearch #AdvFollowupPriority').val() == "")
 
@@ -69,7 +69,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                 EnquiryFollowupReportViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
                 EnquiryFollowupReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
                 EnquiryFollowupReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();               
-                EnquiryFollowupReportViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();               
+                EnquiryFollowupReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val() == "" ? null : $('.divboxASearch #AdvCustomer').val();
                 EnquiryFollowupReportViewModel.AdvStatus = $('.divboxASearch #AdvStatus').val() == "" ? null : $('.divboxASearch #AdvStatus').val();          
                 EnquiryFollowupReportViewModel.AdvFollowupPriority = $('.divboxASearch #AdvFollowupPriority').val() == "" ? null : $('.divboxASearch #AdvFollowupPriority').val();               
                 $('#AdvanceSearch').val(JSON.stringify(EnquiryFollowupReportViewModel));
@@ -83,7 +83,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
         EnquiryFollowupReportViewModel.SearchTerm = $('#SearchTerm').val();
         EnquiryFollowupReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
         EnquiryFollowupReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();        
-        EnquiryFollowupReportViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();       
+        EnquiryFollowupReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val();       
         EnquiryFollowupReportViewModel.AdvStatus = $('.divboxASearch #AdvStatus').val();
         EnquiryFollowupReportViewModel.AdvFollowupPriority = $('.divboxASearch #AdvFollowupPriority').val();
 

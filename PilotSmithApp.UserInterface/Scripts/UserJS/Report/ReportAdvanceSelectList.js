@@ -62,6 +62,35 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
+    try {
+        debugger;
+        BindCountrySelectList()
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+    try {
+        debugger;
+        BindCustomerCategorySelectList()
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+    try {
+        debugger;
+        BindDistrictSelectList()
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+    try {
+        debugger;
+        BindStateSelectList()
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+    
 
     $('.select2').addClass('form-control newinput');
 });
@@ -265,3 +294,93 @@ function BindPositionSelectList() {
         }
     });
 }
+
+function BindCountrySelectList()
+{
+    $('#AdvCountryCode').select2({
+        ajax: {
+            type: 'POST',
+            dataType: 'json',
+            url: "/Country/GetCountryForSelectListOnDemand/",
+            delay: 50,
+            data: function (term) {
+                return {
+                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+        }
+    });
+}
+
+function BindStateSelectList()
+{  
+    $('#AdvStateCode').select2({
+            ajax: {
+                type: 'POST',
+                dataType: 'json',
+                url: "/State/GetStateForSelectListOnDemand/",
+                delay: 50,
+                data: function (term) {
+                    return {
+                        'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.items
+                    };
+                },
+            }
+        });
+}
+
+
+function BindDistrictSelectList() {
+    $('#AdvDistrictCode').select2({
+        ajax: {
+            type: 'POST',
+            dataType: 'json',
+            url: "/District/GetDistrictForSelectListOnDemand/",
+            delay: 50,
+            data: function (term) {
+                return {
+                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+        }
+    });
+}
+
+
+
+function BindCustomerCategorySelectList() {
+    $('#AdvCustomerCategoryCode').select2({
+        ajax: {
+            type: 'POST',
+            dataType: 'json',
+            url: "/CustomerCategory/GetCustomerCategoryForSelectListOnDemand/",
+            delay: 50,
+            data: function (term) {
+                return {
+                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.items
+                };
+            },
+        }
+    });
+}
+

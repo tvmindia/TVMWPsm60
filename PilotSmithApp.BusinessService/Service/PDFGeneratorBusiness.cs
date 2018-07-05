@@ -27,6 +27,7 @@ namespace PilotSmithApp.BusinessService.Service
                 string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
                 StringReader reader = new StringReader(htmlBody.ToString());
                 Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
+                byte[] bytes = null;
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
@@ -36,8 +37,20 @@ namespace PilotSmithApp.BusinessService.Service
                     pdfDoc.Open();
                     XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
                     pdfDoc.Close();
-                    byte[] bytes = memoryStream.ToArray();
+                    bytes = memoryStream.ToArray();
                     memoryStream.Close();
+                    //return bytes;
+                }
+                string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Report.pdf" : (pDFTools.ContentFileName.ToString()+".pdf");
+                //string filename = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/Uploads/"), contentFileName);
+                if (pDFTools.ContentFileName.ToString() == "Quotation" || pDFTools.ContentFileName.ToString() == "ProformaInvoice" || pDFTools.ContentFileName.ToString() == "SaleInvoice")
+                {
+                    string demo = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/Uploads/"), "Demo" + contentFileName);
+                    System.IO.File.WriteAllBytes(demo, bytes);
+                    return MergePDFs(demo, System.Web.HttpContext.Current.Server.MapPath("~/Content/images/Terms&Cond.pdf"));
+                }
+                else
+                {
                     return bytes;
                 }
             }
@@ -45,6 +58,38 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 throw ex;
             }
+        }
+        private byte[] MergePDFs(params string[] filesPath)
+        {
+            List<PdfReader> readerList = new List<PdfReader>();
+            foreach (string filePath in filesPath)
+            {
+                PdfReader pdfReader = new PdfReader(filePath);
+                readerList.Add(pdfReader);
+            }
+
+            //Define a new output document and its size, type
+            Document document = new Document(PageSize.A4, 0, 0, 0, 0);
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                //Create blank output pdf file and get the stream to write on it.
+                PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+                document.Open();
+
+                foreach (PdfReader reader in readerList)
+                {
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        PdfImportedPage page = writer.GetImportedPage(reader, i);
+                        document.Add(iTextSharp.text.Image.GetInstance(page));
+                    }
+                }
+                document.Close();
+                byte[] bytes = memoryStream.ToArray();
+                memoryStream.Close();
+                return bytes;
+            }
+
         }
         public partial class Footer : PdfPageEventHelper
 

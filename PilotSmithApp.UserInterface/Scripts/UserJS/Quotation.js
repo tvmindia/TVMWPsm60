@@ -837,6 +837,19 @@ function EmailQuotation() {
         $('#divModelEmailQuotation').modal('show');
     });
 }
+function PrintQuotation() {
+    debugger;
+    $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val(), function () {
+        $('#lblModelPrintQuotation').text('Print Quotation');
+        //var mailheader = $('#MailBodyHeader').val();
+        //mailheader = mailheader.replace(/\n/g, "<br />");
+        //$('#lblmailheader').html(mailheader);
+        //var mailfooter = $('#MailBodyFooter').val();
+        //mailfooter = mailfooter.replace(/\n/g, "<br />");
+        //$('#lblmailfooter').html(mailfooter);
+        $('#divModelPrintQuotation').modal('show');
+    });
+}
 function SendQuotationEmail() {
     var bodyContent = $('#divQuotationEmailcontainer').html();
     //var headerContent = $('#hdnHeadContent').html();

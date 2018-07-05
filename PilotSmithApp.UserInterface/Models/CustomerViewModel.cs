@@ -86,7 +86,11 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Category")]
         public int[] CustomerCategoryList { get; set; }
         public CustomerCategoryViewModel CustomerCategory { get; set; }
-        //public int CustomerCategoryCode { get; set; }        
+        //public int CustomerCategoryCode { get; set; }      
+        public string CustomerSelect { get; set; }
+        public List<SelectListItem> CustomerList { get; set; }
+
+
     }
     public class CustomerAdvanceSearchViewModel
     {
