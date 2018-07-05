@@ -229,11 +229,11 @@ function imageUpload() {
                     result = JSON.parse(result)
                     if (result.Result == "OK") {
                         debugger;
-                        $('#ImageURL').val(result.Record.AttachmentURL);
-                        //$('#FormProductModel').submit();
-                        //.not(':button, :submit, :reset, :hidden')
-                        //.val('');
-
+                        
+                            $('#ImageURL').val(result.Record.AttachmentURL);
+                            $('#FormProductModel').submit();
+                            //.not(':button, :submit, :reset, :hidden')
+                            //.val('');
                     }
                 },
                 error: function (err) {
