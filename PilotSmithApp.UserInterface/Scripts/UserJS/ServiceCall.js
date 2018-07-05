@@ -26,7 +26,7 @@ $(document).ready(function () {
     catch (e) {
         console.log(e.message);
     }
-    $("#AdvAreaCode,#AdvCustomerID,#AdvBranchCode,#AdvDocumentStatusCode,#AdvServicedBy,#AdvAttendedBy").select2({//for attendedby and servicedby
+    $("#AdvAreaCode,#AdvCustomerID,#AdvBranchCode,#AdvDocumentStatusCode,#AdvServicedBy,#AdvAttendedBy,#AdvServiceTypeCode").select2({
         dropdownParent: $(".divboxASearch")
     });
 
@@ -52,6 +52,7 @@ function BindOrReloadServiceCallTable(action) {
                 $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvServicedBy').val('').trigger('change');
                 $('.divboxASearch #AdvAttendedBy').val('').trigger('change');
+                $('.divboxASearch #AdvServiceTypeCode').val('').trigger('change');
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
@@ -63,9 +64,10 @@ function BindOrReloadServiceCallTable(action) {
                 $('.divboxASearch #AdvDocumentStatusCode').val('');
                 $('.divboxASearch #AdvServicedBy').val('');
                 $('.divboxASearch #AdvAttendedBy').val('');
+                $('.divboxASearch #AdvServiceTypeCode').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvAttendedBy').val() == "") && ($('.divboxASearch #AdvServicedBy').val() == "")) {
+                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('#AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvAttendedBy').val() == "") && ($('.divboxASearch #AdvServicedBy').val() == "") && ($('.divboxASearch #AdvServiceTypeCode').val() == "")) {
                     return true;
                 }
                 break;
@@ -81,6 +83,7 @@ function BindOrReloadServiceCallTable(action) {
                 ServiceCallAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
                 ServiceCallAdvanceSearchViewModel.AdvServicedBy = $('.divboxASearch #AdvServicedBy').val() == "" ? _emptyGuid : $('.divboxASearch #AdvServicedBy').val();
                 ServiceCallAdvanceSearchViewModel.AdvAttendedBy = $('.divboxASearch #AdvAttendedBy').val() == "" ? _emptyGuid : $('.divboxASearch #AdvAttendedBy').val();
+                ServiceCallAdvanceSearchViewModel.AdvServiceTypeCode = $('.divboxASearch #AdvServiceTypeCode').val() == "" ? null : $('.divboxASearch #AdvServiceTypeCode').val();
                 $('#AdvanceSearch').val(JSON.stringify(ServiceCallAdvanceSearchViewModel));
                 $('#FormExcelExport').submit();
                 return true;
@@ -98,10 +101,11 @@ function BindOrReloadServiceCallTable(action) {
         ServiceCallAdvanceSearchViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
         ServiceCallAdvanceSearchViewModel.AdvServicedBy = $('.divboxASearch #AdvServicedBy').val();
         ServiceCallAdvanceSearchViewModel.AdvAttendedBy = $('.divboxASearch #AdvAttendedBy').val();
+        ServiceCallAdvanceSearchViewModel.AdvServiceTypeCode = $('.divboxASearch #AdvServiceTypeCode').val();
         //apply datatable plugin on ServiceCall table
         _dataTable.ServiceCallList = $('#tblServiceCall').DataTable(
         {
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',           
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
             ordering: false,
             searching: false,
             paging: true,
@@ -140,12 +144,12 @@ function BindOrReloadServiceCallTable(action) {
                        return "<b>Doc.Status-</b>" + (data == null ? " " : data) + " </br>" + "<b>Branch-</b>" + (row.Branch.Description == null ? " " : row.Branch.Description);
                    }, "defaultContent": "<i>-</i>"
                },
+               { "data": "ServiceType.Name", "defaultContent": "<i>-</i>" },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditServiceCall(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
             ],
             columnDefs: [
                           { className: "text-left", "targets": [0, 3, 4, 5, 6] },
-                          { className: "text-center", "targets": [6] },                           
-
+                          { className: "text-center", "targets": [6] },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -157,10 +161,10 @@ function BindOrReloadServiceCallTable(action) {
                     //$('.excelExport').hide();
                     OnServerCallComplete();
                 }
-               
+
             }
         });
-        
+
     }
     catch (e) {
         console.log(e.message);
@@ -1007,4 +1011,12 @@ function GetSaleInvoiceByCustomerID() {
     catch (e) {
         console.log(e.message);
     }
+}
+
+function AddServiceCallDetailSpare() {
+    debugger;
+    $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetailSpare", function () {
+        $('#lblModelPopServiceCall').text('Service Call Detail')
+        $('#divModelPopServiceCall').modal('show');
+    });
 }

@@ -27,10 +27,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IEmployeeBusiness _employeeBusiness;
         SecurityFilter.ToolBarAccess _tool;
         ISaleInvoiceBusiness _saleInvoiceBusiness;
+        IServiceTypeBusiness _serviceTypeBusiness;
         public ServiceCallController(IServiceCallBusiness serviceCallBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
-            IDocumentStatusBusiness documentStatusBusiness,IEmployeeBusiness employeeBusiness, 
-            ISaleInvoiceBusiness saleInvoiceBusiness,SecurityFilter.ToolBarAccess tool)
+            IDocumentStatusBusiness documentStatusBusiness, IEmployeeBusiness employeeBusiness,
+            ISaleInvoiceBusiness saleInvoiceBusiness, SecurityFilter.ToolBarAccess tool,
+            IServiceTypeBusiness serviceTypeBusiness)
         {
             _serviceCallBusiness = serviceCallBusiness;
             _customerBusiness = customerBusiness;
@@ -41,6 +43,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _employeeBusiness = employeeBusiness;
             _tool = tool;
             _saleInvoiceBusiness = saleInvoiceBusiness;
+            _serviceTypeBusiness = serviceTypeBusiness;
         }
         #endregion Constructor Injection 
 
@@ -63,6 +66,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             serviceCallAdvanceSearchVM.AdvEmployee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             serviceCallAdvanceSearchVM.AdvServicedEmployee = new EmployeeViewModel();
             serviceCallAdvanceSearchVM.AdvServicedEmployee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            serviceCallAdvanceSearchVM.AdvServiceType = new ServiceTypeViewModel();
+            serviceCallAdvanceSearchVM.AdvServiceType.ServiceTypeSelectList = _serviceTypeBusiness.GetServiceTypeSelectList();
             return View(serviceCallAdvanceSearchVM);
         }
 
@@ -126,6 +131,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion ServiceCall Charges Add
 
+        #region ServiceCall Spare Add
+        public ActionResult AddServiceCallDetailSpare()
+        {
+            ServiceCallDetailViewModel serviceCallDetailVM = new ServiceCallDetailViewModel();
+            serviceCallDetailVM.IsUpdate = false;
+            return PartialView("_AddServiceCallDetailSpare", serviceCallDetailVM);
+        }
+        #endregion ServiceCall Spare Add
+
         #region GetAllServiceCall
         [HttpPost]
         [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "R")]
@@ -136,7 +150,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             serviceCallAdvanceSearchVM.DataTablePaging.Length = (serviceCallAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : serviceCallAdvanceSearchVM.DataTablePaging.Length;
 
             List<ServiceCallViewModel> serviceCallVMList = Mapper.Map<List<ServiceCall>, List<ServiceCallViewModel>>(_serviceCallBusiness.GetAllServiceCall(Mapper.Map<ServiceCallAdvanceSearchViewModel, ServiceCallAdvanceSearch>(serviceCallAdvanceSearchVM)));
-            
+
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -408,7 +422,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.deletebtn.Text = "Delete";
                     toolboxVM.deletebtn.Title = "Delete";
                     toolboxVM.deletebtn.Event = "DeleteServiceCall();";
-                    
+
                     //toolboxVM.SendForApprovalBtn.Visible = true;
                     //toolboxVM.SendForApprovalBtn.Text = "Send";
                     //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";

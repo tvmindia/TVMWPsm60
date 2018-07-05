@@ -102,8 +102,16 @@
                         @Html.DropDownListFor(model => model.AdvAttendedBy, Model.AdvEmployee.EmployeeSelectList, "Select Employee", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvServiceTypeCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvServiceTypeCode, Model.AdvServiceType.ServiceTypeSelectList, "Select Service Type", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
                 <div class="col-md-12">&nbsp;</div>
-                @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID });
+                @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID })
                 <div class="col-md-12 no-left-padding">
                     <div class="col-md-12">
                         <button class="btn searchbtn" type="submit" onclick="ApplyFilterThenSearch()" style="width: 60px;"><i class="fa fa-search" style="font-size:18px;"></i></button>
@@ -127,6 +135,7 @@
                         <th>Attented By</th>
                         <th>Serviced By</th>
                         <th>Other Details</th>
+                        <th>Service Type</th>
                         <th>...</th>
                     </tr>
                 </thead>
@@ -226,12 +235,11 @@
     @Html.Hidden("DocumentType", null, htmlAttributes: new { @class = "control-label", Value = "SRC" })
 }
 @section Scripts {
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")   
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/ServiceCall")
 }
-
 
 
 

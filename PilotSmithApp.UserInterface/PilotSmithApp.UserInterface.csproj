@@ -1091,6 +1091,7 @@
     <Content Include="Views\Report\EstimateReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
     <Content Include="Views\ServiceType\_ServiceTypeSelectList.cshtml" />
+    <Content Include="Views\ServiceCall\_AddServiceCallDetailSpare.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
