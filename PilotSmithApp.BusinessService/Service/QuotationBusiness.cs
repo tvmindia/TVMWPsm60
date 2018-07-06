@@ -78,7 +78,13 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 if (!string.IsNullOrEmpty(quotation.EmailSentTo))
                 {
+                    string[] BccList=null;
+                    string[] CcList=null;
                     string[] EmailList = quotation.EmailSentTo.Split(',');
+                    if (quotation.Cc != null)
+                        CcList = quotation.Cc.Split(',');
+                    if(quotation.Bcc != null)
+                        BccList = quotation.Bcc.Split(',');
                     string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
                     MailMessage _mail = new MailMessage();
                     PDFTools pDFTools = new PDFTools();
@@ -88,12 +94,22 @@ namespace PilotSmithApp.BusinessService.Service
                     pDFTools.ContentFileName = "Quotation";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), quotation.QuoteNo + ".pdf"));
 
-                    _mail.Subject = "Quotation";
+                    _mail.Subject = quotation.Subject;
                     _mail.IsBodyHtml = true;
                     foreach (string email in EmailList)
                     {
                         _mail.To.Add(email);
                     }
+                    if (quotation.Cc != null)
+                        foreach (string email in CcList)
+                        {
+                        _mail.CC.Add(email);
+                        }
+                    if (quotation.Bcc != null)
+                        foreach (string email in BccList)
+                        {
+                        _mail.Bcc.Add(email);
+                        }
                     sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
 

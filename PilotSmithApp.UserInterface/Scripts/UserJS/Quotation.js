@@ -851,15 +851,31 @@ function PrintQuotation() {
     });
 }
 function SendQuotationEmail() {
-    var bodyContent = $('#divQuotationEmailcontainer').html();
-    //var headerContent = $('#hdnHeadContent').html();
-    $('#hdnContentEmail').val(bodyContent);
-    $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
-    $('#hdnQuoteNo').val($('#QuoteNo').val());
-    $('#hdnContactPerson').val($('#ContactPerson').text());
-    $('#hdnQuoteDate').val($('#QuoteDateFormatted').val());
-    $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
-    
+    debugger;
+    if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
+        var bodyContent = $('#divQuotationEmailcontainer').html();
+        //var headerContent = $('#hdnHeadContent').html();
+        $('#hdnContentEmail').val(bodyContent);
+        $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
+        $('#hdnQuoteNo').val($('#QuoteNo').val());
+        $('#hdnContactPerson').val($('#ContactPerson').text());
+        $('#hdnQuoteDate').val($('#QuoteDateFormatted').val());
+        $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
+        $('#FormQuotationEmailSend').submit();
+    }
+    else {
+        if ($('#EmailSentTo').val() == null)
+        {
+            $('#sentTolbl').css('color', 'red'); 
+            $("#sentTolbl").attr("title", "Please specify at least one recipient");
+            $('#sentTovalidationmsglbl').html('__________________________________');
+            $('#sentTovalidationmsglbl').css('color', 'red');
+            $("#sentTovalidationmsglbl").attr("title", "Please specify at least one recipient");
+        }
+        //if ($('#Subject').val() == null) {
+        //    $('#subjectlbl').css('color', 'red');
+        //}
+    }
 }
 function UpdateQuotationEmailInfo() {
     debugger;
@@ -888,13 +904,13 @@ function SaveSuccessUpdateQuotationEmailInfo(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
-                MasterAlert("success", _result.Message)
+                //MasterAlert("success", _result.Message)
                 $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=False", function () {
                     $('#lblModelEmailQuotation').text('Email Attachment')
                 });
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                //MasterAlert("success", _message)
                 $('#divModelEmailQuotation').modal('hide');
                 break;
             default:

@@ -10,8 +10,26 @@
                 <table style="width:100%;font-size:12px">
                     <tr>
                         <td colspan="6">
-                            @Html.LabelFor(model => model.EmailSentTo, htmlAttributes: new { @class = "control-label lblrequired", @style = "font-weight: bold;font-size:15px" })
+                            @Html.LabelFor(model => model.EmailSentTo, htmlAttributes: new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
                             @Html.EditorFor(model => model.EmailSentTo, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Email Sent To" } })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            @Html.LabelFor(model => model.Cc, htmlAttributes: new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                            @Html.EditorFor(model => model.Cc, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            @Html.LabelFor(model => model.Bcc, htmlAttributes: new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                            @Html.EditorFor(model => model.Bcc, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control newinput" } })
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +70,28 @@
                                 </thead>
                                 <tbody>
                                     <tr><td colspan="6">&nbsp;</td></tr>
-                                    <tr><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>To,</b><br /> <span>@Model.Customer.CompanyName <br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
+                                    <tr><td colspan="3" style="padding-left:30px;vertical-align:top;">
+                                    <b>To,</b><br /> <span>
+                                     @Model.Customer.CompanyName <br />
+                                     @{
+                                        if (Model.MailingAddress != null)
+                                        {
+                                            @Html.Raw(Model.MailingAddress.Replace("\n", "<br />"))<br />
+                                        }
+                                       }
+
+                                    </span>
+                                    </td><td colspan="3" style="padding-left:30px;vertical-align:top;">
+                                    <b>Delivery Address,</b><br /><span>
+                                     @{
+                                        if (Model.ShippingAddress != null)
+                                             {
+                                                @Html.Raw(Model.ShippingAddress.Replace("\n", "<br />"))
+                                              }
+                                       }
+        
+                                     </span>
+                                    </td></tr>
                                     <tr><td colspan="6">&nbsp;</td></tr>
                                     <tr><td>Quotation No</td><td colspan="2">: @Model.QuoteNo</td><td>Ref. Quotation No.</td><td colspan="2">: @Model.QuoteRefNo</td></tr>
                                     <tr><td>Quotation Date</td><td colspan="2">: @Model.QuoteDateFormatted</td><td></td><td></td><td></td></tr>
@@ -262,7 +301,7 @@
                         <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />
                     </div>
 }
-<div class="modal-footer d-flex justify-content-center">
+<div class="modal-footer d-flex justify-content-center" style="text-align:left;">
 @{
     if (!Model.EmailFlag)
         {
@@ -272,19 +311,30 @@
 
                         @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
                         @Html.HiddenFor(model => model.EmailSentTo, htmlAttributes: new { @class = "", @id = "hdnEmailSentTo" })
+                        @Html.HiddenFor(model => model.Cc, htmlAttributes: new { @class = "" })
+                        @Html.HiddenFor(model => model.Bcc, htmlAttributes: new { @class = "" })
+                        @Html.HiddenFor(model => model.Subject, htmlAttributes: new { @class = "" })
                         @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
                         @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
                         @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "", @id = "hdnQuoteNo" })
                         @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnEmailContentFileName" })
                         @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
-                        <a class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;margin-right: 1%;" onclick="EmailQuotation()">Back </a>
+                        <table style="width:50%;font-size:12px">
+                            <tbody>
+                                <tr><td id="sentTolbl">Sent To</td><td>: </td><td id="sentTovalidationmsglbl">@Model.EmailSentTo</td></tr>
+                                <tr><td>Cc</td><td>: </td><td>@Model.Cc</td></tr>
+                                <tr><td>Bcc</td><td>: </td><td>@Model.Bcc</td></tr>
+                                <tr><td>Subject</td><td>: </td><td>@Model.Subject</td></tr>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;margin-right: 1%;float:right" onclick="EmailQuotation()">Back </a>
                         if (Model.LatestApprovalStatus == 4)
                         {
-                            <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                            <button type="button" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;float:right;margin-right:10px" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                         }
                         else
                          {
-                            <button type="submit" disabled class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                            <button type="button" disabled class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;float:right;margin-right:10px" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                          }
 
                   }
