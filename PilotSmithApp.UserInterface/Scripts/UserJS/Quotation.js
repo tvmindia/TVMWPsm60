@@ -852,7 +852,7 @@ function PrintQuotation() {
 }
 function SendQuotationEmail() {
     debugger;
-    if ($('#hdnEmailSentTo').val() != null && $('#Subject').val()) {
+    if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
         var bodyContent = $('#divQuotationEmailcontainer').html();
         //var headerContent = $('#hdnHeadContent').html();
         $('#hdnContentEmail').val(bodyContent);
@@ -866,8 +866,11 @@ function SendQuotationEmail() {
     else {
         if ($('#EmailSentTo').val() == null)
         {
-            $('#sentTolbl').css('color', 'red');
+            $('#sentTolbl').css('color', 'red'); 
             $("#sentTolbl").attr("title", "Please specify at least one recipient");
+            $('#sentTovalidationmsglbl').html('__________________________________');
+            $('#sentTovalidationmsglbl').css('color', 'red');
+            $("#sentTovalidationmsglbl").attr("title", "Please specify at least one recipient");
         }
         //if ($('#Subject').val() == null) {
         //    $('#subjectlbl').css('color', 'red');

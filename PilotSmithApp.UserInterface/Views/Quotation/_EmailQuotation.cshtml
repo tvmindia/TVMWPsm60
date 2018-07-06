@@ -70,7 +70,28 @@
                                 </thead>
                                 <tbody>
                                     <tr><td colspan="6">&nbsp;</td></tr>
-                                    <tr><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>To,</b><br /> <span>@Model.Customer.CompanyName <br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
+                                    <tr><td colspan="3" style="padding-left:30px;vertical-align:top;">
+                                    <b>To,</b><br /> <span>
+                                     @Model.Customer.CompanyName <br />
+                                     @{
+                                        if (Model.MailingAddress != null)
+                                        {
+                                            @Html.Raw(Model.MailingAddress.Replace("\n", "<br />"))<br />
+                                        }
+                                       }
+
+                                    </span>
+                                    </td><td colspan="3" style="padding-left:30px;vertical-align:top;">
+                                    <b>Delivery Address,</b><br /><span>
+                                     @{
+                                        if (Model.ShippingAddress != null)
+                                             {
+                                                @Html.Raw(Model.ShippingAddress.Replace("\n", "<br />"))
+                                              }
+                                       }
+        
+                                     </span>
+                                    </td></tr>
                                     <tr><td colspan="6">&nbsp;</td></tr>
                                     <tr><td>Quotation No</td><td colspan="2">: @Model.QuoteNo</td><td>Ref. Quotation No.</td><td colspan="2">: @Model.QuoteRefNo</td></tr>
                                     <tr><td>Quotation Date</td><td colspan="2">: @Model.QuoteDateFormatted</td><td></td><td></td><td></td></tr>
@@ -300,7 +321,7 @@
                         @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
                         <table style="width:50%;font-size:12px">
                             <tbody>
-                                <tr><td id="sentTolbl">Sent To</td><td>: </td><td>@Model.EmailSentTo</td></tr>
+                                <tr><td id="sentTolbl">Sent To</td><td>: </td><td id="sentTovalidationmsglbl">@Model.EmailSentTo</td></tr>
                                 <tr><td>Cc</td><td>: </td><td>@Model.Cc</td></tr>
                                 <tr><td>Bcc</td><td>: </td><td>@Model.Bcc</td></tr>
                                 <tr><td>Subject</td><td>: </td><td>@Model.Subject</td></tr>
