@@ -272,6 +272,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         serviceCallDetail.DocumentStatus.Description = (sdr["Status"].ToString() != "" ? sdr["Status"].ToString() : serviceCallDetail.DocumentStatus.Description);
                                         serviceCallDetail.InstalledDate = (sdr["InstalledDate"].ToString() != "" ? DateTime.Parse(sdr["InstalledDate"].ToString()) : serviceCallDetail.InstalledDate);
                                         serviceCallDetail.InstalledDateFormatted = (sdr["InstalledDate"].ToString() != "" ? DateTime.Parse(sdr["InstalledDate"].ToString()).ToString(_settings.DateFormat) : serviceCallDetail.InstalledDateFormatted);
+                                        serviceCallDetail.Spare = new Spare();
+                                        serviceCallDetail.SpareID= (sdr["SpareID"].ToString() != "" ? Guid.Parse(sdr["SpareID"].ToString()) : Guid.Empty);
+                                        serviceCallDetail.Spare.Name = (sdr["Spare"].ToString() != "" ? sdr["Spare"].ToString() : string.Empty);
                                     }
                                     serviceCallDetailList.Add(serviceCallDetail);
                                 }

@@ -10,7 +10,7 @@
     { Text = "Not Set", Value = "", Selected = true });
 }
 
-@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormServiceCallDetail" }))
+@using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormServiceCallDetailSpare" }))
 {
     @Html.HiddenFor(model => model.ServiceCallID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
@@ -31,7 +31,6 @@
             @Html.Hidden("hdnSparedisabled", false)
             @Html.HiddenFor(model => model.SpareID, htmlAttributes: new { @class = "", @id = "hdnSpareID" })
         </div>
-
         <div class="col-md-12 no-padding">
 
             <div class="col-md-6 no-padding">
@@ -77,16 +76,17 @@
     </div>
     @*</div>*@
     <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-default" id="btnAddServiceCallDetail" onclick="AddServiceCallDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+        <button class="btn btn-default" id="btnAddServiceCallDetail" onclick="AddServiceCallDetailSpareToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
     </div>
 }
 
 <script>
     $(document).ready(function () {
-        $.validator.unobtrusive.parse("#FormServiceCallDetail");
+        debugger;
+        //$.validator.unobtrusive.parse("#FormServiceCallDetailSpare");
         try {
             $('.divSpareSelectList').load('/Spare/SpareSelectList?required=' + $('#hdnSpareRequired').val() + '&disabled=' + $('#hdnSparedisabled').val());
-            $('.divServiceStatusSelectList').load('/DocumentStatus/ServiceStatusSelectList?code=SRC&required=' + $('#hdnServiceStatusRequired').val())
+            $('.divServiceStatusSelectList').load('/DocumentStatus/ServiceStatusSelectList?code=SRC&required=' + $('#hdnServiceStatusRequired').val());
         }
         catch (e) {
             console.log(e.message);

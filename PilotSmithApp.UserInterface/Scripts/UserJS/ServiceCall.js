@@ -394,15 +394,23 @@ function BindServiceCallDetailList(id) {
              },
              columns: [
              {
-                 "data": "Product.Code", render: function (data, type, row) {
-
-                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
+                 "data": null, render: function (data, type, row) {
+                     debugger;
+                     if (row.Product !== undefined && row.Product !== null && row.Product.Code !== "") {
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + ((row.ProductSpec!==null&&row.ProductSpec!=='')? row.ProductSpec.replace(/"/g, "&quot"):'') + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name;
+                     }
+                     if (row.Spare !== undefined && row.Spare !== null && row.Spare.Name !== "") {
+                         return '<span>' + row.Spare.Name + '</span>';
+                     }
+                     else {
+                         return '<i></i>';
+                     }
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "true" || data === true) { return "Yes" } else if (data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
+             { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "True" || data === "true" || data === true) { return "Yes" } else if (data === "False" || data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "InstalledDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DocumentStatus.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditServiceCallDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
+             { "data": null, "orderable": false, render: function (data, type, row) { return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="' + (row.Spare.Name !== "" ? 'EditServiceCallDetailSpare(this)' : 'EditServiceCallDetail(this)') + '" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-"; }, "defaultContent": "<i></i>" },
              ],
              columnDefs: [
                  { "targets": [1, 4], "width": "10%" },
@@ -444,8 +452,12 @@ function AddServiceCallDetailToList() {
                 serviceCallDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
                 serviceCallDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                 serviceCallDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                ProductModel = new Object;
-                DocumentStatus = new Object;
+                var ProductModel = new Object;
+                var DocumentStatus = new Object;
+                var Spare = new Object();
+                Spare.Code = "";
+                serviceCallDetailList[_datatablerowindex].SpareID = _emptyGuid;
+                serviceCallDetailList[_datatablerowindex].Spare = Spare;
                 ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 serviceCallDetailList[_datatablerowindex].ProductModel = ProductModel;
                 serviceCallDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
@@ -478,6 +490,7 @@ function AddServiceCallDetailToList() {
             if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != ""))) {
                     if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
+                    debugger;
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                     serviceCallDetailList[0].Product = new Object();
                     serviceCallDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -495,34 +508,38 @@ function AddServiceCallDetailToList() {
                     serviceCallDetailList[0].DocumentStatus = DocumentStatus;
                     serviceCallDetailList[0].InstalledDate = $('#InstalledDate').val();
                     serviceCallDetailList[0].InstalledDateFormatted = $('#InstalledDate').val();
+                    serviceCallDetailList[0].SpareID = _emptyGuid;
                     _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
                     $('#divModelPopServiceCall').modal('hide');
                 }
                 else {
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                     if (serviceCallDetailList.length > 0) {
-
-                            var serviceCallDetailVM = new Object();
-                            var Product = new Object;
-                            var ProductModel = new Object()
-                            DocumentStatus = new Object;
-                            serviceCallDetailVM.ID = _emptyGuid;
-                            serviceCallDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                            Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                            Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                            serviceCallDetailVM.Product = Product;
-                            serviceCallDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                            serviceCallDetailVM.ProductModel = ProductModel;
-                            serviceCallDetailVM.ProductSpec = $('#ProductSpec').val();
-                            serviceCallDetailVM.GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
-                            serviceCallDetailVM.ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
-                            DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
-                            serviceCallDetailVM.DocumentStatus = DocumentStatus;
-                            serviceCallDetailVM.InstalledDate = $('#InstalledDate').val();
-                            serviceCallDetailVM.InstalledDateFormatted = $('#InstalledDate').val();
-                            _dataTable.ServiceCallDetailList.row.add(serviceCallDetailVM).draw(true);
-                            $('#divModelPopServiceCall').modal('hide');
+                        var serviceCallDetailVM = new Object();
+                        var Product = new Object;
+                        var ProductModel = new Object();
+                        var DocumentStatus = new Object;
+                        var Spare = new Object();
+                        serviceCallDetailVM.ID = _emptyGuid;
+                        serviceCallDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                        Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                        Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                        serviceCallDetailVM.Product = Product;
+                        serviceCallDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                        ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                        serviceCallDetailVM.ProductModel = ProductModel;
+                        serviceCallDetailVM.ProductSpec = $('#ProductSpec').val();
+                        serviceCallDetailVM.GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
+                        serviceCallDetailVM.ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
+                        DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
+                        serviceCallDetailVM.DocumentStatus = DocumentStatus;
+                        serviceCallDetailVM.InstalledDate = $('#InstalledDate').val();
+                        serviceCallDetailVM.InstalledDateFormatted = $('#InstalledDate').val();
+                        Spare.Code = "";
+                        serviceCallDetailVM.Spare = Spare;
+                        serviceCallDetailVM.SpareID = _emptyGuid;
+                        _dataTable.ServiceCallDetailList.row.add(serviceCallDetailVM).draw(true);
+                        $('#divModelPopServiceCall').modal('hide');
                     }
                 }
             }
@@ -1015,8 +1032,155 @@ function GetSaleInvoiceByCustomerID() {
 
 function AddServiceCallDetailSpare() {
     debugger;
+    _datatablerowindex = -1;
     $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetailSpare", function () {
         $('#lblModelPopServiceCall').text('Service Call Detail')
         $('#divModelPopServiceCall').modal('show');
     });
+}
+
+function AddServiceCallDetailSpareToList() {
+    try {
+        debugger;
+
+        $("#FormServiceCallDetailSpare").submit(function () { });
+
+        if ($('#FormServiceCallDetailSpare #IsUpdate').val() == 'True') {
+            if (($('#SpareID').val() != "") && ($('#InstalledDate').val() != "")) {
+
+                var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
+
+                var Product = new Object;
+                var ProductModel = new Object();
+                Product.Code = "";
+                serviceCallDetailList[_datatablerowindex].Product = Product;
+                serviceCallDetailList[_datatablerowindex].ProductID = _emptyGuid;
+                serviceCallDetailList[_datatablerowindex].ProductModelID = _emptyGuid;
+                serviceCallDetailList[_datatablerowindex].Spare = new Object();
+                serviceCallDetailList[_datatablerowindex].Spare.Code = $("#SpareID").val() != "" ? $("#SpareID option:selected").text().split("-")[0].trim() : "";
+                serviceCallDetailList[_datatablerowindex].Spare.Name = $("#SpareID").val() != "" ? $("#SpareID option:selected").text().split("-")[1].trim() : "";
+                serviceCallDetailList[_datatablerowindex].SpareID = $("#SpareID").val() != "" ? $("#SpareID").val() : _emptyGuid;
+                DocumentStatus = new Object;
+                serviceCallDetailList[_datatablerowindex].GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
+                serviceCallDetailList[_datatablerowindex].ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
+                DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
+                serviceCallDetailList[_datatablerowindex].DocumentStatus = DocumentStatus;
+                serviceCallDetailList[_datatablerowindex].InstalledDate = $('#InstalledDate').val();
+                serviceCallDetailList[_datatablerowindex].InstalledDateFormatted = $('#InstalledDate').val();
+                _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
+                $('#divModelPopServiceCall').modal('hide');
+                _datatablerowindex = -1;
+            }
+            else {
+                if (($('#InstalledDate').val() != "")) {
+                    $('#msgInstalledDate').show();
+                    $('#msgInstalledDate').change(function () {
+                        if ($('#InstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
+                    });
+                }
+            }
+        }
+        else {
+            if (($('#SpareID').val() != "") && ($('#InstalledDate').val() != "")) {
+                if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
+                    _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
+                    var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
+                    serviceCallDetailList[0].Spare = new Object();
+                    serviceCallDetailList[0].Spare.Code = $("#SpareID").val() != "" ? $("#SpareID option:selected").text().split("-")[0].trim() : "";
+                    serviceCallDetailList[0].Spare.Name = $("#SpareID").val() != "" ? $("#SpareID option:selected").text().split("-")[1].trim() : "";
+                    serviceCallDetailList[0].SpareID = $("#SpareID").val() != "" ? $("#SpareID").val() : _emptyGuid;
+                    serviceCallDetailList[0].GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
+                    serviceCallDetailList[0].ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
+                    DocumentStatus = new Object;
+                    DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
+                    serviceCallDetailList[0].DocumentStatus = DocumentStatus;
+                    serviceCallDetailList[0].InstalledDate = $('#InstalledDate').val();
+                    serviceCallDetailList[0].InstalledDateFormatted = $('#InstalledDate').val();
+                    serviceCallDetailList[0].ProductID = _emptyGuid;
+                    serviceCallDetailList[0].ProductModelID = _emptyGuid;
+                    _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
+                    $('#divModelPopServiceCall').modal('hide');
+                }
+                else {
+                    var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
+                    if (serviceCallDetailList.length > 0) {
+
+                        var serviceCallDetailVM = new Object();
+                        var Spare = new Object;
+                        var DocumentStatus = new Object;
+                        var Product = new Object;
+                        var ProductModel = new Object();
+                        Product.Code = "";
+                        serviceCallDetailVM.Product = Product;
+                        serviceCallDetailVM.ID = _emptyGuid;
+                        serviceCallDetailVM.ProductID = _emptyGuid;
+                        serviceCallDetailVM.ProductModelID = _emptyGuid;
+                        serviceCallDetailVM.SpareID = $("#SpareID").val() != "" ? $("#SpareID").val() : _emptyGuid;
+                        Spare.Code = $("#SpareID").val() != "" ? $("#SpareID option:selected").text().split("-")[0].trim() : "";
+                        Spare.Name = $("#SpareID").val() != "" ? $("#SpareID option:selected").text().split("-")[1].trim() : "";
+                        serviceCallDetailVM.Spare = Spare;
+                        serviceCallDetailVM.GuaranteeYN = $('#divModelServiceCallPopBody #GuaranteeYN').val();
+                        serviceCallDetailVM.ServiceStatusCode = $('#divModelServiceCallPopBody #ServiceStatusCode').val();
+                        DocumentStatus.Description = $("#divModelServiceCallPopBody #ServiceStatusCode").val() != "" ? $("#divModelServiceCallPopBody #ServiceStatusCode option:selected").text().trim() : "";
+                        serviceCallDetailVM.DocumentStatus = DocumentStatus;
+                        serviceCallDetailVM.InstalledDate = $('#InstalledDate').val();
+                        serviceCallDetailVM.InstalledDateFormatted = $('#InstalledDate').val();
+                        _dataTable.ServiceCallDetailList.row.add(serviceCallDetailVM).draw(true);
+                        $('#divModelPopServiceCall').modal('hide');
+                    }
+                }
+            }
+            else {
+                if (($('#InstalledDate').val() != "")) {
+                    $('#msgInstalledDate').show();
+                    $('#msgInstalledDate').change(function () {
+                        if ($('#InstalledDate').val !== "") { $('#msgInstalledDate').hide(); }
+                    });
+                }
+            }
+        }
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            'trigger': 'hover',
+            'placement': 'top'
+        });
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+function EditServiceCallDetailSpare(this_Obj) {
+    try {
+        debugger;
+        _datatablerowindex = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).index();
+        var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
+        $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetailSpare", function () {
+            debugger;
+            $('#lblModelPopServiceCall').text('Service Call Detail')
+            $('#FormServiceCallDetailSpare #IsUpdate').val('True');
+            $('#FormServiceCallDetailSpare #ID').val(serviceCallDetail.ID);
+            $("#FormServiceCallDetailSpare #SpareID").val(serviceCallDetail.SpareID).trigger('change');
+            $("#FormServiceCallDetailSpare #hdnSpareID").val(serviceCallDetail.SpareID);
+            switch (serviceCallDetail.GuaranteeYN) {
+                case true:
+                    serviceCallDetail.GuaranteeYN = 'True'
+                    break;
+                case false:
+                    serviceCallDetail.GuaranteeYN = 'False'
+                    break;
+                default:
+                    serviceCallDetail.GuaranteeYN = ''
+                    break;
+            }
+            $('#FormServiceCallDetailSpare #GuaranteeYN').val(serviceCallDetail.GuaranteeYN);
+            $('#FormServiceCallDetailSpare #ServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
+            $('#FormServiceCallDetailSpare #hdnServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
+            $('#FormServiceCallDetailSpare #InstalledDate').val(serviceCallDetail.InstalledDateFormatted);
+            $('#divModelPopServiceCall').modal('show');
+        });
+    }
+    catch (e) {
+        console.log(e.message);
+    }
 }

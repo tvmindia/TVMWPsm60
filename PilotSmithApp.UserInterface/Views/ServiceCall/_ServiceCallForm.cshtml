@@ -289,11 +289,13 @@
                 @{
                     if (Model.IsDocLocked || !Model.IsUpdate)
                     {
-                        <a class="btn btn-openid pull-right" onclick="AddServiceCallDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                        <a class="btn btn-openid pull-right" onclick="AddServiceCallDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Product Detail</a>
+                        <a class="btn btn-openid pull-right" onclick="AddServiceCallDetailSpare()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Spare Detail</a>
                     }
                     else
                     {
-                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Spare Detail</a>
+                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Product Detail</a>
                     }
                 }
             </div>
@@ -303,7 +305,7 @@
                 <table id="tblServiceCallDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                     <thead>
                         <tr class="text-center TableHead">
-                            <th style="width:50%">Product</th>
+                            <th style="width:50%">Product / Spare</th>
                             <th style="width:15%">Guarantee</th>
                             <th style="width:15%">Installed Date</th>
                             <th style="width:15%">Service Status</th>

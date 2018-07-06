@@ -94,6 +94,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ProductModel ProductModel { get; set; }
         public string InstalledDateFormatted { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
+        public Spare Spare { get; set; }
     }
 
     public class ServiceCallCharge
