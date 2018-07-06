@@ -199,7 +199,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = customer.TaxRegNo;
                         cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = customer.PANNO;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customer.GeneralNotes;
-                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = customer.AreaCode;
+                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = customer.CountryCode;
                         cmd.Parameters.Add("@StateCode", SqlDbType.Int).Value = customer.StateCode;
                         cmd.Parameters.Add("@DistrictCode", SqlDbType.Int).Value = customer.DistrictCode;
                         cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = customer.AreaCode;
