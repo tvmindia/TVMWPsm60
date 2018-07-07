@@ -10,7 +10,7 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
+    @Html.HiddenFor(model => model.hdnPopupFileID, htmlAttributes: new { @class = "", @id = "hdnPopupFileDupID", @value = Guid.Empty })
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-6 no-padding">
@@ -94,7 +94,7 @@
     <div class="col-md-11 divbox1" style="margin-left: 0% !important;width: 96.666667% !important;">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">Attachments</div>
-            @Html.Partial("_Fileupload")
+            @Html.Partial("_PopupFileupload")
         </div>
     </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -137,12 +137,12 @@
         //}
         //    $('.divModelMasterPopUp .modal-body').height('50px');
             //Fileupload
-            $('#btnUpload').click(function () {
+            $('#btnPopupUpload').click(function () {
                 debugger;
                 //Pass the controller name
                 var FileObject = new Object;
-                if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
-                    FileObject.ParentID = (($('#FormProduct #ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#FormProduct #ID').val()) : $('#hdnFileDupID').val());
+                if ($('#hdnPopupFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
+                    FileObject.ParentID = (($('#FormProduct #ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#FormProduct #ID').val()) : $('#hdnPopupFileDupID').val());
                 }
                 else {
                     FileObject.ParentID = ($('#FormProduct #ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#FormProduct #ID').val();
@@ -151,7 +151,7 @@
 
                 FileObject.ParentType = "Product";
                 FileObject.Controller = "FileUpload";
-                UploadFile(FileObject);
+                UploadPopupFile(FileObject);
             });
         }
         catch (e) {

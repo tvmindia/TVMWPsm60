@@ -580,6 +580,63 @@ function UploadFile(FileObject)
         }
    // });
 }
+function UploadPopupFile(FileObject) {
+    debugger;
+    // $('#btnUpload').click(function () {
+
+    // Checking whether FormData is available in browser  
+    if (window.FormData !== undefined) {
+        debugger;
+        var fileUpload = $("#PopupFileUpload").get(0);
+        var files = fileUpload.files;
+        if (files.length > 0) {
+            // Create FormData object  
+            var fileData = new FormData();
+
+            // Looping over all files and add it to FormData object  
+            for (var i = 0; i < files.length; i++) {
+                debugger;
+                fileData.append(files[i].name, files[i]);
+                var filesize = (parseInt($('#hdnFileSizebytes').val())) + files[i].size;
+                $('#hdnFileSizebytes').val(filesize);
+                if (parseInt($('#hdnFileSizebytes').val()) > 10485760) {
+                    notyAlert('error', "File size exceeds the limit 10 MB");
+                    return false;
+                }
+            }
+
+            // Adding one more key to FormData object  
+            fileData.append('ParentID', FileObject.ParentID);
+            fileData.append('ParentType', FileObject.ParentType);
+            $.ajax({
+                url: '/' + FileObject.Controller + '/UploadFiles',
+                type: "POST",
+                contentType: false, // Not to set any content header  
+                processData: false, // Not to process data  
+                data: fileData,
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        $('#hdnPopupFileDupID').val(result.Records.ParentID);
+                        notyAlert('success', result.Message);
+                        PaintImages(result.Records.ParentID);
+                        cancelAll();
+                    }
+                    else if (result.Result == "ERROR") {
+                        notyAlert('error', result.Message);
+                    }
+
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+
+    } else {
+        notyAlert('error', 'FormData is not supported.');
+    }
+    // });
+}
 
 function DeleteFile(this_Obj)
 {
@@ -679,6 +736,15 @@ function clearUploadControl()
     $('#UploadPreview').empty();
     $('#UploadPreview').append('New attachments');
     var file = document.getElementById('FileUpload1');
+    file.value = '';
+    $('#hdnFileSizebytes').val(0);
+    $('#hdnFileDupID').val('00000000-0000-0000-0000-000000000000');
+    $('#ExistingPreview').empty();
+}
+function clearPopupUploadControl() {
+    $('#FileUploadPreview').empty();
+    $('#FileUploadPreview').append('New attachments');
+    var file = document.getElementById('PopupFileUpload');
     file.value = '';
     $('#hdnFileSizebytes').val(0);
     $('#hdnFileDupID').val('00000000-0000-0000-0000-000000000000');
