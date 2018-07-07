@@ -908,6 +908,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion EmailSent
 
+        #region Print SaleInvoice
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public ActionResult PrintSaleInvoice(SaleInvoiceViewModel saleInvoiceVM)
+        {
+            bool emailFlag = saleInvoiceVM.EmailFlag;
+            saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(saleInvoiceVM.ID));
+            saleInvoiceVM.SaleInvoiceDetailList = Mapper.Map<List<SaleInvoiceDetail>, List<SaleInvoiceDetailViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceDetailListBySaleInvoiceID(saleInvoiceVM.ID));
+            saleInvoiceVM.SaleInvoiceOtherChargeDetailList = Mapper.Map<List<SaleInvoiceOtherCharge>, List<SaleInvoiceOtherChargeViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceOtherChargesDetailListBySaleInvoiceID(saleInvoiceVM.ID));
+            saleInvoiceVM.PDFTools = new PDFToolsViewModel();
+            return PartialView("_PrintSaleInvoice", saleInvoiceVM);
+        }
+        #endregion Print SaleInvoice
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
@@ -982,6 +995,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Title = "Email";
                     toolboxVM.EmailBtn.Event = "EmailSaleInvoice();";
 
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintSaleInvoice()";
+
                     toolboxVM.SendForApprovalBtn.Visible = false;
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
@@ -1027,6 +1045,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Disable = true;
                     toolboxVM.EmailBtn.DisableReason = "Document Locked";
                     toolboxVM.EmailBtn.Event = "";
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.DisableReason = "Not Approved";
+                    toolboxVM.PrintBtn.Event = "";
 
                     toolboxVM.TimeLine.Visible = true;
                     toolboxVM.TimeLine.Text = "TimeLn";

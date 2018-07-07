@@ -157,6 +157,23 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion District SelectList
 
+
+        #region Get District SelectList On Demand
+        [HttpPost]
+        public ActionResult GetDistrictForSelectListOnDemand(string searchTerm, int? stateCode)
+        {
+            List<SelectListItem> districtSelectList = _districtBusiness.GetDistrictForSelectList(stateCode);
+            var list = districtSelectList != null ? (from SelectListItem in districtSelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                    select new Select2Model
+                                                    {
+                                                        text = SelectListItem.Text,
+                                                        id = SelectListItem.Value,
+                                                    }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion Get District SelectList On Demand
+
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "District", Mode = "R")]

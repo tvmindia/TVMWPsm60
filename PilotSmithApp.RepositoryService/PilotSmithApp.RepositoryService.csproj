@@ -86,6 +86,7 @@
     <Compile Include="Contract\ISaleOrderRepository.cs" />
     <Compile Include="Contract\ISalesInvoiceRepository.cs" />
     <Compile Include="Contract\IServiceCallRepository.cs" />
+    <Compile Include="Contract\IServiceTypeRepository.cs" />
     <Compile Include="Contract\ISpareRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
     <Compile Include="Contract\IPaymentTermRepository.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Service\SaleOrderRepository.cs" />
     <Compile Include="Service\SalesInvoiceRepository.cs" />
     <Compile Include="Service\ServiceCallRepository.cs" />
+    <Compile Include="Service\ServiceTypeRepository.cs" />
     <Compile Include="Service\SpareRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
     <Compile Include="Service\PaymentTermRepository.cs" />

@@ -1174,7 +1174,13 @@ function DownloadProformaInvoice() {
     var customerName = $("#ProformaInvoiceForm #CustomerID option:selected").text();
     $('#hdnCustomerName').val(customerName);
 }
-
+function PrintProformaInvoice() {
+    debugger;
+    $("#divModelPrintProformaInvoiceBody").load("ProformaInvoice/PrintProformaInvoice?ID=" + $('#ProformaInvoiceForm #ID').val(), function () {
+        $('#lblModelPrintProformaInvoice').text('Print ProformaInvoice');
+        $('#divModelPrintProformaInvoice').modal('show');
+    });
+}
 function SaveSuccessUpdateProformaInvoiceEmailInfo(data, status) {
     try {
         debugger;

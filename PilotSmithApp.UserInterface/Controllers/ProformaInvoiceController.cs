@@ -709,6 +709,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         # endregion GetProformaInvoiceForSelectListOnDemand
 
+        #region Print ProformaInvoice
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
+        public ActionResult PrintProformaInvoice(ProformaInvoiceViewModel proformaInvoiceVM)
+        {
+            bool emailFlag = proformaInvoiceVM.EmailFlag;
+            proformaInvoiceVM = Mapper.Map<ProformaInvoice, ProformaInvoiceViewModel>(_proformaInvoiceBusiness.GetProformaInvoice(proformaInvoiceVM.ID));
+            proformaInvoiceVM.ProformaInvoiceDetailList = Mapper.Map<List<ProformaInvoiceDetail>, List<ProformaInvoiceDetailViewModel>>(_proformaInvoiceBusiness.GetProformaInvoiceDetailListByProformaInvoiceID(proformaInvoiceVM.ID));
+            proformaInvoiceVM.ProformaInvoiceOtherChargeDetailList = Mapper.Map<List<ProformaInvoiceOtherCharge>, List<ProformaInvoiceOtherChargeViewModel>>(_proformaInvoiceBusiness.GetProformaInvoiceOtherChargesDetailListByProformaInvoiceID(proformaInvoiceVM.ID));
+            proformaInvoiceVM.PDFTools = new PDFToolsViewModel();
+            return PartialView("_PrintProformaInvoice", proformaInvoiceVM);
+        }
+        #endregion Print ProformaInvoice
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
@@ -783,6 +796,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Title = "Email";
                     toolboxVM.EmailBtn.Event = "EmailProformaInvoice();";
 
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintProformaInvoice()";
+
                     //toolboxVM.SendForApprovalBtn.Visible = false;
                     //toolboxVM.SendForApprovalBtn.Text = "Send";
                     //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
@@ -828,6 +846,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Disable = true;
                     toolboxVM.EmailBtn.DisableReason = "Document Locked";
                     toolboxVM.EmailBtn.Event = "";
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.DisableReason = "Not Approved";
+                    toolboxVM.PrintBtn.Event = "";
 
                     toolboxVM.TimeLine.Visible = true;
                     toolboxVM.TimeLine.Text = "TimeLn";

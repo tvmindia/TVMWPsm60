@@ -10,7 +10,7 @@ $(document).ready(function () {
     try {
     
         BindOrReloadEnquiryReportTable('Init');
-        $(' #AdvDocumentStatusCode,#AdvReferenceTypeCode,#AdvEnquiryGradeCode,#AdvAttendedByID').select2({
+        $(' #AdvDocumentStatusCode,#AdvReferenceTypeCode,#AdvEnquiryGradeCode,#AdvAttendedByID,#AdvCustomer').select2({
             dropdownParent: $(".divboxASearch")
         });
 
@@ -36,7 +36,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
-                $('.divboxASearch #AdvCustomerID').val('').trigger('change');
+                $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
@@ -46,6 +46,10 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvAmountFrom').val('').trigger('change');
                 $('.divboxASearch #AdvAmountTo').val('').trigger('change');
                 $('.divboxASearch #AdvAttendedByID').val('').trigger('change');
+                $('.divboxASearch #AdvCountryCode').val('').trigger('change');
+                $('.divboxASearch #AdvStateCode').val('').trigger('change');
+                $('.divboxASearch #AdvDistrictCode').val('').trigger('change');
+                $('.divboxASearch #AdvCustomerCategoryCode').val('').trigger('change');
 
                 
                 
@@ -55,7 +59,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvFromDate').val('');
                 $('.divboxASearch #AdvToDate').val('');              
                 $('.divboxASearch #AdvAreaCode').val('');
-                $('.divboxASearch #AdvCustomerID').val('');
+                $('.divboxASearch #AdvCustomer').val('');
                 $('.divboxASearch #AdvBranchCode').val('');
                 $('.divboxASearch #AdvDocumentStatusCode');
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
@@ -65,13 +69,19 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvAmountFrom').val('');
                 $('.divboxASearch #AdvAmountTo').val('');
                 $('.divboxASearch #AdvAttendedByID').val('');
+                $('.divboxASearch #AdvCountryCode').val('');
+                $('.divboxASearch #AdvStateCode').val('');
+                $('.divboxASearch #AdvDistrictCode').val('');
+                $('.divboxASearch #AdvCustomerCategoryCode').val('');
+
+                
                 
                 break;
             case 'Search':
                 if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
-                    ($('.divboxASearch #AdvCustomerID').val() == "") &&
+                    ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "")&&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
                     ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
@@ -80,8 +90,13 @@ function BindOrReloadEnquiryReportTable(action) {
                     ($('.divboxASearch #AdvEnquiryGradeCode').val() == "")&&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "")&&
-                    ($('.divboxASearch #AdvAttendedByID').val() == "")
+                    ($('.divboxASearch #AdvAttendedByID').val() == "")&&
+                    ($('.divboxASearch #AdvCountryCode').val() == "") &&
+                    ($('.divboxASearch #AdvStateCode').val() == "") &&
+                    ($('.divboxASearch #AdvDistrictCode').val() == "")&&
+                    ($('.divboxASearch #AdvCustomerCategoryCode').val() == "")
 
+                    
                     ) {
                     return true;
                 }
@@ -93,7 +108,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 EnquiryReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
                 EnquiryReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
                 EnquiryReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
-                EnquiryReportViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvCustomerID').val();
+                EnquiryReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val() == "" ? null : $('.divboxASearch #AdvCustomer').val();
                 EnquiryReportViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
                 EnquiryReportViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
                 EnquiryReportViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
@@ -104,6 +119,11 @@ function BindOrReloadEnquiryReportTable(action) {
                 EnquiryReportViewModel.AdvAmountFrom = $('.divboxASearch #AdvAmountFrom').val() == "" ? null : $('.divboxASearch #AdvAmountFrom').val();
                 EnquiryReportViewModel.AdvAmountTo = $('.divboxASearch #AdvAmountTo').val() == "" ? null : $('.divboxASearch #AdvAmountTo').val();
                 EnquiryReportViewModel.AdvAttendedByID = $('.divboxASearch #AdvAttendedByID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvAttendedByID').val();
+                EnquiryReportViewModel.AdvCountryCode = $('.divboxASearch #AdvCountryCode').val() == "" ? null : $('.divboxASearch #AdvCountryCode').val();
+                EnquiryReportViewModel.AdvStateCode = $('.divboxASearch #AdvStateCode').val() == "" ? null : $('.divboxASearch #AdvStateCode').val();
+                EnquiryReportViewModel.AdvDistrictCode = $('.divboxASearch #AdvDistrictCode').val() == "" ? null : $('.divboxASearch #AdvDistrictCode').val();
+                EnquiryReportViewModel.AdvCustomerCategoryCode = $('.divboxASearch #AdvCustomerCategoryCode').val() == "" ? null : $('.divboxASearch #AdvCustomerCategoryCode').val();
+
                 $('#AdvanceSearch').val(JSON.stringify(EnquiryReportViewModel));
                 $('#FormExcelExport').submit();
                 return true;
@@ -116,7 +136,7 @@ function BindOrReloadEnquiryReportTable(action) {
         EnquiryReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
         EnquiryReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
         EnquiryReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
-        EnquiryReportViewModel.AdvCustomerID = $('.divboxASearch #AdvCustomerID').val();
+        EnquiryReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val();
         EnquiryReportViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
         EnquiryReportViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
         EnquiryReportViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
@@ -126,6 +146,10 @@ function BindOrReloadEnquiryReportTable(action) {
         EnquiryReportViewModel.AdvEnquiryGradeCode = $('.divboxASearch #AdvEnquiryGradeCode').val();
         EnquiryReportViewModel.AdvReferenceTypeCode = $('.divboxASearch #AdvReferenceTypeCode').val();
         EnquiryReportViewModel.AdvAttendedByID = $('.divboxASearch #AdvAttendedByID').val();
+        EnquiryReportViewModel.AdvCountryCode = $('.divboxASearch #AdvCountryCode').val();
+        EnquiryReportViewModel.AdvStateCode = $('.divboxASearch #AdvStateCode').val();
+        EnquiryReportViewModel.AdvDistrictCode = $('.divboxASearch #AdvDistrictCode').val();
+        EnquiryReportViewModel.AdvCustomerCategoryCode = $('.divboxASearch #AdvCustomerCategoryCode').val();
 
 
 

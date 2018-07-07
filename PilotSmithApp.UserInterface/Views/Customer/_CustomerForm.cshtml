@@ -295,6 +295,10 @@
             $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
                 
             });
+            $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val());
+            $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val(), function () {
+            });
+            $('.divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val());
             $('.divPaymentTermSelectList').load('/PaymentTerm/PaymentTermSelectList?required=' + $('#hdnPaymentTermRequired').val())
             $('.select2').addClass('form-control newinput');
         }

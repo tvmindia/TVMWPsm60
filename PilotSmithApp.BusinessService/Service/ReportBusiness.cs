@@ -51,5 +51,20 @@ namespace PilotSmithApp.BusinessService.Service
         }
         #endregion GetEnquiryFollowupReport
 
+        #region GetEstimateReport
+        public List<EstimateReport> GetEstimateReport(EstimateReport estimateReport)
+        {
+            return _reportRepository.GetEstimateReport(estimateReport);
+        }
+        #endregion GetEstimateReport
+
+
+        #region GetQuotationReport
+        public List<QuotationReport> GetQuotationReport(QuotationReport quotationReport)
+        {
+            return _reportRepository.GetQuotationReport(quotationReport);
+        }
+        #endregion GetQuotationReport
+        
     }
 }

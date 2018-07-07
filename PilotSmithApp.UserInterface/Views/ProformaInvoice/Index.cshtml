@@ -214,6 +214,18 @@
 
     </div>
 </div>
+<div class="modal fade" id="divModelPrintProformaInvoice" tabindex="-1" role="dialog" aria-labelledby="ProformaInvoice" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width:20%;">
+        <div class="clearfix" style="background-color:transparent;">
+            <div class="col-md-12 no-padding" style="background-color:transparent">
+                <div class="no-padding" id="divModelPrintProformaInvoiceBody">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 @using (Html.BeginForm("DownloadExcel", "ExcelExport", FormMethod.Post, new { id = "FormExcelExport" }))
 {
     @Html.Hidden("AdvanceSearch", null, htmlAttributes: new { @class = "control-label" })

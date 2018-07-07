@@ -42,7 +42,7 @@
     <div class="divboxASearch">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">Advance search<button type="button" class="close" onclick="CloseAdvanceSearch()"><span aria-hidden="true">×</span></button></div>
-            <div class="form-group col-md-12">
+            <div class="form-group col-md-12" style="height:260px; overflow: auto;">
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvFromDate, htmlAttributes: new { @class = "control-label" })
@@ -62,10 +62,10 @@
 
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.AdvCustomerID, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.AdvCustomer, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvCustomerID, EmptySelectList, "Select customer", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvCustomer, Model.Customer.CustomerList, "Select customer and contact person", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-right-padding">
@@ -78,13 +78,43 @@
                 </div>
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvCountryCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvCountryCode, EmptySelectList, "Select Country", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvStateCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvStateCode, EmptySelectList, "Select State", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvDistrictCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvDistrictCode, EmptySelectList, "Select District", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvBranchCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         @Html.DropDownListFor(model => model.AdvBranchCode, EmptySelectList, "Select branch", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                <div class="col-md-6 no-right-padding">
+                <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvDocumentStatusCode, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -92,7 +122,7 @@
                         @Html.DropDownListFor(model => model.AdvDocumentStatusCode, Model.DocumentStatus.DocumentStatusSelectList, "Select document status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                <div class="col-md-6 no-left-padding">
+                <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvDocumentOwnerID, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -100,7 +130,7 @@
                         @Html.DropDownListFor(model => model.AdvDocumentOwnerID, EmptySelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                <div class="col-md-6 no-right-padding">
+                <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvReferencePersonCode, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -108,7 +138,7 @@
                         @Html.DropDownListFor(model => model.AdvReferencePersonCode, EmptySelectList, "Select referred by", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                <div class="col-md-6 no-left-padding">
+                <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvReferenceTypeCode, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -116,15 +146,16 @@
                         @Html.DropDownListFor(model => model.AdvReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList , "Select reference type", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                <div class="col-md-6 no-right-padding">
+                <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvEnquiryGradeCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
                         @Html.DropDownListFor(model => model.AdvEnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "Select grade", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
-                </div>
-                <div class="col-md-6 no-left-padding">
+                </div>                
+
+                <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvAttendedByID, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -132,8 +163,7 @@
                         @Html.DropDownListFor(model => model.AdvAttendedByID, Model.Employee.EmployeeSelectList, "Select attended by", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-
-                <div class="col-md-6 no-right-padding">
+                <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvAmountFrom, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -141,7 +171,7 @@
                         @Html.EditorFor(model => model.AdvAmountFrom, new { htmlAttributes = new { @class = "form-control newinput", @style = "width:100 % !important" } })
                     </div>
                 </div>
-                <div class="col-md-6 no-left-padding">
+                <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvAmountTo, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -150,16 +180,28 @@
                     </div>
                 </div>                           
 
-               
-                <div class="col-md-12">&nbsp;</div>
-                <div class="col-md-12 no-left-padding">
+             
+                <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
-                        <button class="btn searchbtn" type="submit" onclick="ApplyFilterThenSearch()" style="width: 60px;"><i class="fa fa-search" style="font-size:18px;"></i></button>
-
+                        @Html.LabelFor(model => model.AdvCustomerCategoryCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvCustomerCategoryCode, EmptySelectList, "Select Customer Category", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
+               
+
+                <div class="col-md-12">&nbsp;</div>
+               
             </div>
-            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID });
+
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <button class="btn searchbtn" type="submit" onclick="ApplyFilterThenSearch()" style="width: 60px;"><i class="fa fa-search" style="font-size:18px;"></i></button>
+
+                </div>
+            </div>
+            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID })
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -172,14 +214,14 @@
                         <th>Enquiry No</th>
                         <th>Date</th>
                         <th>Customer</th>
-                        <th>Cont.Person</th>
-                        <th>Req Spec.</th>
+                        <th>Contact Person</th>
+                        <th>Requirement Spec.</th>
                         <th>Area</th>
                         <th>Branch</th>
-                        <th>Ref.By</th>
-                        <th>Doc Status</th>
-                        <th>Doc Owner</th>
-                        <th>Attend.By</th>
+                        <th>Referred By</th>
+                        <th>Document Status</th>
+                        <th>Document Owner</th>
+                        <th>Attended By</th>
                         <th>Grade</th>
                         <th>Amount</th>               
                        

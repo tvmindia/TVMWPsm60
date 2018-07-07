@@ -199,7 +199,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = customer.TaxRegNo;
                         cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = customer.PANNO;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = customer.GeneralNotes;
-                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = customer.AreaCode;
+                        cmd.Parameters.Add("@CountryCode", SqlDbType.Int).Value = customer.CountryCode;
                         cmd.Parameters.Add("@StateCode", SqlDbType.Int).Value = customer.StateCode;
                         cmd.Parameters.Add("@DistrictCode", SqlDbType.Int).Value = customer.DistrictCode;
                         cmd.Parameters.Add("@AreaCode", SqlDbType.Int).Value = customer.AreaCode;
@@ -502,5 +502,52 @@ namespace PilotSmithApp.RepositoryService.Service
             return customerList;
         }
         #endregion Get Customer SelectList
+
+
+        #region GetCustomerSelectListOnDemand
+        public List<Customer> GetCustomerSelectListOnDemand()
+        {
+            List<Customer> customerList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetCustomerSelectListOnDemand]";
+                        cmd.CommandType = CommandType.StoredProcedure;                       
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                customerList = new List<Customer>();
+                                while (sdr.Read())
+                                {
+                                    Customer customer = new Customer();
+                                    {
+                                        customer.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : customer.ID);
+                                        customer.CustomerSelect = (sdr["Customer"].ToString() != "" ? sdr["Customer"].ToString() : customer.CustomerSelect);
+                                    }
+                                    customerList.Add(customer);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return customerList;
+        }
+        #endregion GetCustomerSelectListOnDemand
+
+
     }
 }

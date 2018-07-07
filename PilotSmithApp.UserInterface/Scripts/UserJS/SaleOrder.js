@@ -979,7 +979,13 @@ function DownloadSaleOrder() {
     var customerName = $("#SaleOrderForm #CustomerID option:selected").text();
     $('#hdnCustomerName').val(customerName);
 }
-
+function PrintSaleOrder() {
+    debugger;
+    $("#divModelPrintSaleOrderBody").load("SaleOrder/PrintSaleOrder?ID=" + $('#SaleOrderForm #ID').val(), function () {
+        $('#lblModelPrintSaleOrder').text('Print SaleOrder');
+        $('#divModelPrintSaleOrder').modal('show');
+    });
+}
 function SaveSuccessUpdateSaleOrderEmailInfo(data, status) {
     try {
         debugger;

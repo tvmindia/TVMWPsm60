@@ -13,6 +13,7 @@ using iTextSharp.tool.xml.pipeline;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using System.Collections.Generic;
+using System.Web;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -25,99 +26,64 @@ namespace PilotSmithApp.UserInterface.Controllers
             //string result= SendPDFDoc("");
             return View();
         }
-        [HttpPost]
-        public byte[] GetPdfAttachment(PDFToolsViewModel pDFTools)
+        public void PrintPDF(PDFToolsViewModel pDFTools)
         {
-            try
-            {
-                string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
-                StringReader reader = new StringReader(htmlBody.ToString());
-                Document pdfDoc = new Document(PageSize.A4, -13f, -4f, 30f, 100f);
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
-                    pdfDoc.Open();
-                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
-                    pdfDoc.Close();
-                    byte[] bytes = memoryStream.ToArray();
-                    memoryStream.Close();
-                    return bytes;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public string PrintPDF(PDFToolsViewModel pDFToolsObj)
-        {
-            //string imageURL = Server.MapPath("~/Content/images/logo.png");
-            //iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
-            ////Resize image depend upon your need
-            //jpg.ScaleToFit(70f, 60f);
-            //jpg.SpacingBefore = 10f;
-            //jpg.SpacingAfter = 1f;
+            string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
+            StringReader reader = new StringReader(htmlBody.ToString());
+            Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
+            PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            Footer footobj = new Footer();
+            footobj.imageURL = pDFTools.IsWithLetterHead? Server.MapPath("~/Content/images/LetterHead.jpg"): Server.MapPath("~/Content/images/LetterHead_Blank.jpg");
+            writer.PageEvent = footobj;
+            pdfDoc.Open();
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
+            pdfDoc.Close();
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.End();
 
-            //jpg.Alignment = Element.ALIGN_LEFT;
-            string sw = pDFToolsObj.Content.Replace("<br>", "<br/>").ToString();
-            StringReader sr = new StringReader(sw.ToString());
-            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 85f, 30f);
+        }
+        public void PrintPDFWithTerms(PDFToolsViewModel pDFTools)
+        {
+            string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
+            StringReader reader = new StringReader(htmlBody.ToString());
+            Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
             byte[] bytes = null;
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
                 Footer footobj = new Footer();
-                footobj.imageURL = Server.MapPath("~/Content/images/logo.png");
-                footobj.Header = XMLWorkerHelper.ParseToElementList(pDFToolsObj.Headcontent, null);
+                footobj.imageURL = pDFTools.IsWithLetterHead ? Server.MapPath("~/Content/images/LetterHead.jpg") : Server.MapPath("~/Content/images/LetterHead_Blank.jpg");
                 writer.PageEvent = footobj;
-                // Our custom Header and Footer is done using Event Handler
-                //TwoColumnHeaderFooter PageEventHandler = new TwoColumnHeaderFooter();
-                //writer.PageEvent = PageEventHandler;
-                //// Define the page header
-                //PageEventHandler.Title = "Column Header";
-                //PageEventHandler.HeaderFont = FontFactory.GetFont(BaseFont.COURIER_BOLD, 10, Font.BOLD);
-                //PageEventHandler.HeaderLeft = "Group";
-                //PageEventHandler.HeaderRight = "1";
                 pdfDoc.Open();
-                //jpg.SetAbsolutePosition(pdfDoc.Left, pdfDoc.Top - 60);
-                //pdfDoc.Add(jpg);
-                //PdfContentByte cb = writer.DirectContent;
-                //cb.MoveTo(pdfDoc.Left, pdfDoc.Top-60 );
-                //cb.LineTo(pdfDoc.Right, pdfDoc.Top-60);
-                //cb.SetLineWidth(1);
-                //cb.SetColorStroke(new CMYKColor(0f, 12f, 0f, 7f));
-                //cb.Stroke();
-                //cb.MoveTo(pdfDoc.Left, pdfDoc.Top+5);
-                //cb.LineTo(pdfDoc.Right, pdfDoc.Top+5);
-                //cb.SetLineWidth(1);
-                //cb.SetColorStroke(new CMYKColor(0f, 12f, 0f, 7f));
-                //cb.Stroke();
-
-                //Paragraph welcomeParagraph = new Paragraph("Hello, World!");
-                // Our custom Header and Footer is done using Event Handler
-
-                //pdfDoc.Add(welcomeParagraph);
-
-                XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
-                //for (int i = 0; i <= 2; i++)
-                //{
-                //    // Define the page header
-                //    PageEventHandler.HeaderRight = i.ToString();
-                //    if (i != 1)
-                //    {
-                //        pdfDoc.NewPage();
-                //    }
-                //}
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
                 pdfDoc.Close();
                 bytes = memoryStream.ToArray();
                 memoryStream.Close();
             }
-            string fname = Path.Combine(Server.MapPath("~/Content/Uploads/"), "Report.pdf");
-            System.IO.File.WriteAllBytes(fname, bytes);
-            //File(bytes, "application/pdf", "Report.pdf").sa
-            //bytes.SaveAs(fname);
-            return JsonConvert.SerializeObject(new { Result = "OK", URL = "../Content/Uploads/Report.pdf" });
-
+            List<PdfReader> readerList = new List<PdfReader>();
+            PdfReader pdfReader = new PdfReader(bytes);
+            readerList.Add(pdfReader);
+            PdfReader pdfReader1 = new PdfReader(pDFTools.IsWithLetterHead ? Server.MapPath("~/Content/images/Terms&Cond.pdf") : Server.MapPath("~/Content/images/Terms&Conditions.pdf"));
+            readerList.Add(pdfReader1);
+            Document document = new Document(PageSize.A4, 0, 0, 0, 0);
+            //Create blank output pdf file and get the stream to write on it.
+            PdfWriter writer1 = PdfWriter.GetInstance(document, Response.OutputStream);
+            document.Open();
+            foreach (PdfReader readerObj in readerList)
+            {
+                for (int i = 1; i <= readerObj.NumberOfPages; i++)
+                {
+                    PdfImportedPage page = writer1.GetImportedPage(readerObj, i);
+                    document.Add(iTextSharp.text.Image.GetInstance(page));
+                }
+            }
+            document.Close();
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.End();
         }
         public partial class Footer : PdfPageEventHelper
 
@@ -233,12 +199,29 @@ namespace PilotSmithApp.UserInterface.Controllers
             //}
         }
         [HttpPost]
-        public FileResult Download(PDFToolsViewModel PDFTools)
+        public void Download(PDFToolsViewModel pDFTools)
         {
-            // Footer footobj = new Footer();
-
-            //jpg.Alignment = Element.ALIGN_LEFT;
-            string htmlBody = PDFTools.Content == null ? "" : PDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
+            string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
+            string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString() + " - " + pDFTools.CustomerName.ToString() + ".pdf");
+            StringReader reader = new StringReader(htmlBody.ToString());
+            Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
+            PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+            Footer footobj = new Footer();
+            footobj.imageURL = pDFTools.IsWithLetterHead ? Server.MapPath("~/Content/images/LetterHead.jpg") : Server.MapPath("~/Content/images/LetterHead_Blank.jpg");
+            writer.PageEvent = footobj;
+            pdfDoc.Open();
+            XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
+            pdfDoc.Close();
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + contentFileName);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.End();
+        }
+        [HttpPost]
+        public void DownloadWithTerms(PDFToolsViewModel pDFTools)
+        {
+            string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
             StringReader reader = new StringReader(htmlBody.ToString());
             Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
             byte[] bytes = null;
@@ -246,60 +229,39 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
                 PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
                 Footer footobj = new Footer();
-                footobj.imageURL = Server.MapPath("~/Content/images/LetterHead.jpg");
+                footobj.imageURL = pDFTools.IsWithLetterHead ? Server.MapPath("~/Content/images/LetterHead.jpg") : Server.MapPath("~/Content/images/LetterHead_Blank.jpg");
                 writer.PageEvent = footobj;
                 pdfDoc.Open();
                 XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
                 pdfDoc.Close();
                 bytes = memoryStream.ToArray();
                 memoryStream.Close();
-
             }
-            string contentFileName = PDFTools.ContentFileName.ToString() == null ? "Report.pdf" : (PDFTools.ContentFileName.ToString() + " - " + PDFTools.CustomerName.ToString() + ".pdf");
-            string filename = Path.Combine(Server.MapPath("~/Content/Uploads/"), contentFileName);
-            if (PDFTools.ContentFileName.ToString() == "Quotation"|| PDFTools.ContentFileName.ToString() == "ProformaInvoice" || PDFTools.ContentFileName.ToString() == "SaleInvoice")
-            {
-                string demo = Path.Combine(Server.MapPath("~/Content/Uploads/"), "Demo"+ contentFileName);
-                System.IO.File.WriteAllBytes(demo, bytes);
-                MergePDFs(filename, demo, Server.MapPath("~/Content/images/Terms&Cond.pdf"));                
-                string contentType = "application/pdf";
-                return File(filename, contentType, contentFileName);
-            }
-            else
-            {                
-                System.IO.File.WriteAllBytes(filename, bytes);
-                string contentType = "application/pdf";
-                return File(filename, contentType, contentFileName);
-            }
-        }
-        private void MergePDFs(string outPutFilePath, params string[] filesPath)
-        {
+            string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString() + " - " + pDFTools.CustomerName.ToString() + ".pdf");
             List<PdfReader> readerList = new List<PdfReader>();
-            foreach (string filePath in filesPath)
-            {
-                PdfReader pdfReader = new PdfReader(filePath);
-                readerList.Add(pdfReader);
-            }
-
-            //Define a new output document and its size, type
+            PdfReader pdfReader = new PdfReader(bytes);
+            readerList.Add(pdfReader);
+            PdfReader pdfReader1 = new PdfReader(pDFTools.IsWithLetterHead ? Server.MapPath("~/Content/images/Terms&Cond.pdf"): Server.MapPath("~/Content/images/Terms&Conditions.pdf"));
+            readerList.Add(pdfReader1);
             Document document = new Document(PageSize.A4, 0, 0, 0, 0);
             //Create blank output pdf file and get the stream to write on it.
-            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(outPutFilePath, FileMode.Create));
+            PdfWriter writer1 = PdfWriter.GetInstance(document, Response.OutputStream);
             document.Open();
-
-            foreach (PdfReader reader in readerList)
+            foreach (PdfReader readerObj in readerList)
             {
-                for (int i = 1; i <= reader.NumberOfPages; i++)
+                for (int i = 1; i <= readerObj.NumberOfPages; i++)
                 {
-                    PdfImportedPage page = writer.GetImportedPage(reader, i);
+                    PdfImportedPage page = writer1.GetImportedPage(readerObj, i);
                     document.Add(iTextSharp.text.Image.GetInstance(page));
                 }
             }
             document.Close();
-           
+            Response.Buffer = true;
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + contentFileName);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.End();
         }
-
-
     }
 
 }

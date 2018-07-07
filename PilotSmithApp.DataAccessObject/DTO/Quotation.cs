@@ -36,6 +36,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         //Additional fields
+        public string Cc { get; set; }
+        public string Bcc { get; set; }
+        public string Subject { get; set; }
         public string OtherChargeDetailXML { get; set; }
         public string MailContant { get; set; }
         public string QuoteDateFormatted { get; set; }

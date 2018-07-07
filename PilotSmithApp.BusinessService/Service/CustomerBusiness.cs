@@ -71,5 +71,21 @@ namespace PilotSmithApp.BusinessService.Service
                                                             }).ToList():new List<SelectListItem>();
                 
         }
+
+      
+
+        public List<SelectListItem> GetCustomerSelectListOnDemand()
+        {
+            List<SelectListItem> selectListItem = null;
+            List<Customer> customerList = _customerRepository.GetCustomerSelectListOnDemand();
+            return selectListItem = customerList != null ? (from customer in customerList
+                                                            select new SelectListItem
+                                                            {
+                                                                Text = customer.CustomerSelect,
+                                                                Value = customer.CustomerSelect,
+                                                                Selected = false
+                                                            }).ToList() : new List<SelectListItem>();
+
+        }
     }
 }

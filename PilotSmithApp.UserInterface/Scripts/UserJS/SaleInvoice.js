@@ -1265,7 +1265,13 @@ function DownloadSaleInvoice() {
     var customerName = $("#SaleInvoiceForm #CustomerID option:selected").text();
     $('#hdnCustomerName').val(customerName);
 }
-
+function PrintSaleInvoice() {
+    debugger;
+    $("#divModelPrintSaleInvoiceBody").load("SaleInvoice/PrintSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val(), function () {
+        $('#lblModelPrintSaleInvoice').text('Print SaleInvoice');
+        $('#divModelPrintSaleInvoice').modal('show');
+    });
+}
 function SaveSuccessUpdateSaleInvoiceEmailInfo(data, status) {
     try {
         var _jsonData = JSON.parse(data)

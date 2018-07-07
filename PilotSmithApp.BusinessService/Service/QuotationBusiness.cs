@@ -14,7 +14,7 @@ using System.Web.Mvc;
 
 namespace PilotSmithApp.BusinessService.Service
 {
-    public class QuotationBusiness:IQuotationBusiness
+    public class QuotationBusiness : IQuotationBusiness
     {
         IQuotationRepository _quotationRepository;
         ICommonBusiness _commonBusiness;
@@ -47,9 +47,9 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 quotation.DetailXML = _commonBusiness.GetXMLfromQuotationObject(quotation.QuotationDetailList, "ProductID,ProductModelID,Qty,Rate,UnitCode");
             }
-            if(quotation.QuotationOtherChargeList.Count>0)
+            if (quotation.QuotationOtherChargeList.Count > 0)
             {
-                quotation.OtherChargeDetailXML= _commonBusiness.GetXMLfromQuotationOtherChargeObject(quotation.QuotationOtherChargeList, "OtherChargeCode,ChargeAmount");
+                quotation.OtherChargeDetailXML = _commonBusiness.GetXMLfromQuotationOtherChargeObject(quotation.QuotationOtherChargeList, "OtherChargeCode,ChargeAmount");
             }
             return _quotationRepository.InsertUpdateQuotation(quotation);
         }
@@ -78,22 +78,39 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 if (!string.IsNullOrEmpty(quotation.EmailSentTo))
                 {
-                        string[] EmailList = quotation.EmailSentTo.Split(',');
-                        string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
-                        MailMessage _mail = new MailMessage();
-                        PDFTools pDFTools = new PDFTools();
-                        string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
-                        _mail.Body = mailBody.Replace("$Customer$",quotation.Customer.ContactPerson).Replace("$Document$","Quotation").Replace("$DocumentNo$",quotation.QuoteNo).Replace("$DocumentDate$",quotation.QuoteDateFormatted).Replace("$Logo$", link);
-                        pDFTools.Content = quotation.MailContant;
-                        _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), quotation.QuoteNo+".pdf"));
-                        
-                        _mail.Subject = "Quotation";
-                        _mail.IsBodyHtml = true;
-                        foreach(string email in EmailList)
+                    string[] BccList=null;
+                    string[] CcList=null;
+                    string[] EmailList = quotation.EmailSentTo.Split(',');
+                    if (quotation.Cc != null)
+                        CcList = quotation.Cc.Split(',');
+                    if(quotation.Bcc != null)
+                        BccList = quotation.Bcc.Split(',');
+                    string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
+                    MailMessage _mail = new MailMessage();
+                    PDFTools pDFTools = new PDFTools();
+                    string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
+                    _mail.Body = mailBody.Replace("$Customer$", quotation.Customer.ContactPerson).Replace("$Document$", "Quotation").Replace("$DocumentNo$", quotation.QuoteNo).Replace("$DocumentDate$", quotation.QuoteDateFormatted).Replace("$Logo$", link);
+                    pDFTools.Content = quotation.MailContant;
+                    pDFTools.ContentFileName = "Quotation";
+                    _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), quotation.QuoteNo + ".pdf"));
+
+                    _mail.Subject = quotation.Subject;
+                    _mail.IsBodyHtml = true;
+                    foreach (string email in EmailList)
+                    {
+                        _mail.To.Add(email);
+                    }
+                    if (quotation.Cc != null)
+                        foreach (string email in CcList)
                         {
-                            _mail.To.Add(email);
-                        }                        
-                        sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
+                        _mail.CC.Add(email);
+                        }
+                    if (quotation.Bcc != null)
+                        foreach (string email in BccList)
+                        {
+                        _mail.Bcc.Add(email);
+                        }
+                    sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
 
 
@@ -109,13 +126,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             List<SelectListItem> selectListItem = null;
             List<Quotation> quotationList = _quotationRepository.GetQuotationForSelectList(quoteID);
-            return selectListItem = quotationList!=null?(from quotation in quotationList
-                                     select new SelectListItem
-                                     {
-                                         Text = quotation.QuoteNo,
-                                         Value = quotation.ID.ToString(),
-                                         Selected = false
-                                     }).ToList():new List<SelectListItem>();
+            return selectListItem = quotationList != null ? (from quotation in quotationList
+                                                             select new SelectListItem
+                                                             {
+                                                                 Text = quotation.QuoteNo,
+                                                                 Value = quotation.ID.ToString(),
+                                                                 Selected = false
+                                                             }).ToList() : new List<SelectListItem>();
         }
         public List<Quotation> GetQuotationForSelectListOnDemand(string searchTerm)
         {

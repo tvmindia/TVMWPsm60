@@ -97,6 +97,7 @@
     <Compile Include="Contract\ISaleOrderBusiness.cs" />
     <Compile Include="Contract\ISalesInvoieBusiness.cs" />
     <Compile Include="Contract\IServiceCallBusiness.cs" />
+    <Compile Include="Contract\IServiceTypeBusiness.cs" />
     <Compile Include="Contract\ISpareBusiness.cs" />
     <Compile Include="Contract\IStateBusiness.cs" />
     <Compile Include="Contract\IPaymentTermBusiness.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Service\SaleOrderBusiness.cs" />
     <Compile Include="Service\SalesInvoieBusiness.cs" />
     <Compile Include="Service\ServiceCallBusiness.cs" />
+    <Compile Include="Service\ServiceTypeBusiness.cs" />
     <Compile Include="Service\SpareBusiness.cs" />
     <Compile Include="Service\StateBusiness.cs" />
     <Compile Include="Service\PaymentTermBusiness.cs" />

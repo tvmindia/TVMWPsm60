@@ -13,5 +13,7 @@ namespace PilotSmithApp.RepositoryService.Contract
        // List<PendingSaleOrderProductionReport> GetPendingSaleOrderProductionReport(PendingSaleOrderProductionReport pendingSaleOrderProductionReport);
         List<EnquiryReport> GetEnquiryReport(EnquiryReport enquiryReport);
         List<EnquiryFollowupReport> GetEnquiryFollowupReport(EnquiryFollowupReport enquiryFollowupReport);
+        List<EstimateReport> GetEstimateReport(EstimateReport estimateReport);
+        List<QuotationReport> GetQuotationReport(QuotationReport quotationReport);
     }
 }

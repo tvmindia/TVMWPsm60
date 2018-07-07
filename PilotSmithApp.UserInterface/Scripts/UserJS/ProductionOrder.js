@@ -837,6 +837,14 @@ function DownloadProductionOrder() {
     var customerName = $("#ProductionOrderForm #CustomerID option:selected").text();
     $('#hdnCustomerName').val(customerName);
 }
+function PrintProductionOrder() {
+    debugger;
+    $("#divModelPrintProductionOrderBody").load("ProductionOrder/PrintProductionOrder?ID=" + $('#ProductionOrderForm #ID').val(), function () {
+        $('#lblModelPrintProductionOrder').text('Print ProductionOrder');
+        $('#divModelPrintProductionOrder').modal('show');
+    });
+}
+
 function SaveSuccessUpdateProductionOrderEmailInfo(data, status) {
     try {
         debugger;

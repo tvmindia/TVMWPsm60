@@ -453,6 +453,19 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_EmailQuotation",quotationVM);
         }
         #endregion Email Quotation
+        #region Print Quotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public ActionResult PrintQuotation(QuotationViewModel quotationVM)
+        {
+            bool emailFlag = quotationVM.EmailFlag;
+            //QuotationViewModel quotationVM = new QuotationViewModel();
+            quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
+            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
+            quotationVM.PDFTools = new PDFToolsViewModel();
+            return PartialView("_PrintQuotation", quotationVM);
+        }
+        #endregion Print Quotation
         #region EmailSent
         [HttpPost, ValidateInput(false)]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
@@ -592,7 +605,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Title = "Approval History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
 
-                   
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.DisableReason = "Not Approved";
+                    toolboxVM.PrintBtn.Event = "";
                     break;
                 case "Draft":
                     toolboxVM.addbtn.Visible = true;
@@ -646,6 +663,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.DisableReason = "Not Approved";
+                    toolboxVM.PrintBtn.Event = "";
                     break;
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
@@ -704,6 +727,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Text = "History";
                     toolboxVM.HistoryBtn.Title = "Approval History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.DisableReason = "Not Approved";
+                    toolboxVM.PrintBtn.Event = "";
                     break;
 
                 case "Approved":
@@ -761,6 +790,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Text = "History";
                     toolboxVM.HistoryBtn.Title = "Approval History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
+
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintQuotation()";
                     break;
                 case "Add":
 
@@ -779,8 +814,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetQuotation();";
 
-                                    
-                   
                     break;
                 case "AddSub":
 

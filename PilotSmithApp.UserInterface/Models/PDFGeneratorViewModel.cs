@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -30,5 +31,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string ContentFileName { get; set; }
         [AllowHtml]
         public string CustomerName { get; set; }
+        [Display(Name ="Print On")]
+        public bool IsWithLetterHead { get; set; } = true;
     }
 }
