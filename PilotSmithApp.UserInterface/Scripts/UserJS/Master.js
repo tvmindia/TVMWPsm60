@@ -311,6 +311,8 @@ function AddProductModelMaster(flag) {
             OnServerCallComplete();
             $('#hdnMasterCall').val(flag);
             $('#lblModelMasterContextLabel').text('Add Product Model')
+            if(flag=="OTR")
+            $('#divModelMasterPopUp #divimageUpload').hide();
             $('#divModelMasterPopUp').modal('show');
         }
         else {
@@ -1154,4 +1156,44 @@ function SaveSuccessSpare(data, status) {
             break;
     }
     $('#divModelMasterPopUp').modal('hide');
+}
+//image upload
+function imageUpload() {
+    debugger;
+    if (window.FormData !== undefined) {
+        debugger;
+        var fileUpload = $("#fileUpload").get(0);
+        var files = fileUpload.files;
+        if (files.length > 0) {
+            // Create FormData object
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            $.ajax({
+                url: '/' + 'ProductModel' + '/UploadImages',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    debugger;
+                    result = JSON.parse(result)
+                    if (result.Result == "OK") {
+                        debugger;
+                        $('#ImageURL').val(result.Record.AttachmentURL);
+                        $('#FormProductModel').submit();
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+        else {
+            $('#FormProductModel').submit();
+        }
+    }
 }
