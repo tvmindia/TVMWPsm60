@@ -227,6 +227,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         GuaranteeYN = null,
                         ServiceStatusCode = null,
                         InstalledDate = null,
+                        SpareID = Guid.Empty,
                         Product = new ProductViewModel()
                         {
                             ID = Guid.Empty,
@@ -240,6 +241,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         },
                         Spare = new SpareViewModel()
                         {
+                            ID = Guid.Empty,
                             Code = string.Empty,
                             Name = string.Empty,
                         },
