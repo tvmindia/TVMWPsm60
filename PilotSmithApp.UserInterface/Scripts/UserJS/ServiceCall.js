@@ -399,7 +399,7 @@ function BindServiceCallDetailList(id) {
                      if (row.Product !== undefined && row.Product !== null && row.Product.Code !== "") {
                          return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + ((row.ProductSpec!==null&&row.ProductSpec!=='')? row.ProductSpec.replace(/"/g, "&quot"):'') + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name;
                      }
-                     if (row.Spare !== undefined && row.Spare !== null && row.Spare.Name !== "") {
+                     if (row.Spare !== undefined && row.Spare !== null && row.Spare.Code !== "") {
                          return '<span>' + row.Spare.Name + '</span>';
                      }
                      else {
@@ -407,9 +407,8 @@ function BindServiceCallDetailList(id) {
                      }
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "True" || data === "true" || data === true) { return "Yes" } else if (data === "False" || data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
-             { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "true" || data === true) { return "Yes" } else if (data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
+             { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "True" || data === "true" || data === true) { return "Yes" } else if (data === "False" || data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "InstalledDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DocumentStatus.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": null, "orderable": false, render: function (data, type, row) { debugger; return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="' + (row.Spare.Code !== "" ? 'EditServiceCallDetailSpare(this)' : 'EditServiceCallDetail(this)') + '" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-"; }, "defaultContent": "<i></i>" },
@@ -418,7 +417,7 @@ function BindServiceCallDetailList(id) {
                  { "targets": [1,4,3,2], "width": "15%" },
                  { "targets": [5], "width": "5%" },
                  { "targets": [0], "width": "35%" },
-                
+
                  { className: "text-left", "targets": [0, 1,2,4] },
                  { className: "text-center", "targets": [5,3] }
              ]
