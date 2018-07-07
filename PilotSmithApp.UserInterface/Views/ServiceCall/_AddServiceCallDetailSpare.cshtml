@@ -43,20 +43,6 @@
                 </div>
             </div>
 
-
-            <div class="col-md-6 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.InstalledDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id = "InstalledDate" } })
-                    @Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })
-                    @*@Html.ValidationMessage("InstalledDateFormatted", "Installed Date Required", new { @class = "text-danger", @style = "display:none;", @id = "msgInstalledDate" })*@
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 no-padding">
-
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "control-label" })
@@ -71,6 +57,7 @@
                 @Html.Hidden("hdnServiceStatusRequired", "")
                 @Html.HiddenFor(model => model.ServiceStatusCode, htmlAttributes: new { @class = "", @id = "hdnServiceStatusCode" })
             </div>
+
         </div>
 
     </div>

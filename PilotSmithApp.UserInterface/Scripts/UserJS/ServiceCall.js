@@ -263,7 +263,7 @@ function EditServiceCallDetail(this_Obj) {
         var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
         $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail", function () {
             debugger;
-            $('#lblModelPopServiceCall').text('Service Call Detail')
+            $('#lblModelPopServiceCall').text('Service Call Detail (Product)')
             $('#FormServiceCallDetail #IsUpdate').val('True');
             $('#FormServiceCallDetail #ID').val(serviceCallDetail.ID);
             $("#FormServiceCallDetail #ProductID").val(serviceCallDetail.ProductID)
@@ -410,7 +410,7 @@ function BindServiceCallDetailList(id) {
              { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "True" || data === "true" || data === true) { return "Yes" } else if (data === "False" || data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "InstalledDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DocumentStatus.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, render: function (data, type, row) { return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="' + (row.Spare.Name !== "" ? 'EditServiceCallDetailSpare(this)' : 'EditServiceCallDetail(this)') + '" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-"; }, "defaultContent": "<i></i>" },
+             { "data": null, "orderable": false, render: function (data, type, row) { debugger; return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="' + (row.Spare.Code !== "" ? 'EditServiceCallDetailSpare(this)' : 'EditServiceCallDetail(this)') + '" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-"; }, "defaultContent": "<i></i>" },
              ],
              columnDefs: [
                  { "targets": [1, 4], "width": "10%" },
@@ -431,7 +431,7 @@ function BindServiceCallDetailList(id) {
 function AddServiceCallDetailList() {
     debugger;
     $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail", function () {
-        $('#lblModelPopServiceCall').text('Service Call Detail')
+        $('#lblModelPopServiceCall').text('Service Call Detail (Product)');
         $('#divModelPopServiceCall').modal('show');
     });
 }
@@ -718,7 +718,7 @@ function AddServiceCallChargeDetailToList() {
                     if ($('#divModelCallChargesPopBody #TaxTypeCode').val() != null) {
                         serviceCallChargeDetailList[0].TaxTypeCode = $('#divModelCallChargesPopBody #TaxTypeCode').val().split('|')[0];
                     }
-                    serviceCallChargeDetailList[0].TaxType.ValueText = $('#divModelServiceCallPopBody #TaxTypeCode').val();
+                    serviceCallChargeDetailList[0].TaxType.ValueText = $('#divModelCallChargesPopBody #TaxTypeCode').val();
                     serviceCallChargeDetailList[0].CGSTPerc = $('#divModelCallChargesPopBody #hdnCGSTPerc').val();
                     serviceCallChargeDetailList[0].SGSTPerc = $('#divModelCallChargesPopBody #hdnSGSTPerc').val();
                     serviceCallChargeDetailList[0].IGSTPerc = $('#divModelCallChargesPopBody #hdnIGSTPerc').val();
@@ -1034,7 +1034,7 @@ function AddServiceCallDetailSpare() {
     debugger;
     _datatablerowindex = -1;
     $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetailSpare", function () {
-        $('#lblModelPopServiceCall').text('Service Call Detail')
+        $('#lblModelPopServiceCall').text('Service Call Detail (Spare)')
         $('#divModelPopServiceCall').modal('show');
     });
 }
@@ -1046,7 +1046,7 @@ function AddServiceCallDetailSpareToList() {
         $("#FormServiceCallDetailSpare").submit(function () { });
 
         if ($('#FormServiceCallDetailSpare #IsUpdate').val() == 'True') {
-            if (($('#SpareID').val() != "") && ($('#InstalledDate').val() != "")) {
+            if ($('#SpareID').val() != "") {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
 
@@ -1081,7 +1081,7 @@ function AddServiceCallDetailSpareToList() {
             }
         }
         else {
-            if (($('#SpareID').val() != "") && ($('#InstalledDate').val() != "")) {
+            if ($('#SpareID').val() != "") {
                 if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
@@ -1157,7 +1157,7 @@ function EditServiceCallDetailSpare(this_Obj) {
         var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
         $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetailSpare", function () {
             debugger;
-            $('#lblModelPopServiceCall').text('Service Call Detail')
+            $('#lblModelPopServiceCall').text('Service Call Detail (Spare)')
             $('#FormServiceCallDetailSpare #IsUpdate').val('True');
             $('#FormServiceCallDetailSpare #ID').val(serviceCallDetail.ID);
             $("#FormServiceCallDetailSpare #SpareID").val(serviceCallDetail.SpareID).trigger('change');
