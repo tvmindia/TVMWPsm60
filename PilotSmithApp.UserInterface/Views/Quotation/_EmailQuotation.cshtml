@@ -37,78 +37,87 @@
 </div>
 @if (!Model.EmailFlag)
 {
-                    <div>
-                        <img style="width:100%;height:180px;" src="~/Content/images/LH_Header.jpg" />
-                    </div>
-                    <div style="padding:0px 30px 0px 30px;">
-                        <div id="divQuotationEmailcontainer">
-                            @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
-                                var tot = "";
-                                PSASysCommon pSASysCommon = new PSASysCommon();}
-                            <table style="width:100%;font-size:12px">
-                                <thead>
-                                    <tr><th colspan="6" style="text-align:center;text-decoration:underline;font-weight:100;font-size:16px;">Quotation</th></tr>
+    <div>
+        <img style="width:100%;height:210px;" src="~/Content/images/LH_Header.jpg" />
+    </div>
+    <div style="padding:0px 30px 0px 30px;">
+        <div id="divQuotationEmailcontainer">
+            @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
+                var tot = "";
+                PSASysCommon pSASysCommon = new PSASysCommon();}
+            <table style="width:100%;font-size:12px">
+                <thead>
+                    <tr><th colspan="6" style="text-align:center;text-decoration:underline;font-weight:100;font-size:16px;">Quotation</th></tr>
 
-                                </thead>
-                                <tbody>
-                                    <tr><td colspan="6">&nbsp;</td></tr>
-                                    <tr><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>To,</b><br /> <span>@Model.Customer.CompanyName <br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
-                                    <tr><td colspan="6">&nbsp;</td></tr>
-                                    <tr><td>Quotation No</td><td colspan="2">: @Model.QuoteNo</td><td>Ref. Quotation No.</td><td colspan="2">: @Model.QuoteRefNo</td></tr>
-                                    <tr><td>Quotation Date</td><td colspan="2">: @Model.QuoteDateFormatted</td><td></td><td></td><td></td></tr>
-                                    <tr><td colspan="6">&nbsp;</td></tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="6">&nbsp;</td></tr>
+                    <tr><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>To,</b><br /> <span>@Model.Customer.CompanyName <br />@Model.MailingAddress<br /></span></td><td colspan="3" style="padding-left:30px;vertical-align:top;"><b>Delivery Address,</b><br /><span>@Model.ShippingAddress</span></td></tr>
+                    <tr><td colspan="6">&nbsp;</td></tr>
+                    <tr><td>Quotation No</td><td colspan="2">: @Model.QuoteNo</td><td>Ref. Quotation No.</td><td colspan="2">: @Model.QuoteRefNo</td></tr>
+                    <tr><td>Quotation Date</td><td colspan="2">: @Model.QuoteDateFormatted</td><td></td><td></td><td></td></tr>
+                    <tr><td colspan="6">&nbsp;</td></tr>
 
-                                    <tr>
-                                        @{ 
-                                            var mailBodyHeader = @Model.MailBodyHeader;
-                                            mailBodyHeader = mailBodyHeader.Replace("\r\n", "<br />");
-                                            <td colspan="6" style="font-size:12px;">@Html.Raw(mailBodyHeader)</td>
-                                         }
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                </tbody>
-                            </table>
-                            <table style="width:100%;padding-top:30px;">
-                                <thead>
-                                    <tr>
-                                        <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
-                                        <th style="width:30%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
-                                        <th style="width:9%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
-                                        <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
-                                        <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
-                                        <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
-                                        <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CGST</th>
-                                        <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">IGST</th>
-                                        <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">AMOUNT</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <tr>
+                        @{
+                            var mailBodyHeader = @Model.MailBodyHeader;
+                            mailBodyHeader = mailBodyHeader.Replace("\r\n", "<br />");
+                            <td colspan="6" style="font-size:12px;">@Html.Raw(mailBodyHeader)</td>
+                        }
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                </tbody>
+            </table>
+            <table style="width:100%;padding-top:30px;">
+                <thead>
+                    <tr>
+                        <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
+                        <th style="width:15%;text-align: left;font-size:12px;border-bottom:dotted 1pt;">     </th>
+                        <th style="width:21%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                        <th style="width:13%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">HSN</th>
+                        <th style="width:10%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
+                        <th style="width:13%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
+                        <th style="width:11%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
+                        <th style="width:13%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">AMOUNT</th>
 
-                                    @if (Model.QuotationDetailList != null)
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model.QuotationDetailList != null)
+                    {
+                        int slno = 1;
+
+                        foreach (var mp in Model.QuotationDetailList)
+                        {
+                            decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
+                            itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
+                            CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
+                            SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
+                            IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
+                            GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+                            itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+
+                            itemgrandTotal = itemtaxableAmount + itemgSTAmount;
+                            <tr style="border-bottom-style:solid;border-bottom-color: #e4dcdc;border-bottom-width:1px;">
+                                <td style="width:4%;text-align: center;padding:5px;font-size:12px;vertical-align:top;">@slno</td>
+                                @{if (@mp.ProductModel.ImageURL != null)
                                     {
-                                        int slno = 1;
+                                        <td style="width:15%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:80px!important; style="height:80px!important;padding:10px;workAround:image"></td>
 
-                                        foreach (var mp in Model.QuotationDetailList)
-                                        {
-                                            decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
-                                            itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                                            CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
-                                            SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
-                                            IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
-                                            GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                                            itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                                            itemgrandTotal = itemtaxableAmount + itemgSTAmount;
-                                            <tr>
-                                                <td style="width:4%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
-                                                <td style="width:30%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
-                                                <td style="width:9%; text-align: left;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
-                                                <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Rate</td>
-                                                <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Discount</td>
-                                                <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@SGSTAmt<br /> <span style="font-size:8px;">(@mp.SGSTPerc %)</span></td>
-                                                <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span></td>
-                                                <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
-                                                <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@itemgrandTotal</td>
-                                            </tr>
+                                    }
+                                    else
+                                    {
+                                        <td style="width:15%;vertical-align:central;padding:5px"></td>
+                                    }
+                                }
+                                <td style="width:21%; text-align: left;padding:5px;font-size:12px;vertical-align:top">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
+                                <td style="width:13%; text-align:left;padding:5px;font-size:12px;vertical-align:top;">@mp.Product.HSNCode</td>
+                                <td style="width:10%; text-align: left;padding:5px;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
+                                <td style="width:13%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@mp.Rate</td>
+                                <td style="width:11%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@mp.Discount</td>
+                                <td style="width:13%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@itemgrandTotal</td>
+                            </tr>
                                             slno = slno + 1;
                                             totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
                                             totalCGST = totalCGST + (decimal)CGSTAmt;
@@ -119,198 +128,200 @@
                                         grandTotal = grossAmt - ((decimal)Model.Discount);
                                         GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
                                     }
-                                    <tr>
-                                        <td colspan="5" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
-                                            @if (Model.QuotationOtherChargeList.Count != 0)
+                    <tr>
+                        <td colspan="5" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
+                            @if (Model.QuotationOtherChargeList.Count != 0)
+                            {
+                                <table id="OtherChargeDetailsTable" style="font-family: arial, sans-serif;width: 90%;padding:8px;" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:7%;text-align: center;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black; ">No.</th>
+                                            <th style="width:36%; text-align: left;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">ITEM</th>
+                                            <th style="width:10%;text-align:left;font-size:12px;border-bottom-style: solid;border-bottom-width:1pt;border-bottom-color:black;">SAC</th>
+                                            <th style="width:17%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">CHARGE</th>
+                                            <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">GST</th>
+                                            <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">AMOUNT</th>
+                                        </tr>
+                                        @if (Model.QuotationOtherChargeList != null)
+                                        {
+                                            int slno = 1;
+
+                                            foreach (var mp in Model.QuotationOtherChargeList)
                                             {
-                                                <table id="OtherChargeDetailsTable" style="font-family: arial, sans-serif;width: 90%;padding:8px;" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width:7%;text-align: center;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black; ">No.</th>
-                                                            <th style="width:46%; text-align: left;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">ITEM</th>
-                                                            <th style="width:17%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">CHARGE</th>
-                                                            <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">GST</th>
-                                                            <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">AMOUNT</th>
-                                                        </tr>
-                                                        @if (Model.QuotationOtherChargeList != null)
-                                                        {
-                                                            int slno = 1;
+                                                decimal GSTAmt = 0, CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, Total = 0;
+                                                CGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
+                                                SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
+                                                IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
+                                                GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+                                                Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount, 2);
+                                                <tr>
 
-                                                            foreach (var mp in Model.QuotationOtherChargeList)
-                                                            {
-                                                                decimal GSTAmt = 0, CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, Total = 0;
-                                                                CGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
-                                                                SGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
-                                                                IGSTAmt = Math.Round((decimal)mp.ChargeAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
-                                                                GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                                                                Total = Math.Round((decimal)GSTAmt + (decimal)mp.ChargeAmount, 2);
-                                                                <tr>
+                                                    <td style="width:7%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
+                                                    <td style="width:36%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.Description</td>
+                                                    <td style="width:10%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.SACCode</td>
+                                                    <td style="width:17%; text-align: right;font-size:12px;vertical-align:top;">@mp.ChargeAmount</td>
+                                                    <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@GSTAmt</td>
+                                                    <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@Total</td>
 
-                                                                    <td style="width:7%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
-                                                                    <td style="width:46%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.Description</td>
-                                                                    <td style="width:17%; text-align: right;font-size:12px;vertical-align:top;">@mp.ChargeAmount</td>
-                                                                    <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@GSTAmt</td>
-                                                                    <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@Total</td>
-
-                                                                </tr>
-                                                                slno = slno + 1;
-                                                                otherChargeAmt = otherChargeAmt + Total;
-                                                            }
-                                                            grossAmt = Math.Round(grossAmt + otherChargeAmt, 2);
-                                                            grandTotal = grossAmt - ((decimal)Model.Discount);
-                                                        }
-
-                                                    </thead>
-                                                </table>
+                                                </tr>
+                                                slno = slno + 1;
+                                                otherChargeAmt = otherChargeAmt + Total;
                                             }
-
-
-                                        <td colspan="4" style="font:12px;border-top:solid .5px;padding-top:8px;">
-                                            <table style="width:100%">
-                                                <tr class="">
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left" valign="top">
-                                                        Total Taxable Amount
-                                                    </td>
-
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px" align="right" valign="top">
-                                                        @totaltaxable
-                                                    </td>
-                                                </tr>
-
-                                                <tr class="">
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;" valign="top">
-                                                        Total GST Amount
-                                                    </td>
-
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px" align="right" valign="top">
-                                                        @GSTTotal
-                                                    </td>
-                                                </tr>
-
-                                                <tr class="">
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px;text-align:left;" valign="top">
-                                                        Total Other Charge
-                                                    </td>
-                                                    @if (otherChargeAmt != 0)
-                                                    {
-                                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px" align="right" valign="top">
-                                                            @otherChargeAmt
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px" align="right" valign="top">
-                                                            0.00
-                                                        </td>
-                                                    }
-                                                </tr>
-                                                <tr class="">
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;font-weight:bold;" valign="top">
-                                                        Gross Amount
-                                                    </td>
-
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;font-weight:bold;" align="right" valign="top">
-                                                        @grossAmt
-                                                    </td>
-                                                </tr>
-                                                <tr class="item">
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px;text-align:left" valign="top">
-                                                        Cash Discount
-                                                    </td>
-
-                                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px" align="right" valign="top">
-                                                        @Model.Discount
-                                                    </td>
-                                                </tr>
-
-                                                <tr class="total">
-                                                    <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:14px;text-align:left;font-weight:bold;" valign="top">Grand Total</td>
-                                                    @{
-                                                        var total = pSASysCommon.ConvertToCurrencyStandards((double)grandTotal, "IND");
-                                                    }
-                                                    <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:14px;text-align:right;font-weight:bold;" align="right" valign="top">
-                                                        @total
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        @{
-                                            tot = pSASysCommon.NumberToWords(double.Parse(grandTotal.ToString()), "IND");
+                                            grossAmt = Math.Round(grossAmt + otherChargeAmt, 2);
+                                            grandTotal = grossAmt - ((decimal)Model.Discount);
                                         }
-                                        <td colspan="10" style="font-size:14px;">
-                                            <span>Amount(In words)</span><br />
-                                            <b><i>Indian Rupees @tot only </i></b>
+
+                                    </thead>
+                                </table>
+                            }
+
+
+                        <td colspan="3" style="font:12px;border-top:solid .5px;padding-top:8px;">
+                            <table style="width:100%">
+                                <tr class="">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left" valign="top">
+                                        Total Taxable Amount
+                                    </td>
+
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px" align="right" valign="top">
+                                        @totaltaxable
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;" valign="top">
+                                        Total GST Amount
+                                    </td>
+
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px" align="right" valign="top">
+                                        @GSTTotal
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px;text-align:left;" valign="top">
+                                        Total Other Charge
+                                    </td>
+                                    @if (otherChargeAmt != 0)
+                                    {
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px" align="right" valign="top">
+                                            @otherChargeAmt
                                         </td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        @{
-                                            var mailbodyFooter = @Model.MailBodyFooter;
-                                            mailbodyFooter = mailbodyFooter.Replace("\r\n", "<br />");
-                                            <td colspan="6" style="font-size:12px;">@Html.Raw(@mailbodyFooter)</td>
-                                        }
-                                    </tr>
-                                </tbody>
+                                    }
+                                    else
+                                    {
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1px" align="right" valign="top">
+                                            0.00
+                                        </td>
+                                    }
+                                </tr>
+                                <tr class="">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;font-weight:bold;" valign="top">
+                                        Gross Amount
+                                    </td>
+
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;font-weight:bold;" align="right" valign="top">
+                                        @grossAmt
+                                    </td>
+                                </tr>
+                                <tr class="item">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px;text-align:left" valign="top">
+                                        Cash Discount
+                                    </td>
+
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px" align="right" valign="top">
+                                        @Model.Discount
+                                    </td>
+                                </tr>
+
+                                <tr class="total">
+                                    <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:14px;text-align:left;font-weight:bold;" valign="top">Grand Total</td>
+                                    @{
+                                        var total = pSASysCommon.ConvertToCurrencyStandards((double)grandTotal, "IND");
+                                    }
+                                    <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:14px;text-align:right;font-weight:bold;" align="right" valign="top">
+                                        @total
+                                    </td>
+                                </tr>
                             </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        @{
+                            tot = pSASysCommon.NumberToWords(double.Parse(grandTotal.ToString()), "IND");
+                        }
+                        <td colspan="10" style="font-size:14px;">
+                            <span>Amount(In words)</span><br />
+                            <b><i>Indian Rupees @tot only </i></b>
+                        </td>
+                    </tr>
+                    <tr><td>&nbsp;</td></tr>
+                    <tr>
+                        @{
+                            var mailbodyFooter = @Model.MailBodyFooter;
+                            mailbodyFooter = mailbodyFooter.Replace("\r\n", "<br />");
+                            <td colspan="6" style="font-size:12px;">@Html.Raw(@mailbodyFooter)</td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
 
 
-                        </div>
-                    </div>
+        </div>
+    </div>
                     <div style="padding-top:20px">
                         <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />
                     </div>
-}
+                            }
 <div class="modal-footer d-flex justify-content-center">
-@{
-    if (!Model.EmailFlag)
+    @{
+        if (!Model.EmailFlag)
         {
             using (Ajax.BeginForm("SendQuotationEmail", "Quotation", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotationEmailSend", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormQuotationEmailSend" }))
+            {
+                @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentEmail" })
+
+                @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.EmailSentTo, htmlAttributes: new { @class = "", @id = "hdnEmailSentTo" })
+                @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
+                @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
+                @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "", @id = "hdnQuoteNo" })
+                @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
+                <a class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;margin-right: 1%;" onclick="EmailQuotation()">Back </a>
+                if (Model.LatestApprovalStatus == 4)
                 {
-                        @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentEmail" })
+                    <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                }
+                else
+                {
+                    <button type="submit" disabled class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                }
 
-                        @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-                        @Html.HiddenFor(model => model.EmailSentTo, htmlAttributes: new { @class = "", @id = "hdnEmailSentTo" })
-                        @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnQuotationEMailContent" })
-                        @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
-                        @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "", @id = "hdnQuoteNo" })
-                        @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
-                        <a class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;margin-right: 1%;" onclick="EmailQuotation()">Back </a>
-                        if (Model.LatestApprovalStatus == 4)
-                        {
-                            <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-                        }
-                        else
-                         {
-                            <button type="submit" disabled class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-                         }
+            }
 
-                  }
-
-                  using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormQuotationEmailDownload" }))
-                  {
-                      @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
-                      @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
-                      @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
-                      @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
-                      @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
-                      if (Model.LatestApprovalStatus == 4)
-                      {
-                         <button type="submit" class="btn btn-openid" style="color:white;text-decoration:none;" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-                       }
-                       else
-                       {
-                           <button type="submit" disabled class="btn btn-openid" style="color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-                       }
-                    }
-                 }
-     }
-   </div>
+            using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormQuotationEmailDownload" }))
+            {
+                @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
+                @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
+                @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
+                @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
+                @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
+                if (Model.LatestApprovalStatus == 4)
+                {
+                    <button type="submit" class="btn btn-openid" style="color:white;text-decoration:none;" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                }
+                else
+                {
+                    <button type="submit" disabled class="btn btn-openid" style="color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                }
+            }
+        }
+    }
+</div>
 <script>
-   $(document).ready(function () {
-    $.validator.unobtrusive.parse('#FormUpdateQuotationEmailInfo');
-    $.validator.unobtrusive.parse("#FormQuotationEmailSend");
-    $.validator.unobtrusive.parse("#FormQuotationEmailDownload");
-});
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse('#FormUpdateQuotationEmailInfo');
+        $.validator.unobtrusive.parse("#FormQuotationEmailSend");
+        $.validator.unobtrusive.parse("#FormQuotationEmailDownload");
+    });
 </script>

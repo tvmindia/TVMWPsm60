@@ -241,13 +241,15 @@ namespace PilotSmithApp.RepositoryService.Service
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
                                             Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : string.Empty),
-                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty)
+                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty),
+                                            HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : String.Empty)
                                         };
                                         quotationDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         quotationDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         quotationDetail.ProductModel = new ProductModel();
                                         quotationDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         quotationDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : quotationDetail.ProductModel.Name);
+                                        quotationDetail.ProductModel.ImageURL = (sdr["ImageURL"].ToString() != "" ? sdr["ImageURL"].ToString() : quotationDetail.ProductModel.ImageURL);
                                         quotationDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : quotationDetail.Qty);
                                         quotationDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : quotationDetail.Rate);
                                         quotationDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : quotationDetail.UnitCode);
@@ -670,6 +672,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationOtherCharge.IGSTPerc = (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : quotationOtherCharge.IGSTPerc);
                                         quotationOtherCharge.OtherCharge = new OtherCharge();
                                         quotationOtherCharge.OtherCharge.Description= (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : quotationOtherCharge.OtherCharge.Description);
+                                        quotationOtherCharge.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : quotationOtherCharge.OtherCharge.SACCode);
                                     }
                                     quotationOtherChargeList.Add(quotationOtherCharge);
                                 }

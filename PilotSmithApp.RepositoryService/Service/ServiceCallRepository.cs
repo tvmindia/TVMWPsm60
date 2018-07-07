@@ -245,7 +245,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
                                             Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : string.Empty),
-                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty)
+                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty),
+                                            HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : String.Empty)
                                         };
                                         serviceCallDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         serviceCallDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
@@ -318,6 +319,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         serviceCallCharge.AddlTaxAmt = (sdr["AddlTaxAmt"].ToString() != "" ? decimal.Parse(sdr["AddlTaxAmt"].ToString()) : serviceCallCharge.AddlTaxAmt);
                                         serviceCallCharge.OtherCharge = new OtherCharge();
                                         serviceCallCharge.OtherCharge.Description = (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : serviceCallCharge.OtherCharge.Description);
+                                        serviceCallCharge.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : serviceCallCharge.OtherCharge.SACCode);
                                     }
                                     serviceCallChargeList.Add(serviceCallCharge);
                                 }

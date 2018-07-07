@@ -179,7 +179,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetEstimate
 
-        #region GetAllEstimateItems
+        #region GetAllEstimateDetailItems
         public List<EstimateDetail> GetEstimateDetailListByEstimateID(Guid estimateID)
         {
             List<EstimateDetail> estimateDetailList = new List<EstimateDetail>();
@@ -221,6 +221,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateDetail.Product = new Product();
                                         estimateDetail.Product.Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : estimateDetail.Product.Code);
                                         estimateDetail.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : estimateDetail.Product.Name);
+                                        estimateDetail.Product.HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : estimateDetail.Product.HSNCode);
                                         estimateDetail.ProductModel = new ProductModel();
                                         estimateDetail.ProductModel.Name = (sdr["ModelName"].ToString() != "" ? sdr["ModelName"].ToString() : estimateDetail.ProductModel.Name);
                                         estimateDetail.Unit = new Unit();
@@ -243,7 +244,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
 
 
-        #endregion GetAllEstimateItems
+        #endregion GetAllEstimateDetailItems
 
         #region InsertUpdateEstimate
         public object InsertUpdateEstimate(Estimate estimate)

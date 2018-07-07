@@ -373,6 +373,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderDetail.Product = new Product();
                                         saleOrderDetail.Product.Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : saleOrderDetail.Product.Code);
                                         saleOrderDetail.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : saleOrderDetail.Product.Name);
+                                        saleOrderDetail.Product.HSNCode= (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : saleOrderDetail.Product.HSNCode);
                                         saleOrderDetail.ProductModel = new ProductModel();
                                         saleOrderDetail.ProductModel.Name = (sdr["ModelName"].ToString() != "" ? sdr["ModelName"].ToString() : saleOrderDetail.ProductModel.Name);
                                         saleOrderDetail.Unit = new Unit();
@@ -749,6 +750,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderOtherCharge.AddlTaxAmt = (sdr["AddlTaxAmt"].ToString() != "" ? decimal.Parse(sdr["AddlTaxAmt"].ToString()) : saleOrderOtherCharge.AddlTaxAmt);
                                         saleOrderOtherCharge.OtherCharge = new OtherCharge();
                                         saleOrderOtherCharge.OtherCharge.Description = (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : saleOrderOtherCharge.OtherCharge.Description);
+                                        saleOrderOtherCharge.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : saleOrderOtherCharge.OtherCharge.SACCode);
                                     }
                                     saleorderOtherChargeList.Add(saleOrderOtherCharge);
                                 }

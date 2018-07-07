@@ -395,18 +395,19 @@ function BindServiceCallDetailList(id) {
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
+             { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
              { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "true" || data === true) { return "Yes" } else if (data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "InstalledDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DocumentStatus.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditServiceCallDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
              ],
              columnDefs: [
-                 { "targets": [1, 4], "width": "10%" },
-                 { "targets": [3, 2], "width": "20%" },
-                 { "targets": [0], "width": "40%" },
-                 { className: "text-right", "targets": [2, 3] },
-                 { className: "text-left", "targets": [0, 1] },
-                 { className: "text-center", "targets": [4] }
+                 { "targets": [1,4,3,2], "width": "15%" },
+                 { "targets": [5], "width": "5%" },
+                 { "targets": [0], "width": "35%" },
+                
+                 { className: "text-left", "targets": [0, 1,2,4] },
+                 { className: "text-center", "targets": [5,3] }
              ]
          });
     $('[data-toggle="popover"]').popover({
@@ -592,6 +593,7 @@ function BindServiceCallChargeDetailList(id) {
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data":"OtherCharge.SACCode","defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
@@ -628,9 +630,9 @@ function BindServiceCallChargeDetailList(id) {
                  //{ "targets": [0], "width": "30%" },
                  //{ "targets": [1, 2], "width": "20%" },
                  //{ "targets": [3], "width": "20%" },
-                 { className: "text-right", "targets": [1, 2, 3, 4] },
-                 { className: "text-left", "targets": [0] },
-                 { className: "text-center", "targets": [5] }
+                 { className: "text-right", "targets": [ 2, 3, 4, 5] },
+                 { className: "text-left", "targets": [0,1] },
+                 { className: "text-center", "targets": [6] }
              ],
              destroy: true,
          });

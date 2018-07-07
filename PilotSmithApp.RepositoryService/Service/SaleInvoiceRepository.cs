@@ -253,7 +253,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
                                             Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : string.Empty),
-                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty)
+                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty),
+                                            HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : String.Empty)
                                         };
                                         saleInvoiceDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         saleInvoiceDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
@@ -264,6 +265,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoiceDetail.OtherCharge = new OtherCharge();
                                         saleInvoiceDetail.OtherCharge.Description= (sdr["OtherChargeCodeDesc"].ToString() != "" ? (sdr["OtherChargeCodeDesc"].ToString()) : saleInvoiceDetail.OtherCharge.Description);
                                         saleInvoiceDetail.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : saleInvoiceDetail.OtherChargeCode);
+                                        saleInvoiceDetail.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : saleInvoiceDetail.OtherCharge.SACCode);
                                         saleInvoiceDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : saleInvoiceDetail.Qty);
                                         saleInvoiceDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : saleInvoiceDetail.Rate);
                                         saleInvoiceDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : saleInvoiceDetail.UnitCode);
@@ -541,6 +543,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoiceOtherCharge.AddlTaxAmt = (sdr["AddlTaxAmt"].ToString() != "" ? decimal.Parse(sdr["AddlTaxAmt"].ToString()) : saleInvoiceOtherCharge.AddlTaxAmt);
                                         saleInvoiceOtherCharge.OtherCharge = new OtherCharge();
                                         saleInvoiceOtherCharge.OtherCharge.Description = (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : saleInvoiceOtherCharge.OtherCharge.Description);
+                                        saleInvoiceOtherCharge.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : saleInvoiceOtherCharge.OtherCharge.SACCode);
                                     }
                                     saleInvoiceOtherChargeList.Add(saleInvoiceOtherCharge);
                                 }

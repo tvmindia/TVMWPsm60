@@ -395,11 +395,22 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation,IsProformaInvoic
                  "data": "Product.Code", render: function (data, type, row) {
                      if (data != "") {
                          debugger;
-                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' +
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' +
                                                  row.Product.Name + '</br>' + row.ProductModel.Name
                      }
                      else {
                          return row.OtherCharge.Description
+                     }
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "Product.HSNCode", render: function (data, type, row) {
+                     debugger;
+                     if ((row.OtherCharge.SACCode == null||row.OtherCharge.SACCode=="") && row.Product.HSNCode !== null) {
+                         return row.Product.HSNCode;
+                     }
+                     else if (row.OtherCharge.SACCode !== null && (row.Product.HSNCode == null || row.Product.HSNCode=="")) {
+                         return row.OtherCharge.SACCode;
                      }
                  }, "defaultContent": "<i></i>"
              },
@@ -468,9 +479,9 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation,IsProformaInvoic
              },
              ],
              columnDefs: [
-                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
-                 { className: "text-left", "targets": [0] },
-                 { className: "text-center", "targets": [1, 8] }
+                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7,8] },
+                 { className: "text-left", "targets": [0,1] },
+                 { className: "text-center", "targets": [2,9] }
              ]
          });
     $('[data-toggle="popover"]').popover({
@@ -895,6 +906,9 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsP
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             {
+                 "data": "OtherCharge.SACCode", "defaultContent": "<i></i>"
+             },
              { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
@@ -948,9 +962,9 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsP
                  //{ "targets": [0], "width": "30%" },
                  //{ "targets": [1, 2, 3, 4], "width": "15%" },
                  //{ "targets": [5], "width": "10%" },
-                 { className: "text-left", "targets": [0] },
-                 { className: "text-right", "targets": [1, 2, 3, 4] },
-                 { className: "text-center", "targets": [5] }
+                 { className: "text-left", "targets": [0,1] },
+                 { className: "text-right", "targets": [ 2, 3, 4, 5] },
+                 { className: "text-center", "targets": [6] }
              ],
              destroy: true,
          });
