@@ -238,6 +238,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                             ID = Guid.Empty,
                             Name = string.Empty
                         },
+                        Spare = new SpareViewModel()
+                        {
+                            Code = string.Empty,
+                            Name = string.Empty,
+                        },
                     };
                     serviceCallItemViewModelList.Add(serviceCallDetailVM);
                 }

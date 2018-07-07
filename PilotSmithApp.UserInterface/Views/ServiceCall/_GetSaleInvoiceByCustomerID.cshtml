@@ -37,7 +37,18 @@
 <script>
     $(document).ready(function () {
         try {
-            $('#lblTotalInvoices').html('Total Invoices for this customer : <span onclick="GetSaleInvoiceByCustomerID();" style="cursor:pointer;text-decoration:underline;color:skyblue">' + @Model.SaleInvoiceList.Count +'</span>');
+            @if(@Model.SaleInvoiceList.Count>0)
+            {
+                <text>
+                    $('#lblTotalInvoices').html('Total Invoices for this customer : <span onclick="GetSaleInvoiceByCustomerID();" style="cursor:pointer;text-decoration:underline;color:skyblue">' + @Model.SaleInvoiceList.Count + '</span>');
+                </text>
+            }
+            else
+            {
+                <text>
+                    $('#lblTotalInvoices').html('Total Invoices for this customer : <span style="cursor:text-decoration:underline;">' + @Model.SaleInvoiceList.Count + '</span>');
+                </text>
+            }
         } catch (ex) {
             console.log(ex);
         }
