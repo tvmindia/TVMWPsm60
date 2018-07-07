@@ -179,7 +179,7 @@ function EditSpareMaster(thisObj) {
             if (statusTxt == "success") {
                 $('#hdnMasterCall').val('MSTR');
                 $('#lblModelMasterContextLabel').text('Edit Spare Information')
-                clearUploadControl();
+                clearPopupUploadControl();
                 PaintImages(SpareVM.ID);
                 $('#divModelMasterPopUp').modal('show');
             }

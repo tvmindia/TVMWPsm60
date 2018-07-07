@@ -22,7 +22,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public Guid hdnFileID { get; set; }
+        public Guid hdnPopupFileID { get; set; }
         public List<SelectListItem> SpareSelectList { get; set; }
     }
 

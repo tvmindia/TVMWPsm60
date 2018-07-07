@@ -140,6 +140,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@Code", SqlDbType.VarChar).Value = spare.Code.Replace("-", "_ ");
                         cmd.Parameters.Add("@Name", SqlDbType.VarChar).Value = spare.Name.Replace("-", "_ ");
                         cmd.Parameters.Add("@HSNCode", SqlDbType.VarChar).Value = spare.HSNCode;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = spare.hdnPopupFileID;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = spare.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = spare.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = spare.PSASysCommon.UpdatedBy;

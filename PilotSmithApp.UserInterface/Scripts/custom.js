@@ -747,7 +747,7 @@ function clearPopupUploadControl() {
     var file = document.getElementById('PopupFileUpload');
     file.value = '';
     $('#hdnFileSizebytes').val(0);
-    $('#hdnFileDupID').val('00000000-0000-0000-0000-000000000000');
+    $('#hdnPopupFileDupID').val('00000000-0000-0000-0000-000000000000');
     $('#ExistingPreview').empty();
 }
 function validateType(ext) {
