@@ -540,5 +540,225 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetQuotationReport
 
+        #region GetPendingSaleOrderReport
+        public List<PendingSaleOrderReport> GetPendingSaleOrderReport(PendingSaleOrderReport pendingSaleOrderReport)
+        {
+
+            List<PendingSaleOrderReport> pendingSaleOrderReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetPendingSaleOrderReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(pendingSaleOrderReport.SearchTerm) ? "" : pendingSaleOrderReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = pendingSaleOrderReport.DataTablePaging.Start;
+                        if (pendingSaleOrderReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = pendingSaleOrderReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = pendingSaleOrderReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = pendingSaleOrderReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = pendingSaleOrderReport.AdvCustomer;
+                        if (pendingSaleOrderReport.AdvPreparedBy != Guid.Empty)
+                            cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = pendingSaleOrderReport.AdvPreparedBy;
+                        cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = pendingSaleOrderReport.AdvReferencePersonCode;
+                        if (pendingSaleOrderReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = pendingSaleOrderReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = pendingSaleOrderReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = pendingSaleOrderReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = pendingSaleOrderReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = pendingSaleOrderReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = pendingSaleOrderReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = pendingSaleOrderReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = pendingSaleOrderReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@ApprovalStatus", SqlDbType.Int).Value = pendingSaleOrderReport.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = pendingSaleOrderReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = pendingSaleOrderReport.AdvAmountTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = pendingSaleOrderReport.AdvReportType;
+                        cmd.Parameters.Add("@ExpDelDateFrom", SqlDbType.DateTime).Value = pendingSaleOrderReport.AdvDelFromDate;
+                        cmd.Parameters.Add("@ExpDelDateTo", SqlDbType.DateTime).Value = pendingSaleOrderReport.AdvDelToDate;
+                        if (pendingSaleOrderReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = pendingSaleOrderReport.AdvProduct;
+                        if (pendingSaleOrderReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = pendingSaleOrderReport.AdvProductModel;
+
+
+
+
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                pendingSaleOrderReportList = new List<PendingSaleOrderReport>();
+                                while (sdr.Read())
+                                {
+                                    PendingSaleOrderReport pendingSaleOrderReportObj = new PendingSaleOrderReport();
+                                    {
+                                        pendingSaleOrderReportObj.SaleOrderNo = (sdr["SaleOrdNo"].ToString() != "" ? (sdr["SaleOrdNo"].ToString()) : pendingSaleOrderReportObj.SaleOrderNo);
+                                        pendingSaleOrderReportObj.SaleOrdNo= (sdr["SaleOrderNo"].ToString() != "" ? (sdr["SaleOrderNo"].ToString()) : pendingSaleOrderReportObj.SaleOrdNo);
+                                        pendingSaleOrderReportObj.SaleOrderDate = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()) : pendingSaleOrderReportObj.SaleOrderDate);
+                                        pendingSaleOrderReportObj.SaleOrderDateFormatted = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()).ToString(_settings.DateFormat) : pendingSaleOrderReportObj.SaleOrderDateFormatted);
+                                        pendingSaleOrderReportObj.Customer = new Customer();
+                                        pendingSaleOrderReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : pendingSaleOrderReportObj.Customer.CompanyName);
+                                        pendingSaleOrderReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : pendingSaleOrderReportObj.Customer.ContactPerson);                                       
+                                        pendingSaleOrderReportObj.Branch = new Branch();
+                                        pendingSaleOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingSaleOrderReportObj.Branch.Description);
+                                        pendingSaleOrderReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : pendingSaleOrderReportObj.Amount);
+                                        pendingSaleOrderReportObj.PSAUser = new PSAUser();
+                                        pendingSaleOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingSaleOrderReportObj.PSAUser.LoginName);                                       
+                                        pendingSaleOrderReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : pendingSaleOrderReportObj.TotalCount);
+                                        pendingSaleOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : pendingSaleOrderReportObj.FilteredCount);
+                                        pendingSaleOrderReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : pendingSaleOrderReportObj.Qty);
+                                        pendingSaleOrderReportObj.PendingQty = (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingSaleOrderReportObj.PendingQty);
+                                        pendingSaleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingSaleOrderReportObj.ProductSpec);
+                                        pendingSaleOrderReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : pendingSaleOrderReportObj.ProductID);
+                                        pendingSaleOrderReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : pendingSaleOrderReportObj.ProductModelID);
+                                        pendingSaleOrderReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : pendingSaleOrderReportObj.UnitCode);
+                                        pendingSaleOrderReportObj.Product = new Product();
+                                        pendingSaleOrderReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : pendingSaleOrderReportObj.Product.Name);
+                                        pendingSaleOrderReportObj.ProductModel = new ProductModel();
+                                        pendingSaleOrderReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : pendingSaleOrderReportObj.ProductModel.Name);
+                                        pendingSaleOrderReportObj.Unit = new Unit();
+                                        pendingSaleOrderReportObj.Unit.Description= (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : pendingSaleOrderReportObj.Unit.Description);
+                                        
+                                    }
+                                    pendingSaleOrderReportList.Add(pendingSaleOrderReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return pendingSaleOrderReportList;
+        }
+        #endregion GetPendingSaleOrderReport
+
+
+        #region GetSaleOrderStandardReport
+        public List<SaleOrderReport> GetSaleOrderStandardReport(SaleOrderReport saleOrderReport)
+        {
+
+            List<SaleOrderReport> saleOrderReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetSaleOrderStandardReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(saleOrderReport.SearchTerm) ? "" : saleOrderReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = saleOrderReport.DataTablePaging.Start;
+                        if (saleOrderReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = saleOrderReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = saleOrderReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = saleOrderReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = saleOrderReport.AdvCustomer;
+                        if (saleOrderReport.AdvPreparedBy != Guid.Empty)
+                            cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = saleOrderReport.AdvPreparedBy;
+                        cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = saleOrderReport.AdvReferencePersonCode;
+                        if (saleOrderReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = saleOrderReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleOrderReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = saleOrderReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = saleOrderReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = saleOrderReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = saleOrderReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = saleOrderReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = saleOrderReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@ApprovalStatus", SqlDbType.Int).Value = saleOrderReport.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = saleOrderReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = saleOrderReport.AdvAmountTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = saleOrderReport.AdvReportType;
+                        cmd.Parameters.Add("@ExpDelDateFrom", SqlDbType.DateTime).Value = saleOrderReport.AdvDelFromDate;
+                        cmd.Parameters.Add("@ExpDelDateTo", SqlDbType.DateTime).Value = saleOrderReport.AdvDelToDate;
+                        if (saleOrderReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = saleOrderReport.AdvProduct;
+                        if (saleOrderReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = saleOrderReport.AdvProductModel;
+                        
+       
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                saleOrderReportList = new List<SaleOrderReport>();
+                                while (sdr.Read())
+                                {
+                                    SaleOrderReport saleOrderReportObj = new SaleOrderReport();
+                                    {
+                                        saleOrderReportObj.SaleOrderNo = (sdr["SaleOrdNo"].ToString() != "" ? (sdr["SaleOrdNo"].ToString()) : saleOrderReportObj.SaleOrderNo);
+                                        saleOrderReportObj.SaleOrdNo = (sdr["SaleOrderNo"].ToString() != "" ? (sdr["SaleOrderNo"].ToString()) : saleOrderReportObj.SaleOrdNo);
+                                        saleOrderReportObj.SaleOrderDate = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()) : saleOrderReportObj.SaleOrderDate);
+                                        saleOrderReportObj.SaleOrderDateFormatted = (sdr["SaleOrderDate"].ToString() != "" ? DateTime.Parse(sdr["SaleOrderDate"].ToString()).ToString(_settings.DateFormat) : saleOrderReportObj.SaleOrderDateFormatted);
+                                        saleOrderReportObj.Customer = new Customer();
+                                        saleOrderReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : saleOrderReportObj.Customer.CompanyName);
+                                        saleOrderReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : saleOrderReportObj.Customer.ContactPerson);
+                                        saleOrderReportObj.Branch = new Branch();
+                                        saleOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : saleOrderReportObj.Branch.Description);
+                                        saleOrderReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : saleOrderReportObj.Amount);
+                                        saleOrderReportObj.PSAUser = new PSAUser();
+                                        saleOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : saleOrderReportObj.PSAUser.LoginName);
+                                        saleOrderReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : saleOrderReportObj.TotalCount);
+                                        saleOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : saleOrderReportObj.FilteredCount);
+                                        saleOrderReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : saleOrderReportObj.Qty);
+                                        saleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : saleOrderReportObj.ProductSpec);
+                                        saleOrderReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : saleOrderReportObj.ProductID);
+                                        saleOrderReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : saleOrderReportObj.ProductModelID);
+                                        saleOrderReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : saleOrderReportObj.UnitCode);
+                                        saleOrderReportObj.Product = new Product();
+                                        saleOrderReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : saleOrderReportObj.Product.Name);
+                                        saleOrderReportObj.ProductModel = new ProductModel();
+                                        saleOrderReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : saleOrderReportObj.ProductModel.Name);
+                                        saleOrderReportObj.Unit = new Unit();
+                                        saleOrderReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : saleOrderReportObj.Unit.Description);
+                                    }
+                                    saleOrderReportList.Add(saleOrderReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return saleOrderReportList;
+        }
+        #endregion GetSaleOrderStandardReport
+
+
+
     }
 }

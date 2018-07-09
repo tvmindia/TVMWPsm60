@@ -41,7 +41,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int? ProductSpecificationCode { get; set; }
         public ProductViewModel Product { get; set; }
         public UnitViewModel Unit { get; set; }
-       // public Guid hdnFileID { get; set; }
+        // public Guid hdnFileID { get; set; }
+        public string ProductModelSelect { get; set; }
+
     }
     public class ProductModelAdvanceSearchViewModel
     {

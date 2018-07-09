@@ -29,9 +29,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         IEnquiryGradeBusiness _enquiryGradeBusiness;
         IEmployeeBusiness _employeeBusiness;
         ICustomerBusiness _customerBusiness;
+        IProductModelBusiness _productModelBusiness;
         public ReportController(IReportBusiness reportBusiness, IProductBusiness productBusiness, IDocumentStatusBusiness documentStatusBusiness, IReferenceTypeBusiness referenceTypeBusiness,
         ICustomerCategoryBusiness customerCategoryBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
-        IEmployeeBusiness employeeBusiness, ICustomerBusiness customerBusiness)
+        IEmployeeBusiness employeeBusiness, ICustomerBusiness customerBusiness, IProductModelBusiness productModelBusiness)
         {
             _reportBusiness = reportBusiness;
             _productBusiness = productBusiness;
@@ -41,9 +42,12 @@ namespace PilotSmithApp.UserInterface.Controllers
             _enquiryGradeBusiness = enquiryGradeBusiness;
             _employeeBusiness = employeeBusiness;
             _customerBusiness = customerBusiness;
+            _productModelBusiness = productModelBusiness;
         }
         #endregion Constructor Injection  
         // GET: Report
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Report", Mode = "R")]
         public ActionResult Index(string searchTerm)
         {
             PSASysReportViewModel PSASysReport = new PSASysReportViewModel();
@@ -258,6 +262,118 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #endregion GetQuotationReport
 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleOrderReport", Mode = "R")]
+        public ActionResult SaleOrderReport()
+        {        
+
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            SaleOrderReportViewModel SaleOrderReportVM = new SaleOrderReportViewModel();
+            SaleOrderReportVM.DocumentStatus = new DocumentStatusViewModel();
+            SaleOrderReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SOD");
+            SaleOrderReportVM.Employee = new EmployeeViewModel();
+            SaleOrderReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            SaleOrderReportVM.Customer = new CustomerViewModel();
+            SaleOrderReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            SaleOrderReportVM.Product = new ProductViewModel();
+            SaleOrderReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            SaleOrderReportVM.ProductModel = new ProductModelViewModel();
+            SaleOrderReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(SaleOrderReportVM);
+        }
+
+
+        #region GetSaleOrderStandardReport
+        public JsonResult GetSaleOrderStandardReport(DataTableAjaxPostModel model, SaleOrderReportViewModel saleOrderReportVM)
+        {
+            //PSASysCommon pSASysCommon = new PSASysCommon();
+            //DateTime dt = pSASysCommon.GetCurrentDateTime();
+            //if (saleOrderReportVM != null)
+            //{
+            //    if (saleOrderReportVM.DateFilter == "3")
+            //    {                    
+            //        saleOrderReportVM.AdvFromDate = dt.AddMonths(-3).ToString("dd-MMM-yyyy");
+            //        saleOrderReportVM.AdvToDate = dt.ToString("dd-MMM-yyyy");
+            //    }
+            //    if (saleOrderReportVM.DateFilter == "6")
+            //    {
+            //        saleOrderReportVM.AdvFromDate = dt.AddMonths(-6).ToString("dd-MMM-yyyy");                  
+            //        saleOrderReportVM.AdvToDate = dt.ToString("dd-MMM-yyyy");
+            //    }
+            //    if (saleOrderReportVM.DateFilter == "12")
+            //    {
+            //        saleOrderReportVM.AdvFromDate = dt.AddMonths(-12).ToString("dd-MMM-yyyy");                 
+            //        saleOrderReportVM.AdvToDate = dt.ToString("dd-MMM-yyyy");
+            //    }
+            //}
+
+            saleOrderReportVM.DataTablePaging.Start = model.start;
+            saleOrderReportVM.DataTablePaging.Length = (saleOrderReportVM.DataTablePaging.Length == 0 ? model.length : saleOrderReportVM.DataTablePaging.Length);
+
+            List<SaleOrderReportViewModel> saleOrderReportList = Mapper.Map<List<SaleOrderReport>, List<SaleOrderReportViewModel>>(_reportBusiness.GetSaleOrderStandardReport(Mapper.Map<SaleOrderReportViewModel, SaleOrderReport>(saleOrderReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = saleOrderReportList.Count != 0 ? saleOrderReportList[0].TotalCount : 0,
+                recordsFiltered = saleOrderReportList.Count != 0 ? saleOrderReportList[0].FilteredCount : 0,
+                data = saleOrderReportList
+            });
+        }
+
+        #endregion GetSaleOrderStandardReport
+
+
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "PendingSaleOrderReport", Mode = "R")]
+        public ActionResult PendingSaleOrderReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            PendingSaleOrderReportViewModel PendingSaleOrderReportVM = new PendingSaleOrderReportViewModel();
+            PendingSaleOrderReportVM.DocumentStatus = new DocumentStatusViewModel();
+            PendingSaleOrderReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SOD");
+            PendingSaleOrderReportVM.Employee = new EmployeeViewModel();
+            PendingSaleOrderReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            PendingSaleOrderReportVM.Customer = new CustomerViewModel();
+            PendingSaleOrderReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            PendingSaleOrderReportVM.Product = new ProductViewModel();
+            PendingSaleOrderReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            PendingSaleOrderReportVM.ProductModel = new ProductModelViewModel();
+            PendingSaleOrderReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(PendingSaleOrderReportVM);
+        }
+
+        #region GetPendingSaleOrderReport
+        public JsonResult GetPendingSaleOrderReport(DataTableAjaxPostModel model, PendingSaleOrderReportViewModel pendingSaleOrderReportVM)
+        {
+            pendingSaleOrderReportVM.DataTablePaging.Start = model.start;
+            pendingSaleOrderReportVM.DataTablePaging.Length = (pendingSaleOrderReportVM.DataTablePaging.Length == 0 ? model.length : pendingSaleOrderReportVM.DataTablePaging.Length);
+
+            List<PendingSaleOrderReportViewModel> pendingSaleOrderReportList = Mapper.Map<List<PendingSaleOrderReport>, List<PendingSaleOrderReportViewModel>>(_reportBusiness.GetPendingSaleOrderReport(Mapper.Map<PendingSaleOrderReportViewModel, PendingSaleOrderReport>(pendingSaleOrderReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = pendingSaleOrderReportList.Count != 0 ? pendingSaleOrderReportList[0].TotalCount : 0,
+                recordsFiltered = pendingSaleOrderReportList.Count != 0 ? pendingSaleOrderReportList[0].FilteredCount : 0,
+                data = pendingSaleOrderReportList
+            });
+        }
+
+        #endregion GetPendingSaleOrderReport
+
+
         public void DownloadExcel(ExcelExportViewModel excelExportVM)
         {
             try
@@ -412,6 +528,91 @@ namespace PilotSmithApp.UserInterface.Controllers
                         quotationreportworkSheet.Column(11).AutoFit();
                         quotationreportworkSheet.Column(12).AutoFit();
                         quotationreportworkSheet.Column(13).AutoFit();
+
+                        break;
+                    case "SaleOrderReport":
+                        fileName = "SaleOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        SaleOrderReportViewModel saleOrderReportVM = new SaleOrderReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        saleOrderReportVM = JsonConvert.DeserializeObject<SaleOrderReportViewModel>(ReadableFormat);
+                        List<SaleOrderReportViewModel> saleOrderReportList = Mapper.Map<List<SaleOrderReport>, List<SaleOrderReportViewModel>>(_reportBusiness.GetSaleOrderStandardReport(Mapper.Map<SaleOrderReportViewModel,SaleOrderReport>(saleOrderReportVM)));                        
+                        var saleorderreportworkSheet = excel.Workbook.Worksheets.Add("SaleOrderReport");
+                        SaleOrderReportViewModel[] saleOrderReportVMListArray = saleOrderReportList.ToArray();
+                        saleorderreportworkSheet.Cells[1, 1].LoadFromCollection(saleOrderReportVMListArray.Select(x => new {
+                            SaleOrderNo=x.SaleOrdNo,
+                            SaleOrderDate=x.SaleOrderDateFormatted,
+                            CompanyName=x.Customer.CompanyName,
+                            ContactPerson=x.Customer.ContactPerson,
+                            ProductName=x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification=x.ProductSpec,
+                            Qty=x.Qty,
+                            Unit=x.Unit.Description,
+                            Amount=x.Amount,
+                            Branch=x.Branch.Description,
+                            DocumentOwner=x.PSAUser.LoginName
+
+                        }), true, TableStyles.Light1);
+                        saleorderreportworkSheet.Column(1).AutoFit();
+                        saleorderreportworkSheet.Column(2).AutoFit();
+                        saleorderreportworkSheet.Column(3).Width = 40;
+                        saleorderreportworkSheet.Column(4).AutoFit();
+                        saleorderreportworkSheet.Column(5).AutoFit();
+                        saleorderreportworkSheet.Column(6).AutoFit();
+                        saleorderreportworkSheet.Column(7).Width = 40;
+                        saleorderreportworkSheet.Column(8).AutoFit();
+                        saleorderreportworkSheet.Column(9).AutoFit();
+                        saleorderreportworkSheet.Column(10).AutoFit();
+                        saleorderreportworkSheet.Column(11).AutoFit();
+                        saleorderreportworkSheet.Column(12).AutoFit();
+
+
+                        saleorderreportworkSheet.Column(2).AutoFit();
+
+
+                        break;
+
+
+                    case "PendingSaleOrderReport":
+                        fileName = "PendingSaleOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        PendingSaleOrderReportViewModel pendingSaleOrderReportVM = new PendingSaleOrderReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        pendingSaleOrderReportVM = JsonConvert.DeserializeObject<PendingSaleOrderReportViewModel>(ReadableFormat);
+                        List<PendingSaleOrderReportViewModel> pendingSaleOrderReportList = Mapper.Map<List<PendingSaleOrderReport>, List<PendingSaleOrderReportViewModel>>(_reportBusiness.GetPendingSaleOrderReport(Mapper.Map<PendingSaleOrderReportViewModel, PendingSaleOrderReport>(pendingSaleOrderReportVM)));
+                        var pendingSaleorderreportworkSheet = excel.Workbook.Worksheets.Add("PendingSaleOrderReport");
+                        PendingSaleOrderReportViewModel[] pendingSaleOrderReportVMListArray = pendingSaleOrderReportList.ToArray();
+                        pendingSaleorderreportworkSheet.Cells[1, 1].LoadFromCollection(pendingSaleOrderReportVMListArray.Select(x => new {
+                            SaleOrderNo = x.SaleOrdNo,
+                            SaleOrderDate = x.SaleOrderDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ProductName = x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification = x.ProductSpec,
+                            Quantity = x.Qty,
+                            PendingQty=x.PendingQty,
+                            Unit = x.Unit.Description,
+                            Amount = x.Amount,
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName
+
+                        }), true, TableStyles.Light1);
+                        pendingSaleorderreportworkSheet.Column(1).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(2).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(3).Width = 40;
+                        pendingSaleorderreportworkSheet.Column(4).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(5).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(6).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(7).Width = 40;
+                        pendingSaleorderreportworkSheet.Column(8).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(9).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(10).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(11).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(12).AutoFit();
+                        pendingSaleorderreportworkSheet.Column(13).AutoFit();
+
 
                         break;
                     default:break;

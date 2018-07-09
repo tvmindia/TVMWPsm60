@@ -337,5 +337,51 @@ namespace PilotSmithApp.RepositoryService.Service
             return productModelList;
         }
         #endregion
+
+
+        #region GetProductModelSelectList
+
+        public List<ProductModel> GetProductModelSelectList()
+        {
+            List<ProductModel> productModelSelectList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProductModelSelectList]";
+                        cmd.CommandType = CommandType.StoredProcedure;                     
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                productModelSelectList = new List<ProductModel>();
+                                while (sdr.Read())
+                                {
+                                    ProductModel productModel = new ProductModel();
+                                    {
+                                        productModel.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productModel.ID);
+                                        productModel.Name = (sdr["Name"].ToString() != "" ? (sdr["Name"].ToString()) : productModel.Name);
+                                    }
+                                    productModelSelectList.Add(productModel);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return productModelSelectList;
+        }
+        #endregion GetProductModelSelectList
     }
 }
