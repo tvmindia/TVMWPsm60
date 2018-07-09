@@ -64,6 +64,10 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
                 ViewBag.EditableEnquiryFollowupID = enquiryFollowupVM.EnquiryFollowupList.Count() > 0 ? enquiryFollowupVM.EnquiryFollowupList[0].ID : Guid.Empty; ;
             }
+            AppUA appUA = Session["AppUA"] as AppUA;
+            if(enquiryFollowupVM.EnquiryFollowupList.Count > 0)
+                foreach(EnquiryFollowupViewModel item in enquiryFollowupVM.EnquiryFollowupList)
+                    item.IsDocLocked = item.DocumentOwners.Contains(appUA.UserName);
             return PartialView("_EnquiryFollowupList", enquiryFollowupVM);
         }
         public ActionResult AddEnquiryFollowup(Guid id, Guid enquiryID,Guid customerID)

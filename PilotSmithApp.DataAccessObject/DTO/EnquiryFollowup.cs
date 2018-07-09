@@ -21,6 +21,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Status { get; set; }
         public string GeneralNotes { get; set; }
         //additional fields
+        public string[] DocumentOwners { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
