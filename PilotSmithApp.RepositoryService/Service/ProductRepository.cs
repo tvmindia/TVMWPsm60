@@ -56,6 +56,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@IntroducedDate", SqlDbType.DateTime).Value = product.IntroducedDateFormatted;
                         cmd.Parameters.Add("@CompanyID", SqlDbType.UniqueIdentifier).Value = product.CompanyID;
                         cmd.Parameters.Add("@HSNCode", SqlDbType.VarChar).Value = product.HSNCode;
+                        cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = product.hdnPopupFileID;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = product.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = product.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = product.PSASysCommon.UpdatedBy;

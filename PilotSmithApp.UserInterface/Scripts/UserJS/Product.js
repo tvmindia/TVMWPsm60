@@ -144,7 +144,7 @@ function EditProductMaster(thisObj) {
             if (statusTxt == "success") {
                 $('#hdnMasterCall').val('MSTR');
                 $('#lblModelMasterContextLabel').text('Edit Product Information')
-                clearUploadControl();
+                clearPopupUploadControl();
                 PaintImages(ProductVM.ID);
                 $('#divModelMasterPopUp').modal('show');
             }

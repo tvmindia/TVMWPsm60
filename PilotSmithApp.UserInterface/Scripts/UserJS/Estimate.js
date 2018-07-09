@@ -367,7 +367,7 @@ function BindEstimateDetailList(id,IsEnquiry) {
                      return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
-            
+            { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
@@ -382,14 +382,12 @@ function BindEstimateDetailList(id,IsEnquiry) {
             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "21%" },
-                 { "targets": [1], "width": "10%" },
-                 { "targets": [2, 3, 7], "width": "10%" },
-                 { "targets": [5,6], "width": "12%" },
-                 { "targets": [4], "width": "15%" },
-                 { className: "text-left", "targets": [0,4] },
-                 { className: "text-right", "targets": [1, 2, 3,5,6] },
-                 { className: "text-center", "targets": [7] }
+                 { "targets": [0], "width": "23%" },              
+                 { "targets": [1, 2, 3, 4, 5, 6, 7], "width": "10%" },
+                 {"targets":[8],"width":"7%"},
+                 { className: "text-left", "targets": [0,1,5] },
+                 { className: "text-right", "targets": [2,4 ,3,6,7] },
+                 { className: "text-center", "targets": [8] }
              ],
              destroy:true
          });

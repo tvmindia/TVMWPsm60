@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
 using PilotSmithApp.BusinessService.Contract;
+using PilotSmithApp.BusinessService.Contracts;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
@@ -8,6 +9,7 @@ using SAMTool.BusinessServices.Contracts;
 using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,11 +24,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         IProductModelBusiness _productModelBusiness;
         IProductBusiness _productBusiness;
         IUserBusiness _userBusiness;
-        public ProductModelController(IProductModelBusiness productModelBusiness,IProductBusiness productBusiness, IUserBusiness userBusiness)
+        IFileUploadBusiness _fileUploadBusiness;
+        public ProductModelController(IProductModelBusiness productModelBusiness,IProductBusiness productBusiness, IUserBusiness userBusiness, IFileUploadBusiness fileUploadBusiness)
         {
             _productModelBusiness = productModelBusiness;  
             _productBusiness = productBusiness;
             _userBusiness = userBusiness;
+            _fileUploadBusiness = fileUploadBusiness;
         }
         #endregion Constructor_Injection
         // GET: ProductModel
@@ -165,6 +169,56 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion DeleteProductModel
+
+        [HttpPost]
+        public string UploadImages()
+        {
+            // Checking no of files injected in Request object  
+            if (Request.Files.Count > 0)
+            {
+                Guid FileID = Guid.NewGuid();
+                FileUpload fileuploadObj = new FileUpload();
+                try
+                {
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        
+                        HttpPostedFileBase file = files[i];
+                        string fname;
+                        // Checking for Internet Explorer  
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                        }
+                        fileuploadObj.AttachmentURL = "Content/images/ProductImage/" + fname;
+                        fileuploadObj.FileName = fname;
+                        fname = Path.Combine(Server.MapPath("~/Content/images/ProductImage/"), fname);
+                        file.SaveAs(fname);
+                    }
+                        //return _fileObj.AttachmentURL;
+                        return JsonConvert.SerializeObject(new { Result = "OK", Record = fileuploadObj, Message = "File Uploaded Successfully!" });
+                       
+
+                }
+                catch (Exception ex)
+                {
+                    //return "";
+                    return JsonConvert.SerializeObject(new { Result = "Error", Message = "Error occurred. Error details: " + ex.Message });
+                }
+            }
+            else
+            {
+                return "";
+                //return Json(new { Result = "Error", Message = "No files selected." });
+            }
+        }
 
         #region ButtonStyling
         [HttpGet]

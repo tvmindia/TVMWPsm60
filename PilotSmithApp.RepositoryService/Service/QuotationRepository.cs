@@ -183,6 +183,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.LatestApprovalStatusDescription= (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : quotation.LatestApprovalStatusDescription);
                                     quotation.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : quotation.IsFinalApproved);
                                     quotation.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? (sdr["EmailSentTo"].ToString()) : quotation.EmailSentTo);
+                                    quotation.Cc = (sdr["Cc"].ToString() != "" ? (sdr["Cc"].ToString()) : quotation.Cc);
+                                    quotation.Bcc = (sdr["Bcc"].ToString() != "" ? (sdr["Bcc"].ToString()) : quotation.Bcc);
+                                    quotation.Subject = (sdr["Subject"].ToString() != "" ? (sdr["Subject"].ToString()) : quotation.Subject);
                                     quotation.TermReferenceNo = (sdr["TermReferenceNo"].ToString() != "" ? (sdr["TermReferenceNo"].ToString()) : quotation.TermReferenceNo);
                                     quotation.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : quotation.Discount);
                                     quotation.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : quotation.GeneralNotes);
@@ -241,13 +244,15 @@ namespace PilotSmithApp.RepositoryService.Service
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
                                             Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : string.Empty),
-                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty)
+                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty),
+                                            HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : String.Empty)
                                         };
                                         quotationDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         quotationDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         quotationDetail.ProductModel = new ProductModel();
                                         quotationDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         quotationDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : quotationDetail.ProductModel.Name);
+                                        quotationDetail.ProductModel.ImageURL = (sdr["ImageURL"].ToString() != "" ? sdr["ImageURL"].ToString() : quotationDetail.ProductModel.ImageURL);
                                         quotationDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : quotationDetail.Qty);
                                         quotationDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : quotationDetail.Rate);
                                         quotationDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : quotationDetail.UnitCode);
@@ -393,6 +398,9 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = quotation.MailBodyFooter;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quotation.EmailSentYN;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = quotation.EmailSentTo;
+                        cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = quotation.Cc;
+                        cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = quotation.Bcc;
+                        cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = quotation.Subject;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quotation.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
@@ -670,6 +678,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationOtherCharge.IGSTPerc = (sdr["IGSTPerc"].ToString() != "" ? decimal.Parse(sdr["IGSTPerc"].ToString()) : quotationOtherCharge.IGSTPerc);
                                         quotationOtherCharge.OtherCharge = new OtherCharge();
                                         quotationOtherCharge.OtherCharge.Description= (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : quotationOtherCharge.OtherCharge.Description);
+                                        quotationOtherCharge.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : quotationOtherCharge.OtherCharge.SACCode);
                                     }
                                     quotationOtherChargeList.Add(quotationOtherCharge);
                                 }

@@ -6,36 +6,38 @@
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-
+    @Html.HiddenFor(model => model.ImageURL, htmlAttributes: new { @class = "" })
 
     <div class="form-group col-md-12 no-padding">
+
         <div class="col-md-12 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
-            </div>
-            <div class="col-md-12">
-                <div class="divProductCategorySelectList">
-                    @Html.Action("ProductSelectList", "Product", new { required = "required" })
-                </div>
-                @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group col-md-12 no-padding">
-        <div class="col-md-12 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label lblrequired" })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group col-md-12 no-padding">
             <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
+                </div>
+                <div class="col-md-12">
+                    <div class="divProductCategorySelectList">
+                        @Html.Action("ProductSelectList", "Product", new { required = "required" })
+                    </div>
+                    @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <div class="col-md-12 no-padding">
+                @*<div class="col-md-6 no-padding">*@
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label lblrequired" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+                @*</div>*@
+            </div>
+            <div class="col-md-12 no-padding">
+                @*<div class="col-md-6 no-padding">*@
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
@@ -50,71 +52,102 @@
                 <!-- This hidden field will keep the information whether the field is disabled or not -->
                 @Html.Hidden("hdnUnitdisabled", false)
                 @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
+                @*</div>*@
             </div>
+            <div class="col-md-12 no-padding">&nbsp;</div>
         </div>
 
-    <div class="form-group col-md-12 no-padding">
+        <div class="form-group col-md-6" id="divimageUpload">
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.ImageURL, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12 " style="padding-bottom:2px;">
+                    <input type="hidden" id="hdnFileSizebytes" value=0 />
+                    @*<input type="file" id="FileUpload1" style="display:none;" />*@
+                    <input id="fileUpload" type="file">
+                    @Html.ValidationMessageFor(model => model.ImageURL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-12" style="padding-right:0px !important;">
+                @*<div class="col-md-12 headSeperator">Preview</div>*@
+                @{ if (!Model.IsUpdate || Model.ImageURL == null)
+                    {
+                        <div id="image-holder" style="width:10%;height:10%;"></div>
+                    }
+                    else
+                    {
+                        <div id="image-holder" style="width:10%;height:10%;">
+                            <img src="@Model.ImageURL" height="150" />
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        
+
         <div class="col-md-12 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.Specification, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.TextAreaFor(model => model.Specification, 4, 0, htmlAttributes: new { @class = "form-control newinput" })
-                @Html.ValidationMessageFor(model => model.Specification, "", new { @class = "text-danger" })
+            <div class="col-md-12 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Specification, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.TextAreaFor(model => model.Specification, 4, 0, htmlAttributes: new { @class = "form-control newinput" })
+                    @Html.ValidationMessageFor(model => model.Specification, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
+
+        <div class="col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.CostPrice, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.CostPrice, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", onkeypress = "return isNumber(event)" } })
+                    @Html.ValidationMessageFor(model => model.CostPrice, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.SellingPrice, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.SellingPrice, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", onkeypress = "return isNumber(event)" } })
+                    @Html.ValidationMessageFor(model => model.SellingPrice, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 no-padding">
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.IntroducedDateFormatted, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.IntroducedDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
+                    @Html.ValidationMessageFor(model => model.IntroducedDateFormatted, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.StockQty, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.StockQty, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.StockQty, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
     </div>
-
-    <div class="form-group col-md-12 no-padding">
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.CostPrice, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.CostPrice, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.CostPrice, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.SellingPrice, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.SellingPrice, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", onkeypress = "return isNumber(event)" } })
-                @Html.ValidationMessageFor(model => model.SellingPrice, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group col-md-12 no-padding">
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.IntroducedDateFormatted, htmlAttributes: new { @class = "control-label" })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.IntroducedDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput" } })
-                @Html.ValidationMessageFor(model => model.IntroducedDateFormatted, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="col-md-6 no-padding">
-            <div class="col-md-12">
-                @Html.LabelFor(model => model.StockQty, htmlAttributes: new { @class = "control-label " })
-            </div>
-            <div class="col-md-12">
-                @Html.EditorFor(model => model.StockQty, new { htmlAttributes = new { @class = "form-control newinput" } })
-                @Html.ValidationMessageFor(model => model.StockQty, "", new { @class = "text-danger" })
-            </div>
-        </div>
-    </div>
-
-    
-        @*<div class="col-md-12 no-padding">
+    @*<div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ImageURL, htmlAttributes: new { @class = "control-label " })
-            </div> 
+            </div>
             <div class="col-md-12 ">
                 <input type="hidden" id="hdnFileSizebytes" value=0 />
                 <input type="file" multiple id="FileUpload1" style="display:none;" onchange="BindFiles()" />
@@ -122,15 +155,15 @@
                 <input type="button" id="btnUpload" value="UPLOAD FILES" class="btn uploadbtn" />
                 <input type="button" id="btnCancel" value="CANCEL" onclick="cancelAll()" class="btn" style="color:#000000;font-weight:500;" />
                 <input id="browse" type="file">
-                @Html.ValidationMessageFor(model => model.ImageURL, "", new { @class = "text-danger" }) 
+                @Html.ValidationMessageFor(model => model.ImageURL, "", new { @class = "text-danger" })
             </div>
         </div>*@
-   
 
-        <div class="modal-footer d-flex justify-content-center">
-            <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-        </div>
-}
+
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-default" type="button" id="btnSaveMaster" onclick="imageUpload()" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                </div>
+                }
 <script>
     $(document).ready(function () {
         $('#divModelMasterPopUp #ProductModelID').val($('#divModelMasterPopUp #hdnProductModelID').val());
@@ -144,8 +177,8 @@
         catch (e) {
             console.log(e.message);
         }
-        $.validator.unobtrusive.parse("#FormProductModel");         
-        try{
+        $.validator.unobtrusive.parse("#FormProductModel");
+        try {
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",//",
                 maxViewMode: 0,
@@ -155,8 +188,53 @@
                 todayHighlight: true
             });
         }
-        catch(e){
+        catch (e) {
             console.log(e.message);
         }
+        try {
+            $("#fileUpload").on('change', function() {
+                debugger;
+                
+                //Get count of selected files
+                var countFiles = $(this)[0].files.length;
+
+                var imgPath = $(this)[0].value;
+                var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                var image_holder = $("#image-holder");
+                image_holder.empty();
+
+                if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                    if (typeof (FileReader) != "undefined") {
+
+                        //loop for each file selected for uploaded.
+                        for (var i = 0; i < countFiles; i++) {
+
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                $("<img />", {
+                                    "src": e.target.result,
+                                    "class": "thumb-image",
+                                    "height": '150px'
+                                }).appendTo(image_holder);
+                            }
+
+                            image_holder.show();
+                            reader.readAsDataURL($(this)[0].files[i]);
+                            //$("#ImageURL").val(imgPath);
+                            
+                        }
+
+                    } else {
+                        alert("This browser does not support FileReader.");
+                    }
+                } else {
+                    alert("Pls select only images");
+                }
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+
     });
 </script>

@@ -462,6 +462,7 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "OtherCharge.Description", "defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
@@ -512,8 +513,8 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                  { "targets": [0], "width": "30%" },
                  { "targets": [1, 2, 3,4], "width": "15%" },
                  { "targets": [5], "width": "10%" },
-                 { className: "text-left", "targets": [0] },
-                 { className: "text-right", "targets": [1, 2, 3,4] },
+                 { className: "text-left", "targets": [0,1] },
+                 { className: "text-right", "targets": [ 2, 3,4] },
                  { className: "text-center", "targets": [5] }
              ],
              destroy: true,
@@ -556,9 +557,10 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      debugger;
-                     return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
+             { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
@@ -627,12 +629,12 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "35%" },
-                 { "targets": [2, 4, 5, 6, 7], "width": "10%" },
-                 { "targets": [1, 3, 8], "width": "5%" },
-                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
-                 { className: "text-left", "targets": [0] },
-                 { className: "text-center", "targets": [1, 8] }
+                 { "targets": [0], "width": "20%" },
+                 { "targets": [3, 5, 2, 4, 8, 6, 7], "width": "10%" },
+                 { "targets": [ 1,9], "width": "5%" },
+                 { className: "text-right", "targets": [2,3, 4, 5, 6, 7, 8] },
+                 { className: "text-left", "targets": [0,1] },
+                 { className: "text-center", "targets": [ 9] }
              ],
              //rowCallback: function (row, data, index) {
              //    debugger;
@@ -977,7 +979,13 @@ function DownloadSaleOrder() {
     var customerName = $("#SaleOrderForm #CustomerID option:selected").text();
     $('#hdnCustomerName').val(customerName);
 }
-
+function PrintSaleOrder() {
+    debugger;
+    $("#divModelPrintSaleOrderBody").load("SaleOrder/PrintSaleOrder?ID=" + $('#SaleOrderForm #ID').val(), function () {
+        $('#lblModelPrintSaleOrder').text('Print SaleOrder');
+        $('#divModelPrintSaleOrder').modal('show');
+    });
+}
 function SaveSuccessUpdateSaleOrderEmailInfo(data, status) {
     try {
         debugger;

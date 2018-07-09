@@ -42,7 +42,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int? LatestApprovalStatus { get; set; }
         [Display(Name = "Final Approval")]
         public bool? IsFinalApproved { get; set; }
-        [Required(ErrorMessage = "Please specify at least one recipient")]
+        //[Required(ErrorMessage = "Please specify at least one recipient")]
         [Display(Name = "Sent To")]
         public string EmailSentTo { get; set; }
         [Display(Name = "Term Ref. No")]
@@ -59,6 +59,10 @@ namespace PilotSmithApp.UserInterface.Models
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional fields
 
+        public string Cc { get; set; }
+        public string Bcc { get; set; }
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
         public string[] DocumentOwners { get; set; }
         public string DocumentOwner { get; set; }
         [Display(Name = "Document Locked")]

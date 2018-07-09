@@ -30,7 +30,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
-        public Guid hdnFileID { get; set; }
+        public Guid hdnPopupFileID { get; set; }
         public ProductCategoryViewModel ProductCategory { get; set; }
         public CompanyViewModel Company { get; set; }
         public ProductModelViewModel ProductModel { get; set; }

@@ -403,7 +403,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
                      return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null? row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
-
+             { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
              {
                  "data": "OrderQty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
@@ -436,12 +436,12 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : '-' },
              ],
              columnDefs: [
-                  { className: "text-left", "targets": [0] },
-                 { className: "text-right", "targets": [1, 2, 3] },
-                 { className: "text-center", "targets": [4] },
+                  { className: "text-left", "targets": [0,1] },
+                 { className: "text-right", "targets": [2, 3,4] },
+                 { className: "text-center", "targets": [5] },
                  { "targets": [0], "width": "30%" },
-                 { "targets": [1,2,3], "width": "20%" },                 
-                 { "targets": [4], "width": "10%" },                                
+                 { "targets": [1,2,3,4], "width": "10%" },                 
+                 { "targets": [5], "width": "10%" },                                
              ],
              destroy: true
          });

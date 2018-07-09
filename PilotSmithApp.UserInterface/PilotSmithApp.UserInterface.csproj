@@ -262,10 +262,13 @@
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
+    <Content Include="Content\images\ProductImage\catphoto.png" />
+    <Content Include="Content\images\ProductImage\chillyclaner.png" />
     <Content Include="Content\images\contact.png" />
     <Content Include="Content\images\contract.png" />
     <Content Include="Content\images\CustPOrd.png" />
     <Content Include="Content\images\datePicker.png" />
+    <Content Include="Content\images\ProductImage\destoner.png" />
     <Content Include="Content\images\document.png" />
     <Content Include="Content\images\email.png" />
     <Content Include="Content\images\enquiry.png" />
@@ -278,6 +281,7 @@
     <Content Include="Content\images\LH_Body.jpg" />
     <Content Include="Content\images\LH_Footer.jpg" />
     <Content Include="Content\images\LH_Header.jpg" />
+    <Content Include="Content\images\logo1New.png" />
     <Content Include="Content\images\mail1.png" />
     <Content Include="Content\images\mailSend.png" />
     <Content Include="Content\images\organisation.png" />
@@ -820,6 +824,7 @@
     <Compile Include="Controllers\SaleOrderController.cs" />
     <Compile Include="Controllers\SAMPanelController.cs" />
     <Compile Include="Controllers\ServiceCallController.cs" />
+    <Compile Include="Controllers\ServiceTypeController.cs" />
     <Compile Include="Controllers\SpareController.cs" />
     <Compile Include="Controllers\StateController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
@@ -886,6 +891,7 @@
     <Compile Include="Models\SaleOrderViewModel.cs" />
     <Compile Include="Models\SalesInvoiceViewModel.cs" />
     <Compile Include="Models\ServiceCallViewModel.cs" />
+    <Compile Include="Models\ServiceTypeViewModel.cs" />
     <Compile Include="Models\SpareViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
@@ -1090,6 +1096,13 @@
     <Content Include="Views\Spare\_SpareSelectList.cshtml" />
     <Content Include="Views\Report\EstimateReport.cshtml" />
     <Content Include="Views\Report\QuotationReport.cshtml" />
+    <Content Include="Views\ServiceType\_ServiceTypeSelectList.cshtml" />
+    <Content Include="Views\ServiceCall\_AddServiceCallDetailSpare.cshtml" />
+    <Content Include="Views\SaleOrder\_PrintSaleOrder.cshtml" />
+    <Content Include="Views\ProformaInvoice\_PrintProformaInvoice.cshtml" />
+    <Content Include="Views\ProductionOrder\_PrintProductionOrder.cshtml" />
+    <Content Include="Views\SaleInvoice\_PrintSaleInvoice.cshtml" />
+    <Content Include="Views\Shared\_PopupFileupload.cshtml" />
     <Content Include="Views\Report\PendingSaleOrderReport.cshtml" />
     <Content Include="Views\Report\SaleOrderReport.cshtml" />
     <None Include="Web.Debug.config">

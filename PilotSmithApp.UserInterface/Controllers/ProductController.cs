@@ -33,9 +33,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion Constructor_Injection
         // GET: Product
         [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
-        public ActionResult Index(string code)
+        public ActionResult Index()
         {
-            ViewBag.SysModuleCode = code;
             ProductAdvanceSearchViewModel productAdvanceSearchViewModelVM = new ProductAdvanceSearchViewModel();
             return View();
         }

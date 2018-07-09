@@ -251,7 +251,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
                                             Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : string.Empty),
-                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty)
+                                            Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty),
+                                            HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : String.Empty)
                                         };
                                         proformaInvoiceDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
                                         proformaInvoiceDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
@@ -262,6 +263,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         proformaInvoiceDetail.OtherCharge = new OtherCharge();
                                         proformaInvoiceDetail.OtherCharge.Description = (sdr["OtherChargeCodeDesc"].ToString() != "" ? (sdr["OtherChargeCodeDesc"].ToString()) : proformaInvoiceDetail.OtherCharge.Description);
                                         proformaInvoiceDetail.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : proformaInvoiceDetail.OtherChargeCode);
+                                        proformaInvoiceDetail.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : proformaInvoiceDetail.OtherCharge.SACCode);
                                         proformaInvoiceDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : proformaInvoiceDetail.Qty);
                                         proformaInvoiceDetail.Rate = (sdr["Rate"].ToString() != "" ? decimal.Parse(sdr["Rate"].ToString()) : proformaInvoiceDetail.Rate);
                                         proformaInvoiceDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : proformaInvoiceDetail.UnitCode);
@@ -541,6 +543,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         proformaInvoiceOtherCharge.AddlTaxAmt = (sdr["AddlTaxAmt"].ToString() != "" ? decimal.Parse(sdr["AddlTaxAmt"].ToString()) : proformaInvoiceOtherCharge.AddlTaxAmt);
                                         proformaInvoiceOtherCharge.OtherCharge = new OtherCharge();
                                         proformaInvoiceOtherCharge.OtherCharge.Description = (sdr["OtherCharge"].ToString() != "" ? sdr["OtherCharge"].ToString() : proformaInvoiceOtherCharge.OtherCharge.Description);
+                                        proformaInvoiceOtherCharge.OtherCharge.SACCode= (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : proformaInvoiceOtherCharge.OtherCharge.SACCode);
                                     }
                                     proformaInvoiceOtherChargeList.Add(proformaInvoiceOtherCharge);
                                 }

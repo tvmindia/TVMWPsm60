@@ -413,6 +413,7 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "OtherCharge.Description", "defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
@@ -445,11 +446,11 @@ function BindQuotationOtherChargesDetailList(id) {
              ],             
              columnDefs: [
                  { "targets": [0], "width": "30%" },
-                 { "targets": [1, 2], "width": "20%" },
-                 { "targets": [3], "width": "20%" },
-                 { className: "text-right", "targets": [1, 2, 3] },
-                 { className: "text-left", "targets": [0] },
-                 { className: "text-center", "targets": [4] }
+                 { "targets": [1, 2,4], "width": "20%" },
+                 { "targets": [3,5], "width": "10%" },
+                 { className: "text-right", "targets": [ 2, 3,4] },
+                 { className: "text-left", "targets": [0,1] },
+                 { className: "text-center", "targets": [5] }
              ],
              destroy: true,
          });
@@ -478,9 +479,16 @@ function BindQuotationDetailList(id, IsEstimated) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      debugger;
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpecHtml!==null?row.ProductSpecHtml.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
+                     if (row.ProductModel.ImageURL!==null)
+                     {
+                         return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + "<div><table><tr><td><img height='80px' src='" + row.ProductModel.ImageURL + "'></td><td>&nbsp;</td><td>" + (row.ProductSpecHtml !== null ? row.ProductSpecHtml.replace(/"/g, "&quot") : "") + '</td></tr></table></div></p>"/>' + row.ProductModel.Name
+                     }
+                     else {
+                         return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpecHtml !== null ? row.ProductSpecHtml.replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
+                     }
                  }, "defaultContent": "<i></i>"
              },
+             { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data + " " + row.Unit.Description
@@ -529,11 +537,12 @@ function BindQuotationDetailList(id, IsEstimated) {
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "30%" },
-                 { "targets": [1,2,3,4, 5, 6, 7], "width": "10%" },
-                 { className: "text-right", "targets": [1,2,3,4, 5, 6] },
-                 { className: "text-left", "targets": [3, 0] },
-                 { className: "text-center", "targets": [7] }
+                 { "targets": [0], "width": "23%" },
+                 { "targets": [1, 2, 3, 4, 5, 6, 7], "width": "10%" },
+                 { "targets": [8], "width": "7%" },
+                 { className: "text-right", "targets": [2,3,4, 5, 6,7] },
+                 { className: "text-left", "targets": [1,4, 0] },
+                 { className: "text-center", "targets": [8] }
              ],
              initComplete: function (settings, json) {
                  $('#QuotationForm #Discount').trigger('change');
@@ -542,7 +551,7 @@ function BindQuotationDetailList(id, IsEstimated) {
          });
     $('[data-toggle="popover"]').popover({
         html: true,
-        'trigger': 'hover'
+        'trigger': 'hover'       
     });
 }
 function GetQuotationDetailListByQuotationID(id, IsEstimated) {
@@ -851,15 +860,31 @@ function PrintQuotation() {
     });
 }
 function SendQuotationEmail() {
-    var bodyContent = $('#divQuotationEmailcontainer').html();
-    //var headerContent = $('#hdnHeadContent').html();
-    $('#hdnContentEmail').val(bodyContent);
-    $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
-    $('#hdnQuoteNo').val($('#QuoteNo').val());
-    $('#hdnContactPerson').val($('#ContactPerson').text());
-    $('#hdnQuoteDate').val($('#QuoteDateFormatted').val());
-    $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
-    
+    debugger;
+    if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
+        var bodyContent = $('#divQuotationEmailcontainer').html();
+        //var headerContent = $('#hdnHeadContent').html();
+        $('#hdnContentEmail').val(bodyContent);
+        $('#hdnQuotationEMailContent').val($('#divQuotationEmailcontainer').html());
+        $('#hdnQuoteNo').val($('#QuoteNo').val());
+        $('#hdnContactPerson').val($('#ContactPerson').text());
+        $('#hdnQuoteDate').val($('#QuoteDateFormatted').val());
+        $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
+        $('#FormQuotationEmailSend').submit();
+    }
+    else {
+        if ($('#EmailSentTo').val() == null)
+        {
+            $('#sentTolbl').css('color', 'red'); 
+            $("#sentTolbl").attr("title", "Please specify at least one recipient");
+            $('#sentTovalidationmsglbl').html('__________________________________');
+            $('#sentTovalidationmsglbl').css('color', 'red');
+            $("#sentTovalidationmsglbl").attr("title", "Please specify at least one recipient");
+        }
+        //if ($('#Subject').val() == null) {
+        //    $('#subjectlbl').css('color', 'red');
+        //}
+    }
 }
 function UpdateQuotationEmailInfo() {
     debugger;
@@ -888,13 +913,13 @@ function SaveSuccessUpdateQuotationEmailInfo(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
-                MasterAlert("success", _result.Message)
+                //MasterAlert("success", _result.Message)
                 $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=False", function () {
                     $('#lblModelEmailQuotation').text('Email Attachment')
                 });
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                //MasterAlert("success", _message)
                 $('#divModelEmailQuotation').modal('hide');
                 break;
             default:

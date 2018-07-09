@@ -54,9 +54,11 @@ namespace PilotSmithApp.UserInterface.Models
         public string PaymentTermCode { get; set; }
         [Display(Name = "Tax Registration Number")]
         [MaxLength(50)]
+        [RegularExpression(@"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$", ErrorMessage ="Entered GSTIN is not valid")]
         public string TaxRegNo { get; set; }
         [Display(Name = "Pan Number")]
         [MaxLength(50)]
+        [RegularExpression(@"[A-Z]{5}\d{4}[A-Z]{1}", ErrorMessage ="Entered PAN number is not valid")]
         public string PANNO { get; set; }
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }

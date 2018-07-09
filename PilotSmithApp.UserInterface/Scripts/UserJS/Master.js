@@ -311,6 +311,8 @@ function AddProductModelMaster(flag) {
             OnServerCallComplete();
             $('#hdnMasterCall').val(flag);
             $('#lblModelMasterContextLabel').text('Add Product Model')
+            if(flag=="OTR")
+            $('#divModelMasterPopUp #divimageUpload').hide();
             $('#divModelMasterPopUp').modal('show');
         }
         else {
@@ -1111,4 +1113,87 @@ function SaveSuccessBank(data, status) {
             break;
     }
     $('#divModelMasterPopUp').modal('hide');
+}
+
+//Add Spare
+function AddSpareMaster(flag) {
+    debugger;
+    OnServerCallBegin();
+    $("#divMasterBody").load("Spare/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Spare')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+
+}
+
+//onsuccess function for formsubmitt
+function SaveSuccessSpare(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadSpareTable('Reset');
+            }
+            else if ($('#hdnMasterCall').val() == "OTR") {
+                $('.divSpareSelectList').load('/Spare/SpareSelectList?required=' + $('#hdnSpareRequired').val());
+            }
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
+//image upload
+function imageUpload() {
+    debugger;
+    if (window.FormData !== undefined) {
+        debugger;
+        var fileUpload = $("#fileUpload").get(0);
+        var files = fileUpload.files;
+        if (files.length > 0) {
+            // Create FormData object
+            var fileData = new FormData();
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+
+            $.ajax({
+                url: '/' + 'ProductModel' + '/UploadImages',
+                type: "POST",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    debugger;
+                    result = JSON.parse(result)
+                    if (result.Result == "OK") {
+                        debugger;
+                        $('#ImageURL').val(result.Record.AttachmentURL);
+                        $('#FormProductModel').submit();
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+        else {
+            $('#FormProductModel').submit();
+        }
+    }
 }

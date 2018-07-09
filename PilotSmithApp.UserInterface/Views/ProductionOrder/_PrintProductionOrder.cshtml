@@ -1,0 +1,137 @@
+﻿@model PilotSmithApp.UserInterface.Models.ProductionOrderViewModel
+@using PilotSmithApp.DataAccessObject.DTO;
+@{
+    List<SelectListItem> IsLetterHeadSelectList = new List<SelectListItem>();
+    IsLetterHeadSelectList.Add(new SelectListItem
+    { Text = "Plain paper", Value = "True", Selected = false });
+    IsLetterHeadSelectList.Add(new SelectListItem
+    { Text = "Letter head", Value = "False", Selected = false });
+}
+<div id="divProductionOrderPrintcontainer" style="display:none;">
+    <table style="width:100%;font-size:12px">
+        <thead>
+            <tr><th colspan="6" style="text-align:center;text-decoration:underline;font-weight:100;font-size:16px">Production Order</th></tr>
+
+        </thead>
+        <tbody>
+            <tr><td colspan="6">&nbsp;</td></tr>
+            <tr><td colspan="3" style="padding-left:30px"><b>From,</b><br /> <span>@Html.Raw(@Model.MailFrom)<br /></span></td><td colspan="3" style="padding-left:30px"><b>Customer Details,</b><br /><span id="contact"></span><span><br />@Model.Customer.CompanyName</span></td></tr>
+            <tr><td colspan="6">&nbsp;</td></tr>
+            <tr><td class="detailSpace">Production Order No</td><td colspan="2">: @Model.ProdOrderNo</td><td></td><td></td></tr>
+            <tr><td>Production Order Date</td><td colspan="2">: @Model.ProdOrderDateFormatted</td><td></td><td></td></tr>
+            <tr><td colspan="6">&nbsp;</td></tr>
+        </tbody>
+    </table>
+    <br />
+    @{ decimal curProductionQty = 0, amount = 0; string totMilestone;}
+    <table id="ItemDetailsTable" style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%; line-height: 14px; text-align: left;" cellspacing="0" width="100%">
+        <thead>
+            <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
+                <th style="width:5%;text-align: center;padding: 8px;font-size:10px; ">No.</th>
+                <th style="width:21%; text-align: left;padding: 8px;font-size:10px;">Product</th>
+                <th style="width:12%; text-align: left;padding: 8px;font-size:10px;">Sale.Ord Qty</th>
+                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">PrevProd Ord.Qty</th>
+                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">CurProductionQty</th>
+                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Produced.Qty</th>
+                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Rate</th>
+                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Amount</th>
+                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Sup/Plant</th>
+                <th style="width:12%; text-align: right;padding: 8px;font-size:10px;">Completed</th>
+            </tr>
+            @if (Model.ProductionOrderDetailList != null)
+            {
+                int slno = 1;
+
+                foreach (var mp in Model.ProductionOrderDetailList)
+                {
+
+                    //curProductionQty = Math.Round((decimal)mp.SaleOrderQty - (decimal)mp.PrevProducedQty);
+                    if (mp.SaleOrderQty != 0)
+                    {
+                        amount = Math.Round((decimal)mp.SaleOrderQty * (decimal)mp.Rate);
+                    }
+                    else
+                    {
+                        amount = Math.Round((decimal)mp.OrderQty * (decimal)mp.Rate);
+                    }
+
+                    totMilestone = "";
+                    if ((mp.MileStone1FcFinishDtFormatted != "") && (mp.MileStone1AcTFinishDtFormatted != ""))
+                    {
+                        totMilestone = "25%";
+                    }
+                    if ((mp.MileStone2FcFinishDtFormatted != "") && (mp.MileStone2AcTFinishDtFormatted != ""))
+                    {
+                        totMilestone = "50%";
+                    }
+                    if ((mp.MileStone3FcFinishDtFormatted != "") && (mp.MileStone3AcTFinishDtFormatted != ""))
+                    {
+                        totMilestone = "75%";
+                    }
+                    if ((mp.MileStone4FcFinishDtFormatted != "") && (mp.MileStone4AcTFinishDtFormatted != ""))
+                    {
+                        totMilestone = "100%";
+                    }
+
+                    <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
+
+                        <td style="width:5%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
+                        <td style="width:21%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                        <td style="width:12%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.SaleOrderQty @mp.Unit.Description</td>
+                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.PrevProducedQty @mp.Unit.Description</td>
+                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.OrderQty @mp.Unit.Description</td>
+                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.ProducedQty @mp.Unit.Description</td>
+                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Rate</td>
+                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@amount</td>
+                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Plant.Description</td>
+                        <td style="width:12%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@totMilestone</td>
+                    </tr>
+                    slno = slno + 1;
+
+                }
+
+            }
+
+        </thead>
+    </table>
+</div>
+<table style="width:100%;margin-top:15%;">
+    <thead>
+        <tr><th colspan="2"></th></tr>
+    </thead>
+    <tbody>
+        <tr><td align="center"><a onclick="PostPrint(1)"><img class="printdoc" src="~/Content/images/LetterHeadSelect.jpg" style="width:80%" /></a></td><td align="center"><a onclick="PostPrint(0)"><img class="printdoc" src="~/Content/images/LetterHeadSelect_Blank.jpg" style="width:80%" /></a></td></tr>
+    </tbody>
+</table>
+@using (Html.BeginForm("PrintPDF", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormPrintProductionOrder", target = "_blank" }))
+{
+    @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentPrint" })
+    @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContentPrint" })
+    @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "ProductionOrder", @id = "hdnContentFileNamePrint" })
+    @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerNamPrint" })
+    @Html.HiddenFor(model => model.PDFTools.IsWithLetterHead, htmlAttributes: new { @id = "hdnPrintFlag" })
+}
+<script>
+    $(document).ready(function () {
+        var bodyContent = $('#divProductionOrderPrintcontainer').html();
+        var headerContent = $('#hdnHeadContentPrint').html();
+        $('#hdnContentPrint').val(bodyContent);
+        $('#hdnHeadContentPrint').val(headerContent);
+        var customerName = $("#ProductionOrderForm #CustomerID option:selected").text();
+        $('#hdnCustomerNamePrint').val(customerName);
+    });
+    function PostPrint(val)
+    {
+        if(val==1)
+        {
+            $('#hdnPrintFlag').val(true);
+            $('#FormPrintProductionOrder').submit();
+        }
+        if(val==0)
+        {
+            $('#hdnPrintFlag').val(false);
+            $('#FormPrintProductionOrder').submit();
+        }
+        $('#divModelPrintProductionOrder').modal('hide');
+    }
+</script>

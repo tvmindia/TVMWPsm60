@@ -5,7 +5,7 @@ var _message = "";
 var _status = "";
 var _result = "";
 $(document).ready(function () {
-    try {     
+    try {
         BindOrReloadProductModelTable('Init');
         $('#tblProductModel tbody').on('dblclick', 'td', function () {
             EditProductModelMaster(this);
@@ -123,7 +123,7 @@ function BindOrReloadProductModelTable(action) {
 }
 
 function ResetProductModelList() {
-    try{
+    try {
         BindOrReloadProductModelTable('Reset');
     }
     catch (e) {
@@ -203,5 +203,5 @@ function DeleteProductModel(id) {
     }
 }
 
-//file upload
+
 

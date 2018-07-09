@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
+using iTextSharp.text.html;
 using System.Net.Mail;
 using System.Net;
 using System;
