@@ -370,7 +370,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = estimateReport.AdvFromDate;
                         cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = estimateReport.AdvToDate;                       
-                            cmd.Parameters.Add("@Customer", SqlDbType.UniqueIdentifier).Value = estimateReport.AdvCustomer;
+                            cmd.Parameters.Add("@Customer", SqlDbType.NVarChar,100).Value = estimateReport.AdvCustomer;
                         if (estimateReport.AdvPreparedBy != Guid.Empty)
                             cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = estimateReport.AdvPreparedBy;
                         if (estimateReport.AdvDocumentOwnerID != Guid.Empty)
@@ -759,6 +759,124 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion GetSaleOrderStandardReport
 
 
+        #region GetProductionOrderStandardReport
 
+        public List<ProductionOrderReport> GetProductionOrderStandardReport(ProductionOrderReport productionOrderReport)
+        {
+
+            List<ProductionOrderReport> productionOrderReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProductionOrderStandardReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(productionOrderReport.SearchTerm) ? "" : productionOrderReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = productionOrderReport.DataTablePaging.Start;
+                        if (productionOrderReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = productionOrderReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = productionOrderReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = productionOrderReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = productionOrderReport.AdvCustomer;                                          
+                        if (productionOrderReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = productionOrderReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionOrderReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = productionOrderReport.AdvAreaCode;
+                       cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = productionOrderReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = productionOrderReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = productionOrderReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = productionOrderReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = productionOrderReport.AdvCustomerCategoryCode;                   
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = productionOrderReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = productionOrderReport.AdvAmountTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = productionOrderReport.AdvReportType;
+                        //cmd.Parameters.Add("@ExpDelDateFrom", SqlDbType.DateTime).Value = productionOrderReport.AdvDelFromDate;
+                        //cmd.Parameters.Add("@ExpDelDateTo", SqlDbType.DateTime).Value = productionOrderReport.AdvDelToDate;
+                        if (productionOrderReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = productionOrderReport.AdvProduct;
+                        if (productionOrderReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = productionOrderReport.AdvProductModel;
+                        cmd.Parameters.Add("@Progress", SqlDbType.Int).Value = productionOrderReport.AdvProgress;
+                        cmd.Parameters.Add("@PlantCode", SqlDbType.Int).Value = productionOrderReport.AdvPlantCode;
+                        cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = productionOrderReport.AdvReferencePersonCode;
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                productionOrderReportList = new List<ProductionOrderReport>();
+                                while (sdr.Read())
+                                {
+                                    ProductionOrderReport productionOrderReportObj = new ProductionOrderReport();
+                                    {
+                                        productionOrderReportObj.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? (sdr["ProdOrderNo"].ToString()) : productionOrderReportObj.ProdOrderNo);
+                                        productionOrderReportObj.ProductionOrderNo = (sdr["ProductionOrdNo"].ToString() != "" ? (sdr["ProductionOrdNo"].ToString()) : productionOrderReportObj.ProductionOrderNo);
+                                        
+                                        productionOrderReportObj.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrderReportObj.ProdOrderDate);
+                                        productionOrderReportObj.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString(_settings.DateFormat) : productionOrderReportObj.ProdOrderDateFormatted);
+                                        productionOrderReportObj.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? (sdr["SaleOrderNo"].ToString()) : productionOrderReportObj.SaleOrderNo);
+                                        productionOrderReportObj.SaleOrdNo = (sdr["SaleOrdNo"].ToString() != "" ? (sdr["SaleOrdNo"].ToString()) : productionOrderReportObj.SaleOrdNo);
+                                        productionOrderReportObj.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : productionOrderReportObj.ExpectedDelvDate);
+                                        productionOrderReportObj.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : productionOrderReportObj.ExpectedDelvDateFormatted);
+                                        productionOrderReportObj.PreparedBy= (sdr["PreparedByName"].ToString() != "" ? sdr["PreparedByName"].ToString() : productionOrderReportObj.PreparedBy);
+
+                                        productionOrderReportObj.Area = new Area();
+                                        productionOrderReportObj.Area.Description = (sdr["AreaName"].ToString() != "" ? sdr["AreaName"].ToString() : productionOrderReportObj.Area.Description);
+                                        productionOrderReportObj.DocumentStatus = new DocumentStatus();
+                                        productionOrderReportObj.DocumentStatus.Description = (sdr["DocumentStatusName"].ToString() != "" ? sdr["DocumentStatusName"].ToString() : productionOrderReportObj.DocumentStatus.Description);
+                                        productionOrderReportObj.Remarks= (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrderReportObj.Remarks);
+                                        productionOrderReportObj.Customer = new Customer();
+                                        productionOrderReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : productionOrderReportObj.Customer.CompanyName);
+                                        productionOrderReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : productionOrderReportObj.Customer.ContactPerson);
+                                        productionOrderReportObj.Branch = new Branch();
+                                        productionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionOrderReportObj.Branch.Description);
+                                        productionOrderReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : productionOrderReportObj.Amount);
+                                        productionOrderReportObj.PSAUser = new PSAUser();
+                                        productionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionOrderReportObj.PSAUser.LoginName);
+                                        productionOrderReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : productionOrderReportObj.TotalCount);
+                                        productionOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionOrderReportObj.FilteredCount);
+                                        productionOrderReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionOrderReportObj.Qty);
+
+                                        productionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionOrderReportObj.ProductSpec);
+                                       
+                                        productionOrderReportObj.Product = new Product();
+                                        productionOrderReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : productionOrderReportObj.Product.Name);
+                                        productionOrderReportObj.ProductModel = new ProductModel();
+                                        productionOrderReportObj.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? sdr["ProductModelName"].ToString() : productionOrderReportObj.ProductModel.Name);
+                                        productionOrderReportObj.Plant = new Plant();
+                                        productionOrderReportObj.Plant.Description= (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : productionOrderReportObj.Plant.Description);
+                                        productionOrderReportObj.ReferencePerson = new ReferencePerson();
+                                        productionOrderReportObj.ReferencePerson.Name= (sdr["ReferredName"].ToString() != "" ? sdr["ReferredName"].ToString() : productionOrderReportObj.ReferencePerson.Name);
+                                    }
+                                    productionOrderReportList.Add(productionOrderReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return productionOrderReportList;
+        }
+
+
+        #endregion GetProductionOrderStandardReport
     }
 }

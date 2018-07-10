@@ -712,6 +712,7 @@
     <Content Include="Scripts\UserJS\Report\EstimateReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderReport.js" />
+    <Content Include="Scripts\UserJS\Report\ProductionOrderStandardReport.js" />
     <Content Include="Scripts\UserJS\Report\QuotationReport.js" />
     <Content Include="Scripts\UserJS\Report\Report.js" />
     <Content Include="Scripts\UserJS\Report\ReportAdvanceSelectList.js" />
@@ -1105,6 +1106,7 @@
     <Content Include="Views\Shared\_PopupFileupload.cshtml" />
     <Content Include="Views\Report\PendingSaleOrderReport.cshtml" />
     <Content Include="Views\Report\SaleOrderReport.cshtml" />
+    <Content Include="Views\Report\ProductionOrderReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

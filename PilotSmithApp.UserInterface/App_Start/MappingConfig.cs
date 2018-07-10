@@ -142,7 +142,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ServiceTypeViewModel, ServiceType>().ReverseMap();
                 config.CreateMap<PendingSaleOrderReportViewModel, PendingSaleOrderReport>().ReverseMap();
                 config.CreateMap<SaleOrderReportViewModel, SaleOrderReport>().ReverseMap();
-
+                config.CreateMap<ProductionOrderReportViewModel, ProductionOrderReport>().ReverseMap();
             });
         }
     }
