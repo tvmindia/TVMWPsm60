@@ -711,9 +711,12 @@
     <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
     <Content Include="Scripts\UserJS\Report\EstimateReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
+    <Content Include="Scripts\UserJS\Report\PendingSaleOrderReport.js" />
+    <Content Include="Scripts\UserJS\Report\ProductionOrderStandardReport.js" />
     <Content Include="Scripts\UserJS\Report\QuotationReport.js" />
     <Content Include="Scripts\UserJS\Report\Report.js" />
     <Content Include="Scripts\UserJS\Report\ReportAdvanceSelectList.js" />
+    <Content Include="Scripts\UserJS\Report\SaleOrderReport.js" />
     <Content Include="Scripts\UserJS\ServiceCall.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\tether.js" />
@@ -1101,6 +1104,9 @@
     <Content Include="Views\ProductionOrder\_PrintProductionOrder.cshtml" />
     <Content Include="Views\SaleInvoice\_PrintSaleInvoice.cshtml" />
     <Content Include="Views\Shared\_PopupFileupload.cshtml" />
+    <Content Include="Views\Report\PendingSaleOrderReport.cshtml" />
+    <Content Include="Views\Report\SaleOrderReport.cshtml" />
+    <Content Include="Views\Report\ProductionOrderReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

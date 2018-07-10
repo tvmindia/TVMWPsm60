@@ -65,6 +65,30 @@ namespace PilotSmithApp.BusinessService.Service
             return _reportRepository.GetQuotationReport(quotationReport);
         }
         #endregion GetQuotationReport
+
+        #region GetPendingSaleOrderReport
+        public List<PendingSaleOrderReport> GetPendingSaleOrderReport(PendingSaleOrderReport pendingSaleOrderReport)
+        {
+            return _reportRepository.GetPendingSaleOrderReport(pendingSaleOrderReport);
+        }
+        #endregion GetPendingSaleOrderReport        
+
+
+
+        #region GetSaleOrderStandardReport
+        public List<SaleOrderReport> GetSaleOrderStandardReport(SaleOrderReport saleOrderReport)
+        {
+            return _reportRepository.GetSaleOrderStandardReport(saleOrderReport);
+        }
+        #endregion GetSaleOrderStandardReport   
+
+        #region  GetProductionOrderStandardReport
+
+        public List<ProductionOrderReport> GetProductionOrderStandardReport(ProductionOrderReport productionOrderReport)
+        {
+            return _reportRepository.GetProductionOrderStandardReport(productionOrderReport);
+        }
+            #endregion GetProductionOrderStandardReport 
         
     }
 }

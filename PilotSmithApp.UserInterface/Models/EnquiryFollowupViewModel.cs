@@ -32,6 +32,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "General Notes")]
         public string GeneralNotes { get; set; }
         //Additional fields
+        public string[] DocumentOwners { get; set; }
         [Display(Name ="Followup Date")]
         [Required(ErrorMessage = "Followup Date is required")]
         public string FollowupDateFormatted { get; set; }

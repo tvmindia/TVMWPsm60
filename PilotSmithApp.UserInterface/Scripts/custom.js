@@ -694,6 +694,24 @@ function PaintImages(ID)
                 var filesize = 0;
                 for (var i = 0; i < ds.Records.length; i++) {
                     var html = "";
+                    if (ds.Records[i].IsDocLocked == false)
+                        html = '<div class="file-preview-thumbnails">'
+                                        + '  <div class="file-preview-frame krajee-default  kv-preview-thumb">'
+                                             + ' <div class="kv-file-content">'
+                                             + '<a href="/FileUpload/DownloadFile?token=' + ds.Records[i].AttachmentURL + '" style="position: absolute;left: 7%;cursor:pointer;z-index: 900;color: #26a026;"><i class="fa fa-download" aria-hidden="true" ></i></a>'
+                                                 + ' <div class="kv-preview-data file-preview-other-frame">'
+                                                     + ' <div class="file-preview-other">'
+                                                        + '  <span class="file-other-icon">' + validateType(ds.Records[i].FileName) + '</span>'
+                                                     + ' </div>'
+                                                  + '</div>'
+                                              + '</div>'
+                                            + '  <div class="file-thumbnail-footer">'
+                                                 + ' <div class="file-footer-caption" title="' + ds.Records[i].FileName + '">' + ds.Records[i].FileName + '<br> <samp>(' + bytesToSize(ds.Records[i].FileSize) + ')</samp></div>'
+
+                                           + '   </div>'
+                                       + '   </div>'
+                                      + '</div>'
+                    else
                     html = '<div class="file-preview-thumbnails">'
                                         + '  <div class="file-preview-frame krajee-default  kv-preview-thumb">'
                                              + ' <div class="kv-file-content">'

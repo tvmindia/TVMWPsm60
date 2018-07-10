@@ -262,4 +262,242 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? AdvAmountTo { get; set; }
     }
 
+    public class PendingSaleOrderReportViewModel
+    {
+        public string SaleOrderNo { get; set; }
+        public DateTime SaleOrderDate { get; set; }
+        public string SaleOrderDateFormatted { get; set; }
+        public Guid? ProductID { get; set; }
+        public Guid? ProductModelID { get; set; }
+        public string ProductSpec { get; set; }
+        public string ProductName { get; set; }
+        public string ProdModel { get; set; }
+        public decimal? Qty { get; set; }
+        public decimal? Amount { get; set; }
+        public int? UnitCode { get; set; }            
+        public UnitViewModel Unit { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Sale Order From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Sale Order To")]
+        public string AdvToDate { get; set; }
+        [Display(Name = "Exp. Delivery Date From")]
+        public string AdvDelFromDate { get; set; }
+        [Display(Name = "Exp. Delivery Date To")]
+        public string AdvDelToDate { get; set; }
+        [Display(Name = "Customer")]
+        public string AdvCustomer { get; set; }
+        [Display(Name = "Prepared By")]
+        public Guid AdvPreparedBy { get; set; }
+        [Display(Name = "Referred By")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        [Display(Name = "Amount <=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount >=")]
+        public decimal? AdvAmountTo { get; set; }
+        [Display(Name = "District")]
+        public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? AdvCountryCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        [Display(Name = "Customer Category")]
+        public int? AdvCustomerCategoryCode { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        [Display(Name = "Product")]
+        public Guid AdvProduct { get; set; }
+        public ProductViewModel Product { get; set; }        
+        [Display(Name = "Product Model")]
+        public Guid AdvProductModel { get; set; }
+        public ProductModelViewModel ProductModel { get; set; }
+        
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }       
+        public int? AdvReportType { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        public List<PendingSaleOrderReportViewModel> PendingSaleOrderReportList { get; set; }
+        public string SaleOrdNo { get; set; }
+        public decimal? PendingQty { get; set; }
+        public string DateFilter { get; set; }
+        public int? ReportType { get; set; }
+
+    }
+    public class SaleOrderReportViewModel
+    {
+        public string SaleOrderNo { get; set; }
+        public DateTime SaleOrderDate { get; set; }
+        public string SaleOrderDateFormatted { get; set; }
+        public Guid? ProductID { get; set; }
+        public Guid? ProductModelID { get; set; }
+        public string ProductSpec { get; set; }
+        public string ProductName { get; set; }
+        public string ProdModel { get; set; }
+        public decimal? Qty { get; set; }
+        public decimal? Amount { get; set; }
+        public int? UnitCode { get; set; }
+        public ProductModelViewModel ProductModel { get; set; }
+        public UnitViewModel Unit { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Sale Order From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Sale Order To")]
+        public string AdvToDate { get; set; }
+        [Display(Name = "Exp. Delivery Date From")]
+        public string AdvDelFromDate { get; set; }
+        [Display(Name = "Exp. Delivery Date To")]
+        public string AdvDelToDate { get; set; }
+        [Display(Name = "Customer")]
+        public string AdvCustomer { get; set; }
+        [Display(Name = "Prepared By")]
+        public Guid AdvPreparedBy { get; set; }
+        [Display(Name = "Referred By")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        [Display(Name = "Amount <=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount >=")]
+        public decimal? AdvAmountTo { get; set; }
+        [Display(Name = "District")]
+        public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? AdvCountryCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        [Display(Name = "Customer Category")]
+        public int? AdvCustomerCategoryCode { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }        
+        public ProductViewModel Product { get; set; }
+        [Display(Name = "Product")]
+        public string AdvProduct { get; set; }
+        [Display(Name = "Product Model")]
+        public string AdvProductModel { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
+        [Display(Name = "Report Type")]
+        public int? AdvReportType { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        public List<SaleOrderReportViewModel> SaleOrderReportList { get; set; }
+        public string SaleOrdNo { get; set; }        
+        public string DateFilter { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
+    }
+
+
+    public class ProductionOrderReportViewModel
+    {
+        public string ProdOrderNo { get; set; }
+        public string ProductionOrderNo { get; set; }
+        public string SaleOrderNo { get; set; }
+        public string SaleOrdNo { get; set; }
+        public DateTime ProdOrderDate { get; set; }
+        public string ProdOrderDateFormatted { get; set; }
+        public Guid? SaleOrderID { get; set; }
+        public Guid? CustomerID { get; set; }
+        public DateTime? ExpectedDelvDate { get; set; }
+        public string ExpectedDelvDateFormatted { get; set; }
+        [Display(Name = "Referred By")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        
+        [Display(Name = "Production Order From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Production Order To")]
+        public string AdvToDate { get; set; }
+        [Display(Name = "Exp. Delivery Date From")]
+        public string AdvDelFromDate { get; set; }
+        [Display(Name = "Exp. Delivery Date To")]
+        public string AdvDelToDate { get; set; }
+        [Display(Name = "Customer")]
+        public string AdvCustomer { get; set; }
+        public AreaViewModel Area { get; set; }
+        [Display(Name = "Amount <=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount >=")]
+        public decimal? AdvAmountTo { get; set; }
+        [Display(Name = "District")]
+        public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? AdvCountryCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        [Display(Name = "Customer Category")]
+        public int? AdvCustomerCategoryCode { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        [Display(Name = "Product")]
+        public Guid AdvProduct { get; set; }
+        public ProductViewModel Product { get; set; }
+        [Display(Name = "Product Model")]
+        public Guid AdvProductModel { get; set; }
+        public ProductModelViewModel ProductModel { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
+        public string ProductSpec { get; set; }
+        public string ProductName { get; set; }
+        public string ProdModel { get; set; }
+        public decimal? Amount { get; set; }
+        public string Remarks { get; set; }
+        public int? AdvReportType { get; set; }
+        public int? AdvProgress { get; set; }
+        public PlantViewModel Plant { get; set; }
+        [Display(Name = "Plant")]
+        public int? AdvPlantCode { get; set; }
+        public string PreparedBy { get; set; }
+        public string DateFilter { get; set; }      
+        public PSASysCommonViewModel PSASysCommon { get; set; }
+        [Display(Name = "Prepared By")]
+        public Guid AdvPreparedBy { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        public decimal? Qty { get; set; }
+    }
+
 }

@@ -97,6 +97,10 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                 List<FileUpload> AttachmentList = new List<FileUpload>();
                 AttachmentList = _fileUploadBusiness.GetAttachments(Guid.Parse(ID));
+                AppUA appUA = Session["AppUA"] as AppUA;
+                if (AttachmentList !=null)
+                    foreach (FileUpload item in AttachmentList)
+                        item.IsDocLocked = item.DocumentOwners.Contains(appUA.UserName);
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = AttachmentList });
             }
             catch (Exception ex)

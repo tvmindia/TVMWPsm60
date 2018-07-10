@@ -335,6 +335,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string FileSize { get; set; }
         public string AttachmentURL { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public bool IsDocLocked { get; set; }
+        public string[] DocumentOwners { get; set; }
     }
 
     public class RecentDocument
