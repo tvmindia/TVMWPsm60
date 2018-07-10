@@ -543,6 +543,25 @@
         //catch (e) {
         //    console.log(e.message);
         //}
-
+        try {
+            if ($('#ServiceCallForm #IsDocLocked').val() == "False" && $('#ServiceCallForm #IsUpdate').val() == "True")
+            {
+                $('#btnUpload').attr("disabled", "disabled")
+                $('#btnUpload').attr("title", "Document Locked");
+                $('#btnUpload').prop("onclick", null);
+                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnCancel').attr("disabled", "disabled")
+                $('#btnCancel').attr("title", "Document Locked");
+                $('#btnCancel').prop("onclick", null);
+                $('#btnCancel').css("background", "#b2aca4");
+                $('#btnSelect').attr("disabled", "disabled")
+                $('#btnSelect').attr("title", "Document Locked");
+                $('#btnSelect').prop("onclick", null);
+                $('#btnSelect').css("background", "#b2aca4");
+            }
+        }
+        catch (e) {
+            console.log(e.message);
+        }
     });
 </script>

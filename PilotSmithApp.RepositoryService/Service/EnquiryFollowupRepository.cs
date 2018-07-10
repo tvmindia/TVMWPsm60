@@ -139,6 +139,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryFollowup.Status = (sdr["Status"].ToString() != "" ? sdr["Status"].ToString() : enquiryFollowup.Status);
                                         enquiryFollowup.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryFollowup.FilteredCount);
                                         enquiryFollowup.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryFollowup.FilteredCount);
+                                        enquiryFollowup.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : enquiryFollowup.DocumentOwners);
                                     }
                                     enquiryFollowupList.Add(enquiryFollowup);
                                 }
@@ -191,7 +192,6 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiryFollowup.ReminderType = (sdr["ReminderType"].ToString() != "" ? sdr["ReminderType"].ToString() : enquiryFollowup.ReminderType);
                                     enquiryFollowup.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : enquiryFollowup.GeneralNotes);
                                     enquiryFollowup.Status = (sdr["Status"].ToString() != "" ? sdr["Status"].ToString() : enquiryFollowup.Status);
-
                                 }
                         }
                     }
