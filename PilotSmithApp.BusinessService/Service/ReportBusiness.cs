@@ -80,6 +80,15 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _reportRepository.GetSaleOrderStandardReport(saleOrderReport);
         }
-        #endregion GetSaleOrderStandardReport        
+        #endregion GetSaleOrderStandardReport   
+
+        #region  GetProductionOrderStandardReport
+
+        public List<ProductionOrderReport> GetProductionOrderStandardReport(ProductionOrderReport productionOrderReport)
+        {
+            return _reportRepository.GetProductionOrderStandardReport(productionOrderReport);
+        }
+            #endregion GetProductionOrderStandardReport 
+        
     }
 }

@@ -374,6 +374,51 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetPendingSaleOrderReport
 
 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrderReport", Mode = "R")]
+        public ActionResult ProductionOrderReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            ProductionOrderReportViewModel ProductionOrderReportVM = new ProductionOrderReportViewModel();
+            ProductionOrderReportVM.DocumentStatus = new DocumentStatusViewModel();
+            ProductionOrderReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");         
+            ProductionOrderReportVM.Customer = new CustomerViewModel();
+            ProductionOrderReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            ProductionOrderReportVM.Product = new ProductViewModel();
+            ProductionOrderReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            ProductionOrderReportVM.ProductModel = new ProductModelViewModel();
+            ProductionOrderReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(ProductionOrderReportVM);
+        }
+
+
+        #region GetProductionOrderStandardReport
+        public JsonResult GetProductionOrderStandardReport(DataTableAjaxPostModel model, ProductionOrderReportViewModel productionOrderReportVM)
+        {
+            productionOrderReportVM.DataTablePaging.Start = model.start;
+            productionOrderReportVM.DataTablePaging.Length = (productionOrderReportVM.DataTablePaging.Length == 0 ? model.length : productionOrderReportVM.DataTablePaging.Length);
+
+            List<ProductionOrderReportViewModel>productionOrderReportList = Mapper.Map<List<ProductionOrderReport>, List<ProductionOrderReportViewModel>>(_reportBusiness.GetProductionOrderStandardReport(Mapper.Map<ProductionOrderReportViewModel, ProductionOrderReport>(productionOrderReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = productionOrderReportList.Count != 0 ? productionOrderReportList[0].TotalCount : 0,
+                recordsFiltered = productionOrderReportList.Count != 0 ? productionOrderReportList[0].FilteredCount : 0,
+                data = productionOrderReportList
+            });
+        }
+
+        #endregion GetProductionOrderStandardReport
+
+
+
+
         public void DownloadExcel(ExcelExportViewModel excelExportVM)
         {
             try
@@ -615,6 +660,54 @@ namespace PilotSmithApp.UserInterface.Controllers
 
 
                         break;
+                    case "ProductionOrderReport":
+                        fileName = "ProductionOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        ProductionOrderReportViewModel productionOrderReportVM = new ProductionOrderReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        productionOrderReportVM = JsonConvert.DeserializeObject<ProductionOrderReportViewModel>(ReadableFormat);
+                        List<ProductionOrderReportViewModel> productionOrderReportList = Mapper.Map<List<ProductionOrderReport>, List<ProductionOrderReportViewModel>>(_reportBusiness.GetProductionOrderStandardReport(Mapper.Map<ProductionOrderReportViewModel, ProductionOrderReport>(productionOrderReportVM)));
+                        var productionorderreportworkSheet = excel.Workbook.Worksheets.Add("ProductionOrderReport");
+                        ProductionOrderReportViewModel[] productionOrderReportVMListArray = productionOrderReportList.ToArray();
+                        productionorderreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderReportVMListArray.Select(x => new {
+                            ProductionOrderNo=x.ProdOrderNo,
+                            ProductionOrderDate=x.ProdOrderDateFormatted,                           
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ExpectedDeliveryDate=x.ExpectedDelvDateFormatted,
+                            ReferredBy=x.ReferencePerson.Name,
+                            Area=x.Area.Description,
+                            Plant=x.Plant.Description,
+                            ProductName = x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification = x.ProductSpec,
+                            Qty = x.Qty,                          
+                            Amount = x.Amount,
+                            SaleOrderNo = x.SaleOrderNo,
+                            DocumentStatus=x.DocumentStatus.Description,
+                            Remarks = x.Remarks
+                        }), true, TableStyles.Light1);
+                        productionorderreportworkSheet.Column(1).AutoFit();
+                        productionorderreportworkSheet.Column(2).AutoFit();
+                        productionorderreportworkSheet.Column(3).Width = 40;
+                        productionorderreportworkSheet.Column(4).AutoFit();
+                        productionorderreportworkSheet.Column(5).AutoFit();
+                        productionorderreportworkSheet.Column(6).AutoFit();
+                        productionorderreportworkSheet.Column(7).Width = 40;
+                        productionorderreportworkSheet.Column(8).AutoFit();
+                        productionorderreportworkSheet.Column(9).AutoFit();
+                        productionorderreportworkSheet.Column(10).AutoFit();
+                        productionorderreportworkSheet.Column(11).AutoFit();
+                        productionorderreportworkSheet.Column(12).AutoFit();
+                        productionorderreportworkSheet.Column(13).AutoFit();
+                        productionorderreportworkSheet.Column(14).AutoFit();
+                        productionorderreportworkSheet.Column(15).AutoFit();
+                        productionorderreportworkSheet.Column(16).AutoFit();
+
+                        break;
+
+
+
                     default:break;
                 }
                 using (var memoryStream = new MemoryStream())
