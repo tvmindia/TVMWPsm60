@@ -112,6 +112,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         fileUpload.FileType = sdr["FileType"].ToString();
                                         fileUpload.FileSize = sdr["FileSize"].ToString();
                                         fileUpload.AttachmentURL = sdr["AttachmentURL"].ToString();
+                                        fileUpload.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : fileUpload.DocumentOwners);
                                     }
                                     fileUploadList.Add(fileUpload);
                                 }
