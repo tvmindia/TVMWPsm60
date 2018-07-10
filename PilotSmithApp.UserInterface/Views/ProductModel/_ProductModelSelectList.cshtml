@@ -36,6 +36,8 @@ else
         $('.select2').addClass('form-control newinput');
         $('#ProductModelID').change(function () {
             if ($('#divProductBasicInfo') != undefined) {
+                debugger;
+                //var HSNCode = $('#hdnProductHSNCode').val();
                 $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
                     $('#ProductSpec').val($('#spnProductName').text());
                     $('#Rate').val($('#spnSellingPrice').text().replace('₹ ', '').trim());
@@ -43,7 +45,7 @@ else
                     $('#SellingRate').val($('#spnSellingPrice').text().replace('₹ ', ' ').trim());
                         $('#UnitCode').val($('#hdnProductModelUnitCode').val());
                         $('#hdnUnitCode').val($('#hdnProductModelUnitCode').val());
-                        $('#UnitCode').trigger('change');
+                        $('#UnitCode').trigger('change');                      
                         if ($('#FormQuotationDetail') != undefined)
                         var editor = new wysihtml5.Editor("ProductSpec", {
                             toolbar: "toolbar",

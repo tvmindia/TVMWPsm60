@@ -384,7 +384,8 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     if (data != "") {
+                     if (data != "" && data!=undefined) {
+                         debugger;
                          return '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' +
                                                  row.Product.Name + '</br>' + row.ProductModel.Name
                      }
@@ -396,10 +397,16 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              {
                  "data": "Product.HSNCode", render: function (data, type, row) {
                      debugger;
-                     if ((row.OtherCharge.SACCode == null || row.OtherCharge.SACCode == "") && row.Product.HSNCode !== null) {
+                     //if ((row.OtherCharge.SACCode == null || row.OtherCharge.SACCode == "") && (row.Product.HSNCode !== null || row.Product.HSNCode=="")) {
+                     //    return row.Product.HSNCode;
+                     //}
+                     //else if (((row.OtherCharge.SACCode !== null) || (row.OtherCharge.SACCode=="")) && ((row.Product.HSNCode == null) || (row.Product.HSNCode == ""))) {
+                     //    return row.OtherCharge.SACCode;
+                     //}
+                     if (data !== null || data == "") {
                          return row.Product.HSNCode;
                      }
-                     else if (row.OtherCharge.SACCode !== null && (row.Product.HSNCode == null || row.Product.HSNCode == "")) {
+                     else {
                          return row.OtherCharge.SACCode;
                      }
                  }, "defaultContent": "<i></i>"
@@ -531,12 +538,16 @@ function AddProformaInvoiceDetailToList() {
     if ($('#FormProformaInvoiceDetail #IsUpdate').val() == 'True') {
         if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             var proformaInvoiceDetailList = _dataTable.ProformaInvoiceDetailList.rows().data();
+            debugger;
             proformaInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
             proformaInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+            proformaInvoiceDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
             proformaInvoiceDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
             proformaInvoiceDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
             ProductModel = new Object;
             Unit = new Object;
+            OtherCharge = new Object;
+            OtherCharge.SACCode = null;
             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
             proformaInvoiceDetailList[_datatablerowindex].ProductModel = ProductModel;
             proformaInvoiceDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
@@ -571,8 +582,11 @@ function AddProformaInvoiceDetailToList() {
                 proformaInvoiceDetailVM.ProductModel = new Object;
                 proformaInvoiceDetailVM.Unit = new Object;
                 proformaInvoiceDetailVM.TaxType = new Object;
+                proformaInvoiceDetailVM.OtherCharge = new Object;
+                proformaInvoiceDetailVM.OtherCharge.SACCode = null;
                 proformaInvoiceDetailVM[0].Product.Code = $("#divModelProformaInvoicePopBody #ProductID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductID option:selected").text().split("-")[0].trim() : "";
                 proformaInvoiceDetailVM[0].Product.Name = $("#divModelProformaInvoicePopBody #ProductID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                proformaInvoiceDetailVM[0].Product.HSNCode = $("#hdnProductHSNCode").val();
                 proformaInvoiceDetailVM[0].ProductID = $("#divModelProformaInvoicePopBody #ProductID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductID").val() : _emptyGuid;
                 proformaInvoiceDetailVM[0].ProductModelID = $("#divModelProformaInvoicePopBody #ProductModelID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductModelID").val() : _emptyGuid;
                 proformaInvoiceDetailVM[0].ProductModel.Name = $("#divModelProformaInvoicePopBody #ProductModelID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductModelID option:selected").text() : "";
@@ -617,11 +631,14 @@ function AddProformaInvoiceDetailToList() {
                         ProformaInvoiceDetailVM.ProductModel = new Object()
                         ProformaInvoiceDetailVM.Unit = new Object();
                         ProformaInvoiceDetailVM.TaxType = new Object();
+                        ProformaInvoiceDetailVM.OtherCharge = new Object();
+                        ProformaInvoiceDetailVM.OtherCharge.SACCode = null;
 
                         ProformaInvoiceDetailVM.ID = _emptyGuid;
                         ProformaInvoiceDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                         ProformaInvoiceDetailVM.Product.Code = $("#divModelProformaInvoicePopBody #ProductID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductID option:selected").text().split("-")[0].trim() : "";
                         ProformaInvoiceDetailVM.Product.Name = $("#divModelProformaInvoicePopBody #ProductID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                        ProformaInvoiceDetailVM.Product.HSNCode = $("#hdnProductHSNCode").val();
                         ProformaInvoiceDetailVM.ProductID = $("#divModelProformaInvoicePopBody #ProductID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductID").val() : _emptyGuid;
                         ProformaInvoiceDetailVM.ProductModelID = $("#divModelProformaInvoicePopBody #ProductModelID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductModelID").val() : _emptyGuid;
                         ProformaInvoiceDetailVM.ProductModel.Name = $("#divModelProformaInvoicePopBody #ProductModelID").val() != "" ? $("#divModelProformaInvoicePopBody #ProductModelID option:selected").text() : "";
@@ -768,6 +785,7 @@ function AddOtherExpenseDetailToList() {
         if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() != "")) {
             var proformaInvoiceOtherExpenseDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
             proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             proformaInvoiceOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelProformaInvoicePopBody #ChargeAmount").val();
             proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
             TaxType = new Object;
@@ -797,6 +815,7 @@ function AddOtherExpenseDetailToList() {
                 //saleInvoiceOtherExpenseDetailList.OtherCharge = new Object;
                 //saleInvoiceOtherExpenseDetailList.TaxType = new Object;
                 proformaInvoiceOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+                proformaInvoiceOtherExpenseDetailList[0].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                 proformaInvoiceOtherExpenseDetailList[0].OtherChargeCode = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
                 proformaInvoiceOtherExpenseDetailList[0].ChargeAmount = $("#divModelProformaInvoicePopBody #ChargeAmount").val();
                 if ($('#divModelProformaInvoicePopBody #TaxTypeCode').val() != null) {
@@ -840,6 +859,7 @@ function AddOtherExpenseDetailToList() {
                         OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                         ProformaInvoiceOtherChargesDetailVM.OtherCharge = OtherCharge;
                         ProformaInvoiceOtherChargesDetailVM.OtherChargeCode = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
+                        ProformaInvoiceOtherChargesDetailVM.OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                         ProformaInvoiceOtherChargesDetailVM.ChargeAmount = $("#divModelProformaInvoicePopBody #ChargeAmount").val();
                         var TaxType = new Object();
                         if ($('#divModelProformaInvoicePopBody #TaxTypeCode').val() != null) {
@@ -1262,9 +1282,10 @@ function AddProformaInvoiceServiceBillToDetailList() {
     if ($('#FormProformaInvoiceServiceBill #IsUpdate').val() == 'True') {
         if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
             var proformaInvoiceDetailList = _dataTable.ProformaInvoiceDetailList.rows().data();
-
+            proformaInvoiceDetailList[_datatablerowindex].Product = new Object();
             proformaInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
             proformaInvoiceDetailList[_datatablerowindex].OtherChargeCode = $("#OtherChargeCode").val();
+            proformaInvoiceDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             proformaInvoiceDetailList[_datatablerowindex].Qty = $('#Qty').val();
             proformaInvoiceDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
             proformaInvoiceDetailList[_datatablerowindex].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
@@ -1298,6 +1319,7 @@ function AddProformaInvoiceServiceBillToDetailList() {
                 proformaInvoiceDetailVM.Product = new Object;
                 proformaInvoiceDetailVM[0].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                 proformaInvoiceDetailVM[0].OtherChargeCode = $("#OtherChargeCode").val();
+                proformaInvoiceDetailVM[0].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                 proformaInvoiceDetailVM[0].Qty = $('#divModelProformaInvoicePopBody #Qty').val();
                 proformaInvoiceDetailVM[0].UnitCode = $('#divModelProformaInvoicePopBody #UnitCode').val();
                 proformaInvoiceDetailVM[0].Unit.Description = $("#divModelProformaInvoicePopBody #UnitCode").val() != "" ? $("#divModelProformaInvoicePopBody #UnitCode option:selected").text().trim() : "";
@@ -1340,6 +1362,7 @@ function AddProformaInvoiceServiceBillToDetailList() {
 
                         ProformaInvoiceDetailVM.OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                         ProformaInvoiceDetailVM.OtherChargeCode = $("#divModelProformaInvoicePopBody #OtherChargeCode").val();
+                        ProformaInvoiceDetailVM.OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                         ProformaInvoiceDetailVM.Qty = $('#divModelProformaInvoicePopBody #Qty').val();
                         ProformaInvoiceDetailVM.UnitCode = $('#divModelProformaInvoicePopBody #UnitCode').val();
                         ProformaInvoiceDetailVM.Unit.Description = $("#divModelProformaInvoicePopBody #UnitCode").val() != "" ? $("#divModelProformaInvoicePopBody #UnitCode option:selected").text().trim() : "";
@@ -1355,7 +1378,7 @@ function AddProformaInvoiceServiceBillToDetailList() {
                         _dataTable.ProformaInvoiceDetailList.row.add(ProformaInvoiceDetailVM).draw(true);
                     }
                     CalculateTotal();
-                    $('#divModelPoproformaInvoice').modal('hide');
+                    $('#divModelPopProformaInvoice').modal('hide');
                 }
             }
         }
@@ -1428,4 +1451,33 @@ function EditRedirectToDocument(id) {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
     });
+}
+
+//To get SACCode
+function GetOtherCharge(value) {
+    try {
+        debugger;
+        var otherCharge;
+        var data = { "code": value };
+        _jsonData = GetDataFromServer("OtherCharge/GetOtherCharge/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            otherCharge = _jsonData.Record;
+        }
+
+        if (_status == "OK") {
+            return otherCharge;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
+
 }

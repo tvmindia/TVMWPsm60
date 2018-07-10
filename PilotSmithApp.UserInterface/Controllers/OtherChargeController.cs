@@ -158,7 +158,24 @@ namespace PilotSmithApp.UserInterface.Controllers
             otherChargeVM.OtherChargeSelectList = _otherChargeBusiness.GetOtherChargeForSelectList();
             return PartialView("_OtherChargeSelectList", otherChargeVM);
         }
-        #endregion 
+        #endregion
+
+        #region GetOtherCharge
+        public string  GetOtherCharge(int code)
+        {
+            try
+            {
+                OtherChargeViewModel otherChargeVM = Mapper.Map<OtherCharge, OtherChargeViewModel>(_otherChargeBusiness.GetOtherCharge(code));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = otherChargeVM, Message = "Success" });
+            }
+            catch(Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+
+            }
+        } 
+        #endregion GetOtherCharge
 
         #region ButtonStyling
         [HttpGet]

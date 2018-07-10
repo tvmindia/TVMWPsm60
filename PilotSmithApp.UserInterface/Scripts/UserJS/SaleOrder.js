@@ -462,7 +462,7 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "OtherCharge.Description", "defaultContent": "<i></i>" },
+             { "data": "OtherCharge.SACCode", "defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
@@ -723,6 +723,7 @@ function AddSaleOrderDetailToList() {
             var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
             saleOrderDetailList[_datatablerowindex].Product.Code = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
             saleOrderDetailList[_datatablerowindex].Product.Name = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+            saleOrderDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
             saleOrderDetailList[_datatablerowindex].ProductID = $("#divModelPopSaleOrder #ProductID").val() != "" ? $("#divModelPopSaleOrder #ProductID").val() : _emptyGuid;
             saleOrderDetailList[_datatablerowindex].ProductModelID = $("#divModelSaleOrderPopBody #ProductModelID").val() != "" ? $("#divModelSaleOrderPopBody #ProductModelID").val() : _emptyGuid;
             ProductModel = new Object;
@@ -761,6 +762,7 @@ function AddSaleOrderDetailToList() {
                 var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
                 saleOrderDetailList[0].Product.Code = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
                 saleOrderDetailList[0].Product.Name = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                saleOrderDetailList[0].Product.HSNCode = $("#hdnProductHSNCode").val();
                 saleOrderDetailList[0].ProductID = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID").val() : _emptyGuid;
                 saleOrderDetailList[0].ProductModelID = $("#divModelSaleOrderPopBody #ProductModelID").val() != "" ? $("#divModelSaleOrderPopBody #ProductModelID").val() : _emptyGuid;
                 saleOrderDetailList[0].ProductModel.Name = $("#divModelSaleOrderPopBody #ProductModelID").val() != "" ? $("#divModelSaleOrderPopBody #ProductModelID option:selected").text() : "";
@@ -811,6 +813,7 @@ function AddSaleOrderDetailToList() {
                         var Product = new Object;
                         Product.Code = ($("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "");
                         Product.Name = ($("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[1].trim() : "");
+                        Product.HSNCode = $("#hdnProductHSNCode").val();
                         SaleOrderDetailVM.Product = Product;
                         SaleOrderDetailVM.ProductModelID = ($("#divModelSaleOrderPopBody #ProductModelID").val() != "" ? $("#divModelSaleOrderPopBody #ProductModelID").val() : _emptyGuid);
                         var ProductModel = new Object()
@@ -1103,6 +1106,7 @@ function AddOtherExpenseDetailToList() {
             debugger;
             var saleOrderOtherExpenseDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
             saleOrderOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            saleOrderOtherExpenseDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             saleOrderOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelSaleOrderPopBody #ChargeAmount").val();
             saleOrderOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode").val() : _emptyGuid;
             TaxType = new Object;
@@ -1132,6 +1136,7 @@ function AddOtherExpenseDetailToList() {
                 var saleOrderOtherExpenseDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
                 saleOrderOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                 saleOrderOtherExpenseDetailList[0].OtherChargeCode = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode").val() : _emptyGuid;
+                saleOrderOtherExpenseDetailList[0].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                 saleOrderOtherExpenseDetailList[0].ChargeAmount = $("#divModelSaleOrderPopBody #ChargeAmount").val();
                 if ($('#divModelSaleOrderPopBody #TaxTypeCode').val() != null) {
                     saleOrderOtherExpenseDetailList[0].TaxTypeCode = $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0];
@@ -1175,6 +1180,7 @@ function AddOtherExpenseDetailToList() {
                         OtherCharge.Description = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                         SaleOrderOtherChargesDetailVM.OtherCharge = OtherCharge;
                         SaleOrderOtherChargesDetailVM.OtherChargeCode = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode").val() : _emptyGuid;
+                        SaleOrderOtherChargesDetailVM.OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                         SaleOrderOtherChargesDetailVM.ChargeAmount = $("#divModelSaleOrderPopBody #ChargeAmount").val();
                         var TaxType = new Object();
                         if ($('#divModelSaleOrderPopBody #TaxTypeCode').val() != null) {
@@ -1398,4 +1404,32 @@ function EditRedirectToDocument(id) {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
     });
+}
+
+function GetOtherCharge(value) {
+    try {
+        debugger;
+        var otherCharge;
+        var data = { "code": value };
+        _jsonData = GetDataFromServer("OtherCharge/GetOtherCharge/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            otherCharge = _jsonData.Record;
+        }
+
+        if (_status == "OK") {
+            return otherCharge;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
+
 }

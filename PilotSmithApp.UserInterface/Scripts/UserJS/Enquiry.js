@@ -362,7 +362,9 @@ function BindEnquiryDetailList(id) {
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null? row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
+             {
+                 "data": "Product.HSNCode", "defaultContent": "<i></i>"
+             },
              {
                  "data": "Qty", render: function (data, type, row) {
                      return data +" "+ row.Unit.Description
@@ -435,6 +437,8 @@ function AddEnquiryDetailToList() {
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
                 enquiryDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                 enquiryDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                debugger;
+                enquiryDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
                 enquiryDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                 enquiryDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
@@ -462,6 +466,8 @@ function AddEnquiryDetailToList() {
                     var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
                     enquiryDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                     enquiryDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    debugger;
+                    enquiryDetailList[0].Product.HSNCode = $("#hdnProductHSNCode").val();
                     enquiryDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                     enquiryDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                     enquiryDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
@@ -502,6 +508,8 @@ function AddEnquiryDetailToList() {
                             EnquiryDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                             Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                             Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                            debugger;
+                            Product.HSNCode = $("#hdnProductHSNCode").val();
                             EnquiryDetailVM.Product = Product;
                             EnquiryDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";

@@ -451,6 +451,7 @@ function AddServiceCallDetailToList() {
                 serviceCallDetailList[_datatablerowindex].Product = new Object();
                 serviceCallDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                 serviceCallDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                serviceCallDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
                 serviceCallDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                 serviceCallDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 var ProductModel = new Object;
@@ -496,6 +497,7 @@ function AddServiceCallDetailToList() {
                     serviceCallDetailList[0].Product = new Object();
                     serviceCallDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                     serviceCallDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    serviceCallDetailList[0].Product.HSNCode = $("#hdnProductHSNCode").val();
                     serviceCallDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                     serviceCallDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                     ProductModel = new Object;
@@ -525,6 +527,7 @@ function AddServiceCallDetailToList() {
                         serviceCallDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                         Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                         Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                        Product.HSNCode = $("#hdnProductHSNCode").val();
                         serviceCallDetailVM.Product = Product;
                         serviceCallDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                         ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
@@ -689,6 +692,7 @@ function AddServiceCallChargeDetailToList() {
                 serviceCallChargeDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelCallChargesPopBody #OtherChargeCode").val() != "" ? $("#divModelCallChargesPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                 serviceCallChargeDetailList[_datatablerowindex].ChargeAmount = $("#divModelCallChargesPopBody #ChargeAmount").val();
                 serviceCallChargeDetailList[_datatablerowindex].OtherChargeCode = $("#divModelCallChargesPopBody #OtherChargeCode").val() != "" ? $("#divModelCallChargesPopBody #OtherChargeCode").val() : _emptyGuid;
+                serviceCallChargeDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                 TaxType = new Object;
                 if ($('#divModelCallChargesPopBody #TaxTypeCode').val() != null) {
                     serviceCallChargeDetailList[_datatablerowindex].TaxTypeCode = $('#divModelCallChargesPopBody #TaxTypeCode').val().split('|')[0];
@@ -717,6 +721,7 @@ function AddServiceCallChargeDetailToList() {
                     serviceCallChargeDetailList[0].OtherCharge.Description = $("#divModelCallChargesPopBody #OtherChargeCode").val() != "" ? $("#divModelCallChargesPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                     serviceCallChargeDetailList[0].OtherChargeCode = $("#divModelCallChargesPopBody #OtherChargeCode").val() != "" ? $("#divModelCallChargesPopBody #OtherChargeCode").val() : _emptyGuid;
                     serviceCallChargeDetailList[0].ChargeAmount = $("#divModelCallChargesPopBody #ChargeAmount").val();
+                    serviceCallChargeDetailList[0].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                     if ($('#divModelCallChargesPopBody #TaxTypeCode').val() != null) {
                         serviceCallChargeDetailList[0].TaxTypeCode = $('#divModelCallChargesPopBody #TaxTypeCode').val().split('|')[0];
                     }
@@ -762,6 +767,7 @@ function AddServiceCallChargeDetailToList() {
                             ServiceCallChargeDetailVM.OtherCharge = OtherCharge;
                             ServiceCallChargeDetailVM.OtherChargeCode = $("#divModelCallChargesPopBody #OtherChargeCode").val() != "" ? $("#divModelCallChargesPopBody #OtherChargeCode").val() : _emptyGuid;
                             ServiceCallChargeDetailVM.ChargeAmount = $("#divModelCallChargesPopBody #ChargeAmount").val();
+                            ServiceCallChargeDetailVM.OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                             var TaxType = new Object();
                             if ($('#divModelCallChargesPopBody #TaxTypeCode').val() != null) {
                                 ServiceCallChargeDetailVM.TaxTypeCode = $('#divModelCallChargesPopBody #TaxTypeCode').val().split('|')[0];
@@ -1185,4 +1191,33 @@ function EditServiceCallDetailSpare(this_Obj) {
     catch (e) {
         console.log(e.message);
     }
+}
+
+//To get SACCode
+function GetOtherCharge(value) {
+    try {
+        debugger;
+        var otherCharge;
+        var data = { "code": value };
+        _jsonData = GetDataFromServer("OtherCharge/GetOtherCharge/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            otherCharge = _jsonData.Record;
+        }
+
+        if (_status == "OK") {
+            return otherCharge;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
+
 }

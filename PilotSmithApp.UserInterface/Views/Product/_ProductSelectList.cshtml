@@ -26,7 +26,6 @@ else
     @Html.DropDownList("ProductID", Model.ProductSelectList, "--Select product--", SelectListattributes)
 }
 @Html.ValidationMessage("ProductID", "", new { @class = "text-danger" })
-
 <script>
     $(document).ready(function () {
         $('#ProductID').val($('#hdnProductID').val());
@@ -36,7 +35,7 @@ else
                 debugger;
                 $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
                     $('#ProductSpec').val($('#spnProductName').text());
-                });
+                });           
             }
             if ($('.divProductModelSelectList') != undefined) {
                 debugger;

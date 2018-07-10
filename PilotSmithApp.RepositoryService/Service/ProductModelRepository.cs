@@ -200,6 +200,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productModel.IntroducedDateFormatted = (sdr["IntroducedDate"].ToString() != "" ? DateTime.Parse(sdr["IntroducedDate"].ToString()).ToString(_settings.DateFormat) : productModel.IntroducedDateFormatted);
                                     productModel.StockQty = (sdr["StockQty"].ToString() != "" ? Decimal.Parse(sdr["StockQty"].ToString()) : productModel.StockQty);
                                     productModel.ImageURL = (sdr["ImageURL"].ToString() != "" ? sdr["ImageURL"].ToString() : productModel.ImageURL);
+                                    productModel.Product.HSNCode= (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : productModel.Product.HSNCode);
                                 }
                             }
                         }

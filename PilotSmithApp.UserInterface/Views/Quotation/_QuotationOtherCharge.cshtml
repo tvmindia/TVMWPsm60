@@ -19,6 +19,7 @@
             <!-- This hidden field will keep the information whether the field is disabled or not -->
             @Html.Hidden("hdnOtherChargedisabled", false)
             @Html.HiddenFor(model => model.OtherChargeCode, htmlAttributes: new { @id = "hdnOtherChargeCode" })
+            
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -43,7 +44,7 @@
             @Html.Hidden("hdnTaxTypeRequired", "")
             <!-- This hidden field will keep the information whether the field is disabled or not -->
             @Html.Hidden("hdnTaxTypedisabled", false)
-            @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })
+            @Html.HiddenFor(model => model.TaxTypeCode, htmlAttributes: new { @class = "CalculateGST", @id = "hdnTaxTypeCode" })            
         </div>
         <div class="col-md-12 no-padding" id="divGSTCalculatedFields">
             <div class="col-md-4 no-padding">
@@ -101,7 +102,15 @@
                     $('#divModelPopQuotation #IGSTPerc').val(ChargeAmount * IGST / 100);
                 });
             });
-            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
+            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val(), function () {
+                $('.divOtherChargeSelectList #OtherChargeCode').change(function () {
+                    debugger;
+                    var otherCharge;
+                    otherCharge = GetOtherCharge(this.value);
+                    $('#hdnOtherChargeSACCode').val(otherCharge.SACCode);
+                });
+                
+            });
         }
         catch (e) {
             console.log(e.message);

@@ -19,7 +19,9 @@
                 <span id="spnProductName">@Html.Raw(Model.Specification)</span>
             </li>
         </ul>
-        @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "",@id="hdnProductModelUnitCode" })
-        @Html.HiddenFor(model => model.StockQty, htmlAttributes: new { @class = "",@id="hdnProductModelStockQty" })
+        @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnProductModelUnitCode" })
+        @Html.HiddenFor(model => model.StockQty, htmlAttributes: new { @class = "", @id = "hdnProductModelStockQty" })
+        @Html.HiddenFor(model => model.Product.HSNCode, htmlAttributes: new { @class = "", @id = "hdnProductHSNCode" })
+        @Html.HiddenFor(model => model.ImageURL, htmlAttributes: new { @class = "", @id = "hdnProductModelImage" })
     </div>
 </div>

@@ -138,7 +138,14 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProformaInvoiceServiceBill");
         try {
-            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
+            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val(), function () {
+                $('.divOtherChargeSelectList #OtherChargeCode').change(function () {
+                    debugger;
+                    var otherCharge;
+                    otherCharge = GetOtherCharge(this.value);
+                    $('#hdnOtherChargeSACCode').val(otherCharge.SACCode);
+                });
+            });
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
             $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
                 $('#divModelPopProformaInvoice .CalculateGST').change(function () {

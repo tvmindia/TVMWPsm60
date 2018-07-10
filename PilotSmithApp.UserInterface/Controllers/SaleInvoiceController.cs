@@ -400,6 +400,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         ProductModel = proformaInvoiceDetailVM.ProductModel,
                                                         Unit = proformaInvoiceDetailVM.Unit,
                                                         TaxType = proformaInvoiceDetailVM.TaxType,
+                                                        OtherCharge = proformaInvoiceDetailVM.OtherCharge,
+
                                                     }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceItemViewModelList, Message = "Success" });
@@ -555,7 +557,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                                AddlTaxPerc = 0,
                                                                AddlTaxAmt = 0,
                                                                OtherCharge = quotationOtherChargeVM.OtherCharge,
-                                                               TaxType = quotationOtherChargeVM.TaxType,
+                                                               TaxType = quotationOtherChargeVM.TaxType,                                                            
                                                            }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleInvoiceOtherChargeViewModelList, Message = "Success" });

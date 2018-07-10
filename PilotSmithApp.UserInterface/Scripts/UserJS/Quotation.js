@@ -413,7 +413,7 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "OtherCharge.Description", "defaultContent": "<i></i>" },
+             { "data": "OtherCharge.SACCode", "defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
@@ -603,6 +603,7 @@ function AddQuotationDetailToList() {
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
                 quotationDetailList[_datatablerowindex].Product.Name = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                quotationDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
                 quotationDetailList[_datatablerowindex].ProductID = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID").val() : _emptyGuid;
                 quotationDetailList[_datatablerowindex].ProductModelID = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
@@ -610,6 +611,7 @@ function AddQuotationDetailToList() {
                 TaxType = new Object;
                 ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[_datatablerowindex].ProductModel = ProductModel;
+                quotationDetailList[_datatablerowindex].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                 quotationDetailList[_datatablerowindex].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
                 quotationDetailList[_datatablerowindex].Qty = $('#divModelQuotationPopBody #Qty').val();
                 quotationDetailList[_datatablerowindex].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
@@ -640,9 +642,11 @@ function AddQuotationDetailToList() {
                     var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                     quotationDetailList[0].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
                     quotationDetailList[0].Product.Name = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                    quotationDetailList[0].Product.HSNCode = $("#hdnProductHSNCode").val();
                     quotationDetailList[0].ProductID = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID").val() : _emptyGuid;
                     quotationDetailList[0].ProductModelID = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid;
                     quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
+                    quotationDetailList[0].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                     quotationDetailList[0].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
                     quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val();
                     quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
@@ -689,11 +693,13 @@ function AddQuotationDetailToList() {
                             var Product = new Object;
                             Product.Code = ($("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "");
                             Product.Name = ($("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "");
+                            Product.HSNCode = $("#hdnProductHSNCode").val();
                             QuotationDetailVM.Product = Product;
                             QuotationDetailVM.ProductModelID = ($("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid);
                             var ProductModel = new Object()
                             ProductModel.Name = ($("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "");
                             QuotationDetailVM.ProductModel = ProductModel;
+                            QuotationDetailVM.ProductModel.ImageURL = $('#hdnProductModelImage').val();
                             QuotationDetailVM.ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
                             QuotationDetailVM.Qty = $('#divModelQuotationPopBody #Qty').val();
                             var Unit = new Object();
@@ -1013,6 +1019,7 @@ function AddOtherExpenseDetailToList() {
             debugger;
             var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
             quotationOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            quotationOtherExpenseDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             quotationOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
             quotationOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode").val() : _emptyGuid;
             TaxType = new Object;
@@ -1040,6 +1047,7 @@ function AddOtherExpenseDetailToList() {
                 var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
                 quotationOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                 quotationOtherExpenseDetailList[0].OtherChargeCode = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode").val() : _emptyGuid;
+                quotationOtherExpenseDetailList[0].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                 quotationOtherExpenseDetailList[0].ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
                 if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
                     quotationOtherExpenseDetailList[0].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0];
@@ -1081,6 +1089,7 @@ function AddOtherExpenseDetailToList() {
                         OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
                         QuotationOtherChargesDetailVM.OtherCharge = OtherCharge;
                         QuotationOtherChargesDetailVM.OtherChargeCode = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode").val() : _emptyGuid;
+                        QuotationOtherChargesDetailVM.OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
                         QuotationOtherChargesDetailVM.ChargeAmount = $("#divModelQuotationPopBody #ChargeAmount").val();
                         var TaxType = new Object();
                         if ($('#divModelQuotationPopBody #TaxTypeCode').val() != null) {
@@ -1293,4 +1302,34 @@ function EditRedirectToDocument(id) {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
     });
+}
+
+//To get SACCode
+function GetOtherCharge(value)
+{
+    try{
+        debugger;
+        var otherCharge;
+        var data = { "code": value };
+        _jsonData = GetDataFromServer("OtherCharge/GetOtherCharge/",data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            otherCharge = _jsonData.Record;
+        }
+
+        if (_status == "OK") {
+            return otherCharge;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+
+    }
+    
 }

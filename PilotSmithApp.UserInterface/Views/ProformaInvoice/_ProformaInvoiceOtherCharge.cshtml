@@ -105,7 +105,14 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
         try {
-            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
+            $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val(), function () {
+                $('.divOtherChargeSelectList #OtherChargeCode').change(function () {
+                    debugger;
+                    var otherCharge;
+                    otherCharge = GetOtherCharge(this.value);
+                    $('#hdnOtherChargeSACCode').val(otherCharge.SACCode);
+                });
+            });
             $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
                 $('#divModelPopProformaInvoice .CalculateGST').change(function () {
                     debugger;

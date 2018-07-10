@@ -578,6 +578,7 @@ function AddProductionOrderDetailToList() {
             var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
             productionOrderDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
             productionOrderDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+            productionOrderDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
             productionOrderDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
             productionOrderDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
             ProductModel = new Object;
@@ -619,6 +620,7 @@ function AddProductionOrderDetailToList() {
                 var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
                 productionOrderDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                 productionOrderDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                productionOrderDetailList[0].Product.HSNCode = $("#hdnProductHSNCode").val();
                 productionOrderDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                 productionOrderDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
@@ -678,6 +680,7 @@ function AddProductionOrderDetailToList() {
                             ProductionOrderDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
                             Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
                             Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                            Product.HSNCode = $("#hdnProductHSNCode").val();
                             ProductionOrderDetailVM.Product = Product;
                             ProductionOrderDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";

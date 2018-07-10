@@ -122,7 +122,13 @@
                 $('#divModelPopSaleOrder #hdnAddlTaxAmt').val(TaxAmount * AddlTaxPerc / 100);
             });
         });
-        $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val())
+        $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val(), function () {
+            $('.divOtherChargeSelectList #OtherChargeCode').change(function () {
+                var otherCharge;
+                otherCharge = GetOtherCharge(this.value);
+                $('#hdnOtherChargeSACCode').val(otherCharge.SACCode);
+            });
+        });
         $('#divModelPopSaleOrder #TaxTypeCode').select2({
             dropdownParent: $("#divModelPopSaleOrder")
         });

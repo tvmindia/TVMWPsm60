@@ -25,7 +25,7 @@ else
     @Html.DropDownList("OtherChargeCode", Model.OtherChargeSelectList, "--Select OtherCharge--", SelectListattributes)
 }
 @Html.ValidationMessage("OtherChargeCode", "", new { @class = "text-danger" })
-
+@Html.HiddenFor(model => model.SACCode, htmlAttributes: new { @class = "", @id = "hdnOtherChargeSACCode" })
 <script>
     $(document).ready(function () {
         $('#OtherChargeCode').val($('#hdnOtherChargeCode').val());
