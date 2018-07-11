@@ -49,7 +49,7 @@
             $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
                 try {
                     $('.divCountrySelectList #CountryCode').select2({
-                        dropdownParent: $("#divModelMasterPopUp")
+                        dropdownParent: $("#divModelMasterPopUp3")
                     });
                     $('.select2').addClass('form-control newinput');
                 }

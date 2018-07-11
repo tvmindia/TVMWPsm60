@@ -16,7 +16,7 @@
                     @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
-                    <div class="divProductCategorySelectList">
+                    <div class="divProductSelectList">
                         @Html.Action("ProductSelectList", "Product", new { required = "required" })
                     </div>
                     @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
@@ -166,11 +166,11 @@
                 }
 <script>
     $(document).ready(function () {
-        $('#divModelMasterPopUp #ProductModelID').val($('#divModelMasterPopUp #hdnProductModelID').val());
+        $('#divModelMasterPopUp2 #ProductModelID').val($('#divModelMasterPopUp2 #hdnProductModelID').val());
         try {
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
-            $('#divModelMasterPopUp #ProductID,#divModelMasterPopUp #UnitCode').select2({
-                dropdownParent: $("#divModelMasterPopUp")
+            $('#divModelMasterPopUp2 #ProductID,#divModelMasterPopUp2 #UnitCode').select2({
+                dropdownParent: $("#divModelMasterPopUp2")
             });
             $('.select2').addClass('form-control newinput');
         }

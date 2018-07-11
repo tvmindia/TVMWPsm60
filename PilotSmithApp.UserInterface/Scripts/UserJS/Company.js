@@ -123,11 +123,11 @@ function EditCompanyMaster(thisObj) {
     debugger;
     CompanyVM = _dataTables.CompanyList.row($(thisObj).parents('tr')).data();
 
-    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + CompanyVM.ID, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody4").load("Company/MasterPartial?masterCode=" + CompanyVM.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            $('#hdnMasterCall').val('MSTR');
-            $('#lblModelMasterContextLabel').text('Edit Company Information')
-            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall4').val('MSTR');
+            $('#lblModelMasterContextLabel4').text('Edit Company Information')
+            $('#divModelMasterPopUp4').modal('show');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

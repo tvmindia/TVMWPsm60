@@ -147,11 +147,11 @@ function EditProductModelMaster(thisObj) {
         debugger;
         ProductModelVM = _dataTables.ProductModelList.row($(thisObj).parents('tr')).data();
 
-        $("#divMasterBody").load("ProductModel/MasterPartial?masterCode=" + ProductModelVM.ID, function (responseTxt, statusTxt, xhr) {
+        $("#divMasterBody2").load("ProductModel/MasterPartial?masterCode=" + ProductModelVM.ID, function (responseTxt, statusTxt, xhr) {
             if (statusTxt == "success") {
-                $('#hdnMasterCall').val('MSTR');
-                $('#lblModelMasterContextLabel').text('Edit Product Model Information')
-                $('#divModelMasterPopUp').modal('show');
+                $('#hdnMasterCall2').val('MSTR');
+                $('#lblModelMasterContextLabel2').text('Edit Product Model Information')
+                $('#divModelMasterPopUp2').modal('show');
             }
             else {
                 console.log("Error: " + xhr.status + ": " + xhr.statusText);
