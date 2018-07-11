@@ -129,7 +129,7 @@ function ExportAreaData() {
 function EditAreaMaster(thisObj) {
     debugger;
     AreaVM = _dataTables.AreaList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody1").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             $('#lblModelMasterContextLabel1').text('Edit Area Information')
             $('#divModelMasterPopUp1').modal('show');
