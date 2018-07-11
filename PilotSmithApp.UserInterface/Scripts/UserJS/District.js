@@ -131,11 +131,11 @@ function ExportDistrictData() {
 function EditDistrictMaster(thisObj) {
     debugger;
     DistrictVM = _dataTables.DistrictList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("District/MasterPartial?masterCode=" + DistrictVM.Code, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody2").load("District/MasterPartial?masterCode=" + DistrictVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            $('#lblModelMasterContextLabel').text('Edit District Information')
-            $('#divModelMasterPopUp').modal('show');
-            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel2').text('Edit District Information')
+            $('#divModelMasterPopUp2').modal('show');
+            $('#hdnMasterCall2').val('MSTR');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

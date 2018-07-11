@@ -128,11 +128,11 @@ function ExportCountryData() {
 function EditCountryMaster(thisObj) {
     debugger;
     CountryVM = _dataTables.CountryList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("Country/MasterPartial?masterCode=" + CountryVM.Code, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody4").load("Country/MasterPartial?masterCode=" + CountryVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            $('#lblModelMasterContextLabel').text('Edit Country Information')
-            $('#divModelMasterPopUp').modal('show');
-            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel4').text('Edit Country Information')
+            $('#divModelMasterPopUp4').modal('show');
+            $('#hdnMasterCall4').val('MSTR');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

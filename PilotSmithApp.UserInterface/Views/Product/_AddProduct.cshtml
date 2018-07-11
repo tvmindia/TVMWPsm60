@@ -1,6 +1,6 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ProductViewModel
 <style>
-    .modal-dialog {
+    #divModelMasterPopUp3 .modal-dialog {
     width: 65% !important;
 }
 </style>
@@ -109,12 +109,12 @@
         $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList?required=' + $('#hdnProductCategoryRequired').val())
         $('.divCompanySelectList').load('/Company/CompanySelectList?required=' + $('#hdnCompanyRequired').val(), function () {
             $('#FormProduct #CompanyID').select2({
-                dropdownParent: $("#divModelMasterPopUp")
+                dropdownParent: $("#divModelMasterPopUp3")
             });
         })
         try {
             $('#CompanyID,#ProductCategoryCode').select2({
-                dropdownParent: $("#divModelMasterPopUp")
+                dropdownParent: $("#divModelMasterPopUp3")
             });
             $('.select2').addClass('form-control newinput');
         }
