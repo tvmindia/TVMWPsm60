@@ -411,10 +411,10 @@
                         <tr><td>Subject</td><td>: </td><td>@Model.Subject</td></tr>
                     </tbody>
                 </table>
-                <a class="btn btn-openid" style="color:white;text-decoration:none;float:right" onclick="EmailProformaInvoice()">Back </a>
+                <a class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="EmailProformaInvoice()">Back </a>
                 //if (Model.LatestApprovalStatus == 4)
                 //{
-            <button type="button" class="btn btn-openid" style="color:white;text-decoration:none;float:right" onclick="SendProformaInvoiceEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            <button type="button" class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="SendProformaInvoiceEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 //}
                 //else
                 //{
@@ -432,7 +432,7 @@
             @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
                 //if (Model.LatestApprovalStatus == 4)
                 //{
-            <button type="submit" class="btn btn-openid" style="color:white;text-decoration:none;float:right" onclick="DownloadProformaInvoice()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+            <button type="submit" class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="DownloadProformaInvoice()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                     //}
                     //else
                     //{

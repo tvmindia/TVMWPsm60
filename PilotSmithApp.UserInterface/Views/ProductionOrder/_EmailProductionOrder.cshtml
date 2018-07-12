@@ -172,14 +172,14 @@
                         <tr><td>Subject</td><td>: </td><td>@Model.Subject</td></tr>
                     </tbody>
                 </table>
-                <a class="btn btn-openid" style="color:white;text-decoration:none;float:right" onclick="EmailProductionOrder()">Back </a>
+                <a class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="EmailProductionOrder()">Back </a>
                 if (Model.LatestApprovalStatus == 4)
                 {
-                <button type="button" class="btn btn-openid" style="float:right;color:white;text-decoration:none;" onclick="SendProductionOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                <button type="button" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="SendProductionOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
                 else
                 {
-                <button type="button" disabled class="btn btn-openid" style="float:right;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                <button type="button" disabled class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
             }
 
@@ -192,11 +192,11 @@
             @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
                 if (Model.LatestApprovalStatus == 4)
                 {
-                <button type="submit" class="btn btn-openid" style="float:right;color:white;text-decoration:none;" onclick="DownloadProductionOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                <button type="submit" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="DownloadProductionOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
                 else
                 {
-                <button type="submit" disabled class="btn btn-openid" style="float:right;color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                <button type="submit" disabled class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                     }
                 }
             }
