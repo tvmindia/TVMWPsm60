@@ -2,12 +2,12 @@
 //Add Product Category
 function AddProductCategoryMaster(flag) {
     OnServerCallBegin();
-    $("#divMasterBody").load("ProductCategory/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody4").load("ProductCategory/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#hdnMasterCall').val(flag);
-            $('#lblModelMasterContextLabel').text('Add ProductCategory')
-            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall4').val(flag);
+            $('#lblModelMasterContextLabel4').text('Add ProductCategory')
+            $('#divModelMasterPopUp4').modal('show');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -25,11 +25,11 @@ function SaveSuccessProductCategory(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall4').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadProductCategoryTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall4').val() == "OTR") {
                 $('.divProductCategorySelectList').load('/ProductCategory/ProductCategorySelectList?required=' + $('#hdnProductCategoryRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -41,7 +41,7 @@ function SaveSuccessProductCategory(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp4').modal('hide');
 }
 
 //Add Product Specification
@@ -89,12 +89,12 @@ function SaveSuccessProductSpecification(data, status) {
 //Add State master
 function AddStateMaster(flag) {
     OnServerCallBegin();
-    $("#divMasterBody").load("State/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody3").load("State/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#lblModelMasterContextLabel').text('Add State Information')
-            $('#divModelMasterPopUp').modal('show');
-            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel3').text('Add State Information')
+            $('#divModelMasterPopUp3').modal('show');
+            $('#hdnMasterCall3').val(flag);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -109,11 +109,11 @@ function SaveSuccessState(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall3').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadStateTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall3').val() == "OTR") {
                 $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -125,19 +125,19 @@ function SaveSuccessState(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp3').modal('hide');
 }
 
 //Add District
 function AddDistrictMaster(flag) {
     debugger;
     OnServerCallBegin();
-    $("#divMasterBody").load("District/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody2").load("District/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#lblModelMasterContextLabel').text('Add District Information')
-            $('#divModelMasterPopUp').modal('show');
-            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel2').text('Add District Information')
+            $('#divModelMasterPopUp2').modal('show');
+            $('#hdnMasterCall2').val(flag);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -151,11 +151,11 @@ function SaveSuccessDistrict(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall2').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadDistrictTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall2').val() == "OTR") {
                 $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -167,19 +167,19 @@ function SaveSuccessDistrict(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp2').modal('hide');
 }
 
 //Add Area
 function AddAreaMaster(flag) {
     debugger;
     OnServerCallBegin();
-    $("#divMasterBody").load("Area/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody1").load("Area/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#lblModelMasterContextLabel').text('Add Area Information')
-            $('#divModelMasterPopUp').modal('show');
-            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel1').text('Add Area Information')
+            $('#divModelMasterPopUp1').modal('show');
+            $('#hdnMasterCall1').val(flag);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -193,11 +193,11 @@ function SaveSuccessArea(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall1').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadAreaTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall1').val() == "OTR") {
                 $('.divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -209,19 +209,19 @@ function SaveSuccessArea(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp1').modal('hide');
 }
 
 //Add Product
 function AddProductMaster(flag) {
     debugger;
     OnServerCallBegin();
-    $("#divMasterBody").load("Product/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody3").load("Product/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#hdnMasterCall').val(flag);
-            $('#lblModelMasterContextLabel').text('Add Product')
-            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall3').val(flag);
+            $('#lblModelMasterContextLabel3').text('Add Product')
+            $('#divModelMasterPopUp3').modal('show');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -240,11 +240,11 @@ function SaveSuccessProduct(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall3').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadProductTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall3').val() == "OTR") {
                 $('.divProductSelectList').load('/Product/ProductSelectList?required='+$('#hdnProductRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -256,19 +256,19 @@ function SaveSuccessProduct(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp3').modal('hide');
 }
 
 //Add Company
 function AddCompanyMaster(flag) {
     debugger;
     OnServerCallBegin();
-    $("#divMasterBody").load("Company/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody4").load("Company/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#hdnMasterCall').val(flag);
-            $('#lblModelMasterContextLabel').text('Add Company')
-            $('#divModelMasterPopUp').modal('show');
+            $('#hdnMasterCall4').val(flag);
+            $('#lblModelMasterContextLabel4').text('Add Company')
+            $('#divModelMasterPopUp4').modal('show');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -283,11 +283,11 @@ function SaveSuccessCompany(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall4').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadCompanyTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall4').val() == "OTR") {
                 $('.divCompanySelectList').load('/Company/CompanySelectList?required=' + $('#hdnCompanyRequired').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -299,21 +299,21 @@ function SaveSuccessCompany(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp4').modal('hide');
 }
 
 //Add Product Model
 function AddProductModelMaster(flag) {
     debugger;
     OnServerCallBegin();
-    $("#divMasterBody").load("ProductModel/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody2").load("ProductModel/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#hdnMasterCall').val(flag);
-            $('#lblModelMasterContextLabel').text('Add Product Model')
+            $('#hdnMasterCall2').val(flag);
+            $('#lblModelMasterContextLabel2').text('Add Product Model')
             if(flag=="OTR")
-            $('#divModelMasterPopUp #divimageUpload').hide();
-            $('#divModelMasterPopUp').modal('show');
+            $('#divModelMasterPopUp2 #divimageUpload').hide();
+            $('#divModelMasterPopUp2').modal('show');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -327,11 +327,11 @@ function SaveSuccessProductModel(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall2').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadProductModelTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall2').val() == "OTR") {
                 $('.divProductModelSelectList').load('/ProductModel/ProductModelSelectList?required=' + $('#hdnProductModelRequired').val()+'&productID='+$('#hdnProductID').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -343,7 +343,7 @@ function SaveSuccessProductModel(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp2').modal('hide');
 }
 //=========================================================================================================
 //Add Employee master
@@ -1016,13 +1016,13 @@ function SaveSuccessOtherCharge(data, status) {
 function AddCountryMaster(flag) {
     debugger;
     OnServerCallBegin();
-    $("#divMasterBody").load("Country/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody4").load("Country/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
-            $('#lblModelMasterContextLabel').text('Add Country Information')
-            $('#divModelMasterPopUp').modal('show');
+            $('#lblModelMasterContextLabel4').text('Add Country Information')
+            $('#divModelMasterPopUp4').modal('show');
 
-            $('#hdnMasterCall').val(flag);
+            $('#hdnMasterCall4').val(flag);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -1036,11 +1036,11 @@ function SaveSuccessCountry(data, status) {
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
-            if ($('#hdnMasterCall').val() == "MSTR") {
+            if ($('#hdnMasterCall4').val() == "MSTR") {
                 $('#IsUpdate').val('True');
                 BindOrReloadCountryTable('Reset');
             }
-            else if ($('#hdnMasterCall').val() == "OTR") {
+            else if ($('#hdnMasterCall4').val() == "OTR") {
                 $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val());
                 if ($('#CustomerForm')[0])
                     $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
@@ -1069,7 +1069,7 @@ function SaveSuccessCountry(data, status) {
             MasterAlert("danger", JsonResult.Message)
             break;
     }
-    $('#divModelMasterPopUp').modal('hide');
+    $('#divModelMasterPopUp4').modal('hide');
 }
 
 //Add Bank

@@ -125,11 +125,11 @@ function ExportStateData() {
 function EditStateMaster(thisObj) {
     debugger;
     StateVM = _dataTables.StateList.row($(thisObj).parents('tr')).data();
-    $("#divMasterBody").load("State/MasterPartial?masterCode=" + StateVM.Code, function (responseTxt, statusTxt, xhr) {
+    $("#divMasterBody3").load("State/MasterPartial?masterCode=" + StateVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            $('#lblModelMasterContextLabel').text('Edit State Information')
-            $('#divModelMasterPopUp').modal('show');
-            $('#hdnMasterCall').val('MSTR');
+            $('#lblModelMasterContextLabel3').text('Edit State Information')
+            $('#divModelMasterPopUp3').modal('show');
+            $('#hdnMasterCall3').val('MSTR');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

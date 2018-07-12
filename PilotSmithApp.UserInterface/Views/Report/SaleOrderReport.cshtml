@@ -45,7 +45,7 @@
                                 DateTime dt = pSASysCommon.GetCurrentDateTime();                              
                                 List <SelectListItem> saleOrderDateRange = new List<SelectListItem>();
                                 saleOrderDateRange.Add(new SelectListItem
-                                { Text = "ALL", Value = "0", Selected = true });
+                                { Text = "ALL", Value = "", Selected = true });
                                 saleOrderDateRange.Add(new SelectListItem
                                 { Text = "Last 3 Months", Value =dt.AddMonths(-3).ToString("dd-MMM-yyyy")+"||"+ dt.ToString("dd-MMM-yyyy")});
                                 saleOrderDateRange.Add(new SelectListItem

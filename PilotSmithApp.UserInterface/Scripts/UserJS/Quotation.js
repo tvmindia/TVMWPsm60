@@ -841,7 +841,7 @@ function ClearCalculatedFields() {
 //
 function EmailQuotation() {
     debugger;
-    $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=True", function () {
+    $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=True&ImageCheck=True", function () {
         $('#lblModelEmailQuotation').text('Email Quotation');
         //var mailheader = $('#MailBodyHeader').val();
         //mailheader = mailheader.replace(/\n/g, "<br />");
@@ -896,9 +896,29 @@ function UpdateQuotationEmailInfo() {
     debugger;
     //$('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
     //$('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
-    //$('#hdnEmailSentTo').val($('#EmailSentTo').val());
+    //$('#hdnEmailSentTo').val($('#EmailSentTo').val());  
+    //if ($('#imagecheck').prop("checked")) {
+    //    alert('1')
+    //}
+    //else {
+    //    alert('2')
+    //}
+    $('#imagecheck').prop("checked")
     $('#FormUpdateQuotationEmailInfo #ID').val($('#QuotationForm #ID').val());
 }
+
+//function ChangeValueCheckBox(element) {
+//    debugger;
+//    if (element.checked) {
+//        element.value = true;
+//        $('#FormUpdateQuotationEmailInfo #imagecheck').val($('#QuotationForm #imagecheck').val());
+//    }
+//    else {
+//        element.value = false;
+//        $('#FormUpdateQuotationEmailInfo #imagecheck').val($('#QuotationForm #imagecheck').val());
+//    }
+//}
+
 function DownloadQuotation() {
     debugger;
     var bodyContent = $('#divQuotationEmailcontainer').html();
@@ -920,7 +940,7 @@ function SaveSuccessUpdateQuotationEmailInfo(data, status) {
         switch (_status) {
             case "OK":
                 //MasterAlert("success", _result.Message)
-                $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=False", function () {
+                $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=False" + "&ImageCheck=" + $('#imagecheck').prop("checked"), function () {
                     $('#lblModelEmailQuotation').text('Email Attachment')
                 });
                 break;
@@ -1333,3 +1353,4 @@ function GetOtherCharge(value)
     }
     
 }
+
