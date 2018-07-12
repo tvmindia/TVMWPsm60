@@ -296,6 +296,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : saleOrder.LatestApprovalStatusDescription);
                                     saleOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : saleOrder.IsFinalApproved);
                                     saleOrder.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : saleOrder.EmailSentTo);
+                                    saleOrder.Cc = (sdr["Cc"].ToString() != "" ? (sdr["Cc"].ToString()) : saleOrder.Cc);
+                                    saleOrder.Bcc = (sdr["Bcc"].ToString() != "" ? (sdr["Bcc"].ToString()) : saleOrder.Bcc);
+                                    saleOrder.Subject = (sdr["Subject"].ToString() != "" ? (sdr["Subject"].ToString()) : saleOrder.Subject);
                                     saleOrder.TermReferenceNo = (sdr["TermReferenceNo"].ToString() != "" ? sdr["TermReferenceNo"].ToString() : saleOrder.TermReferenceNo);
                                     saleOrder.PrintRemark = (sdr["PrintRemark"].ToString() != "" ? sdr["PrintRemark"].ToString() : saleOrder.PrintRemark);
                                     saleOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleOrder.GeneralNotes);
@@ -524,6 +527,9 @@ namespace PilotSmithApp.RepositoryService.Service
                         //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleOrder.EmailSentYN;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleOrder.EmailSentTo;
+                        cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = saleOrder.Cc;
+                        cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = saleOrder.Bcc;
+                        cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = saleOrder.Subject;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = saleOrder.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = saleOrder.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);

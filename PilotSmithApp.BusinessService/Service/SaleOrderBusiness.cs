@@ -76,7 +76,13 @@ namespace PilotSmithApp.BusinessService.Service
             {
                 if (!string.IsNullOrEmpty(saleOrder.EmailSentTo))
                 {
+                    string[] BccList = null;
+                    string[] CcList = null;
                     string[] EmailList = saleOrder.EmailSentTo.Split(',');
+                    if (saleOrder.Cc != null)
+                        CcList = saleOrder.Cc.Split(',');
+                    if (saleOrder.Bcc != null)
+                        BccList = saleOrder.Bcc.Split(',');
                     string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
                     MailMessage _mail = new MailMessage();
                     PDFTools pDFTools = new PDFTools();
@@ -85,12 +91,22 @@ namespace PilotSmithApp.BusinessService.Service
                     pDFTools.Content = saleOrder.MailContant;
                     pDFTools.ContentFileName = "SaleOrder";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), saleOrder.SaleOrderNo + ".pdf"));
-                    _mail.Subject = "SaleOrder";
+                    _mail.Subject = saleOrder.Subject;
                     _mail.IsBodyHtml = true;
                     foreach (string email in EmailList)
                     {
                         _mail.To.Add(email);
                     }
+                    if (saleOrder.Cc != null)
+                        foreach (string email in CcList)
+                        {
+                            _mail.CC.Add(email);
+                        }
+                    if (saleOrder.Bcc != null)
+                        foreach (string email in BccList)
+                        {
+                            _mail.Bcc.Add(email);
+                        }
                     sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
 

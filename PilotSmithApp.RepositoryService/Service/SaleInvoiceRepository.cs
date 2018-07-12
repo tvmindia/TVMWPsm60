@@ -193,6 +193,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.MailFrom = mailfrom.Replace("\n", "<br />");
                                     saleInvoice.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : saleInvoice.EmailSentYN);
                                     saleInvoice.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : saleInvoice.EmailSentTo);
+                                    saleInvoice.Cc = (sdr["Cc"].ToString() != "" ? (sdr["Cc"].ToString()) : saleInvoice.Cc);
+                                    saleInvoice.Bcc = (sdr["Bcc"].ToString() != "" ? (sdr["Bcc"].ToString()) : saleInvoice.Bcc);
+                                    saleInvoice.Subject = (sdr["Subject"].ToString() != "" ? (sdr["Subject"].ToString()) : saleInvoice.Subject);
                                     saleInvoice.GSTIN = (sdr["GSTIN"].ToString() != "" ? sdr["GSTIN"].ToString() : saleInvoice.GSTIN);
                                     saleInvoice.CIN = (sdr["CIN"].ToString() != "" ? sdr["CIN"].ToString() : saleInvoice.CIN);
                                     saleInvoice.EmailID = (sdr["EmailID"].ToString() != "" ? sdr["EmailID"].ToString() : saleInvoice.EmailID);
@@ -580,6 +583,9 @@ namespace PilotSmithApp.RepositoryService.Service
                         //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleInvoice.EmailSentYN;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleInvoice.EmailSentTo;
+                        cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = saleInvoice.Cc;
+                        cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = saleInvoice.Bcc;
+                        cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = saleInvoice.Subject;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = saleInvoice.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = saleInvoice.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);

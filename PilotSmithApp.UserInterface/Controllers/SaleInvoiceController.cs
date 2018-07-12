@@ -852,6 +852,40 @@ namespace PilotSmithApp.UserInterface.Controllers
         //    return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         //}
         //#endregion Get SaleInvoice SelectList On Demand
+        #region UpdateSaleInvoiceEmailInfo
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string UpdateSaleInvoiceEmailInfo(SaleInvoiceViewModel saleInvoiceVM)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                saleInvoiceVM.PSASysCommon = new PSASysCommonViewModel();
+                saleInvoiceVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                saleInvoiceVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                object result = _saleInvoiceBusiness.UpdateSaleInvoiceEmailInfo(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
+
+                if (saleInvoiceVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+
+        #endregion UpdateSaleInvoiceEmailInfo
 
         #region Email SaleInvoice
         public ActionResult EmailSaleInvoice(SaleInvoiceViewModel saleInvoiceVM)

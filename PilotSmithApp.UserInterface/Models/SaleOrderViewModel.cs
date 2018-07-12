@@ -47,7 +47,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Latest Approval Status")]
         public int? LatestApprovalStatus { get; set; }
         public bool? IsFinalApproved { get; set; }
-        [Required(ErrorMessage = "Please specify at least one recipient")]
+        //[Required(ErrorMessage = "Please specify at least one recipient")]
         [Display(Name = "Sent To")]
         public string EmailSentTo { get; set; }
         [Display(Name = "Term Reference No.")]
@@ -63,9 +63,14 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal Discount { get; set; }
         [Display(Name = "Advance Amount")]
         public decimal? AdvanceAmount { get; set; }
+        public string Cc { get; set; }
+        public string Bcc { get; set; }
+        //[Required(ErrorMessage = "subject is missing")]
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
 
         //Aditional Fields
-        
+
         public string MailFrom { get; set; }
         public string MailBodyFooter { get; set; }
         public string MailContant { get; set; }

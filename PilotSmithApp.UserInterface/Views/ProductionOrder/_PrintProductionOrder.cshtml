@@ -15,7 +15,7 @@
         </thead>
         <tbody>
             <tr><td colspan="6">&nbsp;</td></tr>
-            <tr><td colspan="3" style="padding-left:30px"><b>From,</b><br /> <span>@Html.Raw(@Model.MailFrom)<br /></span></td><td colspan="3" style="padding-left:30px"><b>Customer Details,</b><br /><span id="contact"></span><span><br />@Model.Customer.CompanyName</span></td></tr>
+            <tr><td colspan="3" style="padding-left:30px"><b>From,</b><br /> <span>@Html.Raw(@Model.MailFrom.Replace("\n", "<br />"))<br /></span></td><td colspan="3" style="padding-left:30px"><b>Customer Details,</b><br /><span id="contact"></span><span><br />@Model.Customer.CompanyName</span></td></tr>
             <tr><td colspan="6">&nbsp;</td></tr>
             <tr><td class="detailSpace">Production Order No</td><td colspan="2">: @Model.ProdOrderNo</td><td></td><td></td></tr>
             <tr><td>Production Order Date</td><td colspan="2">: @Model.ProdOrderDateFormatted</td><td></td><td></td></tr>

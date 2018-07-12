@@ -23,7 +23,12 @@
                         <tr style="width:100%;">
                             <td colspan="4" style="width:50%;text-align:left;vertical-align:top;">
                                 @Model.BillLocation.Name<br />
-                                @Model.BillLocation.Address<br />
+                                @{
+                                    if (Model.BillLocation.Address != null)
+                                    {
+                                        @Html.Raw(Model.BillLocation.Address.Replace("\n", "<br />"))<br />
+                                    }
+                                }
                                 GSTIN/UIN : @Model.GSTIN<br />
                                 PAN : @Model.PAN<br />
                                 CIN : @Model.CIN<br />
@@ -51,12 +56,23 @@
             <tr>
                 <td colspan="4" style="width:40%;">
                     @Model.Customer.CompanyName<br />
-                    @Html.Raw(@Model.MailingAddress)
+                    @{
+                        if (Model.MailingAddress != null)
+                        {
+                            @Html.Raw(Model.MailingAddress.Replace("\n", "<br />"))
+                        }
+                    }
+                    
                 </td>
                 <td colspan="2" style="width:20%;"></td>
                 <td colspan="4" style="width:40%;">
                     @Model.Customer.CompanyName<br />
-                    @Html.Raw(@Model.ShippingAddress)
+                    @{
+                        if (Model.ShippingAddress != null)
+                        {
+                            @Html.Raw(Model.ShippingAddress.Replace("\n", "<br />"))
+                        }
+                    }
                 </td>
             </tr>
         </tbody>

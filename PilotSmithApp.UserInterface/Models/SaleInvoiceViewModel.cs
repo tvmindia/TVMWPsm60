@@ -55,6 +55,11 @@ namespace PilotSmithApp.UserInterface.Models
         public string InvoiceType { get; set; }
         public decimal? Discount { get; set; }
         public decimal? AdvanceAmount { get; set; }
+        public string Cc { get; set; }
+        public string Bcc { get; set; }
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
+
         //additional Fields
         public string DocumentType { get; set; }
         public string DetailJSON { get; set; }

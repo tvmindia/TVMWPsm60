@@ -71,7 +71,13 @@ namespace PilotSmithApp.BusinessService.Service
                 if (!string.IsNullOrEmpty(saleInvoice.EmailSentTo))
                 {
                     //------------------------
+                    string[] BccList = null;
+                    string[] CcList = null;
                     string[] EmailList = saleInvoice.EmailSentTo.Split(',');
+                    if (saleInvoice.Cc != null)
+                        CcList = saleInvoice.Cc.Split(',');
+                    if (saleInvoice.Bcc != null)
+                        BccList = saleInvoice.Bcc.Split(',');
                     string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
                     MailMessage _mail = new MailMessage();
                     PDFTools pDFTools = new PDFTools();
@@ -80,12 +86,22 @@ namespace PilotSmithApp.BusinessService.Service
                     pDFTools.Content = saleInvoice.MailContant;
                     pDFTools.ContentFileName = "SaleInvoice";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), saleInvoice.SaleInvNo + ".pdf"));
-                    _mail.Subject = "Sale Invoice";
+                    _mail.Subject = saleInvoice.Subject;
                     _mail.IsBodyHtml = true;
                     foreach (string email in EmailList)
                     {
                         _mail.To.Add(email);
                     }
+                    if (saleInvoice.Cc != null)
+                        foreach (string email in CcList)
+                        {
+                            _mail.CC.Add(email);
+                        }
+                    if (saleInvoice.Bcc != null)
+                        foreach (string email in BccList)
+                        {
+                            _mail.Bcc.Add(email);
+                        }
                     sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
             }
