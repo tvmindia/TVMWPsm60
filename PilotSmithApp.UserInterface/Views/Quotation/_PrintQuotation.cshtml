@@ -38,13 +38,13 @@
         <thead>
             <tr>
                 <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
-                <th style="width:30%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
-                <th style="width:9%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
+                <th colspan="2" style="width:34%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                <th style="width:8%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
                 <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
                 <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
-                <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
-                <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CGST</th>
-                <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">IGST</th>
+                <th style="width:8%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
+                <th style="width:8%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CGST</th>
+                <th style="width:8%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">IGST</th>
                 <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">AMOUNT</th>
             </tr>
         </thead>
@@ -66,13 +66,23 @@
                     itemgrandTotal = itemtaxableAmount + itemgSTAmount;
                     <tr>
                         <td style="width:4%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
-                        <td style="width:30%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
-                        <td style="width:9%; text-align: left;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
+                        @{if (@mp.ProductModel.ImageURL != null)
+                            {
+                                <td style="width:14%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:77pt!important; style="height:77pt!important;workAround:image"></td>
+
+                            }
+                            else
+                            {
+                                <td style="width:14%;vertical-align:central;padding:5px"></td>
+                            }
+                        }
+                        <td style="width:21%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
+                        <td style="width:8%; text-align: left;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                         <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Rate</td>
                         <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Discount</td>
-                        <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@SGSTAmt<br /> <span style="font-size:8px;">(@mp.SGSTPerc %)</span></td>
-                        <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span></td>
-                        <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
+                        <td style="width:8%; text-align: right;font-size:12px;vertical-align:top;">@SGSTAmt<br /> <span style="font-size:8px;">(@mp.SGSTPerc %)</span></td>
+                        <td style="width:8%; text-align: right;font-size:12px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span></td>
+                        <td style="width:8%; text-align: right;font-size:12px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
                         <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@itemgrandTotal</td>
                     </tr>
                     slno = slno + 1;
@@ -86,7 +96,7 @@
                 GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
             }
             <tr>
-                <td colspan="5" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
+                <td colspan="6" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
                     @if (Model.QuotationOtherChargeList.Count != 0)
                     {
                         <table id="OtherChargeDetailsTable" style="font-family: arial, sans-serif;width: 90%;padding:8px;" cellspacing="0">
@@ -256,14 +266,15 @@
     });
     function PostPrint(val)
     {
+        debugger;
         if(val==1)
         {
-            $('#hdnPrintFlag').val(true);
+            $('#hdnPrintFlag').val(true);            
             $('#FormPrintQuotation').submit();
         }
         if(val==0)
         {
-            $('#hdnPrintFlag').val(false);
+            $('#hdnPrintFlag').val(false);          
             $('#FormPrintQuotation').submit();
         }
         $('#divModelPrintQuotation').modal('hide');
