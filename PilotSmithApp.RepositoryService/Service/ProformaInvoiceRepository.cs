@@ -190,6 +190,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     proformaInvoice.MailFrom = mailfrom.Replace("\n", "<br />");
                                     proformaInvoice.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : proformaInvoice.EmailSentYN);
                                     proformaInvoice.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : proformaInvoice.EmailSentTo);
+                                    proformaInvoice.Cc = (sdr["Cc"].ToString() != "" ? (sdr["Cc"].ToString()) : proformaInvoice.Cc);
+                                    proformaInvoice.Bcc = (sdr["Bcc"].ToString() != "" ? (sdr["Bcc"].ToString()) : proformaInvoice.Bcc);
+                                    proformaInvoice.Subject = (sdr["Subject"].ToString() != "" ? (sdr["Subject"].ToString()) : proformaInvoice.Subject);
                                     proformaInvoice.GSTIN = (sdr["GSTIN"].ToString() != "" ? sdr["GSTIN"].ToString() : proformaInvoice.GSTIN);
                                     proformaInvoice.CIN = (sdr["CIN"].ToString() != "" ? sdr["CIN"].ToString() : proformaInvoice.CIN);
                                     proformaInvoice.EmailID = (sdr["EmailID"].ToString() != "" ? sdr["EmailID"].ToString() : proformaInvoice.EmailID);
@@ -581,6 +584,9 @@ namespace PilotSmithApp.RepositoryService.Service
                        
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = proformaInvoice.EmailSentYN;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = proformaInvoice.EmailSentTo;
+                        cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = proformaInvoice.Cc;
+                        cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = proformaInvoice.Bcc;
+                        cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = proformaInvoice.Subject;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = proformaInvoice.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = proformaInvoice.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);

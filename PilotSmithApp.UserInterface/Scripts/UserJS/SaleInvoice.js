@@ -1266,13 +1266,25 @@ function EmailSaleInvoice() {
 }
 
 function SendSaleInvoiceEmail() {
-    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
-    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
-    $('#hdnSaleInvoiceEMailContent').val($('#divSaleInvoiceEmailcontainer').html());
-    $('#hdnSaleInvNo').val($('#SaleInvNo').val());
-    $('#hdnContactPerson').val($('#ContactPerson').text());
-    $('#hdnSaleInvDateFormatted').val($('#SaleInvDateFormatted').val());
-    $('#FormSaleInvoiceEmailSend #ID').val($('#SaleInvoiceForm #ID').val());
+    if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
+        $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+        $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+        $('#hdnSaleInvoiceEMailContent').val($('#divSaleInvoiceEmailcontainer').html());
+        $('#hdnSaleInvNo').val($('#SaleInvNo').val());
+        $('#hdnContactPerson').val($('#ContactPerson').text());
+        $('#hdnSaleInvDateFormatted').val($('#SaleInvDateFormatted').val());
+        $('#FormSaleInvoiceEmailSend #ID').val($('#SaleInvoiceForm #ID').val());
+        $('#FormSaleInvoiceEmailSend').submit();
+    }
+    else {
+        if ($('#EmailSentTo').val() == null) {
+            $('#sentTolbl').css('color', 'red');
+            $("#sentTolbl").attr("title", "Please specify at least one recipient");
+            $('#sentTovalidationmsglbl').html('__________________________________');
+            $('#sentTovalidationmsglbl').css('color', 'red');
+            $("#sentTovalidationmsglbl").attr("title", "Please specify at least one recipient");
+        }
+    }
 }
 function UpdateSaleInvoiceEmailInfo() {
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
@@ -1303,13 +1315,13 @@ function SaveSuccessUpdateSaleInvoiceEmailInfo(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
-                MasterAlert("success", _result.Message)
+                //MasterAlert("success", _result.Message)
                 $("#divModelEmailSaleInvoiceBody").load("SaleInvoice/EmailSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val() + "&EmailFlag=False", function () {
                     $('#lblModelEmailSaleInvoice').text('Send Email SaleInvoice')
                 });
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                //MasterAlert("success", _message)
                 $('#divModelEmailSaleInvoice').modal('hide');
                 break;
             default:

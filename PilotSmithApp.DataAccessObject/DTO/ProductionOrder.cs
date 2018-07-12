@@ -25,6 +25,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool? IsFinalApproved { get; set; }
         public string EmailSentTo { get; set; }
         public int? BranchCode { get; set; }
+        public string Cc { get; set; }
+        public string Bcc { get; set; }
+        public string Subject { get; set; }
 
         //Aditional Fields
         public string MailFrom { get; set; }

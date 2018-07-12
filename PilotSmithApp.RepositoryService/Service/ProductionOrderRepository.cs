@@ -168,6 +168,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : productionOrder.DocumentOwners);
                                     productionOrder.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : productionOrder.DocumentOwner);
                                     productionOrder.EmailSentTo = (sdr["EmailSentTo"].ToString() != "" ? sdr["EmailSentTo"].ToString() : productionOrder.EmailSentTo);
+                                    productionOrder.Cc = (sdr["Cc"].ToString() != "" ? (sdr["Cc"].ToString()) : productionOrder.Cc);
+                                    productionOrder.Bcc = (sdr["Bcc"].ToString() != "" ? (sdr["Bcc"].ToString()) : productionOrder.Bcc);
+                                    productionOrder.Subject = (sdr["Subject"].ToString() != "" ? (sdr["Subject"].ToString()) : productionOrder.Subject);
                                     productionOrder.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionOrder.EmailSentYN);
                                     productionOrder.LatestApprovalID = (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : productionOrder.LatestApprovalID);
                                     productionOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionOrder.LatestApprovalStatus);
@@ -581,6 +584,9 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = productionOrder.ID;                      
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = productionOrder.EmailSentYN;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = productionOrder.EmailSentTo;
+                        cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = productionOrder.Cc;
+                        cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = productionOrder.Bcc;
+                        cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = productionOrder.Subject;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = productionOrder.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = productionOrder.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);

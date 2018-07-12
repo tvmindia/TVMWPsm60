@@ -37,13 +37,15 @@ namespace PilotSmithApp.UserInterface.Models
         public int? LatestApprovalStatus{get;set;}
         [Display(Name = "Final Approval")]
         public bool? IsFinalApproved{get;set;}
-        [Required(ErrorMessage = "Please specify at least one recipient.")]
         [Display(Name = "Sent To")]
         public string EmailSentTo{get;set;}
         [Display(Name = "Select Branch")]
         [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode{get;set;}
-
+        public string Cc { get; set; }
+        public string Bcc { get; set; }
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
         //Aditional Fields
 
         public string MailFrom { get; set; }

@@ -821,11 +821,23 @@ function EmailProductionOrder() {
 }
 function SendProductionOrderEmail() {
     debugger;
-    $('#hdnProductionOrderEMailContent').val($('#divProductionOrderEmailcontainer').html());
-    $('#hdnProdOrderNo').val($('#ProdOrderNo').val());
-    $('#hdnContactPerson').val($('#ContactPerson').text());
-    $('#hdnProdOrderDateFormatted').val($('#ProdOrderDateFormatted').val());
-    $('#FormProductionOrderEmailSend #ID').val($('#ProductionOrderForm #ID').val());
+    if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
+        $('#hdnProductionOrderEMailContent').val($('#divProductionOrderEmailcontainer').html());
+        $('#hdnProdOrderNo').val($('#ProdOrderNo').val());
+        $('#hdnContactPerson').val($('#ContactPerson').text());
+        $('#hdnProdOrderDateFormatted').val($('#ProdOrderDateFormatted').val());
+        $('#FormProductionOrderEmailSend #ID').val($('#ProductionOrderForm #ID').val());
+        $('#FormProductionOrderEmailSend').submit();
+    }
+    else {
+        if ($('#EmailSentTo').val() == null) {
+            $('#sentTolbl').css('color', 'red');
+            $("#sentTolbl").attr("title", "Please specify at least one recipient");
+            $('#sentTovalidationmsglbl').html('__________________________________');
+            $('#sentTovalidationmsglbl').css('color', 'red');
+            $("#sentTovalidationmsglbl").attr("title", "Please specify at least one recipient");
+        }
+    }
 }
 function UpdateProductionOrderEmailInfo() {
     debugger;    
@@ -858,13 +870,13 @@ function SaveSuccessUpdateProductionOrderEmailInfo(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
-                MasterAlert("success", _result.Message)
+                //MasterAlert("success", _result.Message)
                 $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=False", function () {
                     $('#lblModelEmailProductionOrder').text('Email Attachment')
                 });
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                //MasterAlert("success", _message)
                 $('#divModelEmailProductionOrder').modal('hide');
                 break;
             default:
