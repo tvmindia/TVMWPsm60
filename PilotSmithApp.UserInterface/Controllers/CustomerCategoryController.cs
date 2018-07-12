@@ -69,7 +69,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool exists = _customerCategoryBusiness.CheckCustomerCategoryNameExist(Mapper.Map<CustomerCategoryViewModel, CustomerCategory>(customerCategoryVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>CustomerCategory already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>CustomerCategory already is in use </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }

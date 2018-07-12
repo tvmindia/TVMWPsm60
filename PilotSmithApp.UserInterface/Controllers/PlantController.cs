@@ -85,7 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool exists =_plantBusiness.CheckPlantNameExist(Mapper.Map<PlantViewModel, Plant>(plantVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Plant already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Plant already is in use </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }

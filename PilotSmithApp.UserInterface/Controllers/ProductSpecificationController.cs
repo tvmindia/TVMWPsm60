@@ -44,7 +44,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool exists = productSpecificationVM.IsUpdate ? false : _productSpecificationBusiness.CheckProductSpecificationExist(Mapper.Map<ProductSpecificationViewModel, ProductSpecification>(productSpecificationVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Product Specification is already in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Product Specification is already in use </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);

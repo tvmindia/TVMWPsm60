@@ -71,7 +71,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool exists = stateVM.IsUpdate ? false : _stateBusiness.CheckStateNameExist(Mapper.Map<StateViewModel,State>(stateVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>State already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>State already is in use </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);

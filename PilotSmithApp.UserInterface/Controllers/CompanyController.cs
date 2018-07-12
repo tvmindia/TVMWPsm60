@@ -71,7 +71,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool exists = companyVM.IsUpdate ? false : _companyBusiness.CheckCompanyNameExist(Mapper.Map<CompanyViewModel, Company>(companyVM));
             if (exists)
             {
-                return Json("<p><span style='vertical-align: 2px'>Company already is in use </span> <i class='fas fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                return Json("<p><span style='vertical-align: 2px'>Company already is in use </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
             }
             //var result = new { success = true, message = "Success" };
             return Json(true, JsonRequestBehavior.AllowGet);
