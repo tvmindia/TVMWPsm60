@@ -815,7 +815,7 @@ function DeleteProductionOrderDetail(ID) {
 function EmailProductionOrder() {
     debugger;
     $("#divModelEmailProductionOrderBody").load("ProductionOrder/EmailProductionOrder?ID=" + $('#ProductionOrderForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailProductionOrder').text('Email Attachment')
+        $('#lblModelEmailProductionOrder').text('Email Production Order')
         $('#divModelEmailProductionOrder').modal('show');
     });
 }

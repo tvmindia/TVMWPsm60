@@ -1260,7 +1260,7 @@ function CalculateGrandTotal(value) {
 //
 function EmailSaleInvoice() {
     $("#divModelEmailSaleInvoiceBody").load("SaleInvoice/EmailSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailSaleInvoice').text('Email SaleInvoice')
+        $('#lblModelEmailSaleInvoice').text('Email Sale Invoice')
         $('#divModelEmailSaleInvoice').modal('show');
     });
 }
@@ -1302,7 +1302,7 @@ function DownloadSaleInvoice() {
 function PrintSaleInvoice() {
     debugger;
     $("#divModelPrintSaleInvoiceBody").load("SaleInvoice/PrintSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val(), function () {
-        $('#lblModelPrintSaleInvoice').text('Print SaleInvoice');
+        $('#lblModelPrintSaleInvoice').text('Print Sale Invoice');
         $('#divModelPrintSaleInvoice').modal('show');
     });
 }
@@ -1317,7 +1317,7 @@ function SaveSuccessUpdateSaleInvoiceEmailInfo(data, status) {
             case "OK":
                 //MasterAlert("success", _result.Message)
                 $("#divModelEmailSaleInvoiceBody").load("SaleInvoice/EmailSaleInvoice?ID=" + $('#SaleInvoiceForm #ID').val() + "&EmailFlag=False", function () {
-                    $('#lblModelEmailSaleInvoice').text('Send Email SaleInvoice')
+                    $('#lblModelEmailSaleInvoice').text('Email Attachment')
                 });
                 break;
             case "ERROR":

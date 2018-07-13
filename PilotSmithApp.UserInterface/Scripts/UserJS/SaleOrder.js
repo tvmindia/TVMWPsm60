@@ -955,7 +955,7 @@ function CalculateGrandTotal(value) {
 function EmailSaleOrder() {
     debugger;
     $("#divModelEmailSaleOrderBody").load("SaleOrder/EmailSaleOrder?ID=" + $('#SaleOrderForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailSaleOrder').text('Email Attachment')
+        $('#lblModelEmailSaleOrder').text('Email SaleOrder')
         $('#divModelEmailSaleOrder').modal('show');
     });
 }
