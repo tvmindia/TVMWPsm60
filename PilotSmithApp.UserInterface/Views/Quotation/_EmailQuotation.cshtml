@@ -47,9 +47,9 @@
                 </table>
                 <div class="col-md-12" style="padding:0px;">
                     <div class="col-md-6" style="margin-top:2%;margin-left:0px !important;padding:0px;">
-                        @Html.Label("Include Product Images:",new { @class="control-label",@style= "font-weight: bold;font-size:15px" })
-                        @Html.CheckBoxFor(model => model.ImageCheck, new { @checked = "checked", @id = "imagecheck"})
-                    </div>                   
+                        @Html.Label("Include Product Images:", new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                        @Html.CheckBoxFor(model => model.ImageCheck, new { @checked = "checked", @id = "imagecheck" })
+                    </div>
                     <div class="col-md-6 modal-footer d-flex justify-content-center">
                         <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="UpdateQuotationEmailInfo()">Preview <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                     </div>
@@ -60,14 +60,14 @@
     }
     <br />
 </div>
-@if (Model.ImageCheck==true)
+@if (Model.ImageCheck == true)
 {
     if (!Model.EmailFlag)
     {
         <div>
             <img style="width:100%;height:210px;" src="~/Content/images/LH_Header.jpg" />
         </div>
-        <div style="padding:0px 30px 0px 30px;">
+        <div style="padding:0px 30px 0px 30px;margin-left:51px;">
             <div id="divQuotationEmailcontainer">
                 @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
                     var tot = "";
@@ -123,10 +123,10 @@
                     <thead>
                         <tr>
                             <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
-                            <th style="width:15%;text-align: left;font-size:12px;border-bottom:dotted 1pt;">     </th>
-                            <th style="width:21%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
-                            <th style="width:13%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">HSN</th>
-                            <th style="width:10%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
+                            @*<th style="width:15%;text-align: left;font-size:12px;border-bottom:dotted 1pt;">     </th>*@
+                            <th colspan="2" style="width:40%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                            <th style="width:10%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">HSN</th>
+                            <th style="width:9%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
                             <th style="width:13%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
                             <th style="width:11%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
                             <th style="width:13%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">AMOUNT</th>
@@ -154,19 +154,19 @@
                                     <td style="width:4%;text-align: center;padding:5px;font-size:12px;vertical-align:top;">@slno</td>
                                     @{if (@mp.ProductModel.ImageURL != null)
                                         {
-                                            <td style="width:15%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:80px!important; style="height:80px!important;padding:10px;workAround:image"></td>
+                                    <td style="width:10%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:77pt!important; style="height:77pt!important;workAround:image"></td>
 
                                         }
                                         else
                                         {
-                                            <td style="width:15%;vertical-align:central;padding:5px"></td>
+                                    <td style="width:10%;vertical-align:central;padding:5px"></td>
                                         }
                                     }
-                                    <td style="width:21%; text-align: left;padding:5px;font-size:12px;vertical-align:top">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
-                                    <td style="width:13%; text-align:left;padding:5px;font-size:12px;vertical-align:top;">@mp.Product.HSNCode</td>
-                                    <td style="width:10%; text-align: left;padding:5px;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
+                                    <td style="width:32%; text-align: left;padding:5px;font-size:12px;vertical-align:top">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
+                                    <td style="width:10%; text-align:left;padding:5px;font-size:12px;vertical-align:top;">@mp.Product.HSNCode</td>
+                                    <td style="width:9%; text-align: left;padding:5px;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                                     <td style="width:13%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@mp.Rate</td>
-                                    <td style="width:11%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@mp.Discount</td>
+                                    <td style="width:9%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@mp.Discount</td>
                                     <td style="width:13%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@itemgrandTotal</td>
                                 </tr>
                                                 slno = slno + 1;
@@ -225,7 +225,7 @@
                                         </thead>
                                     </table>
                                 }
-
+                            </td>
 
                             <td colspan="3" style="font:12px;border-top:solid .5px;padding-top:8px;">
                                 <table style="width:100%">
@@ -332,7 +332,7 @@
                                         <div>
                                             <img style="width:100%;height:210px;" src="~/Content/images/LH_Header.jpg" />
                                         </div>
-                                        <div style="padding:0px 30px 0px 30px;">
+                                        <div style="padding:0px 30px 0px 30px;margin-left:51px;">
                                             <div id="divQuotationEmailcontainer">
                                                 @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
                                                     var tot = "";
@@ -388,10 +388,10 @@
                                                     <thead>
                                                         <tr>
                                                             <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
-                                                            <th style="width:15%;text-align: left;font-size:12px;border-bottom:dotted 1pt;">     </th>
-                                                            <th style="width:21%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                                                            @*<th style="width:15%;text-align: left;font-size:12px;border-bottom:dotted 1pt;">     </th>*@
+                                                            <th style="width:37%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
                                                             <th style="width:13%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">HSN</th>
-                                                            <th style="width:10%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
+                                                            <th style="width:9%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
                                                             <th style="width:13%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
                                                             <th style="width:11%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
                                                             <th style="width:13%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">AMOUNT</th>
@@ -418,34 +418,37 @@
                                                                 <tr style="border-bottom-style:solid;border-bottom-color: #e4dcdc;border-bottom-width:1px;">
                                                                     <td style="width:4%;text-align: center;padding:5px;font-size:12px;vertical-align:top;">@slno</td>
                                                                     @*@{if (@mp.ProductModel.ImageURL != null)
-                                                                        {
-                                                                            <td style="width:15%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:80px!important; style="height:80px!important;padding:10px;workAround:image"></td>
+                                                                            {
+                                                                                <td style="width:15%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:80px!important; style="height:80px!important;padding:10px;workAround:image"></td>
 
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <td style="width:15%;vertical-align:central;padding:5px"></td>
-                                                                        }
-                                                                    }*@
-                                                                    <td style="width:21%; text-align: left;padding:5px;font-size:12px;vertical-align:top">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <td style="width:15%;vertical-align:central;padding:5px"></td>
+                                                                            }
+                                                                        }*@
+                                                                    <td style="width:37%; text-align: left;padding:5px;font-size:12px;vertical-align:top">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
                                                                     <td style="width:13%; text-align:left;padding:5px;font-size:12px;vertical-align:top;">@mp.Product.HSNCode</td>
-                                                                    <td style="width:10%; text-align: left;padding:5px;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
+                                                                    <td style="width:9%; text-align: left;padding:5px;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                                                                     <td style="width:13%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@mp.Rate</td>
                                                                     <td style="width:11%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@mp.Discount</td>
                                                                     <td style="width:13%; text-align: right;padding:5px;font-size:12px;vertical-align:top;">@itemgrandTotal</td>
                                                                 </tr>
-                                                                                slno = slno + 1;
-                                                                                totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
-                                                                                totalCGST = totalCGST + (decimal)CGSTAmt;
-                                                                                totalSGST = totalSGST + (decimal)SGSTAmt;
-                                                                                totalIGST = totalIGST + (decimal)IGSTAmt;
-                                                                            }
-                                                                            grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
-                                                                            grandTotal = grossAmt - ((decimal)Model.Discount);
-                                                                            GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
-                                                                        }
+                                                                slno = slno + 1;
+                                                                totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
+                                                                totalCGST = totalCGST + (decimal)CGSTAmt;
+                                                                totalSGST = totalSGST + (decimal)SGSTAmt;
+                                                                totalIGST = totalIGST + (decimal)IGSTAmt;
+                                                            }
+                                                            grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
+                                                            grandTotal = grossAmt - ((decimal)Model.Discount);
+                                                            GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
+                                                        }
+
                                                         <tr>
-                                                            <td colspan="5" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
+                                                            <td colspan="4" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
+                                                                @*<h5><u>Other Charge</u></h5>*@
+
                                                                 @if (Model.QuotationOtherChargeList.Count != 0)
                                                                 {
                                                                     <table id="OtherChargeDetailsTable" style="font-family: arial, sans-serif;width: 90%;padding:8px;" cellspacing="0">
@@ -453,8 +456,8 @@
                                                                             <tr>
                                                                                 <th style="width:7%;text-align: center;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black; ">No.</th>
                                                                                 <th style="width:36%; text-align: left;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">ITEM</th>
-                                                                                <th style="width:10%;text-align:left;font-size:12px;border-bottom-style: solid;border-bottom-width:1pt;border-bottom-color:black;">SAC</th>
-                                                                                <th style="width:17%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">CHARGE</th>
+                                                                                <th style="width:12%;text-align:left;font-size:12px;border-bottom-style: solid;border-bottom-width:1pt;border-bottom-color:black;">SAC</th>
+                                                                                <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">CHARGE</th>
                                                                                 <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">GST</th>
                                                                                 <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">AMOUNT</th>
                                                                             </tr>
@@ -474,8 +477,8 @@
 
                                                                                         <td style="width:7%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
                                                                                         <td style="width:36%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.Description</td>
-                                                                                        <td style="width:10%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.SACCode</td>
-                                                                                        <td style="width:17%; text-align: right;font-size:12px;vertical-align:top;">@mp.ChargeAmount</td>
+                                                                                        <td style="width:12%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.SACCode</td>
+                                                                                        <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@mp.ChargeAmount</td>
                                                                                         <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@GSTAmt</td>
                                                                                         <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@Total</td>
 
@@ -490,6 +493,7 @@
                                                                         </thead>
                                                                     </table>
                                                                 }
+                                                            </td>
 
 
                                                             <td colspan="3" style="font:12px;border-top:solid .5px;padding-top:8px;">
@@ -588,7 +592,7 @@
                                         <div style="padding-top:20px">
                                             <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />
                                         </div>
-                                                                }
+                                                                    }
                                                                 }
 
 <div class="modal-footer d-flex justify-content-left" style="text-align:left;padding:0px 30px 0px 30px;">
@@ -610,6 +614,7 @@
                 @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
                 <br />
                 <table style="width:50%;font-size:12px">
+                <table style="width:50%;font-size:12px;margin-left:70px">
                     <tbody>
                         <tr><td id="sentTolbl">Sent To</td><td>: </td><td id="sentTovalidationmsglbl">@Model.EmailSentTo</td></tr>
                         <tr><td>Cc</td><td>: </td><td>@Model.Cc</td></tr>
