@@ -111,7 +111,9 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/PendingSaleOrderReport").Include("~/Scripts/UserJS/Report/PendingSaleOrderReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/SaleOrderReport").Include("~/Scripts/UserJS/Report/SaleOrderReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/ProductionOrderStandardReport").Include("~/Scripts/UserJS/Report/ProductionOrderStandardReport.js"));
-
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/PendingProductionOrderReport").Include("~/Scripts/UserJS/Report/PendingProductionOrderReport.js"));
+            bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/ProductionQCStandardReport").Include("~/Scripts/UserJS/Report/ProductionQCStandardReport.js"));
+                        
         }
     }
 }

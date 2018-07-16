@@ -1,0 +1,289 @@
+﻿
+@model PilotSmithApp.UserInterface.Models.ProductionQCStandardReportViewModel
+@using PilotSmithApp.UserInterface.App_Start
+@using PilotSmithApp.DataAccessObject.DTO;
+
+
+
+@{
+    ViewBag.Title = "Production QC Standard Report";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+
+
+@section styles {
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
+    @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
+}
+@{
+    List<SelectListItem> EmptySelectList = new List<SelectListItem>();
+}
+
+<section class="content" id="main">
+    <div class="row">
+        <div class="form-group col-md-6">
+            <div class="col-md-12">&nbsp;</div>
+            <div class="col-md-12">
+                <div class="input-group">
+                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    <label class="searchicon" for="textbox">
+                        <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
+                    </label>
+                    <div class="input-group-btn">
+                        <button class="btn searchbtn" type="submit" onclick="BindOrReloadProductionQCReportTable('Search')"><i class="fa fa-search" style="font-size:18px;"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3" style="padding-top:15px;">
+            <div class="col-md-12">
+                @*@Html.LabelFor(model => model.DateFilter, htmlAttributes: new { @class = "control-label" })*@
+            </div>
+            <div class="col-md-12">
+                @{
+                    PSASysCommon pSASysCommon = new PSASysCommon();
+                    DateTime dt = pSASysCommon.GetCurrentDateTime();
+                    List<SelectListItem> productionOrderDateRange = new List<SelectListItem>();
+                    productionOrderDateRange.Add(new SelectListItem
+                    { Text = "ALL", Value = "", Selected = true });
+                    productionOrderDateRange.Add(new SelectListItem
+                    { Text = "Last 3 Months", Value = dt.AddMonths(-3).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+                    productionOrderDateRange.Add(new SelectListItem
+                    { Text = "Last 6 Months", Value = dt.AddMonths(-6).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+                    productionOrderDateRange.Add(new SelectListItem
+                    { Text = "Last 12 Months", Value = dt.AddMonths(-12).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+
+                }
+                @Html.DropDownListFor(model => model.DateFilter, productionOrderDateRange, "--- Quick Filter ---", new { @class = "form-control newinput ", @style = "width:100 % !important", @onchange = "DateFilterOnchange('Search');", @id = "DateFilter" })
+            </div>
+        </div>
+
+        <div class="col-md-3" id="btnPatchProductionQCList" style="min-height:25px">
+
+            @{
+                @Html.Action("ChangeButtonStyle", "Report", new { actionType = "List" });
+            }
+        </div>
+    </div>
+
+    <div class="divboxASearch">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Advance search<button type="button" class="close" onclick="CloseAdvanceSearch()"><span aria-hidden="true">×</span></button></div>
+            <div class="form-group col-md-12" style="height:260px; overflow: auto;">
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvFromDate, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.AdvFromDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvToDate, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.AdvToDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvCustomer, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvCustomer, Model.Customer.CustomerList, "Select customer", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvPlantCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvPlantCode, EmptySelectList, "Select plant", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvAreaCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvAreaCode, EmptySelectList, "Select area", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvCountryCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvCountryCode, EmptySelectList, "Select Country", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvStateCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvStateCode, EmptySelectList, "Select State", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvDistrictCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvDistrictCode, EmptySelectList, "Select District", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvCustomerCategoryCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvCustomerCategoryCode, EmptySelectList, "Select Customer Category", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvReferencePersonCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvReferencePersonCode, EmptySelectList, "Select referred person", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvProduct, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvProduct, Model.Product.ProductSelectList, "Select product", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvProductModel, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                    </div>@Html.DropDownListFor(model => model.AdvProductModel, Model.ProductModel.ProductModelSelectList, "Select product model", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+
+
+                </div>
+
+
+
+
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvBranchCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvBranchCode, EmptySelectList, "Select branch", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+
+
+
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvDocumentStatusCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvDocumentStatusCode, Model.DocumentStatus.DocumentStatusSelectList, "Select document status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvAmountFrom, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.AdvAmountFrom, new { htmlAttributes = new { @class = "form-control newinput", @style = "width:100 % !important" } })
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvAmountTo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.AdvAmountTo, new { htmlAttributes = new { @class = "form-control newinput", @style = "width:100 % !important" } })
+                    </div>
+                </div>
+                <div class="col-md-6 no-left-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvDocumentOwnerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.AdvDocumentOwnerID, EmptySelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-12">&nbsp;</div>
+
+            </div>
+            <div class="col-md-12">&nbsp;</div>
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <button class="btn searchbtn" type="submit" onclick="ApplyFilterThenSearch()" style="width: 60px;"><i class="fa fa-search" style="font-size:18px;"></i></button>
+
+                </div>
+            </div>
+            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID })
+            <div class="col-md-12">&nbsp;</div>
+        </div>
+    </div>
+    <div class="row tableContainer">
+        <div class="excelExport" style="display:none;"></div>
+        <div class="col-md-12">
+            <table id="tblProductionQCReport" class="table table-striped" cellspacing="0" style="width:100%;display:none;">
+                <thead>
+                    <tr class="text-center TableHead">
+                        <th>Prod.Order No.</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Contact Person</th>
+                        <th>Exp.Del.Date</th>
+                        <th>Referred By</th>
+                        <th>Area</th>
+                        <th>Plant/Supplier</th>
+                        <th>Product Name</th>
+                        <th>Product Model</th>
+                        <th>Product Spec.</th>
+                        <th>Amount</th>
+                        <th>Prod.Ord.Qty</th>
+                        <th>Prod.QC No.</th>
+                        <th>Prod.QC Qty.</th>
+                        <th>Doc.Status</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+@using (Html.BeginForm("DownloadExcel", "Report", FormMethod.Post, new { id = "FormExcelExport" }))
+{
+    @Html.Hidden("AdvanceSearch", null, htmlAttributes: new { @class = "control-label" })
+    @Html.Hidden("DocumentType", null, htmlAttributes: new { @class = "control-label", Value = "ProductionQCStandardReport" })
+}
+@section Scripts {
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/ReportAdvanceSelectList")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/ProductionQCStandardReport")
+}
+
