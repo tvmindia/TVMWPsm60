@@ -1121,5 +1121,122 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionQCStandardReportList;
         }
         #endregion GetProductionQCStandardReport
+
+        #region GetPendingProductionQCReport
+        public List<PendingProductionQCReport> GetPendingProductionQCReport(PendingProductionQCReport productionQCStandardReport)
+        {
+
+            List<PendingProductionQCReport> pendingroductionQCReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetPendingProductionQCReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(productionQCStandardReport.SearchTerm) ? "" : productionQCStandardReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = productionQCStandardReport.DataTablePaging.Start;
+                        if (productionQCStandardReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = productionQCStandardReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = productionQCStandardReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = productionQCStandardReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = productionQCStandardReport.AdvCustomer;
+                        if (productionQCStandardReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = productionQCStandardReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionQCStandardReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = productionQCStandardReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = productionQCStandardReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = productionQCStandardReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = productionQCStandardReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = productionQCStandardReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = productionQCStandardReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = productionQCStandardReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = productionQCStandardReport.AdvAmountTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = productionQCStandardReport.AdvReportType;
+                        if (productionQCStandardReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = productionQCStandardReport.AdvProduct;
+                        if (productionQCStandardReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = productionQCStandardReport.AdvProductModel;
+                        cmd.Parameters.Add("@PlantCode", SqlDbType.Int).Value = productionQCStandardReport.AdvPlantCode;
+                        cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = productionQCStandardReport.AdvReferencePersonCode;
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                pendingroductionQCReportList = new List<PendingProductionQCReport>();
+                                while (sdr.Read())
+                                {
+                                    PendingProductionQCReport pendingProductionQCReportObj = new PendingProductionQCReport();
+                                    {
+                                        pendingProductionQCReportObj.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? (sdr["ProdOrderNo"].ToString()) : pendingProductionQCReportObj.ProdOrderNo);
+                                        pendingProductionQCReportObj.ProductionOrderNo = (sdr["ProductionOrdNo"].ToString() != "" ? (sdr["ProductionOrdNo"].ToString()) : pendingProductionQCReportObj.ProductionOrderNo);
+
+                                        pendingProductionQCReportObj.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : pendingProductionQCReportObj.ProdOrderDate);
+                                        pendingProductionQCReportObj.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString(_settings.DateFormat) : pendingProductionQCReportObj.ProdOrderDateFormatted);
+                                        pendingProductionQCReportObj.ProdQCNo = (sdr["ProdQCNos"].ToString() != "" ? (sdr["ProdQCNos"].ToString()) : pendingProductionQCReportObj.ProdQCNo);
+                                        pendingProductionQCReportObj.ProductionQCNo = (sdr["ProductionQCNo"].ToString() != "" ? (sdr["ProductionQCNo"].ToString()) : pendingProductionQCReportObj.ProductionQCNo);
+                                        pendingProductionQCReportObj.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : pendingProductionQCReportObj.ExpectedDelvDate);
+                                        pendingProductionQCReportObj.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : pendingProductionQCReportObj.ExpectedDelvDateFormatted);
+                                      
+                                        pendingProductionQCReportObj.Area = new Area();
+                                        pendingProductionQCReportObj.Area.Description = (sdr["AreaName"].ToString() != "" ? sdr["AreaName"].ToString() : pendingProductionQCReportObj.Area.Description);
+                                        pendingProductionQCReportObj.DocumentStatus = new DocumentStatus();
+                                        pendingProductionQCReportObj.DocumentStatus.Description = (sdr["DocumentStatusName"].ToString() != "" ? sdr["DocumentStatusName"].ToString() : pendingProductionQCReportObj.DocumentStatus.Description);
+                                        pendingProductionQCReportObj.Remarks = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : pendingProductionQCReportObj.Remarks);
+                                        pendingProductionQCReportObj.Customer = new Customer();
+                                        pendingProductionQCReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : pendingProductionQCReportObj.Customer.CompanyName);
+                                        pendingProductionQCReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : pendingProductionQCReportObj.Customer.ContactPerson);
+                                        pendingProductionQCReportObj.Branch = new Branch();
+                                        pendingProductionQCReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingProductionQCReportObj.Branch.Description);
+                                        pendingProductionQCReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : pendingProductionQCReportObj.Amount);
+                                        pendingProductionQCReportObj.PSAUser = new PSAUser();
+                                        pendingProductionQCReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingProductionQCReportObj.PSAUser.LoginName);
+                                        pendingProductionQCReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : pendingProductionQCReportObj.TotalCount);
+                                        pendingProductionQCReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : pendingProductionQCReportObj.FilteredCount);
+                                        pendingProductionQCReportObj.PendingQty = (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingProductionQCReportObj.PendingQty);
+                                        pendingProductionQCReportObj.ProdOrdQty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : pendingProductionQCReportObj.ProdOrdQty);
+                                        pendingProductionQCReportObj.ProdQCQty = (sdr["QCQty"].ToString() != "" ? decimal.Parse(sdr["QCQty"].ToString()) : pendingProductionQCReportObj.ProdQCQty);
+                                        pendingProductionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingProductionQCReportObj.ProductSpec);
+                                    
+                                        pendingProductionQCReportObj.Product = new Product();
+                                        pendingProductionQCReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : pendingProductionQCReportObj.Product.Name);
+                                        pendingProductionQCReportObj.ProductModel = new ProductModel();
+                                        pendingProductionQCReportObj.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? sdr["ProductModelName"].ToString() : pendingProductionQCReportObj.ProductModel.Name);
+                                        pendingProductionQCReportObj.Plant = new Plant();
+                                        pendingProductionQCReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : pendingProductionQCReportObj.Plant.Description);
+                                        pendingProductionQCReportObj.ReferencePerson = new ReferencePerson();
+                                        pendingProductionQCReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : pendingProductionQCReportObj.ReferencePerson.Name);
+                                    }
+                                    pendingroductionQCReportList.Add(pendingProductionQCReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return pendingroductionQCReportList;
+        }
+        #endregion GetPendingProductionQCReport
+
+
+
     }
 }
