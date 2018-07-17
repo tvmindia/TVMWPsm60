@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAMTool.DataAccessObject.DTO;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -66,7 +67,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
                     }
 
                     break;
-               case "USA" : 
+                case "USA":
                     string[] numbersArr = new string[] { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
                     string[] tensArr = new string[] { "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninty" };
                     string[] suffixesArr = new string[] { "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion", "Septillion", "Octillion", "Nonillion", "Decillion", "Undecillion", "Duodecillion", "Tredecillion", "Quattuordecillion", "Quindecillion", "Sexdecillion", "Septdecillion", "Octodecillion", "Novemdecillion", "Vigintillion" };
@@ -126,15 +127,15 @@ namespace PilotSmithApp.DataAccessObject.DTO
                             words += (tens ? "-" + numbersArr[(int)number - 1] : numbersArr[(int)number - 1]);
                             number -= Math.Floor(number);
                         }
-                       
+
                     }
                     break;
             }
-            return words; 
+            return words;
         }
         //Reference for country code and and culture code
         //https://www.c-sharpcorner.com/UploadFile/0f68f2/converting-a-number-in-currency-format-for-different-culture/
-        public string ConvertToCurrencyStandards(double value,string countryCode)
+        public string ConvertToCurrencyStandards(double value, string countryCode)
         {
             string currencyFormatted = "";
             double todaysValue = 0;
@@ -143,13 +144,19 @@ namespace PilotSmithApp.DataAccessObject.DTO
                 case "IND":
                     todaysValue = Math.Round(value) * 1;
                     currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-IN"));
-                        break;
+                    break;
                 case "USA":
                     todaysValue = Math.Round(value) * 67.51;
                     currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"));
                     break;
             }
             return currencyFormatted;
+        }
+        public Permission GetSecurityCode(string loginName, string projectObject)
+        {
+            List<Permission> permissionList = (HttpContext.Current.Session["UserRights"] as List<Permission>).Where(x => x.Name == projectObject).ToList();
+            Permission permission = (permissionList != null ? permissionList[0] : new Permission());
+            return permission;
         }
     }
 

@@ -37,6 +37,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? BillLocationCode { get; set; }
         public decimal Discount { get; set; }
         public decimal AdvanceAmount { get; set; }
+        public string Cc { get; set; }
+        public string Bcc { get; set; }
+        public string Subject { get; set; }
 
         //additional Fields
         public string DetailXML { get; set; }

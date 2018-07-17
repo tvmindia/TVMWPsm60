@@ -1166,20 +1166,32 @@ function CalculateGrandTotal(value) {
 function EmailProformaInvoice() {
     debugger;
     $("#divModelEmailProformaInvoiceBody").load("ProformaInvoice/EmailProformaInvoice?ID=" + $('#ProformaInvoiceForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailProformaInvoice').text('Email ProformaInvoice')
+        $('#lblModelEmailProformaInvoice').text('Email Proforma Invoice')
         $('#divModelEmailProformaInvoice').modal('show');
     });
 }
 
 function SendProformaInvoiceEmail() {
     debugger;
-    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
-    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
-    $('#hdnProformaInvoiceEMailContent').val($('#divProformaInvoiceEmailcontainer').html());
-    $('#hdnProfInvNo').val($('#ProfInvNo').val());
-    $('#hdnContactPerson').val($('#ContactPerson').text());
-    $('#hdnProfInvDateFormatted').val($('#ProfInvDateFormatted').val());
-    $('#FormProformaInvoiceEmailSend #ID').val($('#ProformaInvoiceForm #ID').val());
+    if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
+        $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+        $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+        $('#hdnProformaInvoiceEMailContent').val($('#divProformaInvoiceEmailcontainer').html());
+        $('#hdnProfInvNo').val($('#ProfInvNo').val());
+        $('#hdnContactPerson').val($('#ContactPerson').text());
+        $('#hdnProfInvDateFormatted').val($('#ProfInvDateFormatted').val());
+        $('#FormProformaInvoiceEmailSend #ID').val($('#ProformaInvoiceForm #ID').val());
+        $('#FormProformaInvoiceEmailSend').submit();
+    }
+    else {
+        if ($('#EmailSentTo').val() == null) {
+            $('#sentTolbl').css('color', 'red');
+            $("#sentTolbl").attr("title", "Please specify at least one recipient");
+            $('#sentTovalidationmsglbl').html('__________________________________');
+            $('#sentTovalidationmsglbl').css('color', 'red');
+            $("#sentTovalidationmsglbl").attr("title", "Please specify at least one recipient");
+        }
+    }
 }
 function UpdateProformaInvoiceEmailInfo() {
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
@@ -1197,7 +1209,7 @@ function DownloadProformaInvoice() {
 function PrintProformaInvoice() {
     debugger;
     $("#divModelPrintProformaInvoiceBody").load("ProformaInvoice/PrintProformaInvoice?ID=" + $('#ProformaInvoiceForm #ID').val(), function () {
-        $('#lblModelPrintProformaInvoice').text('Print ProformaInvoice');
+        $('#lblModelPrintProformaInvoice').text('Print Proforma Invoice');
         $('#divModelPrintProformaInvoice').modal('show');
     });
 }
@@ -1211,13 +1223,13 @@ function SaveSuccessUpdateProformaInvoiceEmailInfo(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
-                MasterAlert("success", _result.Message)
+                //MasterAlert("success", _result.Message)
                 $("#divModelEmailProformaInvoiceBody").load("ProformaInvoice/EmailProformaInvoice?ID=" + $('#ProformaInvoiceForm #ID').val() + "&EmailFlag=False", function () {
-                    $('#lblModelEmailProformaInvoice').text('Send Email ProformaInvoice')
+                    $('#lblModelEmailProformaInvoice').text('Email Attachment')
                 });
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                //MasterAlert("success", _message)
                 $('#divModelEmailProformaInvoice').modal('hide');
                 break;
             default:

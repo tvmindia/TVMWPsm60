@@ -22,13 +22,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         IProductCategoryBusiness _productCategoryBusiness;
         IProductBusiness _productBusiness;
         ICompanyBusiness _companyBusiness;
-        IUserBusiness _userBusiness;
-        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness,ICompanyBusiness companyBusiness, IUserBusiness userBusiness)
+        //IUserBusiness _userBusiness;
+        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness,ICompanyBusiness companyBusiness)//, IUserBusiness userBusiness)
         {
             _productCategoryBusiness = productCategoryBusiness;
             _productBusiness = productBusiness;
             _companyBusiness = companyBusiness;
-            _userBusiness = userBusiness;
+            //_userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
         // GET: Product
@@ -113,7 +113,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Product");
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Product");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))

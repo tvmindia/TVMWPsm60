@@ -955,18 +955,30 @@ function CalculateGrandTotal(value) {
 function EmailSaleOrder() {
     debugger;
     $("#divModelEmailSaleOrderBody").load("SaleOrder/EmailSaleOrder?ID=" + $('#SaleOrderForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailSaleOrder').text('Email Attachment')
+        $('#lblModelEmailSaleOrder').text('Email SaleOrder')
         $('#divModelEmailSaleOrder').modal('show');
     });
 }
 function SendSaleOrderEmail() {
-    $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
-    $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
-    $('#hdnSaleOrderEMailContent').val($('#divSaleOrderEmailcontainer').html());
-    $('#hdnSaleOrderNo').val($('#SaleOrderNo').val());
-    $('#hdnContactPerson').val($('#ContactPerson').text());
-    $('#hdnSaleOrderDateFormatted').val($('#SaleOrderDateFormatted').val());
-    $('#FormSaleOrderEmailSend #ID').val($('#SaleOrderForm #ID').val());
+    if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
+        $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
+        $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
+        $('#hdnSaleOrderEMailContent').val($('#divSaleOrderEmailcontainer').html());
+        $('#hdnSaleOrderNo').val($('#SaleOrderNo').val());
+        $('#hdnContactPerson').val($('#ContactPerson').text());
+        $('#hdnSaleOrderDateFormatted').val($('#SaleOrderDateFormatted').val());
+        $('#FormSaleOrderEmailSend #ID').val($('#SaleOrderForm #ID').val());
+        $('#FormSaleOrderEmailSend').submit();
+    }
+    else {
+        if ($('#EmailSentTo').val() == null) {
+            $('#sentTolbl').css('color', 'red');
+            $("#sentTolbl").attr("title", "Please specify at least one recipient");
+            $('#sentTovalidationmsglbl').html('__________________________________');
+            $('#sentTovalidationmsglbl').css('color', 'red');
+            $("#sentTovalidationmsglbl").attr("title", "Please specify at least one recipient");
+        }
+    }
 }
 function UpdateSaleOrderEmailInfo() {
     $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
@@ -999,13 +1011,13 @@ function SaveSuccessUpdateSaleOrderEmailInfo(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
-                MasterAlert("success", _result.Message)
+                //MasterAlert("success", _result.Message)
                 $("#divModelEmailSaleOrderBody").load("SaleOrder/EmailSaleOrder?ID=" + $('#SaleOrderForm #ID').val() + "&EmailFlag=False", function () {
                     $('#lblModelEmailSaleOrder').text('Email Attachment')
                 });
                 break;
             case "ERROR":
-                MasterAlert("success", _message)
+                //MasterAlert("success", _message)
                 $('#divModelEmailSaleOrder').modal('hide');
                 break;
             default:

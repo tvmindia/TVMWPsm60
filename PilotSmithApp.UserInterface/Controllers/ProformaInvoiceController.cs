@@ -632,6 +632,41 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #endregion InsertUpdateProformaInvoice
 
+        #region UpdateProformaEmailInfo
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
+        public string UpdateProformaInvoiceEmailInfo(ProformaInvoiceViewModel proformaInvoiceVM)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                proformaInvoiceVM.PSASysCommon = new PSASysCommonViewModel();
+                proformaInvoiceVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                proformaInvoiceVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                object result = _proformaInvoiceBusiness.UpdateProformaInvoiceEmailInfo(Mapper.Map<ProformaInvoiceViewModel, ProformaInvoice>(proformaInvoiceVM));
+
+                if (proformaInvoiceVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+
+        #endregion UpdateSaleOrderEmailInfo
+
         #region Email ProformaInvoice
         public ActionResult EmailProformaInvoice(ProformaInvoiceViewModel proformaInvoiceVM)
         {

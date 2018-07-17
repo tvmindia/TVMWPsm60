@@ -710,9 +710,12 @@
     <Content Include="Scripts\UserJS\Report\EnquiryFollowupReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
     <Content Include="Scripts\UserJS\Report\EstimateReport.js" />
+    <Content Include="Scripts\UserJS\Report\PendingProductionOrderReport.js" />
+    <Content Include="Scripts\UserJS\Report\PendingProductionQCReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderReport.js" />
     <Content Include="Scripts\UserJS\Report\ProductionOrderStandardReport.js" />
+    <Content Include="Scripts\UserJS\Report\ProductionQCStandardReport.js" />
     <Content Include="Scripts\UserJS\Report\QuotationReport.js" />
     <Content Include="Scripts\UserJS\Report\Report.js" />
     <Content Include="Scripts\UserJS\Report\ReportAdvanceSelectList.js" />
@@ -1107,6 +1110,9 @@
     <Content Include="Views\Report\PendingSaleOrderReport.cshtml" />
     <Content Include="Views\Report\SaleOrderReport.cshtml" />
     <Content Include="Views\Report\ProductionOrderReport.cshtml" />
+    <Content Include="Views\Report\PendingProductionOrderReport.cshtml" />
+    <Content Include="Views\Report\ProductionQCStandardReport.cshtml" />
+    <Content Include="Views\Report\PendingProductionQCReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

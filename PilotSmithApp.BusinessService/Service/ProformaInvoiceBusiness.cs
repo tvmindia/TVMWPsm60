@@ -76,7 +76,13 @@ namespace PilotSmithApp.BusinessService.Service
                 if (!string.IsNullOrEmpty(proformaInvoice.EmailSentTo))
                 {
                     //------------------------
+                    string[] BccList = null;
+                    string[] CcList = null;
                     string[] EmailList = proformaInvoice.EmailSentTo.Split(',');
+                    if (proformaInvoice.Cc != null)
+                        CcList = proformaInvoice.Cc.Split(',');
+                    if (proformaInvoice.Bcc != null)
+                        BccList = proformaInvoice.Bcc.Split(',');
                     string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/DocumentEmailBody.html"));
                     MailMessage _mail = new MailMessage();
                     PDFTools pDFTools = new PDFTools();
@@ -85,12 +91,22 @@ namespace PilotSmithApp.BusinessService.Service
                     pDFTools.Content = proformaInvoice.MailContant;
                     pDFTools.ContentFileName = "ProformaInvoice";
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pdfGeneratorBusiness.GetPdfAttachment(pDFTools)), proformaInvoice.ProfInvNo + ".pdf"));
-                    _mail.Subject = "Proforma Invoice";
+                    _mail.Subject = proformaInvoice.Subject;
                     _mail.IsBodyHtml = true;
                     foreach (string email in EmailList)
                     {
                         _mail.To.Add(email);
                     }
+                    if (proformaInvoice.Cc != null)
+                        foreach (string email in CcList)
+                        {
+                            _mail.CC.Add(email);
+                        }
+                    if (proformaInvoice.Bcc != null)
+                        foreach (string email in BccList)
+                        {
+                            _mail.Bcc.Add(email);
+                        }
                     sendsuccess = await _mailBusiness.MailMessageSendAsync(_mail);
                 }
             }

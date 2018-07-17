@@ -23,13 +23,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICustomerBusiness _customerBusiness;
         IPaymentTermBusiness _paymentTermBusiness;
         ICustomerCategoryBusiness _customerCategoryBusiness;
-        IUserBusiness _userBusiness;
-        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness, ICustomerCategoryBusiness customerCategoryBusiness, IUserBusiness userBusiness)
+        //IUserBusiness _userBusiness;
+        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness, ICustomerCategoryBusiness customerCategoryBusiness)//, IUserBusiness userBusiness)
         {
             _customerBusiness = customerBusiness;
             _paymentTermBusiness = paymentTermBusiness;
             _customerCategoryBusiness = customerCategoryBusiness;
-            _userBusiness = userBusiness;
+            //_userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
         // GET: Customer
@@ -136,7 +136,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.propertydisable = disabled == null ? false : disabled;
             //Permission _permission = Session["UserRights"] as Permission;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Customer");
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Customer");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
