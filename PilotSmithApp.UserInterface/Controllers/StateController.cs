@@ -179,6 +179,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get State SelectList On Demand
 
+        #region GetState
+        public string GetState(int code)
+        {
+            try
+            {
+                StateViewModel stateVM = Mapper.Map<State, StateViewModel>(_stateBusiness.GetState(code));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = stateVM, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConst.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion GetState
 
         #region ButtonStyling
         [HttpGet]

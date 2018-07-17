@@ -28,33 +28,86 @@ else
 
 <script>
     $(document).ready(function () {
-        debugger;
-        $('#CountryCode').val($('#hdnCountryCode').val());
-        $('#CountryCode').select2({
-            dropdownParent: $('.divCountrySelectList')
-        });
-        $('.select2').addClass('form-control newinput');
-        $('#CountryCode').change(function () {
-            if ($('.divStateSelectList') != undefined) {
-                $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                if (this.value != "") {
-                    $('.divStateSelectList').load('State/StateSelectList?countryCode=' + this.value + '&required=' + $('#hdnStateRequired').val())
+        try {
+            debugger;
+            var parent = '#' + _parentFormID + " ";
+            if (parent[0]) {
 
-                }
-                else {
-                    $('.divStateSelectList').empty();
-                    $('.divStateSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
-                }
-                $('.divDistrictSelectList').empty();
-                $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
-                $('.divAreaSelectList').empty();
-                $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
-                $('#hdnStateCode').val('');
-                $('#hdnDistrictCode').val('');
-                $('#hdnAreaCode').val('');
+                $(parent + '#CountryCode').val($(parent + '#hdnCountryCode').val());
+                $(parent + '#CountryCode').select2({
+                    dropdownParent: $(parent + '.divCountrySelectList')
+                });
+                $('.select2').addClass('form-control newinput');
+                //Country Code on change
+                $(parent + '#CountryCode').change(function () {
+                    debugger;
+                    $(parent + ' #hdnStateCode').val('');
+                    $(parent + ' #StateCode').val('');
+                    $(parent + ' #hdnDistrictCode').val('');
+                    $(parent + ' #DistrictCode').val('');
+                    $(parent + ' #hdnAreaCode').val('');
+                    $(parent + ' #AreaCode').val('');
+                    //$('#dropLoad').addClass('fa fa-spinner fa-spin');
+                    var countryCode = this.value;
+
+                    if ($(parent + '.divStateSelectList')[0]) {
+                        $(parent + '.divStateSelectList').load('State/StateSelectList?countryCode=' + countryCode + '&required=' + $('#hdnStateRequired').val(), function () {
+                            $('#CustomerForm #StateCode').change(function () {
+                                $(parent + ' #hdnDistrictCode').val('');
+                                $(parent + ' #hdnAreaCode').val('');
+                                $(parent + ' #DistrictCode').val('');
+                                $(parent + ' #AreaCode').val('');
+                                if (_parentFormID === 'CustomerForm') {
+                                    if (this.value !== "")
+                                        StateCodeOnChange();
+                                }
+                            });
+                        });
+                    }
+                    if ($(parent + '.divDistrictSelectList')[0]) {
+                        $(parent + '.divDistrictSelectList').load('District/DistrictSelectList?countryCode=' + countryCode + '&required=' + $('#hdnDistrictRequired').val(), function () {
+                            //$('#CustomerForm #DistrictCode').val($('#CustomerForm #hdnDistrictCode').val());
+                            $('#CustomerForm #DistrictCode').change(function () {
+                                $(parent + ' #hdnAreaCode').val('');
+                                $(parent + ' #AreaCode').val('');
+                                if (_parentFormID === 'CustomerForm') {
+                                    if (this.value !== "")
+                                        DistrictCodeOnChange();
+                                }
+                            });
+                        });
+                    }
+                    if ($(parent + '.divAreaSelectList')[0]) {
+                        //$('.divAreaSelectList').each(function () {
+                        //    if ($(this).closest('form').attr('id') === _parentFormID) {
+                        //        console.log(_parentFormID+" Area");
+                        //    }
+                        //});
+                        $(parent + '.divAreaSelectList').load('Area/AreaSelectList?countryCode=' + countryCode + '&required=' + $('#hdnAreaRequired').val(), function () {
+                            //$('#CustomerForm #AreaCode').val($('#CustomerForm #hdnAreaCodeCode').val());
+                            $('#CustomerForm #AreaCode').change(function () {
+                                if (_parentFormID === 'CustomerForm') {
+                                    if (this.value !== "")
+                                        AreaCodeOnChange();
+                                }
+                            });
+                        });
+                    }
+                    //else {
+                    //    $('.divStateSelectList').empty();
+                    //    $('.divStateSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
+                    //}
+                    //$('.divDistrictSelectList').empty();
+                    //$('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
+                    //$('.divAreaSelectList').empty();
+                    //$('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
+                });
             }
-        });
 
+        }
+        catch (e) {
+            console.log(e.message);
+        }
     });
 </script>
 

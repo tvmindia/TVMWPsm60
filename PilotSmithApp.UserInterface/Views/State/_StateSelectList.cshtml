@@ -28,37 +28,62 @@ else
 @Html.ValidationMessage("StateCode", "", new { @class = "text-danger" })
 
 <script>
-    $(document).ready(function () {             
+    $(document).ready(function () {
         try {
-            $('#StateCode').val($('#hdnStateCode').val());
-           
-                $('.divStateSelectList #StateCode').change(function () {
-                    debugger;
-                    if ($('.divDistrictSelectList') != undefined) {
-                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                        if (this.value != "") {
-                            $('.divDistrictSelectList').load('District/DistrictSelectList?stateCode=' + this.value)
-                        }
-                        else {
-                            $('.divDistrictSelectList').empty();
-                            $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
-                        }
-                        $('.divAreaSelectList').empty();
-                        $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
-                        $('#hdnDistrictCode').val('');
-                        $('#hdnAreaCode').val('');
-                    }
-                });
-                $('#StateCode').select2({
-                    dropdownParent: $('.divCountrySelectList')
+            debugger;
+            var parent = '#' + _parentFormID + " ";
+            if (parent[0]) {
+
+                $(parent + '#StateCode').val($(parent + ' #hdnStateCode').val());
+                $(parent + '#StateCode').select2({
+                    dropdownParent: $(parent + '.divCountrySelectList')
                 });
                 $('.select2').addClass('form-control newinput');
+                //State Code on change
+                $(parent + '#StateCode').change(function () {
+                    debugger;
+                    //$('#dropLoad').addClass('fa fa-spinner fa-spin');
+                    $(parent + ' #hdnDistrictCode').val('');
+                    $(parent + ' #DistrictCode').val('');
+                    var stateCode = this.value;
+
+                    if ($(parent + '.divDistrictSelectList')[0]) {
+                        $(parent + '.divDistrictSelectList').load('District/DistrictSelectList?stateCode=' + stateCode + '&required=' + $('#hdnDistrictRequired').val(), function () {
+                            debugger;
+                            $('#CustomerForm #DistrictCode').change(function () {
+                                $(parent + ' #AreaCode').val('');
+                                $(parent + ' #hdnAreaCode').val('');
+                                if (_parentFormID === 'CustomerForm') {
+                                    if (this.value !== "")
+                                        DistrictCodeOnChange();
+                                }
+                            });
+                        });
+                    }
+                    if ($(parent + '.divAreaSelectList')[0]) {
+                        $(parent + '.divAreaSelectList').load('Area/AreaSelectList?stateCode=' + stateCode + '&required=' + $('#hdnAreaRequired').val(), function () {
+                            debugger;
+                            $('#CustomerForm #AreaCode').change(function () {
+                                if (_parentFormID === 'CustomerForm') {
+                                    if (this.value !== "")
+                                        AreaCodeOnChange();
+                                }
+                            });
+                        });
+                    }
+                    //else {
+                    //    $('.divDistrictSelectList').empty();
+                    //    $('.divDistrictSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
+                    //}
+                    //$('.divAreaSelectList').empty();
+                    //$('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');
+                });
+            }
+
+
         }
         catch (e) {
             console.log(e.message);
         }
-        
-       
-        
     });
 </script>

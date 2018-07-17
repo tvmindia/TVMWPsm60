@@ -46,12 +46,12 @@
         debugger;
         $.validator.unobtrusive.parse("#FormState");
         try {
-            $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+            $('#FormState .divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#FormState #hdnCountryRequired').val(), function () {
                 try {
-                    $('.divCountrySelectList #CountryCode').select2({
-                        dropdownParent: $("#divModelMasterPopUp3")
+                    $('#FormState .divCountrySelectList #CountryCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp3 .divCountrySelectList")
                     });
-                    $('.select2').addClass('form-control newinput');
+                    $('#FormState .select2').addClass('form-control newinput');
                 }
                 catch (e) {
                     console.log(e.message);
@@ -61,7 +61,7 @@
         catch (e) {
             console.log(e.message);
         }
-        $('#StateCode').val($('#hdnStateCode').val());
+        $('#FormState #StateCode').val($('#FormState #hdnStateCode').val());
         //try {
         //    $('#CountryCode').select2({
         //        dropdownParent: $("#divModelMasterPopUp")
@@ -71,7 +71,7 @@
         //catch (e) {
         //    console.log(e.message);
         //}
-        
+
     });
 </script>
 

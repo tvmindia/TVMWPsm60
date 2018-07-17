@@ -293,12 +293,25 @@
         try {
             $('#CustomerCategoryList,#ContactTitle').select2();
             $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
-                
             });
-            $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val());
+            $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+                $('#StateCode').change(function () {
+                    if (this.value !== "")
+                        StateCodeOnChange();
+                });
+            });
             $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val(), function () {
+                $('#DistrictCode').change(function () {
+                    if (this.value !== "")
+                        DistrictCodeOnChange();
+                });
             });
-            $('.divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val());
+            $('.divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val(), function () {
+                $('#AreaCode').change(function () {
+                    if (this.value !== "")
+                        AreaCodeOnChange();
+                });
+            });
             $('.divPaymentTermSelectList').load('/PaymentTerm/PaymentTermSelectList?required=' + $('#hdnPaymentTermRequired').val())
             $('.select2').addClass('form-control newinput');
         }

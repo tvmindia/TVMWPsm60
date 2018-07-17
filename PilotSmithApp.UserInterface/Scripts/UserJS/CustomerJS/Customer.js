@@ -144,6 +144,8 @@ function ExportCustomerData() {
 }
 // add customer section
 function AddCustomer() {
+    //_parentFormID is a global variable from Master.js used in Add of State,District,Area
+    _parentFormID = "CustomerForm";
     //this will return form body(html)
     $("#divCustomerForm").load("Customer/CustomerForm?id=" + _emptyGuid, function () {
         ChangeButtonPatchView("Customer", "btnPatchCustomerNew", "Add");
@@ -230,6 +232,149 @@ function DeleteItem(id) {
     }
     catch (e) {
         //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
+function StateCodeOnChange() {
+    try {
+        debugger;
+        var StateViewModel = GetState($('#StateCode').val());
+        $('#hdnStateCode').val($('#StateCode').val());
+        $('#hdnCountryCode').val($('#CountryCode').val());
+        if ($('#CountryCode').val() === "") {
+            $('#hdnCountryCode').val(StateViewModel.CountryCode);
+            $('#CountryCode').val(StateViewModel.CountryCode).trigger('change');
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+function GetState(code) {
+    try {
+        debugger;
+        var data = { "code": code };
+        var stateVM = [];
+        _jsonData = GetDataFromServer("State/GetState/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            stateVM = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            return stateVM;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+function DistrictCodeOnChange() {
+    try {
+        debugger;
+        var DistrictViewModel = GetDistrict($('#DistrictCode').val());
+        $('#hdnDistrictCode').val($('#DistrictCode').val());
+        $('#hdnStateCode').val($('#StateCode').val());
+        $('#hdnCountryCode').val($('#CountryCode').val());
+        if ($('#CountryCode').val() === "") {
+            $('#hdnCountryCode').val(DistrictViewModel.CountryCode);
+            $('#hdnStateCode').val($('#hdnStateCode').val() !== "" ? $('#hdnStateCode').val() : DistrictViewModel.StateCode);
+            $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : DistrictViewModel.DistrictCode);
+            $('#CountryCode').val(DistrictViewModel.CountryCode).trigger('change');
+        }
+        if ($('#StateCode').val() === "") {
+            $('#hdnStateCode').val(DistrictViewModel.StateCode);
+            $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : DistrictViewModel.DistrictCode);
+            $('#StateCode').val(DistrictViewModel.StateCode).trigger('change');
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+function GetDistrict(code) {
+    try {
+        debugger;
+        var data = { "code": code };
+        var districtVM = [];
+        _jsonData = GetDataFromServer("District/GetDistrict/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            districtVM = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            return districtVM;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+function AreaCodeOnChange() {
+    try {
+        debugger;
+        var AreaViewModel = GetArea($('#AreaCode').val());
+        $('#hdnAreaCode').val($('#AreaCode').val());
+        $('#hdnDistrictCode').val($('#DistrictCode').val());
+        $('#hdnStateCode').val($('#StateCode').val());
+        $('#hdnCountryCode').val($('#CountryCode').val());
+
+        if ($('#CountryCode').val() === "") {
+            $('#hdnCountryCode').val(AreaViewModel.CountryCode);
+            $('#hdnStateCode').val($('#hdnStateCode').val() !== "" ? $('#hdnStateCode').val() : AreaViewModel.StateCode);
+            $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : AreaViewModel.DistrictCode);
+            $('#CountryCode').val(AreaViewModel.CountryCode).trigger('change');
+        }
+        if ($('#StateCode').val() === "") {
+            $('#hdnStateCode').val(AreaViewModel.StateCode);
+            $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : AreaViewModel.DistrictCode);
+            $('#StateCode').val(AreaViewModel.StateCode).trigger('change');
+        }
+        if ($('#DistrictCode').val() === "") {
+            $('#hdnDistrictCode').val(AreaViewModel.DistrictCode);
+            $('#DistrictCode').val(AreaViewModel.DistrictCode).trigger('change');
+        }
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+function GetArea(code) {
+    try {
+        debugger;
+        var data = { "code": code };
+        var areaVM = [];
+        _jsonData = GetDataFromServer("Area/GetArea/", data);
+        if (_jsonData != '') {
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            areaVM = _jsonData.Record;
+        }
+        if (_status == "OK") {
+            return areaVM;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+
+    }
+    catch (e) {
         console.log(e.message);
     }
 }
