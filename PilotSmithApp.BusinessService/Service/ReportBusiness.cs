@@ -106,6 +106,16 @@ namespace PilotSmithApp.BusinessService.Service
             return _reportRepository.GetProductionQCStandardReport(productionQCStandardReport);
         }
         #endregion GetProductionQCStandardReport
+
+
+       
+        #region GetPendingProductionQCReport
+        public List<PendingProductionQCReport> GetPendingProductionQCReport(PendingProductionQCReport pendingProductionQCReport)
+        {
+            return _reportRepository.GetPendingProductionQCReport(pendingProductionQCReport);
+        }
+     
+        #endregion GetPendingProductionQCReport
     }
 
 

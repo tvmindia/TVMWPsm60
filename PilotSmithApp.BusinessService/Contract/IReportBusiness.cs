@@ -19,7 +19,7 @@ namespace PilotSmithApp.BusinessService.Contract
         List<ProductionOrderReport> GetProductionOrderStandardReport(ProductionOrderReport productionOrderReport);
         List<PendingProductionOrderReport> GetPendingProductionOrderReport(PendingProductionOrderReport pendingProductionOrderReport);
         List<ProductionQCStandardReport> GetProductionQCStandardReport(ProductionQCStandardReport productionQCStandardReport);
-
+        List<PendingProductionQCReport> GetPendingProductionQCReport(PendingProductionQCReport pendingProductionQCReport);
         
     }
 }
