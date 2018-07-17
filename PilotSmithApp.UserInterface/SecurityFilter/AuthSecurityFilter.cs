@@ -9,6 +9,7 @@ using System.Web.Mvc.Filters;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using Unity.Attributes;
+using System.Collections.Generic;
 
 namespace PilotSmithApp.UserInterface.SecurityFilter
 {
@@ -118,15 +119,25 @@ namespace PilotSmithApp.UserInterface.SecurityFilter
 
         public void OnAuthorization(AuthorizationContext filterContext)
         {
-            Permission permission = (Permission)filterContext.HttpContext.Session["UserRights"]==null?new Permission(): (Permission)filterContext.HttpContext.Session["UserRights"];
-            if(permission.Name!=ProjectObject)
+            List<Permission> permissionList =(List<Permission>)filterContext.HttpContext.Session["UserRights"];
+            if((permissionList!=null)&&(permissionList.Count()>0))
             {
-                permission = _userBusiness.GetSecurityCode(LoggedUserName, ProjectObject);
-            }
-            if (permission.AccessCode.Contains(Mode))
-            {
-                //Allows Permission
-                filterContext.HttpContext.Session.Add("UserRights", permission);
+                if ((permissionList.Where(x => x.Name == ProjectObject).ToList().Count()>0)&&(permissionList.Where(x => x.Name == ProjectObject).ToList()[0].AccessCode.Contains(Mode)))
+                {
+                    //authorized user
+                }
+                else
+                {
+                    if (filterContext.HttpContext.Request.IsAjaxRequest())
+                    {
+                        filterContext.Result = new HttpUnauthorizedResult();
+                    }
+                    else
+                    {    //unauthorized page show here 
+                        filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary() { { "controller", "Account" }, { "action", "NotAuthorized" } });
+                    }
+
+                }
             }
             else
             {
@@ -135,11 +146,31 @@ namespace PilotSmithApp.UserInterface.SecurityFilter
                     filterContext.Result = new HttpUnauthorizedResult();
                 }
                 else
-               {    //unauthorized page show here 
-                    filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary() { { "controller", "Account" }, { "action", "NotAuthorized" } });
+                {    //unauthorized page show here 
+                    filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary() { { "controller", "Account" }, { "action", "Index" } });
                 }
-                    
             }
+            //if(permission.Name!=ProjectObject)
+            //{
+            //    permission = _userBusiness.GetSecurityCode(LoggedUserName, ProjectObject);
+            //}
+            //if (permission.AccessCode.Contains(Mode))
+            //{
+            //    //Allows Permission
+            //    filterContext.HttpContext.Session.Add("UserRights", permission);
+            //}
+            //else
+            //{
+            //    if (filterContext.HttpContext.Request.IsAjaxRequest())
+            //    {
+            //        filterContext.Result = new HttpUnauthorizedResult();
+            //    }
+            //    else
+            //   {    //unauthorized page show here 
+            //        filterContext.Result = new RedirectToRouteResult(new System.Web.Routing.RouteValueDictionary() { { "controller", "Account" }, { "action", "NotAuthorized" } });
+            //    }
+
+            //}
         }
 
         //

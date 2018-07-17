@@ -58,6 +58,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ua.UserName = uservm.LoginName;
                     ua.AppID = AppID;
                     Session.Add("TvmValid", ua);
+                    Session.Add("UserRights", _userBusiness.GetAllAccess(uservm.LoginName));
                     if (uservm.RoleCSV.Contains("SAdmin") || uservm.RoleCSV.Contains("CEO"))
                     {
                         return RedirectToAdminDashboard();
