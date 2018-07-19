@@ -41,12 +41,10 @@ else
                 //Country Code on change
                 $(parent + '#CountryCode').change(function () {
                     debugger;
+                    //to remove
                     $(parent + ' #hdnStateCode').val('');
-                    $(parent + ' #StateCode').val('');
                     $(parent + ' #hdnDistrictCode').val('');
-                    $(parent + ' #DistrictCode').val('');
-                    $(parent + ' #hdnAreaCode').val('');
-                    $(parent + ' #AreaCode').val('');
+                    $(parent + ' #hdnAreaCode').val(''); 
                     //$('#dropLoad').addClass('fa fa-spinner fa-spin');
                     var countryCode = this.value;
 
@@ -93,6 +91,7 @@ else
                             });
                         });
                     }
+                    $(parent + ' #hdnCountryCode').val(this.value);
                     //else {
                     //    $('.divStateSelectList').empty();
                     //    $('.divStateSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');

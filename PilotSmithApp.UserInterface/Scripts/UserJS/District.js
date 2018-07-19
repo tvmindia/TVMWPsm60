@@ -130,12 +130,15 @@ function ExportDistrictData() {
 
 function EditDistrictMaster(thisObj) {
     debugger;
+    _parentFormID = "FormDistrict";
     DistrictVM = _dataTables.DistrictList.row($(thisObj).parents('tr')).data();
     $("#divMasterBody2").load("District/MasterPartial?masterCode=" + DistrictVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             $('#lblModelMasterContextLabel2').text('Edit District Information')
             $('#divModelMasterPopUp2').modal('show');
             $('#hdnMasterCall2').val('MSTR');
+            $('#CountryCode').val(DistrictVM.CountryCode).trigger('change');
+            $('#StateCode').val(DistrictVM.StateCode).trigger('change');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
