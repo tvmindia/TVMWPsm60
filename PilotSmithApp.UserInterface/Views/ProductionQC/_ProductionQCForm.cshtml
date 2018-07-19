@@ -314,7 +314,7 @@
         }
         try {
             $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
-            @if (Model.IsUpdate) {
+            @if (Model.IsUpdate || Model.ProdOrderID != null) {
                  <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
             });

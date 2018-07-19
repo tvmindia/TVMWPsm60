@@ -602,7 +602,7 @@
     $(document).ready(function () {
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (Model.IsUpdate) {
+            @if (Model.IsUpdate || Model.QuoteID != null || Model.SaleOrderID != null || Model.ProfInvID != null) {
                  <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
             });

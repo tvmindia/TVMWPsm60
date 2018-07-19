@@ -405,7 +405,7 @@
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
-            @if (Model.IsUpdate) {
+            @if (Model.IsUpdate || Model.SaleOrderID != null || Model.ProdOrderID != null) {
                  <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
             });

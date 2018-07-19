@@ -579,7 +579,7 @@
         }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (Model.IsUpdate) {
+            @if (Model.IsUpdate || Model.EnquiryID != null || Model.QuoteID!=null) {
 
                   <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {

@@ -530,7 +530,7 @@
     $(document).ready(function () {
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
-            @if (Model.IsUpdate) {
+            @if (Model.IsUpdate || Model.QuoteID != null || Model.SaleOrderID != null) {
                   <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
             });
