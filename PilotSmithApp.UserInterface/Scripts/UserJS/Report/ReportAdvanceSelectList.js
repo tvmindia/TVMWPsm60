@@ -1,6 +1,6 @@
 ﻿//---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
-    debugger;
+   
     try {
         BindCustomerSelectList();
     }
