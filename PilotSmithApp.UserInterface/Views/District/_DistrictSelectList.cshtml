@@ -42,10 +42,9 @@ else
                 //District Code on change
                 $(parent + '#DistrictCode').change(function () {
                     debugger;
+                    $(parent + ' #hdnAreaCode').val('');
                     if ($(parent + '.divAreaSelectList')[0]) {
                         //$('#dropLoad').addClass('fa fa-spinner fa-spin');
-                        $(parent + ' #hdnAreaCode').val('');
-                        $(parent + ' #AreaCode').val('');
                         var districtCode = this.value;
 
                         $(parent + '.divAreaSelectList').each(function () {
@@ -59,6 +58,7 @@ else
                                 });
                             });
                         });
+                        $(parent + ' #hdnDistrictCode').val(this.value);
                         //else {
                         //    $('.divAreaSelectList').empty();
                         //    $('.divAreaSelectList').append('<span class="form-control newinput"><i id="dropLoad" class=""></i></span>');

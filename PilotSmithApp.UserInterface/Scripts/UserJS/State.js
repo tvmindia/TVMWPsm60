@@ -124,12 +124,14 @@ function ExportStateData() {
 
 function EditStateMaster(thisObj) {
     debugger;
+    _parentFormID = "FormState";
     StateVM = _dataTables.StateList.row($(thisObj).parents('tr')).data();
     $("#divMasterBody3").load("State/MasterPartial?masterCode=" + StateVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             $('#lblModelMasterContextLabel3').text('Edit State Information')
             $('#divModelMasterPopUp3').modal('show');
             $('#hdnMasterCall3').val('MSTR');
+            $('#CountryCode').val(DistrictVM.CountryCode).trigger('change');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
