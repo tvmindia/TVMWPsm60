@@ -102,11 +102,17 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ProductionOrder Detail Add
         public ActionResult AddProductionOrderDetail()
         {
+            //ProductionOrderDetailViewModel productionOrderDetailVM = null;
+            //List<ProductionOrderDetailViewModel> productionOrderDetailVM = new List<ProductionOrderDetailViewModel>();
+   
             ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();
+           
+            productionOrderDetailVM = new ProductionOrderDetailViewModel();
             productionOrderDetailVM.IsUpdate = false;
             productionOrderDetailVM.OrderQty = 0;
             productionOrderDetailVM.ProducedQty = 0;
-            productionOrderDetailVM.PrevProducedQty = 0;        
+            productionOrderDetailVM.PrevProducedQty = 0;
+            productionOrderDetailVM.SaleOrderQty = 0;
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -449,7 +455,29 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderVM.PDFTools = new PDFToolsViewModel();
             return PartialView("_PrintProductionOrder", productionOrderVM);
         }
-        #endregion Print ProductionOrder
+        #endregion Print ProductionOrder 
+
+        #region CheckOrderQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckOrderQty(ProductionOrderDetailViewModel prodOrderDetailVM)
+        {
+            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+            if (prodOrderDetailVM.SaleOrderQty != 0)
+            {
+                if (prodOrderDetailVM.ProducedQty > prodOrderDetailVM.SaleOrderQty)
+                {
+                    return Json("<p><span style='vertical-align: 2px'>Produced Qty Cannot grater than SaleOrder Qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                }
+                else if (prodOrderDetailVM.OrderQty > prodOrderDetailVM.SaleOrderQty)
+                {
+                    return Json("<p><span style='vertical-align: 2px'>Cur.Prod Qty Cannot grater than SaleOrder Qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                }
+            }
+           
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckOrderQty
 
         #region ButtonStyling
         [HttpGet]

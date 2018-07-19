@@ -530,7 +530,7 @@ function AddDeliveryChallanDetailToList() {
                 _datatablerowindex = -1;
             }
             else {
-                $('#msgDelvQty').append('Cancelled Qty cannot be less than Order Qty: ' + $('#OrderQty').val())
+                $('#msgDelvQty').append('Cancelled Qty cannot be grater than Order Qty: ' + $('#OrderQty').val())
             }
     }
     }
@@ -611,7 +611,7 @@ function AddDeliveryChallanDetailToList() {
                 }
             }
             else {
-                $('#msgDelvQty').append('Cancelled Qty cannot be less than Order Qty: ' + $('#OrderQty').val())
+                $('#msgDelvQty').append('Cancelled Qty cannot be grater than Order Qty: ' + $('#OrderQty').val())
             }
         }
     }

@@ -406,7 +406,7 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      if (data !== null || data == "") {
                          return row.Product.HSNCode;
                      }
-                     else {
+                     else if(data!=null || data=="") {
                          return row.OtherCharge.SACCode;
                      }
                  }, "defaultContent": "<i></i>"
