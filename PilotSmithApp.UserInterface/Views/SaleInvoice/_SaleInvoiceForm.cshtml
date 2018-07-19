@@ -602,10 +602,15 @@
     $(document).ready(function () {
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
+            @if (Model.IsUpdate) {
+                 <text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
+            });
+            </text>
+            }
             else {
                 <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
@@ -755,8 +760,8 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false,false);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true,false)
+                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false, false);
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true, false)
                     CalculateTotal();
                     $('#DocumentType').prop('disabled', true);
                     $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
@@ -775,8 +780,8 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true,false);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false,false)
+                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true, false);
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false, false)
                     CalculateTotal();
                     $("input[type=radio][value=SaleOrder]").attr("disabled", true);
                     $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
@@ -787,7 +792,7 @@
         catch (e) {
             console.log(e.message);
         }
-        try{
+        try {
             $('#SaleInvoiceForm #ProfInvID').change(function () {
                 debugger;
                 OnServerCallBegin();
@@ -795,8 +800,8 @@
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val(), function () {
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
-                        BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, false,true);
-                        BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, false,true)
+                        BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, false, true);
+                        BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, false, true)
                         CalculateTotal();
                         $("input[type=radio][value=SaleOrder]").attr("disabled", true);
                         $("input[type=radio][value=Quotation]").attr("disabled", true);
@@ -804,7 +809,7 @@
                         OnServerCallComplete();
                     });
                 });
-                   
+
             });
         }
         catch (e) {
@@ -828,7 +833,7 @@
                     $('#SaleOrderID').prop('disabled', false);
                     $('#ProfInvID').prop('disabled', true);
                 }
-                else if (this.value == "ProformaInvoice") {                  
+                else if (this.value == "ProformaInvoice") {
                     $('#divSaleOrderSelectList').hide();
                     $('#divQuotationSelectList').hide();
                     $('#divProformaInvoiceSelectList').show();
@@ -851,12 +856,11 @@
             console.log(e.message);
         }
         try {
-            if ($('#SaleInvoiceForm #IsDocLocked').val() == "False" && $('#SaleInvoiceForm #IsUpdate').val() == "True")
-            {
+            if ($('#SaleInvoiceForm #IsDocLocked').val() == "False" && $('#SaleInvoiceForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);

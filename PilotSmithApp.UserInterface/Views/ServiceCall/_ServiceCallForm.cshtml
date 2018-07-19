@@ -444,10 +444,15 @@
 
             $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
             $('.divServicedBySelectList').load('/Employee/ServicedBySelectList?required=' + $('#hdnServicedByRequired').val())
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
-             else {
+            @if (Model.IsUpdate) {
+                      <text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
+            });
+            </text>
+            }
+            else {
                  <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
                      }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val(), function () {
@@ -544,12 +549,11 @@
         //    console.log(e.message);
         //}
         try {
-            if ($('#ServiceCallForm #IsDocLocked').val() == "False" && $('#ServiceCallForm #IsUpdate').val() == "True")
-            {
+            if ($('#ServiceCallForm #IsDocLocked').val() == "False" && $('#ServiceCallForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);

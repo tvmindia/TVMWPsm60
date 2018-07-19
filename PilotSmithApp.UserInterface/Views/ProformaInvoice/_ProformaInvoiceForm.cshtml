@@ -231,7 +231,7 @@
                             </div>
                         </div>
                     </div>
-                 }
+                                        }
             </div>
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
@@ -530,11 +530,16 @@
     $(document).ready(function () {
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
+            @if (Model.IsUpdate) {
+                  <text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
+            });
+            </text>
+            }
             else {
                 <text>
-                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-                </text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
+            </text>
                     }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
@@ -710,7 +715,7 @@
         catch (e) {
             console.log(e.message);
         }
-        try{
+        try {
             $('#InvoiceType').select2({
 
             });
@@ -719,13 +724,12 @@
         catch (e) {
             console.log(e.message);
         }
-        try{
-            if ($('#ProformaInvoiceForm #IsDocLocked').val() == "False" && $('#ProformaInvoiceForm #IsUpdate').val() == "True")
-            {
+        try {
+            if ($('#ProformaInvoiceForm #IsDocLocked').val() == "False" && $('#ProformaInvoiceForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);
