@@ -22,7 +22,6 @@ $(document).ready(function () {
         $('.select2').addClass('form-control newinput');
 
 
-
     }
     catch (e) {
         console.log(e.message);
@@ -175,15 +174,20 @@ function BindOrReloadPendingProductionQCReportTable(action) {
         PendingProductionQCReportViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val();
 
 
-        //apply datatable plugin on Production Order standard report table
+        //apply datatable plugin on Pending Production QC report table
         _dataTable.pendingProductionQCReportList = $("#tblPendingProductionQCReport").DataTable(
         {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
             ordering: false,
             searching: false,
-            paging: true,
+            paging: true,          
             lengthChange: false,
-            autoWidth: false,         
+            autoWidth: false,
+            "bAutoWidth": false,                
+            //fixedHeader: {
+            //    header: true
+            //},
+            //sScrollXInner: "100%",
             processing: true,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -197,52 +201,52 @@ function BindOrReloadPendingProductionQCReportTable(action) {
             pageLength: 8,        
             columns: [
 
-               { "data": "ProductionOrderNo", "defaultContent": "<i>-</i>" },
-               { "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
-               { "data": "ExpectedDelvDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
-               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
-               { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
-               { "data": "Product.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductSpec", "defaultContent": "<i>-</i>" },
-               { "data": "Amount", "defaultContent": "<i>-</i>" },
-               { "data": "ProdOrdQty", "defaultContent": "<i>-</i>" },
-               { "data": "ProductionQCNo", "defaultContent": "<i>-</i>" },
-               { "data": "ProdQCQty", "defaultContent": "<i>-</i>" },
-               { "data": "PendingQty", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-               { "data": "Remarks", "defaultContent": "<i>-</i>" },
+               { "data": "ProductionOrderNo", "defaultContent": "<i>-</i>"},//, "width": "50px" }0,
+               { "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>"},//, "width": "50px" 1},
+               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>"},//, "width": "50px" }2,
+               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>"},//, "width": "50px" }3,
+               { "data": "ExpectedDelvDateFormatted", "defaultContent": "<i>-</i>"},//, "width": "50px" }4,
+               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }5,
+               { "data": "Area.Description", "defaultContent": "<i>-</i>"},//, "width": "50px" }6,
+               { "data": "Plant.Description", "defaultContent": "<i>-</i>"},//, "width": "50px" }7,
+               { "data": "Product.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }8,
+               { "data": "ProductModel.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }9,
+               { "data": "ProductSpec", "defaultContent": "<i>-</i>"},//, "width": "50px" }10,
+               { "data": "Amount", "defaultContent": "<i>-</i>"},//, "width": "50px" }11,
+               { "data": "ProdOrdQty", "defaultContent": "<i>-</i>"},//, "width": "50px" }12,
+               { "data": "ProductionQCNo", "defaultContent": "<i>-</i>"},//, "width": "50px" }13,
+               { "data": "ProdQCQty", "defaultContent": "<i>-</i>"},//, "width": "50px" }14,
+               { "data": "PendingQty", "defaultContent": "<i>-</i>"},//, "width": "50px" }15,
+               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>"},//, "width": "50px" }1,
+               { "data": "Remarks", "defaultContent": "<i>-</i>"},//, "width": "50px" }17,
 
 
             ],
             columnDefs: [{ className: "text-right", "targets": [11] },
-                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16,17] },
+                         { className: "text-left", "targets": [0,1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16,17] },
                          { className: "text-center", "targets": [] },
-                           { "targets": [0], "width": "12%" },
-                           { "targets": [1], "width": "12%" },
-                           { "targets": [2], "width": "12%" },
-                           { "targets": [3], "width": "10%" },
-                           { "targets": [4], "width": "10%" },
-                           { "targets": [5], "width": "10%" },
-                           { "targets": [6], "width": "10%" },
-                           { "targets": [7], "width": "9%" },
-                           { "targets": [8], "width": "10%" },
-                           { "targets": [9], "width": "10%" },
-                           { "targets": [10], "width": "14%" },
-                           { "targets": [11], "width": "9%" },
-                           { "targets": [12], "width": "9%" },
-                           { "targets": [13], "width": "9%" },
-                           { "targets": [14], "width": "9%" },
-                           { "targets": [15], "width": "9%" },
-                           { "targets": [16], "width": "9%" },
-                           { "targets": [17], "width": "12%" },
+                           { "targets": [0], "width": "8%" },
+                           { "targets": [1], "width": "5%" },
+                           { "targets": [2], "width": "5%" },
+                           { "targets": [3], "width": "5%" },
+                           { "targets": [4], "width": "8%" },
+                           { "targets": [5], "width": "8%" },
+                           { "targets": [6], "width": "5%" },
+                           { "targets": [7], "width": "5%" },
+                           { "targets": [8], "width": "8%" },
+                           { "targets": [9], "width": "8%" },
+                           { "targets": [10], "width": "20%" },
+                           { "targets": [11], "width": "5%" },
+                           { "targets": [12], "width": "8%" },
+                           { "targets": [13], "width": "8%" },
+                           { "targets": [14], "width": "10%" },
+                           { "targets": [15], "width": "10%" },
+                           { "targets": [16], "width": "10%" },
+                           { "targets": [17], "width": "10%" },
 
 
             ],
-            destroy: true,
+            destroy: true,          
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;
@@ -255,7 +259,7 @@ function BindOrReloadPendingProductionQCReportTable(action) {
 
             }
         });
-
+ 
     }
     catch (e) {
         console.log(e.message);

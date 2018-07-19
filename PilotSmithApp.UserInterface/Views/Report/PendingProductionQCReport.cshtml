@@ -6,7 +6,10 @@
     ViewBag.Title = "Production QC Pending Report";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
+ 
 
+
+ 
 
 
 @section styles {
@@ -14,6 +17,7 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
+    @*@Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatableFixedHeader")*@ 
 }
 @{
     List<SelectListItem> EmptySelectList = new List<SelectListItem>();
@@ -242,27 +246,27 @@
     </div>
     <div class="row tableContainer">
         <div class="excelExport" style="display:none;"></div>
-        <div class="col-md-12" style="overflow:auto; width:100%;">
-            <table id="tblPendingProductionQCReport" class="table table-striped" cellspacing="0" style="width:100%;display:none;">
+        <div class="col-md-12" style="overflow-x:scroll">
+            <table id="tblPendingProductionQCReport" class="table table-striped" cellspacing="0" style="display:none;width:2200px!important" >
                 <thead>
-                    <tr class="text-center TableHead">
-                        <th>Prod.Ord.No.</th>
+                    <tr class="text-center TableHead" >
+                        <th >Prod. Ord. No.</th>
                         <th>Date</th>
                         <th>Customer</th>
-                        <th>Cont.Person</th>
-                        <th>Exp.Del.Date</th>
-                        <th>Ref.By</th>
+                        <th>Cont. Person</th>
+                        <th>Exp. Del. Date</th>
+                        <th>Ref. By</th>
                         <th>Area</th>
                         <th>Plant</th>
-                        <th>Prod.Name</th>
-                        <th>Prod.Model</th>
-                        <th>Prod.Spec.</th>
+                        <th>Prod. Name</th>
+                        <th>Prod. Model</th>
+                        <th>Prod. Spec.</th>
                         <th>Amt</th>
-                        <th>Prod.Ord.Qty</th>
-                        <th>Prod.QC.No.</th>
-                        <th>Prod.QC.Qty.</th>
-                        <th>Pend.Qty</th>
-                        <th>Doc.Status</th>
+                        <th>Prod. Ord. Qty</th>
+                        <th>Prod. QC No.</th>
+                        <th>Prod. QC Qty</th>
+                        <th>Pend. Qty</th>
+                        <th>Doc. Status</th>
                         <th>Remarks</th>
                     </tr>
                 </thead>
