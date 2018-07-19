@@ -135,7 +135,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region District SelectList
-        public ActionResult DistrictSelectList(string required,bool? disabled, int? stateCode)
+        public ActionResult DistrictSelectList(string required,bool? disabled, int? stateCode, int? countryCode)
         {
             ViewBag.IsRequired = required;
             ViewBag.IsDisabled = disabled;
@@ -152,17 +152,16 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
             }
             DistrictViewModel districtVM = new DistrictViewModel();
-            districtVM.DistrictSelectList = _districtBusiness.GetDistrictForSelectList(stateCode);
+            districtVM.DistrictSelectList = _districtBusiness.GetDistrictForSelectList(stateCode, countryCode);
             return PartialView("_DistrictSelectList", districtVM);
         }
         #endregion District SelectList
 
-
         #region Get District SelectList On Demand
         [HttpPost]
-        public ActionResult GetDistrictForSelectListOnDemand(string searchTerm, int? stateCode)
+        public ActionResult GetDistrictForSelectListOnDemand(string searchTerm, int? stateCode, int? countryCode)
         {
-            List<SelectListItem> districtSelectList = _districtBusiness.GetDistrictForSelectList(stateCode);
+            List<SelectListItem> districtSelectList = _districtBusiness.GetDistrictForSelectList(stateCode, countryCode);
             var list = districtSelectList != null ? (from SelectListItem in districtSelectList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
                                                     select new Select2Model
                                                     {
@@ -173,6 +172,21 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get District SelectList On Demand
 
+        #region GetDistrict
+        public string GetDistrict(int code)
+        {
+            try
+            {
+                DistrictViewModel districtVM = Mapper.Map<District, DistrictViewModel>(_districtBusiness.GetDistrict(code));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = districtVM, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConst.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion GetDistrict
 
         #region ButtonStyling
         [HttpGet]

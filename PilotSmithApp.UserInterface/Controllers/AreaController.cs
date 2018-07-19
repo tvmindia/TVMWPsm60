@@ -137,7 +137,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion
 
         #region Area SelectList
-        public ActionResult AreaSelectList(string required,bool? disabled,int? districtCode)
+        public ActionResult AreaSelectList(string required,bool? disabled,int? districtCode, int? stateCode, int? countryCode)
         {
             ViewBag.IsRequired = required;
             ViewBag.IsDisabled = disabled;
@@ -154,7 +154,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
             }
             AreaViewModel areaVM = new AreaViewModel();
-            areaVM.AreaSelectList = _areaBusiness.GetAreaForSelectList(districtCode);
+            areaVM.AreaSelectList = _areaBusiness.GetAreaForSelectList(districtCode, stateCode, countryCode);
             return PartialView("_AreaSelectList", areaVM);
         }
         #endregion Area SelectList
@@ -173,6 +173,22 @@ namespace PilotSmithApp.UserInterface.Controllers
             return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         }
         #endregion Get Area SelectList On Demand
+
+        #region GetArea
+        public string GetArea(int code)
+        {
+            try
+            {
+                AreaViewModel areaVM = Mapper.Map<Area, AreaViewModel>(_areaBusiness.GetArea(code));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = areaVM, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConst.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion GetArea
 
         #region ButtonStyling
         [HttpGet]

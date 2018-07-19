@@ -9,7 +9,7 @@ $(document).ready(function () {
     debugger;
     try {
 
-        BindOrReloadProductionOrderReportTable('Init');
+        BindOrReloadPendingProductionOrderReportTable('Init');
         $(' #AdvDocumentStatusCode,#AdvCustomer,#AdvProductModel,#AdvProduct').select2({
             dropdownParent: $(".divboxASearch")
         });
@@ -28,12 +28,12 @@ $(document).ready(function () {
         console.log(e.message);
     }
 });
-//function bind the Production Order standard report list checking search and filter
-function BindOrReloadProductionOrderReportTable(action) {
+//function bind the Pending Production Order  report list checking search and filter
+function BindOrReloadPendingProductionOrderReportTable(action) {
     try {
         debugger;
         //creating advancesearch object
-        ProductionOrderReportViewModel = new Object();
+        PendingProductionOrderReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
         //switch case to check the operation
@@ -117,81 +117,81 @@ function BindOrReloadProductionOrderReportTable(action) {
                     && ($('.divboxASearch #AdvProduct').val() == "")
                     && ($('.divboxASearch #AdvProductModel').val() == "")
                     && ($('.divboxASearch #AdvPlantCode').val('') == "")
-              
+
                     ) {
                     return true;
                 }
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
-                ProductionOrderReportViewModel.DataTablePaging = DataTablePagingViewModel;
+                PendingProductionOrderReportViewModel.DataTablePaging = DataTablePagingViewModel;
 
-                ProductionOrderReportViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
-                ProductionOrderReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
-                ProductionOrderReportViewModel.AdvFromDate = $('#AdvFromDate').val() == "" ? null : $('#AdvFromDate').val();
-                ProductionOrderReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
-                ProductionOrderReportViewModel.AdvToDate = $('#AdvToDate').val() == "" ? null : $('#AdvToDate').val();
+                PendingProductionOrderReportViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                PendingProductionOrderReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val() == "" ? null : $('.divboxASearch #AdvFromDate').val();
+                PendingProductionOrderReportViewModel.AdvFromDate = $('#AdvFromDate').val() == "" ? null : $('#AdvFromDate').val();
+                PendingProductionOrderReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();
+                PendingProductionOrderReportViewModel.AdvToDate = $('#AdvToDate').val() == "" ? null : $('#AdvToDate').val();
 
-                ProductionOrderReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
-                ProductionOrderReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val() == "" ? null : $('.divboxASearch #AdvCustomer').val();
-                ProductionOrderReportViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
-                ProductionOrderReportViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
-                ProductionOrderReportViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
-                ProductionOrderReportViewModel.AdvPreparedBy = $('.divboxASearch #AdvPreparedBy').val() == "" ? _emptyGuid : $('.divboxASearch #AdvPreparedBy').val();
+                PendingProductionOrderReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
+                PendingProductionOrderReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val() == "" ? null : $('.divboxASearch #AdvCustomer').val();
+                PendingProductionOrderReportViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val() == "" ? null : $('.divboxASearch #AdvAreaCode').val();
+                PendingProductionOrderReportViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val() == "" ? null : $('.divboxASearch #AdvBranchCode').val();
+                PendingProductionOrderReportViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val() == "" ? null : $('.divboxASearch #AdvDocumentStatusCode').val();
+                PendingProductionOrderReportViewModel.AdvPreparedBy = $('.divboxASearch #AdvPreparedBy').val() == "" ? _emptyGuid : $('.divboxASearch #AdvPreparedBy').val();
 
-                ProductionOrderReportViewModel.AdvAmountFrom = $('.divboxASearch #AdvAmountFrom').val() == "" ? null : $('.divboxASearch #AdvAmountFrom').val();
-                ProductionOrderReportViewModel.AdvAmountTo = $('.divboxASearch #AdvAmountTo').val() == "" ? null : $('.divboxASearch #AdvAmountTo').val();
-                ProductionOrderReportViewModel.AdvCountryCode = $('.divboxASearch #AdvCountryCode').val() == "" ? null : $('.divboxASearch #AdvCountryCode').val();
-                ProductionOrderReportViewModel.AdvStateCode = $('.divboxASearch #AdvStateCode').val() == "" ? null : $('.divboxASearch #AdvStateCode').val();
-                ProductionOrderReportViewModel.AdvDistrictCode = $('.divboxASearch #AdvDistrictCode').val() == "" ? null : $('.divboxASearch #AdvDistrictCode').val();
-                ProductionOrderReportViewModel.AdvCustomerCategoryCode = $('.divboxASearch #AdvCustomerCategoryCode').val() == "" ? null : $('.divboxASearch #AdvCustomerCategoryCode').val();
-                ProductionOrderReportViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val() == "" ? null : $('.divboxASearch #AdvReferencePersonCode').val();
-                ProductionOrderReportViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
-                ProductionOrderReportViewModel.AdvDelFromDate = $('.divboxASearch #AdvDelFromDate').val() == "" ? null : $('.divboxASearch #AdvDelFromDate').val();
-                ProductionOrderReportViewModel.AdvDelToDate = $('.divboxASearch #AdvDelToDate').val() == "" ? null : $('.divboxASearch #AdvDelToDate').val();
-                ProductionOrderReportViewModel.AdvReportType = $('.divboxASearch #AdvReportType').val() == "" ? null : $('.divboxASearch #AdvReportType').val();
-                ProductionOrderReportViewModel.DateFilter = $('#DateFilter').val() == "" ? null : $('#DateFilter').val();
-                ProductionOrderReportViewModel.AdvProduct = $('.divboxASearch #AdvProduct').val() == "" ? _emptyGuid : $('.divboxASearch #AdvProduct').val();
-                ProductionOrderReportViewModel.AdvProductModel = $('.divboxASearch #AdvProductModel').val() == "" ? _emptyGuid : $('.divboxASearch #AdvProductModel').val();
-                ProductionOrderReportViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val() == "" ? null : $('.divboxASearch #AdvPlantCode').val();
+                PendingProductionOrderReportViewModel.AdvAmountFrom = $('.divboxASearch #AdvAmountFrom').val() == "" ? null : $('.divboxASearch #AdvAmountFrom').val();
+                PendingProductionOrderReportViewModel.AdvAmountTo = $('.divboxASearch #AdvAmountTo').val() == "" ? null : $('.divboxASearch #AdvAmountTo').val();
+                PendingProductionOrderReportViewModel.AdvCountryCode = $('.divboxASearch #AdvCountryCode').val() == "" ? null : $('.divboxASearch #AdvCountryCode').val();
+                PendingProductionOrderReportViewModel.AdvStateCode = $('.divboxASearch #AdvStateCode').val() == "" ? null : $('.divboxASearch #AdvStateCode').val();
+                PendingProductionOrderReportViewModel.AdvDistrictCode = $('.divboxASearch #AdvDistrictCode').val() == "" ? null : $('.divboxASearch #AdvDistrictCode').val();
+                PendingProductionOrderReportViewModel.AdvCustomerCategoryCode = $('.divboxASearch #AdvCustomerCategoryCode').val() == "" ? null : $('.divboxASearch #AdvCustomerCategoryCode').val();
+                PendingProductionOrderReportViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val() == "" ? null : $('.divboxASearch #AdvReferencePersonCode').val();
+                PendingProductionOrderReportViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val() == "" ? null : $('.divboxASearch #AdvApprovalStatusCode').val();
+                PendingProductionOrderReportViewModel.AdvDelFromDate = $('.divboxASearch #AdvDelFromDate').val() == "" ? null : $('.divboxASearch #AdvDelFromDate').val();
+                PendingProductionOrderReportViewModel.AdvDelToDate = $('.divboxASearch #AdvDelToDate').val() == "" ? null : $('.divboxASearch #AdvDelToDate').val();
+                PendingProductionOrderReportViewModel.AdvReportType = $('.divboxASearch #AdvReportType').val() == "" ? null : $('.divboxASearch #AdvReportType').val();
+                PendingProductionOrderReportViewModel.DateFilter = $('#DateFilter').val() == "" ? null : $('#DateFilter').val();
+                PendingProductionOrderReportViewModel.AdvProduct = $('.divboxASearch #AdvProduct').val() == "" ? _emptyGuid : $('.divboxASearch #AdvProduct').val();
+                PendingProductionOrderReportViewModel.AdvProductModel = $('.divboxASearch #AdvProductModel').val() == "" ? _emptyGuid : $('.divboxASearch #AdvProductModel').val();
+                PendingProductionOrderReportViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val() == "" ? null : $('.divboxASearch #AdvPlantCode').val();
 
-                
-                $('#AdvanceSearch').val(JSON.stringify(ProductionOrderReportViewModel));
+
+                $('#AdvanceSearch').val(JSON.stringify(PendingProductionOrderReportViewModel));
                 $('#FormExcelExport').submit();
                 return true;
                 break;
             default:
                 break;
         }
-        ProductionOrderReportViewModel.DataTablePaging = DataTablePagingViewModel;
-        ProductionOrderReportViewModel.SearchTerm = $('#SearchTerm').val();
-        ProductionOrderReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
-        ProductionOrderReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
-        ProductionOrderReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
-        ProductionOrderReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val();
-        ProductionOrderReportViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
-        ProductionOrderReportViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
-        ProductionOrderReportViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
-        ProductionOrderReportViewModel.AdvPreparedBy = $('.divboxASearch #AdvPreparedBy').val();
-        ProductionOrderReportViewModel.AdvAmountFrom = $('.divboxASearch #AdvAmountFrom').val();
-        ProductionOrderReportViewModel.AdvAmountTo = $('.divboxASearch #AdvAmountTo').val();
-        ProductionOrderReportViewModel.AdvCountryCode = $('.divboxASearch #AdvCountryCode').val();
-        ProductionOrderReportViewModel.AdvStateCode = $('.divboxASearch #AdvStateCode').val();
-        ProductionOrderReportViewModel.AdvDistrictCode = $('.divboxASearch #AdvDistrictCode').val();
-        ProductionOrderReportViewModel.AdvCustomerCategoryCode = $('.divboxASearch #AdvCustomerCategoryCode').val();
-        ProductionOrderReportViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val();
-        ProductionOrderReportViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
-        ProductionOrderReportViewModel.AdvDelFromDate = $('.divboxASearch #AdvDelFromDate').val();
-        ProductionOrderReportViewModel.AdvDelToDate = $('.divboxASearch #AdvDelToDate').val();
-        ProductionOrderReportViewModel.AdvReportType = $('.divboxASearch #AdvReportType').val();
-        ProductionOrderReportViewModel.DateFilter = $('#DateFilter').val();
-        ProductionOrderReportViewModel.AdvProduct = $('.divboxASearch #AdvProduct').val();
-        ProductionOrderReportViewModel.AdvProductModel = $('.divboxASearch #AdvProductModel').val();
-        ProductionOrderReportViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val();
+        PendingProductionOrderReportViewModel.DataTablePaging = DataTablePagingViewModel;
+        PendingProductionOrderReportViewModel.SearchTerm = $('#SearchTerm').val();
+        PendingProductionOrderReportViewModel.AdvFromDate = $('.divboxASearch #AdvFromDate').val();
+        PendingProductionOrderReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val();
+        PendingProductionOrderReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
+        PendingProductionOrderReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val();
+        PendingProductionOrderReportViewModel.AdvAreaCode = $('.divboxASearch #AdvAreaCode').val();
+        PendingProductionOrderReportViewModel.AdvBranchCode = $('.divboxASearch #AdvBranchCode').val();
+        PendingProductionOrderReportViewModel.AdvDocumentStatusCode = $('.divboxASearch #AdvDocumentStatusCode').val();
+        PendingProductionOrderReportViewModel.AdvPreparedBy = $('.divboxASearch #AdvPreparedBy').val();
+        PendingProductionOrderReportViewModel.AdvAmountFrom = $('.divboxASearch #AdvAmountFrom').val();
+        PendingProductionOrderReportViewModel.AdvAmountTo = $('.divboxASearch #AdvAmountTo').val();
+        PendingProductionOrderReportViewModel.AdvCountryCode = $('.divboxASearch #AdvCountryCode').val();
+        PendingProductionOrderReportViewModel.AdvStateCode = $('.divboxASearch #AdvStateCode').val();
+        PendingProductionOrderReportViewModel.AdvDistrictCode = $('.divboxASearch #AdvDistrictCode').val();
+        PendingProductionOrderReportViewModel.AdvCustomerCategoryCode = $('.divboxASearch #AdvCustomerCategoryCode').val();
+        PendingProductionOrderReportViewModel.AdvReferencePersonCode = $('.divboxASearch #AdvReferencePersonCode').val();
+        PendingProductionOrderReportViewModel.AdvApprovalStatusCode = $('.divboxASearch #AdvApprovalStatusCode').val();
+        PendingProductionOrderReportViewModel.AdvDelFromDate = $('.divboxASearch #AdvDelFromDate').val();
+        PendingProductionOrderReportViewModel.AdvDelToDate = $('.divboxASearch #AdvDelToDate').val();
+        PendingProductionOrderReportViewModel.AdvReportType = $('.divboxASearch #AdvReportType').val();
+        PendingProductionOrderReportViewModel.DateFilter = $('#DateFilter').val();
+        PendingProductionOrderReportViewModel.AdvProduct = $('.divboxASearch #AdvProduct').val();
+        PendingProductionOrderReportViewModel.AdvProductModel = $('.divboxASearch #AdvProductModel').val();
+        PendingProductionOrderReportViewModel.AdvPlantCode = $('.divboxASearch #AdvPlantCode').val();
 
 
         //apply datatable plugin on Production Order standard report table
-        _dataTable.productionOrderReportList = $("#tblProductionOrderReport").DataTable(
+        _dataTable.productionOrderReportList = $("#tblPendingProductionOrderReport").DataTable(
         {
             dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
             ordering: false,
@@ -205,8 +205,8 @@ function BindOrReloadProductionOrderReportTable(action) {
             },
             serverSide: true,
             ajax: {
-                url: "GetProductionOrderStandardReport/",
-                data: { "productionOrderReportVM": ProductionOrderReportViewModel },
+                url: "GetPendingProductionOrderReport/",
+                data: { "pendingProductionOrderReportVM": PendingProductionOrderReportViewModel },
                 type: 'POST'
             },
             pageLength: 8,
@@ -223,35 +223,36 @@ function BindOrReloadProductionOrderReportTable(action) {
                { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
                { "data": "Product.Name", "defaultContent": "<i>-</i>" },
                { "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductSpec", "defaultContent": "<i>-</i>" },
-                 { "data": "Qty", "defaultContent": "<i>-</i>" },
-                 { "data": "Amount", "defaultContent": "<i>-</i>" },
+               { "data": "ProductSpec", "defaultContent": "<i>-</i>" },               
+               { "data": "Amount", "defaultContent": "<i>-</i>" },
+               { "data": "Qty", "defaultContent": "<i>-</i>" },
                { "data": "SaleOrdNo", "defaultContent": "<i>-</i>" },
-             
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-               { "data": "Remarks", "defaultContent": "<i>-</i>" },
-
+               { "data": "SaleOrderQty", "defaultContent": "<i>-</i>" },
+               { "data": "PendingQty", "defaultContent": "<i>-</i>" },
+               { "data": "Progress", "defaultContent": "<i>-</i>" },
+               { "data": "ForecastDateFormatted", "defaultContent": "<i>-</i>" },
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [12] },
-                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6,7, 8, 10, 11,13,14,15] },
+            columnDefs: [{ className: "text-right", "targets": [11] },
+                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15,16,17] },
                          { className: "text-center", "targets": [] },
                            { "targets": [0], "width": "8%" },
                            { "targets": [1], "width": "5%" },
                            { "targets": [2], "width": "8%" },
-                           { "targets": [3], "width": "8%" },
+                           { "targets": [3], "width": "5%" },
                            { "targets": [4], "width": "8%" },
                            { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "8%" },
-                           { "targets": [7], "width": "8%" },
+                           { "targets": [6], "width": "5%" },
+                           { "targets": [7], "width": "5%" },
                            { "targets": [8], "width": "8%" },
                            { "targets": [9], "width": "8%" },
-                           { "targets": [10], "width": "15%" },
-                           { "targets": [11], "width": "3%" },
+                           { "targets": [10], "width": "13%" },
                            { "targets": [12], "width": "5%" },
-                           { "targets": [13], "width": "8%" },
-                           { "targets": [14], "width": "10%" },
-                            { "targets": [15], "width": "10%" },
+                           { "targets": [13], "width": "5%" },
+                           { "targets": [14], "width": "6%" },
+                           { "targets": [15], "width": "5%" },
+                           { "targets": [16], "width": "6%" },
+                           { "targets": [17], "width": "12%" },
 
 
             ],
@@ -260,7 +261,7 @@ function BindOrReloadProductionOrderReportTable(action) {
             initComplete: function (settings, json) {
                 debugger;
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                $('#tblProductionOrderReport').fadeIn('slow');
+                $('#tblPendingProductionOrderReport').fadeIn('slow');
                 if (action == undefined) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
@@ -278,20 +279,20 @@ function BindOrReloadProductionOrderReportTable(action) {
 //function reset the list to initial
 function ResetReportList() {
     $(".searchicon").removeClass('filterApplied');
-    BindOrReloadProductionOrderReportTable('Reset');
+    BindOrReloadPendingProductionOrderReportTable('Reset');
 }
 //function export data to excel
 function ExportReportData() {
     debugger;
     //$('.excelExport').show();
     //OnServerCallBegin();       
-    BindOrReloadProductionOrderReportTable('Export');
+    BindOrReloadPendingProductionOrderReportTable('Export');
 }
 
 function ApplyFilterThenSearch() {
     $(".searchicon").addClass('filterApplied');
     CloseAdvanceSearch();
-    BindOrReloadProductionOrderReportTable('Search');
+    BindOrReloadPendingProductionOrderReportTable('Search');
 }
 
 function GoToList() {
@@ -304,5 +305,5 @@ function DateFilterOnchange() {
     var selectedValue = $("#DateFilter").val().split("||");
     $('.divboxASearch #AdvFromDate').val(selectedValue[0]);
     $('.divboxASearch #AdvToDate').val(selectedValue[1]);
-    BindOrReloadProductionOrderReportTable('Search');
+    BindOrReloadPendingProductionOrderReportTable('Search');
 }

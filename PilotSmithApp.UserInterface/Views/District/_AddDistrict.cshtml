@@ -66,26 +66,26 @@
         $.validator.unobtrusive.parse("#FormDistrict");
         try {
             debugger;
-            $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+            $('#FormDistrict .divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#FormDistrict #hdnCountryRequired').val(), function () {
                 try {
-                    $('.divCountrySelectList #CountryCode').select2({
-                        dropdownParent: $(".divCountrySelectList")
+                    $('#FormDistrict .divCountrySelectList #CountryCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp2 .divCountrySelectList")
                     });
 
-                    $('.select2').addClass('form-control newinput');
+                    $('#FormDistrict .select2').addClass('form-control newinput');
                 }
-               catch(e){
-                        console.log(e.message);
+                catch (e) {
+                    console.log(e.message);
                 }
 
             });
-            $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+            $('#FormDistrict .divStateSelectList').load('/State/StateSelectList?required=' + $('#FormDistrict #hdnStateRequired').val(), function () {
                 try {
-                    $('.divStateSelectList #StateCode').select2({
-                        dropdownParent: $(".divStateSelectList")
+                    $('#FormDistrict .divStateSelectList #StateCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp2 .divStateSelectList")
                     });
 
-                    $('.select2').addClass('form-control newinput');
+                    $('#FormDistrict .select2').addClass('form-control newinput');
                 }
                 catch (e) {
                     console.log(e.message);
@@ -106,7 +106,7 @@
         //catch (e) {
         //    console.log(e.message);
         //}
-       
+
     });
 </script>
 

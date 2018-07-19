@@ -18,15 +18,15 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConstant = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
-        IUserBusiness _userBusiness;
+        //IUserBusiness _userBusiness;
         IEmployeeBusiness _employeeBusiness;
         IDepartmentBusiness _departmentBusiness;
         IPositionBusiness _positionBusiness;
 
-        public EmployeeController(IEmployeeBusiness employeeBusiness, IUserBusiness userBusiness, IDepartmentBusiness departmentBusiness, IPositionBusiness positionBusiness)
+        public EmployeeController(IEmployeeBusiness employeeBusiness, IDepartmentBusiness departmentBusiness, IPositionBusiness positionBusiness)// IUserBusiness userBusiness,
         {
             _employeeBusiness = employeeBusiness;
-            _userBusiness = userBusiness;
+            //_userBusiness = userBusiness;
             _departmentBusiness = departmentBusiness;
             _positionBusiness =positionBusiness;
         }
@@ -127,7 +127,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
@@ -148,7 +148,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
@@ -169,7 +169,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
@@ -190,7 +190,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
@@ -211,7 +211,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
@@ -232,7 +232,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Employee");
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Employee");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))

@@ -21,14 +21,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         private IReferencePersonBusiness _referencePersonBusiness;
         private IReferenceTypeBusiness _referenceTypeBusiness;
         private IAreaBusiness _areaBusiness;
-        IUserBusiness _userBusiness;
+        //IUserBusiness _userBusiness;
 
-        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness, IReferenceTypeBusiness referenceTypeBusiness, IAreaBusiness areaBusiness, IUserBusiness userBusiness)
+        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness, IReferenceTypeBusiness referenceTypeBusiness, IAreaBusiness areaBusiness)//, IUserBusiness userBusiness)
         {
             _referencePersonBusiness = referencePersonBusiness;
             _referenceTypeBusiness = referenceTypeBusiness;
             _areaBusiness = areaBusiness;
-            _userBusiness = userBusiness;
+           // _userBusiness = userBusiness;
         }
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]
         public ActionResult Index()
@@ -145,7 +145,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "ReferencePerson");
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "ReferencePerson");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))

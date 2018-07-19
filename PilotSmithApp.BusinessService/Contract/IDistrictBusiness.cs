@@ -15,6 +15,6 @@ namespace PilotSmithApp.BusinessService.Contract
         District GetDistrict(int code);
         bool CheckDistrictNameExist(District district);
         object DeleteDistrict(int code);
-        List<SelectListItem> GetDistrictForSelectList(int? stateCode);
+        List<SelectListItem> GetDistrictForSelectList(int? stateCode=null, int? countryCode=null);
     }
 }

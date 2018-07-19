@@ -81,41 +81,38 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormArea");
-        $('#AreaCode').val($('#hdnAreaCode').val());
+        $('#FormArea #AreaCode').val($('#FormArea #hdnAreaCode').val());
         debugger;
-        try{
-            $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
+        try {
+            $('#FormArea .divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#FormArea #hdnCountryRequired').val(), function () {
                 try {
-                    $('.divCountrySelectList #CountryCode').select2({
-                        dropdownParent: $("#divModelMasterPopUp1")
+                    $('#FormArea .divCountrySelectList #CountryCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp1 .divCountrySelectList")
                     });
-
-                    $('.select2').addClass('form-control newinput');
+                    $('#FormArea .select2').addClass('form-control newinput');
                 }
                 catch (e) {
                     console.log(e.message);
                 }
             });
-            $('.divStateSelectList').load('/State/StateSelectList?required=' + $('#hdnStateRequired').val(), function () {
+            $('#FormArea .divStateSelectList').load('/State/StateSelectList?required=' + $('#FormArea #hdnStateRequired').val(), function () {
                 try {
-                    $('.divStateSelectList #StateCode').select2({
-                        dropdownParent: $("#divModelMasterPopUp1")
+                    $('#FormArea .divStateSelectList #StateCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp1 .divStateSelectList")
                     });
-
-                    $('.select2').addClass('form-control newinput');
+                    $('#FormArea .select2').addClass('form-control newinput');
                 }
                 catch (e) {
                     console.log(e.message);
                 }
             });
 
-            $('.divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#hdnDistrictRequired').val(), function () {
+            $('#FormArea .divDistrictSelectList').load('/District/DistrictSelectList?required=' + $('#FormArea #hdnDistrictRequired').val(), function () {
                 try {
-                    $('.divDistrictSelectList #DistrictCode').select2({
-                        dropdownParent: $("#divModelMasterPopUp1")
+                    $('#FormArea .divDistrictSelectList #DistrictCode').select2({
+                        dropdownParent: $("#divModelMasterPopUp1 .divDistrictSelectList")
                     });
-
-                    $('.select2').addClass('form-control newinput');
+                    $('#FormArea .select2').addClass('form-control newinput');
                 }
                 catch (e) {
                     console.log(e.message);

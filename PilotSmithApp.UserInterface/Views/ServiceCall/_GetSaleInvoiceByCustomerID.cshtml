@@ -18,7 +18,7 @@
                     @for (int i = 0; i < Model.SaleInvoiceList.Count; i++)
                     {
                         <tr>
-                            <td style="width: 25%"><a href="SaleInvoice?id=@Model.SaleInvoiceList[i].ID">@Model.SaleInvoiceList[i].SaleInvNo</a></td>
+                            <td style="width: 25%"><a href="SaleInvoice?id=@Model.SaleInvoiceList[i].ID" target="_blank">@Model.SaleInvoiceList[i].SaleInvNo</a></td>
                             <td style="width: 20%;text-align: center;">@Model.SaleInvoiceList[i].SaleInvDateFormatted</td>
                             <td style="width: 55%">@Html.Raw(Model.SaleInvoiceList[i].ProductDetail)</td>
                         </tr>

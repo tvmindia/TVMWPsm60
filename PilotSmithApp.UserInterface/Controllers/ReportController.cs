@@ -417,6 +417,138 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetProductionOrderStandardReport
 
 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "PendingProductionOrderReport", Mode = "R")]
+        public ActionResult PendingProductionOrderReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            PendingProductionOrderReportViewModel PendingProductionOrderReportVM = new PendingProductionOrderReportViewModel();
+            PendingProductionOrderReportVM.DocumentStatus = new DocumentStatusViewModel();
+            PendingProductionOrderReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
+            PendingProductionOrderReportVM.Customer = new CustomerViewModel();
+            PendingProductionOrderReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            PendingProductionOrderReportVM.Product = new ProductViewModel();
+            PendingProductionOrderReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            PendingProductionOrderReportVM.ProductModel = new ProductModelViewModel();
+            PendingProductionOrderReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(PendingProductionOrderReportVM);
+        }
+
+
+        #region GetPendingProductionOrderReport
+        public JsonResult GetPendingProductionOrderReport(DataTableAjaxPostModel model, PendingProductionOrderReportViewModel pendingProductionOrderReportVM)
+        {
+            pendingProductionOrderReportVM.DataTablePaging.Start = model.start;
+            pendingProductionOrderReportVM.DataTablePaging.Length = (pendingProductionOrderReportVM.DataTablePaging.Length == 0 ? model.length : pendingProductionOrderReportVM.DataTablePaging.Length);
+
+            List<PendingProductionOrderReportViewModel> pendingProductionOrderReportList = Mapper.Map<List<PendingProductionOrderReport>, List<PendingProductionOrderReportViewModel>>(_reportBusiness.GetPendingProductionOrderReport(Mapper.Map<PendingProductionOrderReportViewModel, PendingProductionOrderReport>(pendingProductionOrderReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = pendingProductionOrderReportList.Count != 0 ? pendingProductionOrderReportList[0].TotalCount : 0,
+                recordsFiltered = pendingProductionOrderReportList.Count != 0 ? pendingProductionOrderReportList[0].FilteredCount : 0,
+                data = pendingProductionOrderReportList
+            });
+        }
+
+        #endregion GetPendingProductionOrderReport
+
+
+
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionQCStandardReport", Mode = "R")]
+        public ActionResult ProductionQCStandardReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            ProductionQCStandardReportViewModel ProductionQCStandardReportVM = new ProductionQCStandardReportViewModel();
+            ProductionQCStandardReportVM.DocumentStatus = new DocumentStatusViewModel();
+            ProductionQCStandardReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
+            ProductionQCStandardReportVM.Customer = new CustomerViewModel();
+            ProductionQCStandardReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            ProductionQCStandardReportVM.Product = new ProductViewModel();
+            ProductionQCStandardReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            ProductionQCStandardReportVM.ProductModel = new ProductModelViewModel();
+            ProductionQCStandardReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(ProductionQCStandardReportVM);
+        }
+
+
+        #region GetProductionQCStandardReport
+        public JsonResult GetProductionQCStandardReport(DataTableAjaxPostModel model,ProductionQCStandardReportViewModel productionQCReportVM)
+        {
+            productionQCReportVM.DataTablePaging.Start = model.start;
+            productionQCReportVM.DataTablePaging.Length = (productionQCReportVM.DataTablePaging.Length == 0 ? model.length : productionQCReportVM.DataTablePaging.Length);
+
+            List<ProductionQCStandardReportViewModel> productionQCReportList = Mapper.Map<List<ProductionQCStandardReport>, List<ProductionQCStandardReportViewModel>>(_reportBusiness.GetProductionQCStandardReport(Mapper.Map<ProductionQCStandardReportViewModel, ProductionQCStandardReport>(productionQCReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = productionQCReportList.Count != 0 ? productionQCReportList[0].TotalCount : 0,
+                recordsFiltered = productionQCReportList.Count != 0 ? productionQCReportList[0].FilteredCount : 0,
+                data = productionQCReportList
+            });
+        }
+
+        #endregion GetProductionQCStandardReport
+
+
+
+
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "PendingProductionQCReport", Mode = "R")]
+        public ActionResult PendingProductionQCReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            PendingProductionQCReportViewModel PendingProductionQCReportVM = new PendingProductionQCReportViewModel();
+            PendingProductionQCReportVM.DocumentStatus = new DocumentStatusViewModel();
+            PendingProductionQCReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
+            PendingProductionQCReportVM.Customer = new CustomerViewModel();
+            PendingProductionQCReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            PendingProductionQCReportVM.Product = new ProductViewModel();
+            PendingProductionQCReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            PendingProductionQCReportVM.ProductModel = new ProductModelViewModel();
+            PendingProductionQCReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(PendingProductionQCReportVM);
+        }
+
+
+        #region GetPendingProductionQCReport
+        public JsonResult GetPendingProductionQCReport(DataTableAjaxPostModel model, PendingProductionQCReportViewModel pendingProductionQCReportVM)
+        {
+            pendingProductionQCReportVM.DataTablePaging.Start = model.start;
+            pendingProductionQCReportVM.DataTablePaging.Length = (pendingProductionQCReportVM.DataTablePaging.Length == 0 ? model.length : pendingProductionQCReportVM.DataTablePaging.Length);
+
+            List<PendingProductionQCReportViewModel> pendingProductionQCReportList = Mapper.Map<List<PendingProductionQCReport>, List<PendingProductionQCReportViewModel>>(_reportBusiness.GetPendingProductionQCReport(Mapper.Map<PendingProductionQCReportViewModel, PendingProductionQCReport>(pendingProductionQCReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = pendingProductionQCReportList.Count != 0 ? pendingProductionQCReportList[0].TotalCount : 0,
+                recordsFiltered = pendingProductionQCReportList.Count != 0 ? pendingProductionQCReportList[0].FilteredCount : 0,
+                data = pendingProductionQCReportList
+            });
+        }
+
+        #endregion GetPendingProductionQCReport
+
 
 
         public void DownloadExcel(ExcelExportViewModel excelExportVM)
@@ -706,9 +838,153 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                         break;
 
+                    case "PendingProductionOrderReport":
+                        fileName = "PendingProductionOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        PendingProductionOrderReportViewModel pendingProductionOrderReportVM = new PendingProductionOrderReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        pendingProductionOrderReportVM = JsonConvert.DeserializeObject<PendingProductionOrderReportViewModel>(ReadableFormat);
+                        List<PendingProductionOrderReportViewModel> pendingProductionOrderReportList = Mapper.Map<List<PendingProductionOrderReport>, List<PendingProductionOrderReportViewModel>>(_reportBusiness.GetPendingProductionOrderReport(Mapper.Map<PendingProductionOrderReportViewModel, PendingProductionOrderReport>(pendingProductionOrderReportVM)));
+                        var pendingproductionorderreportworkSheet = excel.Workbook.Worksheets.Add("PendingProductionOrderReport");
+                        PendingProductionOrderReportViewModel[] pendingProductionOrderReportVMListArray = pendingProductionOrderReportList.ToArray();
+                        pendingproductionorderreportworkSheet.Cells[1, 1].LoadFromCollection(pendingProductionOrderReportVMListArray.Select(x => new {
+                            ProductionOrderNo = x.ProdOrderNo,
+                            ProductionOrderDate = x.ProdOrderDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
+                            ReferredBy = x.ReferencePerson.Name,
+                            Area = x.Area.Description,
+                            Plant = x.Plant.Description,
+                            ProductName = x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification = x.ProductSpec,
+                            Amount = x.Amount,
+                            Qty = x.Qty,                            
+                            SaleOrderNo = x.SaleOrderNo,
+                            SaleOrderQty=x.SaleOrderQty,
+                            PendingQty=x.PendingQty,
+                            Progress = x.Progress,
+                            ForecastCompleteDate=x.ForecastDateFormatted
+                        }), true, TableStyles.Light1);
+                        pendingproductionorderreportworkSheet.Column(1).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(2).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(3).Width = 40;
+                        pendingproductionorderreportworkSheet.Column(4).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(5).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(6).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(7).Width = 40;
+                        pendingproductionorderreportworkSheet.Column(8).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(9).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(10).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(11).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(12).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(13).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(14).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(15).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(16).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(17).AutoFit();
 
 
-                    default:break;
+                        break;
+                    case "ProductionQCStandardReport":
+                        fileName = "ProductionQCStandardReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                       ProductionQCStandardReportViewModel productionQCReportVM = new ProductionQCStandardReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        productionQCReportVM = JsonConvert.DeserializeObject<ProductionQCStandardReportViewModel>(ReadableFormat);
+                        List<ProductionQCStandardReportViewModel> productionQCReportList = Mapper.Map<List<ProductionQCStandardReport>, List<ProductionQCStandardReportViewModel>>(_reportBusiness.GetProductionQCStandardReport(Mapper.Map<ProductionQCStandardReportViewModel, ProductionQCStandardReport>(productionQCReportVM)));
+                        var productionqcreportworkSheet = excel.Workbook.Worksheets.Add("ProductionQCStandardReport");
+                        ProductionQCStandardReportViewModel[] productionQCReportVMListArray = productionQCReportList.ToArray();
+                        productionqcreportworkSheet.Cells[1, 1].LoadFromCollection(productionQCReportVMListArray.Select(x => new {
+                            ProductionOrderNo = x.ProdOrderNo,
+                            ProductionOrderDate = x.ProdOrderDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
+                            ReferredBy = x.ReferencePerson.Name,
+                            Area = x.Area.Description,
+                            Plant = x.Plant.Description,
+                            ProductName = x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification = x.ProductSpec,
+                            Amount = x.Amount,
+                            ProductionOrderQty = x.ProdOrdQty,
+                            ProductionQCNo = x.ProdQCNo,
+                            ProductionQCQty = x.ProdQCQty,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Remarks = x.Remarks
+                        }), true, TableStyles.Light1);
+                        productionqcreportworkSheet.Column(1).AutoFit();
+                        productionqcreportworkSheet.Column(2).AutoFit();
+                        productionqcreportworkSheet.Column(3).Width = 40;
+                        productionqcreportworkSheet.Column(4).AutoFit();
+                        productionqcreportworkSheet.Column(5).AutoFit();
+                        productionqcreportworkSheet.Column(6).AutoFit();
+                        productionqcreportworkSheet.Column(7).Width = 40;
+                        productionqcreportworkSheet.Column(8).AutoFit();
+                        productionqcreportworkSheet.Column(9).AutoFit();
+                        productionqcreportworkSheet.Column(10).AutoFit();
+                        productionqcreportworkSheet.Column(11).AutoFit();
+                        productionqcreportworkSheet.Column(12).AutoFit();
+                        productionqcreportworkSheet.Column(13).AutoFit();
+                        productionqcreportworkSheet.Column(14).AutoFit();
+                        productionqcreportworkSheet.Column(15).AutoFit();
+                        productionqcreportworkSheet.Column(16).Width = 40;
+
+                        break;
+
+                    case "PendingProductionQCReport":
+                        fileName = "PendingProductionQCReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        PendingProductionQCReportViewModel pendingProductionQCReportVM = new PendingProductionQCReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        pendingProductionQCReportVM = JsonConvert.DeserializeObject<PendingProductionQCReportViewModel>(ReadableFormat);
+                        List<PendingProductionQCReportViewModel> pendingproductionQCReportList = Mapper.Map<List<PendingProductionQCReport>, List<PendingProductionQCReportViewModel>>(_reportBusiness.GetPendingProductionQCReport(Mapper.Map<PendingProductionQCReportViewModel, PendingProductionQCReport>(pendingProductionQCReportVM)));
+                        var pendingproductionqcreportworkSheet = excel.Workbook.Worksheets.Add("PendingProductionQCReport");
+                        PendingProductionQCReportViewModel[] pendingProductionQCReportVMListArray = pendingproductionQCReportList.ToArray();
+                        pendingproductionqcreportworkSheet.Cells[1, 1].LoadFromCollection(pendingProductionQCReportVMListArray.Select(x => new {
+                            ProductionOrderNo = x.ProdOrderNo,
+                            ProductionOrderDate = x.ProdOrderDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
+                            ReferredBy = x.ReferencePerson.Name,
+                            Area = x.Area.Description,
+                            Plant = x.Plant.Description,
+                            ProductName = x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification = x.ProductSpec,
+                            Amount = x.Amount,
+                            ProductionOrderQty = x.ProdOrdQty,
+                            ProductionQCNo = x.ProdQCNo,
+                            ProductionQCQty = x.ProdQCQty,
+                            PendingQty=x.PendingQty,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Remarks = x.Remarks
+                        }), true, TableStyles.Light1);
+                        pendingproductionqcreportworkSheet.Column(1).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(2).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(3).Width = 40;
+                        pendingproductionqcreportworkSheet.Column(4).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(5).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(6).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(7).Width = 40;
+                        pendingproductionqcreportworkSheet.Column(8).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(9).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(10).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(11).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(12).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(13).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(14).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(15).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(16).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(17).Width = 40;
+
+                        break;
+
+
+                    default: break;
                 }
                 using (var memoryStream = new MemoryStream())
                         {

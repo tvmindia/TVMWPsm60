@@ -1166,7 +1166,7 @@ function CalculateGrandTotal(value) {
 function EmailProformaInvoice() {
     debugger;
     $("#divModelEmailProformaInvoiceBody").load("ProformaInvoice/EmailProformaInvoice?ID=" + $('#ProformaInvoiceForm #ID').val() + "&EmailFlag=True", function () {
-        $('#lblModelEmailProformaInvoice').text('Email ProformaInvoice')
+        $('#lblModelEmailProformaInvoice').text('Email Proforma Invoice')
         $('#divModelEmailProformaInvoice').modal('show');
     });
 }
@@ -1209,7 +1209,7 @@ function DownloadProformaInvoice() {
 function PrintProformaInvoice() {
     debugger;
     $("#divModelPrintProformaInvoiceBody").load("ProformaInvoice/PrintProformaInvoice?ID=" + $('#ProformaInvoiceForm #ID').val(), function () {
-        $('#lblModelPrintProformaInvoice').text('Print ProformaInvoice');
+        $('#lblModelPrintProformaInvoice').text('Print Proforma Invoice');
         $('#divModelPrintProformaInvoice').modal('show');
     });
 }
@@ -1225,7 +1225,7 @@ function SaveSuccessUpdateProformaInvoiceEmailInfo(data, status) {
             case "OK":
                 //MasterAlert("success", _result.Message)
                 $("#divModelEmailProformaInvoiceBody").load("ProformaInvoice/EmailProformaInvoice?ID=" + $('#ProformaInvoiceForm #ID').val() + "&EmailFlag=False", function () {
-                    $('#lblModelEmailProformaInvoice').text('Send Email ProformaInvoice')
+                    $('#lblModelEmailProformaInvoice').text('Email Attachment')
                 });
                 break;
             case "ERROR":

@@ -23,13 +23,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IProductModelBusiness _productModelBusiness;
         IProductBusiness _productBusiness;
-        IUserBusiness _userBusiness;
+        //IUserBusiness _userBusiness;
         IFileUploadBusiness _fileUploadBusiness;
-        public ProductModelController(IProductModelBusiness productModelBusiness,IProductBusiness productBusiness, IUserBusiness userBusiness, IFileUploadBusiness fileUploadBusiness)
+        public ProductModelController(IProductModelBusiness productModelBusiness,IProductBusiness productBusiness, IFileUploadBusiness fileUploadBusiness)//, IUserBusiness userBusiness
         {
             _productModelBusiness = productModelBusiness;  
             _productBusiness = productBusiness;
-            _userBusiness = userBusiness;
+            //_userBusiness = userBusiness;
             _fileUploadBusiness = fileUploadBusiness;
         }
         #endregion Constructor_Injection
@@ -102,7 +102,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "ProductModel");
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductModel");
             if (permission.SubPermissionList != null)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
