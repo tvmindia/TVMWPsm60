@@ -855,6 +855,7 @@
     <Compile Include="Models\DepartmentViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\DocumentApprovalViewModel.cs" />
+    <Compile Include="Models\DocumentLogViewModel.cs" />
     <Compile Include="Models\DocumentStatusViewModel.cs" />
     <Compile Include="Models\DocumentTypeViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
