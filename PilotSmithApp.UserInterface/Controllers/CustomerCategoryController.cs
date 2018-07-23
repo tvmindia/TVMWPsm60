@@ -19,13 +19,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private ICustomerCategoryBusiness _customerCategoryBusiness;
-        IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         // GET: CustomerCategory
         #region Constructor Injection
-        public CustomerCategoryController(ICustomerCategoryBusiness customerCategoryBusiness,IUserBusiness userBusiness)
+        public CustomerCategoryController(ICustomerCategoryBusiness customerCategoryBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _customerCategoryBusiness = customerCategoryBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;
         }
         #endregion       
         [AuthSecurityFilter(ProjectObject = "CustomerCategory", Mode = "R")]
@@ -135,8 +135,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "CustomerCategory");
-            if (permission.SubPermissionList != null)
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "CustomerCategory");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -173,6 +173,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "CustomerCategory");
             switch (actionType)
             {
                 case "List":
@@ -195,6 +197,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

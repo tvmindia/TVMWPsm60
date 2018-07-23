@@ -20,11 +20,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         private IUserBusiness _userBusiness;
         private IUserInBranchBusiness _userInBranchBusiness;
-
-        public UserInBranchController(IUserBusiness userBusiness, IUserInBranchBusiness userInBranchBusiness)
+        SecurityFilter.ToolBarAccess _tool;
+        public UserInBranchController(IUserBusiness userBusiness, IUserInBranchBusiness userInBranchBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _userBusiness = userBusiness;
             _userInBranchBusiness = userInBranchBusiness;
+            _tool = tool;
         }
         // GET: UserBranch
         public ActionResult Index()
@@ -92,13 +93,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
-            Permission _permission = Session["UserRights"] as Permission;
+            //Permission _permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "UserInBranch");
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
             switch (ActionType)
             {
                 case "Default":
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.savebtn.Visible = true;
                     }
@@ -116,6 +119,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
 
