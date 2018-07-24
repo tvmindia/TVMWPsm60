@@ -84,6 +84,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                     serviceCallVM.IsUpdate = true;
                     AppUA appUA = Session["AppUA"] as AppUA;
                     serviceCallVM.IsDocLocked = serviceCallVM.DocumentOwners.Contains(appUA.UserName);
+                    serviceCallVM.Customer = new CustomerViewModel()
+                    {
+                        CompanyName = serviceCallVM.Customer.CompanyName,
+                        Titles = new TitlesViewModel()
+                        {
+                            TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                        },
+                    };
+
                 }
                 else //(id == Guid.Empty)
                 {
@@ -94,14 +103,16 @@ namespace PilotSmithApp.UserInterface.Controllers
                     serviceCallVM.DocumentStatus.Description = "-";
                     serviceCallVM.Branch = new BranchViewModel();
                     serviceCallVM.Branch.Description = "-";
-                }
-                serviceCallVM.Customer = new CustomerViewModel
-                {
-                    Titles = new TitlesViewModel()
+                    serviceCallVM.Customer = new CustomerViewModel
                     {
-                        TitlesSelectList = _customerBusiness.GetTitleSelectList(),
-                    },
-                };
+                        //CompanyName = serviceCallVM.Customer.CompanyName,
+                        Titles = new TitlesViewModel()
+                        {
+                            TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                        },
+                    };
+                }
+               
             }
             catch (Exception ex)
             {

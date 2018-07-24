@@ -70,6 +70,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     AppUA appUA = Session["AppUA"] as AppUA;
                     estimateVM.IsDocLocked = estimateVM.DocumentOwners.Contains(appUA.UserName);
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
+
                 }
                 else if(id==Guid.Empty && enquiryID==null)
                 {
@@ -82,6 +83,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    //estimateVM.Customer = new CustomerViewModel();
+                    //estimateVM.Customer.CompanyName = "-";
                     estimateVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
@@ -97,6 +100,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    estimateVM.Customer = new CustomerViewModel();
+                    estimateVM.Customer.CompanyName = "-";
                     estimateVM.IsDocLocked = false;
                 }
                 

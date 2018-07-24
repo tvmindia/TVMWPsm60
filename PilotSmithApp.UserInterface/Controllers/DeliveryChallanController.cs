@@ -80,6 +80,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.Customer = new CustomerViewModel();
+                    deliveryChallanVM.Customer.CompanyName = "-";
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && prodOrderID != null)
@@ -94,6 +96,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.SaleOrderID = null;
                     deliveryChallanVM.DocumentType = "ProductionOrder";
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.Customer = new CustomerViewModel();
+                    deliveryChallanVM.Customer.CompanyName = "-";
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else
@@ -107,6 +111,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.IsDocLocked = false;
                     deliveryChallanVM.IsUpdate = false;
                     deliveryChallanVM.ID = Guid.Empty;
+                    deliveryChallanVM.Customer = new CustomerViewModel();
+                    deliveryChallanVM.Customer.CompanyName = "-";
                 }
             }
             catch (Exception ex)

@@ -74,11 +74,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsDocLocked = enquiryVM.DocumentOwners.Contains(appUA.UserName);
                     enquiryVM.Customer = new CustomerViewModel
                     {
+                        CompanyName =enquiryVM.Customer.CompanyName,
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                         },
                     };
+                    
                 }
                 else
                 {
@@ -92,6 +94,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsDocLocked = false;
                     enquiryVM.Customer = new CustomerViewModel
                     {
+                        //CompanyName = "-",
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),

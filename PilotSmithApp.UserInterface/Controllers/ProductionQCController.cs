@@ -68,6 +68,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description="-",
                     };
+                    //productionQCVM.Customer = new CustomerViewModel();
+                    //productionQCVM.Customer.CompanyName = "-";
                     productionQCVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && productionOrderID != null)
@@ -83,6 +85,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description = "-",
                     };
+                    productionQCVM.Customer = new CustomerViewModel();
+                    productionQCVM.Customer.CompanyName = "-";
                     productionQCVM.IsDocLocked = false;
                 }
             }

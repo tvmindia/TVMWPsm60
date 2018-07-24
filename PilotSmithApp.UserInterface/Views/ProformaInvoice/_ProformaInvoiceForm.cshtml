@@ -176,7 +176,7 @@
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
-                        @if (!Model.IsDocLocked && Model.IsUpdate)
+                        @if (Model.IsUpdate)
                         {
                             <div class="col-md-12">
                                 <span class="form-control newinput">@Model.Branch.Description</span>
@@ -188,12 +188,12 @@
                                 <div class="divBranchSelectList">
                                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
-                                </div>
-                                <!-- This hidden field will keep the information whether the field is required or not -->
-                                @Html.Hidden("hdnBranchRequired", "required")
-                                @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                                </div>                            
                             </div>
                         }
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBranchRequired", "required")
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
@@ -326,12 +326,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            @* binding from javascript document ready function using div class *@
+                    @if (Model.IsUpdate)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divCustomerSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                @* binding from javascript document ready function using div class *@
+                            </div>
+                        </div>
+                    }
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -530,26 +539,21 @@
     $(document).ready(function () {
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
-            @if (Model.IsUpdate || Model.QuoteID != null || Model.SaleOrderID != null) {
-                  <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val() + '&disabled=true', function () {
-            });
-            </text>
-            }
-            else {
-                <text>
+            @if (Model.IsUpdate)
+             {
+             }
+             else
+             {
+            <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
-                    }
+             }
+
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
-            @if (Model.IsUpdate || Model.QuoteID !=null || Model.SaleOrderID != null)
+            @if (Model.IsUpdate)
          {
-             <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
-
-            });
-            </text>
+           
          }
          else
          {

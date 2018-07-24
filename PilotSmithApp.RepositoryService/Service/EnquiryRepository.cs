@@ -172,6 +172,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiry.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
                                     enquiry.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : enquiry.DocumentOwners);
                                     enquiry.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : enquiry.DocumentOwner);
+                                    enquiry.Customer = new Customer();
+                                    enquiry.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.Customer.CompanyName);
                                 }
                         }
                     }

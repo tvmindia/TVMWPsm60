@@ -62,7 +62,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     AppUA appUA = Session["AppUA"] as AppUA;
                     quotationVM.IsDocLocked = quotationVM.DocumentOwners.Contains(appUA.UserName);
                     quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
-                   
+
                 }
                 else if(id==Guid.Empty&&estimateID==null)
                 {
@@ -75,6 +75,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "-";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
+                    //quotationVM.Customer = new CustomerViewModel();
+                    //quotationVM.Customer.CompanyName = "-";
                     quotationVM.IsDocLocked = false;
                 }
                 else if(id == Guid.Empty && estimateID != null)
@@ -90,15 +92,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "-";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
+                    quotationVM.Customer = new CustomerViewModel();
+                    quotationVM.Customer.CompanyName = "-";
                     quotationVM.IsDocLocked = false;
                 }
-                quotationVM.Customer = new CustomerViewModel
-                {
-                    //Titles = new TitlesViewModel()
-                    //{
-                    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
-                    //},
-                };               
+                //quotationVM.Customer = new CustomerViewModel
+                //{
+                //    //Titles = new TitlesViewModel()
+                //    //{
+                //    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                //    //},
+                //};               
 
             }
             catch (Exception ex)
