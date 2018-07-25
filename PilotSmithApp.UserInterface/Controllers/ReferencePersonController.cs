@@ -21,13 +21,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         private IReferencePersonBusiness _referencePersonBusiness;
         private IReferenceTypeBusiness _referenceTypeBusiness;
         private IAreaBusiness _areaBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         //IUserBusiness _userBusiness;
 
-        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness, IReferenceTypeBusiness referenceTypeBusiness, IAreaBusiness areaBusiness)//, IUserBusiness userBusiness)
+        public ReferencePersonController(IReferencePersonBusiness referencePersonBusiness,
+            IReferenceTypeBusiness referenceTypeBusiness, IAreaBusiness areaBusiness, SecurityFilter.ToolBarAccess tool)//, IUserBusiness userBusiness)
         {
             _referencePersonBusiness = referencePersonBusiness;
             _referenceTypeBusiness = referenceTypeBusiness;
             _areaBusiness = areaBusiness;
+            _tool = tool;
            // _userBusiness = userBusiness;
         }
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]
@@ -146,7 +149,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
             Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "ReferencePerson");
-            if (permission.SubPermissionList != null)
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -179,6 +182,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "ReferencePerson", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "ReferencePerson");
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
             {
@@ -202,6 +207,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

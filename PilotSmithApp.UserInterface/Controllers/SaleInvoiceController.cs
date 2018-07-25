@@ -112,6 +112,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = new CustomerViewModel();
+                    saleInvoiceVM.Customer.CompanyName = "-";
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && saleorderID != null)
@@ -133,6 +135,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = new CustomerViewModel();
+                    saleInvoiceVM.Customer.CompanyName = "-";
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && proformaInvoiceID!=null)
@@ -154,6 +158,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = new CustomerViewModel();
+                    saleInvoiceVM.Customer.CompanyName = "-";
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else   
@@ -171,15 +177,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = new CustomerViewModel();
+                    saleInvoiceVM.Customer.CompanyName = "-";
                     saleInvoiceVM.IsDocLocked = false;
                 }
-                saleInvoiceVM.Customer = new CustomerViewModel
-                {
-                    //Titles = new TitlesViewModel()
-                    //{
-                    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
-                    //},
-                };
+                //saleInvoiceVM.Customer = new CustomerViewModel
+                //{
+                //    //Titles = new TitlesViewModel()
+                //    //{
+                //    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                //    //},
+                //};
             }
             catch (Exception ex)
             {
@@ -963,7 +971,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "SaleInvoice");
             switch (actionType)
             {
                 case "List":

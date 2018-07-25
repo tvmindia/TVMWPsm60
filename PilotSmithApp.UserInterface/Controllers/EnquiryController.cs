@@ -26,14 +26,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         IAreaBusiness _areaBusiness;
         IReferencePersonBusiness _referencePersonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
-        private IUserBusiness _userBusiness;
+        //private IUserBusiness _userBusiness;
         SecurityFilter.ToolBarAccess _tool;
 
         public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
             ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
             IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, 
-            IUserBusiness userBusiness, SecurityFilter.ToolBarAccess tool)
+            SecurityFilter.ToolBarAccess tool)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
@@ -42,8 +42,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;
             _areaBusiness= areaBusiness;
             _referencePersonBusiness = referencePersonBusiness;
-            _documentStatusBusiness = documentStatusBusiness;
-            _userBusiness = userBusiness;
+            _documentStatusBusiness = documentStatusBusiness;           
             _tool = tool;
 
         }
@@ -75,11 +74,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsDocLocked = enquiryVM.DocumentOwners.Contains(appUA.UserName);
                     enquiryVM.Customer = new CustomerViewModel
                     {
+                        CompanyName =enquiryVM.Customer.CompanyName,
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                         },
                     };
+                    
                 }
                 else
                 {
@@ -93,6 +94,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsDocLocked = false;
                     enquiryVM.Customer = new CustomerViewModel
                     {
+                        //CompanyName = "-",
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),

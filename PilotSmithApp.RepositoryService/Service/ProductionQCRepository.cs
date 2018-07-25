@@ -179,6 +179,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionQC.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : productionQC.DocumentOwner);
                                     productionQC.Branch = new Branch();
                                     productionQC.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : productionQC.Branch.Description);
+                                    productionQC.Customer = new Customer();
+                                    productionQC.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : productionQC.Customer.CompanyName);
                                 }
                         }
                     }

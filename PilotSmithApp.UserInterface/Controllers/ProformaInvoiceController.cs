@@ -102,6 +102,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     proformaInvoiceVM.Branch = new BranchViewModel();
                     proformaInvoiceVM.Branch.Description = "-";
+                    proformaInvoiceVM.Customer = new CustomerViewModel();
+                    proformaInvoiceVM.Customer.CompanyName = "-";
                     proformaInvoiceVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && saleorderID != null)
@@ -122,6 +124,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     proformaInvoiceVM.Branch = new BranchViewModel();
                     proformaInvoiceVM.Branch.Description = "-";
+                    proformaInvoiceVM.Customer = new CustomerViewModel();
+                    proformaInvoiceVM.Customer.CompanyName = "-";
                     proformaInvoiceVM.IsDocLocked = false;
                 }
                 else
@@ -138,15 +142,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     proformaInvoiceVM.Branch = new BranchViewModel();
                     proformaInvoiceVM.Branch.Description = "-";
+                    proformaInvoiceVM.Customer = new CustomerViewModel();
+                    proformaInvoiceVM.Customer.CompanyName = "-";
                     proformaInvoiceVM.IsDocLocked = false;
                 }
-                proformaInvoiceVM.Customer = new CustomerViewModel
-                {
-                    //Titles = new TitlesViewModel()
-                    //{
-                    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
-                    //},
-                };
+                //proformaInvoiceVM.Customer = new CustomerViewModel
+                //{
+                //    //Titles = new TitlesViewModel()
+                //    //{
+                //    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                //    //},
+                //};
             }
             catch (Exception ex)
             {
@@ -763,7 +769,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProformaInvoice");
             switch (actionType)
             {
                 case "List":

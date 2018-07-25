@@ -60,7 +60,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.IsUpdate = true;
                     AppUA appUA = Session["AppUA"] as AppUA;
                     productionOrderVM.IsDocLocked = productionOrderVM.DocumentOwners.Contains(appUA.UserName);
-                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
+                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);                   
                 }
                 else if (id == Guid.Empty && saleOrderID==null)
                 {
@@ -73,6 +73,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.DocumentStatus.Description = "-";
                     productionOrderVM.Branch = new BranchViewModel();
                     productionOrderVM.Branch.Description = "-";
+                    //productionOrderVM.Customer = new CustomerViewModel();
+                    //productionOrderVM.Customer.CompanyName = "-";
                     productionOrderVM.IsDocLocked = false;
                 }     
                 else if(id==Guid.Empty && saleOrderID!=null)
@@ -89,6 +91,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.Branch = new BranchViewModel();
                     productionOrderVM.IsDocLocked = false;
                     productionOrderVM.Branch.Description = "-";
+                    productionOrderVM.Customer = new CustomerViewModel();
+                    productionOrderVM.Customer.CompanyName = "-";
+
                 }           
             }
             catch(Exception ex)
@@ -485,7 +490,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType,Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
             switch (actionType)
             {
                 case "List":

@@ -166,6 +166,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     deliveryChallan.LatestApprovalIDv = (sdr["LatestApprovalIDv"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalIDv"].ToString()) : deliveryChallan.LatestApprovalIDv);
                                     deliveryChallan.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : deliveryChallan.LatestApprovalStatus);
                                     deliveryChallan.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : deliveryChallan.LatestApprovalStatusDescription);
+                                    deliveryChallan.Customer = new Customer();
+                                    deliveryChallan.Customer.CompanyName= (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : deliveryChallan.Customer.CompanyName);
                                 }
                         }
                     }

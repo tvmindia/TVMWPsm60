@@ -17,12 +17,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Constructor_Injection
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
-        ICarrierBusiness _carrierBusiness;
-        IUserBusiness _userBusiness;
-        public CarrierController(ICarrierBusiness carrierBusiness,IUserBusiness userBusiness)
+        ICarrierBusiness _carrierBusiness;      
+        public CarrierController(ICarrierBusiness carrierBusiness)
         {
-            _carrierBusiness = carrierBusiness;
-            _userBusiness = userBusiness;
+            _carrierBusiness = carrierBusiness;           
         }
         #endregion Constructor_Injection
         // GET: Carrier
@@ -39,8 +37,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Carrier");
-            if (permission.SubPermissionList != null)
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Carrier");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListCarrierAddButton").AccessCode.Contains("R"))
                 {
