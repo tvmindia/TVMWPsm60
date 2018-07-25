@@ -2,16 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PilotSmithApp.BusinessService.Contract
 {
-    public interface IMailBusiness
+    public interface ITakeOwnershipBusiness
     {
-        Task<bool> MailSendAsync(Mail mailObj);
-        Task<bool> MailMessageSendAsync(MailMessage mailObj);
-        bool MailMessageSend(MailMessage mailObj);
+        DocumentLog InsertTakeOwnership(DocumentLog documentLog);
     }
 }

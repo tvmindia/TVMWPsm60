@@ -330,7 +330,7 @@ function ChangeButtonPatchView(Controller, Dom, Action,ExtraParam) {
         var ds = {};
         ds = GetDataFromServer(Controller + "/ChangeButtonStyle/", data);
         if (ds == "Nochange") {
-            return; 0
+            return 0;
         }
         $("#" + Dom).empty();
         $("#" + Dom).html(ds);
@@ -852,8 +852,6 @@ function Attachment_FindRow(element) {
 }
 
 function Attachment_Remove(link) {
-    debugger;
-    return;
     var row = Attachment_FindRow(link);
     if (!confirm("Are you sure you want to delete '" + row.getAttribute("filename") + "'?"))
         return;
@@ -1067,5 +1065,35 @@ function ApprovalHistoryList(DocumentID, Type) {
         });
     } catch (e) {
         //console.log(e.message);
+    }
+}
+
+function TakeOwnership(thisObj) {
+    debugger;
+    $('#Remarks').val('');
+    $('#DocumentNo').val(thisObj.attributes.documentNumber.value);
+    $('#DocType').val(thisObj.attributes.documentType.value);
+    $('#divModelTakeOwnershipPopUp').modal('show');
+}
+
+function TakeOwnershipSuccess(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if (JsonResult.Record.DocType == "ENQ") {
+                EditRedirectToDocument(JsonResult.Record.DocumentID)
+                BindOrReloadEnquiryTable('Init');
+            }
+
+            MasterAlert("success", JsonResult.Record.Message)
+            $('#divModelTakeOwnershipPopUp').modal('hide');
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
     }
 }
