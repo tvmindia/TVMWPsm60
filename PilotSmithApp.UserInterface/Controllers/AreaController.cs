@@ -21,15 +21,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         private IAreaBusiness _areaBusiness;
         private IStateBusiness _stateBusiness;
         private IDistrictBusiness _districtBusiness;
-        IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         // GET: Area
         #region Constructor Injection
-        public AreaController(IAreaBusiness areaBusiness, IStateBusiness stateBusiness, IDistrictBusiness districtBusiness,IUserBusiness userBusiness)
+        public AreaController(IAreaBusiness areaBusiness, IStateBusiness stateBusiness,
+            IDistrictBusiness districtBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _areaBusiness = areaBusiness;
             _stateBusiness = stateBusiness;
             _districtBusiness = districtBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;       
         }
         #endregion
         [AuthSecurityFilter(ProjectObject = "Area", Mode = "R")]
@@ -145,8 +146,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.propertydisable = disabled == null ? false : disabled;
             //Permission _permission = Session["UserRights"] as Permission;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Area");
-            if (permission.SubPermissionList != null)
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Area");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -196,6 +197,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Area");
             switch (actionType)
             {
                 case "List":
@@ -218,6 +221,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

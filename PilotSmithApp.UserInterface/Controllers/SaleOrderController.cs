@@ -68,6 +68,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleOrderVM.DocumentType = "Quotation";
                     saleOrderVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quoteID);
                 }
+
             }
             else if (id == Guid.Empty && quoteID != null)
             {
@@ -85,6 +86,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
+                saleOrderVM.Customer = new CustomerViewModel();
+                saleOrderVM.Customer.CompanyName = "-";
                 saleOrderVM.IsDocLocked = false;
             }
             else if (id == Guid.Empty && enquiryID != null)
@@ -102,6 +105,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
+                saleOrderVM.Customer = new CustomerViewModel();
+                saleOrderVM.Customer.CompanyName = "-";
                 saleOrderVM.IsDocLocked = false;
             }
             else
@@ -116,6 +121,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
+                saleOrderVM.Customer = new CustomerViewModel();
+                saleOrderVM.Customer.CompanyName = "-";
                 saleOrderVM.IsDocLocked = false;
             }
             return PartialView("_SaleOrderForm", saleOrderVM);
@@ -635,7 +642,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "SaleOrder");
             switch (actionType)
             {
                 case "List":

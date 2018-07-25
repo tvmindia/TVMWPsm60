@@ -21,15 +21,16 @@ namespace PilotSmithApp.UserInterface.Controllers
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         ISpareBusiness _spareBusiness;
-        IUserBusiness _userBusiness;
-        public SpareController( ISpareBusiness spareBusiness, IUserBusiness userBusiness)
+        SecurityFilter.ToolBarAccess _tool;     
+        public SpareController( ISpareBusiness spareBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _spareBusiness = spareBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;
         }
         #endregion Constructor_Injection
 
         // GET: Spare
+        [AuthSecurityFilter(ProjectObject = "Spare", Mode = "R")]
         public ActionResult Index()
         {
             return View();
@@ -141,8 +142,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Spare");
-            if (permission.SubPermissionList != null)
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Spare");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -160,6 +161,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Spare", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Spare");
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
             {
@@ -183,6 +186,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
         #endregion

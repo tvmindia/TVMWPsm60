@@ -25,14 +25,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICommonBusiness _commonBusiness;
         IAreaBusiness _areaBusiness;
         IReferencePersonBusiness _referencePersonBusiness;
-        IDocumentStatusBusiness _documentStatusBusiness;
-        private IUserBusiness _userBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;    
         SecurityFilter.ToolBarAccess _tool;
 
         public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
             IAreaBusiness areaBusiness, IReferencePersonBusiness referencePersonBusiness,
-            IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness, SecurityFilter.ToolBarAccess tool)
+            IDocumentStatusBusiness documentStatusBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _estimateBusiness = estimateBusiness;
             _customerBusiness = customerBusiness;
@@ -41,8 +40,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;
             _areaBusiness = areaBusiness;
             _referencePersonBusiness = referencePersonBusiness;
-            _documentStatusBusiness = documentStatusBusiness;
-            _userBusiness = userBusiness;
+            _documentStatusBusiness = documentStatusBusiness;           
             _tool = tool;
 
         }
@@ -72,6 +70,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     AppUA appUA = Session["AppUA"] as AppUA;
                     estimateVM.IsDocLocked = estimateVM.DocumentOwners.Contains(appUA.UserName);
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
+
                 }
                 else if(id==Guid.Empty && enquiryID==null)
                 {
@@ -84,6 +83,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    //estimateVM.Customer = new CustomerViewModel();
+                    //estimateVM.Customer.CompanyName = "-";
                     estimateVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
@@ -99,6 +100,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    estimateVM.Customer = new CustomerViewModel();
+                    estimateVM.Customer.CompanyName = "-";
                     estimateVM.IsDocLocked = false;
                 }
                 
@@ -362,7 +365,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Estimate");
             switch (actionType)
             {
                 case "List":

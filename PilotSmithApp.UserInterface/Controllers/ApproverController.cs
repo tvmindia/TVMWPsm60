@@ -5,6 +5,7 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.BusinessServices.Contracts;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         private IApproverBusiness _approverBusiness;
         private IDocumentTypeBusiness _documentTypeBusiness;
         private IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         #region Constructor Injection
-        public ApproverController(IApproverBusiness approverBusiness, IDocumentTypeBusiness documentTypeBusiness, IUserBusiness userBusiness)
+        public ApproverController(IApproverBusiness approverBusiness, IDocumentTypeBusiness documentTypeBusiness, 
+            IUserBusiness userBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _approverBusiness = approverBusiness;
             _documentTypeBusiness = documentTypeBusiness;
             _userBusiness = userBusiness;
+            _tool = tool;
         }
         #endregion Constructor Injection
 
@@ -193,6 +197,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Approver");
             switch (actionType)
             {
                 case "List":
@@ -216,6 +222,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
         #endregion ButtonStyling

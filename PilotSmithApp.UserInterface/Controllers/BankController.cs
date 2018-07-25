@@ -18,16 +18,16 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         #region Global Declaration
         private IBankBusiness _bankBusiness;
-        IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;     
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         #endregion Global Declaration
 
         #region Construction Injection
-        public BankController(IBankBusiness bankBusiness,IUserBusiness userBusiness)
+        public BankController(IBankBusiness bankBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _bankBusiness = bankBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;   
         }
         #endregion Construction Injection
 
@@ -147,8 +147,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Bank");
-            if (permission.SubPermissionList != null)
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Bank");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -181,6 +181,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Bank");
             switch (actionType)
             {
                 case "List":
@@ -203,6 +205,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

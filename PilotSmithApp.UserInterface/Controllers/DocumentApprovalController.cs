@@ -4,6 +4,7 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         private IDocumentTypeBusiness _documentTypeBusiness;
         PSASysCommon _pSASysCommon = new PSASysCommon();
         AppConst _appConst = new AppConst();
-
-        public DocumentApprovalController(IDocumentApprovalBusiness documentApprovalBusiness, IDocumentTypeBusiness documentTypeBusiness)
+        SecurityFilter.ToolBarAccess _tool;
+        public DocumentApprovalController(IDocumentApprovalBusiness documentApprovalBusiness, 
+            IDocumentTypeBusiness documentTypeBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _documentApprovalBusiness = documentApprovalBusiness;
             _documentTypeBusiness = documentTypeBusiness;
+            _tool = tool;
         }
 
         // GET: DocumentApproval
@@ -278,6 +281,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "DocumentApproval");
             switch (actionType)
             {
                 case "List":
@@ -326,6 +331,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

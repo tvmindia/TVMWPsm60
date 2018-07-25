@@ -24,11 +24,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         IPaymentTermBusiness _paymentTermBusiness;
         ICustomerCategoryBusiness _customerCategoryBusiness;
         //IUserBusiness _userBusiness;
-        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness, ICustomerCategoryBusiness customerCategoryBusiness)//, IUserBusiness userBusiness)
+        SecurityFilter.ToolBarAccess _tool;
+        public CustomerController(ICustomerBusiness customerBusiness, IPaymentTermBusiness paymentTermBusiness, 
+            ICustomerCategoryBusiness customerCategoryBusiness,SecurityFilter.ToolBarAccess tool)//, IUserBusiness userBusiness)
         {
             _customerBusiness = customerBusiness;
             _paymentTermBusiness = paymentTermBusiness;
             _customerCategoryBusiness = customerCategoryBusiness;
+            _tool = tool;
             //_userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
@@ -137,7 +140,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             //Permission _permission = Session["UserRights"] as Permission;
             AppUA appUA = Session["AppUA"] as AppUA;
             Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Customer");
-            if (permission.SubPermissionList != null)
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -284,18 +287,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get Customer SelectList On Demand
 
-
-
-     
-
-
-
+   
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Customer", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Customer");
             switch (actionType)
             {
                 case "List":
@@ -372,6 +372,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

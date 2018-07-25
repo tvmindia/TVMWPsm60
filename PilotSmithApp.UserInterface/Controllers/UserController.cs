@@ -15,15 +15,18 @@ namespace PilotSmithApp.UserInterface.Controllers
 {
     public class UserController : Controller
     {
+        PSASysCommon _pSASysCommon = new PSASysCommon();
         private IUserBusiness _userBusiness;
         private IRolesBusiness _rolesBusiness;
         private IApplicationBusiness _applicationBusiness;
-
-        public UserController(IUserBusiness userBusiness, IRolesBusiness rolesBusiness, IApplicationBusiness applicationBusiness)
+        SecurityFilter.ToolBarAccess _tool;
+        public UserController(IUserBusiness userBusiness, IRolesBusiness rolesBusiness, 
+            IApplicationBusiness applicationBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _userBusiness = userBusiness;
             _rolesBusiness = rolesBusiness;
             _applicationBusiness = applicationBusiness;
+            _tool = tool;
         }
 
        [AuthSecurityFilter(ProjectObject = "User", Mode = "R")]
@@ -170,12 +173,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "User", Mode = "R")]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
-            Permission _permission = Session["UserRights"] as Permission;
+            //Permission _permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "User");
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
             switch (ActionType)
             {
                 case "List":
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonAdd").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0? _permission.SubPermissionList.First(s => s.Name == "ButtonAdd").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.addbtn.Visible = true;
                     }
@@ -183,7 +188,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ToolboxViewModelObj.addbtn.Title = "Add New";
                         ToolboxViewModelObj.addbtn.Event = "Add();";
                    
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.backbtn.Visible = true;
                     }
@@ -193,7 +198,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                    
                     break;
                 case "Edit":
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.backbtn.Visible = true;
                     }
@@ -201,7 +206,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ToolboxViewModelObj.backbtn.Title = "Back to list";
                         ToolboxViewModelObj.backbtn.Event = "Back()";
                    
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.savebtn.Visible = true;
                     }
@@ -210,7 +215,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ToolboxViewModelObj.savebtn.Event = "save();";
                    
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonDelete").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonDelete").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.deletebtn.Visible = true;
                     }
@@ -218,7 +223,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ToolboxViewModelObj.deletebtn.Title = "Delete";
                         ToolboxViewModelObj.deletebtn.Event = "DeleteClick();";
                   
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.resetbtn.Visible = true;
                     }
@@ -228,7 +233,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     
                     break;
                 case "Add":
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.backbtn.Visible = true;
                     }
@@ -236,7 +241,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.backbtn.Title = "Back to list";
                     ToolboxViewModelObj.backbtn.Event = "Back()";
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.savebtn.Visible = true;
                     }
@@ -244,7 +249,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Title = "Save";
                     ToolboxViewModelObj.savebtn.Event = "save();";
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonDelete").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonDelete").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.deletebtn.Visible = true;
                     }
@@ -253,7 +258,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.deletebtn.Disable = true;
                     ToolboxViewModelObj.deletebtn.Event = "DeleteClick()";
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.resetbtn.Visible = true;
                     }
@@ -265,6 +270,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
 
