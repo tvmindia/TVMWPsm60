@@ -251,7 +251,7 @@
                                 <div class="divBranchSelectList">
                                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
-                                </div>                             
+                                </div>
                             </div>
                         }
                         <!-- This hidden field will keep the information whether the field is required or not -->
@@ -413,7 +413,7 @@
                             </div>
                         </div>
                     }
-                    
+
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -612,14 +612,7 @@
     $(document).ready(function () {
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (Model.IsUpdate) {
-                
-            }
-            else {
-                <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
-            </text>
-                    }
+
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=' + $('#hdnBillLocationRequired').val())
             @if (Model.IsUpdate)
@@ -631,6 +624,7 @@
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
 

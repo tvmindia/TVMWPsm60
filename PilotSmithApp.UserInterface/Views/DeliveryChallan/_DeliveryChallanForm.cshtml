@@ -415,27 +415,21 @@
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
-            @if (Model.IsUpdate) {
-               
-            }
-            else {
-                <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
-            </text>
-            }
+          
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?required=' + $('#hdnDocumentStatusRequired').val())
             @if (Model.IsUpdate)
-       {
+             {
           
-       }
-       else
-       {
-           <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
+             }
+            else
+            {
+                <text>
+                $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
-            });
-            </text>
-       }
+                });
+                $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
+                </text>
+            }
 
         }
         catch (e) {

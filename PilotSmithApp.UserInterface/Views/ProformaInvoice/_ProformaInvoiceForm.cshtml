@@ -538,17 +538,7 @@
 <script>
     $(document).ready(function () {
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
-            @if (Model.IsUpdate)
-             {
-             }
-             else
-             {
-            <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
-            </text>
-             }
-
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')          
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
             @if (Model.IsUpdate)
@@ -561,6 +551,7 @@
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
 

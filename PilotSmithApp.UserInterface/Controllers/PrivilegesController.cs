@@ -19,14 +19,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         private IPrivilegesBusiness _privillegesBusiness;
         private IApplicationBusiness _applicationBusiness;
         private IRolesBusiness _rolesBusiness;
-        SecurityFilter.ToolBarAccess _tool;
+        
         public PrivilegesController(IPrivilegesBusiness privillegesBusiness, IApplicationBusiness applicationBusiness, 
-            IRolesBusiness rolesBusiness,SecurityFilter.ToolBarAccess tool)
+            IRolesBusiness rolesBusiness)
         {
             _privillegesBusiness = privillegesBusiness;
             _applicationBusiness = applicationBusiness;
             _rolesBusiness = rolesBusiness;
-            _tool = tool;
+           
         }
 
         // GET: Privileges
@@ -222,8 +222,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     break;
                 default:
                     return Content("Nochange");
-            }
-            ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
+            }            
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
         #endregion ChangeButtonStyleForVP
@@ -342,7 +341,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
-            ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
+            
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
 
