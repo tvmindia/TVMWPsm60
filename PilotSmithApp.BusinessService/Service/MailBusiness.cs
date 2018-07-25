@@ -75,5 +75,36 @@ namespace PilotSmithApp.BusinessService.Service
             }
             return true;
         }
+
+        public bool MailMessageSend(MailMessage mailObj)
+        {
+            try
+            {
+                MailAddress from = new MailAddress(smtpUserName);
+                using (mailObj)
+                {
+                    mailObj.Subject = mailObj.Subject;
+                    mailObj.Body = mailObj.Body;
+                    mailObj.IsBodyHtml = true;
+                    mailObj.From = from;
+                    using (var client = new SmtpClient())
+                    {
+                        client.UseDefaultCredentials = false;
+                        client.Host = host;
+                        client.Port = int.Parse(port);
+                        client.EnableSsl = true;
+                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        client.Credentials = new NetworkCredential(smtpUserName, smtpPassword);
+                        client.Send(mailObj);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

@@ -7,12 +7,12 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link rel="icon" type="image/png" href=@Url.Content("~/Content/images/Pilot1.png") />    
+    <link rel="icon" type="image/png" href=@Url.Content("~/Content/images/Pilot1.png") />
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/AdminLTE/css/plugins")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/boot")
     @RenderSection("styles", required: false)
-     
+
 </head>
 <body class="hold-transition skin-green-light sidebar-mini">
     <div class="wrapper">
@@ -29,69 +29,69 @@
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
-                <span class="main-header title" >@ViewBag.Title</span>
+                <span class="main-header title">@ViewBag.Title</span>
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
                         @*<li class="dropdown messages-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-envelope-o"></i>
-            <span class="label label-success">0</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">You have 0 messages</li>
-            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="label label-success">0</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">You have 0 messages</li>
+                                    <li>
 
-            </li>
+                                    </li>
 
-        </ul>
-    </li> 
-    *@
+                                </ul>
+                            </li>
+                        *@
 
                         <!-- inner menu: contains the actual data -->
                         @if (Session["UserRights"] != null)
                         {
-                            Permission _permission = (Session["UserRights"] as List<Permission>).Where(x => x.Name == "AdminDashBoard").ToList().Count>0?(Session["UserRights"] as List<Permission>).Where(x=>x.Name== "AdminDashBoard").ToList()[0]:new Permission();
+                            Permission _permission = (Session["UserRights"] as List<Permission>).Where(x => x.Name == "AdminDashBoard").ToList().Count > 0 ? (Session["UserRights"] as List<Permission>).Where(x => x.Name == "AdminDashBoard").ToList()[0] : new Permission();
                             if (@_permission.Name.Equals("AdminDashBoard") && @_permission.AccessCode.Contains("R"))
                             {
                                 //if (ViewBag.ActionName == "Admin")
                                 //{
-                                    <li class="dropdown notifications-menu">
-                                        <a href="@Url.Action("Index", "DashBoard", new { isUser = true})">
-                                            <i class="fa fa-dashboard" style="font-size:17px"> </i>
-                                            <span class="hidden-xs"><strong>User Dashboard</strong></span>
-                                        </a>
-                                    </li>
-                                    //}
+                                <li class="dropdown notifications-menu">
+                                    <a href="@Url.Action("Index", "DashBoard", new { isUser = true})">
+                                        <i class="fa fa-dashboard" style="font-size:17px"> </i>
+                                        <span class="hidden-xs"><strong>User Dashboard</strong></span>
+                                    </a>
+                                </li>
+                                //}
                                 @*if (ViewBag.ActionName == "Home")
-                                {
-                                    <li class="dropdown notifications-menu">
-                                        <a href="@Url.Action("Admin", "Home")">
-                                            <i class="fa fa-dashboard" style="font-size:17px"> </i>
-                                            <span class="hidden-xs"><strong>Dashboard</strong></span>
-                                        </a>
-                                    </li>
-                                }*@
+                                    {
+                                        <li class="dropdown notifications-menu">
+                                            <a href="@Url.Action("Admin", "Home")">
+                                                <i class="fa fa-dashboard" style="font-size:17px"> </i>
+                                                <span class="hidden-xs"><strong>Dashboard</strong></span>
+                                            </a>
+                                        </li>
+                                    }*@
 
                             }
                         }
 
-    <!-- Tasks: style can be found in dropdown.less -->
-    @* <li class="dropdown tasks-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-flag-o"></i>
-            <span class="label label-danger">0</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">You have 0 tasks</li>
-            <li>
-                 inner menu: contains the actual data
+                        <!-- Tasks: style can be found in dropdown.less -->
+                        @* <li class="dropdown tasks-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-flag-o"></i>
+                                    <span class="label label-danger">0</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="header">You have 0 tasks</li>
+                                    <li>
+                                         inner menu: contains the actual data
 
-            </li>
+                                    </li>
 
-        </ul>
-    </li>*@
+                                </ul>
+                            </li>*@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
@@ -103,15 +103,15 @@
 
                                 <!-- Menu Body -->
                                 <li class="user-body">
-                                   @{
-                                       if (Session["AppUA"] != null)
-                                       {
-                                        AppUA _appUA = Session["AppUA"] as AppUA;
-                                        <span>Role : @_appUA.RolesCSV </span>
-                                       }
+                                    @{
+                                        if (Session["AppUA"] != null)
+                                        {
+                                            AppUA _appUA = Session["AppUA"] as AppUA;
+                                            <span>Role : @_appUA.RolesCSV </span>
+                                        }
 
 
-                                }
+                                    }
                                 </li>
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
@@ -133,7 +133,7 @@
             </nav>
         </header>
         <!-- Left side column. contains the logo and sidebar -->
-       @Html.Action("_MenuNavBar", "DynamicUI")
+        @Html.Action("_MenuNavBar", "DynamicUI")
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper" style="margin-top:4%;min-height:88vh!important;">
@@ -145,16 +145,18 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
 
-            <strong> &copy; <a href="http://thrithvam.com">Thrithvam Tehnology</a>
-             @{
-                if (Session["AppUA"] != null)
-                {
-                    AppUA _appUA = Session["AppUA"] as AppUA;
-                    <span style="position: relative;left: 55%;color: #000000;">⏲ Last Login Time: @_appUA.LoginDateTime.ToString("dd-MMM-yyyy HH:mm:ss") </span>
+            <strong>
+                &copy; <a href="http://thrithvam.com">Thrithvam Tehnology</a>
+                @{
+                    if (Session["AppUA"] != null)
+                    {
+                        AppUA _appUA = Session["AppUA"] as AppUA;
+                        <span style="position: relative;left: 55%;color: #000000;">⏲ Last Login Time: @_appUA.LoginDateTime.ToString("dd-MMM-yyyy HH:mm:ss") </span>
+                    }
+
+
                 }
-
-
-            }</strong>
+            </strong>
         </footer>
         <!-- Control Sidebar -->
         <!-- /.control-sidebar -->
@@ -164,23 +166,23 @@
     </div>
     <!-- Master add/edit Model start-->
     @*<div class="modal fade"  tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="min-width:550px !important;max-width:600px !important;">
-            <div class="modal-content">
-                <div class="modal-header" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 36px;padding: 3px;border-bottom:2px solid rgb(40, 45, 51)!important;">
-                    <div class="container-fluid" style="padding-right: 0px;">
-                        <div class="col-md-12">
-                            <h3 class="modal-title SCHeader col-md-10" id="h3ModelMasterContextLabel"></h3>
-                            <a class="close" data-dismiss="modal" aria-label="Close"><i style="font-size:33px;color:rgb(40, 45, 51)!important;" class="fa fa-times-circle" aria-hidden="true"></i></a>
+            <div class="modal-dialog" role="document" style="min-width:550px !important;max-width:600px !important;">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-image: url('content/images/73a6f1c8.png');background-repeat: repeat;height: 36px;padding: 3px;border-bottom:2px solid rgb(40, 45, 51)!important;">
+                        <div class="container-fluid" style="padding-right: 0px;">
+                            <div class="col-md-12">
+                                <h3 class="modal-title SCHeader col-md-10" id="h3ModelMasterContextLabel"></h3>
+                                <a class="close" data-dismiss="modal" aria-label="Close"><i style="font-size:33px;color:rgb(40, 45, 51)!important;" class="fa fa-times-circle" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-body" style="padding:0" id="divMasterBody">
+                    <div class="modal-body" style="padding:0" id="divMasterBody">
 
+                    </div>
+                    <input type="hidden" id="hdnMasterCall" value="" />
                 </div>
-                <input type="hidden" id="hdnMasterCall" value="" />
             </div>
-        </div>
-    </div>*@
+        </div>*@
     <div class="modal fade" id="divModelMasterPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
@@ -297,7 +299,7 @@
 
         </div>
     </div>
-    
+
     <!-- Modal -->
     <div class="modal fade" id="RedirectToLoginModel" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
         <div class="modal-dialog" role="document">
@@ -325,13 +327,12 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!-- Master add/edit Model end -->
-
     <!-- TimeLine -->
-    <div class="modal fade" id="divModelTimeLinePopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal fade" id="divModelTimeLinePopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modalTimeLine" role="document" style="float:right">
             <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
                 <div class="col-md-11 no-right-padding" style="background-color:#EEF5F9">
-                  
+
                     <div class="no-padding" id="divTimeLineBody">
 
                     </div>
@@ -340,7 +341,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" style="color: white;font-size: 1.5em;">&times;</span>
                     </button>
-                     
+
                 </div>
 
             </div>
@@ -348,10 +349,9 @@
         </div>
     </div>
     <!-- TimeLine end -->
-
     <!-- ApprovalHistory List -->
     <div class="modal fade" id="divModelApprovalHistoryPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modalTimeLine" role="document" style="float:right">
+        <div class="modal-dialog" role="document" style="float:right">
             <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
                 <div class="col-md-11 no-right-padding" style="background-color:white">
 
@@ -372,6 +372,51 @@
     </div>
     <!-- ApprovalHistory List end -->
 
+    <!-- TakeOwnership -->
+    <div class="modal fade" id="divModelTakeOwnershipPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modalTimeLine" role="document">
+            <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
+                <div class="col-md-11 no-right-padding" style="background-color:white">
+
+                    <div class="no-padding" id="divTakeOwnershipBody">
+                       
+                        @using (Ajax.BeginForm("InsertTakeOwnership", "TakeOwnership", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "TakeOwnershipSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "" }))
+                        {
+                            <div class="form-group col-md-12 no-padding"  style="margin-left: -2%;">
+                                <h4 style="text-align: center;">Take Ownership</h4>
+                                <div class="col-md-12 no-padding">
+                                    <div class="col-md-12">
+                                        @Html.Label("Reason", htmlAttributes: new { @class = "control-label", @style = "color:red" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <textarea class="form-control  newinput" cols="20"data-val="true" id="Remarks" name="Remarks" data-val-required="Reason is missing" rows="4"></textarea>
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Remarks" data-valmsg-replace="true"></span>
+                                        @Html.Hidden("DocumentNo")
+                                        @Html.Hidden("Type", "TOS")
+                                        @Html.Hidden("DocType")
+                                    </div>
+                                </div>
+                                <div class="col-md-12 ">
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnSavLoading" style="display:none;"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-1" style="font-size: 80px;color: white;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: white;font-size: 1.5em;">&times;</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- TakeOwnership end -->
 
     <!-- PRELOADER -->
     <div class="spn_hol" id="divLoader">

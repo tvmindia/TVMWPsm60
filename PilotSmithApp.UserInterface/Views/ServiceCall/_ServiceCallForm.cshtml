@@ -263,7 +263,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.ServiceCallNo" documentType="SRC"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -454,14 +454,7 @@
 
             $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
             $('.divServicedBySelectList').load('/Employee/ServicedBySelectList?required=' + $('#hdnServicedByRequired').val())
-            @if (Model.IsUpdate) {
-                  
-            }
-            else {
-                 <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
-            </text>
-                     }
+           
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val(), function () {
                 $('#DocumentStatusCode').select2({
                     dropdownParent: $('#ServiceCallForm')
@@ -488,6 +481,7 @@
                     $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#CustomerID').val());
                 });
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
                     }
             $('.divServiceTypeSelectList').load('/ServiceType/ServiceTypeSelectList?required=' + $('#hdnServiceTypeRequired').val())

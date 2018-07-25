@@ -20,12 +20,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         PSASysCommon _pSASysCommon = new PSASysCommon();
         private IUserBusiness _userBusiness;
         private IUserInBranchBusiness _userInBranchBusiness;
-        SecurityFilter.ToolBarAccess _tool;
-        public UserInBranchController(IUserBusiness userBusiness, IUserInBranchBusiness userInBranchBusiness,SecurityFilter.ToolBarAccess tool)
+        
+        public UserInBranchController(IUserBusiness userBusiness, IUserInBranchBusiness userInBranchBusiness)
         {
             _userBusiness = userBusiness;
             _userInBranchBusiness = userInBranchBusiness;
-            _tool = tool;
+            
         }
         // GET: UserBranch
         public ActionResult Index()
@@ -119,7 +119,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
-            ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
+            
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
 

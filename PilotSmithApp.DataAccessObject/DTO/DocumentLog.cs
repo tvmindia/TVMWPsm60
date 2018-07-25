@@ -12,7 +12,15 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DocumentNo { get; set; }
         public string Type { get; set; }
         public DateTime Date { get; set; }
+        public string DateFormatted { get; set; }
         public string Remarks { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        //addtional fields
+        public Guid DocumentOwnerId { get; set; }
+        public string DocType { get; set; }
+        public string OldUserName { get; set; }
+        public string OldUserEmail { get; set; }
+        public string NewDocumentOwner { get; set; }
+        public Guid DocumentID { get; set; }
     }
 }
