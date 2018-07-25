@@ -18,13 +18,12 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         PSASysCommon _pSASysCommon = new PSASysCommon();
         private IRolesBusiness _rolesBusiness;
-        private IApplicationBusiness _applicationBusiness;
-        SecurityFilter.ToolBarAccess _tool;
-        public RolesController(IRolesBusiness rolesBusiness, IApplicationBusiness applicationBusiness,SecurityFilter.ToolBarAccess tool)
+        private IApplicationBusiness _applicationBusiness;        
+        public RolesController(IRolesBusiness rolesBusiness, IApplicationBusiness applicationBusiness)
         {
             _rolesBusiness = rolesBusiness;
             _applicationBusiness = applicationBusiness;
-            _tool = tool;
+          
         }
 
 
@@ -277,8 +276,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     break;
                 default:
                     return Content("Nochange");
-            }
-            ToolboxViewModelObj = _tool.SetToolbarAccess(ToolboxViewModelObj, _permission);
+            }           
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
 

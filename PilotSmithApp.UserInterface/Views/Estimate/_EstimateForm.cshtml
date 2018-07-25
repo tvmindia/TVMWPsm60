@@ -310,17 +310,7 @@
             console.log(e.message);
         }
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (Model.IsUpdate)
-            {
-             
-            }
-            else {
-                    <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-            });
-            </text>
-                    }
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())           
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=EST&required=' + $('#hdnDocumentStatusRequired').val())
             @if (Model.IsUpdate)
             {
@@ -331,6 +321,8 @@
                 <text>
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
+            });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
             });
             </text>
             }
