@@ -1071,6 +1071,8 @@ function ApprovalHistoryList(DocumentID, Type) {
 function TakeOwnership(thisObj) {
     debugger;
     $('#Remarks').val('');
+    $('#spanDocumentNo').text(thisObj.attributes.documentNumber.value);
+    $('#spanCurrentOwner').text(thisObj.attributes.documentCurrentOwner.value);
     $('#DocumentNo').val(thisObj.attributes.documentNumber.value);
     $('#DocType').val(thisObj.attributes.documentType.value);
     $('#divModelTakeOwnershipPopUp').modal('show');
