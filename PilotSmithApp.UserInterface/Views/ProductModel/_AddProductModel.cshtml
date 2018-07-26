@@ -17,7 +17,8 @@
                 </div>
                 <div class="col-md-12">
                     <div class="divProductSelectList">
-                        @Html.Action("ProductSelectList", "Product", new { required = "required" })
+                        <span class="form-control"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
                     </div>
                     @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
                 </div>
@@ -166,6 +167,8 @@
                 }
 <script>
     $(document).ready(function () {
+        _parentFormID = 'FormProductModel';
+        $('#FormProductModel .divProductSelectList').load('Product/ProductSelectList?required=required');
         $('#divModelMasterPopUp2 #ProductModelID').val($('#divModelMasterPopUp2 #hdnProductModelID').val());
         try {
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
