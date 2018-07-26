@@ -26,7 +26,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #region InsertTakeOwnership
         public DocumentLog InsertTakeOwnership(DocumentLog documentLog)
         {
-            SqlParameter outputStatus, outputCode, emailID, oldUserName , documentID = null;
+            SqlParameter outputStatus, outputCode, emailID, oldUserName , documentID, newDocumentOwner = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -60,6 +60,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         emailID.Direction = ParameterDirection.Output;
                         documentID = cmd.Parameters.Add("@DocumentID", SqlDbType.UniqueIdentifier);
                         documentID.Direction = ParameterDirection.Output;
+                        newDocumentOwner = cmd.Parameters.Add("@NewDocumentOwner", SqlDbType.NVarChar,250);
+                        newDocumentOwner.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -73,6 +75,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         documentLog.OldUserEmail= emailID.Value.ToString();
                         documentLog.DateFormatted = DateTime.Parse(documentLog.PSASysCommon.CreatedDate.ToString()).ToString("dd-MMM-yyyy hh:mm tt");
                         documentLog.DocumentID= Guid.Parse(documentID.Value.ToString());
+                        documentLog.NewDocumentOwner= newDocumentOwner.Value.ToString();
                         break;
                     default:
                         break;

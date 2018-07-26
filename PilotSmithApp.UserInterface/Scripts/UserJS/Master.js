@@ -430,13 +430,16 @@ function SaveSuccessCompany(data, status) {
 function AddProductModelMaster(flag) {
     debugger;
     OnServerCallBegin();
+    $("#divMasterBody2 .close").click(function () {
+        _parentFormID = "";
+    });
     $("#divMasterBody2").load("ProductModel/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             $('#hdnMasterCall2').val(flag);
             $('#lblModelMasterContextLabel2').text('Add Product Model')
-            if(flag=="OTR")
-            $('#divModelMasterPopUp2 #divimageUpload').hide();
+            //if(flag=="OTR")
+            //$('#divModelMasterPopUp2 #divimageUpload').hide();
             $('#divModelMasterPopUp2').modal('show');
         }
         else {
@@ -456,6 +459,7 @@ function SaveSuccessProductModel(data, status) {
                 BindOrReloadProductModelTable('Reset');
             }
             else if ($('#hdnMasterCall2').val() == "OTR") {
+                _parentFormID = "";
                 $('.divProductModelSelectList').load('/ProductModel/ProductModelSelectList?required=' + $('#hdnProductModelRequired').val()+'&productID='+$('#hdnProductID').val());
             }
             MasterAlert("success", JsonResult.Record.Message)

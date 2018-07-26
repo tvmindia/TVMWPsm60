@@ -149,11 +149,11 @@ function CloseAdvanceSearch()
 function OnMasterBegin() {
     debugger;
     $('#btnSaveMaster').prop('disabled', true);
-    $('#icnMasterLoading').show()    
+    $('#icnMasterLoading,#icnSavLoading').show()
 }
 function OnMasterComplete() {
     $('#btnSaveMaster').prop('disabled', false);
-    $('#icnMasterLoading').fadeOut(100)
+    $('#icnMasterLoading,#icnSavLoading').fadeOut(100)
     
 }
 function OnServerCallBegin(){
@@ -1071,13 +1071,14 @@ function ApprovalHistoryList(DocumentID, Type) {
 function TakeOwnership(thisObj) {
     debugger;
     $('#Remarks').val('');
+    $('#spanDocumentNo').text(thisObj.attributes.documentNumber.value);
+    $('#spanCurrentOwner').text(thisObj.attributes.documentCurrentOwner.value);
     $('#DocumentNo').val(thisObj.attributes.documentNumber.value);
     $('#DocType').val(thisObj.attributes.documentType.value);
     $('#divModelTakeOwnershipPopUp').modal('show');
 }
 
 function TakeOwnershipSuccess(data, status) {
-    debugger;
     var JsonResult = JSON.parse(data)
     switch (JsonResult.Status) {
         case "OK":
@@ -1085,8 +1086,43 @@ function TakeOwnershipSuccess(data, status) {
                 EditRedirectToDocument(JsonResult.Record.DocumentID)
                 BindOrReloadEnquiryTable('Init');
             }
-
-            MasterAlert("success", JsonResult.Record.Message)
+             if (JsonResult.Record.DocType == "EST") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadEstimateTable('Init');
+            }
+             if (JsonResult.Record.DocType == "QUO") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadQuotationTable('Init');
+             }
+             if (JsonResult.Record.DocType == "SOD") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadSaleOrderTable('Init');
+             }
+             if (JsonResult.Record.DocType == "PIV") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadProformaInvoiceTable('Init');
+             }
+             if (JsonResult.Record.DocType == "POD") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadProductionOrderTable('Init');
+             }
+             if (JsonResult.Record.DocType == "PQC") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadProductionQCTable('Init');
+             }
+             if (JsonResult.Record.DocType == "SIV") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadSaleInvoiceTable('Init');
+             }
+             if (JsonResult.Record.DocType == "DLC") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadDeliveryChallanTable('Init');
+             }
+             if (JsonResult.Record.DocType == "SRC") {
+                 EditRedirectToDocument(JsonResult.Record.DocumentID)
+                 BindOrReloadServiceCallTable('Init');
+             }
+             MasterAlert("success", "Document Ownership changed Successfully ! ")
             $('#divModelTakeOwnershipPopUp').modal('hide');
             break;
         case "ERROR":

@@ -32,9 +32,9 @@ namespace PilotSmithApp.BusinessService.Service
                 string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/TakeOwnershipAcknowledgement.html"));
                 MailMessage _mail = new MailMessage();
                 string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
-                _mail.Body = mailBody.Replace("$DocumentOwner$", documentLogOut.OldUserName).Replace("$Document$", "Enquiry").Replace("$DocumentNo$", documentLogOut.DocumentNo).Replace("$DocumentDate$", documentLog.DateFormatted).Replace("$Logo$", link);
+                _mail.Body = mailBody.Replace("$DocumentOwner$", documentLogOut.OldUserName).Replace("$Document$", "Enquiry").Replace("$DocumentNo$", documentLogOut.DocumentNo).Replace("$DocumentDate$", documentLog.DateFormatted).Replace("$NewDocumentOwner$", documentLog.NewDocumentOwner).Replace("$Reason$", documentLog.Remarks).Replace("$Logo$", link);
                 _mail.To.Add(documentLogOut.OldUserEmail);
-                _mail.Subject = "Ownership Change";
+                _mail.Subject = "Document Ownership Change";
                 _mail.IsBodyHtml = true;
                  sendsuccess = _mailBusiness.MailMessageSend(_mail);
                 return documentLogOut;

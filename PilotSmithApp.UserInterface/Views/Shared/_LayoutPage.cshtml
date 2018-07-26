@@ -373,43 +373,65 @@
     <!-- ApprovalHistory List end -->
 
     <!-- TakeOwnership -->
-    <div class="modal fade" id="divModelTakeOwnershipPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modalTimeLine" role="document">
-            <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
-                <div class="col-md-11 no-right-padding" style="background-color:white">
 
+    <div class="modal fade" id="divModelTakeOwnershipPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="clearfix" style="background-color:#068a78;background-image:url(/Content/images/patternPop.png)">
+                <div class="col-md-10 no-right-padding" style="background-color:white">
+                    <div class="modal-header text-center">
+                        <label style="font-size:16px;" id="lblModelTakeOwnershipContextLabel">Take Ownership</label>
+                    </div>
                     <div class="no-padding" id="divTakeOwnershipBody">
-                       
                         @using (Ajax.BeginForm("InsertTakeOwnership", "TakeOwnership", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "TakeOwnershipSuccess", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "" }))
                         {
-                            <div class="form-group col-md-12 no-padding"  style="margin-left: -2%;">
-                                <h4 style="text-align: center;">Take Ownership</h4>
+                            <div class="form-group col-md-12 no-padding" style="margin-left: -2%;">
                                 <div class="col-md-12 no-padding">
                                     <div class="col-md-12">
-                                        @Html.Label("Reason", htmlAttributes: new { @class = "control-label", @style = "color:red" })
+                                        <div class="col-md-12">
+                                            @Html.Label("Document Number:", htmlAttributes: new { @class = "control-label" })
+                                            <b><span id="spanDocumentNo"></span></b>
+                                        </div>
+                                        <div class="col-md-12">
+                                            @Html.Label("Current Owner:", htmlAttributes: new { @class = "control-label" })
+                                            <b><span id="spanCurrentOwner"></span></b>
+                                        </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <textarea class="form-control  newinput" cols="20"data-val="true" id="Remarks" name="Remarks" data-val-required="Reason is missing" rows="4"></textarea>
-                                        <span class="text-danger field-validation-valid" data-valmsg-for="Remarks" data-valmsg-replace="true"></span>
-                                        @Html.Hidden("DocumentNo")
-                                        @Html.Hidden("Type", "TOS")
-                                        @Html.Hidden("DocType")
+                                        <div class="col-md-12">
+                                            @Html.Label("Reason For Ownership Change", htmlAttributes: new { @class = "control-label", @style = "color:red" })
+                                        </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            <textarea class="form-control  newinput" cols="20" data-val="true" id="Remarks" name="Remarks" data-val-required="Reason is missing" rows="4"></textarea>
+                                            <span class="text-danger field-validation-valid" data-valmsg-for="Remarks" data-valmsg-replace="true"></span>
+                                            @Html.Hidden("DocumentNo")
+                                            @Html.Hidden("Type", "TOS")
+                                            @Html.Hidden("DocType")
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-12">
+                                            @Html.Label("[Note: Document Ownership will be changed to "+ @User.Identity.Name+"]", htmlAttributes: new { @class = "control-label", @style = "font-size: 11px;font-style: italic;" })
+                                            <b><span id="spanNewOwner"></span></b>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="col-md-12 ">
                                     <div class="modal-footer d-flex justify-content-center">
-                                        <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Save Changes <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                                        <button class="btn btn-default" type="submit" id="btnSaveMaster" style="margin-right:3%;margin-top:2%">Change Ownership<i class="fa fa-spinner fa-spin" id="icnSavLoading" style="display:none;"></i></button>
                                     </div>
                                 </div>
                             </div>
                         }
                     </div>
                 </div>
-                <div class="col-md-1" style="font-size: 80px;color: white;">
+                <div class="col-md-2" style="font-size: 90px;color: white;">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" style="color: white;font-size: 1.5em;">&times;</span>
+                        <span aria-hidden="true" style="color: white;font-size: 2em;">&times;</span>
                     </button>
-
+                    <label style="transform: rotate(20deg)"><i class="fa fa-globe"></i></label>
                 </div>
 
             </div>

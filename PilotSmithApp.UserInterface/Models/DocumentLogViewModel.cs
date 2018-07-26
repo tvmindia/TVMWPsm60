@@ -20,6 +20,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string DocType { get; set; }
         public string OldUserName { get; set; }
         public string OldUserEmail { get; set; }
+        public string NewDocumentOwner { get; set; }
         public Guid DocumentID { get; set; }
     }
 }
