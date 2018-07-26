@@ -861,8 +861,8 @@ function DownloadProductionOrder() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#ProductionOrderForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#ProductionOrderForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);
 }
 function PrintProductionOrder() {
     debugger;

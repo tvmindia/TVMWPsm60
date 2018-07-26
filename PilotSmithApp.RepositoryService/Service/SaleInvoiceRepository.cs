@@ -169,6 +169,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
                                     saleInvoice.Customer = new Customer();
                                     saleInvoice.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : saleInvoice.Customer.CompanyName);
+                                    saleInvoice.Customer.TaxRegNo= (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : saleInvoice.Customer.TaxRegNo);
                                     saleInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatusCode);
                                     saleInvoice.DocumentStatus = new DocumentStatus();
                                     saleInvoice.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? sdr["DocumentStatusDescription"].ToString() : saleInvoice.DocumentStatus.Description);

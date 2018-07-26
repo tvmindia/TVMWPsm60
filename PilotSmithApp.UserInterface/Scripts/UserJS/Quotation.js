@@ -925,8 +925,8 @@ function DownloadQuotation() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#QuotationForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#QuotationForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);   
 }
 
 function SaveSuccessUpdateQuotationEmailInfo(data, status) {

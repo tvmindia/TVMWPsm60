@@ -88,9 +88,9 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" style="width:40%;padding-top:5px;font-weight:bold;">Billing Address</td>
+                <td colspan="4" style="width:40%;padding-top:10px;font-weight:bold;">Billing Address</td>
                 <td colspan="2" style="width:20%;"></td>
-                <td colspan="4" style="width:40%;padding-top:5px;font-weight:bold;">Shipping Address</td>
+                <td colspan="4" style="width:40%;padding-top:10px;font-weight:bold;">Shipping Address</td>
             </tr>
             <tr>
                 <td colspan="4" style="width:40%;">
@@ -429,7 +429,7 @@
             @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
             @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
             @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "ProformaInvoice", @id = "hdnContentFileName" })
-            @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
+            @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "",Value=Model.Customer.CompanyName @*@id = "hdnCustomerName"*@ })
                 //if (Model.LatestApprovalStatus == 4)
                 //{
             <button type="submit" class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="DownloadProformaInvoice()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>

@@ -1296,8 +1296,8 @@ function DownloadSaleInvoice() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#SaleInvoiceForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#SaleInvoiceForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);
 }
 function PrintSaleInvoice() {
     debugger;

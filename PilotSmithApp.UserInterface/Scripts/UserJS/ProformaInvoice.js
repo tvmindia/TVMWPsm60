@@ -1203,8 +1203,8 @@ function DownloadProformaInvoice() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#ProformaInvoiceForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#ProformaInvoiceForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);
 }
 function PrintProformaInvoice() {
     debugger;

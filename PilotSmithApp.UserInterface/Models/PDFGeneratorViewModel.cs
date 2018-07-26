@@ -30,7 +30,7 @@ namespace PilotSmithApp.UserInterface.Models
         [AllowHtml]
         public string ContentFileName { get; set; }
         [AllowHtml]
-        public string CustomerName { get; set; }
+        public string CustomerName { get; set; }        
         [Display(Name ="Print On")]
         public bool IsWithLetterHead { get; set; } = true;
     }
