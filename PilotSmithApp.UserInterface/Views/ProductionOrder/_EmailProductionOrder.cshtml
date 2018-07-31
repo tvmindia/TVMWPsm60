@@ -42,10 +42,10 @@
 </div>
 @if (!Model.EmailFlag)
 {
-<div>
-    <img style="width:100%;height:210px" src="~/Content/images/LH_Header.jpg" />
-</div>
-<div id="divProductionOrderEmailcontainer" style="padding:0px 30px 0px 30px;">
+    <div>
+        <img style="width:100%;height:210px" src="~/Content/images/LH_Header.jpg" />
+    </div>
+    <div id="divProductionOrderEmailcontainer" style="padding:0px 30px 0px 30px;margin-left:51px;">
         <table style="width:100%;font-size:12px; font-family: Arial; color: #000;">
             <thead>
                 <tr><th colspan="6" style="text-align:center;text-decoration:underline;font-weight:100;font-size:16px">Production Order</th></tr>
@@ -66,104 +66,110 @@
         <br />
         @{ decimal @*curProductionQty = 0,*@ amount = 0; string totMilestone;}
         @*<table id="ItemDetailsTable" style="font-family: arial, sans-serif;color: #000;padding-top:10px; border-collapse: collapse; width: 100%; line-height: 14px; text-align: left;" cellspacing="0" width="100%">*@
-    <table style="width:100%;padding-top:30px;">
-        <thead>
-            <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
-                <th style="width:5%;text-align: center;padding: 8px;font-size:10px; ">No.</th>
-                <th style="width:18%; text-align: left;padding: 8px;font-size:10px;">Product</th>
-                <th style="width:9%; text-align: left;padding: 8px;font-size:10px;">HSN</th>
-                <th style="width:10%; text-align: left;padding: 8px;font-size:10px;">Sale.Ord Qty</th>
-                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">PrevProd Ord.Qty</th>
-                <th style="width:8%; text-align: right;padding: 8px;font-size:10px;">CurProductionQty</th>
-                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Produced.Qty</th>
-                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Rate</th>
-                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Amount</th>
-                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Sup/Plant</th>
-                <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Completed</th>
-            </tr>
-            @if (Model.ProductionOrderDetailList != null)
-            {
-                int slno = 1;
-
-                foreach (var mp in Model.ProductionOrderDetailList)
+        <table style="width:100%;padding-top:30px;">
+            <thead>
+                <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
+                    <th style="width:5%;text-align: center;padding: 8px;font-size:10px; ">No.</th>
+                    <th style="width:18%; text-align: left;padding: 8px;font-size:10px;">Product</th>
+                    <th style="width:9%; text-align: left;padding: 8px;font-size:10px;">HSN</th>
+                    <th style="width:10%; text-align: left;padding: 8px;font-size:10px;">Sale.Ord Qty</th>
+                    <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">PrevProd Ord.Qty</th>
+                    <th style="width:8%; text-align: right;padding: 8px;font-size:10px;">CurProductionQty</th>
+                    <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Produced.Qty</th>
+                    @*<th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Rate</th>
+                    <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Amount</th>*@
+                    <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Sup/Plant</th>
+                    <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Completed</th>
+                </tr>
+                @if (Model.ProductionOrderDetailList != null)
                 {
+                    int slno = 1;
 
-                    //curProductionQty = Math.Round((decimal)mp.SaleOrderQty - (decimal)mp.PrevProducedQty);
-                    if (mp.SaleOrderQty != 0)
+                    foreach (var mp in Model.ProductionOrderDetailList)
                     {
-                        amount = Math.Round((decimal)mp.SaleOrderQty * (decimal)mp.Rate);
-                    }
-                    else
-                    {
-                        amount = Math.Round((decimal)mp.OrderQty * (decimal)mp.Rate);
-                    }
 
-                    totMilestone = "";
-                    if ((mp.MileStone1FcFinishDtFormatted != "") && (mp.MileStone1AcTFinishDtFormatted != ""))
-                    {
-                        totMilestone = "25%";
-                    }
-                    if ((mp.MileStone2FcFinishDtFormatted != "") && (mp.MileStone2AcTFinishDtFormatted != ""))
-                    {
-                        totMilestone = "50%";
-                    }
-                    if ((mp.MileStone3FcFinishDtFormatted != "") && (mp.MileStone3AcTFinishDtFormatted != ""))
-                    {
-                        totMilestone = "75%";
-                    }
-                    if ((mp.MileStone4FcFinishDtFormatted != "") && (mp.MileStone4AcTFinishDtFormatted != ""))
-                    {
-                        totMilestone = "100%";
-                    }
+                        //curProductionQty = Math.Round((decimal)mp.SaleOrderQty - (decimal)mp.PrevProducedQty);
+                        if (mp.SaleOrderQty != 0)
+                        {
+                            amount = Math.Round((decimal)mp.SaleOrderQty * (decimal)mp.Rate);
+                        }
+                        else
+                        {
+                            amount = Math.Round((decimal)mp.OrderQty * (decimal)mp.Rate);
+                        }
 
-                    <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 1px;color: #808080;">
+                        totMilestone = "";
+                        if ((mp.MileStone1FcFinishDtFormatted != "") && (mp.MileStone1AcTFinishDtFormatted != ""))
+                        {
+                            totMilestone = "25%";
+                        }
+                        if ((mp.MileStone2FcFinishDtFormatted != "") && (mp.MileStone2AcTFinishDtFormatted != ""))
+                        {
+                            totMilestone = "50%";
+                        }
+                        if ((mp.MileStone3FcFinishDtFormatted != "") && (mp.MileStone3AcTFinishDtFormatted != ""))
+                        {
+                            totMilestone = "75%";
+                        }
+                        if ((mp.MileStone4FcFinishDtFormatted != "") && (mp.MileStone4AcTFinishDtFormatted != ""))
+                        {
+                            totMilestone = "100%";
+                        }
 
-                        <td style="width:5%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
-                        <td style="width:18%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
-                        <td style="width:9%;text-align:left;padding:8px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
-                        <td style="width:10%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.SaleOrderQty @mp.Unit.Description</td>
-                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.PrevProducedQty @mp.Unit.Description</td>
-                        <td style="width:8%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.OrderQty @mp.Unit.Description</td>
-                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.ProducedQty @mp.Unit.Description</td>
-                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Rate</td>
-                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@amount</td>
-                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Plant.Description</td>
-                        <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@totMilestone</td>
-                    </tr>
-                    slno = slno + 1;
+                        <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 1px;color: #1d1a1a;">
+
+                            <td style="width:5%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
+                            <td style="width:18%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                            <td style="width:9%;text-align:left;padding:8px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
+                            <td style="width:10%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.SaleOrderQty @mp.Unit.Description</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.PrevProducedQty @mp.Unit.Description</td>
+                            <td style="width:8%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.OrderQty @mp.Unit.Description</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.ProducedQty @mp.Unit.Description</td>
+                            @*<td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Rate</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@amount</td>*@
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Plant.Description</td>
+                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@totMilestone</td>
+                        </tr>
+                        slno = slno + 1;
+
+                    }
 
                 }
 
+            </thead>
+        </table>
+
+        <table style="width:100%;margin-top:2%;">
+            <thead>
+                <tr>
+                    <td style="font-size:small;padding-bottom:5px;"><b><u>General Notes</u></b></td>
+                </tr>
+                <tr>
+                    <td style="font-size:small">@Html.Raw(Model.GeneralNotes.Replace("\n","<br />"))</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="padding-top:20px">
+        <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />
+    </div>
             }
-
-        </thead>
-    </table>
-
-        <br />
-    
-
-
-</div>
-<div style="padding-top:20px">
-    <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />
-</div>
-}
 <div class="modal-footer d-flex justify-content-left" style="text-align:left;padding:0px 30px 0px 30px;">
-    @{ 
+    @{
         if (!Model.EmailFlag)
         {
             using (Ajax.BeginForm("SendProductionOrderEmail", "ProductionOrder", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessProductionOrderEmailSend", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormProductionOrderEmailSend" }))
             {
-            @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-            @Html.HiddenFor(model => model.EmailSentTo, htmlAttributes: new { @class = "", @id = "hdnEmailSentTo" })
-            @Html.HiddenFor(model => model.Cc, htmlAttributes: new { @class = "" })
-            @Html.HiddenFor(model => model.Bcc, htmlAttributes: new { @class = "" })
-            @Html.HiddenFor(model => model.Subject, htmlAttributes: new { @class = "" })
-            @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnProductionOrderEMailContent" })
-            @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
-            @Html.HiddenFor(model => model.ProdOrderNo, htmlAttributes: new { @class = "", @id = "hdnProdOrderNo" })
-            @Html.HiddenFor(model => model.ProdOrderDateFormatted, htmlAttributes: new { @class = "", @id = "hdnProdOrderDateFormatted" })
-                <br/>
+                @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.EmailSentTo, htmlAttributes: new { @class = "", @id = "hdnEmailSentTo" })
+                @Html.HiddenFor(model => model.Cc, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.Bcc, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.Subject, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnProductionOrderEMailContent" })
+                @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
+                @Html.HiddenFor(model => model.ProdOrderNo, htmlAttributes: new { @class = "", @id = "hdnProdOrderNo" })
+                @Html.HiddenFor(model => model.ProdOrderDateFormatted, htmlAttributes: new { @class = "", @id = "hdnProdOrderDateFormatted" })
+                <br />
                 <table style="width:50%;font-size:12px">
                     <tbody>
                         <tr><td id="sentTolbl">Sent To</td><td>: </td><td id="sentTovalidationmsglbl">@Model.EmailSentTo</td></tr>
@@ -175,32 +181,35 @@
                 <a class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="EmailProductionOrder()">Back </a>
                 if (Model.LatestApprovalStatus == 4)
                 {
-                <button type="button" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="SendProductionOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                    <button type="button" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="SendProductionOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
                 else
                 {
-                <button type="button" disabled class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                    <button type="button" disabled class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
             }
 
             using (Html.BeginForm("Download", "PDFGenerator", FormMethod.Post, new { @class = "", role = "form", @id = "PDFForm" }))
             {
-            @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
-            @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
-            @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
-            @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "ProductionOrder", @id = "hdnContentFileName" })
-            @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "",Value=Model.Customer.CompanyName @*@id = "hdnCustomerName"*@ })
+                @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
+                @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
+                @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
+                @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "ProductionOrder", @id = "hdnContentFileName" })
+                @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new
+           {
+               @class = "",
+               Value = Model.Customer.CompanyName @*@id = "hdnCustomerName"*@ })
                 if (Model.LatestApprovalStatus == 4)
                 {
-                <button type="submit" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="DownloadProductionOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                    <button type="submit" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="DownloadProductionOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
                 else
                 {
-                <button type="submit" disabled class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-                    }
+                    <button type="submit" disabled class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
             }
         }
+    }
 </div>
 <script>
     $(document).ready(function () {

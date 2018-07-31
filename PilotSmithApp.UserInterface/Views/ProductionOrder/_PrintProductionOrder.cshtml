@@ -94,6 +94,16 @@
 
         </thead>
     </table>
+    <table style="width:100%;margin-top:15%;">
+        <thead>
+            <tr>
+                <td style="font-size:small;padding-bottom:5px;"><b><u>General Notes</u></b></td>
+            </tr>
+            <tr>
+                <td style="font-size:small">@Html.Raw(Model.GeneralNotes.Replace("\n", "<br />"))</td>
+            </tr>
+        </thead>
+    </table>
 </div>
 <table style="width:100%;margin-top:15%;">
     <thead>
