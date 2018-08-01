@@ -166,6 +166,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     proformaInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : proformaInvoice.CustomerID);
                                     proformaInvoice.Customer = new Customer();
                                     proformaInvoice.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : proformaInvoice.Customer.CompanyName);
+                                    proformaInvoice.Customer.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : proformaInvoice.Customer.TaxRegNo);
                                     proformaInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : proformaInvoice.DocumentStatusCode);
                                     proformaInvoice.DocumentStatus = new DocumentStatus();
                                     proformaInvoice.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? sdr["DocumentStatusDescription"].ToString() : proformaInvoice.DocumentStatus.Description);

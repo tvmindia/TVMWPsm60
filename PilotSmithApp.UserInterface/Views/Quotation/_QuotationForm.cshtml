@@ -294,7 +294,7 @@
                         @Html.LabelFor(model => model.MailingAddress, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.MailingAddress, 5, 0, new { @class = "form-control newinput" })
+                        @Html.TextAreaFor(model => model.MailingAddress, 5, 60, new { @class = "form-control newinput" })
                         @Html.ValidationMessageFor(model => model.MailingAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -303,7 +303,7 @@
                         @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 0, new { @class = "form-control newinput" })
+                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 60, new { @class = "form-control newinput" })
                         @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -475,7 +475,8 @@
                 <text>
             debugger;
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
-
+                //$('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                //$('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
             });
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
@@ -529,6 +530,7 @@
         }
         try {
             $('#QuotationForm #EstimateID').change(function () {
+                debugger;
                 OnServerCallBegin();
                 $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function (responseTxt, statusTxt, xhr) {
                     if (statusTxt == "success") {
