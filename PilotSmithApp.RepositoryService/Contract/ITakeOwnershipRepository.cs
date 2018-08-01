@@ -10,5 +10,6 @@ namespace PilotSmithApp.RepositoryService.Contract
     public interface ITakeOwnershipRepository
     {
         DocumentLog InsertTakeOwnership(DocumentLog documentLog);
+        List<DocumentLog> GetOwnershipHistory(Guid documentID, string documentTypeCode);
     }
 }

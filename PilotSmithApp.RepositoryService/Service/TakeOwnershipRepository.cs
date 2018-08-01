@@ -88,6 +88,52 @@ namespace PilotSmithApp.RepositoryService.Service
             return documentLog;
         }
         #endregion InsertTakeOwnership
+        public List<DocumentLog> GetOwnershipHistory(Guid documentID, string documentTypeCode)
+        {
+            List<DocumentLog> ownershipHistoryList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetDocumentOwnershipHistory]";
+                        cmd.Parameters.Add("@DocumentID", SqlDbType.UniqueIdentifier).Value = documentID;
+                        cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.NVarChar, 5).Value = documentTypeCode;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                ownershipHistoryList = new List<DocumentLog>();
+                                while (sdr.Read())
+                                {
+                                    DocumentLog ownershipHistory = new DocumentLog();
+                                    {
+                                        ownershipHistory.Date = (sdr["Date"].ToString() != "" ? DateTime.Parse(sdr["Date"].ToString()) : ownershipHistory.Date);
+                                        ownershipHistory.DateFormatted = (sdr["Date"].ToString() != "" ? DateTime.Parse(sdr["Date"].ToString()).ToString(_settings.DateFormat) : ownershipHistory.DateFormatted);
+                                        ownershipHistory.Type = (sdr["Type"].ToString() != "" ? sdr["Type"].ToString() : ownershipHistory.Type);
+                                        ownershipHistory.Remarks = (sdr["Remarks"].ToString() != "" ? sdr["Remarks"].ToString() : ownershipHistory.Remarks);
+                                    }
+                                    ownershipHistoryList.Add(ownershipHistory);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return ownershipHistoryList;
 
+
+        }
     }
 }

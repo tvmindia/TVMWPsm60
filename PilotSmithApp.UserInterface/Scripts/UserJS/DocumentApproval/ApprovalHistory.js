@@ -22,35 +22,60 @@ function GetApprovalHistory() {
         notyAlert('error', e.message);
     }
 }
-
-function BindApprovalHistoryTable() {
-    debugger;
+function GetOwnershipHistory() {
     try {
-        DataTables.ApprovalHistoryTable = $('#tblApprovalHistory').DataTable(
+        debugger;
+        var DocumentID = $("#DocumentID").val();
+        var DocumentTypeCode = $("#DocumentType").val();
+        var data = { "documentID": DocumentID, "documentTypeCode": DocumentTypeCode };
+        var ds = {};
+        ds = GetDataFromServer("TakeOwnership/GetOwnershipHistory/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        if (ds.Result == "OK") {
+            return ds.Records;
+        }
+        if (ds.Result == "ERROR") {
+            alert(ds.Message);
+        }
+    }
+    catch (e) {
+        notyAlert('error', e.message);
+    }
+}
+function BindApprovalHistoryTable() {
+    try {
+            var result = GetApprovalHistory();
+            $("#tbodyApprovalHistory").empty();
+            if (result.length > 0) {
+                $.each(result, function (index, Records) {
+                    $("#tbodyApprovalHistory").append('<tr><td><span><i class="fa fa-circle-o" style="color:green;"/></span></td><td style="font-weight:500;"><span><i class="fa fa-calendar" style="color:grey;"/></span> ' + (Records.ApprovalDate == null ? "" : Records.ApprovalDate) + '</td><td>' + (Records.ApproverName == null ? "" : Records.ApproverName) + '</td><td>' + (Records.ApproverLevel == null ? "" : Records.ApproverLevel) + '</td><td>' + (Records.Remarks == null ? "" : Records.Remarks) + '</td><td style="font-size: 10px;">' + (Records.ApprovalStatus == null ? "" : Records.ApprovalStatus) + '</td></tr>');
+                });
+            }
+            else {
+                $("#tbodyApprovalHistory").append('<tr><td colspan="6">No history for the document</td></tr>');
+            }
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+}
+
+function BindOwnershipHistoryTable() {
+    try {
+        var result=GetOwnershipHistory();
+        $("#tbodyOwnershipHistory").empty();
+        if (result.length > 0)
         {
-            dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
-            //"oLanguage": {
-            //    "sEmptyTable": '<h2><i class="fa fa-times-circle-o" style="color:#239563" aria-hidden="true"></i> No Approvals Done Yet</h2>'
-            //},
-            ordering: false,
-            searching: false,
-            paging: false,
-            bInfo: false,
-            data: GetApprovalHistory(),
-            autoWidth: false,
-            columns: [
-            { "data": "ApproverName", "defaultContent": "<i>-</i>", "width": "20%" },
-            { "data": "ApproverLevel", "defaultContent": "<i>-</i>", "width": "5%" },
-            { "data": "ApprovalDate", "defaultContent": "<i>-</i>", "width": "20%" },
-            { "data": "Remarks", "defaultContent": "<i>-</i>", "width": "35%" },
-            { "data": "ApprovalStatus", "defaultContent": "<i>-</i>", "width": "20%" },
-            ],
-            columnDefs: [
-                { className: "text-center", "targets": [2] },
-                { className: "text-right", "targets": [] },
-                { className: "text-left", "targets": [0, 1, 3] }
-            ]
-        });
+            $.each(result, function (index, Records) {
+                $("#tbodyOwnershipHistory").append('<tr><td><span><i class="fa fa-circle-o" style="color:green;"/></span></td><td style="font-weight:500;"><span><i class="fa fa-calendar" style="color:grey;"/></span> ' + Records.DateFormatted + '</td><td>' + Records.Type + '</td><td>' + Records.Remarks + '</td></tr>');
+            });
+        }
+        else
+        {
+            $("#tbodyOwnershipHistory").append('<tr><td colspan="4">No updates in log</td></tr>');
+        }
     }
     catch (e) {
         console.log(e.message);

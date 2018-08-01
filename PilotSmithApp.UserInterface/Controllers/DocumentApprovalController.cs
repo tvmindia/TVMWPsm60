@@ -153,12 +153,12 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region GetApprovalHistory
         [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
-        public string GetApprovalHistory(string DocumentID, string DocumentTypeCode)
+        public string GetApprovalHistory(string documentID, string documentTypeCode)
             {
             try
             {
                 List<ApprovalHistoryViewModel> approvalHistoryVMList = new List<ApprovalHistoryViewModel>();
-                approvalHistoryVMList = Mapper.Map<List<ApprovalHistory>,List< ApprovalHistoryViewModel>>(_documentApprovalBusiness.GetApprovalHistory(Guid.Parse(DocumentID), DocumentTypeCode));
+                approvalHistoryVMList = Mapper.Map<List<ApprovalHistory>,List< ApprovalHistoryViewModel>>(_documentApprovalBusiness.GetApprovalHistory(Guid.Parse(documentID), documentTypeCode));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = approvalHistoryVMList });
             }
             catch (Exception ex)
