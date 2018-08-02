@@ -56,7 +56,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         outputCode.Direction = ParameterDirection.Output;
                         oldUserName = cmd.Parameters.Add("@oldUserName", SqlDbType.NVarChar,250);
                         oldUserName.Direction = ParameterDirection.Output;
-                        emailID = cmd.Parameters.Add("@emailID", SqlDbType.NVarChar,250);
+                        emailID = cmd.Parameters.Add("@EmailID", SqlDbType.NVarChar,250);
                         emailID.Direction = ParameterDirection.Output;
                         documentID = cmd.Parameters.Add("@DocumentID", SqlDbType.UniqueIdentifier);
                         documentID.Direction = ParameterDirection.Output;
