@@ -85,8 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description = "-",
                     };
-                    productionQCVM.Customer = new CustomerViewModel();
-                    productionQCVM.Customer.CompanyName = "-";
+                    productionQCVM.Customer = productioOrderVM.Customer;
                     productionQCVM.IsDocLocked = false;
                 }
             }

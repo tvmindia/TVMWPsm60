@@ -92,8 +92,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "-";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
-                    quotationVM.Customer = new CustomerViewModel();
-                    quotationVM.Customer.CompanyName = "-";
+                    quotationVM.Customer = estimateVM.Customer;
                     quotationVM.IsDocLocked = false;
                 }
                 //quotationVM.Customer = new CustomerViewModel

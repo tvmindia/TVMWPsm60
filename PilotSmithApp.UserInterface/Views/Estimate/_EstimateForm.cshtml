@@ -95,10 +95,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.IsUpdate || Model.EnquiryID != null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -108,7 +108,7 @@
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             </div>
                         </div>
-                    }                   
+                    }
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
@@ -155,7 +155,7 @@
                     @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -165,7 +165,7 @@
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
                             </div>
-                           
+
                         </div>
                     }
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -310,11 +310,11 @@
             console.log(e.message);
         }
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())           
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=EST&required=' + $('#hdnDocumentStatusRequired').val())
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate||Model.EnquiryID!=null)
             {
-            
+
             }
             else
             {
@@ -326,7 +326,13 @@
             });
             </text>
             }
-
+            @if (!Model.IsUpdate&&Model.EnquiryID!=null)
+             {
+                <text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
+                </text>
+             }
         }
         catch (e) {
             console.log(e.message);

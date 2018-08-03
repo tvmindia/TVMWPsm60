@@ -179,7 +179,7 @@
                         @if (Model.IsUpdate)
                         {
                             <div class="col-md-12">
-                                <span class="form-control newinput">@Model.Branch.Description</span>
+                                <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                             </div>
                         }
                         else
@@ -326,10 +326,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.IsUpdate || Model.QuoteID != null || Model.SaleOrderID != null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -541,7 +541,7 @@
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')          
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate||Model.QuoteID!=null||Model.SaleOrderID!=null)
          {
            
          }
@@ -554,7 +554,13 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
-
+        @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null))
+        {
+            <text>
+        $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+        });
+            </text>
+        }
         }
         catch (e) {
             console.log(e.message);

@@ -166,6 +166,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : quotation.CustomerID);
                                     quotation.Customer = new Customer();
                                     quotation.Customer.CompanyName= (sdr["CustomerCompanyName"].ToString() != "" ? (sdr["CustomerCompanyName"].ToString()) : quotation.Customer.CompanyName);
+                                    quotation.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : quotation.Customer.ID);
                                     quotation.MailingAddress = (sdr["MailingAddress"].ToString() != "" ? sdr["MailingAddress"].ToString() : quotation.MailingAddress);
                                     quotation.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : quotation.ShippingAddress);
                                     quotation.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : quotation.DocumentStatusCode);
@@ -195,6 +196,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.Branch = new Branch();
                                     quotation.Branch.Description= (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : quotation.Branch.Description);
                                     quotation.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.BranchCode);
+                                    quotation.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.Branch.Code);
                                 }
                         }
                     }

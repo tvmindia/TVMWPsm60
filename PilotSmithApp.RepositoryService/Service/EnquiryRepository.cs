@@ -167,6 +167,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiry.Branch = new Branch();
                                     enquiry.Branch.Description = (sdr["Branch"].ToString() != "" ? (sdr["Branch"].ToString()) : enquiry.Branch.Description);
                                     enquiry.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : enquiry.BranchCode);
+                                    enquiry.Branch.Code = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()):enquiry.Branch.Code);
                                     enquiry.DocumentStatus = new DocumentStatus();
                                     enquiry.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : enquiry.DocumentStatus.Code);
                                     enquiry.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : enquiry.DocumentStatus.Description);
@@ -174,6 +175,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiry.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : enquiry.DocumentOwner);
                                     enquiry.Customer = new Customer();
                                     enquiry.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.Customer.CompanyName);
+                                    enquiry.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.Customer.ID);
                                 }
                         }
                     }

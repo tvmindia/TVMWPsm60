@@ -166,6 +166,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     proformaInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : proformaInvoice.CustomerID);
                                     proformaInvoice.Customer = new Customer();
                                     proformaInvoice.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : proformaInvoice.Customer.CompanyName);
+                                    proformaInvoice.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : proformaInvoice.Customer.ID);
                                     proformaInvoice.Customer.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : proformaInvoice.Customer.TaxRegNo);
                                     proformaInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : proformaInvoice.DocumentStatusCode);
                                     proformaInvoice.DocumentStatus = new DocumentStatus();
@@ -180,6 +181,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     proformaInvoice.BillLocation.Address = (sdr["BillingLocationAddress"].ToString() != "" ? sdr["BillingLocationAddress"].ToString() : proformaInvoice.BillLocation.Address);
                                     proformaInvoice.BillLocation.Name = (sdr["BillingLocationName"].ToString() != "" ? sdr["BillingLocationName"].ToString() : proformaInvoice.BillLocation.Name);
                                     proformaInvoice.Branch = new Branch();
+                                    proformaInvoice.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : proformaInvoice.Branch.Code);
                                     proformaInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : proformaInvoice.Branch.Description);
                                     proformaInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : proformaInvoice.PreparedBy);
                                     proformaInvoice.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : proformaInvoice.Discount);

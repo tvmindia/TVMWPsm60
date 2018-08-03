@@ -86,8 +86,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
-                saleOrderVM.Customer = new CustomerViewModel();
-                saleOrderVM.Customer.CompanyName = "-";
+                saleOrderVM.Customer = quotationVM.Customer;
                 saleOrderVM.IsDocLocked = false;
             }
             else if (id == Guid.Empty && enquiryID != null)
@@ -105,8 +104,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 };
                 saleOrderVM.Branch = new BranchViewModel();
                 saleOrderVM.Branch.Description = "-";
-                saleOrderVM.Customer = new CustomerViewModel();
-                saleOrderVM.Customer.CompanyName = "-";
+                saleOrderVM.Customer = enquiryVM.Customer;
                 saleOrderVM.IsDocLocked = false;
             }
             else

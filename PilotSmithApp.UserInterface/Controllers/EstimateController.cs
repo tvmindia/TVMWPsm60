@@ -100,8 +100,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
-                    estimateVM.Customer = new CustomerViewModel();
-                    estimateVM.Customer.CompanyName = "-";
+                    estimateVM.Customer = enquiryVM.Customer;
                     estimateVM.IsDocLocked = false;
                 }
                 
@@ -301,8 +300,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                               ProductSpec = enquiryDetailVM.ProductSpec,
                                               Qty = enquiryDetailVM.Qty,
                                               UnitCode = enquiryDetailVM.UnitCode,
-                                              CostRate = enquiryDetailVM.ProductModel.CostPrice,
-                                              SellingRate = enquiryDetailVM.Rate,
+                                              CostRate = enquiryDetailVM.ProductModel.CostPrice==null?0: enquiryDetailVM.ProductModel.CostPrice,
+                                              SellingRate = enquiryDetailVM.Rate==null?0: enquiryDetailVM.Rate,
                                               SpecTag = enquiryDetailVM.SpecTag,
                                               Product = enquiryDetailVM.Product,
                                               ProductModel = enquiryDetailVM.ProductModel,

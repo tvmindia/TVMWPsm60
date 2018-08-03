@@ -403,7 +403,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              bInfo: false,
              data: //id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id),
                     !IsSaleOrder ? id==_emptyGuid?null: GetProductionOrderDetailListByProductionOrderID(id,false) : GetProductionOrderDetailListByProductionOrderID(id,true),
-
+            
              language: {
                  search: "_INPUT_",
                  searchPlaceholder: "Search"
@@ -412,7 +412,7 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      debugger;                    
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.ProductModel.Name
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
@@ -517,7 +517,23 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                  {className:"text-center","targets":[9,10]},
                  { "targets": [0], "width": "20%" },
                  { "targets": [1, 2, 3, 4, 5, 6, 7, 8,9,10], "width": "8%" },                
-             ]
+             ],
+             rowCallback: function (row, data) {
+                 debugger;
+                 var table = $('#tblProductionOrderDetails').DataTable();
+                 if ((data.ShowRate == true)||(data.ShowAmount==true)) {
+                     $('#prodordRate').show();
+                     table.column(6).visible(true);
+                     $('#prodordAmount').show();
+                     table.column(7).visible(true);
+                 }
+                 else {
+                     $('#prodordRate').hide();
+                     table.column(6).visible(false);
+                     $('#prodordAmount').show();
+                     table.column(7).visible(false);
+                 }
+             }
          });
     $('[data-toggle="popover"]').popover({
         html: true,
@@ -595,7 +611,12 @@ function AddProductionOrderDetailToList() {
                 productionOrderDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
                 Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                 productionOrderDetailList[_datatablerowindex].Unit = Unit;
-                productionOrderDetailList[_datatablerowindex].Rate = $('#Rate').val();
+                if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
+                    productionOrderDetailList[_datatablerowindex].Rate = parseFloat($('#Rate').val());
+                }
+                else {
+                    productionOrderDetailList[_datatablerowindex].Rate = 0;
+                }
                 productionOrderDetailList[_datatablerowindex].PlantCode = $('#PlantCode').val();
                 Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
                 productionOrderDetailList[_datatablerowindex].Plant = Plant;
@@ -642,7 +663,12 @@ function AddProductionOrderDetailToList() {
                     productionOrderDetailList[0].UnitCode = $('#UnitCode').val();
                     Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                     productionOrderDetailList[0].Unit = Unit;
-                    productionOrderDetailList[0].Rate = $('#Rate').val();
+                    if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
+                        productionOrderDetailList[0].Rate = parseFloat($('#Rate').val());
+                    }
+                    else {
+                        productionOrderDetailList[0].Rate = 0;
+                    }
                     productionOrderDetailList[0].PlantCode = $('#PlantCode').val();
                     Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
                     productionOrderDetailList[0].Plant = Plant;
@@ -700,7 +726,12 @@ function AddProductionOrderDetailToList() {
                         Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                         ProductionOrderDetailVM.Unit = Unit;
                         ProductionOrderDetailVM.UnitCode = $('#UnitCode').val();
-                        ProductionOrderDetailVM.Rate = $('#Rate').val();
+                        if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
+                            ProductionOrderDetailVM.Rate = parseFloat($('#Rate').val());
+                        }
+                        else {
+                            ProductionOrderDetailVM.Rate = 0;
+                        }
                         Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
                         ProductionOrderDetailVM.Plant = Plant;
                         ProductionOrderDetailVM.PlantCode = $('#PlantCode').val();
