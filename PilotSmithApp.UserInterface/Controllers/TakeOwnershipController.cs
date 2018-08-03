@@ -51,6 +51,20 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion
-
+        #region GetOwnershipHistory
+        public string GetOwnershipHistory(string DocumentID, string DocumentTypeCode)
+        {
+            try
+            {
+                List<DocumentLogViewModel> ownershipHistoryVMList = new List<DocumentLogViewModel>();
+                ownershipHistoryVMList = Mapper.Map<List<DocumentLog>, List<DocumentLogViewModel>>(_takeOwnershipBusiness.GetOwnershipHistory(Guid.Parse(DocumentID), DocumentTypeCode));
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = ownershipHistoryVMList });
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex });
+            }
+        }
+        #endregion GetOwnershipHistory
     }
 }

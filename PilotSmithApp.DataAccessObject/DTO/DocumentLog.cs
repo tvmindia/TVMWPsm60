@@ -14,6 +14,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime Date { get; set; }
         public string DateFormatted { get; set; }
         public string Remarks { get; set; }
+        public string CurrentStatus { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         //addtional fields
         public Guid DocumentOwnerId { get; set; }

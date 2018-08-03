@@ -22,6 +22,10 @@ namespace PilotSmithApp.BusinessService.Service
             _takeOwnershipRepository = takeOwnershipRepository;
             _mailBusiness = mailBusiness;
         }
+        public List<DocumentLog> GetOwnershipHistory(Guid documentID, string documentTypeCode)
+        {
+            return _takeOwnershipRepository.GetOwnershipHistory(documentID, documentTypeCode);
+        }
 
         public DocumentLog InsertTakeOwnership(DocumentLog documentLog)
         {

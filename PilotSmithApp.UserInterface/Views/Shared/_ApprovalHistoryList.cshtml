@@ -7,36 +7,136 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/DocumentApproval/ApprovalHistory")
 }
 
-<div style="min-height:400px;background-color:#eef5f9;">
-    <section class="content-header">
-        <h1>
-            Approval History
-        </h1>
+<div style="min-height:200px;background-color:#eef5f9;">
+    @Html.HiddenFor(model => model.DocumentID, htmlAttributes: new { @class = "", Value = @ViewBag.DocumentID })
+    @Html.HiddenFor(model => model.DocumentType, htmlAttributes: new { @class = "", Value = @ViewBag.DocumentType })
+    @if (ViewBag.DocumentType != "ENQ" && ViewBag.DocumentType != "EST")
+    {
+        <section class="content" style="min-height:30vh;margin-top: 5%;">
 
-        @Html.HiddenFor(model => model.DocumentID, htmlAttributes: new { @class = "", Value = @ViewBag.DocumentID })
-        @Html.HiddenFor(model => model.DocumentType, htmlAttributes: new { @class = "", Value = @ViewBag.DocumentType })
 
-    </section><br />
-    <section class="content">
-        <div class="row" style="max-height:80vh;overflow-y: scroll;">
-            <div class="col-md-12">
+            <div class="row" style="max-height:80vh;overflow-y: scroll;">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header" style="background:white;padding:6px;">
+                            <h3 class="col-md-12 box-title" style="color:#DB8B0B;left:-3%;"><i class="fa fa-history"></i> Approver History</h3>
 
-                <div class="row tableContainer">
+                            @*<div class="box-tools">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th style="width:25%">Date</th>
+                                        <th style="width:15%">Approver</th>
+                                        <th style="width:10%">Level</th>
+                                        <th style="width:25%">Remarks</th>
+                                        <th style="width:25%">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbodyApprovalHistory">
+                                    <tr>
+                                        <td colspan="6">No history for the document</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+
+            @*<div class="row" style="max-height:80vh;overflow-y: scroll;">
                     <div class="col-md-12">
-                        <table id="tblApprovalHistory" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" width="80%">
+
+                        <div class="row tableContainer">
+                            <div class="col-md-12">
+                                <table id="tblApprovalHistory" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" width="80%">
+                                    <thead>
+                                        <tr class="text-center TableHead">
+                                            <th>Approver</th>
+                                            <th>Level</th>
+                                            <th>Date</th>
+                                            <th>Remarks</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>*@
+        </section><br />
+    }
+    <section class="content" style="min-height:30vh;margin-top: 5%;">
+        @*<div class="row" style="max-height:80vh;overflow-y: scroll;">
+                <div class="col-md-12">
+
+                    <div class="row tableContainer">
+                        <div class="col-md-12">
+                            <table id="tblOwnershipHistory" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" width="80%">
+                                <thead>
+                                    <tr class="text-center TableHead">
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>*@
+        <div class="row" style="max-height:80vh;overflow-y: scroll;">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header" style="background:white;padding:6px;">
+                        <h3 class="col-md-12 box-title" style="color:#DB8B0B;left:-3%;"><i class="fa fa-history"></i> Document Log</h3>
+
+                        @*<div class="box-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
                             <thead>
-                                <tr class="text-center TableHead">
-                                    <th>Approver</th>
-                                    <th>Level</th>
-                                    <th>Date</th>
-                                    <th>Remarks</th>
-                                    <th>Status</th>
+                                <tr>
+                                    <th>#</th>
+                                    <th style="width:25%">Date</th>
+                                    <th style="width:30%">Type</th>
+                                    <th style="width:45%">Remarks</th>
                                 </tr>
                             </thead>
+                            <tbody id="tbodyOwnershipHistory">
+                                <tr>
+                                    <td colspan="3">No updates in log</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
+                    <!-- /.box-body -->
                 </div>
-
+                <!-- /.box -->
             </div>
         </div>
     </section>
@@ -45,6 +145,12 @@
 <script>
     $(document).ready(function () {
         debugger;
+        @if (ViewBag.DocumentType != "ENQ" && ViewBag.DocumentType != "EST")
+            {
+            <text>
         BindApprovalHistoryTable();
+        </text>
+            }
+        BindOwnershipHistoryTable();
     })
 </script>

@@ -14,6 +14,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime Date { get; set; }
         [Required(ErrorMessage = "Reason is missing")]
         public string Remarks { get; set; }
+        public string CurrentStatus { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //addtional fields
         public Guid DocumentOwnerId { get; set; }
@@ -22,5 +23,6 @@ namespace PilotSmithApp.UserInterface.Models
         public string OldUserEmail { get; set; }
         public string NewDocumentOwner { get; set; }
         public Guid DocumentID { get; set; }
+        public string DateFormatted { get; set; }
     }
 }

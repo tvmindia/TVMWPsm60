@@ -669,7 +669,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','POD');";
-
+                                        
                     if (_commonBusiness.CheckDocumentIsDeletable("POD", id))
                     {
                         toolboxVM.deletebtn.Visible = true;
