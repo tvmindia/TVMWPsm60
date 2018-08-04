@@ -54,11 +54,12 @@ namespace PilotSmithApp.UserInterface.Controllers
             ProductionOrderViewModel productionOrderVM = null;
             try
             {
+                AppUA appUA = Session["AppUA"] as AppUA;
                 if (id != Guid.Empty)
                 {
                     productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(id));
                     productionOrderVM.IsUpdate = true;
-                    AppUA appUA = Session["AppUA"] as AppUA;
+                    //AppUA appUA = Session["AppUA"] as AppUA;
                     productionOrderVM.IsDocLocked = productionOrderVM.DocumentOwners.Contains(appUA.UserName);
                     productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);                   
                 }
@@ -75,8 +76,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.Branch.Description = "-";
                     //productionOrderVM.Customer = new CustomerViewModel();
                     //productionOrderVM.Customer.CompanyName = "-";
-                    productionOrderVM.IsDocLocked = false;
-                }     
+                    productionOrderVM.IsDocLocked = false;                   
+                }
                 else if(id==Guid.Empty && saleOrderID!=null)
                 {
                     SaleOrderViewModel saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleOrderID));
@@ -91,12 +92,28 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.Branch = new BranchViewModel();
                     productionOrderVM.IsDocLocked = false;
                     productionOrderVM.Branch.Description = "-";
-                    productionOrderVM.Customer = new CustomerViewModel();
-                    productionOrderVM.Customer.CompanyName = "-";
+                    productionOrderVM.Customer = saleOrderVM.Customer;
 
-                }           
+                }
+                //AppUA appUA = Session["AppUA"] as AppUA;
+                Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                if (permission.SubPermissionList.Count > 0)
+                {
+                    string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                    string q = permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                    if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                    {
+                        productionOrderVM.ShowRate = true;
+                        productionOrderVM.ShowAmount = true;
+                    }
+                    else
+                    {
+                        productionOrderVM.ShowRate = false;
+                        productionOrderVM.ShowAmount = false;
+                    }
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -110,14 +127,30 @@ namespace PilotSmithApp.UserInterface.Controllers
             //ProductionOrderDetailViewModel productionOrderDetailVM = null;
             //List<ProductionOrderDetailViewModel> productionOrderDetailVM = new List<ProductionOrderDetailViewModel>();
    
-            ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();
-           
+            ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();           
             productionOrderDetailVM = new ProductionOrderDetailViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+            if (permission.SubPermissionList.Count > 0)
+            {
+                string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                if (p.Contains("R") || p.Contains("W"))
+                {
+                    productionOrderDetailVM.ShowRate = true;
+                    // productionOrderDetailVM.ShowAmount = true;
+                }
+                else
+                {
+                    productionOrderDetailVM.ShowRate = false;
+                    // productionOrderDetailVM.ShowAmount = false;
+                }
+            }
             productionOrderDetailVM.IsUpdate = false;
             productionOrderDetailVM.OrderQty = 0;
             productionOrderDetailVM.ProducedQty = 0;
             productionOrderDetailVM.PrevProducedQty = 0;
             productionOrderDetailVM.SaleOrderQty = 0;
+            productionOrderDetailVM.Rate = 0;          
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -217,7 +250,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             try
             {
-                List<ProductionOrderDetailViewModel> productionOrderItemViewModelList = new List<ProductionOrderDetailViewModel>();
+                List<ProductionOrderDetailViewModel> productionOrderItemViewModelList = new List<ProductionOrderDetailViewModel>();               
                 if (productionOrderID == Guid.Empty)
                 {
                     ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel()
@@ -259,11 +292,31 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Name = string.Empty
                         },
                     };
-                    productionOrderItemViewModelList.Add(productionOrderDetailVM);
+                    productionOrderItemViewModelList.Add(productionOrderDetailVM);                  
                 }
                 else
                 {
                     productionOrderItemViewModelList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderID));
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                    if (permission.SubPermissionList.Count > 0)
+                    {
+                        string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                        string q = permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                        foreach (var Item in productionOrderItemViewModelList)
+                        {
+                            if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                            {
+                                Item.ShowRate = true;
+                                Item.ShowAmount = true;
+                            }
+                            else
+                            {
+                                Item.ShowRate = false;
+                                Item.ShowAmount = false;
+                            }
+                        }
+                    }
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = productionOrderItemViewModelList, Message = "Success" });
             }
@@ -308,7 +361,26 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         }).ToList();
                              
                         }
-                      
+                AppUA appUA = Session["AppUA"] as AppUA;
+                Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                if (permission.SubPermissionList.Count > 0)
+                {
+                    string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                    string q = permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                    foreach (var Item in productionOrderItemViewModelList)
+                    {
+                        if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                        {
+                            Item.ShowRate = true;
+                            Item.ShowAmount = true;
+                        }
+                        else
+                        {
+                            Item.ShowRate = false;
+                            Item.ShowAmount = false;
+                        }
+                    }
+                }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = productionOrderItemViewModelList, Message = "Success" });
             }
             catch (Exception ex)

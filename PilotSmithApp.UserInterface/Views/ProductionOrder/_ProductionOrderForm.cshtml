@@ -128,10 +128,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.IsUpdate||Model.SaleOrderID!=null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -160,7 +160,7 @@
                     @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -320,8 +320,8 @@
                             <th>Prev Prod Order Qty</th>
                             <th>Curr Prod Order Qty</th>
                             <th>Produced Qty</th>
-                            <th>Rate(₹)</th>
-                            <th>Amount(₹)</th>
+                            <th id="prodordRate">Rate(₹)</th>
+                            <th id="prodordAmount">Amount(₹)</th>
                             <th>Supplier/Plant</th>
                             <th>Milestone</th>
                             <th>...</th>
@@ -379,7 +379,7 @@
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
            
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=POD&required=' + $('#hdnDocumentStatusRequired').val())
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate||Model.SaleOrderID!=null)
           {
             
           }
@@ -392,7 +392,13 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
           }
-
+          @if ((!Model.IsUpdate) && (Model.SaleOrderID!=null))
+          {
+              <text>
+          $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+          });
+              </text>
+          }
         }
         catch (e) {
             console.log(e.message);

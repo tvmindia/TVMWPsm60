@@ -287,9 +287,10 @@ function SaveSuccessEstimate(data, status) {
                     BindEstimateDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
                     $('#lblEstimateInfo').text(_result.EstimateNo);
 
-                });
+                });               
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", _result.ID);
                 BindOrReloadEstimateTable('Init');
                 notyAlert('success', _result.Message);
@@ -377,8 +378,32 @@ function BindEstimateDetailList(id,IsEnquiry) {
              { "data": "CostRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "SellingRate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "TotalCostPrice", render: function (data, type, row) { return parseFloat(row.CostRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
-             { "data": "TotalSeingPrice", render: function (data, type, row) { return parseFloat(row.SellingRate) * parseFloat(row.Qty) }, "defaultContent": "<i></i>" },
+             {
+                 "data": "TotalCostPrice", render: function (data, type, row)
+                 {
+                     debugger;
+                     var Result = roundoff(parseFloat(row.CostRate) * parseFloat(row.Qty));
+                     if (Result == NaN || Result == null || Result == "") {
+                         return 0
+                     }
+                     else {
+                         return Result
+                     }
+                 }, "defaultContent": "<i></i>"
+             },
+             {
+                 "data": "TotalSellingPrice", render: function (data, type, row)
+                 {
+
+                     var Result = roundoff(parseFloat(row.SellingRate) * parseFloat(row.Qty));
+                     if (Result == NaN || Result == null || Result == "") {
+                         return 0
+                     }
+                     else {
+                         return Result
+                     }
+                 }, "defaultContent": "<i></i>"
+             },
             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [

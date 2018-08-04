@@ -146,7 +146,7 @@
                     @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -264,10 +264,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.IsUpdate||Model.EstimateID!=null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -463,12 +463,12 @@
             console.log(e.message);
         }
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())          
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate||Model.EstimateID!=null)
             {
-             
+
             }
             else
             {
@@ -481,7 +481,13 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
             }
-
+           @if (!Model.IsUpdate&&Model.EstimateID!=null)
+             {
+                <text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
+                </text>
+             }
         }
         catch (e) {
             console.log(e.message);

@@ -80,8 +80,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
-                    deliveryChallanVM.Customer = new CustomerViewModel();
-                    deliveryChallanVM.Customer.CompanyName = "-";
+                    deliveryChallanVM.Customer = saleOrderVM.Customer;
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && prodOrderID != null)
@@ -96,8 +95,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.SaleOrderID = null;
                     deliveryChallanVM.DocumentType = "ProductionOrder";
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
-                    deliveryChallanVM.Customer = new CustomerViewModel();
-                    deliveryChallanVM.Customer.CompanyName = "-";
+                    deliveryChallanVM.Customer = productionOrderVM.Customer;
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else

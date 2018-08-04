@@ -102,8 +102,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     proformaInvoiceVM.Branch = new BranchViewModel();
                     proformaInvoiceVM.Branch.Description = "-";
-                    proformaInvoiceVM.Customer = new CustomerViewModel();
-                    proformaInvoiceVM.Customer.CompanyName = "-";
+                    proformaInvoiceVM.Customer = quotationVM.Customer;
                     proformaInvoiceVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && saleorderID != null)
@@ -124,8 +123,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     proformaInvoiceVM.Branch = new BranchViewModel();
                     proformaInvoiceVM.Branch.Description = "-";
-                    proformaInvoiceVM.Customer = new CustomerViewModel();
-                    proformaInvoiceVM.Customer.CompanyName = "-";
+                    proformaInvoiceVM.Customer = saleorderVM.Customer;
                     proformaInvoiceVM.IsDocLocked = false;
                 }
                 else

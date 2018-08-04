@@ -273,6 +273,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleOrder.CustomerID);
                                     saleOrder.Customer = new Customer();
                                     saleOrder.Customer.CompanyName = (sdr["CustomerCompanyName"].ToString() != "" ? (sdr["CustomerCompanyName"].ToString()) : saleOrder.Customer.CompanyName);
+                                    saleOrder.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleOrder.Customer.ID);
                                     saleOrder.Customer.AadharNo= (sdr["AadharNo"].ToString() != "" ? (sdr["AadharNo"].ToString()) : saleOrder.Customer.AadharNo);
                                     saleOrder.Customer.PANNO= (sdr["PANNO"].ToString() != "" ? (sdr["PANNO"].ToString()) : saleOrder.Customer.PANNO);
                                     saleOrder.Customer.TaxRegNo= (sdr["TaxRegNo"].ToString() != "" ? (sdr["TaxRegNo"].ToString()) : saleOrder.Customer.TaxRegNo);
@@ -305,6 +306,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleOrder.BranchCode);
                                     saleOrder.Branch = new Branch();
                                     saleOrder.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : saleOrder.Branch.Description);
+                                    saleOrder.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleOrder.Branch.Code);
                                     saleOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleOrder.DocumentOwnerID);
                                     saleOrder.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleOrder.Discount);
                                     saleOrder.AdvanceAmount = (sdr["AdvanceAmount"].ToString() != "" ? decimal.Parse(sdr["AdvanceAmount"].ToString()) : saleOrder.AdvanceAmount);
