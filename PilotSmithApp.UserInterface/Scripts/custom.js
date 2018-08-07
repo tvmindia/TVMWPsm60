@@ -1,46 +1,5 @@
 var appAddress = window.location.protocol + "//" + window.location.host + "/";   //Retrieving browser Url 
 var fileArray = [];
-(function Checker() {
-    var flag = false;
-    $.ajax({
-        type: 'POST',
-        url: appAddress + 'Account/AreyouAlive/',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-
-            if (data.Result == "OK") {
-                switch (data.Record) {
-                    case "dead":
-                        $('.modal').modal('hide');
-                        $("#RedirectToLoginModel").modal('show');
-  
-                        flag = true;
-                        break;
-                    case "alive":
-                        flag = false;
-                        break;
-                }
-
-
-            }
-            if (data.Result == "ERROR") {
-                notyAlert('error', data.Message);
-            }
-
-        },
-        complete: function () {
-            // Schedule the next request when the current one's complete
-            //  setTimeout(Checker, 126000);
-            if (flag != true) {
-                //for 15.2 minutes
-                setTimeout(Checker, 912000);
-               // setTimeout(Checker, 126000);
-            }
-
-        },
-    });
-})();
 
 //LOADER/SPINNER
 $(window).bind("load", function () {
@@ -132,8 +91,49 @@ $(document).ready(function () {
 
     });
     $('.EntryForms').attr('style', 'height:' + (screen.availHeight / 1.53) + 'px');
-   
+    setTimeout(Checker, 912000);
 });
+function Checker() {
+    var flag = false;
+    $.ajax({
+        type: 'POST',
+        url: appAddress + 'Account/AreyouAlive/',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            if (data.Result == "OK") {
+                switch (data.Record) {
+                    case "dead":
+                        $('.modal').modal('hide');
+                        $("#RedirectToLoginModel").modal('show');
+
+                        flag = true;
+                        break;
+                    case "alive":
+                        flag = false;
+                        break;
+                }
+
+
+            }
+            if (data.Result == "ERROR") {
+                notyAlert('error', data.Message);
+            }
+
+        },
+        complete: function () {
+            // Schedule the next request when the current one's complete
+            //  setTimeout(Checker, 126000);
+            if (flag != true) {
+                //for 15.2 minutes
+                //setTimeout(Checker, 912000);
+                // setTimeout(Checker, 126000);
+            }
+
+        },
+    });
+}
 function ChangeNavPosition()
 {
     $('.main-sidebar').css('position', 'absolute');

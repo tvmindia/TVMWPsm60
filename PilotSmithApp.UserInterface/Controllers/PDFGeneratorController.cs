@@ -14,9 +14,11 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using System.Collections.Generic;
 using System.Web;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class PDFGeneratorController : Controller
     {
         // GET: PDFGenerator

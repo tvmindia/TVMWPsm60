@@ -4,9 +4,11 @@ using AutoMapper;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.BusinessService.Contracts;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class DynamicUIController : Controller
     {
         // GET: DynamicUI
