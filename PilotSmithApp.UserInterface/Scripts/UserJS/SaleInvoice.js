@@ -202,14 +202,12 @@ function AddSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
+            openNav();
+            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
             ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
             BindSaleInvoiceDetailList(_emptyGuid);
-            BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
-            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
-            //setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-            //}, 100); 
+            BindSaleInvoiceOtherChargesDetailList(_emptyGuid);           
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

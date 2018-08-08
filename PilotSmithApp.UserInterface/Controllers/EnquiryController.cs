@@ -55,6 +55,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.ID = id;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
+            //if (Request.Cookies["UserSettings"] != null)
+            //{
+            //    if (Request.Cookies["UserSettings"]["TvmValid"] != null)
+            //    { AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA; }
+            //}
+            //string userSettings = Request.Cookies["UserSettings"]["TvmValid"];
+            //AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA;
             AppUA appUA = Session["AppUA"] as AppUA;
             enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
