@@ -1,5 +1,4 @@
 ﻿var EmptyGuid = "00000000-0000-0000-0000-000000000000";
-var _masterFormID = "CustomerForm";
 var _parentFormID = "";
 //Add Product Category
 function AddProductCategoryMaster(flag) {
@@ -91,22 +90,25 @@ function SaveSuccessProductSpecification(data, status) {
 //Add State master
 function AddStateMaster(flag) {
     debugger;
-    if ($('#FormDistrict')[0]) {
-        _masterFormID = "FormDistrict";
-    } else if ($('#FormArea')[0]) {
-        _masterFormID = "FormArea";
-    } else {
-        if ($('#CustomerForm')[0]) {
-            _masterFormID = "CustomerForm";
-        }
-    }
     //To specify the current master form is #FormState when select list binding
     _parentFormID = "FormState";
     //when close button clicked
     $('#divModelMasterPopUp3 .close').click(function () {
-        _parentFormID = _masterFormID;
         //Clearing the select lists so that they're not taken in select list rebind in .each(function() { }) given below in savesuccess
         $("#divMasterBody3").html('');
+        if ($('#FormDistrict')[0]) {
+            _parentFormID = "FormDistrict";
+        } else if ($('#FormArea')[0]) {
+            _parentFormID = "FormArea";
+        } else {
+            if ($('#CustomerForm')[0]) {
+                _parentFormID = "CustomerForm";
+            } else {
+                _parentFormID = $('#AreaCode').closest('form').attr('id');
+            }
+        }
+        $('#' + _parentFormID + '#CountryCode').val($('#' + _parentFormID + '#hdnCountryCode').val()).trigger('change');
+
     });
 
     OnServerCallBegin();
@@ -155,16 +157,15 @@ function SaveSuccessState(data, status) {
                             });
                             $('.select2').addClass('form-control newinput');
                             //applicable only for select list in #CustomerForm
-                            if (_parentFormID === 'CustomerForm') {
-                                $('#StateCode').change(function () {
+                            if ($('CustomerForm')[0]) {
+                                $('#CustomerForm #StateCode').change(function () {
                                     if (this.value !== "")
                                         StateCodeOnChange();
                                 });
                             }
-                            _parentFormID = _masterFormID;
                     });
                 });
-
+                $('#' + _parentFormID + '#CountryCode').val($('#' + _parentFormID + '#hdnCountryCode').val()).trigger('change');
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;
@@ -182,17 +183,19 @@ function SaveSuccessState(data, status) {
 function AddDistrictMaster(flag) {
     debugger;
     //--- info on what the below code does is given in AddStateMaster
-    if ($('#FormArea')[0]) {
-        _masterFormID = "FormArea";
-    } else {
-        if ($('#CustomerForm')[0]) {
-            _masterFormID = "CustomerForm";
-        }
-    }
     _parentFormID = "FormDistrict";
     $('#divModelMasterPopUp2 .close').click(function () {
-        _parentFormID = _masterFormID;
         $("#divMasterBody2").html('');
+        if ($('#FormArea')[0]) {
+            _parentFormID = "FormArea";
+        } else {
+            if ($('#CustomerForm')[0]) {
+                _parentFormID = "CustomerForm";
+            } else {
+                _parentFormID = $('#AreaCode').closest('form').attr('id');
+            }
+        }
+        $('#' + _parentFormID + '#CountryCode').val($('#' + _parentFormID + '#hdnCountryCode').val()).trigger('change');
     });
     //---
 
@@ -239,15 +242,15 @@ function SaveSuccessDistrict(data, status) {
                                 dropdownParent: $(parent + '.divDistrictSelectList')
                             });
                             $('.select2').addClass('form-control newinput');
-                            if (_parentFormID === '#CustomerForm') {
-                            $('#DistrictCode').change(function () {
+                            if ($('CustomerForm')[0]) {
+                                $('#CustomerForm #DistrictCode').change(function () {
                                 if (this.value !== "")
                                     DistrictCodeOnChange();
                             });
                         }
-                        _parentFormID = _masterFormID;
-                    });
+                        });
                 });
+                $('#' + _parentFormID + '#CountryCode').val($('#' + _parentFormID + '#hdnCountryCode').val()).trigger('change');
 
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -266,12 +269,14 @@ function SaveSuccessDistrict(data, status) {
 function AddAreaMaster(flag) {
     debugger;
     _parentFormID = "FormArea";
-    if ($('#CustomerForm')[0]) {
-        _masterFormID = "CustomerForm";
-    }
     $('#divModelMasterPopUp1 .close').click(function () {
-        _parentFormID = _masterFormID;
         $("#divMasterBody1").html('');
+        if ($('#CustomerForm')[0]) {
+            _parentFormID = "CustomerForm";
+        } else {
+            _parentFormID = $('#AreaCode').closest('form').attr('id');
+        }
+        $('#' + _parentFormID + '#CountryCode').val($('#' + _parentFormID + '#hdnCountryCode').val()).trigger('change');
     });
 
     OnServerCallBegin();
@@ -310,11 +315,10 @@ function SaveSuccessArea(data, status) {
                         , function () {
                             debugger;
                             $('#CustomerForm #AreaCode').change(function () {
-                            if (this.value !== "")
-                                AreaCodeOnChange();
+                                if (this.value !== "")
+                                    AreaCodeOnChange();
+                            });
                         });
-                        //_parentFormID = _masterFormID;
-                    });
                 }
                 else {
                     $('.divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val());
@@ -426,13 +430,16 @@ function SaveSuccessCompany(data, status) {
 function AddProductModelMaster(flag) {
     debugger;
     OnServerCallBegin();
+    $("#divMasterBody2 .close").click(function () {
+        _parentFormID = "";
+    });
     $("#divMasterBody2").load("ProductModel/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             $('#hdnMasterCall2').val(flag);
             $('#lblModelMasterContextLabel2').text('Add Product Model')
-            if(flag=="OTR")
-            $('#divModelMasterPopUp2 #divimageUpload').hide();
+            //if(flag=="OTR")
+            //$('#divModelMasterPopUp2 #divimageUpload').hide();
             $('#divModelMasterPopUp2').modal('show');
         }
         else {
@@ -452,6 +459,7 @@ function SaveSuccessProductModel(data, status) {
                 BindOrReloadProductModelTable('Reset');
             }
             else if ($('#hdnMasterCall2').val() == "OTR") {
+                _parentFormID = "";
                 $('.divProductModelSelectList').load('/ProductModel/ProductModelSelectList?required=' + $('#hdnProductModelRequired').val()+'&productID='+$('#hdnProductID').val());
             }
             MasterAlert("success", JsonResult.Record.Message)
@@ -1135,17 +1143,23 @@ function SaveSuccessOtherCharge(data, status) {
 //Add Country
 function AddCountryMaster(flag) {
     debugger;
-    if ($('#FormState')[0]) {
-        _masterFormID = "FormState";
-    } else if ($('#FormDistrict')[0]) {
-        _masterFormID = "FormDistrict";
-    } else if ($('#FormArea')[0]) {
-        _masterFormID = "FormArea";
-    } else {
-        if ($('#CustomerForm')[0]) {
-            _masterFormID = "CustomerForm";
+    $('#divModelMasterPopUp4 .close').click(function () {
+        if ($('#FormState')[0]) {
+            _parentFormID = "FormState";
+        } else if ($('#FormDistrict')[0]) {
+            _parentFormID = "FormDistrict";
+        } else if ($('#FormArea')[0]) {
+            _parentFormID = "FormArea";
+        } else {
+            if ($('#CustomerForm')[0]) {
+                _parentFormID = "CustomerForm";
+            } else {
+                _parentFormID = $('#AreaCode').closest('form').attr('id');
+            }
         }
-    }
+        $("#divMasterBody4").html('');
+        $('#' + _parentFormID + ' #CountryCode').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val()).trigger('change');
+    });
 
     OnServerCallBegin();
     $("#divMasterBody4").load("Country/MasterPartial?masterCode=0", function (responseTxt, statusTxt, xhr) {
@@ -1185,7 +1199,6 @@ function SaveSuccessCountry(data, status) {
                         });
                         $('.select2').addClass('form-control newinput');
                     });
-                    _parentFormID = _masterFormID;
                 });
                 //if ($('#CustomerForm')[0])
                 //    $('.divCountrySelectList').load('/Country/CountrySelectList?required=' + $('#hdnCountryRequired').val(), function () {
@@ -1204,6 +1217,7 @@ function SaveSuccessCountry(data, status) {
                 //            }
                 //        });
                 //    });
+
             }
             MasterAlert("success", JsonResult.Record.Message)
             break;

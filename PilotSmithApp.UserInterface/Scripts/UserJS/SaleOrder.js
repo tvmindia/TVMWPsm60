@@ -991,8 +991,8 @@ function DownloadSaleOrder() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#SaleOrderForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#SaleOrderForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);
 }
 function PrintSaleOrder() {
     debugger;

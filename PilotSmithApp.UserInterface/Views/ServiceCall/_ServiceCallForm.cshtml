@@ -57,11 +57,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @if (Model.IsUpdate)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divCustomerSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            </div>
+                        </div>
+                    }
+                    
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -158,7 +168,7 @@
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
-                        @if (!Model.IsDocLocked && Model.IsUpdate)
+                        @if (Model.IsUpdate)
                         {
                             <div class="col-md-12">
                                 <span class="form-control newinput">@Model.Branch.Description</span>
@@ -170,14 +180,14 @@
                                 <div class="divBranchSelectList">
                                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
-                                </div>
-                                <!-- This hidden field will keep the information whether the field is required or not -->
-                                @Html.Hidden("hdnBranchRequired", "required")
-                                <!-- This hidden field will keep the information whether the field is disabled or not -->
-                                @Html.Hidden("hdnBranchdisabled", false)
-                                @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                                </div>                               
                             </div>
                         }
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBranchRequired", "required")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBranchdisabled", false)
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
 
                     <div class="col-md-6 no-padding">
@@ -253,7 +263,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.ServiceCallNo" documentType="SRC"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -444,12 +454,7 @@
 
             $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
             $('.divServicedBySelectList').load('/Employee/ServicedBySelectList?required=' + $('#hdnServicedByRequired').val())
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
-             else {
-                 <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-            </text>
-                     }
+           
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SRC&required=' + $('#hdnDocumentStatusRequired').val(), function () {
                 $('#DocumentStatusCode').select2({
                     dropdownParent: $('#ServiceCallForm')
@@ -459,9 +464,12 @@
             @if (Model.IsUpdate)
                     {
                         <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
-                $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#hdnCustomerID').val());
+            
+            $('#CustomerID').change(function () {
+                debugger;
+                $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#CustomerID').val());
             });
+            
             </text>
                     }
                     else
@@ -473,6 +481,7 @@
                     $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#CustomerID').val());
                 });
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
                     }
             $('.divServiceTypeSelectList').load('/ServiceType/ServiceTypeSelectList?required=' + $('#hdnServiceTypeRequired').val())
@@ -544,12 +553,11 @@
         //    console.log(e.message);
         //}
         try {
-            if ($('#ServiceCallForm #IsDocLocked').val() == "False" && $('#ServiceCallForm #IsUpdate').val() == "True")
-            {
+            if ($('#ServiceCallForm #IsDocLocked').val() == "False" && $('#ServiceCallForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);

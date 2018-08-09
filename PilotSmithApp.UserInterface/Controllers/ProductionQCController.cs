@@ -11,8 +11,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
+
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class ProductionQCController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -68,6 +71,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description="-",
                     };
+                    //productionQCVM.Customer = new CustomerViewModel();
+                    //productionQCVM.Customer.CompanyName = "-";
                     productionQCVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && productionOrderID != null)
@@ -83,6 +88,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         Description = "-",
                     };
+                    productionQCVM.Customer = productioOrderVM.Customer;
                     productionQCVM.IsDocLocked = false;
                 }
             }
@@ -317,7 +323,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionQC");
             switch (actionType)
             {
                 case "List":
@@ -368,15 +375,18 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PQC');";
 
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PQC');";
+
                     break;
 
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddProductionQC();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -408,6 +418,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PQC');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PQC');";
                     break;
 
                 case "Add":

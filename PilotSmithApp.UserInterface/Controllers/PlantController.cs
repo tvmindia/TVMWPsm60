@@ -11,21 +11,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class PlantController : Controller
     {
         AppConst _appConstant = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IPlantBusiness _plantBusiness;
-        IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         
-        public PlantController(IPlantBusiness plantBusiness,IUserBusiness userBusiness)
+        public PlantController(IPlantBusiness plantBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _plantBusiness = plantBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;
         }
         // GET: Plant
         [AuthSecurityFilter(ProjectObject = "Plant", Mode = "R")]
@@ -153,8 +155,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Plant");
-            if (permission.SubPermissionList != null)
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Plant");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -172,6 +174,8 @@ namespace PilotSmithApp.UserInterface.Controllers
          [AuthSecurityFilter(ProjectObject = "Plant", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Plant");
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
             {
@@ -195,6 +199,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
         #endregion

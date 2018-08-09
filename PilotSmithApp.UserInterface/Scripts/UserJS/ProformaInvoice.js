@@ -194,14 +194,12 @@ function AddProformaInvoice() {
     $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
+            openNav();
+            $('#lblProformaInvoiceInfo').text('<<Proforma Invoice No.>>');
             ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Add");
             BindProformaInvoiceDetailList(_emptyGuid);
             BindProformaInvoiceOtherChargesDetailList(_emptyGuid);
-            $('#lblProformaInvoiceInfo').text('<<Proforma Invoice No.>>');
-            //setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-            //}, 100); 
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -406,7 +404,7 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      if (data !== null || data == "") {
                          return row.Product.HSNCode;
                      }
-                     else {
+                     else if(data!=null || data=="") {
                          return row.OtherCharge.SACCode;
                      }
                  }, "defaultContent": "<i></i>"
@@ -1203,8 +1201,8 @@ function DownloadProformaInvoice() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#ProformaInvoiceForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#ProformaInvoiceForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);
 }
 function PrintProformaInvoice() {
     debugger;

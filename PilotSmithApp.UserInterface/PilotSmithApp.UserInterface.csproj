@@ -305,6 +305,7 @@
     <Content Include="Content\MailTemplate\DocumentEmailBody.html" />
     <Content Include="Content\MailTemplate\DocumentRejected.html" />
     <Content Include="Content\MailTemplate\SendForApproval.html" />
+    <Content Include="Content\MailTemplate\TakeOwnershipAcknowledgement.html" />
     <Content Include="Content\PSAForms.css" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -836,6 +837,7 @@
     <Compile Include="Controllers\ServiceTypeController.cs" />
     <Compile Include="Controllers\SpareController.cs" />
     <Compile Include="Controllers\StateController.cs" />
+    <Compile Include="Controllers\TakeOwnershipController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\TimeLineController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
@@ -861,6 +863,7 @@
     <Compile Include="Models\DepartmentViewModel.cs" />
     <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\DocumentApprovalViewModel.cs" />
+    <Compile Include="Models\DocumentLogViewModel.cs" />
     <Compile Include="Models\DocumentStatusViewModel.cs" />
     <Compile Include="Models\DocumentTypeViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
@@ -1134,6 +1137,7 @@
     <Folder Include="Views\Department\" />
     <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\Position\" />
+    <Folder Include="Views\TakeOwnership\" />
     <Folder Include="Views\TimeLine\" />
     <Folder Include="Views\XMLGenerator\" />
   </ItemGroup>

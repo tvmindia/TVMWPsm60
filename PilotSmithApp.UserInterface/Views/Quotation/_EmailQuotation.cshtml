@@ -136,30 +136,30 @@
                     <tbody>
 
                         @if (Model.QuotationDetailList != null)
-                    {
-                        int slno = 1;
-
-                        foreach (var mp in Model.QuotationDetailList)
                         {
-                            decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
-                            itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                            CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
-                            SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
-                            IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
-                            GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                            itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+                            int slno = 1;
 
-                            itemgrandTotal = itemtaxableAmount + itemgSTAmount;
+                            foreach (var mp in Model.QuotationDetailList)
+                            {
+                                decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
+                                itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
+                                CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
+                                SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
+                                IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
+                                GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+                                itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+
+                                itemgrandTotal = itemtaxableAmount + itemgSTAmount;
                                 <tr style="border-bottom-style:solid;border-bottom-color: #e4dcdc;border-bottom-width:1px;">
                                     <td style="width:4%;text-align: center;padding:5px;font-size:12px;vertical-align:top;">@slno</td>
                                     @{if (@mp.ProductModel.ImageURL != null)
                                         {
-                                    <td style="width:10%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:77pt!important; style="height:77pt!important;workAround:image"></td>
+                                            <td style="width:10%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" height:77pt!important; style="height:77pt!important;workAround:image"></td>
 
                                         }
                                         else
                                         {
-                                    <td style="width:10%;vertical-align:central;padding:5px"></td>
+                                            <td style="width:10%;vertical-align:central;padding:5px"></td>
                                         }
                                     }
                                     <td style="width:32%; text-align: left;padding:5px;font-size:12px;vertical-align:top">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
@@ -401,20 +401,20 @@
                                                     <tbody>
 
                                                         @if (Model.QuotationDetailList != null)
-                    {
-                        int slno = 1;
+                                                        {
+                                                            int slno = 1;
 
-                        foreach (var mp in Model.QuotationDetailList)
-                        {
-                            decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
-                            itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
-                            CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
-                            SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
-                            IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
-                            GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
-                            itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+                                                            foreach (var mp in Model.QuotationDetailList)
+                                                            {
+                                                                decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
+                                                                itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
+                                                                CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
+                                                                SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
+                                                                IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
+                                                                GSTAmt = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+                                                                itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
 
-                            itemgrandTotal = itemtaxableAmount + itemgSTAmount;
+                                                                itemgrandTotal = itemtaxableAmount + itemgSTAmount;
                                                                 <tr style="border-bottom-style:solid;border-bottom-color: #e4dcdc;border-bottom-width:1px;">
                                                                     <td style="width:4%;text-align: center;padding:5px;font-size:12px;vertical-align:top;">@slno</td>
                                                                     @*@{if (@mp.ProductModel.ImageURL != null)
@@ -613,7 +613,7 @@
                 @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnEmailContentFileName" })
                 @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
                 <br />
-                <table style="width:50%;font-size:12px">
+                @*<table style="width:50%;font-size:12px">*@
                 <table style="width:50%;font-size:12px;margin-left:70px">
                     <tbody>
                         <tr><td id="sentTolbl">Sent To</td><td>: </td><td id="sentTovalidationmsglbl">@Model.EmailSentTo</td></tr>
@@ -622,7 +622,7 @@
                         <tr><td>Subject</td><td>: </td><td>@Model.Subject</td></tr>
                     </tbody>
                 </table>
-                
+
                 <a class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="EmailQuotation()">Back </a>
                 if (Model.LatestApprovalStatus == 4)
                 {
@@ -632,7 +632,7 @@
                 {
                     <button type="button" disabled class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right;" title="Document Not Approved">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
-                
+
             }
             using (Html.BeginForm("DownloadWithTerms", "PDFGenerator", FormMethod.Post, new { @class = "", role = "form", @id = "FormQuotationEmailDownload" }))
             {
@@ -640,7 +640,8 @@
                 @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
                 @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
                 @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
-                @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerName" })
+                @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "",Value=Model.Customer.CompanyName })
+                @Html.HiddenFor(model => model.Customer.CompanyName, htmlAttributes: new { @class = "" })
                 if (Model.LatestApprovalStatus == 4)
                 {
                     <button type="submit" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
@@ -650,6 +651,7 @@
                     <button type="submit" disabled class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" title="Document Not Approved">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
             }
+
         }
     }
 </div>

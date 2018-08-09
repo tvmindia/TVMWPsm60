@@ -194,7 +194,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@Fax", SqlDbType.VarChar, 50).Value = customer.Fax;
                         cmd.Parameters.Add("@OtherPhoneNos", SqlDbType.VarChar, 250).Value = customer.OtherPhoneNos;
                         cmd.Parameters.Add("@BillingAddress", SqlDbType.NVarChar, -1).Value = customer.BillingAddress;
-                        cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = customer.ShippingAddress;
+                        cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = customer.ShippingAddressCus;
                         cmd.Parameters.Add("@PaymentTermCode", SqlDbType.VarChar, 10).Value = customer.PaymentTermCode;
                         cmd.Parameters.Add("@TaxRegNo", SqlDbType.VarChar, 50).Value = customer.TaxRegNo;
                         cmd.Parameters.Add("@PANNo", SqlDbType.VarChar, 50).Value = customer.PANNO;
@@ -307,7 +307,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         customer.Fax = (sdr["Fax"].ToString() != "" ? sdr["Fax"].ToString() : customer.Fax);
                                         customer.OtherPhoneNos = (sdr["OtherPhoneNos"].ToString() != "" ? sdr["OtherPhoneNos"].ToString() : customer.OtherPhoneNos);
                                         customer.BillingAddress = (sdr["BillingAddress"].ToString() != "" ? sdr["BillingAddress"].ToString() : customer.BillingAddress);
-                                        customer.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : customer.ShippingAddress);
+                                        customer.ShippingAddressCus = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : customer.ShippingAddressCus);
                                         customer.PaymentTermCode = (sdr["PaymentTermCode"].ToString() != "" ? sdr["PaymentTermCode"].ToString() : customer.PaymentTermCode);
                                         customer.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : customer.TaxRegNo);
                                         customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);
@@ -377,7 +377,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     customer.Fax = (sdr["Fax"].ToString() != "" ? sdr["Fax"].ToString() : customer.Fax);
                                     customer.OtherPhoneNos = (sdr["OtherPhoneNos"].ToString() != "" ? sdr["OtherPhoneNos"].ToString() : customer.OtherPhoneNos);
                                     customer.BillingAddress = (sdr["BillingAddress"].ToString() != "" ? sdr["BillingAddress"].ToString() : customer.BillingAddress);
-                                    customer.ShippingAddress = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : customer.ShippingAddress);
+                                    customer.ShippingAddressCus = (sdr["ShippingAddress"].ToString() != "" ? sdr["ShippingAddress"].ToString() : customer.ShippingAddressCus);
                                     customer.PaymentTermCode = (sdr["PaymentTermCode"].ToString() != "" ? sdr["PaymentTermCode"].ToString() : customer.PaymentTermCode);
                                     customer.TaxRegNo = (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : customer.TaxRegNo);
                                     customer.PANNO = (sdr["PANNO"].ToString() != "" ? sdr["PANNO"].ToString() : customer.PANNO);

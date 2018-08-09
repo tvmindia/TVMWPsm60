@@ -22,7 +22,7 @@
 
         <div class="form-group col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label " })
             </div>
             <div class="col-md-12">
                 <div class="divCountrySelectList">
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <!-- This hidden field will keep the information whether the field is required or not -->
-            @Html.Hidden("hdnCountryRequired", "required")
+            @Html.Hidden("hdnCountryRequired", "")
             <!-- This hidden field will keep the information whether the field is disabled or not -->
             @Html.Hidden("hdnCountrydisabled", false)
             @Html.HiddenFor(model => model.CountryCode, htmlAttributes: new { @class = "", @id = "hdnCountryCode" })

@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class EnquiryController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -26,14 +28,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         IAreaBusiness _areaBusiness;
         IReferencePersonBusiness _referencePersonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
-        private IUserBusiness _userBusiness;
+        //private IUserBusiness _userBusiness;
         SecurityFilter.ToolBarAccess _tool;
 
         public EnquiryController(IEnquiryBusiness enquiryBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
             ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
             IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, 
-            IUserBusiness userBusiness, SecurityFilter.ToolBarAccess tool)
+            SecurityFilter.ToolBarAccess tool)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
@@ -42,8 +44,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;
             _areaBusiness= areaBusiness;
             _referencePersonBusiness = referencePersonBusiness;
-            _documentStatusBusiness = documentStatusBusiness;
-            _userBusiness = userBusiness;
+            _documentStatusBusiness = documentStatusBusiness;           
             _tool = tool;
 
         }
@@ -54,6 +55,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.ID = id;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
+            //if (Request.Cookies["UserSettings"] != null)
+            //{
+            //    if (Request.Cookies["UserSettings"]["TvmValid"] != null)
+            //    { AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA; }
+            //}
+            //string userSettings = Request.Cookies["UserSettings"]["TvmValid"];
+            //AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA;
             AppUA appUA = Session["AppUA"] as AppUA;
             enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
@@ -75,11 +83,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsDocLocked = enquiryVM.DocumentOwners.Contains(appUA.UserName);
                     enquiryVM.Customer = new CustomerViewModel
                     {
+                        CompanyName =enquiryVM.Customer.CompanyName,
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                         },
                     };
+                    
                 }
                 else
                 {
@@ -93,6 +103,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.IsDocLocked = false;
                     enquiryVM.Customer = new CustomerViewModel
                     {
+                        //CompanyName = "-",
                         Titles = new TitlesViewModel()
                         {
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
@@ -364,7 +375,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('"+ id.ToString() + "','ENQ');";
 
-
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','ENQ');";
 
                     if (_commonBusiness.CheckDocumentIsDeletable("ENQ", id))
                     {
@@ -389,9 +403,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddEnquiry();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -416,6 +428,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','ENQ');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','ENQ');";
 
                     toolboxVM.deletebtn.Visible = true;
                     toolboxVM.deletebtn.Text = "Delete";

@@ -11,10 +11,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class ProductionOrderController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -54,13 +55,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             ProductionOrderViewModel productionOrderVM = null;
             try
             {
+                AppUA appUA = Session["AppUA"] as AppUA;
                 if (id != Guid.Empty)
                 {
                     productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(id));
                     productionOrderVM.IsUpdate = true;
-                    AppUA appUA = Session["AppUA"] as AppUA;
+                    //AppUA appUA = Session["AppUA"] as AppUA;
                     productionOrderVM.IsDocLocked = productionOrderVM.DocumentOwners.Contains(appUA.UserName);
-                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
+                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);                   
                 }
                 else if (id == Guid.Empty && saleOrderID==null)
                 {
@@ -73,8 +75,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.DocumentStatus.Description = "-";
                     productionOrderVM.Branch = new BranchViewModel();
                     productionOrderVM.Branch.Description = "-";
-                    productionOrderVM.IsDocLocked = false;
-                }     
+                    //productionOrderVM.Customer = new CustomerViewModel();
+                    //productionOrderVM.Customer.CompanyName = "-";
+                    productionOrderVM.IsDocLocked = false;                   
+                }
                 else if(id==Guid.Empty && saleOrderID!=null)
                 {
                     SaleOrderViewModel saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)saleOrderID));
@@ -89,9 +93,28 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.Branch = new BranchViewModel();
                     productionOrderVM.IsDocLocked = false;
                     productionOrderVM.Branch.Description = "-";
-                }           
+                    productionOrderVM.Customer = saleOrderVM.Customer;
+
+                }
+                //AppUA appUA = Session["AppUA"] as AppUA;
+                Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                if (permission.SubPermissionList.Count > 0)
+                {
+                    string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                    string q = permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                    if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                    {
+                        productionOrderVM.ShowRate = true;
+                        productionOrderVM.ShowAmount = true;
+                    }
+                    else
+                    {
+                        productionOrderVM.ShowRate = false;
+                        productionOrderVM.ShowAmount = false;
+                    }
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -102,11 +125,33 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ProductionOrder Detail Add
         public ActionResult AddProductionOrderDetail()
         {
-            ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();
+            //ProductionOrderDetailViewModel productionOrderDetailVM = null;
+            //List<ProductionOrderDetailViewModel> productionOrderDetailVM = new List<ProductionOrderDetailViewModel>();
+   
+            ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();           
+            productionOrderDetailVM = new ProductionOrderDetailViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+            if (permission.SubPermissionList.Count > 0)
+            {
+                string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                if (p.Contains("R") || p.Contains("W"))
+                {
+                    productionOrderDetailVM.ShowRate = true;
+                    // productionOrderDetailVM.ShowAmount = true;
+                }
+                else
+                {
+                    productionOrderDetailVM.ShowRate = false;
+                    // productionOrderDetailVM.ShowAmount = false;
+                }
+            }
             productionOrderDetailVM.IsUpdate = false;
             productionOrderDetailVM.OrderQty = 0;
             productionOrderDetailVM.ProducedQty = 0;
-            productionOrderDetailVM.PrevProducedQty = 0;        
+            productionOrderDetailVM.PrevProducedQty = 0;
+            productionOrderDetailVM.SaleOrderQty = 0;
+            productionOrderDetailVM.Rate = 0;          
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -206,7 +251,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             try
             {
-                List<ProductionOrderDetailViewModel> productionOrderItemViewModelList = new List<ProductionOrderDetailViewModel>();
+                List<ProductionOrderDetailViewModel> productionOrderItemViewModelList = new List<ProductionOrderDetailViewModel>();               
                 if (productionOrderID == Guid.Empty)
                 {
                     ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel()
@@ -248,11 +293,31 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Name = string.Empty
                         },
                     };
-                    productionOrderItemViewModelList.Add(productionOrderDetailVM);
+                    productionOrderItemViewModelList.Add(productionOrderDetailVM);                  
                 }
                 else
                 {
                     productionOrderItemViewModelList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderID));
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                    if (permission.SubPermissionList.Count > 0)
+                    {
+                        string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                        string q = permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                        foreach (var Item in productionOrderItemViewModelList)
+                        {
+                            if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                            {
+                                Item.ShowRate = true;
+                                Item.ShowAmount = true;
+                            }
+                            else
+                            {
+                                Item.ShowRate = false;
+                                Item.ShowAmount = false;
+                            }
+                        }
+                    }
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = productionOrderItemViewModelList, Message = "Success" });
             }
@@ -297,7 +362,26 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         }).ToList();
                              
                         }
-                      
+                AppUA appUA = Session["AppUA"] as AppUA;
+                Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                if (permission.SubPermissionList.Count > 0)
+                {
+                    string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                    string q = permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                    foreach (var Item in productionOrderItemViewModelList)
+                    {
+                        if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                        {
+                            Item.ShowRate = true;
+                            Item.ShowAmount = true;
+                        }
+                        else
+                        {
+                            Item.ShowRate = false;
+                            Item.ShowAmount = false;
+                        }
+                    }
+                }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = productionOrderItemViewModelList, Message = "Success" });
             }
             catch (Exception ex)
@@ -449,7 +533,29 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderVM.PDFTools = new PDFToolsViewModel();
             return PartialView("_PrintProductionOrder", productionOrderVM);
         }
-        #endregion Print ProductionOrder
+        #endregion Print ProductionOrder 
+
+        #region CheckOrderQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckOrderQty(ProductionOrderDetailViewModel prodOrderDetailVM)
+        {
+            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+            if (prodOrderDetailVM.SaleOrderQty != 0)
+            {
+                if (prodOrderDetailVM.ProducedQty > prodOrderDetailVM.SaleOrderQty)
+                {
+                    return Json("<p><span style='vertical-align: 2px'>Produced Qty Cannot grater than SaleOrder Qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                }
+                else if (prodOrderDetailVM.OrderQty > prodOrderDetailVM.SaleOrderQty)
+                {
+                    return Json("<p><span style='vertical-align: 2px'>Cur.Prod Qty Cannot grater than SaleOrder Qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                }
+            }
+           
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckOrderQty
 
         #region ButtonStyling
         [HttpGet]
@@ -457,7 +563,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType,Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
             switch (actionType)
             {
                 case "List":
@@ -536,6 +643,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('POD');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
                     break;
 
                 case "Edit":
@@ -563,7 +675,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','POD');";
-
+                                        
                     if (_commonBusiness.CheckDocumentIsDeletable("POD", id))
                     {
                         toolboxVM.deletebtn.Visible = true;
@@ -599,7 +711,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                     toolboxVM.HistoryBtn.Visible = true;
                     toolboxVM.HistoryBtn.Text = "History";
-                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
                     break;
 
@@ -607,9 +719,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddProductionOrder();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -672,9 +782,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddProductionOrder();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -726,7 +834,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                     toolboxVM.HistoryBtn.Visible = true;
                     toolboxVM.HistoryBtn.Text = "History";
-                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
                     break;
 

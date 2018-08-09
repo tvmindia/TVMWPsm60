@@ -78,6 +78,8 @@ namespace PilotSmithApp.UserInterface.Models
         public AreaViewModel Area { get; set; }
         public PSAUserViewModel PSAUser { get; set; }
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public bool ShowRate { get; set; }
+        public bool ShowAmount { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel
@@ -117,8 +119,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Product Specfication is missing")]
         public string ProductSpec{get;set;}
         [Display(Name ="Order Qty")]
+        [Remote(action: "CheckOrderQty", controller: "ProductionOrder", AdditionalFields = "ProdOrderID,SaleOrderQty")]
         public decimal? OrderQty{get;set;}
         [Display(Name = "Produced Qty")]
+        [Remote(action: "CheckOrderQty", controller: "ProductionOrder", AdditionalFields = "ProdOrderID,SaleOrderQty")]
         public decimal? ProducedQty{get;set;}       
         [Display(Name = "Select Unit")]
         public int? UnitCode{get;set;}
@@ -174,6 +178,8 @@ namespace PilotSmithApp.UserInterface.Models
         public PlantViewModel Plant { get; set; }
         public decimal? PrevDelQty { get; set; }
         public decimal? DelvQty { get; set; }
+        public bool ShowRate { get; set; }
+        public bool ShowAmount { get; set; }
     }
 
     public class ProductionOrderSummaryViewModel

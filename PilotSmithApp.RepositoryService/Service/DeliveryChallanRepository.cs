@@ -158,6 +158,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     deliveryChallan.DocumentOwnerID  = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : deliveryChallan.DocumentOwnerID);
                                     deliveryChallan.Branch = new Branch();
                                     deliveryChallan.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : deliveryChallan.Branch.Description);
+                                    deliveryChallan.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : deliveryChallan.Branch.Code);
                                     deliveryChallan.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : deliveryChallan.BranchCode);
                                     deliveryChallan.VehiclePlateNo = (sdr["VehiclePlateNo"].ToString() != "" ? sdr["VehiclePlateNo"].ToString() : deliveryChallan.VehiclePlateNo);
                                     deliveryChallan.DriverName = (sdr["DriverName"].ToString() != "" ? sdr["DriverName"].ToString() : deliveryChallan.DriverName);
@@ -166,6 +167,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     deliveryChallan.LatestApprovalIDv = (sdr["LatestApprovalIDv"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalIDv"].ToString()) : deliveryChallan.LatestApprovalIDv);
                                     deliveryChallan.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : deliveryChallan.LatestApprovalStatus);
                                     deliveryChallan.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : deliveryChallan.LatestApprovalStatusDescription);
+                                    deliveryChallan.Customer = new Customer();
+                                    deliveryChallan.Customer.CompanyName= (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : deliveryChallan.Customer.CompanyName);
+                                    deliveryChallan.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : deliveryChallan.Customer.ID);
                                 }
                         }
                     }

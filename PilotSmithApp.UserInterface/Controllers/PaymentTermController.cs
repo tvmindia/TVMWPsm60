@@ -11,19 +11,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class PaymentTermController : Controller
     {
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private IPaymentTermBusiness _paymentTermBusiness;
-        IUserBusiness _userBusiness;
-        public PaymentTermController(IPaymentTermBusiness paymentTermBusiness, IUserBusiness userBusiness)
+        SecurityFilter.ToolBarAccess _tool;
+        public PaymentTermController(IPaymentTermBusiness paymentTermBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _paymentTermBusiness = paymentTermBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;
         }
         // GET: PaymentTerm
         [AuthSecurityFilter(ProjectObject = "PaymentTerm", Mode = "R")]
@@ -135,8 +137,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "PaymentTerm");
-            if (permission.SubPermissionList != null)
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "PaymentTerm");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -155,6 +157,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "PaymentTerm");
             switch (actionType)
             {
                 case "List":
@@ -177,6 +181,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

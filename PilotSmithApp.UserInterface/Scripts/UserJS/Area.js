@@ -129,11 +129,15 @@ function ExportAreaData() {
 function EditAreaMaster(thisObj) {
     debugger;
     AreaVM = _dataTables.AreaList.row($(thisObj).parents('tr')).data();
+    _parentFormID = "FormArea";
     $("#divMasterBody1").load("Area/MasterPartial?masterCode=" + AreaVM.Code, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             $('#lblModelMasterContextLabel1').text('Edit Area Information')
             $('#divModelMasterPopUp1').modal('show');
             $('#hdnMasterCall1').val('MSTR');
+            $('#CountryCode').val(AreaVM.CountryCode).trigger('change');
+            $('#StateCode').val(AreaVM.StateCode).trigger('change');
+            $('#DistrictCode').val(AreaVM.DistrictCode).trigger('change');
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

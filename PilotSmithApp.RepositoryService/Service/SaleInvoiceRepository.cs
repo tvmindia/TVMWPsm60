@@ -257,6 +257,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
                                     saleInvoice.Customer = new Customer();
                                     saleInvoice.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : saleInvoice.Customer.CompanyName);
+                                    saleInvoice.Customer.TaxRegNo= (sdr["TaxRegNo"].ToString() != "" ? sdr["TaxRegNo"].ToString() : saleInvoice.Customer.TaxRegNo);
+                                    saleInvoice.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.Customer.ID);
                                     saleInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatusCode);
                                     saleInvoice.DocumentStatus = new DocumentStatus();
                                     saleInvoice.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? sdr["DocumentStatusDescription"].ToString() : saleInvoice.DocumentStatus.Description);
@@ -271,6 +273,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.BillLocation.Name = (sdr["BillingLocationName"].ToString() != "" ? sdr["BillingLocationName"].ToString() : saleInvoice.BillLocation.Name);
                                     saleInvoice.Branch = new Branch();
                                     saleInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : saleInvoice.Branch.Description);
+                                    saleInvoice.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleInvoice.Branch.Code);
                                     saleInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : saleInvoice.PreparedBy);
                                     saleInvoice.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : saleInvoice.Discount);
                                     saleInvoice.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : saleInvoice.DocumentOwners);

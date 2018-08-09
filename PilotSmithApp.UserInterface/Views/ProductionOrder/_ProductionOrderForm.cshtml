@@ -99,8 +99,8 @@
                     <div class="col-md-12">
                         <div class="divPreparedBySelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                           
-                        </div>                        
+
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnPreparedByRequired", "")
@@ -116,8 +116,8 @@
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            
-                        </div>                      
+
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnDocumentStatusRequired", "required")
@@ -128,11 +128,20 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @if (Model.IsUpdate||Model.SaleOrderID!=null)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divCustomerSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            </div>
+                        </div>
+                    }                   
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -148,10 +157,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (!Model.IsDocLocked && Model.IsUpdate)
+                    @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -159,15 +168,15 @@
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                               
-                            </div>
-                            <!-- This hidden field will keep the information whether the field is required or not -->
-                            @Html.Hidden("hdnBranchRequired", "required")
-                            <!-- This hidden field will keep the information whether the field is disabled or not -->
-                            @Html.Hidden("hdnBranchdisabled", false)
-                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+
+                            </div>                         
                         </div>
                     }
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnBranchRequired", "required")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnBranchdisabled", false)
+                    @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                 </div>
 
             </div>
@@ -248,7 +257,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.ProdOrderNo" documentType="POD"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -311,8 +320,8 @@
                             <th>Prev Prod Order Qty</th>
                             <th>Curr Prod Order Qty</th>
                             <th>Produced Qty</th>
-                            <th>Rate(₹)</th>
-                            <th>Amount(₹)</th>
+                            <th id="prodordRate">Rate(₹)</th>
+                            <th id="prodordAmount">Amount(₹)</th>
                             <th>Supplier/Plant</th>
                             <th>Milestone</th>
                             <th>...</th>
@@ -364,24 +373,15 @@
             $.validator.unobtrusive.parse("#ProductionOrderForm");
         }
         catch (e) {
-            console.log(e.message); 
+            console.log(e.message);
         }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
-            else {
-                <text>
-                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-                </text>
-                    }
+           
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=POD&required=' + $('#hdnDocumentStatusRequired').val())
-            @if (Model.IsUpdate || Model.SaleOrderID != null)
+            @if (Model.IsUpdate||Model.SaleOrderID!=null)
           {
-              <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
-
-            });
-            </text>
+            
           }
           else
           {
@@ -389,9 +389,16 @@
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
           }
-
+          @if ((!Model.IsUpdate) && (Model.SaleOrderID!=null))
+          {
+              <text>
+          $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+          });
+              </text>
+          }
         }
         catch (e) {
             console.log(e.message);
@@ -482,12 +489,11 @@
             console.log(e.message);
         }
         try {
-            if ($('#ProductionOrderForm #IsDocLocked').val() == "False" && $('#ProductionOrderForm #IsUpdate').val()=="True")
-            {
+            if ($('#ProductionOrderForm #IsDocLocked').val() == "False" && $('#ProductionOrderForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);

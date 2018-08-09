@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class EstimateController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -25,14 +27,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICommonBusiness _commonBusiness;
         IAreaBusiness _areaBusiness;
         IReferencePersonBusiness _referencePersonBusiness;
-        IDocumentStatusBusiness _documentStatusBusiness;
-        private IUserBusiness _userBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;    
         SecurityFilter.ToolBarAccess _tool;
 
         public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
             IAreaBusiness areaBusiness, IReferencePersonBusiness referencePersonBusiness,
-            IDocumentStatusBusiness documentStatusBusiness, IUserBusiness userBusiness, SecurityFilter.ToolBarAccess tool)
+            IDocumentStatusBusiness documentStatusBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _estimateBusiness = estimateBusiness;
             _customerBusiness = customerBusiness;
@@ -41,8 +42,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;
             _areaBusiness = areaBusiness;
             _referencePersonBusiness = referencePersonBusiness;
-            _documentStatusBusiness = documentStatusBusiness;
-            _userBusiness = userBusiness;
+            _documentStatusBusiness = documentStatusBusiness;           
             _tool = tool;
 
         }
@@ -72,6 +72,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     AppUA appUA = Session["AppUA"] as AppUA;
                     estimateVM.IsDocLocked = estimateVM.DocumentOwners.Contains(appUA.UserName);
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
+
                 }
                 else if(id==Guid.Empty && enquiryID==null)
                 {
@@ -84,6 +85,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    //estimateVM.Customer = new CustomerViewModel();
+                    //estimateVM.Customer.CompanyName = "-";
                     estimateVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
@@ -99,6 +102,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.DocumentStatus.Description = "-";
                     estimateVM.Branch = new BranchViewModel();
                     estimateVM.Branch.Description = "-";
+                    estimateVM.Customer = enquiryVM.Customer;
                     estimateVM.IsDocLocked = false;
                 }
                 
@@ -298,8 +302,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                               ProductSpec = enquiryDetailVM.ProductSpec,
                                               Qty = enquiryDetailVM.Qty,
                                               UnitCode = enquiryDetailVM.UnitCode,
-                                              CostRate = enquiryDetailVM.ProductModel.CostPrice,
-                                              SellingRate = enquiryDetailVM.Rate,
+                                              CostRate = enquiryDetailVM.ProductModel.CostPrice==null?0: enquiryDetailVM.ProductModel.CostPrice,
+                                              SellingRate = enquiryDetailVM.Rate==null?0: enquiryDetailVM.Rate,
                                               SpecTag = enquiryDetailVM.SpecTag,
                                               Product = enquiryDetailVM.Product,
                                               ProductModel = enquiryDetailVM.ProductModel,
@@ -362,7 +366,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Estimate");
             switch (actionType)
             {
                 case "List":
@@ -408,6 +413,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','EST');";
 
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','EST');";
+
                     if (_commonBusiness.CheckDocumentIsDeletable("EST", id))
                     {
                         toolboxVM.deletebtn.Visible = true;
@@ -431,9 +441,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddEstimate();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -466,6 +474,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','EST');";
 
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','EST');";
                     break;
                 case "Add":
 

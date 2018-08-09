@@ -204,8 +204,8 @@ function AddQuotation() {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
-            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
             $('#lblQuotationInfo').text('<<Quotation No.>>');
+            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
             BindQuotationDetailList(_emptyGuid);
             BindQuotationOtherChargesDetailList(_emptyGuid);
         }
@@ -925,8 +925,8 @@ function DownloadQuotation() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#QuotationForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#QuotationForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);   
 }
 
 function SaveSuccessUpdateQuotationEmailInfo(data, status) {

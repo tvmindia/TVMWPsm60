@@ -11,20 +11,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class TaxTypeController : Controller
     {
         AppConst _appConst = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         private ITaxTypeBusiness _taxTypeBusiness;
-        IUserBusiness _userBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         #region Constructor Injection
-        public TaxTypeController(ITaxTypeBusiness taxTypeBusiness,IUserBusiness userBusiness)
+        public TaxTypeController(ITaxTypeBusiness taxTypeBusiness, SecurityFilter.ToolBarAccess tool)
         {
             _taxTypeBusiness = taxTypeBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;
         }
         #endregion
         // GET: TaxType
@@ -137,8 +139,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "TaxType");
-            if (permission.SubPermissionList != null)
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "TaxType");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -156,6 +158,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "TaxType", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "TaxType");
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
             {
@@ -179,6 +183,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

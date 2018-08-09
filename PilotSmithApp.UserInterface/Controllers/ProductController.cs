@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class ProductController : Controller
     {
         #region Constructor_Injection
@@ -22,12 +24,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         IProductCategoryBusiness _productCategoryBusiness;
         IProductBusiness _productBusiness;
         ICompanyBusiness _companyBusiness;
+        SecurityFilter.ToolBarAccess _tool;
         //IUserBusiness _userBusiness;
-        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness,ICompanyBusiness companyBusiness)//, IUserBusiness userBusiness)
+        public ProductController(IProductCategoryBusiness productCategoryBusiness, IProductBusiness productBusiness,
+            ICompanyBusiness companyBusiness,SecurityFilter.ToolBarAccess tool)//, IUserBusiness userBusiness)
         {
             _productCategoryBusiness = productCategoryBusiness;
             _productBusiness = productBusiness;
             _companyBusiness = companyBusiness;
+            _tool = tool;
             //_userBusiness = userBusiness;
         }
         #endregion Constructor_Injection
@@ -114,7 +119,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
             Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Product");
-            if (permission.SubPermissionList != null)
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -175,6 +180,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType)
         {
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Product");
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             switch (actionType)
             {
@@ -198,6 +205,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

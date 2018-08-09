@@ -20,7 +20,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Fax { get; set; }
         public string OtherPhoneNos { get; set; }
         public string BillingAddress { get; set; }
-        public string ShippingAddress { get; set; }
+        public string ShippingAddressCus { get; set; }
         public string PaymentTermCode { get; set; }
         public string TaxRegNo { get; set; }
         public string PANNO { get; set; }

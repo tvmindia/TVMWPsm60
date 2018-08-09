@@ -241,7 +241,7 @@ function StateCodeOnChange() {
         var StateViewModel = GetState($('#StateCode').val());
         $('#hdnStateCode').val($('#StateCode').val());
         $('#hdnCountryCode').val($('#CountryCode').val());
-        if ($('#CountryCode').val() === "") {
+        if ($('#CountryCode').val() === "" && StateViewModel.CountryCode !== null) {
             $('#hdnCountryCode').val(StateViewModel.CountryCode);
             $('#CountryCode').val(StateViewModel.CountryCode).trigger('change');
         }
@@ -283,13 +283,13 @@ function DistrictCodeOnChange() {
         $('#hdnDistrictCode').val($('#DistrictCode').val());
         $('#hdnStateCode').val($('#StateCode').val());
         $('#hdnCountryCode').val($('#CountryCode').val());
-        if ($('#CountryCode').val() === "") {
+        if ($('#CountryCode').val() === "" && DistrictViewModel.CountryCode !== null) {
             $('#hdnCountryCode').val(DistrictViewModel.CountryCode);
             $('#hdnStateCode').val($('#hdnStateCode').val() !== "" ? $('#hdnStateCode').val() : DistrictViewModel.StateCode);
             $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : DistrictViewModel.DistrictCode);
             $('#CountryCode').val(DistrictViewModel.CountryCode).trigger('change');
         }
-        if ($('#StateCode').val() === "") {
+        if ($('#StateCode').val() === "" && DistrictViewModel.StateCode !== null) {
             $('#hdnStateCode').val(DistrictViewModel.StateCode);
             $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : DistrictViewModel.DistrictCode);
             $('#StateCode').val(DistrictViewModel.StateCode).trigger('change');
@@ -333,18 +333,20 @@ function AreaCodeOnChange() {
         $('#hdnStateCode').val($('#StateCode').val());
         $('#hdnCountryCode').val($('#CountryCode').val());
 
-        if ($('#CountryCode').val() === "") {
+        if ($('#CountryCode').val() === "" && AreaViewModel.CountryCode!== null) {
             $('#hdnCountryCode').val(AreaViewModel.CountryCode);
             $('#hdnStateCode').val($('#hdnStateCode').val() !== "" ? $('#hdnStateCode').val() : AreaViewModel.StateCode);
             $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : AreaViewModel.DistrictCode);
             $('#CountryCode').val(AreaViewModel.CountryCode).trigger('change');
         }
-        if ($('#StateCode').val() === "") {
+        if ($('#StateCode').val() === "" && AreaViewModel.StateCode !== null) {
+            debugger;
             $('#hdnStateCode').val(AreaViewModel.StateCode);
             $('#hdnDistrictCode').val($('#hdnDistrictCode').val() !== "" ? $('#hdnDistrictCode').val() : AreaViewModel.DistrictCode);
             $('#StateCode').val(AreaViewModel.StateCode).trigger('change');
         }
-        if ($('#DistrictCode').val() === "") {
+        if ($('#DistrictCode').val() === "" && AreaViewModel.DistrictCode !== null) {
+            debugger;
             $('#hdnDistrictCode').val(AreaViewModel.DistrictCode);
             $('#DistrictCode').val(AreaViewModel.DistrictCode).trigger('change');
         }

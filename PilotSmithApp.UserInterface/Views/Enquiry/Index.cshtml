@@ -10,7 +10,7 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
 }
-@{ 
+@{
     List<SelectListItem> EmptySelectList = new List<SelectListItem>();
 }
 <section class="content" id="main">
@@ -62,7 +62,7 @@
                         @Html.LabelFor(model => model.AdvCustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvCustomerID, EmptySelectList, "Select customer",new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvCustomerID, EmptySelectList, "Select customer", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-right-padding">
@@ -113,7 +113,7 @@
                     </div>
                 </div>
             </div>
-           @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID });
+            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID });
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
@@ -180,8 +180,8 @@
 </div>
 @using (Html.BeginForm("DownloadExcel", "ExcelExport", FormMethod.Post, new { id = "FormExcelExport" }))
 {
-    @Html.Hidden("AdvanceSearch",null, htmlAttributes: new { @class = "control-label" })
-    @Html.Hidden("DocumentType",null, htmlAttributes: new { @class = "control-label",Value="ENQ" })
+    @Html.Hidden("AdvanceSearch", null, htmlAttributes: new { @class = "control-label" })
+    @Html.Hidden("DocumentType", null, htmlAttributes: new { @class = "control-label", Value = "ENQ" })
 }
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
@@ -189,4 +189,5 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/AdvanceSelectList")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Enquiry")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/DocumentApproval/ApprovalHistory")
 }

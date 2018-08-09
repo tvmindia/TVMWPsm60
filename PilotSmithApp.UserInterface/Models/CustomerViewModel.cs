@@ -48,7 +48,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Billing Address")]
         public string BillingAddress { get; set; }
         [Display(Name = "Shipping Address")]
-        public string ShippingAddress { get; set; }
+        public string ShippingAddressCus { get; set; }
         [Display(Name = "Default Payment Term")]
         [MaxLength(10)]
         public string PaymentTermCode { get; set; }

@@ -13,9 +13,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class SaleInvoiceController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -114,6 +116,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = quotationVM.Customer;
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && saleorderID != null)
@@ -135,6 +138,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = saleorderVM.Customer;
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && proformaInvoiceID!=null)
@@ -156,6 +160,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = proformaInvoiceVM.Customer;
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else   
@@ -173,15 +178,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
+                    saleInvoiceVM.Customer = new CustomerViewModel();
+                    saleInvoiceVM.Customer.CompanyName = "-";
                     saleInvoiceVM.IsDocLocked = false;
                 }
-                saleInvoiceVM.Customer = new CustomerViewModel
-                {
-                    //Titles = new TitlesViewModel()
-                    //{
-                    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
-                    //},
-                };
+                //saleInvoiceVM.Customer = new CustomerViewModel
+                //{
+                //    //Titles = new TitlesViewModel()
+                //    //{
+                //    //    TitlesSelectList = _customerBusiness.GetTitleSelectList(),
+                //    //},
+                //};
             }
             catch (Exception ex)
             {
@@ -1009,7 +1016,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
-            Permission permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "SaleInvoice");
             switch (actionType)
             {
                 case "List":
@@ -1091,14 +1099,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SIV');";
                     break;
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddSaleInvoice();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -1143,6 +1154,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SIV');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SIV');";
                     break;
                 case "Add":
 

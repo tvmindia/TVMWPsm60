@@ -242,10 +242,10 @@
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
-                        @if (!Model.IsDocLocked && Model.IsUpdate)
+                        @if (Model.IsUpdate)
                         {
                             <div class="col-md-12">
-                                <span class="form-control newinput">@Model.Branch.Description</span>
+                                <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                             </div>
                         }
                         else
@@ -255,13 +255,13 @@
                                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
                                 </div>
-                                <!-- This hidden field will keep the information whether the field is required or not -->
-                                @Html.Hidden("hdnBranchRequired", "required")
-                                <!-- This hidden field will keep the information whether the field is disabled or not -->
-                                @Html.Hidden("hdnBranchdisabled", false)
-                                @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                             </div>
                         }
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBranchRequired", "required")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBranchdisabled", false)
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
@@ -368,7 +368,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.SaleInvNo" documentType="SIV"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -401,12 +401,22 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            @* binding from javascript document ready function using div class *@
+                    @if (Model.IsUpdate || Model.QuoteID != null||Model.SaleOrderID!=null||Model.ProfInvID!=null)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divCustomerSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                @* binding from javascript document ready function using div class *@
+                            </div>
+                        </div>
+                    }
+
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -605,21 +615,11 @@
     $(document).ready(function () {
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
-            else {
-                <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-            </text>
-                    }
+
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=' + $('#hdnBillLocationRequired').val())
-            @if (Model.IsUpdate || Model.QuoteID !=null || Model.SaleOrderID != null || Model.ProfInvID!=null)
+            @if (Model.IsUpdate||Model.QuoteID!=null||Model.SaleOrderID!=null||Model.ProfInvID!=null)
          {
-             <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
-
-            });
-            </text>
          }
          else
          {
@@ -627,9 +627,16 @@
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
-
+        @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null||Model.ProfInvID!=null))
+        {
+            <text>
+        $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+        });
+            </text>
+        }
         }
         catch (e) {
             console.log(e.message);
@@ -758,8 +765,8 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false,false);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true,false)
+                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false, false);
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true, false)
                     CalculateTotal();
                     $('#DocumentType').prop('disabled', true);
                     $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
@@ -778,8 +785,8 @@
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
                     });
-                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true,false);
-                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false,false)
+                    BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true, false);
+                    BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false, false)
                     CalculateTotal();
                     $("input[type=radio][value=SaleOrder]").attr("disabled", true);
                     $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
@@ -790,7 +797,7 @@
         catch (e) {
             console.log(e.message);
         }
-        try{
+        try {
             $('#SaleInvoiceForm #ProfInvID').change(function () {
                 debugger;
                 OnServerCallBegin();
@@ -798,8 +805,8 @@
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val(), function () {
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                         $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
-                        BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, false,true);
-                        BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, false,true)
+                        BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, false, true);
+                        BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, false, true)
                         CalculateTotal();
                         $("input[type=radio][value=SaleOrder]").attr("disabled", true);
                         $("input[type=radio][value=Quotation]").attr("disabled", true);
@@ -807,7 +814,7 @@
                         OnServerCallComplete();
                     });
                 });
-                   
+
             });
         }
         catch (e) {
@@ -831,7 +838,7 @@
                     $('#SaleOrderID').prop('disabled', false);
                     $('#ProfInvID').prop('disabled', true);
                 }
-                else if (this.value == "ProformaInvoice") {                  
+                else if (this.value == "ProformaInvoice") {
                     $('#divSaleOrderSelectList').hide();
                     $('#divQuotationSelectList').hide();
                     $('#divProformaInvoiceSelectList').show();
@@ -854,12 +861,11 @@
             console.log(e.message);
         }
         try {
-            if ($('#SaleInvoiceForm #IsDocLocked').val() == "False" && $('#SaleInvoiceForm #IsUpdate').val() == "True")
-            {
+            if ($('#SaleInvoiceForm #IsDocLocked').val() == "False" && $('#SaleInvoiceForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);

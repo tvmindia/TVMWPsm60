@@ -11,20 +11,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class UserInBranchController : Controller
     {
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         private IUserBusiness _userBusiness;
         private IUserInBranchBusiness _userInBranchBusiness;
-
+        
         public UserInBranchController(IUserBusiness userBusiness, IUserInBranchBusiness userInBranchBusiness)
         {
             _userBusiness = userBusiness;
             _userInBranchBusiness = userInBranchBusiness;
+            
         }
         // GET: UserBranch
         public ActionResult Index()
@@ -92,13 +95,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
-            Permission _permission = Session["UserRights"] as Permission;
+            //Permission _permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "UserInBranch");
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
             switch (ActionType)
             {
                 case "Default":
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.savebtn.Visible = true;
                     }
@@ -116,6 +121,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            
             return PartialView("ToolboxView", ToolboxViewModelObj);
         }
 

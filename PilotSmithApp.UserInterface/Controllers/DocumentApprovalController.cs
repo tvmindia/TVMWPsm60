@@ -4,26 +4,31 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class DocumentApprovalController : Controller
     {
         private IDocumentApprovalBusiness _documentApprovalBusiness;
         private IDocumentTypeBusiness _documentTypeBusiness;
         PSASysCommon _pSASysCommon = new PSASysCommon();
         AppConst _appConst = new AppConst();
-
-        public DocumentApprovalController(IDocumentApprovalBusiness documentApprovalBusiness, IDocumentTypeBusiness documentTypeBusiness)
+        SecurityFilter.ToolBarAccess _tool;
+        public DocumentApprovalController(IDocumentApprovalBusiness documentApprovalBusiness, 
+            IDocumentTypeBusiness documentTypeBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _documentApprovalBusiness = documentApprovalBusiness;
             _documentTypeBusiness = documentTypeBusiness;
+            _tool = tool;
         }
 
         // GET: DocumentApproval
@@ -150,12 +155,12 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region GetApprovalHistory
         [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
-        public string GetApprovalHistory(string DocumentID, string DocumentTypeCode)
+        public string GetApprovalHistory(string documentID, string documentTypeCode)
             {
             try
             {
                 List<ApprovalHistoryViewModel> approvalHistoryVMList = new List<ApprovalHistoryViewModel>();
-                approvalHistoryVMList = Mapper.Map<List<ApprovalHistory>,List< ApprovalHistoryViewModel>>(_documentApprovalBusiness.GetApprovalHistory(Guid.Parse(DocumentID), DocumentTypeCode));
+                approvalHistoryVMList = Mapper.Map<List<ApprovalHistory>,List< ApprovalHistoryViewModel>>(_documentApprovalBusiness.GetApprovalHistory(Guid.Parse(documentID), documentTypeCode));
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = approvalHistoryVMList });
             }
             catch (Exception ex)
@@ -278,6 +283,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "DocumentApproval");
             switch (actionType)
             {
                 case "List":
@@ -326,6 +333,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

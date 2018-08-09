@@ -12,5 +12,6 @@ namespace PilotSmithApp.BusinessService.Contract
     {
         Task<bool> MailSendAsync(Mail mailObj);
         Task<bool> MailMessageSendAsync(MailMessage mailObj);
+        bool MailMessageSend(MailMessage mailObj);
     }
 }

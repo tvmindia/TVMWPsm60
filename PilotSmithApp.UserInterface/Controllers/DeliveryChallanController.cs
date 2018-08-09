@@ -4,33 +4,37 @@ using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.UserInterface.SecurityFilter;
+using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class DeliveryChallanController : Controller
     {
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         IDeliveryChallanBusiness _deliveryChallanBusiness;
         IProductionOrderBusiness _productionOrderBusiness;
-        ISaleOrderBusiness _saleOrderBusiness;       
-       
+        ISaleOrderBusiness _saleOrderBusiness;
+        SecurityFilter.ToolBarAccess _tool;
+
         public DeliveryChallanController(IDeliveryChallanBusiness deliveryChallanBusiness,
             IProductionOrderBusiness productionOrderBusiness,
-            ISaleOrderBusiness saleOrderBusiness       
-                  
+            ISaleOrderBusiness saleOrderBusiness, SecurityFilter.ToolBarAccess tool
+
             )
         {
             _deliveryChallanBusiness = deliveryChallanBusiness;
             _productionOrderBusiness = productionOrderBusiness;
-            _saleOrderBusiness = saleOrderBusiness;       
-                               
+            _saleOrderBusiness = saleOrderBusiness;
+            _tool = tool;
         }
         // GET: DeliveryChallan
         [AuthSecurityFilter(ProjectObject = "DeliveryChallan", Mode = "R")]
@@ -78,6 +82,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.Customer = saleOrderVM.Customer;
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && prodOrderID != null)
@@ -92,6 +97,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.SaleOrderID = null;
                     deliveryChallanVM.DocumentType = "ProductionOrder";
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
+                    deliveryChallanVM.Customer = productionOrderVM.Customer;
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else
@@ -105,6 +111,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.IsDocLocked = false;
                     deliveryChallanVM.IsUpdate = false;
                     deliveryChallanVM.ID = Guid.Empty;
+                    deliveryChallanVM.Customer = new CustomerViewModel();
+                    deliveryChallanVM.Customer.CompanyName = "-";
                 }
             }
             catch (Exception ex)
@@ -406,6 +414,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "DeliveryChallan");
             switch (actionType)
             {
                 case "List":
@@ -464,15 +474,18 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','DLC');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','DLC');";
                     break;
 
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddDeliveryChallan();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -504,6 +517,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','DLC');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','DLC');";
                     break;
 
                 case "Add":
@@ -536,6 +554,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
 

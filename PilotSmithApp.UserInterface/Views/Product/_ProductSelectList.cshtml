@@ -28,31 +28,34 @@ else
 @Html.ValidationMessage("ProductID", "", new { @class = "text-danger" })
 <script>
     $(document).ready(function () {
-        $('#ProductID').val($('#hdnProductID').val());
+        if (_parentFormID === "")
+            _parentFormID = $('.divProductSelectList').closest('form').attr('id');
+        var parent = '#' + _parentFormID + ' ';
+        $(parent + '#ProductID').val($(parent + '#hdnProductID').val());
         
-        $('#ProductID').change(function () {
-            if ($('#divProductBasicInfo') != undefined) {
+        $(parent + '#ProductID').change(function () {
+            if ($(parent + '#divProductBasicInfo') != undefined) {
                 debugger;
-                $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                $(parent + '#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
                     $('#ProductSpec').val($('#spnProductName').text());
                 });           
             }
-            if ($('.divProductModelSelectList') != undefined) {
+            if ($(parent + '.divProductModelSelectList') != undefined) {
                 debugger;
                 $('#dropLoad').addClass('fa fa-spinner fa-spin');
                 if (this.value != "") {
-                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
+                    $(parent + '.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
 
                 }
                 else {
-                    $('.divProductModelSelectList').empty();
-                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                    $(parent + '.divProductModelSelectList').empty();
+                    $(parent + '.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
                 }
             }
 
         });
-        $('#ProductID').select2({
-            dropdownParent: $('.divProductSelectList')
+        $(parent + '#ProductID').select2({
+            dropdownParent: $(parent + '.divProductSelectList')
         });
         $('.select2').addClass('form-control newinput');
     });

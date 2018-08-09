@@ -11,20 +11,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class CountryController : Controller
     {
         AppConst _appConstant = new AppConst();
         private PSASysCommon _psaSysCommon = new PSASysCommon();
         PSASysCommon _pSASysCommon = new PSASysCommon();
         ICountryBusiness _contryBusiness;
-        IUserBusiness _userBusiness;
-        public CountryController(ICountryBusiness countryBusiness,IUserBusiness userBusiness)
+        SecurityFilter.ToolBarAccess _tool;     
+        public CountryController(ICountryBusiness countryBusiness,SecurityFilter.ToolBarAccess tool)
         {
             _contryBusiness = countryBusiness;
-            _userBusiness = userBusiness;
+            _tool = tool;        
         }
         // GET: Country
         [AuthSecurityFilter(ProjectObject = "Country", Mode = "R")]
@@ -136,8 +138,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.HasAddPermission = false;
             ViewBag.propertydisable = disabled == null ? false : disabled;
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _userBusiness.GetSecurityCode(appUA.UserName, "Country");
-            if (permission.SubPermissionList != null)
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Country");
+            if (permission.SubPermissionList.Count>0)
             {
                 if (permission.SubPermissionList.First(s => s.Name == "SelectListAddButton").AccessCode.Contains("R"))
                 {
@@ -173,6 +175,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult ChangeButtonStyle(string actionType)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _psaSysCommon.GetSecurityCode(appUA.UserName, "Country");
             switch (actionType)
             {
                 case "List":
@@ -195,6 +199,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 default:
                     return Content("Nochange");
             }
+            toolboxVM = _tool.SetToolbarAccess(toolboxVM, permission);
             return PartialView("ToolboxView", toolboxVM);
         }
         #endregion

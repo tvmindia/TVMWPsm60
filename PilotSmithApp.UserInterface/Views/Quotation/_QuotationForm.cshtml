@@ -93,8 +93,8 @@
                     <div class="col-md-12">
                         <div class="divReferredByCodeSelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                           
-                        </div>                       
+
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnReferredByRequired", "")
@@ -109,8 +109,8 @@
                     <div class="col-md-12">
                         <div class="divPreparedBySelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                          
-                        </div>                       
+
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnPreparedByRequired", "")
@@ -132,8 +132,8 @@
                     <div class="col-md-12">
                         <div class="divDocumentStatusSelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                           
-                        </div>                      
+
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnDocumentStatusRequired", "required")
@@ -143,10 +143,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (!Model.IsDocLocked && Model.IsUpdate)
+                    @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -154,15 +154,14 @@
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                               
-                            </div>
-                            <!-- This hidden field will keep the information whether the field is required or not -->
-                            @Html.Hidden("hdnBranchRequired", "required")
-                            <!-- This hidden field will keep the information whether the field is disabled or not -->
-                            @Html.Hidden("hdnBranchdisabled", false)
-                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                            </div>                          
                         </div>
                     }
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnBranchRequired", "required")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnBranchdisabled", false)
+                    @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                 </div>
 
             </div>
@@ -231,7 +230,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.QuoteNo" documentType="QUO"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -265,11 +264,20 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @if (Model.IsUpdate||Model.EstimateID!=null)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divCustomerSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            </div>
+                        </div>
+                    }                 
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -286,7 +294,7 @@
                         @Html.LabelFor(model => model.MailingAddress, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.MailingAddress, 5, 0, new { @class = "form-control newinput" })
+                        @Html.TextAreaFor(model => model.MailingAddress, 5, 60, new { @class = "form-control newinput" })
                         @Html.ValidationMessageFor(model => model.MailingAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -295,7 +303,7 @@
                         @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 0, new { @class = "form-control newinput" })
+                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 60, new { @class = "form-control newinput" })
                         @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -309,7 +317,7 @@
                 @{
                     if (Model.IsDocLocked || !Model.IsUpdate)
                     {
-                        if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus==null)
+                        if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null)
                         {
                             <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
                             <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
@@ -434,17 +442,17 @@
             </div>
         </div>
     </div>
-        <div class="col-md-11 divbox1">
-            <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">Attachments</div>
-                @Html.Partial("_Fileupload")
-            </div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Attachments</div>
+            @Html.Partial("_Fileupload")
         </div>
-            <div class="" hidden="hidden">
-                <div class="col-md-offset-2 col-md-10">
-                    <input id="btnInsertUpdateQuotation" type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
+    </div>
+    <div class="" hidden="hidden">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="btnInsertUpdateQuotation" type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
                     }
 <script>
     $(document).ready(function () {
@@ -452,37 +460,34 @@
             $.validator.unobtrusive.parse("#QuotationForm");
         }
         catch (e) {
-            console.log(e.message); 
+            console.log(e.message);
         }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
-            else {
-                <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-                </text>
-                    }
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
-            @if (Model.IsUpdate || Model.EstimateID != null)
+            @if (Model.IsUpdate||Model.EstimateID!=null)
             {
-                <text>
-            debugger;
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
 
-            });
-            </text>
             }
             else
             {
                 <text>
             debugger;
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
-
+                //$('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                //$('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
             }
-
+           @if (!Model.IsUpdate&&Model.EstimateID!=null)
+             {
+                <text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
+                </text>
+             }
         }
         catch (e) {
             console.log(e.message);
@@ -531,6 +536,7 @@
         }
         try {
             $('#QuotationForm #EstimateID').change(function () {
+                debugger;
                 OnServerCallBegin();
                 $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function (responseTxt, statusTxt, xhr) {
                     if (statusTxt == "success") {
@@ -580,13 +586,12 @@
         catch (e) {
             console.log(e.message);
         }
-        try{
-            if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True")
-            {
+        try {
+            if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);

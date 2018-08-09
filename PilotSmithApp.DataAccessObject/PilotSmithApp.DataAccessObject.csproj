@@ -59,6 +59,7 @@
     <Compile Include="DTO\Department.cs" />
     <Compile Include="DTO\District.cs" />
     <Compile Include="DTO\DocumentApproval.cs" />
+    <Compile Include="DTO\DocumentLog.cs" />
     <Compile Include="DTO\DocumentStatus.cs" />
     <Compile Include="DTO\DocumentType.cs" />
     <Compile Include="DTO\Employee.cs" />

@@ -10,11 +10,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PilotSmithApp.UserInterface.Models;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class ManageAccessController : Controller
-    {
+    {        
+        PSASysCommon _pSASysCommon = new PSASysCommon();
         Const c = new Const();
         private IApplicationBusiness _applicationBusiness;
         private IManageAccessBusiness _manageAccessBusiness;
@@ -238,13 +241,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         [HttpGet]
         public ActionResult ChangeButtonStyle(string ActionType)
         {
-            Permission _permission = Session["UserRights"] as Permission;
+            //Permission _permission = Session["UserRights"] as Permission;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ManageAccess");
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
             switch (ActionType)
             {
                 case "Default":
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.backbtn.Visible = true;
                     }
@@ -252,7 +257,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.backbtn.Title = "Back";
                     ToolboxViewModelObj.backbtn.Event = "GobackMangeAccess()";
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.savebtn.Visible = true;
                     }
@@ -261,7 +266,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Text = "Save";
                     ToolboxViewModelObj.savebtn.DisableReason = "No changes yet";
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.resetbtn.Visible = true;
                     }
@@ -271,7 +276,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     break;
                 case "Checked":
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.backbtn.Visible = true;
                     }
@@ -279,7 +284,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.backbtn.Title = "Back";
                     ToolboxViewModelObj.backbtn.Event = "GobackMangeAccess()";
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.savebtn.Visible = true;
                     }
@@ -287,7 +292,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.savebtn.Text = "Save";
                     ToolboxViewModelObj.savebtn.Event = "SaveChanges();";
 
-                    if ((_permission.SubPermissionList != null ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.resetbtn.Visible = true;
                     }

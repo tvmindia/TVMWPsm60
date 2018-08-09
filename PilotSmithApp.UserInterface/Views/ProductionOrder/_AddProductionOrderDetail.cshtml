@@ -1,9 +1,10 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ProductionOrderDetailViewModel
 
 @using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormProductionOrderDetail" }))
-{
+{  
     @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })    
+    @Html.HiddenFor(model=>model.SaleOrderQty,htmlAttributes:new { @class=""})
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -79,71 +80,144 @@
 
     </div>
     <div class="form-group col-md-12">
-        <div class="col-md-4 no-padding">
+        @if (Model.ShowRate == true)
+        {
+            <div class="col-md-4 no-padding">
 
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divUnitSelectList">
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnUnitRequired", "required")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnUnitdisabled", false)
+                    @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
                 </div>
-                <div class="col-md-12">
-                    <div class="divUnitSelectList">
-                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                        @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
-                    </div>                 
-                </div>
-                <!-- This hidden field will keep the information whether the field is required or not -->
-                @Html.Hidden("hdnUnitRequired", "required")
-                <!-- This hidden field will keep the information whether the field is disabled or not -->
-                @Html.Hidden("hdnUnitdisabled", false)
-                @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
-            </div>
 
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
-                    @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.ProducedQty, htmlAttributes: new { @class = "control-label " })
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.ProducedQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
-                    @Html.ValidationMessageFor(model => model.ProducedQty, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency CalculateGST", @onkeypress = "return isNumber(event)" } })
-                    @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-12 no-padding">
-                <div class="col-md-12">
-                    @Html.LabelFor(model => model.PlantCode, htmlAttributes: new { @class = "control-label" })
-                </div>
-                <div class="col-md-12">
-                    <div class="divPlantSelectList">
-                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                        @*@Html.Action("PlantSelectList", "Plant", new { required = "" })*@
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <!-- This hidden field will keep the information whether the field is required or not -->
-                @Html.Hidden("hdnPlantRequired", "")
-                <!-- This hidden field will keep the information whether the field is disabled or not -->
-                @Html.Hidden("hdnPlantdisabled", false)
-                @Html.HiddenFor(model => model.PlantCode, htmlAttributes: new { @class = "", @id = "hdnPlantCode" })
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ProducedQty, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.ProducedQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.ProducedQty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.PlantCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divPlantSelectList">
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            @*@Html.Action("PlantSelectList", "Plant", new { required = "" })*@
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnPlantRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnPlantdisabled", false)
+                    @Html.HiddenFor(model => model.PlantCode, htmlAttributes: new { @class = "", @id = "hdnPlantCode" })
+                </div>
+                @*<div class="col-md-12">&nbsp;</div>*@
             </div>
-            @*<div class="col-md-12">&nbsp;</div>*@
-        </div>
+        }
+        else
+        {
+            <div class="col-md-4 no-padding">
+
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divUnitSelectList">
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnUnitRequired", "required")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnUnitdisabled", false)
+                    @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnUnitCode" })
+                </div>
+
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ProducedQty, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.ProducedQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.ProducedQty, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*<div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.PlantCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divPlantSelectList">
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            @*@Html.Action("PlantSelectList", "Plant", new { required = "" })*@
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnPlantRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnPlantdisabled", false)
+                    @Html.HiddenFor(model => model.PlantCode, htmlAttributes: new { @class = "", @id = "hdnPlantCode" })
+                </div>
+                @*<div class="col-md-12">&nbsp;</div>*@
+            </div>
+        }
+
+
         <div class="no-padding" style="font-size:14px;margin-left:300px;">
             @Html.Label("Milestone")
             @*<div class="col-md-12">&nbsp;</div>*@
@@ -319,6 +393,7 @@
         catch (e) {
             console.log(e.message);
         }
+        
     });
 </script>
 

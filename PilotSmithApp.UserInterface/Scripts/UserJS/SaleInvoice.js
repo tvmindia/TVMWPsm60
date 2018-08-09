@@ -224,14 +224,12 @@ function AddSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
+            openNav();
+            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
             ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
             BindSaleInvoiceDetailList(_emptyGuid);
-            BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
-            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
-            //setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-            //}, 100); 
+            BindSaleInvoiceOtherChargesDetailList(_emptyGuid);           
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -438,7 +436,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation, IsProformaInvoi
                      if (data != null || data == "") {
                          return row.Product.HSNCode;
                      }
-                     else {
+                     else if(data!=null || data==""){
                          return row.OtherCharge.SACCode;
                      }
                  }, "defaultContent": "<i></i>"
@@ -1318,8 +1316,8 @@ function DownloadSaleInvoice() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
-    var customerName = $("#SaleInvoiceForm #CustomerID option:selected").text();
-    $('#hdnCustomerName').val(customerName);
+    //var customerName = $("#SaleInvoiceForm #CustomerID option:selected").text();
+    //$('#hdnCustomerName').val(customerName);
 }
 function PrintSaleInvoice() {
     debugger;

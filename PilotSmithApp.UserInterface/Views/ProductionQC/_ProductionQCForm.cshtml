@@ -16,36 +16,36 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
-                        @if (!Model.IsUpdate)
-                        {
-                            <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
-                                <div class="col-md-12">
-                                    @Html.Label("Search and select a Production Order", htmlAttributes: new { @class = "control-label lblrequired" })
-                                </div>
-                                <div class="col-md-12">
-                                    @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
-                                    @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
-                                </div>
-                                @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
-                            </div>
+                @if (!Model.IsUpdate)
+                {
+                    <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
+                        <div class="col-md-12">
+                            @Html.Label("Search and select a Production Order", htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                            @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
+                    </div>
 
-                        }
-                        else
-                        {
-                            if (Model.ProdOrderID != null)
-                            {
-                            <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
-                                <div class="col-md-12">
-                                    @Html.Label("Production Order", htmlAttributes: new { @class = "control-label lblrequired" })
-                                </div>
-                                <div class="col-md-12">
-                                    @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnProdOrderID').val(this.value)" })
-                                    @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
-                                </div>
-                                @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
+                }
+                else
+                {
+                    if (Model.ProdOrderID != null)
+                    {
+                        <div class="col-md-12 no-padding" id="divProductionOrderSelectList">
+                            <div class="col-md-12">
+                                @Html.Label("Production Order", htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
-                            }
-                        }
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnProdOrderID').val(this.value)" })
+                                @Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })
+                            </div>
+                            @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
+                        </div>
+                    }
+                }
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -94,11 +94,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblRequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divCustomerSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                    @if (Model.IsUpdate||Model.ProdOrderID!=null)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divCustomerSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            </div>
+                        </div>
+                    }
+                    
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -112,10 +122,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (!Model.IsDocLocked && Model.IsUpdate)
+                    @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -124,14 +134,14 @@
                             <div class="divBranchSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                                 @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
-                            </div>
-                            <!-- This hidden field will keep the information whether the field is required or not -->
-                            @Html.Hidden("hdnBranchRequired", "required")
-                            <!-- This hidden field will keep the information whether the field is disabled or not -->
-                            @Html.Hidden("hdnBranchdisabled", false)
-                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                            </div>                         
                         </div>
                     }
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnBranchRequired", "required")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnBranchdisabled", false)
+                    @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -141,7 +151,7 @@
                         <div class="divDocumentStatusSelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "PQC" })*@
-                        </div>                      
+                        </div>
                     </div>
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnDocumentStatusRequired", "required")
@@ -184,7 +194,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.ProdQCNo" documentType="PQC"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -249,10 +259,11 @@
             @*}*@
             <div class="col-md-12">&nbsp;</div>
         </div>
-        </div>
+    </div>
         <div class="col-md-11 divbox1">
             <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">Quality Control Details@*<a class="btn btn-openid pull-right" onclick="AddProductionQCDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>*@
+                <div class="col-md-12 headSeperator">
+                    Quality Control Details@*<a class="btn btn-openid pull-right" onclick="AddProductionQCDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>*@
                 </div>
 
                 @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
@@ -297,11 +308,11 @@
                 @Html.Partial("_Fileupload")
             </div>
         </div>
-            <div class="" hidden="hidden">
-                <div class="col-md-offset-2 col-md-10">
-                    <input id="btnInsertUpdateProductionQC" type="submit" value="Create" class="btn btn-default" />
-                </div>
+        <div class="" hidden="hidden">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnInsertUpdateProductionQC" type="submit" value="Create" class="btn btn-default" />
             </div>
+        </div>
 }
 <script>
     $(document).ready(function () {
@@ -313,20 +324,11 @@
         }
         try {
             $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
-            @if (!Model.IsDocLocked && Model.IsUpdate) { }
-            else {
-                <text>
-                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val())
-                </text>
-                    }
+            
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=PQC&required=' + $('#hdnDocumentStatusRequired').val())
-            @if (Model.IsUpdate || Model.ProdOrderID != null)
+            @if (Model.IsUpdate||Model.ProdOrderID!=null)
          {
-             <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val() + '&disabled=true', function () {
-
-            });
-            </text>
+           
          }
          else
          {
@@ -334,9 +336,16 @@
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
             });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
-
+         @if ((!Model.IsUpdate) && (Model.ProdOrderID!=null))
+         {
+             <text>
+         $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+         });
+             </text>
+         }
         }
         catch (e) {
             console.log(e.message);
@@ -420,12 +429,11 @@
             console.log(e.message);
         }
         try {
-            if ($('#ProductionQCForm #IsDocLocked').val() == "False" && $('#ProductionQCForm #IsUpdate').val() == "True")
-            {
+            if ($('#ProductionQCForm #IsDocLocked').val() == "False" && $('#ProductionQCForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4"); 
+                $('#btnUpload').css("background", "#b2aca4");
                 $('#btnCancel').attr("disabled", "disabled")
                 $('#btnCancel').attr("title", "Document Locked");
                 $('#btnCancel').prop("onclick", null);
