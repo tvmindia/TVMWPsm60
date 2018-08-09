@@ -17,6 +17,7 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
+                @*<a href="@Url.Action("GetXmlForTally1", "XMLGenerator")">print</a>*@
                 @if (!Model.IsUpdate)
                 {
                     <div class="col-md-12" style="font-size:14px">
@@ -124,6 +125,8 @@
                 }
                 else
                 {
+                    @Html.HiddenFor(model => model.Customer.TallyName, htmlAttributes: new { @class = "" })
+                    @Html.HiddenFor(model => model.TallyCompanyName, htmlAttributes: new { @class = "" })
                     if (Model.QuoteID != null && Model.QuoteID != Guid.Empty)
                     {
                         <div class="col-md-12 no-padding" id="divQuotationSelectList">

@@ -40,12 +40,14 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Cc { get; set; }
         public string Bcc { get; set; }
         public string Subject { get; set; }
+        public int TallyStatus { get; set; }
 
         //additional Fields
         public string DetailXML { get; set; }
         public string OtherChargeDetailXML { get; set; }
         public Guid hdnFileID { get; set; }
         public string SaleInvDateFormatted { get; set; }
+        public string SaleInvDateTallyFormatted { get; set; }
         public bool IsUpdate { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
@@ -63,6 +65,10 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string CIN { get; set; }
         public string PAN { get; set; }
         public string EmailID { get; set; }
+        public string TallyCompanyName { get; set; }
+        public string CGSTTallyLedger { get; set; }
+        public string SGSTTallyLedger { get; set; }
+        public string IGSTTallyLedger { get; set; }
 
         public string DocumentType { get; set; }
         public string[] DocumentOwners { get; set; }

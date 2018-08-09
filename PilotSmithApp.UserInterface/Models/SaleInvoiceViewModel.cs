@@ -59,6 +59,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string Bcc { get; set; }
         [Display(Name = "Subject")]
         public string Subject { get; set; }
+        public int TallyStatus { get; set; }
 
         //additional Fields
         public string DocumentType { get; set; }
@@ -88,11 +89,20 @@ namespace PilotSmithApp.UserInterface.Models
         public string DocumentOwner { get; set; }
         public int FilteredCount { get; set; }
         public int TotalCount { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public decimal? CGSTTotal { get; set; }
+        public decimal? SGSTTotal { get; set; }
+        public decimal? IGSTTotal { get; set; }
         [Display(Name = "Expected Delivery Date")]
         [Required(ErrorMessage = "Expected Delivery Date is missing")]
         public string ExpectedDelvDateFormatted { get; set; }
         [Display(Name = "Purchase Order Date")]
         public string PurchaseOrdDateFormatted { get; set; }
+        public string TallyCompanyName { get; set; }
+        public string SaleInvDateTallyFormatted { get; set; }
+        public string CGSTTallyLedger { get; set; }
+        public string SGSTTallyLedger { get; set; }
+        public string IGSTTallyLedger { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }

@@ -80,6 +80,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Aadhar Number")]        
         [MaxLength(20)]
         public string AadharNo { get; set; }
+        public string TallyName { get; set; }
 
         //Additional properties
         public int TotalCount { get; set; }
