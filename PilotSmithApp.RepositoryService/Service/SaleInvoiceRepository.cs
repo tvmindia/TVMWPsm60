@@ -82,6 +82,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.SaleInvRefNo = (sdr["SaleInvRefNo"].ToString() != "" ? sdr["SaleInvRefNo"].ToString() : saleInvoice.SaleInvRefNo);
                                         saleInvoice.SaleInvDate = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()) : saleInvoice.SaleInvDate);
                                         saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString(_settings.DateFormat) : saleInvoice.SaleInvDateFormatted);
+                                        saleInvoice.SaleInvDateTallyFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString("yyyyMMdd") : saleInvoice.SaleInvDateTallyFormatted);
                                         saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
                                         saleInvoice.Customer = new Customer();
                                         saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.Customer.ID);
@@ -116,6 +117,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.ProformaInvoice = new ProformaInvoice();
                                         saleInvoice.ProfInvID= (sdr["ProfInvID"].ToString() != "" ? Guid.Parse(sdr["ProfInvID"].ToString()) : saleInvoice.ProfInvID);
                                         saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? sdr["ProfInvNo"].ToString() : saleInvoice.ProformaInvoice.ProfInvNo);
+                                        saleInvoice.TallyStatus= (sdr["TallyStatus"].ToString() != "" ? int.Parse(sdr["TallyStatus"].ToString()) : saleInvoice.TallyStatus);
                                     }
                                     saleInvoiceList.Add(saleInvoice);
                                 }
@@ -132,6 +134,92 @@ namespace PilotSmithApp.RepositoryService.Service
             return saleInvoiceList;
         }
         #endregion Get All SaleInvoice
+        #region GetSaleInvoiceByIDs
+        public List<SaleInvoice> GetSaleInvoiceByID(string ids)
+        {
+            List<SaleInvoice> saleInvoiceList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetSaleInvoiceByID]";
+                        cmd.Parameters.Add("@IDs", SqlDbType.NVarChar, -1).Value = ids;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                saleInvoiceList = new List<SaleInvoice>();
+                                while (sdr.Read())
+                                {
+                                    SaleInvoice saleInvoice = new SaleInvoice();
+                                    {
+                                        saleInvoice.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleInvoice.ID);
+                                        saleInvoice.SaleInvNo = (sdr["SaleInvNo"].ToString() != "" ? sdr["SaleInvNo"].ToString() : saleInvoice.SaleInvNo);
+                                        saleInvoice.SaleInvRefNo = (sdr["SaleInvRefNo"].ToString() != "" ? sdr["SaleInvRefNo"].ToString() : saleInvoice.SaleInvRefNo);
+                                        saleInvoice.SaleInvDate = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()) : saleInvoice.SaleInvDate);
+                                        saleInvoice.SaleInvDateFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString(_settings.DateFormat) : saleInvoice.SaleInvDateFormatted);
+                                        saleInvoice.SaleInvDateTallyFormatted = (sdr["SaleInvDate"].ToString() != "" ? DateTime.Parse(sdr["SaleInvDate"].ToString()).ToString("yyyyMMdd") : saleInvoice.SaleInvDateTallyFormatted);
+                                        saleInvoice.TallyCompanyName = (sdr["TallyCompanyName"].ToString() != "" ? sdr["TallyCompanyName"].ToString() : saleInvoice.TallyCompanyName);
+                                        saleInvoice.CGSTTallyLedger = (sdr["CGSTLedger"].ToString() != "" ? sdr["CGSTLedger"].ToString() : saleInvoice.CGSTTallyLedger);
+                                        saleInvoice.SGSTTallyLedger = (sdr["SGSTLedger"].ToString() != "" ? sdr["SGSTLedger"].ToString() : saleInvoice.SGSTTallyLedger);
+                                        saleInvoice.IGSTTallyLedger = (sdr["IGSTLedger"].ToString() != "" ? sdr["IGSTLedger"].ToString() : saleInvoice.IGSTTallyLedger);
+                                        saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
+                                        saleInvoice.Customer = new Customer();
+                                        saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.Customer.ID);
+                                        saleInvoice.Customer.CompanyName = (sdr["CustomerCompanyName"].ToString() != "" ? sdr["CustomerCompanyName"].ToString() : saleInvoice.Customer.CompanyName);
+                                        saleInvoice.Customer.ContactPerson = (sdr["CustomerContactPerson"].ToString() != "" ? sdr["CustomerContactPerson"].ToString() : saleInvoice.Customer.ContactPerson);
+                                        saleInvoice.Customer.Mobile = (sdr["CustomerMobile"].ToString() != "" ? sdr["CustomerMobile"].ToString() : saleInvoice.Customer.Mobile);
+                                        saleInvoice.Customer.TallyName = (sdr["TallyName"].ToString() != "" ? sdr["TallyName"].ToString() : saleInvoice.Customer.TallyName);
+                                        saleInvoice.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatusCode);
+                                        saleInvoice.DocumentStatus = new DocumentStatus();
+                                        saleInvoice.DocumentStatus.Code = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : saleInvoice.DocumentStatus.Code);
+                                        saleInvoice.DocumentStatus.Description = (sdr["DocumentStatusDescription"].ToString() != "" ? (sdr["DocumentStatusDescription"].ToString()) : saleInvoice.DocumentStatus.Description);
+                                        saleInvoice.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : saleInvoice.GeneralNotes);
+                                        saleInvoice.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : saleInvoice.DocumentOwnerID);
+                                        saleInvoice.Branch = new Branch();
+                                        saleInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : saleInvoice.Branch.Description);
+                                        saleInvoice.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : saleInvoice.BranchCode);
+                                        saleInvoice.Area = new Area();
+                                        saleInvoice.Area.Description = (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : saleInvoice.Area.Description);
+                                        saleInvoice.ApprovalStatus = new ApprovalStatus();
+                                        saleInvoice.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? sdr["ApprovalStatus"].ToString() : saleInvoice.ApprovalStatus.Description);
+                                        saleInvoice.PSAUser = new PSAUser();
+                                        saleInvoice.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : saleInvoice.PSAUser.LoginName);
+                                        saleInvoice.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : saleInvoice.EmailSentYN);
+                                        saleInvoice.Quotation = new Quotation();
+                                        saleInvoice.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : saleInvoice.QuoteID);
+                                        saleInvoice.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : saleInvoice.Quotation.QuoteNo);
+                                        saleInvoice.SaleOrder = new SaleOrder();
+                                        saleInvoice.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleInvoice.SaleOrderID);
+                                        saleInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : saleInvoice.SaleOrder.SaleOrderNo);
+                                        saleInvoice.ProductDetail = (sdr["ProductDetail"].ToString() != "" ? sdr["ProductDetail"].ToString() : saleInvoice.ProductDetail);
+                                        saleInvoice.ProformaInvoice = new ProformaInvoice();
+                                        saleInvoice.ProfInvID = (sdr["ProfInvID"].ToString() != "" ? Guid.Parse(sdr["ProfInvID"].ToString()) : saleInvoice.ProfInvID);
+                                        saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? sdr["ProfInvNo"].ToString() : saleInvoice.ProformaInvoice.ProfInvNo);
+                                    }
+                                    saleInvoiceList.Add(saleInvoice);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return saleInvoiceList;
+        }
+        #endregion GetSaleInvoiceByIDs
         #region Get SaleInvoice
         public SaleInvoice GetSaleInvoice(Guid id)
         {
@@ -260,6 +348,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
                                             Code = (sdr["ProductCode"].ToString() != "" ? sdr["ProductCode"].ToString() : string.Empty),
                                             Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : string.Empty),
+                                            TallyName = (sdr["ProductTallyName"].ToString() != "" ? sdr["ProductTallyName"].ToString() : string.Empty),
                                             HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : String.Empty)
                                         };
                                         saleInvoiceDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty);
@@ -267,6 +356,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoiceDetail.ProductModel = new ProductModel();
                                         saleInvoiceDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         saleInvoiceDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : saleInvoiceDetail.ProductModel.Name);
+                                        saleInvoiceDetail.ProductModel.TallyName = (sdr["ProductModelTallyName"].ToString() != "" ? (sdr["ProductModelTallyName"].ToString()) : saleInvoiceDetail.ProductModel.TallyName);
 
                                         saleInvoiceDetail.OtherCharge = new OtherCharge();
                                         saleInvoiceDetail.OtherCharge.Description= (sdr["OtherChargeCodeDesc"].ToString() != "" ? (sdr["OtherChargeCodeDesc"].ToString()) : saleInvoiceDetail.OtherCharge.Description);
@@ -285,6 +375,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoiceDetail.TaxTypeCode = (sdr["TaxTypeCode"].ToString() != "" ? int.Parse(sdr["TaxTypeCode"].ToString()) : saleInvoiceDetail.TaxTypeCode);
                                         saleInvoiceDetail.TaxType = new TaxType();
                                         saleInvoiceDetail.TaxType.ValueText = (sdr["TaxTypeText"].ToString() != "" ? (sdr["TaxTypeText"].ToString()) : saleInvoiceDetail.TaxType.ValueText);
+                                        saleInvoiceDetail.TaxType.TallyName = (sdr["TaxTallyName"].ToString() != "" ? (sdr["TaxTallyName"].ToString()) : saleInvoiceDetail.TaxType.TallyName);
                                         saleInvoiceDetail.CessAmt= (sdr["CessAmt"].ToString() != "" ? decimal.Parse(sdr["CessAmt"].ToString()) : saleInvoiceDetail.CessAmt);
                                         saleInvoiceDetail.CessPerc= (sdr["CessPerc"].ToString() != "" ? decimal.Parse(sdr["CessPerc"].ToString()) : saleInvoiceDetail.CessPerc);
                                     }
@@ -665,5 +756,54 @@ namespace PilotSmithApp.RepositoryService.Service
                 Message = _appConstant.DeleteSuccess
             };
         }
+
+        public object UpdateSaleInvoiceTallyStatus(string ids)
+        {
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[UpdateSaleInvoiceTallyStatus]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@IDs", SqlDbType.NVarChar, -1).Value = ids;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        throw new Exception(_appConstant.InsertFailure);
+                    case "1":
+                        return new
+                        {
+                            Status = outputStatus.Value.ToString(),
+                            Message = _appConstant.UpdateSuccess
+                        };
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConstant.UpdateSuccess
+            };
+        }
+
     }
 }

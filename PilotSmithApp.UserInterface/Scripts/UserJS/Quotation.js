@@ -204,8 +204,8 @@ function AddQuotation() {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
-            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
             $('#lblQuotationInfo').text('<<Quotation No.>>');
+            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
             BindQuotationDetailList(_emptyGuid);
             BindQuotationOtherChargesDetailList(_emptyGuid);
         }

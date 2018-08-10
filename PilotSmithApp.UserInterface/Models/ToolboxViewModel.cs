@@ -33,6 +33,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ToolBoxStructure PrintBtn;
         public ToolBoxStructure SendForApprovalBtn;
         public ToolBoxStructure TimeLine;
+        public ToolBoxStructure XMLBtn;
         public ToolBoxStructure RecallBtn;
         public ToolboxViewModel()
         {
@@ -60,6 +61,7 @@ namespace PilotSmithApp.UserInterface.Models
             PrintBtn.SecurityObject = "ButtonPrint";
             SendForApprovalBtn.SecurityObject = "ButtonSendForApproval";
             TimeLine.SecurityObject = "TimeLine";
+            XMLBtn.SecurityObject = "ButtonXML";
             RecallBtn.SecurityObject = "ButtonRecall";
 
             backbtn.HasAccess = true;
@@ -87,6 +89,7 @@ namespace PilotSmithApp.UserInterface.Models
             PrintBtn.HasAccess = true;
             SendForApprovalBtn.HasAccess = true;
             TimeLine.HasAccess = true;
+            XMLBtn.HasAccess = true;
             RecallBtn.HasAccess = true;
         }
 

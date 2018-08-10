@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class EnquiryController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -53,6 +55,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.ID = id;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
+            //if (Request.Cookies["UserSettings"] != null)
+            //{
+            //    if (Request.Cookies["UserSettings"]["TvmValid"] != null)
+            //    { AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA; }
+            //}
+            //string userSettings = Request.Cookies["UserSettings"]["TvmValid"];
+            //AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA;
             AppUA appUA = Session["AppUA"] as AppUA;
             enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");

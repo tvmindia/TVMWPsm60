@@ -296,7 +296,12 @@
     <Content Include="Content\images\rupee.png" />
     <Content Include="Content\images\saleorder.png" />
     <Content Include="Content\images\SuppPord.png" />
+    <Content Include="Content\images\tallyblack.png" />
+    <Content Include="Content\images\tallywhite.png" />
+    <Content Include="Content\images\tallyxml.PNG" />
     <Content Include="Content\images\timeline.png" />
+    <Content Include="Content\images\xml-file.png" />
+    <Content Include="Content\images\xml.png" />
     <Content Include="Content\MailTemplate\DocumentApproved.html" />
     <Content Include="Content\MailTemplate\DocumentEmailBody.html" />
     <Content Include="Content\MailTemplate\DocumentRejected.html" />
@@ -839,6 +844,7 @@
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UserInBranchController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\XMLGeneratorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1134,6 +1140,7 @@
     <Folder Include="Views\Position\" />
     <Folder Include="Views\TakeOwnership\" />
     <Folder Include="Views\TimeLine\" />
+    <Folder Include="Views\XMLGenerator\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PilotSmithApp.BusinessService\PilotSmithApp.BusinessService.csproj">

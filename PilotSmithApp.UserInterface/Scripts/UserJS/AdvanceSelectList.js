@@ -1,6 +1,5 @@
 ﻿//---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
-    debugger;
     try {
         BindCustomerSelectList();
     }
@@ -40,7 +39,6 @@ $(document).ready(function () {
     }
 
     try {
-        debugger;
         BindPlantSelectList()
     }
     catch (e) {
@@ -48,7 +46,6 @@ $(document).ready(function () {
     }
 
     try {
-        debugger;
         BindDepartmentSelectList()
     }
     catch (e) {
@@ -56,7 +53,6 @@ $(document).ready(function () {
     }
    
     try {
-        debugger;
         BindPositionSelectList()
     }
     catch (e) {
@@ -89,7 +85,6 @@ function BindCustomerSelectList() {
 }
 // Area SelectList //
 function BindAreaSelectList() {
-    debugger;
     $('#AdvAreaCode').select2({
         ajax: {
             type: 'POST',
@@ -175,7 +170,6 @@ function BindDocumentOwnerSelectList() {
 
 // ApprovalStatus SelectList //
 function BindApprovalStatusSelectList() {
-    debugger;
     $('#AdvApprovalStatusCode').select2({
         ajax: {
             type: 'POST',
@@ -198,7 +192,6 @@ function BindApprovalStatusSelectList() {
 
 // Plant SelectList //
 function BindPlantSelectList() {
-    debugger;
     $('#AdvPlantCode').select2({
         ajax: {
             type: 'POST',
@@ -222,7 +215,6 @@ function BindPlantSelectList() {
 //Department SelectList//
 
 function BindDepartmentSelectList() {
-    debugger;
     $('#AdvDepartmentCode').select2({
         ajax: {
             type: 'POST',
@@ -245,7 +237,6 @@ function BindDepartmentSelectList() {
 
 //Position SelectList//
 function BindPositionSelectList() {
-    debugger;
     $('#AdvPositionCode').select2({
         ajax: {
             type: 'POST',

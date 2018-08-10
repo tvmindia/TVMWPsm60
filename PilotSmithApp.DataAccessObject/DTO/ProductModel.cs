@@ -18,7 +18,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime IntroducedDate { get; set; }
         public decimal? StockQty { get; set; }
         public string ImageURL { get; set; }
-
+        public string TallyName { get; set; }
         //Additional Fields
         public string IntroducedDateFormatted { get; set; }
         public PSASysCommon PSASysCommon { get; set; }

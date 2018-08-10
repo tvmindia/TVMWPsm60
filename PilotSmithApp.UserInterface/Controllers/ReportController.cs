@@ -13,9 +13,11 @@ using System.Web.Mvc;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
 using System.IO;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class ReportController : Controller
     {
         #region Constructor Injection  

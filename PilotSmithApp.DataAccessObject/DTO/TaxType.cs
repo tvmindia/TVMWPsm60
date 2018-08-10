@@ -14,6 +14,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal SGSTPercentage { get; set; }
         public decimal IGSTPercentage { get; set; }
         public string ValueText { get; set; }
+        public string TallyName { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         //Additional fields
         public int TotalCount { get; set; }
