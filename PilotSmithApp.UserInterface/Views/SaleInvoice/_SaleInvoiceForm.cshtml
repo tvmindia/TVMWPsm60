@@ -17,6 +17,7 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
+                @*<a href="@Url.Action("GetXmlForTally1", "XMLGenerator")">print</a>*@
                 @if (!Model.IsUpdate)
                 {
                     <div class="col-md-12" style="font-size:14px">
@@ -124,6 +125,8 @@
                 }
                 else
                 {
+                    @Html.HiddenFor(model => model.Customer.TallyName, htmlAttributes: new { @class = "" })
+                    @Html.HiddenFor(model => model.TallyCompanyName, htmlAttributes: new { @class = "" })
                     if (Model.QuoteID != null && Model.QuoteID != Guid.Empty)
                     {
                         <div class="col-md-12 no-padding" id="divQuotationSelectList">
@@ -242,7 +245,7 @@
                         @if (Model.IsUpdate)
                         {
                             <div class="col-md-12">
-                                <span class="form-control newinput">@Model.Branch.Description</span>
+                                <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                             </div>
                         }
                         else
@@ -365,7 +368,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.SaleInvNo" documentType="SIV"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.SaleInvNo" documentType="SIV" documentCurrentOwner="@Model.DocumentOwner"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -398,10 +401,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.IsUpdate || Model.QuoteID != null||Model.SaleOrderID!=null||Model.ProfInvID!=null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -615,7 +618,7 @@
 
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=' + $('#hdnBillLocationRequired').val())
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate||Model.QuoteID!=null||Model.SaleOrderID!=null||Model.ProfInvID!=null)
          {
          }
          else
@@ -627,7 +630,13 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
-
+        @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null||Model.ProfInvID!=null))
+        {
+            <text>
+        $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+        });
+            </text>
+        }
         }
         catch (e) {
             console.log(e.message);

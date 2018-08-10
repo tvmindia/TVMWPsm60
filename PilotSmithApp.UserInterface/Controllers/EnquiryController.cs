@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class EnquiryController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -53,6 +55,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             ViewBag.ID = id;
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryAdvanceSearchViewModel enquiryAdvanceSearchVM = new EnquiryAdvanceSearchViewModel();
+            //if (Request.Cookies["UserSettings"] != null)
+            //{
+            //    if (Request.Cookies["UserSettings"]["TvmValid"] != null)
+            //    { AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA; }
+            //}
+            //string userSettings = Request.Cookies["UserSettings"]["TvmValid"];
+            //AppUA appUA = Request.Cookies["UserSettings"]["TvmValid"] as AppUA;
             AppUA appUA = Session["AppUA"] as AppUA;
             enquiryAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             enquiryAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
@@ -368,7 +377,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                     toolboxVM.HistoryBtn.Visible = true;
                     toolboxVM.HistoryBtn.Text = "History";
-                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','ENQ');";
 
                     if (_commonBusiness.CheckDocumentIsDeletable("ENQ", id))
@@ -394,9 +403,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddEnquiry();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -421,6 +428,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','ENQ');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','ENQ');";
 
                     toolboxVM.deletebtn.Visible = true;
                     toolboxVM.deletebtn.Text = "Delete";

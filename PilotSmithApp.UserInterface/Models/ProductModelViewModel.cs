@@ -29,6 +29,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? StockQty { get; set; }
         [Display(Name = "Image")]
         public string ImageURL { get; set; }
+        public string TallyName { get; set; }
 
         //Additional Fields
         [Display(Name = "Introduced Date")]

@@ -157,12 +157,14 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.Customer = new Customer();
                                     productionOrder.Customer.CompanyName = (sdr["Customer"].ToString() != "" ? sdr["Customer"].ToString() : productionOrder.Customer.CompanyName);
                                     productionOrder.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionOrder.CustomerID);
+                                    productionOrder.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionOrder.Customer.ID);
                                     productionOrder.DocumentStatusCode = (sdr["DocumentStatusCode"].ToString() != "" ? int.Parse(sdr["DocumentStatusCode"].ToString()) : productionOrder.DocumentStatusCode);
                                     productionOrder.GeneralNotes = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrder.GeneralNotes);
                                     productionOrder.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : productionOrder.DocumentOwnerID);
                                     productionOrder.Branch = new Branch();
                                     productionOrder.Branch.Description = (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : productionOrder.Branch.Description);
                                     productionOrder.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionOrder.BranchCode);
+                                    productionOrder.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : productionOrder.Branch.Code);
                                     productionOrder.DocumentStatus = new DocumentStatus();
                                     productionOrder.DocumentStatus.Description = (sdr["DocumentStatus"].ToString() != "" ? sdr["DocumentStatus"].ToString() : productionOrder.DocumentStatus.Description);
                                     productionOrder.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : productionOrder.DocumentOwners);

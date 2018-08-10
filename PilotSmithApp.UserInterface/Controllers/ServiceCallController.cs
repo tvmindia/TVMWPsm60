@@ -10,9 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class ServiceCallController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -392,7 +394,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "R")]
-        public ActionResult ChangeButtonStyle(string actionType)
+        public ActionResult ChangeButtonStyle(string actionType, Guid? id)
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
@@ -446,14 +448,16 @@ namespace PilotSmithApp.UserInterface.Controllers
                     //toolboxVM.SendForApprovalBtn.Text = "Send";
                     //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     //toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SRC');";
                     break;
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddServiceCall();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -485,6 +489,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     //toolboxVM.SendForApprovalBtn.Text = "Send";
                     //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     //toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SRC');";
                     break;
                 case "Add":
 

@@ -11,9 +11,11 @@ using Newtonsoft.Json;
 using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.DataAccessObject.DTO;
 using SAMTool.BusinessServices.Contracts;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class ProductCategoryController : Controller
     {
         AppConst _appConst = new AppConst();

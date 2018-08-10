@@ -20,6 +20,28 @@ $(document).ready(function () {
                 EditRedirectToDocument($('#RedirectToDocument').val());
             }
         }
+        //function GetSaleInvoiceXmlFile()
+        //{
+        //    try{
+        //        var saleInvoiceList = [];
+        //        _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceXmlFile/");
+        //        if (_jsonData != '') {
+        //            _jsonData = JSON.parse(_jsonData);
+        //            _message = _jsonData.Message;
+        //            _status = _jsonData.Status;
+        //            saleInvoiceList = _jsonData.Records;
+        //        }
+        //        if (_status == "OK") {
+        //            return saleInvoiceList;
+        //        }
+        //        if (_status == "ERROR") {
+        //            notyAlert('error', _message);
+        //        }
+        //    }
+        //    catch (e) {
+        //        console.log(e.message);
+        //    }
+        //}
     }
     catch (e) {
         console.log(e.message);
@@ -202,14 +224,12 @@ function AddSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
+            openNav();
+            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
             ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add");
             BindSaleInvoiceDetailList(_emptyGuid);
-            BindSaleInvoiceOtherChargesDetailList(_emptyGuid);
-            $('#lblSaleInvoiceInfo').text('<<Sale Invoice No.>>');
-            //setTimeout(function () {
-            //resides in customjs for sliding
-            openNav();
-            //}, 100); 
+            BindSaleInvoiceOtherChargesDetailList(_emptyGuid);           
+            
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -1588,4 +1608,123 @@ function GetOtherCharge(value) {
 
     }
 
+}
+function GetSaleInvoiceXML()
+{
+    $('#lblModelXMLSaleInvoice').text('Generate Invoice XML For Tally')
+    $('#divModelXMLSaleInvoice').modal('show');
+    bindSaleInvoiceTblForXML();
+}
+function GetXML()
+{
+    debugger;
+    var ids;
+    // save timestamp in hidden field
+    $('#cookieValue').val(Date.now().toString());
+    // start timer to wait for cookie
+    _tmr = window.setInterval(function () {
+        var _str = 'dlc=' + $('#cookieValue').val();
+        if (document.cookie.indexOf(_str) !== -1) {
+
+        $('#cookieValue').val('jk');//Setting cookie value to come out of the loop//
+        $.ajax({
+            url: '/' + 'SaleInvoice' + '/UpdateSaleInvoiceTallyStatus',
+            type: "POST",
+            data: JSON.stringify({ 'ids': ids }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                bindSaleInvoiceTblForXML();
+                clearInterval(_tmr);
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+
+    }
+}, 100);
+        ids = selectedInvoiceIDs();//identify the selected rows 
+        $('#ids').val(ids);
+        _dataTable.XMLSaleInvoiceList.destroy();
+        $('#FormXMLExport').submit();
+        $('#divModelXMLSaleInvoice').modal('hide');
+}
+function GetSaleInvoiceList() {
+    debugger;
+    var data = { "invoiceType": $('#ddlInvoiceFilter').val() };
+    _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceListForXMLGeneration/", data);
+    if (_jsonData != '') {
+        debugger;
+        _jsonData = JSON.parse(_jsonData);
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        SaleInvoiceList = _jsonData.Records;
+    }
+    if (_status == "OK") {
+        return SaleInvoiceList;
+    }
+    if (_status == "ERROR") {
+        notyAlert('error', _message);
+    }
+}
+function bindSaleInvoiceTblForXML()
+{
+    _dataTable.XMLSaleInvoiceList = $('#tblXMLSaleInvoice').DataTable(
+         {
+             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+             order: [],
+             searching: false,
+             paging: false,
+             autoWidth: false,
+             ordering: false,
+             bInfo: false,
+             //data: data,
+             language: {
+                 search: "_INPUT_",
+                 searchPlaceholder: "Search"
+             },
+             serverSide: false,
+             data: GetSaleInvoiceList()
+             ,
+             pageLength: 8,
+             columns: [
+                   { "data": "Checkbox", "defaultContent": "", "width": "5%" },
+                   { "data": "SaleInvNo", "defaultContent": "<i>-</i>" },
+                   { "data": "SaleInvDateFormatted", "defaultContent": "<i>-</i>" },
+                   { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+                   {
+                       "data": "TallyStatus", render: function (data, type, row) {
+                           debugger;
+                           if (data==0)
+                               return '<span class="label label-danger">Not Exported</span>'
+                           else if(data==1)
+                               return '<span class="label label-success">Exported</span>'     
+                           else 
+                               return '<span class="label label-primary">Modified</span>'
+
+                       }, "defaultContent": "<i>-</i>"
+                   },
+             ],
+             columnDefs: [{ orderable: false, className: 'select-checkbox', "targets": 0 }
+                 , { className: "text-left", "targets": [1,3,4] }
+                 , { className: "text-center", "targets": [2] }
+                 , { "targets": [], "bSortable": false }
+                , { "targets": [1], "width": "20%" }
+                , { "targets": [4], "width": "15%" }
+                , { "targets": [3], "width": "40%" }
+                , { "targets": [2], "width": "20%" }],
+             select: { style: 'multi', selector: 'td:first-child' },
+             destroy: true
+         });
+}
+//Selected Rows
+function selectedInvoiceIDs() {
+    debugger;
+    var saleInvoiceVM = _dataTable.XMLSaleInvoiceList.rows(".selected").data();
+    var saleInvoiceIDs = [];
+    for (var r = 0; r < saleInvoiceVM.length; r++) {
+        saleInvoiceIDs.push(saleInvoiceVM[r].ID);
+    }
+    return saleInvoiceIDs.toString();
 }

@@ -151,10 +151,10 @@
                     <div class="col-md-12 ">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.IsUpdate||Model.SaleOrderID!=null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -184,7 +184,7 @@
                     @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -287,7 +287,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.DelvChallanNo" documentType="DLC"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.DelvChallanNo" documentType="DLC" documentCurrentOwner="@Model.DocumentOwner"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -417,7 +417,7 @@
             $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
           
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?required=' + $('#hdnDocumentStatusRequired').val())
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate||Model.SaleOrderID!=null)
              {
           
              }
@@ -430,7 +430,13 @@
                 $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
                 </text>
             }
-
+              @if ((!Model.IsUpdate) && (Model.SaleOrderID!=null))
+              {
+                  <text>
+              $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+              });
+                  </text>
+              }
         }
         catch (e) {
             console.log(e.message);

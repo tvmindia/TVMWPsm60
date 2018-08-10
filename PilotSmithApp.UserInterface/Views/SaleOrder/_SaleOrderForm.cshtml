@@ -205,7 +205,7 @@
                     @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Branch.Description</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -281,7 +281,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.SaleOrderNo" documentType="SOD"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.SaleOrderNo" documentType="SOD" documentCurrentOwner="@Model.DocumentOwner"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -316,10 +316,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate)
+                    @if (Model.IsUpdate||Model.EnquiryID!=null||Model.QuoteID!=null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput">@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -591,7 +591,7 @@
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SOD&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
             $('.divBankSelectList').load('/Bank/BankSelectList?required=' + $('#hdnBankRequired').val())
-            @if (Model.IsUpdate)
+            @if (Model.IsUpdate||Model.EnquiryID!=null||Model.QuoteID!=null)
             {
 
             }
@@ -604,7 +604,13 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
             }
-
+             @if ((!Model.IsUpdate) && (Model.EnquiryID!=null||Model.QuoteID!=null))
+             {
+                 <text>
+             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+             });
+                 </text>
+             }
         }
         catch (e) {
             console.log(e.message);

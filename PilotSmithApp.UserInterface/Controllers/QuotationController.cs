@@ -11,9 +11,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class QuotationController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -92,8 +94,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.DocumentStatus.Description = "-";
                     quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
-                    quotationVM.Customer = new CustomerViewModel();
-                    quotationVM.Customer.CompanyName = "-";
+                    quotationVM.Customer = estimateVM.Customer;
                     quotationVM.IsDocLocked = false;
                 }
                 //quotationVM.Customer = new CustomerViewModel
@@ -581,6 +582,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','QUO');";
 
+
                     if (_commonBusiness.CheckDocumentIsDeletable("QUO", id))
                     {
                         toolboxVM.deletebtn.Visible = true;
@@ -610,7 +612,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                     toolboxVM.HistoryBtn.Visible = true;
                     toolboxVM.HistoryBtn.Text = "History";
-                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
 
                     toolboxVM.PrintBtn.Visible = true;
@@ -677,14 +679,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.PrintBtn.Text = "Print";
                     toolboxVM.PrintBtn.DisableReason = "Not Approved";
                     toolboxVM.PrintBtn.Event = "";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
                     break;
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddQuotation();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -733,7 +738,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                     toolboxVM.HistoryBtn.Visible = true;
                     toolboxVM.HistoryBtn.Text = "History";
-                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
 
                     toolboxVM.PrintBtn.Visible = true;
@@ -747,9 +752,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddQuotation();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -796,7 +799,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                     toolboxVM.HistoryBtn.Visible = true;
                     toolboxVM.HistoryBtn.Text = "History";
-                    toolboxVM.HistoryBtn.Title = "Approval History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','QUO');";
 
 

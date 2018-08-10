@@ -1,46 +1,5 @@
 var appAddress = window.location.protocol + "//" + window.location.host + "/";   //Retrieving browser Url 
 var fileArray = [];
-(function Checker() {
-    var flag = false;
-    $.ajax({
-        type: 'POST',
-        url: appAddress + 'Account/AreyouAlive/',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-
-            if (data.Result == "OK") {
-                switch (data.Record) {
-                    case "dead":
-                        $('.modal').modal('hide');
-                        $("#RedirectToLoginModel").modal('show');
-  
-                        flag = true;
-                        break;
-                    case "alive":
-                        flag = false;
-                        break;
-                }
-
-
-            }
-            if (data.Result == "ERROR") {
-                notyAlert('error', data.Message);
-            }
-
-        },
-        complete: function () {
-            // Schedule the next request when the current one's complete
-            //  setTimeout(Checker, 126000);
-            if (flag != true) {
-                //for 15.2 minutes
-                setTimeout(Checker, 912000);
-               // setTimeout(Checker, 126000);
-            }
-
-        },
-    });
-})();
 
 //LOADER/SPINNER
 $(window).bind("load", function () {
@@ -48,20 +7,7 @@ $(window).bind("load", function () {
     $('.dataTables_processing').hide();
     $(".spn_hol").fadeOut(100);
 });
-$(document).ready(function () {
-    //$("input.Amount").on('click',function () {
-    //    debugger;
-    //    $(this).select();
-    //});
-    //$('#ahrefHome').on('click',function () {
-    //    $('.wrap,a').toggleClass('active');
-    //    return false;
-    //});    
-    //$('.wrap').mouseleave(function () {
-    //    $('.wrap,a').removeClass('active');
-    //    return false;
-    //});
-    //$('#divMainBody').attr('style',"height:"+screen.height + "px");
+$(document).ready(function () {   
     var wrap = $(".EntryForms");
     wrap.on("scroll", function (e) {
         if (this.scrollTop > 147) {
@@ -132,8 +78,49 @@ $(document).ready(function () {
 
     });
     $('.EntryForms').attr('style', 'height:' + (screen.availHeight / 1.53) + 'px');
-   
+    setTimeout(Checker, 912000);
 });
+function Checker() {
+    var flag = false;
+    $.ajax({
+        type: 'POST',
+        url: appAddress + 'Account/AreyouAlive/',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            if (data.Result == "OK") {
+                switch (data.Record) {
+                    case "dead":
+                        $('.modal').modal('hide');
+                        $("#RedirectToLoginModel").modal('show');
+
+                        flag = true;
+                        break;
+                    case "alive":
+                        flag = false;
+                        break;
+                }
+
+
+            }
+            if (data.Result == "ERROR") {
+                notyAlert('error', data.Message);
+            }
+
+        },
+        complete: function () {
+            // Schedule the next request when the current one's complete
+            //  setTimeout(Checker, 126000);
+            if (flag != true) {
+                //for 15.2 minutes
+                //setTimeout(Checker, 912000);
+                // setTimeout(Checker, 126000);
+            }
+
+        },
+    });
+}
 function ChangeNavPosition()
 {
     $('.main-sidebar').css('position', 'absolute');
@@ -147,7 +134,6 @@ function CloseAdvanceSearch()
 
 //for showing loading while saving data
 function OnMasterBegin() {
-    debugger;
     $('#btnSaveMaster').prop('disabled', true);
     $('#icnMasterLoading,#icnSavLoading').show()
 }
@@ -343,7 +329,6 @@ function ChangeButtonPatchView(Controller, Dom, Action,ExtraParam) {
 function GetMasterPartial(Controller, MasterCode) {
     try
     {
-        debugger
         var data = { "masterCode": MasterCode };
         var ds = {};
         ds = GetDataFromServer(Controller + "/MasterPartial/", data);
@@ -520,12 +505,10 @@ $('.EntryForms').scroll(function () {
 });
 function UploadFile(FileObject)
 {
-    debugger;
    // $('#btnUpload').click(function () {
 
         // Checking whether FormData is available in browser  
         if (window.FormData !== undefined) {
-            debugger;
             var fileUpload = $("#FileUpload1").get(0);
             var files = fileUpload.files;
             if (files.length > 0)
@@ -535,7 +518,6 @@ function UploadFile(FileObject)
 
                 // Looping over all files and add it to FormData object  
                 for (var i = 0; i < files.length; i++) {
-                    debugger;
                     fileData.append(files[i].name, files[i]);
                     var filesize = (parseInt($('#hdnFileSizebytes').val())) + files[i].size;
                     $('#hdnFileSizebytes').val(filesize);
@@ -581,12 +563,10 @@ function UploadFile(FileObject)
    // });
 }
 function UploadPopupFile(FileObject) {
-    debugger;
     // $('#btnUpload').click(function () {
 
     // Checking whether FormData is available in browser  
     if (window.FormData !== undefined) {
-        debugger;
         var fileUpload = $("#PopupFileUpload").get(0);
         var files = fileUpload.files;
         if (files.length > 0) {
@@ -595,7 +575,6 @@ function UploadPopupFile(FileObject) {
 
             // Looping over all files and add it to FormData object  
             for (var i = 0; i < files.length; i++) {
-                debugger;
                 fileData.append(files[i].name, files[i]);
                 var filesize = (parseInt($('#hdnFileSizebytes').val())) + files[i].size;
                 $('#hdnFileSizebytes').val(filesize);
@@ -640,7 +619,6 @@ function UploadPopupFile(FileObject) {
 
 function DeleteFile(this_Obj)
 {
-    debugger;
     try
     {
 
@@ -678,7 +656,6 @@ function DeleteNow(this_Obj)
 function PaintImages(ID)
 {
     try {
-        debugger;
         var data = { "ID": ID };
         var ds = {};
         ds = GetDataFromServer("FileUpload/GetAttachments/", data);
@@ -687,7 +664,6 @@ function PaintImages(ID)
         }
         if (ds.Result == "OK") {
             //ds.Records
-            debugger;
             if (ds.Records != null)
             {
                 $('#ExistingPreview').empty();
@@ -769,7 +745,6 @@ function clearPopupUploadControl() {
     $('#ExistingPreview').empty();
 }
 function validateType(ext) {
-    debugger;
     if (ext.match(/(doc|docx)$/i)) {
         //doc
         return '<i class="fa fa-file-word-o text-primary"></i>';
@@ -814,7 +789,6 @@ function validateType(ext) {
     }
 }
 function bytesToSize(bytes) {
-    debugger;
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     if (bytes == 0) return '0 Byte';
     var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
@@ -843,7 +817,6 @@ function AppendToFileList(list) {
     }
 }
 function Attachment_FindRow(element) {
-    debugger;
     while (true) {
         if (element.nodeName == "A")
             return element;
@@ -971,7 +944,6 @@ function clearCookie(cname) {
 //------------------------------------Send/ReSend Document For Approval-----------------------------------------//
 
 function SendDocForApproval(documentID, documentTypeCode, approvers) {
-    debugger;
 
     try {
         var data = { "documentID": documentID, "documentTypeCode": documentTypeCode, "approvers": approvers };
@@ -998,7 +970,6 @@ function SendDocForApproval(documentID, documentTypeCode, approvers) {
 
 }
 function ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID) {
-    debugger;
     try {
         var data = { "documentID": documentID, "documentTypeCode": documentTypeCode, "latestApprovalID": latestApprovalID };
         var result = "";
@@ -1038,7 +1009,6 @@ function RedirectSearchClick(e,this_obj){
 
 function GetTimeLine(DocumentID, Type) {
     try {
-        debugger;
         var data = { "Id": DocumentID, "Type": Type };
         ds = GetDataFromServer("TimeLine/GetTimeLine/", data);      
         $("#divTimeLineBody").empty();
@@ -1053,7 +1023,6 @@ function GetTimeLine(DocumentID, Type) {
 
 function ApprovalHistoryList(DocumentID, Type) {
     try{
-        debugger;
         $("#divApprovalHistoryBody").load("DocumentApproval/ApprovalHistoryList?DocID=" + DocumentID + "&DocType=" + Type, function (responseTxt, statusTxt, xhr) {
             if (statusTxt == "success") {
                 OnServerCallComplete();
@@ -1069,7 +1038,6 @@ function ApprovalHistoryList(DocumentID, Type) {
 }
 
 function TakeOwnership(thisObj) {
-    debugger;
     $('#Remarks').val('');
     $('#spanDocumentNo').text(thisObj.attributes.documentNumber.value);
     $('#spanCurrentOwner').text(thisObj.attributes.documentCurrentOwner.value);

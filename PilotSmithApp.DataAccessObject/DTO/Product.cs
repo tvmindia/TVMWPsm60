@@ -15,6 +15,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public DateTime? IntroducedDate { get; set; }
         public Guid? CompanyID { get; set; }
         public string HSNCode { get; set; }
+        public string TallyName { get; set; }
 
         //Additional Fields
         public string IntroducedDateFormatted { get; set; }

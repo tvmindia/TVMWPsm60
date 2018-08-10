@@ -121,5 +121,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _saleInvoiceRepository.DeleteSaleInvoiceOtherChargeDetail(id);
         }
+        public List<SaleInvoice> GetSaleInvoiceByID(string ids)
+        {
+            return _saleInvoiceRepository.GetSaleInvoiceByID(ids);
+        }
+        public object UpdateSaleInvoiceTallyStatus(string ids)
+        {
+            return _saleInvoiceRepository.UpdateSaleInvoiceTallyStatus(ids);
+        }
     }
 }

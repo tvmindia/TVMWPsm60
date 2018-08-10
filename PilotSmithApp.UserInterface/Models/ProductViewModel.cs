@@ -21,6 +21,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name ="Company")]       
         public Guid? CompanyID { get; set; }
         public string HSNCode { get; set; }
+        public string TallyName { get; set; }
 
         //Additional Fields
         [Display(Name = "Introduced Date")]

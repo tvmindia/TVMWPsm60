@@ -20,7 +20,7 @@ namespace PilotSmithApp.UserInterface.SecurityFilter
         public string Mode { get; set; }
         [Dependency]
         public IUserBusiness _userBusiness { get; set; }
-      
+        
         public void OnAuthentication(AuthenticationContext filterContext)
         {
            //var controllerName = filterContext.RouteData.Values["controller"];

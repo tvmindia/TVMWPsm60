@@ -7,13 +7,17 @@ using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class SaleInvoiceController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -112,8 +116,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
-                    saleInvoiceVM.Customer = new CustomerViewModel();
-                    saleInvoiceVM.Customer.CompanyName = "-";
+                    saleInvoiceVM.Customer = quotationVM.Customer;
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && saleorderID != null)
@@ -135,8 +138,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
-                    saleInvoiceVM.Customer = new CustomerViewModel();
-                    saleInvoiceVM.Customer.CompanyName = "-";
+                    saleInvoiceVM.Customer = saleorderVM.Customer;
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else if(id==Guid.Empty && proformaInvoiceID!=null)
@@ -158,8 +160,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     };
                     saleInvoiceVM.Branch = new BranchViewModel();
                     saleInvoiceVM.Branch.Description = "-";
-                    saleInvoiceVM.Customer = new CustomerViewModel();
-                    saleInvoiceVM.Customer.CompanyName = "-";
+                    saleInvoiceVM.Customer = proformaInvoiceVM.Customer;
                     saleInvoiceVM.IsDocLocked = false;
                 }
                 else   
@@ -732,9 +733,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.OtherChargesDetailJSON);
                 ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceOtherChargeViewModel>>(ReadableFormat);
-
                 object result = _saleInvoiceBusiness.InsertUpdateSaleInvoice(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
-
                 if (saleInvoiceVM.ID == Guid.Empty)
                 {
                     return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
@@ -744,7 +743,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
                 }
 
-
+                
             }
             catch (Exception ex)
             {
@@ -965,7 +964,53 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Print SaleInvoice
 
-        #region ButtonStyling
+        #region GetSaleInvoiceListForXMLGeneration
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetSaleInvoiceListForXMLGeneration(string invoiceType)
+        {
+            SaleInvoiceAdvanceSearchViewModel saleInvoiceAdvanceSearchVM=new SaleInvoiceAdvanceSearchViewModel();
+            saleInvoiceAdvanceSearchVM.DataTablePaging = new DataTablePagingViewModel();
+            saleInvoiceAdvanceSearchVM.DataTablePaging.Length = -1;
+            List<SaleInvoiceViewModel> SaleInvoiceVMList= Mapper.Map<List<SaleInvoice>, List<SaleInvoiceViewModel>>(_saleInvoiceBusiness.GetAllSaleInvoice(Mapper.Map<SaleInvoiceAdvanceSearchViewModel, SaleInvoiceAdvanceSearch>(saleInvoiceAdvanceSearchVM)));
+            switch (invoiceType)
+            {
+                case "ExpModi":
+                    SaleInvoiceVMList = SaleInvoiceVMList.Where(x => x.TallyStatus == 0 || x.TallyStatus==2 ).ToList();
+                    break;
+                case "NExp":
+                    SaleInvoiceVMList = SaleInvoiceVMList.Where(x => x.TallyStatus == 0).ToList();
+                    break;
+                case "Modified":
+                    SaleInvoiceVMList = SaleInvoiceVMList.Where(x => x.TallyStatus == 2).ToList();
+                    break;
+            }
+            
+            return JsonConvert.SerializeObject(new { Status = "OK", Records = SaleInvoiceVMList, Message = "Success" });
+        }
+        #endregion GetSaleInvoiceListForXMLGeneration
+
+        #region UpdateSaleInvoiceTallyStatus
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string UpdateSaleInvoiceTallyStatus(string ids)
+        {
+            try
+            {
+                
+                object result = _saleInvoiceBusiness.UpdateSaleInvoiceTallyStatus(ids);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion GetSaleInvoiceTallyStatus
+
+            #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
@@ -990,6 +1035,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Text = "Reset";
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetSaleInvoiceList();";
+
+                    toolboxVM.XMLBtn.Visible = true;
+                    toolboxVM.XMLBtn.Text = "XML";
+                    toolboxVM.XMLBtn.Title = "Download Invoices to XML";
+                    toolboxVM.XMLBtn.Event = "GetSaleInvoiceXML()";
 
                     break;
                 case "Edit":
@@ -1049,14 +1099,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Text = "Send";
                     toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SIV');";
                     break;
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddSaleInvoice();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -1101,6 +1154,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SIV');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SIV');";
                     break;
                 case "Add":
 

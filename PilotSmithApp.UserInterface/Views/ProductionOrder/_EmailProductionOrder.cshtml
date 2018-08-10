@@ -138,17 +138,20 @@
 
             </thead>
         </table>
-
-        <table style="width:100%;margin-top:2%;">
-            <thead>
-                <tr>
-                    <td style="font-size:small;padding-bottom:5px;"><b><u>General Notes</u></b></td>
-                </tr>
-                <tr>
-                    <td style="font-size:small">@Html.Raw(Model.GeneralNotes.Replace("\n","<br />"))</td>
-                </tr>
-            </thead>
-        </table>
+        @if (Model.GeneralNotes != null)
+        {
+            <table style="width:100%;margin-top:2%;">
+                <thead>
+                    <tr>
+                        <td style="font-size:small;padding-bottom:5px;"><b><u>General Notes</u></b></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:small">@Html.Raw(Model.GeneralNotes.Replace("\n", "<br />"))</td>
+                    </tr>
+                </thead>
+            </table>
+        }
+       
     </div>
     <div style="padding-top:20px">
         <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />

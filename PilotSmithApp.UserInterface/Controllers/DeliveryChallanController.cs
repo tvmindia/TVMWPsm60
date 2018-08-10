@@ -11,9 +11,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class DeliveryChallanController : Controller
     {
         AppConst _appConstant = new AppConst();
@@ -80,8 +82,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.ProdOrderID = null;
                     deliveryChallanVM.DocumentType = "SaleOrder";
                     deliveryChallanVM.ProductionOrderSelectList = new List<SelectListItem>();
-                    deliveryChallanVM.Customer = new CustomerViewModel();
-                    deliveryChallanVM.Customer.CompanyName = "-";
+                    deliveryChallanVM.Customer = saleOrderVM.Customer;
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else if (id == Guid.Empty && prodOrderID != null)
@@ -96,8 +97,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     deliveryChallanVM.SaleOrderID = null;
                     deliveryChallanVM.DocumentType = "ProductionOrder";
                     deliveryChallanVM.SaleOrderSelectList = new List<SelectListItem>();
-                    deliveryChallanVM.Customer = new CustomerViewModel();
-                    deliveryChallanVM.Customer.CompanyName = "-";
+                    deliveryChallanVM.Customer = productionOrderVM.Customer;
                     deliveryChallanVM.IsDocLocked = false;
                 }
                 else
@@ -474,15 +474,18 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','DLC');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','DLC');";
                     break;
 
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
-                    toolboxVM.addbtn.Disable = true;
-                    toolboxVM.addbtn.DisableReason = "Document Locked";
-                    toolboxVM.addbtn.Event = "";
+                    toolboxVM.addbtn.Event = "AddDeliveryChallan();";
 
                     toolboxVM.savebtn.Visible = true;
                     toolboxVM.savebtn.Text = "Save";
@@ -514,6 +517,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.TimeLine.Text = "TimeLn";
                     toolboxVM.TimeLine.Title = "TimeLine";
                     toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','DLC');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','DLC');";
                     break;
 
                 case "Add":

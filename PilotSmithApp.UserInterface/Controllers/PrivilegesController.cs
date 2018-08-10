@@ -10,9 +10,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PilotSmithApp.UserInterface.Models;
+using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class PrivilegesController : Controller
     {
         PSASysCommon _pSASysCommon = new PSASysCommon();

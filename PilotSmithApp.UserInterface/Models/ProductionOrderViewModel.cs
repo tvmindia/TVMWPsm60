@@ -78,6 +78,8 @@ namespace PilotSmithApp.UserInterface.Models
         public AreaViewModel Area { get; set; }
         public PSAUserViewModel PSAUser { get; set; }
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public bool ShowRate { get; set; }
+        public bool ShowAmount { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel
@@ -176,6 +178,8 @@ namespace PilotSmithApp.UserInterface.Models
         public PlantViewModel Plant { get; set; }
         public decimal? PrevDelQty { get; set; }
         public decimal? DelvQty { get; set; }
+        public bool ShowRate { get; set; }
+        public bool ShowAmount { get; set; }
     }
 
     public class ProductionOrderSummaryViewModel
