@@ -1644,11 +1644,16 @@ function GetXML()
 
     }
 }, 100);
-        ids = selectedInvoiceIDs();//identify the selected rows 
+    ids = selectedInvoiceIDs();//identify the selected rows 
+    if (ids != "") {
         $('#ids').val(ids);
         _dataTable.XMLSaleInvoiceList.destroy();
         $('#FormXMLExport').submit();
         $('#divModelXMLSaleInvoice').modal('hide');
+    }
+    else {
+        notyAlert('error','Select invoices to generate XML');
+    }
 }
 function GetSaleInvoiceList() {
     debugger;
@@ -1695,7 +1700,6 @@ function bindSaleInvoiceTblForXML()
                    { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
                    {
                        "data": "TallyStatus", render: function (data, type, row) {
-                           debugger;
                            if (data==0)
                                return '<span class="label label-danger">Not Exported</span>'
                            else if(data==1)

@@ -1038,7 +1038,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                     toolboxVM.XMLBtn.Visible = true;
                     toolboxVM.XMLBtn.Text = "XML";
-                    toolboxVM.XMLBtn.Title = "Download Invoices to XML";
+                    toolboxVM.XMLBtn.Title = "Export to XML";
                     toolboxVM.XMLBtn.Event = "GetSaleInvoiceXML()";
 
                     break;

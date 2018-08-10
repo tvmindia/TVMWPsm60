@@ -252,7 +252,46 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                     writer.WriteEndElement();//</LEDGERENTRIES.LIST>
                                                 }
 
-
+                                                if(saleInvoice.IGSTTotal!=0 && saleInvoice.IGSTTotal != null)
+                                                 {
+                                                    writer.WriteStartElement("LEDGERENTRIES.LIST");
+                                                        writer.WriteStartElement("OLDAUDITENTRYIDS.LIST");
+                                                        writer.WriteAttributeString("TYPE", "Number");
+                                                            writer.WriteStartElement("OLDAUDITENTRYIDS");
+                                                            writer.WriteString("-1");
+                                                            writer.WriteEndElement();//</OLDAUDITENTRYIDS>
+                                                        writer.WriteFullEndElement();//</OLDAUDITENTRYIDS.LIST>
+                                                        writer.WriteStartElement("LEDGERNAME");
+                                                            writer.WriteString(saleInvoice.IGSTTallyLedger);
+                                                        writer.WriteEndElement();//</LEDGERNAME>
+                                                        writer.WriteStartElement("GSTCLASS");
+                                                        writer.WriteEndElement();//</GSTCLASS>
+                                                        writer.WriteStartElement("ISDEEMEDPOSITIVE");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</ISDEEMEDPOSITIVE>
+                                                        writer.WriteStartElement("LEDGERFROMITEM");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</LEDGERFROMITEM>
+                                                        writer.WriteStartElement("REMOVEZEROENTRIES");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</REMOVEZEROENTRIES>
+                                                        writer.WriteStartElement("ISPARTYLEDGER");
+                                                            writer.WriteString("Yes");
+                                                        writer.WriteEndElement();//</ISPARTYLEDGER>
+                                                        writer.WriteStartElement("ISLASTDEEMEDPOSITIVE");
+                                                            writer.WriteString("Yes");
+                                                        writer.WriteEndElement();//</ISLASTDEEMEDPOSITIVE>
+                                                        writer.WriteStartElement("ISCAPVATTAXALTERED");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</ISCAPVATTAXALTERED>
+                                                        writer.WriteStartElement("ISCAPVATNOTCLAIMED");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</ISCAPVATNOTCLAIMED>
+                                                        writer.WriteStartElement("AMOUNT");
+                                                            writer.WriteString((saleInvoice.IGSTTotal).ToString());
+                                                        writer.WriteEndElement();//</AMOUNT>
+                                                    writer.WriteEndElement();//</LEDGERENTRIES.LIST>
+                                                  }
 
                                                 foreach (SaleInvoiceDetailViewModel saleInvoiceDetail in saleInvoice.SaleInvoiceDetailList)
                                                 {
