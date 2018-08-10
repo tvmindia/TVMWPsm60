@@ -382,6 +382,26 @@
        }
 
    }
+    @if (Model.RecallBtn.Visible)
+    {
+        if (Model.RecallBtn.Disable || Model.RecallBtn.HasAccess == false)
+        {
+
+            <a class="thr_disbtn" title="@Model.RecallBtn.Title-@Model.RecallBtn.DisableReason">
+                <img class="btnImg" src="@Url.Content("~/Content/images/Recall.png")">
+                <span class="btnText">@Model.RecallBtn.Text</span>
+            </a>
+        }
+        else
+        {
+
+            <a title="@Model.RecallBtn.Title" class="thr_btn" onclick=@Model.RecallBtn.Event>
+                <img class="btnImg" src="@Url.Content("~/Content/images/Recall.png")">
+                <span class="btnText">@Model.RecallBtn.Text</span>
+            </a>
+        }
+
+    }
  @if (Model.EmailBtn.Visible)
  {
      if (Model.EmailBtn.Disable || Model.EmailBtn.HasAccess == false)

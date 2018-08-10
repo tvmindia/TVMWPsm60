@@ -56,13 +56,14 @@
                     <tr>
                         <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
                         <th style="width:21%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                        <th style="width:8%;text-align:left;font-size:12px;border-bottom:dotted 1pt;">HSN</th>
                         <th style="width:9%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
                         <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
                         <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
-                        <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
-                        <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CGST</th>
-                        <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">IGST</th>
-                        <th style="width:9%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CESS</th>
+                        <th style="width:7%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
+                        <th style="width:7%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CGST</th>
+                        <th style="width:7%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">IGST</th>
+                        <th style="width:7%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CESS</th>
                         <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">AMOUNT</th>
                     </tr>
                 </thead>
@@ -86,13 +87,14 @@
                             <tr>
                                 <td style="width:4%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
                                 <td style="width:21%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                                <td style="width:8%;text-align:left;font-size:12px;vertical-align:top;">@mp.Product.HSNCode</td>
                                 <td style="width:9%; text-align: left;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                                 <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Rate</td>
                                 <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@mp.Discount</td>
-                                <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@SGSTAmt<br /> <span style="font-size:8px;">(@mp.SGSTPerc %)</span></td>
-                                <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span></td>
-                                <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
-                                <td style="width:9%; text-align: right;font-size:12px;vertical-align:top;">@mp.CessAmt<br /><span style="font-size:8px;">(@mp.CessPerc %)</span></td>
+                                <td style="width:7%; text-align: right;font-size:12px;vertical-align:top;">@SGSTAmt<br /> <span style="font-size:8px;">(@mp.SGSTPerc %)</span></td>
+                                <td style="width:7%; text-align: right;font-size:12px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span></td>
+                                <td style="width:7%; text-align: right;font-size:12px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
+                                <td style="width:7%; text-align: right;font-size:12px;vertical-align:top;">@mp.CessAmt<br /><span style="font-size:8px;">(@mp.CessPerc %)</span></td>
                                 <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@itemgrandTotal</td>
                             </tr>
                             slno = slno + 1;
@@ -114,10 +116,11 @@
                                     <thead>
                                         <tr>
                                             <th style="width:7%;text-align: center;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black; ">No.</th>
-                                            <th style="width:31%; text-align: left;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">ITEM</th>
-                                            <th style="width:17%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">CHARGE</th>
-                                            <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">GST</th>
-                                            <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">ADD TAX</th>
+                                            <th style="width:27%; text-align: left;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">ITEM</th>
+                                            <th style="width:10%;text-align:left;font-size:12px;border-bottom-style:solid;border-bottom-width:1pt;border-bottom-color:black;">SAC</th>
+                                            <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">CHARGE</th>
+                                            <th style="width:13%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">GST</th>
+                                            <th style="width:13%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">ADD TAX</th>
                                             <th style="width:15%; text-align: right;font-size:12px;border-bottom-style: solid;border-bottom-width: 1pt;border-bottom-color: black;">AMOUNT</th>
                                         </tr>
                                         @if (Model.SaleOrderOtherChargeList != null)
@@ -135,10 +138,11 @@
                                                 <tr>
 
                                                     <td style="width:7%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
-                                                    <td style="width:31%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.Description</td>
-                                                    <td style="width:17%; text-align: right;font-size:12px;vertical-align:top;">@mp.ChargeAmount</td>
-                                                    <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@GSTAmt</td>
-                                                    <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@mp.AddlTaxAmt</td>
+                                                    <td style="width:27%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.Description</td>
+                                                    <td style="width:10%; text-align: left;font-size:12px;vertical-align:top;">@mp.OtherCharge.SACCode</td>
+                                                    <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@mp.ChargeAmount</td>
+                                                    <td style="width:13%; text-align: right;font-size:12px;vertical-align:top;">@GSTAmt</td>
+                                                    <td style="width:13%; text-align: right;font-size:12px;vertical-align:top;">@mp.AddlTaxAmt</td>
                                                     <td style="width:15%; text-align: right;font-size:12px;vertical-align:top;">@Total</td>
 
                                                 </tr>
@@ -154,7 +158,7 @@
                             }
 
 
-                        <td colspan="4" style="font:12px;border-top:solid .5px;padding-top:8px;">
+                        <td colspan="5" style="font:12px;border-top:solid .5px;padding-top:8px;">
                             <table style="width:100%">
                                 <tr class="">
                                     <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left" valign="top">

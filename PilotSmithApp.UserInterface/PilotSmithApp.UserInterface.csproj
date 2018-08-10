@@ -292,6 +292,7 @@
     <Content Include="Content\images\Pilot1.png" />
     <Content Include="Content\images\PilotLogo.png" />
     <Content Include="Content\images\production.png" />
+    <Content Include="Content\images\Recall.png" />
     <Content Include="Content\images\rupee.png" />
     <Content Include="Content\images\saleorder.png" />
     <Content Include="Content\images\SuppPord.png" />
