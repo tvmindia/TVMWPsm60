@@ -19,6 +19,7 @@
                             @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    
                     <div class="col-md-4 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label" })
@@ -35,7 +36,6 @@
                         @Html.Hidden("hdnCountrydisabled", false)
                         @Html.HiddenFor(model => model.CountryCode, htmlAttributes: new { @class = "", @id = "hdnCountryCode" })
                     </div>
-
                     <div class="col-md-4 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.StateCode, htmlAttributes: new { @class = "control-label" })
@@ -55,6 +55,7 @@
                 </div>
 
                 <div class="col-md-12 no-padding">
+                    
                     <div class="col-md-4 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.CustomerCategoryList, htmlAttributes: new { @class = "control-label" })
@@ -144,6 +145,7 @@
                             @Html.ValidationMessageFor(model => model.Website, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-3 no-left-padding">
@@ -260,6 +262,15 @@
                         <div class="col-md-12">
                             @Html.EditorFor(model => model.AadharNo, new { htmlAttributes = new { @class = "form-control newinput" } })
                             @Html.ValidationMessageFor(model => model.AadharNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-3 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.TallyName, htmlAttributes: new { @class = "control-label " })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.TallyName, new { htmlAttributes = new { @class = "form-control newinput" } })
+                            @Html.ValidationMessageFor(model => model.TallyName, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>

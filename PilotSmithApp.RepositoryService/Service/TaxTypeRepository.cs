@@ -44,7 +44,7 @@ namespace PilotSmithApp.RepositoryService.Service
 
                         else
                             cmd.Parameters.Add("@Code", SqlDbType.Int).Value = taxType.Code;
-
+                        cmd.Parameters.Add("@TallyName", SqlDbType.VarChar, 50).Value = taxType.TallyName;
                         cmd.Parameters.Add("@Description", SqlDbType.VarChar, 50).Value = taxType.Description;
                         cmd.Parameters.Add("@CGSTPercentage", SqlDbType.Decimal).Value = taxType.CGSTPercentage;
                         cmd.Parameters.Add("@SGSTPercentage", SqlDbType.Decimal).Value = taxType.SGSTPercentage;
@@ -165,6 +165,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     taxType = new TaxType();
                                     taxType.Code = (sdr["Code"].ToString() != "" ? int.Parse(sdr["Code"].ToString()) : taxType.Code);
                                     taxType.Description = (sdr["Description"].ToString() != "" ? (sdr["Description"].ToString()) : taxType.Description);
+                                    taxType.TallyName = (sdr["TallyName"].ToString() != "" ? (sdr["TallyName"].ToString()) : taxType.TallyName);
                                     taxType.CGSTPercentage= (sdr["CGSTPercentage"].ToString() != "" ? decimal.Parse(sdr["CGSTPercentage"].ToString()) : taxType.CGSTPercentage);
                                     taxType.SGSTPercentage = (sdr["SGSTPercentage"].ToString() != "" ? decimal.Parse(sdr["SGSTPercentage"].ToString()) : taxType.SGSTPercentage);
                                     taxType.IGSTPercentage = (sdr["IGSTPercentage"].ToString() != "" ? decimal.Parse(sdr["IGSTPercentage"].ToString()) : taxType.IGSTPercentage);

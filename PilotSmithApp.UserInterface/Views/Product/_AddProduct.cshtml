@@ -22,6 +22,11 @@
                     @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                 </div>
             </div>
+            
+        </div>
+
+        <div class="col-md-12 no-padding">
+            
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label lblrequired" })
@@ -29,6 +34,15 @@
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control  newinput" } })
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6 no-padding">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.TallyName, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.TallyName, new { htmlAttributes = new { @class = "form-control newinput" } })
+                    @Html.ValidationMessageFor(model => model.TallyName, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
