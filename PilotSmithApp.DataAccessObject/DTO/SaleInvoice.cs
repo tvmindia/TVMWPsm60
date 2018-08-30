@@ -69,6 +69,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string CGSTTallyLedger { get; set; }
         public string SGSTTallyLedger { get; set; }
         public string IGSTTallyLedger { get; set; }
+        public string DiscountTallyLedger { get; set; }
+        public string ItemDiscountTallyLedger { get; set; }
+        public string DefaultTallyLedger { get; set; }
 
         public string DocumentType { get; set; }
         public string[] DocumentOwners { get; set; }

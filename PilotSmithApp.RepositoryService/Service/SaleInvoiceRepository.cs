@@ -171,6 +171,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.CGSTTallyLedger = (sdr["CGSTLedger"].ToString() != "" ? sdr["CGSTLedger"].ToString() : saleInvoice.CGSTTallyLedger);
                                         saleInvoice.SGSTTallyLedger = (sdr["SGSTLedger"].ToString() != "" ? sdr["SGSTLedger"].ToString() : saleInvoice.SGSTTallyLedger);
                                         saleInvoice.IGSTTallyLedger = (sdr["IGSTLedger"].ToString() != "" ? sdr["IGSTLedger"].ToString() : saleInvoice.IGSTTallyLedger);
+                                        saleInvoice.ItemDiscountTallyLedger = (sdr["ItemDiscountLedger"].ToString() != "" ? sdr["ItemDiscountLedger"].ToString() : saleInvoice.ItemDiscountTallyLedger);
+                                        saleInvoice.DiscountTallyLedger = (sdr["DiscountLedger"].ToString() != "" ? sdr["DiscountLedger"].ToString() : saleInvoice.DiscountTallyLedger);
+                                        saleInvoice.DefaultTallyLedger = (sdr["DefaultLedger"].ToString() != "" ? sdr["DefaultLedger"].ToString() : saleInvoice.DefaultTallyLedger);
                                         saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.CustomerID);
                                         saleInvoice.Customer = new Customer();
                                         saleInvoice.CustomerID = (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : saleInvoice.Customer.ID);

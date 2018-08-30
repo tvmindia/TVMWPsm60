@@ -93,6 +93,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? CGSTTotal { get; set; }
         public decimal? SGSTTotal { get; set; }
         public decimal? IGSTTotal { get; set; }
+        public decimal? DiscountTotal { get; set; }
         [Display(Name = "Expected Delivery Date")]
         [Required(ErrorMessage = "Expected Delivery Date is missing")]
         public string ExpectedDelvDateFormatted { get; set; }
@@ -103,6 +104,9 @@ namespace PilotSmithApp.UserInterface.Models
         public string CGSTTallyLedger { get; set; }
         public string SGSTTallyLedger { get; set; }
         public string IGSTTallyLedger { get; set; }
+        public string DiscountTallyLedger { get; set; }
+        public string ItemDiscountTallyLedger { get; set; }
+        public string DefaultTallyLedger { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
