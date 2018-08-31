@@ -36,14 +36,16 @@ namespace PilotSmithApp.UserInterface.Controllers
                 SaleInvoiceVMList[i].SaleInvoiceDetailList = Mapper.Map<List<SaleInvoiceDetail>, List<SaleInvoiceDetailViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceDetailListBySaleInvoiceID(SaleInvoiceVMList[i].ID));
                 foreach(SaleInvoiceDetailViewModel saleDetail in SaleInvoiceVMList[i].SaleInvoiceDetailList)
                 {
-                    SaleInvoiceVMList[i].TotalAmount = (SaleInvoiceVMList[i].TotalAmount == null ? 0: SaleInvoiceVMList[i].TotalAmount) + (saleDetail.Qty * saleDetail.Rate);
+                    SaleInvoiceVMList[i].TotalAmount = (SaleInvoiceVMList[i].TotalAmount == null ? 0: SaleInvoiceVMList[i].TotalAmount) + (saleDetail.Qty * saleDetail.Rate-saleDetail.Discount);
                     if (saleDetail.CGSTPerc != 0)
                     {
-                        SaleInvoiceVMList[i].CGSTTotal = (SaleInvoiceVMList[i].CGSTTotal == null ? 0 : SaleInvoiceVMList[i].CGSTTotal) + ((saleDetail.Qty * saleDetail.Rate * saleDetail.CGSTPerc) / 100);
-                        SaleInvoiceVMList[i].SGSTTotal = (SaleInvoiceVMList[i].SGSTTotal == null ? 0 : SaleInvoiceVMList[i].SGSTTotal) + ((saleDetail.Qty * saleDetail.Rate * saleDetail.SGSTPerc) / 100);
+                        SaleInvoiceVMList[i].CGSTTotal = (SaleInvoiceVMList[i].CGSTTotal == null ? 0 : SaleInvoiceVMList[i].CGSTTotal) + ((((saleDetail.Qty * saleDetail.Rate) - saleDetail.Discount) * saleDetail.CGSTPerc) / 100);
+                        SaleInvoiceVMList[i].SGSTTotal = (SaleInvoiceVMList[i].SGSTTotal == null ? 0 : SaleInvoiceVMList[i].SGSTTotal) + ((((saleDetail.Qty * saleDetail.Rate)-saleDetail.Discount) * saleDetail.SGSTPerc) / 100);
                     }
                     if(saleDetail.IGSTPerc!=0)
-                    SaleInvoiceVMList[i].IGSTTotal = (SaleInvoiceVMList[i].IGSTTotal == null ? 0 : SaleInvoiceVMList[i].IGSTTotal) + ((saleDetail.Qty * saleDetail.Rate * saleDetail.IGSTPerc) / 100);
+                    SaleInvoiceVMList[i].IGSTTotal = (SaleInvoiceVMList[i].IGSTTotal == null ? 0 : SaleInvoiceVMList[i].IGSTTotal) + ((((saleDetail.Qty * saleDetail.Rate)-saleDetail.Discount) * saleDetail.IGSTPerc) / 100);
+                    if(saleDetail.Discount!=0)
+                        SaleInvoiceVMList[i].DiscountTotal= (SaleInvoiceVMList[i].DiscountTotal == null ? 0 : SaleInvoiceVMList[i].DiscountTotal) + (saleDetail.Discount);
                 }
                 
             }
@@ -172,7 +174,46 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         writer.WriteString((-1 * (saleInvoice.TotalAmount+saleInvoice.CGSTTotal+saleInvoice.SGSTTotal)).ToString());
                                                     writer.WriteEndElement();//</AMOUNT>
                                                 writer.WriteEndElement();//</LEDGERENTRIES.LIST>
-
+                                                if(saleInvoice.DiscountTotal!=0 && saleInvoice.DiscountTotal!=null)
+                                                {
+                                                    writer.WriteStartElement("LEDGERENTRIES.LIST");
+                                                        writer.WriteStartElement("OLDAUDITENTRYIDS.LIST");
+                                                        writer.WriteAttributeString("TYPE", "Number");
+                                                            writer.WriteStartElement("OLDAUDITENTRYIDS");
+                                                            writer.WriteString("-1");
+                                                            writer.WriteEndElement();//</OLDAUDITENTRYIDS>
+                                                        writer.WriteFullEndElement();//</OLDAUDITENTRYIDS.LIST>
+                                                        writer.WriteStartElement("LEDGERNAME");
+                                                            writer.WriteString(saleInvoice.ItemDiscountTallyLedger);
+                                                        writer.WriteEndElement();//</LEDGERNAME>
+                                                        writer.WriteStartElement("GSTCLASS");
+                                                        writer.WriteEndElement();//</GSTCLASS>
+                                                        writer.WriteStartElement("ISDEEMEDPOSITIVE");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</ISDEEMEDPOSITIVE>
+                                                        writer.WriteStartElement("LEDGERFROMITEM");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</LEDGERFROMITEM>
+                                                        writer.WriteStartElement("REMOVEZEROENTRIES");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</REMOVEZEROENTRIES>
+                                                        writer.WriteStartElement("ISPARTYLEDGER");
+                                                            writer.WriteString("Yes");
+                                                        writer.WriteEndElement();//</ISPARTYLEDGER>
+                                                        writer.WriteStartElement("ISLASTDEEMEDPOSITIVE");
+                                                            writer.WriteString("Yes");
+                                                        writer.WriteEndElement();//</ISLASTDEEMEDPOSITIVE>
+                                                        writer.WriteStartElement("ISCAPVATTAXALTERED");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</ISCAPVATTAXALTERED>
+                                                        writer.WriteStartElement("ISCAPVATNOTCLAIMED");
+                                                            writer.WriteString("No");
+                                                        writer.WriteEndElement();//</ISCAPVATNOTCLAIMED>
+                                                        writer.WriteStartElement("AMOUNT");
+                                                            writer.WriteString((-1*saleInvoice.DiscountTotal).ToString());
+                                                        writer.WriteEndElement();//</AMOUNT>
+                                                    writer.WriteEndElement();//</LEDGERENTRIES.LIST>
+                                                }
                                                 if(saleInvoice.CGSTTotal!=0 && saleInvoice.CGSTTotal != null)
                                                 {
                                                     writer.WriteStartElement("LEDGERENTRIES.LIST");
@@ -292,7 +333,46 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         writer.WriteEndElement();//</AMOUNT>
                                                     writer.WriteEndElement();//</LEDGERENTRIES.LIST>
                                                   }
-
+                                                if(saleInvoice.Discount !=0 && saleInvoice.Discount!=null)
+                                                 {
+                                                    writer.WriteStartElement("LEDGERENTRIES.LIST");
+                                                    writer.WriteStartElement("OLDAUDITENTRYIDS.LIST");
+                                                    writer.WriteAttributeString("TYPE", "Number");
+                                                    writer.WriteStartElement("OLDAUDITENTRYIDS");
+                                                        writer.WriteString("-1");
+                                                    writer.WriteEndElement();//</OLDAUDITENTRYIDS>
+                                                    writer.WriteFullEndElement();//</OLDAUDITENTRYIDS.LIST>
+                                                    writer.WriteStartElement("LEDGERNAME");
+                                                        writer.WriteString(saleInvoice.DiscountTallyLedger);
+                                                    writer.WriteEndElement();//</LEDGERNAME>
+                                                    writer.WriteStartElement("GSTCLASS");
+                                                    writer.WriteEndElement();//</GSTCLASS>
+                                                    writer.WriteStartElement("ISDEEMEDPOSITIVE");
+                                                        writer.WriteString("No");
+                                                    writer.WriteEndElement();//</ISDEEMEDPOSITIVE>
+                                                    writer.WriteStartElement("LEDGERFROMITEM");
+                                                        writer.WriteString("No");
+                                                    writer.WriteEndElement();//</LEDGERFROMITEM>
+                                                    writer.WriteStartElement("REMOVEZEROENTRIES");
+                                                        writer.WriteString("No");
+                                                    writer.WriteEndElement();//</REMOVEZEROENTRIES>
+                                                    writer.WriteStartElement("ISPARTYLEDGER");
+                                                        writer.WriteString("Yes");
+                                                    writer.WriteEndElement();//</ISPARTYLEDGER>
+                                                    writer.WriteStartElement("ISLASTDEEMEDPOSITIVE");
+                                                        writer.WriteString("Yes");
+                                                    writer.WriteEndElement();//</ISLASTDEEMEDPOSITIVE>
+                                                    writer.WriteStartElement("ISCAPVATTAXALTERED");
+                                                        writer.WriteString("No");
+                                                    writer.WriteEndElement();//</ISCAPVATTAXALTERED>
+                                                    writer.WriteStartElement("ISCAPVATNOTCLAIMED");
+                                                        writer.WriteString("No");
+                                                    writer.WriteEndElement();//</ISCAPVATNOTCLAIMED>
+                                                    writer.WriteStartElement("AMOUNT");
+                                                        writer.WriteString((-1 * saleInvoice.Discount).ToString());
+                                                    writer.WriteEndElement();//</AMOUNT>
+                                                    writer.WriteEndElement();//</LEDGERENTRIES.LIST>
+                                                }
                                                 foreach (SaleInvoiceDetailViewModel saleInvoiceDetail in saleInvoice.SaleInvoiceDetailList)
                                                 {
                                                     writer.WriteStartElement("ALLINVENTORYENTRIES.LIST");
@@ -371,12 +451,23 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                                 if(saleInvoiceDetail.TaxType.TallyName!=null)
                                                                 writer.WriteString(saleInvoiceDetail.TaxType.TallyName);
                                                                 else
-                                                                writer.WriteString("Direct Sale");
+                                                                writer.WriteString(saleInvoice.DefaultTallyLedger);
                                                                 writer.WriteEndElement();//</LEDGERNAME>
                                                             writer.WriteStartElement("AMOUNT");
                                                                 writer.WriteString((saleInvoiceDetail.Qty * saleInvoiceDetail.Rate).ToString());
                                                             writer.WriteEndElement();//</AMOUNT>
                                                         writer.WriteEndElement();//</ACCOUNTINGALLOCATIONS.LIST>
+                                                        if(saleInvoiceDetail.Discount != 0)
+                                                        {
+                                                        writer.WriteStartElement("UDF:EIDISCOUNTAMT.LIST");
+                                                        writer.WriteAttributeString("ISLIST", "YES");
+                                                        writer.WriteAttributeString("TYPE", "Amount");
+                                                            writer.WriteStartElement("UDF:EIDISCOUNTAMT");
+                                                                writer.WriteString(saleInvoiceDetail.Discount.ToString());
+                                                            writer.WriteEndElement();//</UDF:EIDISCOUNTAMT>
+                                                        writer.WriteEndElement();//</UDF:EIDISCOUNTAMT.LIST>
+                                                    }
+                                                        
                                                     writer.WriteEndElement();//</ALLINVENTORYENTRIES.LIST>
                                                 }
                                             writer.WriteFullEndElement();//</VOUCHER>
