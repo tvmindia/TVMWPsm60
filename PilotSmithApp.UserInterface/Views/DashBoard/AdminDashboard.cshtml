@@ -27,11 +27,39 @@
     }
 
 </div>
-<div class="col-md-12 DashboardContainer" id="enqsummaryDiv">
+
+<div class="col-md-12" style="padding-top:20px;">
+    <div class="col-md-12">
+        <div class="form-group " style="text-align:right;float:right!important;">
+            <label class="radio-btn-new" onclick="ShowEnquiryFollowupSummary()" style="padding-right:30px;">
+                Enquiry Summary By Value
+                <input type="radio" name="enquirygroup1" checked="checked">
+                <span class="checkmark"></span>
+            </label>
+            <label class="radio-btn-new" onclick="ShowEnquiryCountSummary()">
+                Enquiry Summary By Count
+                <input type="radio" name="enquirygroup1">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12" id="enqsummaryDiv">
 
     @{
 
         @Html.Action("EnquiryValueVsFollowupCountSummary", "DashBoard");
+
+    }
+
+</div>
+
+<div class="col-md-12" id="enqcountDiv">
+
+    @{
+
+        @Html.Action("EnquiryCountSummary", "DashBoard");
 
     }
 

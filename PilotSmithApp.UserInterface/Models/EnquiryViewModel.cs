@@ -123,4 +123,11 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal EnquiryValue { get; set; }
         public int FollowupCount { get; set; }
     }
+    public class EnquiryCountSummaryViewModel
+    {
+        public string Month { get; set; }
+        public int MonthCode { get; set; }
+        public int Year { get; set; }
+        public int EnquiryCount { get; set; }
+    }
 }
