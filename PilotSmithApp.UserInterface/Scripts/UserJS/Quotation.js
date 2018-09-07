@@ -455,7 +455,7 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              {
                  "data": "ChargeAmount", "orderable": false,render:function(data,type,row){
-                     if ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val()=="4") {
+                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val()=="4") {
                          return "-"
                      }
                      else {
