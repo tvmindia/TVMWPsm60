@@ -104,7 +104,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_EnquiryFollowupSummary", enqFollowupSummary);
         }
 
-
+        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
+        public ActionResult EnquiryCountSummary()
+        {
+            EnquiryCountSummaryList enquiryCountSummaryList = new EnquiryCountSummaryList();
+            enquiryCountSummaryList.EnquiryCountSummaryVMList = Mapper.Map<List<EnquiryCountSummary>, List<EnquiryCountSummaryViewModel>>(_enquiryBusiness.GetEnquiryCountSummary());
+            return PartialView("_EnquiryCountSummary", enquiryCountSummaryList);
+        }
 
         [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
         public ActionResult DocumentSummary()

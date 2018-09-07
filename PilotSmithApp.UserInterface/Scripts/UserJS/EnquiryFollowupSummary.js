@@ -109,3 +109,8 @@ $(function () {
     $('#enqsummaryDiv').fadeIn();
     // $('#salessummarydiv').css({ opacity: 1, visibility: "visible" }).animate({ opacity: 1 }, 500);
 });
+
+function ShowEnquiryFollowupSummary() {
+    $('#enqcountDiv').fadeOut();
+    $('#enqsummaryDiv').fadeIn();
+}

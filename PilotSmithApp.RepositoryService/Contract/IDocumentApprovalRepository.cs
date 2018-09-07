@@ -24,5 +24,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         DocumentApprovalMailDetail GetApprovalMailDetails(Guid DocumentID, string DocumentTypeCode);
         List<DocumentApproval> GetStockAdjApprovalSummary();
         List<DocumentApproval> GetAllApprovalHistory(DocumentApprovalAdvanceSearch documentApprovalAdvanceSearch);
+        object RecallDocument(Guid documentID, string documentTypeCode,string documentNo, DateTime recallDate, string createdBy, DateTime createdDate);
+        DocumentRecallMailDetail GetRecallMailDetail(Guid DocumentID,string documentTypeCode);
     }
 }

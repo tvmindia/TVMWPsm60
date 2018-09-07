@@ -19,5 +19,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<EnquiryValueFolloupSummary> GetEnquiryValueVsFollowupCountSummary();
         List<Enquiry> GetEnquiryForSelectListOnDemand(string searchTerm);
         EnquirySummary GetEnquirySummaryCount();
+        List<EnquiryCountSummary> GetEnquiryCountSummary();
     }
 }

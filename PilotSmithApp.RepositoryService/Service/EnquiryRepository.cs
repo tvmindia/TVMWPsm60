@@ -625,5 +625,49 @@ namespace PilotSmithApp.RepositoryService.Service
             return enquirySummary;
         }
         #endregion GetEnquirySummaryCount
+
+        #region GetEnquiryCountSummary
+        public List<EnquiryCountSummary> GetEnquiryCountSummary()
+        {
+            List<EnquiryCountSummary> enquiryCountList = new List<EnquiryCountSummary>();
+            EnquiryCountSummary enquiryCount = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnquiryCountSummary]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                while (sdr.Read())
+                                {
+                                    enquiryCount = new EnquiryCountSummary();
+                                    enquiryCount.Month = (sdr["Month"].ToString() != "" ? sdr["Month"].ToString() : enquiryCount.Month);
+                                    enquiryCount.MonthCode = (sdr["MonthCode"].ToString() != "" ? int.Parse(sdr["MonthCode"].ToString()) : enquiryCount.MonthCode);
+                                    enquiryCount.Year = (sdr["Year"].ToString() != "" ? int.Parse(sdr["Year"].ToString()) : enquiryCount.Year);
+                                    enquiryCount.EnquiryCount = (sdr["Count"].ToString() != "" ? int.Parse(sdr["Count"].ToString()) : enquiryCount.EnquiryCount);
+                                    enquiryCountList.Add(enquiryCount);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return enquiryCountList;
+        }
+        #endregion GetEnquiryCountSummary
     }
 }

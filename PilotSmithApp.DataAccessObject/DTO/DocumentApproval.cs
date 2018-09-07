@@ -86,4 +86,16 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Remarks { get; set; }
 
     }
+
+    public class DocumentRecallMailDetail
+    {
+        public string Approver { get; set; }
+        public string ApproverEmail { get; set; }
+        public string DocumentNo { get; set; }
+        public string DocumentType { get; set; }
+        public string DocumentOwner { get; set; }
+        public string DocumnetOwnerMail { get; set; }
+        public DateTime RecallDate { get; set; }       
+        public Guid ApprovalID { get; set; }
+    }
 }
