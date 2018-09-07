@@ -14,7 +14,11 @@
 @{
     List<SelectListItem> EmptySelectList = new List<SelectListItem>();
 }
-
+<style>
+    .selected{
+        background-color:lightblue !important;
+    }
+</style>
 <section class="content" id="main">
     <div class="row">
         <div class="form-group col-md-6">
@@ -276,6 +280,9 @@
                     </table>
                 </div>
                 <div class="col-md-12">
+                    <div class="col-md-8">
+                        @Html.Label("* XML generation not possible, Missing tally name for customer,product or taxtype in invoice", new { style = "color:red;display: none; ", id = "Errormsglbl" })
+                    </div>
                     <input id="btnSaleOrderXML" type="button" onclick="GetXML()" value="Download" class="btn btn-openid" style="float:right" />
                 </div>
                 <div class="col-md-12">&nbsp;</div>
