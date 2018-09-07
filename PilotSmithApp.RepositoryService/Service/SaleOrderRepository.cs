@@ -320,6 +320,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.MailBodyFooter = mailfooter.Replace("\n", "<br />");
                                     string mailfrom = (sdr["MailFromAddress"].ToString() != "" ? (sdr["MailFromAddress"].ToString()) : saleOrder.MailFrom);
                                     saleOrder.MailFrom = mailfrom.Replace("\n", "<br />");
+                                    saleOrder.ApproverLevel= (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : saleOrder.ApproverLevel);
                                 }
                         }
                     }

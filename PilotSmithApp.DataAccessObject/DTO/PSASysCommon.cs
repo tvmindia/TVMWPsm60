@@ -279,6 +279,11 @@ namespace PilotSmithApp.DataAccessObject.DTO
         {
             get { return "Mail Send Successfully ! "; }
         }
+
+        public string RecallDocument
+        {
+            get { return "Recalled Successfully"; }
+        }
         public AppConstMessage GetMessage(string messageCode)
         {
             AppConstMessage result = new AppConstMessage(messageCode, "", "ERROR");

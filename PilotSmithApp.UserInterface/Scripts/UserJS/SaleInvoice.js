@@ -1647,30 +1647,77 @@ function GetXML()
     ids = selectedInvoiceIDs();//identify the selected rows 
     if (ids != "") {
         $('#ids').val(ids);
-        _dataTable.XMLSaleInvoiceList.destroy();
-        $('#FormXMLExport').submit();
-        $('#divModelXMLSaleInvoice').modal('hide');
+        var saleInvoiceDetailsList = GetSaleInvoiceDetailByIDs();
+        var flag = 0;
+        var saleInvoiceVM = _dataTable.XMLSaleInvoiceList.rows().data();
+        debugger;
+        for (var r = 0; r < saleInvoiceDetailsList.length; r++) {
+            if(saleInvoiceDetailsList[r].Customer.TallyName == null || saleInvoiceDetailsList[r].Customer.TallyName=="")
+            {
+                for (i = 0; i < saleInvoiceVM.length; i++)
+                {
+                    if (saleInvoiceVM[i].ID == saleInvoiceDetailsList[r].ID)
+                        break;
+                }
+                
+                var row=_dataTable.XMLSaleInvoiceList.row(i).node();
+                $('td', row).css('color', 'red');
+                flag = 1;
+            }
+            else
+            {
+                debugger;
+                for (var t = 0; t < saleInvoiceDetailsList[r].SaleInvoiceDetailList.length; t++)
+                {
+                    if (saleInvoiceDetailsList[r].SaleInvoiceDetailList[t].Product.TallyName == null || saleInvoiceDetailsList[r].SaleInvoiceDetailList[t].Product.TallyName == "" || (saleInvoiceDetailsList[r].SaleInvoiceDetailList[t].TaxTypeCode != 0 && (saleInvoiceDetailsList[r].SaleInvoiceDetailList[t].TaxType.TallyName == null || saleInvoiceDetailsList[r].SaleInvoiceDetailList[t].TaxType.TallyName == "")))
+                    {
+                        for (i = 0; i < saleInvoiceVM.length; i++) {
+                            if (saleInvoiceVM[i].ID == saleInvoiceDetailsList[r].ID)
+                                break;
+                        }
+
+                        var row = _dataTable.XMLSaleInvoiceList.row(i).node();
+                        $('td', row).css('color', 'red');
+                        flag = 1;
+                    }
+                }
+            }
+        }
+        if (flag == 0) {
+            _dataTable.XMLSaleInvoiceList.destroy();
+            $('#FormXMLExport').submit();
+            $('#divModelXMLSaleInvoice').modal('hide');
+        }
+        else {
+            document.getElementById('Errormsglbl').style.display = 'inline';
+        }
     }
     else {
         notyAlert('error','Select invoices to generate XML');
     }
 }
 function GetSaleInvoiceList() {
-    debugger;
-    var data = { "invoiceType": $('#ddlInvoiceFilter').val() };
-    _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceListForXMLGeneration/", data);
-    if (_jsonData != '') {
+    try{
         debugger;
-        _jsonData = JSON.parse(_jsonData);
-        _message = _jsonData.Message;
-        _status = _jsonData.Status;
-        SaleInvoiceList = _jsonData.Records;
+        var data = { "invoiceType": $('#ddlInvoiceFilter').val() };
+        _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceListForXMLGeneration/", data);
+        if (_jsonData != '') {
+            debugger;
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            SaleInvoiceList = _jsonData.Records;
+        }
+        if (_status == "OK") {
+            return SaleInvoiceList;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
     }
-    if (_status == "OK") {
-        return SaleInvoiceList;
-    }
-    if (_status == "ERROR") {
-        notyAlert('error', _message);
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
     }
 }
 function bindSaleInvoiceTblForXML()
@@ -1731,4 +1778,28 @@ function selectedInvoiceIDs() {
         saleInvoiceIDs.push(saleInvoiceVM[r].ID);
     }
     return saleInvoiceIDs.toString();
+}
+function GetSaleInvoiceDetailByIDs(ids) {
+    try{
+        debugger;
+        var data = { "ids": $('#ids').val() };
+        _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceBySaleInvoiceIDs/", data);
+        if (_jsonData != '') {
+            debugger;
+            _jsonData = JSON.parse(_jsonData);
+            _message = _jsonData.Message;
+            _status = _jsonData.Status;
+            SaleInvoiceList = _jsonData.Records;
+        }
+        if (_status == "OK") {
+            return SaleInvoiceList;
+        }
+        if (_status == "ERROR") {
+            notyAlert('error', _message);
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
 }

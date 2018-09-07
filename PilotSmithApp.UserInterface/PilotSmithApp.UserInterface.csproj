@@ -305,6 +305,7 @@
     <Content Include="Content\MailTemplate\DocumentApproved.html" />
     <Content Include="Content\MailTemplate\DocumentEmailBody.html" />
     <Content Include="Content\MailTemplate\DocumentRejected.html" />
+    <Content Include="Content\MailTemplate\RecallDocument.html" />
     <Content Include="Content\MailTemplate\SendForApproval.html" />
     <Content Include="Content\MailTemplate\TakeOwnershipAcknowledgement.html" />
     <Content Include="Content\PSAForms.css" />

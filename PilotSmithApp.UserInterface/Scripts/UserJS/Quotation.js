@@ -233,8 +233,14 @@ function EditQuotation(this_Obj) {
                     case "0":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", Quotation.ID);
                         break;
-                    case "1":
-                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                    case "1":                      
+                        if ($('#ApproverLevel').val() > 1) {
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                        }
+                        else {
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
+                        }
+                       
                         break;
                     case "3":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
@@ -286,7 +292,12 @@ function ResetQuotation() {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
+                    if ($('#ApproverLevel').val() > 1) {
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
+                    }
+                    else {
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", $('#ID').val());
+                    }
                     break;
                 case "3":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
@@ -442,7 +453,17 @@ function BindQuotationOtherChargesDetailList(id) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + Total
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditQuotationOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
+             {
+                 "data": "ChargeAmount", "orderable": false,render:function(data,type,row){
+                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val()=="4") {
+                         return "-"
+                     }
+                     else {
+                         return '<a href="#" class="actionLink"  onclick="EditQuotationOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                 },
+                 "defaultContent": "<i></i>"
+             },
              ],             
              columnDefs: [
                  { "targets": [0], "width": "30%" },
@@ -522,6 +543,7 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              {
                  "data": "Rate", render: function (data, type, row) {
+                     debugger;
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
                      var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
                      var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
@@ -534,7 +556,18 @@ function BindQuotationDetailList(id, IsEstimated) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
+             {
+                 "data": "Rate", "orderable": false, render: function (data, type, row) {
+                     debugger;
+                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() =="9" || $('#LatestApprovalStatus').val()=="4") {
+                         return "-"
+                     }
+                     else {
+                         return '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                 }, "defaultContent": "<i></i>"
+                     //($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False" ) ? '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"
+             },
              ],
              columnDefs: [
                  { "targets": [0], "width": "23%" },
@@ -1003,6 +1036,8 @@ function ShowSendForApproval(documentTypeCode) {
     });
 }
 
+
+
 function SendForApproval(documentTypeCode) {
     debugger;
     
@@ -1022,7 +1057,52 @@ function SendForApproval(documentTypeCode) {
         //BindPurchaseOrder($('#ID').val());
         
 }
-
+function RecallDocumentItem(documentTypeCode) {
+    debugger;
+    notyConfirmRecall('Are you sure to recall document?', 'RecallDoc("' + documentTypeCode + '")');
+}
+function RecallDoc(documentTypeCode) {
+    debugger;    
+    try{
+        if (documentTypeCode) { 
+            $('#QuotationForm').load("DocumentApproval/RecallDocument?documentID=" + $('#QuotationForm #ID').val() + "&documentTypeCode=" + "QUO" + "&documentNo=" + $('#QuotationForm #QuoteNo').val(), function () {
+            });
+            var data = { "documentID": $('#QuotationForm #ID').val() };
+            _jsonData = GetDataFromServer("DocumentApproval/RecallDocument/", data);
+            if (_jsonData != '') {
+                _jsonData = JSON.parse(_jsonData);
+                _message = _jsonData.Message;
+                _status = _jsonData.Status;
+                _result = _jsonData.Record;
+            }
+            switch (_status) {
+                case "OK":
+                    notyAlert('success', _message);
+                    ResetQuotation();
+                    debugger;
+                    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
+                        if (($('#ApproverLevel').val()) > 1) {
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                        }
+                        else {
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
+                        }
+                    });
+                    break;
+                case "ERROR":
+                    notyAlert('error', _message);
+                    ResetQuotation();
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
 //OtherExpense------------------
 function AddOtherExpenseDetailList() {
     $("#divModelQuotationPopBody").load("Quotation/QuotationOtherChargeDetail", function () {
@@ -1293,7 +1373,12 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", id);
                         break;
                     case "1":
-                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
+                        if ($('#ApproverLevel').val() > 1) {
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
+                        }
+                        else {
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", id);
+                        }
                         break;
                     case "3":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);

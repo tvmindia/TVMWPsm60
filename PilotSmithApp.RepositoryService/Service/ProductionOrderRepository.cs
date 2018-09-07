@@ -180,6 +180,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.IsFinalApproved = (sdr["IsFinalApproved"].ToString() != "" ? bool.Parse(sdr["IsFinalApproved"].ToString()) : productionOrder.IsFinalApproved);
                                     string mailFrom = (sdr["MailFromAddress"].ToString() != "" ? sdr["MailFromAddress"].ToString() : productionOrder.MailFrom);
                                     productionOrder.MailFrom = mailFrom.Replace("\n", "<br />");
+                                    productionOrder.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : productionOrder.ApproverLevel);
                                 }
                         }
                     }

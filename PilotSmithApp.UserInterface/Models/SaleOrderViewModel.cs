@@ -100,6 +100,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string PurchaseOrdDateFormatted { get; set; }
         public CustomerViewModel Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
+        public int? ApproverLevel { get; set; }
         public BranchViewModel Branch { get; set; }
         public CarrierViewModel Carrier { get; set; }
         public BankViewModel Bank { get; set; }

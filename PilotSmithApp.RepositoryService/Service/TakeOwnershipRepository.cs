@@ -118,7 +118,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         ownershipHistory.Date = (sdr["Date"].ToString() != "" ? DateTime.Parse(sdr["Date"].ToString()) : ownershipHistory.Date);
                                         ownershipHistory.DateFormatted = (sdr["Date"].ToString() != "" ? DateTime.Parse(sdr["Date"].ToString()).ToString(_settings.DateFormat) : ownershipHistory.DateFormatted);
                                         ownershipHistory.Type = (sdr["Type"].ToString() != "" ? sdr["Type"].ToString() : ownershipHistory.Type);
-                                        ownershipHistory.Remarks = (sdr["Remarks"].ToString() != "" ? sdr["Remarks"].ToString() : ownershipHistory.Remarks);
+                                        ownershipHistory.Remarks = (sdr["Remarks"].ToString() != "" ? sdr["Remarks"].ToString() : ownershipHistory.Remarks==null?"-":ownershipHistory.Remarks);
                                     }
                                     ownershipHistoryList.Add(ownershipHistory);
                                 }

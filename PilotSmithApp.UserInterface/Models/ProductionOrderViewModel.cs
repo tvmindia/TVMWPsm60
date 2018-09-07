@@ -68,6 +68,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string DocumentOwner { get; set; }
         public CustomerViewModel Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
+        public int? ApproverLevel { get; set; }
         public BranchViewModel Branch { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }
         public List<ProductionOrderDetailViewModel> ProductionOrderDetailList { get; set; }

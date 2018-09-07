@@ -277,6 +277,27 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #endregion ReSendDocForApproval
 
+        #region RecallDocument
+        public async Task <string> RecallDocument(string documentID,string documentTypeCode,string documentNo)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                string createdBy = appUA.UserName;
+                DateTime recallDate = _pSASysCommon.GetCurrentDateTime();
+                DateTime createdDate = _pSASysCommon.GetCurrentDateTime();
+                var result = _documentApprovalBusiness.RecallDocument(Guid.Parse(documentID),documentTypeCode,documentNo,recallDate,createdBy,createdDate);
+                bool mailresult = await _documentApprovalBusiness.SendRecallMails(Guid.Parse(documentID),documentTypeCode);
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConst.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion RecallDocument
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]

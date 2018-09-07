@@ -659,6 +659,98 @@ namespace PilotSmithApp.RepositoryService.Service
         }
 
         #endregion
+
+        #region RecallDocument
+        public object RecallDocument(Guid documentID, string documentTypeCode,string documentNo, DateTime recallDate, string createdBy, DateTime createdDate)
+        {
+           
+            SqlParameter outputStatus = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[RecallDocument]";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@DocumentID", SqlDbType.UniqueIdentifier).Value = documentID;
+                        cmd.Parameters.Add("@DocumentType", SqlDbType.VarChar, 5).Value = documentTypeCode;
+                        cmd.Parameters.Add("@DocumentNo", SqlDbType.VarChar, 20).Value = documentNo;
+                        //cmd.Parameters.Add("@Approvers", SqlDbType.VarChar, -1).Value = approvers;
+                        //cmd.Parameters.Add("@LoginName", SqlDbType.NVarChar, 250).Value = createdBy;
+                        cmd.Parameters.Add("@RecallDate", SqlDbType.DateTime).Value = recallDate;
+                        cmd.Parameters.Add("@Date", SqlDbType.DateTime).Value = recallDate;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.VarChar, 250).Value = createdBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = createdDate;
+
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.Bit);
+                        outputStatus.Direction = ParameterDirection.Output;                     
+                        cmd.ExecuteNonQuery();
+                    }
+                }            
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                Status = outputStatus.Value.ToString(),
+                Message = _appConst.RecallDocument
+            };
+        }
+        #endregion RecallDocument
+
+        #region DocumentRecallMailDetail
+        public DocumentRecallMailDetail GetRecallMailDetail(Guid DocumentID,string documentTypeCode)
+        {
+            DocumentRecallMailDetail documentRecallMailDetail = new DocumentRecallMailDetail();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetRecallMailDetail]";
+                        cmd.Parameters.Add("@DocumentID", SqlDbType.UniqueIdentifier).Value = DocumentID;
+                        cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.VarChar, 5).Value = documentTypeCode;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                if (sdr.Read())
+                                {
+                                    {
+                                        documentRecallMailDetail.DocumentType = (sdr["DocumentType"].ToString() != "" ? sdr["DocumentType"].ToString() : documentRecallMailDetail.DocumentType);
+                                        documentRecallMailDetail.DocumentNo= (sdr["DocumentNo"].ToString() != "" ? sdr["DocumentNo"].ToString() : documentRecallMailDetail.DocumentNo);
+                                        documentRecallMailDetail.Approver = (sdr["Approver"].ToString() != "" ? sdr["Approver"].ToString() : documentRecallMailDetail.Approver);
+                                        documentRecallMailDetail.ApproverEmail = (sdr["ApproverEmail"].ToString() != "" ? sdr["ApproverEmail"].ToString() : documentRecallMailDetail.ApproverEmail);
+                                        documentRecallMailDetail.DocumentOwner = (sdr["OwnerName"].ToString() != "" ? sdr["OwnerName"].ToString() : documentRecallMailDetail.DocumentOwner);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return documentRecallMailDetail;
+        }
+        #endregion DocumentRecallMailDetail
     }
 
 

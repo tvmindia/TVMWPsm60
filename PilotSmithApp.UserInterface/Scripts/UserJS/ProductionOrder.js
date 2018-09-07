@@ -230,7 +230,12 @@ function EditProductionOrder(this_Obj) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", productionOrder.ID);
                         break;
                     case "1":
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
+                        if ($('#ApproverLevel').val() > 1) {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
+                        }
+                        else {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", productionOrder.ID); 
+                        }                      
                         break;
                     case "3":
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
@@ -283,7 +288,12 @@ function ResetProductionOrder() {
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
+                    if ($('#ApproverLevel').val() > 1) {
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
+                    }
+                    else {
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", $('#ID').val());
+                    }
                     break;
                 case "3":
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
@@ -509,8 +519,18 @@ function BindProductionOrderDetailList(id,IsSaleOrder) {
                      return result;
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
-             ],
+             { //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
+                 "data": "OrderQty", "orderable": false, render: function (data, type, row) {
+                     debugger;
+                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") {
+                         return "-"
+                     }
+                     else {
+                         return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                 }, "defaultContent": "<i></i>"
+             },
+                 ],
              columnDefs: [
                  { className: "text-right", "targets": [ 2, 3, 4, 5, 6,7] },
                  { className: "text-left", "targets": [0,8,1] },
@@ -995,6 +1015,46 @@ function SendForApproval(documentTypeCode) {
     ResetProductionOrder();
 }
 
+//Document Recall
+function RecallDocumentItem(documentTypeCode) {
+    debugger;
+    notyConfirmRecall('Are you sure to recall document?', 'RecallDoc("' + documentTypeCode + '")');
+}
+function RecallDoc(documentTypeCode) {
+    debugger;
+    try {
+        if (documentTypeCode) {
+            $('#ProductionOrderForm').load("DocumentApproval/RecallDocument?documentID=" + $('#ProductionOrderForm #ID').val() + "&documentTypeCode=" + "POD" + "&documentNo=" + $('#ProductionOrderForm #ProdOrderNo').val(), function () {
+            });
+            var data = { "documentID": $('#ProductionOrderForm #ID').val() };
+            _jsonData = GetDataFromServer("DocumentApproval/RecallDocument/", data);
+            if (_jsonData != '') {
+                _jsonData = JSON.parse(_jsonData);
+                _message = _jsonData.Message;
+                _status = _jsonData.Status;
+                _result = _jsonData.Record;
+            }
+            switch (_status) {
+                case "OK":
+                    notyAlert('success', _message);
+                    ResetProductionOrder();
+                    break;
+                case "ERROR":
+                    notyAlert('error', _message);
+                    ResetProductionOrder();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
+
 function EditRedirectToDocument(id)
 {
     debugger;
@@ -1013,7 +1073,12 @@ function EditRedirectToDocument(id)
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", id);
                         break;
                     case "1":
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
+                        if ($('#ApproverLevel').val() > 1) {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
+                        }
+                        else {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", id);
+                        }
                         break;
                     case "3":
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);
