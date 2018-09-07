@@ -147,6 +147,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<PendingProductionOrderReportViewModel, PendingProductionOrderReport>().ReverseMap();
                 config.CreateMap<ProductionQCStandardReportViewModel, ProductionQCStandardReport>().ReverseMap();
                 config.CreateMap<PendingProductionQCReportViewModel, PendingProductionQCReport>().ReverseMap();
+                config.CreateMap<EnquiryCountSummaryViewModel, EnquiryCountSummary>().ReverseMap();
             });
         }
     }

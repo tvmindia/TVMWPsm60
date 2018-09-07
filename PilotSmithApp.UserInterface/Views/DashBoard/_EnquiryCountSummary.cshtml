@@ -1,0 +1,23 @@
+﻿@model PilotSmithApp.UserInterface.Models.EnquiryCountSummaryList
+@using PilotSmithApp.UserInterface.Models
+
+@{
+    List<EnquiryCountSummaryViewModel> enquiryCountList = Model.EnquiryCountSummaryVMList;
+}
+
+<div class="col-md-12 GraphCaption"> Enquiry Summary By Count</div>
+<div class="col-md-12" style="margin-bottom:15px">
+    <div class="col-md-12 Summary box" style="text-align:left;max-width:100%;overflow-x:scroll">
+        <div class="col-md-11">
+            <canvas id="enquirycountchart" style="width:95%;height:220px"></canvas>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+        var enquiryCountSummarylbls=@Html.Raw(Json.Encode(enquiryCountList.Select(s => (s.Month + " " + s.Year)).ToList()));
+        var enquiryCountSummarydta=@Html.Raw(Json.Encode(enquiryCountList.Select(s => s.EnquiryCount).ToList()));
+</script>
+

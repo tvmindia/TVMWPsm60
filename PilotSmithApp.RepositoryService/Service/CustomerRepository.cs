@@ -185,6 +185,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = customer.ID;
                         }
                         cmd.Parameters.Add("@CompanyName", SqlDbType.VarChar, 150).Value = customer.CompanyName;
+                        cmd.Parameters.Add("@TallyName", SqlDbType.VarChar, 150).Value = customer.TallyName;
                         cmd.Parameters.Add("@ContactPerson", SqlDbType.VarChar, 100).Value = customer.ContactPerson;
                         cmd.Parameters.Add("@ContactEmail", SqlDbType.VarChar, 150).Value = customer.ContactEmail;
                         cmd.Parameters.Add("@ContactTitle", SqlDbType.VarChar, 10).Value = customer.ContactTitle;
@@ -368,6 +369,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     customer.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : customer.ID);
                                     customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : customer.CompanyName);
+                                    customer.TallyName = (sdr["TallyName"].ToString() != "" ? sdr["TallyName"].ToString() : customer.TallyName);
                                     customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : customer.ContactPerson);
                                     customer.ContactEmail = (sdr["ContactEmail"].ToString() != "" ? sdr["ContactEmail"].ToString() : customer.ContactEmail);
                                     customer.ContactTitle = (sdr["ContactTitle"].ToString() != "" ? sdr["ContactTitle"].ToString() : customer.ContactTitle);

@@ -80,6 +80,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Aadhar Number")]        
         [MaxLength(20)]
         public string AadharNo { get; set; }
+        [Display(Name = "Customer Name In Tally")]
         public string TallyName { get; set; }
 
         //Additional properties

@@ -20,6 +20,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "IGST Percentage")]
         public decimal IGSTPercentage { get; set; }
         public string ValueText { get; set; }
+        [Display(Name = "Name In Tally")]
         public string TallyName { get; set; }
         public List<SelectListItem> TaxTypeSelectList { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }

@@ -17,4 +17,8 @@ namespace PilotSmithApp.UserInterface.Models
     {
         public List<EnquiryValueFolloupSummaryViewModel> EnquiryFollowupSummaryVMList { get; set; }
     }
+    public class EnquiryCountSummaryList
+    {
+        public List<EnquiryCountSummaryViewModel> EnquiryCountSummaryVMList { get; set; }
+    }
 }

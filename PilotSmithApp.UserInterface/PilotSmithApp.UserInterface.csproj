@@ -708,6 +708,7 @@
     <Content Include="Scripts\UserJS\Country.js" />
     <Content Include="Scripts\UserJS\CustomerCategory.js" />
     <Content Include="Scripts\UserJS\DocumentApproval\ViewApprovalHistory.js" />
+    <Content Include="Scripts\UserJS\EnquiryCountSummary.js" />
     <Content Include="Scripts\UserJS\OtherCharge.js" />
     <Content Include="Scripts\UserJS\DeliveryChallan.js" />
     <Content Include="Scripts\UserJS\PaymentTerm.js" />
@@ -1124,6 +1125,7 @@
     <Content Include="Views\Report\PendingProductionOrderReport.cshtml" />
     <Content Include="Views\Report\ProductionQCStandardReport.cshtml" />
     <Content Include="Views\Report\PendingProductionQCReport.cshtml" />
+    <Content Include="Views\DashBoard\_EnquiryCountSummary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
