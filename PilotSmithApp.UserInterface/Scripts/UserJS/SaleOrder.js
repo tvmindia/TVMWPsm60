@@ -266,7 +266,12 @@ function EditSaleOrder(this_Obj) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
                         break;
                     case "1":
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                        if ($('#ApproverLevel').val() > 1) {
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                        }
+                        else {
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", SaleOrder.ID);
+                        }
                         break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
@@ -311,7 +316,12 @@ function ResetSaleOrder() {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
+                    if ($('#ApproverLevel').val() > 1) {
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
+                    }
+                    else {
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", $('#ID').val());
+                    }
                     break;
                 case "3":
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
@@ -626,7 +636,18 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '<br/>Cess : ₹ ' + row.CessAmt + '</p>"/>' + GrandTotal
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
+             {
+                 "data": "Rate", "orderable": false, render: function (data, type, row) {
+                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") {
+                         return "-"
+                     }
+                     else {
+                         return '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                 }, "defaultContent": "<i></i>"
+             },
+                 
+                 //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
                  { "targets": [0], "width": "20%" },
@@ -1093,6 +1114,46 @@ function SendForApproval(documentTypeCode) {
     //BindPurchaseOrder($('#ID').val());
 
 }
+
+//Document Recall
+function RecallDocumentItem(documentTypeCode) {
+    debugger;
+    notyConfirmRecall('Are you sure to recall document?', 'RecallDoc("' + documentTypeCode + '")');
+}
+function RecallDoc(documentTypeCode) {
+    debugger;
+    try {
+        if (documentTypeCode) {
+            $('#SaleOrderForm').load("DocumentApproval/RecallDocument?documentID=" + $('#SaleOrderForm #ID').val() + "&documentTypeCode=" + "SOD" + "&documentNo=" + $('#SaleOrderForm #SaleOrderNo').val(), function () {
+            });
+            var data = { "documentID": $('#SaleOrderForm #ID').val() };
+            _jsonData = GetDataFromServer("DocumentApproval/RecallDocument/", data);
+            if (_jsonData != '') {
+                _jsonData = JSON.parse(_jsonData);
+                _message = _jsonData.Message;
+                _status = _jsonData.Status;
+                _result = _jsonData.Record;
+            }
+            switch (_status) {
+                case "OK":
+                    notyAlert('success', _message);
+                    ResetSaleOrder();
+                    break;
+                case "ERROR":
+                    notyAlert('error', _message);
+                    ResetSaleOrder();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+
 function ClearCalculatedFields()
 {
     $('#lblTaxTotal').text('0.00');
@@ -1388,7 +1449,12 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", id);
                         break;
                     case "1":
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
+                        if ($('#ApproverLevel').val() > 1) {
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
+                        }
+                        else {
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", id);
+                        }
                         break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);

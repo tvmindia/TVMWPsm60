@@ -83,6 +83,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
+        public int? ApproverLevel { get; set; }
         public CustomerViewModel Customer { get; set; }
         public BranchViewModel Branch { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }

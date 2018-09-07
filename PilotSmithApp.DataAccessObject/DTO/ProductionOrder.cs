@@ -44,6 +44,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DocumentOwner { get; set; }
         public Customer Customer { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
+        public int? ApproverLevel { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public Branch Branch { get; set; }
         public string MailContant { get; set; }

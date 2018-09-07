@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.IO;
 using PilotSmithApp.BusinessService.Contract;
+using System.Net.Mail;
 
 namespace PilotSmithApp.BusinessService.Service
 {
@@ -141,6 +142,36 @@ namespace PilotSmithApp.BusinessService.Service
                 return false;
             }
 
+        }
+        public object RecallDocument(Guid documentID, string documentTypeCode,string documentNo, DateTime recallDate, string createdBy, DateTime createdDate)
+        {
+            object result = _documentApprovalRepository.RecallDocument(documentID, documentTypeCode, documentNo, recallDate, createdBy, createdDate);
+            return result;
+        }
+
+        public async Task<bool> SendRecallMails(Guid documentID,string documentTypeCode)
+        {
+            try
+            {
+                DocumentRecallMailDetail documentRecallMailDetail = new DocumentRecallMailDetail();
+                bool sendsuccess = false;
+                Settings settings = new Settings();
+                documentRecallMailDetail = _documentApprovalRepository.GetRecallMailDetail(documentID,documentTypeCode);
+                string mailBody = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Content/MailTemplate/RecallDocument.html"));
+                Mail mail = new Mail();
+                string link = WebConfigurationManager.AppSettings["AppURL"] + "/Content/images/Pilot1.png";
+                mail.Body = mailBody.Replace("$DocumentOwner$", documentRecallMailDetail.DocumentOwner).Replace("$Approver$",documentRecallMailDetail.Approver).Replace("$Document$", documentRecallMailDetail.DocumentType).Replace("$DocumentNo$", documentRecallMailDetail.DocumentNo).Replace("$DocumentDate$", _pSASysCommon.GetCurrentDateTime().ToString(settings.DateFormat)).Replace("$Logo$", link);
+                mail.To = documentRecallMailDetail.ApproverEmail;
+                mail.Subject = "Document Recall";
+                //mail.IsBodyHtml = true;
+                sendsuccess = await _mailBusiness.MailSendAsync(mail);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

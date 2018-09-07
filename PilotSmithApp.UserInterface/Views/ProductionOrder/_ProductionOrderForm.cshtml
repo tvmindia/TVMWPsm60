@@ -15,7 +15,7 @@
     @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
-
+    @Html.HiddenFor(model => model.ApproverLevel, htmlAttributes: new { @class = "" })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>

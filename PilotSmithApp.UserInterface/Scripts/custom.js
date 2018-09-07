@@ -421,6 +421,33 @@ function () {
 
 }
 
+function notyConfirmRecall(msg, functionIfSuccess, msg2, btnText, value) {
+    var m = 'Document can be modified!'
+    if (msg2 != undefined) {
+        m = msg2 + '  ' + m;
+    }
+    if (value == 1) {
+        m = '';
+    }
+    if (btnText == undefined) {
+        btnText = "Yes, Recall !";
+    }
+    swal({
+        title: msg,
+        text: m,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: btnText,
+        closeOnConfirm: false
+    },
+function () {
+  
+    eval(functionIfSuccess);
+});
+
+}
+
 function goHome() {
     window.location = appAddress + '/SAMPanel';
 }

@@ -23,5 +23,7 @@ namespace PilotSmithApp.BusinessService.Contract
         Task<bool> SendApprolMails(Guid documentID, string documentType);
         List<DocumentApproval> GetStockAdjApprovalSummary();
         List<DocumentApproval> GetAllApprovalHistory(DocumentApprovalAdvanceSearch documentApprovalAdvanceSearch);
+        object RecallDocument(Guid documentID, string documentTypeCode,string documentNo, DateTime recallDate, string createdBy, DateTime createdDate);
+        Task<bool> SendRecallMails(Guid documentID,string docuementTypeCode);
     }
 }

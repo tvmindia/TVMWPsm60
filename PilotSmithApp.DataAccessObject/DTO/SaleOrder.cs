@@ -61,6 +61,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Customer Customer { get; set; }
         public Carrier Carrier { get; set; }
         public string LatestApprovalStatusDescription { get; set; }
+        public int? ApproverLevel { get; set; }
         public Branch Branch { get; set; }
         public DocumentStatus DocumentStatus { get; set; }
         public ReferencePerson ReferencePerson { get; set; }

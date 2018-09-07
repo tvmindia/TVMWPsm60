@@ -648,6 +648,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Text = "History";
                     toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
+
+                    //toolboxVM.RecallBtn.Visible = true;
+                    //toolboxVM.RecallBtn.Text = "Recall";
+                    //toolboxVM.RecallBtn.Title = "Document Recall";
+                    //toolboxVM.RecallBtn.Event = "RecallDocumentItem('POD');";
                     break;
 
                 case "Edit":
@@ -713,6 +718,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Text = "History";
                     toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
+
+                    //toolboxVM.RecallBtn.Visible = true;
+                    //toolboxVM.RecallBtn.Text = "Recall";
+                    //toolboxVM.RecallBtn.Title = "Document Recall";
+                    //toolboxVM.RecallBtn.Event = "RecallDocumentItem('POD');";
                     break;
 
                 case "LockDocument":
@@ -776,6 +786,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Text = "History";
                     toolboxVM.HistoryBtn.Title = "Approval History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
+
+                    //toolboxVM.RecallBtn.Visible = true;
+                    //toolboxVM.RecallBtn.Text = "Recall";
+                    //toolboxVM.RecallBtn.Title = "Document Recall";
+                    //toolboxVM.RecallBtn.Event = "";
                     break;
 
                 case "Approved":
@@ -836,6 +851,72 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.HistoryBtn.Text = "History";
                     toolboxVM.HistoryBtn.Title = "Document History";
                     toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
+                
+                    break;
+
+                case "Recalled":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProductionOrder();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Event = "EmailProductionOrder();";
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintProductionOrder()";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','POD');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','POD');";
+
+                    toolboxVM.RecallBtn.Visible = true;
+                    toolboxVM.RecallBtn.Text = "Recall";
+                    toolboxVM.RecallBtn.Title = "Document Recall";
+                    toolboxVM.RecallBtn.Event = "RecallDocumentItem('POD');";
                     break;
 
                 case "Add":
