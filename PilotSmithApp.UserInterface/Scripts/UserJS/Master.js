@@ -1316,6 +1316,49 @@ function SaveSuccessSpare(data, status) {
     }
     $('#divModelMasterPopUp').modal('hide');
 }
+
+//Add SysSetting
+function AddSysSettingMaster(flag) {
+    debugger;
+    OnServerCallBegin();
+    $("#divMasterBody").load("SysSetting/MasterPartial?masterCode=" + EmptyGuid, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            $('#hdnMasterCall').val(flag);
+            $('#lblModelMasterContextLabel').text('Add Tally Setting')
+            $('#divModelMasterPopUp').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+
+}
+
+//onsuccess function for formsubmit
+function SaveSuccessSysSetting(data, status) {
+    debugger;
+    var JsonResult = JSON.parse(data)
+    switch (JsonResult.Status) {
+        case "OK":
+            if ($('#hdnMasterCall').val() == "MSTR") {
+                $('#IsUpdate').val('True');
+                BindOrReloadSysSettingTable('Reset');
+            }
+            //else if ($('#hdnMasterCall').val() == "OTR") {
+            //    $('.divSysSettingSelectList').load('/SysSetting/SysSettingSelectList?required=' + $('#hdnSysSettingRequired').val());
+            //}
+            MasterAlert("success", JsonResult.Record.Message)
+            break;
+        case "ERROR":
+            MasterAlert("danger", JsonResult.Message)
+            break;
+        default:
+            MasterAlert("danger", JsonResult.Message)
+            break;
+    }
+    $('#divModelMasterPopUp').modal('hide');
+}
 //image upload
 function imageUpload() {
     debugger;

@@ -90,6 +90,7 @@
     <Compile Include="Contract\ISpareRepository.cs" />
     <Compile Include="Contract\IStateRepository.cs" />
     <Compile Include="Contract\IPaymentTermRepository.cs" />
+    <Compile Include="Contract\ISysSettingRepository.cs" />
     <Compile Include="Contract\ITakeOwnershipRepository.cs" />
     <Compile Include="Contract\ITaxTypeRepository.cs" />
     <Compile Include="Contract\IUnitRepository.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Service\SpareRepository.cs" />
     <Compile Include="Service\StateRepository.cs" />
     <Compile Include="Service\PaymentTermRepository.cs" />
+    <Compile Include="Service\SysSettingRepository.cs" />
     <Compile Include="Service\TakeOwnershipRepository.cs" />
     <Compile Include="Service\TaxTypeRepository.cs" />
     <Compile Include="Service\UnitRepository.cs" />

@@ -766,6 +766,7 @@
     <Content Include="Scripts\UserJS\SalesSummary.js" />
     <Content Include="Scripts\UserJS\Spare.js" />
     <Content Include="Scripts\UserJS\State.js" />
+    <Content Include="Scripts\UserJS\SysSetting.js" />
     <Content Include="Scripts\UserJS\TaxType.js" />
     <Content Include="Scripts\UserJS\Unit.js" />
     <Content Include="Scripts\UserJS\User.js" />
@@ -839,6 +840,7 @@
     <Compile Include="Controllers\ServiceTypeController.cs" />
     <Compile Include="Controllers\SpareController.cs" />
     <Compile Include="Controllers\StateController.cs" />
+    <Compile Include="Controllers\SysSettingController.cs" />
     <Compile Include="Controllers\TakeOwnershipController.cs" />
     <Compile Include="Controllers\TaxTypeController.cs" />
     <Compile Include="Controllers\TimeLineController.cs" />
@@ -909,6 +911,7 @@
     <Compile Include="Models\ServiceTypeViewModel.cs" />
     <Compile Include="Models\SpareViewModel.cs" />
     <Compile Include="Models\StateViewModel.cs" />
+    <Compile Include="Models\SysSettingViewModel.cs" />
     <Compile Include="Models\TaxTypeViewModel.cs" />
     <Compile Include="Models\TimeLineViewModel.cs" />
     <Compile Include="Models\ToolboxViewModel.cs" />
@@ -1125,6 +1128,8 @@
     <Content Include="Views\Report\ProductionQCStandardReport.cshtml" />
     <Content Include="Views\Report\PendingProductionQCReport.cshtml" />
     <Content Include="Views\DashBoard\_EnquiryCountSummary.cshtml" />
+    <Content Include="Views\SysSetting\Index.cshtml" />
+    <Content Include="Views\SysSetting\_AddSysSetting.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

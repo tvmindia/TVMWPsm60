@@ -95,6 +95,7 @@
     <Compile Include="DTO\ServiceType.cs" />
     <Compile Include="DTO\Spare.cs" />
     <Compile Include="DTO\State.cs" />
+    <Compile Include="DTO\SysSetting.cs" />
     <Compile Include="DTO\TaxType.cs" />
     <Compile Include="DTO\TimeLine.cs" />
     <Compile Include="DTO\Unit.cs" />

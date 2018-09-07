@@ -101,6 +101,7 @@
     <Compile Include="Contract\ISpareBusiness.cs" />
     <Compile Include="Contract\IStateBusiness.cs" />
     <Compile Include="Contract\IPaymentTermBusiness.cs" />
+    <Compile Include="Contract\ISysSettingBusiness.cs" />
     <Compile Include="Contract\ITakeOwnershipBusiness.cs" />
     <Compile Include="Contract\ITaxTypeBusiness.cs" />
     <Compile Include="Contract\IUnitBusiness.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Service\SpareBusiness.cs" />
     <Compile Include="Service\StateBusiness.cs" />
     <Compile Include="Service\PaymentTermBusiness.cs" />
+    <Compile Include="Service\SysSettingBusiness.cs" />
     <Compile Include="Service\TakeOwnershipBusiness.cs" />
     <Compile Include="Service\TaxTypeBusiness.cs" />
     <Compile Include="Service\UnitBusiness.cs" />

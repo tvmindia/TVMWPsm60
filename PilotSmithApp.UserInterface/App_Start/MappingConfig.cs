@@ -138,6 +138,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<EnquiryFollowupReportViewModel, EnquiryFollowupReport>().ReverseMap();
 
                 config.CreateMap<SpareViewModel, Spare>().ReverseMap();
+                config.CreateMap<SpareAdvanceSearchViewModel, SpareAdvanceSearch>().ReverseMap();
                 config.CreateMap<EstimateReportViewModel, EstimateReport>().ReverseMap();
                 config.CreateMap<QuotationReportViewModel, QuotationReport>().ReverseMap();
                 config.CreateMap<ServiceTypeViewModel, ServiceType>().ReverseMap();
@@ -148,6 +149,8 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<ProductionQCStandardReportViewModel, ProductionQCStandardReport>().ReverseMap();
                 config.CreateMap<PendingProductionQCReportViewModel, PendingProductionQCReport>().ReverseMap();
                 config.CreateMap<EnquiryCountSummaryViewModel, EnquiryCountSummary>().ReverseMap();
+                config.CreateMap<SysSettingViewModel, SysSetting>().ReverseMap();
+                config.CreateMap<SysSettingAdvanceSearchViewModel, SysSettingAdvanceSearch>().ReverseMap();
             });
         }
     }

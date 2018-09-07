@@ -94,7 +94,9 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJS/OtherCharge").Include("~/Scripts/UserJS/OtherCharge.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Bank").Include("~/Scripts/UserJS/Bank.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Spare").Include("~/Scripts/UserJS/Spare.js"));
-            
+            bundles.Add(new ScriptBundle("~/bundles/UserJS/SysSetting").Include("~/Scripts/UserJS/SysSetting.js"));
+
+
             bundles.Add(new ScriptBundle("~/bundles/UserJS/SaleInvoice").Include("~/Scripts/UserJS/SaleInvoice.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/DeliveryChallan").Include("~/Scripts/UserJS/DeliveryChallan.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJS/Country").Include("~/Scripts/UserJS/Country.js"));
@@ -114,7 +116,6 @@ namespace PilotSmithApp.UserInterface.App_Start
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/PendingProductionOrderReport").Include("~/Scripts/UserJS/Report/PendingProductionOrderReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/ProductionQCStandardReport").Include("~/Scripts/UserJS/Report/ProductionQCStandardReport.js"));
             bundles.Add(new ScriptBundle("~/bundles/UserJs/Report/PendingProductionQCReport").Include("~/Scripts/UserJS/Report/PendingProductionQCReport.js"));
-
         }
     }
 }
