@@ -455,7 +455,7 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              {
                  "data": "ChargeAmount", "orderable": false,render:function(data,type,row){
-                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val()=="4") {
+                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val()!="") {
                          return "-"
                      }
                      else {
@@ -559,7 +559,7 @@ function BindQuotationDetailList(id, IsEstimated) {
              {
                  "data": "Rate", "orderable": false, render: function (data, type, row) {
                      debugger;
-                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() =="9" || $('#LatestApprovalStatus').val()=="4") {
+                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val()!="") {
                          return "-"
                      }
                      else {

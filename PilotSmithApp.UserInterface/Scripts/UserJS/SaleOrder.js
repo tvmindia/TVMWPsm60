@@ -519,7 +519,7 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
              },
              {
                  "data": "ChargeAmount", "orderable": false, render: function (data, type, row) {
-                     if($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() =="9" || $('#LatestApprovalStatus').val()=="4")
+                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val()!="")
                      {
                          return "-"
                      }
@@ -649,7 +649,7 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
              },
              {
                  "data": "Rate", "orderable": false, render: function (data, type, row) {
-                     if ($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") {
+                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
                          return "-"
                      }
                      else {
