@@ -1010,7 +1010,30 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion GetSaleInvoiceTallyStatus
 
-            #region ButtonStyling
+        #region Get SaleInvoice By SaleInvoiceIDs
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
+        public string GetSaleInvoiceBySaleInvoiceIDs(string ids)
+        {
+            try
+            {
+                List<SaleInvoiceViewModel> SaleInvoiceViewModelList;
+                SaleInvoiceViewModelList = Mapper.Map<List<SaleInvoice>, List<SaleInvoiceViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceByID(ids));
+                for (var i = 0; i < SaleInvoiceViewModelList.Count; i++)
+                {
+                    SaleInvoiceViewModelList[i].SaleInvoiceDetailList = Mapper.Map<List<SaleInvoiceDetail>, List<SaleInvoiceDetailViewModel>>(_saleInvoiceBusiness.GetSaleInvoiceDetailListBySaleInvoiceID(SaleInvoiceViewModelList[i].ID));
+                }
+                    return JsonConvert.SerializeObject(new { Status = "OK", Records = SaleInvoiceViewModelList, Message = "Success" });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Records = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleInvoice By SaleInvoiceIDs
+
+        #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
         public ActionResult ChangeButtonStyle(string actionType, Guid? id)
