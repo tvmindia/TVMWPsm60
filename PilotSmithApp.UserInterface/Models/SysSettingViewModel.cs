@@ -9,6 +9,7 @@ namespace PilotSmithApp.UserInterface.Models
     public class SysSettingViewModel
     {
         public Guid ID { get; set; }
+        [Required(ErrorMessage ="Name is missing")]
         public string Name { get; set; }
         public string Value { get; set; }
         public string Type { get; set; }
