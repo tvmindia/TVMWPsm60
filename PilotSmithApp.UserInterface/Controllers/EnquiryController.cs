@@ -124,10 +124,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Enquiry Form
         #region Enquiry Detail Add
-        public ActionResult AddEnquiryDetail()
+        public ActionResult AddEnquiryDetail(bool update)
         {
             EnquiryDetailViewModel enquiryDetailVM = new EnquiryDetailViewModel();
-            enquiryDetailVM.IsUpdate = false;
+            enquiryDetailVM.IsUpdate = update;
             return PartialView("_AddEnquiryDetail", enquiryDetailVM);
         }
         #endregion Enquiry Detail Add
@@ -322,6 +322,37 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_EnquirySelectList", enquiryVM);
         }
         #endregion EnquirySelectList
+
+        #region CheckNumberZero
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckQty(decimal Qty)
+        {
+            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+            if ((int)Qty == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+            
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckNumberZero
+        #region CheckRate
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckRate( decimal Rate)
+        {
+            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+            if ((int)Rate == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckRate
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]

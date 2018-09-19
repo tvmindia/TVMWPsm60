@@ -357,8 +357,7 @@ function BindEnquiryDetailList(id) {
              },
              columns: [
              {
-                 "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
+                 "data": "Product.Code", render: function (data, type, row) {                   
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null? row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
@@ -370,11 +369,11 @@ function BindEnquiryDetailList(id) {
                      return data +" "+ row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Rate", render: function (data, type, row) { return roundoff(data,2) }, "defaultContent": "<i></i>" },
              {
                  "data": "Rate", render: function (data, type, row) {
 
-                     return parseFloat(data)*parseFloat(row.Qty)
+                     return roundoff(parseFloat(data) * parseFloat(row.Qty), 2)
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
@@ -420,30 +419,36 @@ function GetEnquiryDetailListByEnquiryID(id) {
 }
 function AddEnquiryDetailList()
 {
-    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail", function () {
+    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail?update=false", function () {
         $('#lblModelPopEnquiry').text('Enquiry Detail')
         $('#divModelPopEnquiry').modal('show');
     });
 }
 function AddEnquiryDetailToList() {
-    
+    debugger;
     $("#FormEnquiryDetail").submit(function () { });
         
         if($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
-            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
+            if (($('#Rate').val() >= 1) && ($('#Qty').val() >= 1) && ($('#UnitCode').val() != ""))
             {
                 
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
-                enquiryDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                enquiryDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+               // enquiryDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+              //  enquiryDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                //enquiryDetailList[_datatablerowindex].Product.Code = $('#spanProductName').text().split("-")[0].trim();
+                enquiryDetailList[_datatablerowindex].Product.Code = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[0].trim() : "";
+                enquiryDetailList[_datatablerowindex].Product.Name = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[1].trim() : "";
+                    
+             
                 debugger;
                 enquiryDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
-                enquiryDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                enquiryDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+             //   enquiryDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+              //  enquiryDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
                 Unit = new Object;
-                ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+               ProductModel.Name = $('#spanProductModelName').text();
+                //    ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 enquiryDetailList[_datatablerowindex].ProductModel = ProductModel;
                 enquiryDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
                 enquiryDetailList[_datatablerowindex].Qty = $('#Qty').val();
@@ -458,7 +463,7 @@ function AddEnquiryDetailToList() {
         }
         else
         {
-            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() >= 1) && ($('#Qty').val() >= 1) && ($('#UnitCode').val() != ""))
             {
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
@@ -535,32 +540,35 @@ function AddEnquiryDetailToList() {
 }
 function EditEnquiryDetail(this_Obj)
 {
-    
+    debugger;
     _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
     var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail", function () {
+    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail?update=true", function () {
         $('#lblModelPopEnquiry').text('Enquiry Detail')
         $('#FormEnquiryDetail #IsUpdate').val('True');
         $('#FormEnquiryDetail #ID').val(enquiryDetail.ID);
         $("#FormEnquiryDetail #ProductID").val(enquiryDetail.ProductID)
         $("#FormEnquiryDetail #hdnProductID").val(enquiryDetail.ProductID)
+        $('#spanProductName').text(enquiryDetail.Product.Code +"-" + enquiryDetail.Product.Name)
+        $('#spanProductModelName').text(enquiryDetail.ProductModel.Name)
         $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID="+$('#hdnProductID').val(), function () {
         });
         
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        }
-        else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        }
+
+        //if ($('#hdnProductID').val() != _emptyGuid) {
+        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+        //}
+        //else {
+        //    $('.divProductModelSelectList').empty();
+        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        //}
         $("#FormEnquiryDetail #ProductModelID").val(enquiryDetail.ProductModelID);
         $("#FormEnquiryDetail #hdnProductModelID").val(enquiryDetail.ProductModelID);
-        if($('#hdnProductModelID').val()!=_emptyGuid)
-        {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
+        //if($('#hdnProductModelID').val()!=_emptyGuid)
+        //{
+        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
+        //    });
+        //}
         $('#FormEnquiryDetail #ProductSpec').val(enquiryDetail.ProductSpec);
         $('#FormEnquiryDetail #Qty').val(enquiryDetail.Qty);
         $('#FormEnquiryDetail #UnitCode').val(enquiryDetail.UnitCode);
