@@ -112,7 +112,17 @@
 <script>
     $(document).ready(function () {
         try {
-            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            @if (Model.IsUpdate)
+             {
+
+             }
+            else
+              { 
+                <text>
+                 $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+                </text>
+              }
+
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
         }
         catch (e) {
