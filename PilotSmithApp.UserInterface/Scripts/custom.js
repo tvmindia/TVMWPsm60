@@ -569,8 +569,9 @@ function UploadFile(FileObject)
                         {
                             $('#hdnFileDupID').val(result.Records.ParentID);
                             notyAlert('success', result.Message);
-                            PaintImages(result.Records.ParentID);
                             cancelAll();
+                            PaintImages(result.Records.ParentID);
+                          
                         }
                         else if(result.Result=="ERROR")
                         {
@@ -624,8 +625,9 @@ function UploadPopupFile(FileObject) {
                     if (result.Result == "OK") {
                         $('#hdnPopupFileDupID').val(result.Records.ParentID);
                         notyAlert('success', result.Message);
-                        PaintImages(result.Records.ParentID);
                         cancelAll();
+                        PaintImages(result.Records.ParentID);
+                       
                     }
                     else if (result.Result == "ERROR") {
                         notyAlert('error', result.Message);
