@@ -294,7 +294,7 @@
                 ProductionOrder Details
                 @if (Model.IsDocLocked || !Model.IsUpdate)
                 {
-                    if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null)
+                    if ((Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null)&& (Model.SaleOrderID==null))
                     {
                         <a class="btn btn-openid pull-right" onclick="AddProductionOrderDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
                     }
