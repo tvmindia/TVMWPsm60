@@ -117,10 +117,10 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region Estimate Detail Add
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public ActionResult AddEstimateDetail()
+        public ActionResult AddEstimateDetail(bool update)
          {
             EstimateDetailViewModel estimateDetailVM = new EstimateDetailViewModel();
-            estimateDetailVM.IsUpdate = false;
+            estimateDetailVM.IsUpdate = update;
             return PartialView("_AddEstimateDetail", estimateDetailVM);
         }
         #endregion Estimate Detail Add

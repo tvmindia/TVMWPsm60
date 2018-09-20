@@ -448,7 +448,7 @@ function GetEstimateDetailListByEstimateID(id,IsEnquiry) {
 
 function AddEstimateDetailList() {
     debugger;
-    $("#divModelEstimatePopBody").load("Estimate/AddEstimateDetail", function () {
+    $("#divModelEstimatePopBody").load("Estimate/AddEstimateDetail?update=false", function () {
         $('#lblModelPopEstimate').text('Estimate Detail')
         $('#divModelPopEstimate').modal('show');
     });
@@ -463,14 +463,19 @@ function AddEstimateDetailToList() {
             if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "")  && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
                 debugger;
                 var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
-                estimateDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                estimateDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                //estimateDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                //estimateDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                estimateDetailList[_datatablerowindex].Product.Code = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[0].trim() : "";
+                estimateDetailList[_datatablerowindex].Product.Name = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[1].trim() : "";
+
+
                 estimateDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
-                estimateDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                estimateDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                //estimateDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                //estimateDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
                 Unit = new Object;
-                ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                ProductModel.Name = $('#spanProductModelName').text();
+               // ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 estimateDetailList[_datatablerowindex].ProductModel = ProductModel;
                 estimateDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
                 estimateDetailList[_datatablerowindex].Qty = $('#Qty').val()!=""? $('#Qty').val():0;
@@ -568,28 +573,30 @@ function EditEstimateDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).index();
     var estimateDetail = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelEstimatePopBody").load("Estimate/AddEstimateDetail", function () {
+    $("#divModelEstimatePopBody").load("Estimate/AddEstimateDetail?update=true", function () {
         $('#lblModelPopEstimate').text('Estimate Detail')
         $('#FormEstimateDetail #IsUpdate').val('True');
         $('#FormEstimateDetail #ID').val(estimateDetail.ID);
         $("#FormEstimateDetail #ProductID").val(estimateDetail.ProductID)
         $("#FormEstimateDetail #hdnProductID").val(estimateDetail.ProductID)
+        $('#spanProductName').text(estimateDetail.Product.Code + "-" + estimateDetail.Product.Name)
+        $('#spanProductModelName').text(estimateDetail.ProductModel.Name)
         $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
         });
 
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        }
-        else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        }
+        //if ($('#hdnProductID').val() != _emptyGuid) {
+        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+        //}
+        //else {
+        //    $('.divProductModelSelectList').empty();
+        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        //}
         $("#FormEstimateDetail #ProductModelID").val(estimateDetail.ProductModelID);
         $("#FormEstimateDetail #hdnProductModelID").val(estimateDetail.ProductModelID);
-        if ($('#hdnProductModelID').val() != _emptyGuid) {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
+        //if ($('#hdnProductModelID').val() != _emptyGuid) {
+        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
+        //    });
+        //}
         $('#FormEstimateDetail #ProductSpec').val(estimateDetail.ProductSpec);
         $('#FormEstimateDetail #Qty').val(estimateDetail.Qty);
         $('#FormEstimateDetail #UnitCode').val(estimateDetail.UnitCode);
