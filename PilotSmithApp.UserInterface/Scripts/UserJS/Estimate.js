@@ -472,7 +472,7 @@ function AddEstimateDetailToList() {
         debugger;
         if ($('#FormEstimateDetail #IsUpdate').val() == 'True') {
             debugger;
-            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "")  && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
                 debugger;
                 var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
                 estimateDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -498,7 +498,7 @@ function AddEstimateDetailToList() {
             }
         }
         else {
-            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "")  && ($('#Qty').val() != "") && ($('#UnitCode').val() != ""))
             {
                 if (_dataTable.EstimateDetailList.rows().data().length === 0) {
                     _dataTable.EstimateDetailList.clear().rows.add(GetEstimateDetailListByEstimateID(_emptyGuid)).draw(false);

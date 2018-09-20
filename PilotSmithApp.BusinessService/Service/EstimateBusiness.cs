@@ -36,7 +36,7 @@ namespace PilotSmithApp.BusinessService.Service
         {
             if (estimate.EstimateDetailList.Count > 0)
             {
-                estimate.DetailXML = _commonBusiness.GetXMLfromEstimateObject(estimate.EstimateDetailList, "ProductID,ProductModelID,ProductSpec,Qty,UnitCode");
+                estimate.DetailXML = _commonBusiness.GetXMLfromEstimateObject(estimate.EstimateDetailList, "ProductID,ProductModelID,Qty,UnitCode");
             }
             return _estimateRepository.InsertUpdateEstimate(estimate);
         }
