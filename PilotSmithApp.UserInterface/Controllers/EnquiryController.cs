@@ -323,11 +323,11 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion EnquirySelectList
 
-        #region CheckNumberZero
+        #region CheckQty
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckQty(decimal Qty)
         {
-            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+            
             if ((int)Qty == 0)
             {
 
@@ -337,12 +337,12 @@ namespace PilotSmithApp.UserInterface.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion CheckNumberZero
+        #endregion CheckQty
         #region CheckRate
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckRate( decimal Rate)
         {
-            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+            
             if ((int)Rate == 0)
             {
 

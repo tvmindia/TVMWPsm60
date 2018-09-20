@@ -103,6 +103,7 @@ namespace PilotSmithApp.UserInterface.Models
      //   [Required(ErrorMessage = "Product Specification is missing")]
         public string ProductSpec { get; set; }
         [Display(Name = "Quantity")]
+        [Remote(action: "CheckQty", controller: "Estimate", AdditionalFields = "Qty")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }
         [Display(Name = "Select Unit")]
