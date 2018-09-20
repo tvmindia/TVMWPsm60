@@ -114,10 +114,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Quotation Form
         #region Quotation Detail Add
-        public ActionResult AddQuotationDetail()
+        public ActionResult AddQuotationDetail(bool update)
         {
             QuotationDetailViewModel quotationDetailVM = new QuotationDetailViewModel();
-            quotationDetailVM.IsUpdate = false;
+            quotationDetailVM.IsUpdate = update;
             return PartialView("_AddQuotationDetail", quotationDetailVM);
         }
         #endregion Quotation Detail Add

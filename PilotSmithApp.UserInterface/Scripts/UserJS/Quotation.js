@@ -621,7 +621,7 @@ function GetQuotationDetailListByQuotationID(id, IsEstimated) {
     }
 }
 function AddQuotationDetailList() {
-    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail", function () {
+    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail?update=false", function () {
         $('#lblModelPopQuotation').text('Quotation Detail')
         $('#divModelPopQuotation').modal('show');
     });
@@ -631,18 +631,23 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () { });
         debugger;
         if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
-            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
+            if (($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
-                quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
-                quotationDetailList[_datatablerowindex].Product.Name = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                //quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
+                //quotationDetailList[_datatablerowindex].Product.Name = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+                quotationDetailList[_datatablerowindex].Product.Code = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[0].trim() : "";
+                quotationDetailList[_datatablerowindex].Product.Name = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[1].trim() : "";
+
+
                 quotationDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
-                quotationDetailList[_datatablerowindex].ProductID = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID").val() : _emptyGuid;
-                quotationDetailList[_datatablerowindex].ProductModelID = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid;
+                //quotationDetailList[_datatablerowindex].ProductID = $("#divModelPopQuotation #ProductID").val() != "" ? $("#divModelPopQuotation #ProductID").val() : _emptyGuid;
+                //quotationDetailList[_datatablerowindex].ProductModelID = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID").val() : _emptyGuid;
                 ProductModel = new Object;
                 Unit = new Object;
                 TaxType = new Object;
-                ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
+                ProductModel.Name = $('#spanProductModelName').text();
+               // ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[_datatablerowindex].ProductModel = ProductModel;
                 quotationDetailList[_datatablerowindex].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                 quotationDetailList[_datatablerowindex].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
@@ -765,28 +770,30 @@ function EditQuotationDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).index();
     var quotationDetail = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail", function () {
+    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail?update=true", function () {
         $('#lblModelPopQuotation').text('Quotation Detail')
         $('#FormQuotationDetail #IsUpdate').val('True');
         $('#FormQuotationDetail #ID').val(quotationDetail.ID);
         $("#FormQuotationDetail #ProductID").val(quotationDetail.ProductID)
         $("#FormQuotationDetail #hdnProductID").val(quotationDetail.ProductID)
+        $('#spanProductName').text(quotationDetail.Product.Code + "-" + quotationDetail.Product.Name)
+        $('#spanProductModelName').text(quotationDetail.ProductModel.Name)
         $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
         });
 
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        }
-        else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        }
+        //if ($('#hdnProductID').val() != _emptyGuid) {
+        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+        //}
+        //else {
+        //    $('.divProductModelSelectList').empty();
+        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        //}
         $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
         $("#FormQuotationDetail #hdnProductModelID").val(quotationDetail.ProductModelID);
-        if ($('#hdnProductModelID').val() != _emptyGuid) {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
+        //if ($('#hdnProductModelID').val() != _emptyGuid) {
+        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
+        //    });
+        //}
         $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
         $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
         $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
