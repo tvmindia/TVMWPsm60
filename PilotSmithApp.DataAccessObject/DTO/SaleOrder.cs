@@ -118,6 +118,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Unit Unit { get; set; }
         public TaxType TaxType { get; set; }
         public decimal? PrevProduceQty { get; set; }
+        public decimal? PrevProdOrderQty { get; set; }
         public decimal? PrevDelQty { get; set; }
         public decimal? DelvQty { get; set; }
     }

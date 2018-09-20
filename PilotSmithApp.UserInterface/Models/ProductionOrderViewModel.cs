@@ -120,10 +120,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Product Specfication is missing")]
         public string ProductSpec{get;set;}
         [Display(Name ="Order Qty")]
-        [Remote(action: "CheckOrderQty", controller: "ProductionOrder", AdditionalFields = "ProdOrderID,SaleOrderQty")]
+        [Remote(action: "CheckOrderQty", controller: "ProductionOrder",AdditionalFields = "ProdOrderID,PrevProducedQty,SaleOrderQty")]
         public decimal? OrderQty{get;set;}
         [Display(Name = "Produced Qty")]
-        [Remote(action: "CheckOrderQty", controller: "ProductionOrder", AdditionalFields = "ProdOrderID,SaleOrderQty")]
+        [Remote(action: "CheckProducedQty", controller: "ProductionOrder", AdditionalFields = "ProdOrderID,OrderQty,SaleOrderQty")]
         public decimal? ProducedQty{get;set;}       
         [Display(Name = "Select Unit")]
         public int? UnitCode{get;set;}
@@ -174,6 +174,8 @@ namespace PilotSmithApp.UserInterface.Models
         public UnitViewModel Unit { get; set; }
         public SaleOrderDetailViewModel SaleOrderDetail { get; set; }
         public decimal? PrevProducedQty { get; set; }
+        public decimal? PrevProdOrderQty { get; set; }
+        public decimal? TotalProducedQty { get; set; }
         public decimal? Amount { get; set; }
         public decimal? SaleOrderQty { get; set; }
         public PlantViewModel Plant { get; set; }

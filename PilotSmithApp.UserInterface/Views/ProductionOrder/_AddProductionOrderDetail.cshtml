@@ -1,21 +1,32 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ProductionOrderDetailViewModel
 
 @using (Ajax.BeginForm("", "", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "form-horizontal", role = "form", id = "FormProductionOrderDetail" }))
-{  
+{
     @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })    
-    @Html.HiddenFor(model=>model.SaleOrderQty,htmlAttributes:new { @class=""})
+    @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.SaleOrderQty, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.PrevProducedQty, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.TotalProducedQty, htmlAttributes: new { @class = "" })
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
-            <div class="col-md-12">
-                <div class="divProductSelectList">
-                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                    @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
-                </div>                
-            </div>
+            @if (Model.IsUpdate)
+            {
+                <div class="col-md-12">
+                    <span id="productName" class="form-control newinput" style="background-color:#eeeeee"></span>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <div class="divProductSelectList">
+                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
+                    </div>
+                </div>
+            }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductRequired", "required")
             @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
@@ -24,12 +35,23 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
-            <div class="col-md-12">
-                <div class="divProductModelSelectList">
-                    <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
-                    @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
-                </div>               
-            </div>
+            @*<div class="col-md-12">*@
+                @if (Model.IsUpdate)
+                {
+                    <div class="col-md-12">
+                        <span id="productModelName" class="form-control newinput" style="background-color:#eeeeee"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="divProductModelSelectList">
+                            <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                            @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
+                        </div>
+                    </div>
+                }              
+            @*</div>*@
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductModelRequired", "required")
             @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
@@ -105,7 +127,7 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
                     </div>
-                    <div class="col-md-12">
+                    <div id="orderQtyID" class="col-md-12">
                         @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
                         @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
                     </div>
@@ -114,7 +136,7 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.ProducedQty, htmlAttributes: new { @class = "control-label " })
                     </div>
-                    <div class="col-md-12">
+                    <div id="producedQtyID" class="col-md-12">
                         @Html.EditorFor(model => model.ProducedQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
                         @Html.ValidationMessageFor(model => model.ProducedQty, "", new { @class = "text-danger" })
                     </div>
@@ -189,14 +211,14 @@
                 </div>
 
                 @*<div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency CalculateGST", @onkeypress = "return isNumber(event)" } })
-                        @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency CalculateGST", @onkeypress = "return isNumber(event)" } })
+                            @Html.ValidationMessageFor(model => model.Rate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.PlantCode, htmlAttributes: new { @class = "control-label" })
@@ -223,123 +245,123 @@
             @*<div class="col-md-12">&nbsp;</div>*@
         </div>
         <div class="col-md-8 no-padding rcorners2" style="top:5px;">
-            
+
             <div class="col-md-12">&nbsp;</div>
             @*<div class="col-md-12 no-padding" style="border-left:1px solid #c2dee0;">*@
-                
 
-                <table style="margin-left:10px;">
-                    <tr>
-                        <th></th>
-                        <th style="text-align:center;font-size:12px;">
-                            Forecast Date
-                            <div class="col-md-12">&nbsp;</div>
-                        </th>
-                        <th style="text-align:center;font-size:12px;">
-                            Actual Date
-                            <div class="col-md-12">&nbsp;</div>
-                        </th>
-                    </tr>
-                    <tr >
-                        <td>
-                            MileStone 1 (25%)
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone1FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone1FcFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone1AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone1AcTFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
 
-                    </tr>
-                    <tr >
-                        <td>
-                            MileStone 2 (50%)
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone2FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone2FcFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
+            <table style="margin-left:10px;">
+                <tr>
+                    <th></th>
+                    <th style="text-align:center;font-size:12px;">
+                        Forecast Date
+                        <div class="col-md-12">&nbsp;</div>
+                    </th>
+                    <th style="text-align:center;font-size:12px;">
+                        Actual Date
+                        <div class="col-md-12">&nbsp;</div>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        MileStone 1 (25%)
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone1FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone1FcFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone2AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone2AcTFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone1AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone1AcTFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                    </tr>
-                    <tr >
-                        <td>
-                            MileStone 3 (75%)
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone3FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone3FcFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        MileStone 2 (50%)
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone2FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone2FcFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone3AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone3AcTFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone2AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone2AcTFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                    </tr>
-                    <tr >
-                        <td>
-                            MileStone 4 (100%)
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone4FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone4FcFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        MileStone 3 (75%)
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone3FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone3FcFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                        <td>
-                            <div class="col-md-10 no-padding">
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.MileStone4AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.MileStone4AcTFinishDtFormatted, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone3AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone3AcTFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
-                            <div class="col-md-12">&nbsp;</div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        MileStone 4 (100%)
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone4FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone4FcFinishDtFormatted, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 no-padding">
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.MileStone4AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.MileStone4AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+                    </td>
+                </tr>
+            </table>
         </div>
+    </div>
     @*</div>*@
     <div class="modal-footer d-flex justify-content-center">
         <button class="btn btn-default" id="btnAddProductionOrderDetail" onclick="AddProductionOrderDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
@@ -349,25 +371,34 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProductionOrderDetail");
         try {
-            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
-                $('#divModelPopProductionOrder #ProductID').change(function () {
-                    if ($('#divProductBasicInfo') != undefined) {
-                        $('#divModelPopProductionOrder #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
-                            $('#divModelPopProductionOrder #ProductSpec').val($('#divModelPopProductionOrder #spnProductName').text());
-                        });
-                    }
-                    if ($('.divProductModelSelectList') != undefined) {
-                        $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                        if (this.value != "") {
-                            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=" + $('hdnProductModelRequired').val() + "&productID=" + this.value)
-                        }
-                        else {
-                            $('.divProductModelSelectList').empty();
-                            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                        }
-                    }
-                });
-            });
+            @if (Model.IsUpdate)
+        {
+
+        }
+        else {
+            <text>
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            </text>
+        }
+            //    $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
+            //        $('#divModelPopProductionOrder #ProductID').change(function () {
+            //        if ($('#divProductBasicInfo') != undefined) {
+            //                $('#divModelPopProductionOrder #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+            //                    $('#divModelPopProductionOrder #ProductSpec').val($('#divModelPopProductionOrder #spnProductName').text());
+            //            });
+            //        }
+            //        if ($('.divProductModelSelectList') != undefined) {
+            //                $('#dropLoad').addClass('fa fa-spinner fa-spin');
+            //            if (this.value != "") {
+            //                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=" + $('hdnProductModelRequired').val() + "&productID=" + this.value)
+            //                }
+            //            else {
+            //                    $('.divProductModelSelectList').empty();
+            //                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //            }
+            //        }
+            //    });
+            //});
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
             $('.divPlantSelectList').load('/Plant/PlantSelectList?required=' + $('#hdnPlantRequired').val())
         }
@@ -379,7 +410,7 @@
         });
 
         $('.select2').addClass('form-control newinput');
-        
+
         try {
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",
@@ -393,18 +424,16 @@
         catch (e) {
             console.log(e.message);
         }
-        
+
     });
 </script>
 
 <style>
     .rcorners2 {
-    border-radius: 25px;
-    border: 1px solid #068a78;
-    /*padding: 20px;*/
-    width: 500px;
-    height: 243px;
-}
+        border-radius: 25px;
+        border: 1px solid #068a78;
+        /*padding: 20px;*/
+        width: 500px;
+        height: 243px;
+    }
 </style>
-
-
