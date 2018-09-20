@@ -515,13 +515,13 @@ function BindQuotationDetailList(id, IsEstimated) {
                      return data + " " + row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Rate", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "Rate", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i></i>" },
              { "data": "Discount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "Rate", render: function (data, type, row) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
-                     var Taxable = Total - Discount
+                     var Taxable = roundoff(Total - Discount)
                      return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-placement="left" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + Taxable
                  }, "defaultContent": "<i></i>"
              },
@@ -631,7 +631,7 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () { });
         debugger;
         if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
-            if (($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
+            if (($('#divModelQuotationPopBody #Rate').val() >= 1) && ($('#divModelQuotationPopBody #Qty').val() >= 1) && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 //quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -671,7 +671,7 @@ function AddQuotationDetailToList() {
             }
         }
         else {
-            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() != "") && ($('#divModelQuotationPopBody #Qty').val() != "") && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() >= 1) && ($('#divModelQuotationPopBody #Qty').val() >=1 ) && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
             {
                 debugger;
                 if (_dataTable.QuotationDetailList.rows().data().length === 0) {
