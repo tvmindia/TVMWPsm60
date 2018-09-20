@@ -100,6 +100,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Select Product Model")]
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Product Specification")]
+        [Required(ErrorMessage = "Product Specification is missing")]
         public string ProductSpec { get; set; }
         [Display(Name = "Quantity")]
         [Required(ErrorMessage ="Quantity is missing")]
