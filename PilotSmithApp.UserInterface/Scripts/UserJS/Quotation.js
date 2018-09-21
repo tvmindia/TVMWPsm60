@@ -631,7 +631,7 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () { });
         debugger;
         if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
-            if (($('#divModelQuotationPopBody #Rate').val() >= 1) && ($('#divModelQuotationPopBody #Qty').val() >= 1) && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
+            if (($('#divModelQuotationPopBody #Rate').val() > 0) && ($('#divModelQuotationPopBody #Qty').val() > 0) && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 //quotationDetailList[_datatablerowindex].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -651,11 +651,11 @@ function AddQuotationDetailToList() {
                 quotationDetailList[_datatablerowindex].ProductModel = ProductModel;
                 quotationDetailList[_datatablerowindex].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                 quotationDetailList[_datatablerowindex].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
-                quotationDetailList[_datatablerowindex].Qty = $('#divModelQuotationPopBody #Qty').val();
+                quotationDetailList[_datatablerowindex].Qty = $('#divModelQuotationPopBody #Qty').val()!= "" ? $('#divModelQuotationPopBody #Qty').val():0;
                 quotationDetailList[_datatablerowindex].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                 Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
                 quotationDetailList[_datatablerowindex].Unit = Unit;
-                quotationDetailList[_datatablerowindex].Rate = $('#divModelQuotationPopBody #Rate').val();
+                quotationDetailList[_datatablerowindex].Rate = $('#divModelQuotationPopBody #Rate').val() != "" ? $('#divModelQuotationPopBody #Rate').val() :0;
                 quotationDetailList[_datatablerowindex].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
                 quotationDetailList[_datatablerowindex].TaxTypeCode = $('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                 TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
@@ -671,7 +671,7 @@ function AddQuotationDetailToList() {
             }
         }
         else {
-            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() >= 1) && ($('#divModelQuotationPopBody #Qty').val() >=1 ) && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
+            if (($('#divModelQuotationPopBody #ProductID').val() != "") && ($('#divModelQuotationPopBody #ProductModelID').val() != "") && ($('#divModelQuotationPopBody #Rate').val() > 0) && ($('#divModelQuotationPopBody #Qty').val() >0 ) && ($('#divModelQuotationPopBody #UnitCode').val() != ""))
             {
                 debugger;
                 if (_dataTable.QuotationDetailList.rows().data().length === 0) {
@@ -686,10 +686,10 @@ function AddQuotationDetailToList() {
                     quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                     quotationDetailList[0].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                     quotationDetailList[0].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
-                    quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val();
+                    quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() : 0 ;
                     quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                     quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
-                    quotationDetailList[0].Rate = $('#divModelQuotationPopBody #Rate').val();
+                    quotationDetailList[0].Rate = $('#divModelQuotationPopBody #Rate').val() != "" ? $('#divModelQuotationPopBody #Rate').val() : 0 ;
                     quotationDetailList[0].Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
                     quotationDetailList[0].TaxTypeCode =$('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                     quotationDetailList[0].TaxType.ValueText = $('#divModelQuotationPopBody #TaxTypeCode').val();
@@ -739,12 +739,12 @@ function AddQuotationDetailToList() {
                             QuotationDetailVM.ProductModel = ProductModel;
                             QuotationDetailVM.ProductModel.ImageURL = $('#hdnProductModelImage').val();
                             QuotationDetailVM.ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
-                            QuotationDetailVM.Qty = $('#divModelQuotationPopBody #Qty').val();
+                            QuotationDetailVM.Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() :0;
                             var Unit = new Object();
                             Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
                             QuotationDetailVM.Unit = Unit;
                             QuotationDetailVM.UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
-                            QuotationDetailVM.Rate = $('#divModelQuotationPopBody #Rate').val();
+                            QuotationDetailVM.Rate = $('#divModelQuotationPopBody #Rate').val() != "" ? $('#divModelQuotationPopBody #Rate').val() :0 ;
                             QuotationDetailVM.Discount = $('#divModelQuotationPopBody #Discount').val() != "" ? $('#divModelQuotationPopBody #Discount').val() : 0;
                             QuotationDetailVM.TaxTypeCode =$('#divModelQuotationPopBody #TaxTypeCode').val()!=null? $('#divModelQuotationPopBody #TaxTypeCode').val().split('|')[0]:"";
                             var TaxType = new Object();

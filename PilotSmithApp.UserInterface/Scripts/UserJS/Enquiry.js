@@ -430,7 +430,7 @@ function AddEnquiryDetailToList() {
         
         if($('#FormEnquiryDetail #IsUpdate').val()=='True')
         {
-            if (($('#Rate').val() >= 1) && ($('#Qty').val() >= 1) && ($('#UnitCode').val() != ""))
+            if (($('#Rate').val() > 0) && ($('#Qty').val() > 0) && ($('#UnitCode').val() != ""))
             {
                 
                 var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
@@ -451,11 +451,11 @@ function AddEnquiryDetailToList() {
                 //    ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                 enquiryDetailList[_datatablerowindex].ProductModel = ProductModel;
                 enquiryDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
-                enquiryDetailList[_datatablerowindex].Qty = $('#Qty').val();
+                enquiryDetailList[_datatablerowindex].Qty = $('#Qty').val() !=""? $('#Qty').val() :0 ;
                 enquiryDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
                 Unit.Description=$("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                 enquiryDetailList[_datatablerowindex].Unit = Unit;
-                enquiryDetailList[_datatablerowindex].Rate = $('#Rate').val();
+                enquiryDetailList[_datatablerowindex].Rate = $('#Rate').val() != "" ? $('#Rate').val() : 0;
                 _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
                 $('#divModelPopEnquiry').modal('hide');
                 _datatablerowindex = -1;
@@ -463,7 +463,7 @@ function AddEnquiryDetailToList() {
         }
         else
         {
-            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() >= 1) && ($('#Qty').val() >= 1) && ($('#UnitCode').val() != ""))
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() > 0) && ($('#Qty').val() > 0) && ($('#UnitCode').val() != ""))
             {
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
@@ -477,10 +477,10 @@ function AddEnquiryDetailToList() {
                     enquiryDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
                     enquiryDetailList[0].ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                     enquiryDetailList[0].ProductSpec = $('#ProductSpec').val();
-                    enquiryDetailList[0].Qty = $('#Qty').val();
+                    enquiryDetailList[0].Qty = $('#Qty').val() != "" ? $('#Qty').val() : 0;
                     enquiryDetailList[0].UnitCode = $('#UnitCode').val();
                     enquiryDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                    enquiryDetailList[0].Rate = $('#Rate').val();
+                    enquiryDetailList[0].Rate = $('#Rate').val() != "" ? $('#Rate').val() :0;
                     _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
                     $('#divModelPopEnquiry').modal('hide');
                 }
@@ -520,11 +520,11 @@ function AddEnquiryDetailToList() {
                             ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
                             EnquiryDetailVM.ProductModel = ProductModel;
                             EnquiryDetailVM.ProductSpec = $('#ProductSpec').val();
-                            EnquiryDetailVM.Qty = $('#Qty').val();
+                            EnquiryDetailVM.Qty = $('#Qty').val() != "" ? $('#Qty').val() : 0;
                             Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                             EnquiryDetailVM.Unit = Unit;
                             EnquiryDetailVM.UnitCode = $('#UnitCode').val();
-                            EnquiryDetailVM.Rate = $('#Rate').val();
+                            EnquiryDetailVM.Rate = $('#Rate').val() != "" ? $('#Rate').val() : 0;
                             _dataTable.EnquiryDetailList.row.add(EnquiryDetailVM).draw(true);
                             $('#divModelPopEnquiry').modal('hide');
                         }

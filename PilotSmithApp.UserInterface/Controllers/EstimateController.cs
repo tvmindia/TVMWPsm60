@@ -365,7 +365,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult CheckQty(decimal Qty)
         {
             //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
-            if ((int)Qty == 0)
+            if (Qty == 0)
             {
 
                 return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
