@@ -152,7 +152,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderDetailVM.PrevProdOrderQty = 0;
             productionOrderDetailVM.PrevProducedQty = 0;
             productionOrderDetailVM.SaleOrderQty = 0;
-            productionOrderDetailVM.Rate = 0;          
+            productionOrderDetailVM.Rate = 0;         
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -268,7 +268,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         PrevProducedQty=0,
                         PrevDelQty=0,
                         SaleOrderQty=0,
-                        TotalProducedQty=0,
+                        SaleOrderDetailID=Guid.Empty,
+                       // TotalProdusedQty = 0,
                         Unit=new UnitViewModel()
                         {
                             Code=0,
@@ -347,6 +348,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         select new ProductionOrderDetailViewModel
                                                         {
                                                             ID = Guid.Empty,
+                                                            SaleOrderDetailID=saleOrderDetailVM.ID,
                                                             ProdOrderID = Guid.Empty,
                                                             ProductID = saleOrderDetailVM.ProductID,
                                                             ProductModelID = saleOrderDetailVM.ProductModelID,
@@ -548,7 +550,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
                 if (prodOrderDetailVM.ProducedQty > prodOrderDetailVM.OrderQty)
                 {
-                    return Json("<p><span style='vertical-align: 2px'>Produced qty cannot grater than Order qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                    return Json("<p><span style='vertical-align: 2px'>Produced qty greater than Order qty </span> <i class='fa fa-exclamation' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
                 }             
             }
            
@@ -562,16 +564,15 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckOrderQty(ProductionOrderDetailViewModel prodOrderDetailVM)
         {
-            //prodOrderDetailVM = new ProductionOrderDetailViewModel();
-            if (prodOrderDetailVM.SaleOrderQty != 0)
+            ProductionOrderDetailViewModel prodOrderDetail = Mapper.Map<ProductionOrderDetail, ProductionOrderDetailViewModel>(_productionOrderBusiness.ValidateProductionOrderDetailOrderQty(prodOrderDetailVM.SaleOrderDetailID));
+            if (prodOrderDetail.SaleOrderQty != 0 && prodOrderDetail.TotalProdOrderQty != prodOrderDetail.SaleOrderQty)
             {
-                //var Total = (prodOrderDetailVM.OrderQty + prodOrderDetailVM.PrevProducedQty);
-                if (prodOrderDetailVM.OrderQty > prodOrderDetailVM.PrevProducedQty)
+                var Total = (prodOrderDetailVM.OrderQty + prodOrderDetail.TotalProdOrderQty);
+                if (Total > prodOrderDetail.SaleOrderQty)
                 {
-                    return Json("<p><span style='vertical-align: 2px'>Order qty cannot grater than SaleOrder qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                    return Json("<p><span style='vertical-align: 2px'>Order qty greater than SaleOrder qty </span> <i class='fa fa-exclamation' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
                 }
             }
-
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }

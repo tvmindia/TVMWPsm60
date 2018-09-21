@@ -110,7 +110,9 @@ namespace PilotSmithApp.UserInterface.Models
 
     public class ProductionOrderDetailViewModel
     {
-        public Guid ID{get;set;}        
+        public Guid ID{get;set;}
+        public Guid SaleOrderID { get; set; }
+        public Guid SaleOrderDetailID { get; set; }
         public Guid ProdOrderID{get;set;}
         [Display(Name = "Select Product")]
         public Guid? ProductID{get;set;}
@@ -120,7 +122,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Product Specfication is missing")]
         public string ProductSpec{get;set;}
         [Display(Name ="Order Qty")]
-        [Remote(action: "CheckOrderQty", controller: "ProductionOrder",AdditionalFields = "ProdOrderID,PrevProducedQty,SaleOrderQty")]
+        [Remote(action: "CheckOrderQty", controller: "ProductionOrder",AdditionalFields = "SaleOrderDetailID")]
         public decimal? OrderQty{get;set;}
         [Display(Name = "Produced Qty")]
         [Remote(action: "CheckProducedQty", controller: "ProductionOrder", AdditionalFields = "ProdOrderID,OrderQty,SaleOrderQty")]
@@ -175,9 +177,11 @@ namespace PilotSmithApp.UserInterface.Models
         public SaleOrderDetailViewModel SaleOrderDetail { get; set; }
         public decimal? PrevProducedQty { get; set; }
         public decimal? PrevProdOrderQty { get; set; }
-        public decimal? TotalProducedQty { get; set; }
+        public decimal? TotalProdOrderQty { get; set; }
+        public decimal? TotalProdusedQty { get; set; }
         public decimal? Amount { get; set; }
         public decimal? SaleOrderQty { get; set; }
+        
         public PlantViewModel Plant { get; set; }
         public decimal? PrevDelQty { get; set; }
         public decimal? DelvQty { get; set; }
