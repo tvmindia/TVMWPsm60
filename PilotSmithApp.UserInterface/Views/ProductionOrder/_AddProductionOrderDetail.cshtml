@@ -103,7 +103,7 @@
             </div>*@
 
     </div>
-    <div class="form-group col-md-12">
+    <div class="form-group col-md-12 no-padding">
         @if (Model.ShowRate == true)
         {
             <div class="col-md-4 no-padding">
@@ -243,129 +243,128 @@
                 @*<div class="col-md-12">&nbsp;</div>*@
             </div>
         }
+     
+            <div class="no-padding" style="font-size:14px;margin-left:300px;">
+                @Html.Label("Milestone")
+                @*<div class="col-md-12">&nbsp;</div>*@
+            </div>       
+            <div class="col-md-8 no-padding rcorners2" style="top:5px;">
+
+                <div class="col-md-12">&nbsp;</div>
+                @*<div class="col-md-12 no-padding" style="border-left:1px solid #c2dee0;">*@
 
 
-        <div class="no-padding" style="font-size:14px;margin-left:300px;">
-            @Html.Label("Milestone")
-            @*<div class="col-md-12">&nbsp;</div>*@
-        </div>
-        <div class="col-md-8 no-padding rcorners2" style="top:5px;">
+                <table style="margin-left:10px;">
+                    <tr>
+                        <th></th>
+                        <th style="text-align:center;font-size:12px;">
+                            Forecast Date
+                            <div class="col-md-12">&nbsp;</div>
+                        </th>
+                        <th style="text-align:center;font-size:12px;">
+                            Actual Date
+                            <div class="col-md-12">&nbsp;</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            MileStone 1 (25%)
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone1FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone1FcFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone1AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone1AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
 
-            <div class="col-md-12">&nbsp;</div>
-            @*<div class="col-md-12 no-padding" style="border-left:1px solid #c2dee0;">*@
-
-
-            <table style="margin-left:10px;">
-                <tr>
-                    <th></th>
-                    <th style="text-align:center;font-size:12px;">
-                        Forecast Date
-                        <div class="col-md-12">&nbsp;</div>
-                    </th>
-                    <th style="text-align:center;font-size:12px;">
-                        Actual Date
-                        <div class="col-md-12">&nbsp;</div>
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        MileStone 1 (25%)
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone1FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone1FcFinishDtFormatted, "", new { @class = "text-danger" })
+                    </tr>
+                    <tr>
+                        <td>
+                            MileStone 2 (50%)
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone2FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone2FcFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone1AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone1AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone2AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone2AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>
-                        MileStone 2 (50%)
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone2FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone2FcFinishDtFormatted, "", new { @class = "text-danger" })
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            MileStone 3 (75%)
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone3FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone3FcFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone2AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone2AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone3AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone3AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        MileStone 3 (75%)
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone3FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone3FcFinishDtFormatted, "", new { @class = "text-danger" })
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            MileStone 4 (100%)
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone4FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone4FcFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone3AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone3AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                        <td>
+                            <div class="col-md-10 no-padding">
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.MileStone4AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.MileStone4AcTFinishDtFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        MileStone 4 (100%)
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone4FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone4FcFinishDtFormatted, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                    <td>
-                        <div class="col-md-10 no-padding">
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone4AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.MileStone4AcTFinishDtFormatted, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="col-md-12">&nbsp;</div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                            <div class="col-md-12">&nbsp;</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>       
     </div>
     @*</div>*@
     <div class="modal-footer d-flex justify-content-center">
