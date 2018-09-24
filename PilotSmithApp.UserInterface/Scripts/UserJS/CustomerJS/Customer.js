@@ -155,7 +155,8 @@ function AddCustomer() {
 }
 
 function EditCustomer(this_Obj)
-{
+{ 
+    _parentFormID = "CustomerForm";
     var customer = _dataTable.customerList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
     $("#divCustomerForm").load("Customer/CustomerForm?id=" + customer.ID, function () {
