@@ -37,6 +37,11 @@ function BindOrReloadProductModelTable(action) {
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                ProductModelAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                ProductModelAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                $('#AdvanceSearch').val(JSON.stringify(ProductModelAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -47,13 +52,6 @@ function BindOrReloadProductModelTable(action) {
         _dataTables.ProductModelList = $('#tblProductModel').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-                buttons: [{
-                    extend: 'excel',
-                    exportOptions:
-                                 {
-                                     columns: [0,1, 2, 3, 4, 5, 6,7]
-                                 }
-                }],
                 ordering: false,
                 searching: false,
                 paging: true,
@@ -97,26 +95,18 @@ function BindOrReloadProductModelTable(action) {
                 { "targets": [7], "width": "10%" },
                 ],
                 destroy: true,
+                //for performing the import operation after the data loaded
                 initComplete: function (settings, json) {
+
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                     $('#tblProductModel').fadeIn(100);
                     if (action == undefined) {
-                        $('.excelExport').hide();
                         OnServerCallComplete();
-                    }
-                    if (action === 'Export') {
-                        if (json.data.length > 0) {
-                            if (json.data[0].TotalCount > 10000) {
-                                MasterAlert("info", 'We are able to download maximum 10000 rows of data, There exist more than 10000 rows of data please filter and download')
-                            }
-                        }
-                        $('.buttons-excel').trigger('click');
-                        BindOrReloadProductModelTable();
                     }
                 }
             });
-        $('.buttons-excel').hide();
     }
+   
     catch (e) {
         console.log(e.message);
     }
@@ -133,8 +123,6 @@ function ResetProductModelList() {
 
 function ExportProductModelData() {
     try{
-        $('.excelExport').show();
-        OnServerCallBegin();
         BindOrReloadProductModelTable('Export');
     }
     catch (e) {

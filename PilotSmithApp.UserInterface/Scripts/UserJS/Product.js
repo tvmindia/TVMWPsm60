@@ -38,6 +38,11 @@ function BindOrReloadProductTable(action)
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                ProductAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                ProductAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                $('#AdvanceSearch').val(JSON.stringify(ProductAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -48,13 +53,6 @@ function BindOrReloadProductTable(action)
         _dataTables.ProductList = $('#tblProduct').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-                buttons: [{
-                    extend: 'excel',
-                    exportOptions:
-                                 {
-                                     columns: [1, 2, 3, 4, 5, 6]
-                                 }
-                }],
                 ordering: false,
                 searching: false,
                 paging: true,
@@ -88,25 +86,16 @@ function BindOrReloadProductTable(action)
                 { className: "text-center", "targets": [6] },
                 ],
                 destroy: true,
+                //for performing the import operation after the data loaded
                 initComplete: function (settings, json) {
+
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                     $('#tblProduct').fadeIn(100);
                     if (action == undefined) {
-                        $('.excelExport').hide();
                         OnServerCallComplete();
                     }
-                    if (action === 'Export') {
-                        if (json.data.length > 0) {
-                            if (json.data[0].TotalCount > 10000) {
-                                MasterAlert("info", 'We are able to download maximum 10000 rows of data, There exist more than 10000 rows of data please filter and download')
-                            }
-                        }
-                        $('.buttons-excel').trigger('click');
-                        BindOrReloadProductTable();
-                    }
-                }
+                } 
             });
-        $('.buttons-excel').hide();
     }
     catch(e)
     {
@@ -125,8 +114,7 @@ function ResetProductList() {
 
 function ExportProductData() {
     try{
-        $('.excelExport').show();
-        OnServerCallBegin();
+
         BindOrReloadProductTable('Export');
     }
     catch(e)
