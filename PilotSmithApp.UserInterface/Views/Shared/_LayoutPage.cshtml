@@ -452,6 +452,14 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrap")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrapdatepicker")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/AdminLTE")
+    <script>
+
+        $('.sidebar-menu').slimscroll({
+            //Add your options here
+            SlimscrollWidth: "1px",
+            height:"500px",
+        });
+    </script>    
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/userpluginjs")
     @RenderSection("scripts", required: false)
 </body>
