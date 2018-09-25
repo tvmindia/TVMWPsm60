@@ -241,13 +241,13 @@ function AddSaleOrder() {
         });
 }
 
-function AddSaleOrderDetailList() {
-    debugger;
-    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail", function () {
-        $('#lblModelPopSaleOrder').text('SaleOrder Detail')
-        $('#divModelPopSaleOrder').modal('show');
-    });
-}
+//function AddSaleOrderDetailList() {
+//    debugger;
+//    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail?update=false", function () {
+//        $('#lblModelPopSaleOrder').text('SaleOrder Detail')
+//        $('#divModelPopSaleOrder').modal('show');
+//    });
+//}
 function EditSaleOrder(this_Obj) {
     debugger;
     OnServerCallBegin();
@@ -740,7 +740,7 @@ function GetSaleOrderDetailListBySaleOrderID(id, IsEnquiry, IsQuotation) {
     }
 }
 function AddSaleOrderDetailList() {
-    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail", function () {
+    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail?update=false", function () {
         $('#lblModelPopSaleOrder').text('SaleOrder Detail')
         $('#divModelPopSaleOrder').modal('show');
     });
@@ -750,18 +750,21 @@ function AddSaleOrderDetailToList() {
     $("#FormSaleOrderDetail").submit(function () { });
     debugger;
     if ($('#FormSaleOrderDetail #IsUpdate').val() == 'True') {
-        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
+        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() >0) && ($('#divModelSaleOrderPopBody #Qty').val() >0) && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
-            saleOrderDetailList[_datatablerowindex].Product.Code = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
-            saleOrderDetailList[_datatablerowindex].Product.Name = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+            //saleOrderDetailList[_datatablerowindex].Product.Code = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
+            //saleOrderDetailList[_datatablerowindex].Product.Name = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
+            saleOrderDetailList[_datatablerowindex].Product.Code = $("#productName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
+            saleOrderDetailList[_datatablerowindex].Product.Name = $("#productName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
             saleOrderDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
-            saleOrderDetailList[_datatablerowindex].ProductID = $("#divModelPopSaleOrder #ProductID").val() != "" ? $("#divModelPopSaleOrder #ProductID").val() : _emptyGuid;
-            saleOrderDetailList[_datatablerowindex].ProductModelID = $("#divModelSaleOrderPopBody #ProductModelID").val() != "" ? $("#divModelSaleOrderPopBody #ProductModelID").val() : _emptyGuid;
+            saleOrderDetailList[_datatablerowindex].ProductID = $("#hdnProductID").val() != "" ? $("#hdnProductID").val() : _emptyGuid;
+            saleOrderDetailList[_datatablerowindex].ProductModelID = $("#hdnProductModelID").val() != "" ? $("#hdnProductModelID").val() : _emptyGuid;
             ProductModel = new Object;
             Unit = new Object;
             TaxType = new Object;
-            ProductModel.Name = $("#divModelSaleOrderPopBody #ProductModelID").val() != "" ? $("#divModelSaleOrderPopBody #ProductModelID option:selected").text() : "";
+            //ProductModel.Name = $("#divModelSaleOrderPopBody #ProductModelID").val() != "" ? $("#divModelSaleOrderPopBody #ProductModelID option:selected").text() : "";
+            ProductModel.Name = $('#productModelName').text();
             saleOrderDetailList[_datatablerowindex].ProductModel = ProductModel;
             saleOrderDetailList[_datatablerowindex].ProductSpec = $('#divModelSaleOrderPopBody #ProductSpec').val();
             saleOrderDetailList[_datatablerowindex].Qty = $('#divModelSaleOrderPopBody #Qty').val();
@@ -786,7 +789,7 @@ function AddSaleOrderDetailToList() {
         }
     }
     else {
-        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() != "") && ($('#divModelSaleOrderPopBody #Qty').val() != "") && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
+        if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() >0) && ($('#divModelSaleOrderPopBody #Qty').val() >0) && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             if (_dataTable.SaleOrderDetailList.rows().data().length === 0) {
                 _dataTable.SaleOrderDetailList.clear().rows.add(GetSaleOrderDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
@@ -825,7 +828,7 @@ function AddSaleOrderDetailToList() {
                     for (var i = 0; i < saleOrderDetailList.length; i++) {
                         if ((saleOrderDetailList[i].ProductID == $('#ProductID').val()) && (saleOrderDetailList[i].ProductModelID == $('#ProductModelID').val()
                             && (saleOrderDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (saleOrderDetailList[i].UnitCode == $('#UnitCode').val())))) {
-                            saleOrderDetailList[i].Qty = parseInt(saleOrderDetailList[i].Qty) + parseInt($('#Qty').val());
+                            saleOrderDetailList[i].Qty = parseFloat(saleOrderDetailList[i].Qty) + parseFloat($('#Qty').val());
                             checkpoint = 1;
                             break;
                         }
@@ -885,13 +888,15 @@ function EditSaleOrderDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderDetail = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail", function () {
+    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail?update=true", function () {
         debugger;
         $('#lblModelPopSaleOrder').text('SaleOrder Detail')
         $('#FormSaleOrderDetail #IsUpdate').val('True');
         $('#FormSaleOrderDetail #ID').val(saleOrderDetail.ID);
         $("#FormSaleOrderDetail #ProductID").val(saleOrderDetail.ProductID)
         $("#FormSaleOrderDetail #hdnProductID").val(saleOrderDetail.ProductID)
+        $('#productName').text(saleOrderDetail.Product.Code + "-" + saleOrderDetail.Product.Name)
+        $('#productModelName').text(saleOrderDetail.ProductModel.Name)
         $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
         });
 
@@ -914,7 +919,7 @@ function EditSaleOrderDetail(this_Obj) {
         $('#FormSaleOrderDetail #hdnUnitCode').val(saleOrderDetail.UnitCode);
         $('#FormSaleOrderDetail #Rate').val(saleOrderDetail.Rate);
         $('#FormSaleOrderDetail #Discount').val(saleOrderDetail.Discount);
-        if (saleOrderDetail.TaxType.Code != 0) {
+        if (saleOrderDetail.TaxTypeCode!= 0) {
             $('#FormSaleOrderDetail #TaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
             $('#FormSaleOrderDetail #hdnTaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
         }
@@ -979,7 +984,7 @@ function DeleteSaleOrderDetail(ID) {
 }
 function CalculateGrandTotal(value) {
     var GrandTotal = roundoff(parseFloat($('#lblGrossAmount').text()) - parseFloat(value != "" ? value : 0))
-    $('#lblGrandTotal').text(GrandTotal);
+    $('#lblGrandTotal').text(formatCurrency(GrandTotal));
 }
 //=========================================================================================================================
 //Email SaleOrder
@@ -1335,7 +1340,7 @@ function EditSaleOrderOtherChargesDetail(this_Obj) {
         $("#FormOtherExpenseDetail #OtherChargeCode").val(saleOrderOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(saleOrderOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #ChargeAmount").val(saleOrderOtherChargesDetail.ChargeAmount);
-        if (saleOrderOtherChargesDetail.TaxType.Code != 0) {
+        if (saleOrderOtherChargesDetail.TaxTypeCode != 0) {
             $('#FormOtherExpenseDetail #TaxTypeCode').val(saleOrderOtherChargesDetail.TaxType.ValueText);
             $('#FormOtherExpenseDetail #hdnTaxTypeCode').val(saleOrderOtherChargesDetail.TaxType.ValueText);
         }
@@ -1401,6 +1406,7 @@ function DeleteSaleOrderOtherChargeDetail(ID) {
     }
 }
 function CalculateTotal() {
+    debugger;
     var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, CessAmt=0.00;
     var saleOrderDetail = _dataTable.SaleOrderDetailList.rows().data();
     var saleOrderOtherChargeDetail = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
@@ -1437,8 +1443,8 @@ function CalculateTotal() {
     GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt) + parseFloat(CessAmt))
     $('#lblTaxTotal').text(roundoff(TaxTotal));
     $('#lblItemTotal').text(roundoff(TaxableTotal));
-    $('#lblGrossAmount').text(GrossAmount);
-    $('#lblGrandTotal').text(GrossAmount);
+    $('#lblGrossAmount').text(GrossAmount);  
+    $('#lblGrandTotal').text(formatCurrency(GrossAmount));
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
     $('#Discount').trigger('onchange');
     $('#lblCessAmount').text(roundoff(CessAmt));

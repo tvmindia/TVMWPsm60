@@ -264,9 +264,8 @@ function BindOrReloadPendingProductionOrderReportTable(action) {
             initComplete: function (settings, json) {
                 debugger;
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
-                $('#tblPendingProductionOrderReport').fadeIn('slow');
+                $('#divPendingProductionOrderReport').fadeIn('slow');
                 if (action == undefined) {
-                    $('.excelExport').hide();
                     OnServerCallComplete();
                 }
 
