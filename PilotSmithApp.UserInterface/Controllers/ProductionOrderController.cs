@@ -123,7 +123,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion ProductionOrderForm Form
 
         #region ProductionOrder Detail Add
-        public ActionResult AddProductionOrderDetail()
+        public ActionResult AddProductionOrderDetail(bool update)
         {
             //ProductionOrderDetailViewModel productionOrderDetailVM = null;
             //List<ProductionOrderDetailViewModel> productionOrderDetailVM = new List<ProductionOrderDetailViewModel>();
@@ -146,12 +146,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                     // productionOrderDetailVM.ShowAmount = false;
                 }
             }
-            productionOrderDetailVM.IsUpdate = false;
+            productionOrderDetailVM.IsUpdate = update;
             productionOrderDetailVM.OrderQty = 0;
             productionOrderDetailVM.ProducedQty = 0;
+            productionOrderDetailVM.PrevProdOrderQty = 0;
             productionOrderDetailVM.PrevProducedQty = 0;
             productionOrderDetailVM.SaleOrderQty = 0;
-            productionOrderDetailVM.Rate = 0;          
+            productionOrderDetailVM.Rate = 0;         
             return PartialView("_AddProductionOrderDetail", productionOrderDetailVM);
         }
         #endregion ProductionOrder Detail Add
@@ -263,9 +264,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ProductSpec = string.Empty,
                         OrderQty = 0,
                         ProducedQty=0,
+                        PrevProdOrderQty = 0,
                         PrevProducedQty=0,
                         PrevDelQty=0,
                         SaleOrderQty=0,
+                        SaleOrderDetailID=Guid.Empty,
+                       // TotalProdusedQty = 0,
                         Unit=new UnitViewModel()
                         {
                             Code=0,
@@ -339,11 +343,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<ProductionOrderDetailViewModel> productionOrderItemViewModelList = new List<ProductionOrderDetailViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID).Where(x=>x.Qty!=x.PrevProduceQty).ToList());
+                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID).Where(x=>x.Qty!=x.PrevProdOrderQty).ToList());
                     productionOrderItemViewModelList = (from saleOrderDetailVM in saleOrderDetailVMList
                                                         select new ProductionOrderDetailViewModel
                                                         {
                                                             ID = Guid.Empty,
+                                                            SaleOrderDetailID=saleOrderDetailVM.ID,
                                                             ProdOrderID = Guid.Empty,
                                                             ProductID = saleOrderDetailVM.ProductID,
                                                             ProductModelID = saleOrderDetailVM.ProductModelID,
@@ -351,8 +356,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                             SaleOrderQty = saleOrderDetailVM.Qty,
                                                             UnitCode = saleOrderDetailVM.UnitCode,
                                                             ProducedQty = 0,    //saleOrderDetailVM.Qty-saleOrderDetailVM.PrevProduceQty,
-                                                            OrderQty=saleOrderDetailVM.Qty-saleOrderDetailVM.PrevProduceQty,
-                                                            PrevProducedQty = saleOrderDetailVM.PrevProduceQty,
+                                                            OrderQty=saleOrderDetailVM.Qty-saleOrderDetailVM.PrevProdOrderQty,
+                                                           // PrevProducedQty=saleOrderDetailVM.PrevProduceQty,
+                                                            PrevProdOrderQty = saleOrderDetailVM.PrevProdOrderQty,
                                                             Rate = saleOrderDetailVM.Rate == null ? 0 : saleOrderDetailVM.Rate,
                                                             Amount = 0,
                                                             SpecTag=saleOrderDetailVM.SpecTag,
@@ -535,28 +541,43 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Print ProductionOrder 
 
-        #region CheckOrderQty
+        #region CheckProducedQty
         [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckOrderQty(ProductionOrderDetailViewModel prodOrderDetailVM)
+        public ActionResult CheckProducedQty(ProductionOrderDetailViewModel prodOrderDetailVM)
         {
-            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+             //prodOrderDetailVM = new ProductionOrderDetailViewModel();
             if (prodOrderDetailVM.SaleOrderQty != 0)
             {
-                if (prodOrderDetailVM.ProducedQty > prodOrderDetailVM.SaleOrderQty)
+                if (prodOrderDetailVM.ProducedQty > prodOrderDetailVM.OrderQty)
                 {
-                    return Json("<p><span style='vertical-align: 2px'>Produced Qty Cannot grater than SaleOrder Qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
-                }
-                else if (prodOrderDetailVM.OrderQty > prodOrderDetailVM.SaleOrderQty)
-                {
-                    return Json("<p><span style='vertical-align: 2px'>Cur.Prod Qty Cannot grater than SaleOrder Qty </span> <i class='fa fa-times' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
-                }
+                    return Json("<p><span style='vertical-align: 2px'>Produced qty greater than Order qty </span> <i class='fa fa-exclamation' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                }             
             }
+           
            
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion CheckOrderQty
+        #endregion CheckProducedQty
 
+        #region CheckOrderQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckOrderQty(ProductionOrderDetailViewModel prodOrderDetailVM)
+        {
+            ProductionOrderDetailViewModel prodOrderDetail = Mapper.Map<ProductionOrderDetail, ProductionOrderDetailViewModel>(_productionOrderBusiness.ValidateProductionOrderDetailOrderQty(prodOrderDetailVM.SaleOrderDetailID));
+            if (prodOrderDetail.SaleOrderQty != 0 && prodOrderDetail.TotalProdOrderQty != prodOrderDetail.SaleOrderQty)
+            {
+                var Total = (prodOrderDetailVM.OrderQty + prodOrderDetail.TotalProdOrderQty);
+                if (Total > prodOrderDetail.SaleOrderQty)
+                {
+                    return Json("<p><span style='vertical-align: 2px'>Order qty greater than SaleOrder qty </span> <i class='fa fa-exclamation' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion CheckOrderQty
+          
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]

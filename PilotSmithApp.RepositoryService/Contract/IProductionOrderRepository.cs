@@ -19,5 +19,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<ProductionOrder> GetProductionOrderForSelectList(Guid? id);
         object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder);
         ProductionOrderSummary GetProductionOrderSummaryCount();
+        ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID);
     }
 }

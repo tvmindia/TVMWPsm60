@@ -265,10 +265,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderDetail.MileStone4AcTFinishDt = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()) : productionOrderDetail.MileStone4AcTFinishDt);
                                         productionOrderDetail.MileStone4AcTFinishDtFormatted = (sdr["MileStone4AcTFinishDt"].ToString() != "" ? DateTime.Parse(sdr["MileStone4AcTFinishDt"].ToString()).ToString(_settings.DateFormat) : productionOrderDetail.MileStone4AcTFinishDtFormatted==null?"": productionOrderDetail.MileStone4AcTFinishDtFormatted);
                                         productionOrderDetail.SpecTag= (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : Guid.Empty);
-                                        productionOrderDetail.PrevProducedQty = (sdr["PrevProduceQty"].ToString() != "" ? decimal.Parse(sdr["PrevProduceQty"].ToString()) : productionOrderDetail.PrevProducedQty);
+                                        productionOrderDetail.PrevProdOrderQty = (sdr["PrevProdOrderQty"].ToString() != "" ? decimal.Parse(sdr["PrevProdOrderQty"].ToString()) : productionOrderDetail.PrevProdOrderQty);
+                                        productionOrderDetail.PrevProducedQty= (sdr["PrevProducedQty"].ToString() != "" ? decimal.Parse(sdr["PrevProducedQty"].ToString()) : productionOrderDetail.PrevProducedQty);
                                         productionOrderDetail.PrevDelQty = (sdr["PrevDelQty"].ToString() != "" ? decimal.Parse(sdr["PrevDelQty"].ToString()) : productionOrderDetail.PrevDelQty);
                                         //productionOrderDetail.SaleOrderDetail = new SaleOrderDetail();
                                         productionOrderDetail.SaleOrderQty= (sdr["SaleOrderQty"].ToString() != "" ? decimal.Parse(sdr["SaleOrderQty"].ToString()) : productionOrderDetail.SaleOrderDetail.Qty);
+                                        //productionOrderDetail.TotalProdusedQty = (sdr["TotalProducedQty"].ToString() != "" ? decimal.Parse(sdr["TotalProducedQty"].ToString()) : productionOrderDetail.TotalProdusedQty);
+                                        productionOrderDetail.SaleOrderDetailID= (sdr["SaleOrderDetailID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderDetailID"].ToString()) : productionOrderDetail.SaleOrderDetailID);
                                     }
                                     productionOrderDetailList.Add(productionOrderDetail);
                                 }
@@ -662,5 +665,45 @@ namespace PilotSmithApp.RepositoryService.Service
             return productionOrderSummary;
         }
         #endregion GetProductionOrderSummaryCount
+
+        #region ValidateProductionOrderDetailOrderQty
+        public ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID)
+        {
+            ProductionOrderDetail productionOrderDetail = new ProductionOrderDetail();
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[ValidateProdutionOrderOrderQtyDetail]";
+                        cmd.Parameters.Add("@SaleOrderDetailID", SqlDbType.UniqueIdentifier).Value = SaleOrderDetailID;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                                if (sdr.Read())
+                                {
+                                    //productionOrderDetail.PrevProducedQty= (sdr["PrevProducedQty"].ToString() != "" ? decimal.Parse(sdr["PrevProducedQty"].ToString()) : productionOrderDetail.PrevProducedQty);
+                                    productionOrderDetail.TotalProdOrderQty = (sdr["TotalProdOrderQty"].ToString() != "" ? decimal.Parse(sdr["TotalProdOrderQty"].ToString()) : productionOrderDetail.TotalProdOrderQty);
+                                    productionOrderDetail.SaleOrderQty= (sdr["SaleOrderQty"].ToString() != "" ? decimal.Parse(sdr["SaleOrderQty"].ToString()) : productionOrderDetail.SaleOrderDetail.Qty);
+                                }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return productionOrderDetail;
+        }
+        #endregion ValidateProductionOrderDetailOrderQty
     }
 }

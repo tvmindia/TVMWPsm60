@@ -13,6 +13,7 @@
 
 @section styles {
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
+    <link href="~/Content/DataTables/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
@@ -281,9 +282,11 @@
 }
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
+    <script src="~/Scripts/DataTables/dataTables.fixedColumns.min.js"></script>
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/ReportAdvanceSelectList")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/PendingProductionOrderReport")
+
 }
 

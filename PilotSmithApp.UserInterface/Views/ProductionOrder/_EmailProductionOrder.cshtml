@@ -70,12 +70,12 @@
             <thead>
                 <tr style="border-bottom-style: solid;border-bottom-width: 2px;border-bottom-color: #eee;">
                     <th style="width:5%;text-align: center;padding: 8px;font-size:10px; ">No.</th>
-                    <th style="width:18%; text-align: left;padding: 8px;font-size:10px;">Product</th>
-                    <th style="width:9%; text-align: left;padding: 8px;font-size:10px;">HSN</th>
+                    <th style="width:21%; text-align: left;padding: 8px;font-size:10px;">Product</th>
+                    <th style="width:12%; text-align: left;padding: 8px;font-size:10px;">HSN</th>
                     <th style="width:10%; text-align: left;padding: 8px;font-size:10px;">Sale.Ord Qty</th>
-                    <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">PrevProd Ord.Qty</th>
-                    <th style="width:8%; text-align: right;padding: 8px;font-size:10px;">CurProductionQty</th>
-                    <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Produced.Qty</th>
+                    @*<th style="width:10%; text-align: right;padding: 8px;font-size:10px;">PrevProd Ord.Qty</th>*@
+                    <th style="width:11%; text-align: right;padding: 8px;font-size:10px;">CurProductionQty</th>
+                    <th style="width:11%; text-align: right;padding: 8px;font-size:10px;">Produced.Qty</th>
                     @*<th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Rate</th>
                     <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Amount</th>*@
                     <th style="width:10%; text-align: right;padding: 8px;font-size:10px;">Sup/Plant</th>
@@ -119,12 +119,12 @@
                         <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 1px;color: #1d1a1a;">
 
                             <td style="width:5%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
-                            <td style="width:18%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
-                            <td style="width:9%;text-align:left;padding:8px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
+                            <td style="width:21%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                            <td style="width:12%;text-align:left;padding:8px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
                             <td style="width:10%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.SaleOrderQty @mp.Unit.Description</td>
-                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.PrevProducedQty @mp.Unit.Description</td>
-                            <td style="width:8%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.OrderQty @mp.Unit.Description</td>
-                            <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.ProducedQty @mp.Unit.Description</td>
+                            @*<td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.PrevProdOrderQty @mp.Unit.Description</td>*@
+                            <td style="width:11%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.OrderQty @mp.Unit.Description</td>
+                            <td style="width:11%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.ProducedQty @mp.Unit.Description</td>
                             @*<td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Rate</td>
                             <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@amount</td>*@
                             <td style="width:10%; text-align: right;padding: 8px;font-size:10px;vertical-align:top;">@mp.Plant.Description</td>
