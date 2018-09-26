@@ -78,8 +78,8 @@
                     }
                     else
                     {
-                        <div id="image-holder" style="width:10%;height:10%;">
-                            <img src="@Model.ImageURL" height="150" />
+                        <div id="image-holder" style="width:10%;height:10%;" >
+                            <img src="@Url.Content("~/"+Model.ImageURL)" style="height:100px;object-fit:fill;" />
                         </div>
                     }
                 }
@@ -217,7 +217,8 @@
                                 $("<img />", {
                                     "src": e.target.result,
                                     "class": "thumb-image",
-                                    "height": '150px'
+                                    "style": 'height:100px;Object-fit:fill;'
+                                    
                                 }).appendTo(image_holder);
                             }
 
