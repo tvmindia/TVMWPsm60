@@ -22,6 +22,9 @@ function BindOrReloadProductSpecificationTable(action) {
         ProductSpecificationAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -30,8 +33,8 @@ function BindOrReloadProductSpecificationTable(action) {
             case 'Init':
                 break;
             case 'Search':
-                if ($('#SearchTerm').val() == '') {
-                    return true;
+                if (SearchTerm == SearchValue) {
+                    return false;
                 }
                 break;
             case 'Export':
@@ -124,7 +127,7 @@ function EditProductSpecificationMaster(thisObj) {
     debugger;
     productSpecificationVM = _dataTables.ProductSpecificationList.row($(thisObj).parents('tr')).data();
     GetMasterPartial('ProductSpecification', productSpecificationVM.Code);
-    $('#h3ModelMasterContextLabel').text('Edit ProductSpecification')
+    $('#lblModelMasterContextLabel').text('Edit Product Specification')
     $('#divModelMasterPopUp').modal('show');
     $('#hdnMasterCall').val('MSTR');
 }

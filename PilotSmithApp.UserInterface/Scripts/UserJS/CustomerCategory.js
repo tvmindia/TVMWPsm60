@@ -27,6 +27,9 @@ function BindOrReloadCustomerCategoryTable(action) {
         CustomerCategoryAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -35,8 +38,8 @@ function BindOrReloadCustomerCategoryTable(action) {
             case 'Init':
                 break;
             case 'Search':
-                if ($('#SearchTerm').val() == '') {
-                    return true;
+                if (SearchTerm == SearchValue) {
+                    return false;
                 }
                 break;
             case 'Export':
