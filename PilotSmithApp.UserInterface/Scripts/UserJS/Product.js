@@ -24,6 +24,9 @@ function BindOrReloadProductTable(action)
         ProductAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val());
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -32,8 +35,8 @@ function BindOrReloadProductTable(action)
             case 'Init':
                 break;
             case 'Search':
-                if ($('#SearchTerm').val() == '') {
-                    return true;
+                if (SearchTerm == SearchValue) {
+                    return false;
                 }
                 break;
             case 'Export':
@@ -83,7 +86,7 @@ function BindOrReloadProductTable(action)
                 }
                 ],
                 columnDefs: [
-                { className: "text-center", "targets": [6] },
+                { className: "text-center", "targets": [3,5] },
                 ],
                 destroy: true,
                 //for performing the import operation after the data loaded
@@ -127,7 +130,6 @@ function EditProductMaster(thisObj) {
     try{
         debugger;
         ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
-
         $("#divMasterBody3").load("Product/MasterPartial?masterCode=" + ProductVM.ID, function (responseTxt, statusTxt, xhr) {
             if (statusTxt == "success") {
                 $('#hdnMasterCall3').val('MSTR');

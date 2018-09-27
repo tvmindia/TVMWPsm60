@@ -5,6 +5,7 @@ using PilotSmithApp.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -53,14 +54,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                         else
                         {
                             fname = file.FileName;
-                        } 
+                        }
                         fileuploadObj.AttachmentURL = "/Content/Uploads/" + fname;
                         fileuploadObj.FileSize = file.ContentLength.ToString();
                         fileuploadObj.FileType = file.ContentType;
                         fileuploadObj.FileName = fname;
-                        fileuploadObj.ParentID = Request["ParentID"].ToString()!=""?Guid.Parse(Request["ParentID"].ToString()):FileID;
-                        fileuploadObj.ParentType = Request["ParentID"].ToString() != "" ? Request["ParentType"]:null;
-                        fileuploadObj.PSASysCommon = new PSASysCommon(); 
+                        fileuploadObj.ParentID = Request["ParentID"].ToString() != "" ? Guid.Parse(Request["ParentID"].ToString()) : FileID;
+                        fileuploadObj.ParentType = Request["ParentID"].ToString() != "" ? Request["ParentType"] : null;
+                        fileuploadObj.PSASysCommon = new PSASysCommon();
                         AppUA _appUA = Session["AppUA"] as AppUA;
                         fileuploadObj.PSASysCommon.CreatedBy = _appUA.UserName;
                         fileuploadObj.PSASysCommon.CreatedDate = _appUA.LoginDateTime;
@@ -70,16 +71,16 @@ namespace PilotSmithApp.UserInterface.Controllers
                         fname = Path.Combine(Server.MapPath("~/Content/Uploads/"), fname);
                         file.SaveAs(fname);
                     }
-                    if(_fileObj.ParentID==FileID)
+                    if (_fileObj.ParentID == FileID)
                     {
                         return Json(new { Result = "OK", Message = "File Uploaded Successfully!", Records = _fileObj });
                     }
                     else
                     {
-                       // _fileObj.ParentID = Guid.Empty;
+                        // _fileObj.ParentID = Guid.Empty;
                         return Json(new { Result = "OK", Message = "File Uploaded Successfully!", Records = _fileObj });
                     }
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -96,13 +97,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             try
             {
-
                 List<FileUpload> AttachmentList = new List<FileUpload>();
                 AttachmentList = _fileUploadBusiness.GetAttachments(Guid.Parse(ID));
                 AppUA appUA = Session["AppUA"] as AppUA;
-                if (AttachmentList !=null)
+                if (AttachmentList != null)
                     foreach (FileUpload item in AttachmentList)
+                    {
                         item.IsDocLocked = item.DocumentOwners.Contains(appUA.UserName);
+                        string[] owner = ((!string.IsNullOrEmpty(ConfigurationManager.AppSettings["owners"])) ? ConfigurationManager.AppSettings["owners"].Split(',') : null);
+                        if ((owner != null) && (owner.Any(item.ParentType.Contains)))
+                        {
+                            item.IsDocLocked = true;
+                        }
+                    }
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = AttachmentList });
             }
             catch (Exception ex)
@@ -114,7 +121,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [HttpGet]
         public FileResult DownloadFile(string token)
         {
-            if(token!="")
+            if (token != "")
             {
                 string[] Filess = token.Split('/');
                 string filename = Server.MapPath(token);
@@ -133,12 +140,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             AppConst c = new AppConst();
             object result = null;
-          try
+            try
             {
                 result = _fileUploadBusiness.DeleteFile(Guid.Parse(id));
                 return JsonConvert.SerializeObject(new { Result = "OK", Message = c.DeleteSuccess, Records = result });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 AppConstMessage cm = c.GetMessage(ex.Message);
                 return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
