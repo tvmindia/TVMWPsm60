@@ -52,11 +52,12 @@
                         <!-- inner menu: contains the actual data -->
                         @if (Session["UserRights"] != null)
                         {
-                            Permission _permission = (Session["UserRights"] as List<Permission>).Where(x => x.Name == "AdminDashBoard").ToList().Count > 0 ? (Session["UserRights"] as List<Permission>).Where(x => x.Name == "AdminDashBoard").ToList()[0] : new Permission();
-                            if (@_permission.Name.Equals("AdminDashBoard") && @_permission.AccessCode.Contains("R"))
+                            PSASysCommon _pSASysCommon = new PSASysCommon();
+                            AppUA appUA = Session["AppUA"] as AppUA;
+                            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "AdminDashBoard");
+                            if (_permission.AccessCode.Contains("R"))
                             {
-                                //if (ViewBag.ActionName == "Admin")
-                                //{
+
                                 <li class="dropdown notifications-menu">
                                     <a href="@Url.Action("Index", "DashBoard", new { isUser = true})">
                                         <i class="fa fa-dashboard" style="font-size:17px"> </i>
