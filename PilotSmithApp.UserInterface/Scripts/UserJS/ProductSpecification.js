@@ -124,7 +124,7 @@ function EditProductSpecificationMaster(thisObj) {
     debugger;
     productSpecificationVM = _dataTables.ProductSpecificationList.row($(thisObj).parents('tr')).data();
     GetMasterPartial('ProductSpecification', productSpecificationVM.Code);
-    $('#h3ModelMasterContextLabel').text('Edit ProductSpecification')
+    $('#lblModelMasterContextLabel').text('Edit Product Specification')
     $('#divModelMasterPopUp').modal('show');
     $('#hdnMasterCall').val('MSTR');
 }

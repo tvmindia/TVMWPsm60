@@ -191,20 +191,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         
                         HttpPostedFileBase file = files[i];
-                        string fname;
-                        // Checking for Internet Explorer  
-                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
-                        {
-                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
-                            fname = testfiles[testfiles.Length - 1];
-                        }
-                        else
-                        {
-                            fname = file.FileName;
-                        }
-                        fileuploadObj.AttachmentURL = "Content/images/ProductImage/" + fname;
-                        fileuploadObj.FileName = fname;
-                        fname = Path.Combine(Server.MapPath("~/Content/images/ProductImage/"), fname);
+                        Random random = new Random();
+                        string fname = "pilotpro" + random.Next() + ".png";                     
+                        fileuploadObj.AttachmentURL = "Content/images/ProductImage/" + fname;                 
+                        fname = Path.Combine(Server.MapPath("~/Content/images/ProductImage/"),fname);
                         file.SaveAs(fname);
                     }
                         //return _fileObj.AttachmentURL;

@@ -20,6 +20,7 @@ namespace PilotSmithApp.UserInterface.Models
         public DateTime? IntroducedDate { get; set; } 
         [Display(Name ="Company")]       
         public Guid? CompanyID { get; set; }
+        [Display(Name = "HSN Code")]
         public string HSNCode { get; set; }
         [Display(Name ="Name In Tally")]
         public string TallyName { get; set; }
@@ -35,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid hdnPopupFileID { get; set; }
         public ProductCategoryViewModel ProductCategory { get; set; }
         public CompanyViewModel Company { get; set; }
-        public ProductModelViewModel ProductModel { get; set; }
+        public ProductModelViewModel ProductModel { get; set; } 
     }
 
     public class ProductAdvanceSearchViewModel

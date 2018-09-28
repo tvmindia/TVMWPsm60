@@ -7,7 +7,7 @@ function AddProductCategoryMaster(flag) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             $('#hdnMasterCall4').val(flag);
-            $('#lblModelMasterContextLabel4').text('Add ProductCategory')
+            $('#lblModelMasterContextLabel4').text('Add Product Category')
             $('#divModelMasterPopUp4').modal('show');
         }
         else {

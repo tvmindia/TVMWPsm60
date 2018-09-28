@@ -25,6 +25,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         IQuotationBusiness _quotationBusiness;
         ICommonBusiness _commonBusiness;
         IUserBusiness _userBusiness;
+        PSASysCommon _pSASysCommon = new PSASysCommon();
         public DashBoardController(ISalesInvoieBusiness salesInvoiceBusiness, ICommonBusiness commonBusiness, IEnquiryBusiness enquiryBusiness,
             ISaleOrderBusiness saleOrderBusiness,IProductionOrderBusiness productionOrderBusiness,IQuotationBusiness quotationBusiness, IUserBusiness userBusiness) {
             _salesInvoiceBusiness = salesInvoiceBusiness;
@@ -36,28 +37,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             _userBusiness = userBusiness;
         }
 
-
-        // GET: DashBoard
         [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
-        public ActionResult Index(bool isUser = false)
+        public ActionResult Index(bool isUser=false)
         {
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission _permission = _userBusiness.GetSecurityCode(appUA.UserName, "AdminDashBoard");
-            if (_permission.AccessCode.Contains("R"))
-            {//AdminView subObject given to check if user has admin access.
-                if (isUser)
-                {
-                    return View();
-                }
-                else
-                {
-                    return View("AdminDashboard");
-                }
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "AdminDashBoard");
+            if (_permission.AccessCode.Contains("R")&&!isUser)
+            {
+                return RedirectToAction("AdminDashboard");
             }
             else
             {
                 return View();
-            }
+            } 
+        }
+        // GET: Admindashboard
+        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
+        public ActionResult AdminDashboard()
+        {
+            return View();
         }
 
         [AuthSecurityFilter(ProjectObject = "UserDashboard", Mode = "R")]
@@ -80,11 +78,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_SearchDocument", recentDocument);
         }
 
-        [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
-        public ActionResult AdminDashboard()
-        {
-            return View();
-        }
+        
 
         [AuthSecurityFilter(ProjectObject = "AdminDashBoard", Mode = "R")]
         public ActionResult SalesSummary()

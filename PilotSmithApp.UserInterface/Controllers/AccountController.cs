@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using PilotSmithApp.UserInterface.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -15,6 +16,7 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         Const _const = new Const();
         IUserBusiness _userBusiness;
+        
         Guid AppID = Guid.Parse(ConfigurationManager.AppSettings["ApplicationID"]);
         public AccountController(IUserBusiness userBusiness)
         {
@@ -58,15 +60,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ua.UserName = uservm.LoginName;
                     ua.AppID = AppID;
                     Session.Add("TvmValid", ua);
-                    Session.Add("UserRights", _userBusiness.GetAllAccess(uservm.LoginName));
-                    if (uservm.RoleCSV.Contains("SAdmin") || uservm.RoleCSV.Contains("CEO"))
-                    {
-                        return RedirectToAdminDashboard();
-                    }
-                    else {
-                        return RedirectToLocal();
-                    }
-                   
+                    Session.Add("UserRights", _userBusiness.GetAllAccess(uservm.LoginName));                    
+                    return RedirectToLocal();
                 }
                 else
                 {
@@ -114,11 +109,6 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return RedirectToAction("Index", "Account");
         }
-        private ActionResult RedirectToAdminDashboard()
-        {
-            return RedirectToAction("Index", "DashBoard");
-        }
-
         [HttpGet]
         public ActionResult NotAuthorized()
         {
