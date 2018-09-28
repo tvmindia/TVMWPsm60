@@ -245,8 +245,8 @@
     </div>
     <div class="row tableContainer">
         <div class="excelExport" style="display:none;"></div>
-        <div class="col-md-12" style="overflow-x:auto;">
-            <table id="tblPendingProductionOrderReport" class="table table-striped" cellspacing="0" style="width:2200px!important;display:none;">
+        <div class="col-md-12" id="divPendingProductionOrderReport" style="overflow-x:auto;display:none;">
+            <table id="tblPendingProductionOrderReport" class="table table-striped" cellspacing="0" style="width:2200px!important;">
                 <thead>
                     <tr class="text-center TableHead">
                         <th>Prod. Ord. No.</th>
@@ -282,8 +282,7 @@
 }
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
-    <script src="~/Scripts/DataTables/dataTables.fixedColumns.min.js"></script>
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
+    <script src="~/Scripts/DataTables/dataTables.fixedColumns.min.js"></script>  
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/ReportAdvanceSelectList")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/PendingProductionOrderReport")

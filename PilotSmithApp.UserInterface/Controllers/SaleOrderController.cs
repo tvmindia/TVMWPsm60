@@ -148,10 +148,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Get SaleOrder SelectList On Demand
         #region SaleOrder Detail Add
-        public ActionResult AddSaleOrderDetail()
+        public ActionResult AddSaleOrderDetail(bool update)
         {
             SaleOrderDetailViewModel saleOrderDetailVM = new SaleOrderDetailViewModel();
-            saleOrderDetailVM.IsUpdate = false;
+            saleOrderDetailVM.IsUpdate = update;
             return PartialView("_AddSaleOrderDetail", saleOrderDetailVM);
         }
         #endregion SaleOrder Detail Add
@@ -636,6 +636,31 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_PrintSaleOrder", saleOderVM);
         }
         #endregion Print SaleOrder
+
+        #region CheckQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckQty(decimal Qty)
+        {
+            if (Qty == 0)
+            {
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion CheckQty
+
+        #region CheckRate
+        public ActionResult CheckRate(decimal Rate)
+        {
+            if (Rate == 0)
+            {
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+        #endregion CheckRate
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]

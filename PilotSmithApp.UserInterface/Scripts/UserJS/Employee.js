@@ -26,6 +26,9 @@ function BindOrReloadEmployeeTable(action) {
         EmployeeAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -39,8 +42,9 @@ function BindOrReloadEmployeeTable(action) {
                 $('.divboxASearch #AdvPositionCode').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvDepartmentCode').val() == "") && ($('.divboxASearch #AdvPositionCode').val() == "")) {
-                    return true;
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvDepartmentCode').val() == "") && ($('.divboxASearch #AdvPositionCode').val() == ""))
+                {
+                    return false;
                 }
                 break;
             case 'Export':
@@ -61,7 +65,7 @@ function BindOrReloadEmployeeTable(action) {
                 extend: 'excel',
                 exportOptions:
                              {
-                                 columns: [1,2,3,4,5]
+                                 columns: [0,1,2,3,4,5]
                              }
             }],
             ordering: false,

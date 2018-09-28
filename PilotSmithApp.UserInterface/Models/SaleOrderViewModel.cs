@@ -153,12 +153,14 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Select Product Model")]
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Product Specification")]
-        public string ProductSpec { get; set; }
+        public string ProductSpec { get; set; }      
         [Display(Name = "Quantity")]
+        [Remote(action: "CheckQty",controller:"SaleOrder",AdditionalFields = "Qty")]
         [Required(ErrorMessage = "Quantity is missing")]
         public decimal? Qty { get; set; }
         [Display(Name = "Select Unit")]
         public int? UnitCode { get; set; }
+        [Remote(action:"CheckRate",controller:"SaleOrder",AdditionalFields ="Rate")]
         [Required(ErrorMessage ="Rate is missing")]
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
