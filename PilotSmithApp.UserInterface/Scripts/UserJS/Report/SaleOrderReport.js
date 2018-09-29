@@ -214,14 +214,18 @@ function BindOrReloadSaleOrderReportTable(action) {
                { "data": "ProductSpec", "defaultContent": "<i>-</i>" },
                 { "data": "Qty", "defaultContent": "<i>-</i>" },
                { "data": "Unit.Description", "defaultContent": "<i>-</i>" },
-                 { "data": "Amount", "defaultContent": "<i>-</i>" },
+                 {
+                     "data": "Amount", render: function (data, type, row) {
+                         return formatCurrency(row.Amount)
+                     }, "defaultContent": "<i>-</i>"
+                 },
                  { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [9] },
-                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6,  8, 10, 11] },
-                         { className: "text-center", "targets": [7] },
+            columnDefs: [{ className: "text-right", "targets": [9,7] },
+                         { className: "text-left", "targets": [0, 2, 3, 4, 5, 6,  8, 10, 11] },
+                         { className: "text-center", "targets": [1] },
                            { "targets": [0], "width": "12%" },
                            { "targets": [1], "width": "12%" },
                            { "targets": [2], "width": "12%" },

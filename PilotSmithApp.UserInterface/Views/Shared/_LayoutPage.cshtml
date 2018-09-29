@@ -456,3 +456,11 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<script>
+    // for blocking the browser back button
+    history.pushState(null, document.title, location.href);
+    window.addEventListener('popstate', function (event) {
+        //history.pushState(null, ,document.title, location.href);
+        history.pushState(null, null, 'Back_button_is_not_available');
+    });
+</script>

@@ -54,7 +54,7 @@
                                 { Text = "Last 12 Months", Value = dt.AddMonths(-12).ToString("dd-MMM-yyyy")+"||"+ dt.ToString("dd-MMM-yyyy")});
 
                             }
-                            @Html.DropDownListFor(model => model.DateFilter, saleOrderDateRange, "--- Quick Filter ---", new { @class = "form-control newinput ", @style = "width:100 % !important", @onchange = "DateFilterOnchange('Search');", @id = "DateFilter" })
+                            @Html.DropDownListFor(model => model.DateFilter, saleOrderDateRange, "--- Quick Filter ---", new { @class = "form-control newinput ", @style = "width:100 % !important", @onchange = "DateFilterOnchange('Search');", @id = "DateFilter",@autofocus= "autofocus" })
             </div>
         </div>
        

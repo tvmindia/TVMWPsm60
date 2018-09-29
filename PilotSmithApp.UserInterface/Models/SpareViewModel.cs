@@ -15,6 +15,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string Code { get; set; }
         [Required(ErrorMessage = "Spare Name is missing")]
         public string Name { get; set; }
+        [Display(Name ="HSN Code")]
         public string HSNCode { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
 

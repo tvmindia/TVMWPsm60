@@ -24,6 +24,9 @@ function BindOrReloadSpareTable(action) {
         SpareAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SerachValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -32,8 +35,8 @@ function BindOrReloadSpareTable(action) {
             case 'Init':
                 break;
             case 'Search':
-                if ($('#SearchTerm').val() == '') {
-                    return true;
+                if (SearchTerm == SerachValue) {
+                    return false;
                 }
                 break;
             case 'Export':
