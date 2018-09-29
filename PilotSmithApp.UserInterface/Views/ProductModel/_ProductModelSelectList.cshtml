@@ -45,13 +45,17 @@ else
                     $('#SellingRate').val($('#spnSellingPrice').text().replace('₹ ', ' ').trim());
                         $('#UnitCode').val($('#hdnProductModelUnitCode').val());
                         $('#hdnUnitCode').val($('#hdnProductModelUnitCode').val());
-                        $('#UnitCode').trigger('change');                      
-                        if ($('#FormQuotationDetail') != undefined)
-                        var editor = new wysihtml5.Editor("ProductSpec", {
-                            toolbar: "toolbar",
-                            //stylesheets: "css/stylesheet.css",
-                            parserRules: wysihtml5ParserRules
-                        });
+                        $('#UnitCode').trigger('change');
+                        debugger;
+                        if ($('#FormQuotationDetail').length != 0)
+                        {
+                            var editor = new wysihtml5.Editor("ProductSpec", {
+                                toolbar: "toolbar",
+                                //stylesheets: "css/stylesheet.css",
+                                parserRules: wysihtml5ParserRules
+                            });
+                        }
+                        
                 });
             }
         });

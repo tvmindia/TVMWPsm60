@@ -117,10 +117,10 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region Estimate Detail Add
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public ActionResult AddEstimateDetail()
+        public ActionResult AddEstimateDetail(bool update)
          {
             EstimateDetailViewModel estimateDetailVM = new EstimateDetailViewModel();
-            estimateDetailVM.IsUpdate = false;
+            estimateDetailVM.IsUpdate = update;
             return PartialView("_AddEstimateDetail", estimateDetailVM);
         }
         #endregion Estimate Detail Add
@@ -359,6 +359,25 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion DeleteEstimateDetail
+
+        #region CheckQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckQty(decimal Qty)
+        {
+            //ProductionOrderDetailViewModel prodOrderDetailVM = new ProductionOrderDetailViewModel();
+            if (Qty == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckQty
+
+
+
 
         #region ButtonStyling
         [HttpGet]

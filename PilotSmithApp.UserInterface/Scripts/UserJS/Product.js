@@ -24,6 +24,9 @@ function BindOrReloadProductTable(action)
         ProductAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val());
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -32,12 +35,17 @@ function BindOrReloadProductTable(action)
             case 'Init':
                 break;
             case 'Search':
-                if ($('#SearchTerm').val() == '') {
-                    return true;
+                if (SearchTerm == SearchValue) {
+                    return false;
                 }
                 break;
             case 'Export':
                 DataTablePagingViewModel.Length = -1;
+                ProductAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                ProductAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                $('#AdvanceSearch').val(JSON.stringify(ProductAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -48,13 +56,6 @@ function BindOrReloadProductTable(action)
         _dataTables.ProductList = $('#tblProduct').DataTable(
             {
                 dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-                buttons: [{
-                    extend: 'excel',
-                    exportOptions:
-                                 {
-                                     columns: [1, 2, 3, 4, 5, 6]
-                                 }
-                }],
                 ordering: false,
                 searching: false,
                 paging: true,
@@ -85,28 +86,19 @@ function BindOrReloadProductTable(action)
                 }
                 ],
                 columnDefs: [
-                { className: "text-center", "targets": [6] },
+                { className: "text-center", "targets": [3,5] },
                 ],
                 destroy: true,
+                //for performing the import operation after the data loaded
                 initComplete: function (settings, json) {
+
                     $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                     $('#tblProduct').fadeIn(100);
                     if (action == undefined) {
-                        $('.excelExport').hide();
                         OnServerCallComplete();
                     }
-                    if (action === 'Export') {
-                        if (json.data.length > 0) {
-                            if (json.data[0].TotalCount > 10000) {
-                                MasterAlert("info", 'We are able to download maximum 10000 rows of data, There exist more than 10000 rows of data please filter and download')
-                            }
-                        }
-                        $('.buttons-excel').trigger('click');
-                        BindOrReloadProductTable();
-                    }
-                }
+                } 
             });
-        $('.buttons-excel').hide();
     }
     catch(e)
     {
@@ -125,8 +117,7 @@ function ResetProductList() {
 
 function ExportProductData() {
     try{
-        $('.excelExport').show();
-        OnServerCallBegin();
+
         BindOrReloadProductTable('Export');
     }
     catch(e)
@@ -139,7 +130,6 @@ function EditProductMaster(thisObj) {
     try{
         debugger;
         ProductVM = _dataTables.ProductList.row($(thisObj).parents('tr')).data();
-
         $("#divMasterBody3").load("Product/MasterPartial?masterCode=" + ProductVM.ID, function (responseTxt, statusTxt, xhr) {
             if (statusTxt == "success") {
                 $('#hdnMasterCall3').val('MSTR');

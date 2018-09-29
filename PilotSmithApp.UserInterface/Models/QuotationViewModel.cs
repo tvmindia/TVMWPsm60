@@ -138,11 +138,13 @@ namespace PilotSmithApp.UserInterface.Models
         [AllowHtml]
         public string ProductSpecHtml { get; set; }
         [Display(Name = "Quantity")]
+        [Remote(action: "CheckQty", controller: "Quotation", AdditionalFields = "Qty")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }
         [Display(Name = "Select Unit")]
         [Required(ErrorMessage = "Unit is missing")]
         public int? UnitCode { get; set; }
+        [Remote(action: "CheckRate", controller: "Quotation", AdditionalFields = "Rate")]
         [Required(ErrorMessage = "Rate is missing")]
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }

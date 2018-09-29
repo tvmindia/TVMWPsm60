@@ -114,10 +114,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion Quotation Form
         #region Quotation Detail Add
-        public ActionResult AddQuotationDetail()
+        public ActionResult AddQuotationDetail(bool update)
         {
             QuotationDetailViewModel quotationDetailVM = new QuotationDetailViewModel();
-            quotationDetailVM.IsUpdate = false;
+            quotationDetailVM.IsUpdate = update;
             return PartialView("_AddQuotationDetail", quotationDetailVM);
         }
         #endregion Quotation Detail Add
@@ -529,6 +529,40 @@ namespace PilotSmithApp.UserInterface.Controllers
             return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         }
         #endregion Get Quotation SelectList On Demand
+
+        #region CheckQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckQty(decimal Qty)
+        {
+
+            if (Qty == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckQty
+        #region CheckRate
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckRate(decimal Rate)
+        {
+
+            if (Rate == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckRate
+
+
+
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]

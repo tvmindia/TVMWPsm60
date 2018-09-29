@@ -1391,6 +1391,9 @@ select{
     font-size:x-large;
 }
 
+.blur   {
+     filter: blur(2px);
+}
 .scale-transition { transition: transform 0.3s cubic-bezier(0.53, 0.01, 0.36, 1.63) !important; }
 
 .scale-transition.scale-out {

@@ -97,11 +97,13 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Specification")]
         public string ProductSpec { get; set; }
         [Display(Name = "Quantity")]
+        [Remote(action: "CheckQty", controller: "Enquiry", AdditionalFields = "Qty")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }
         [Display(Name = "Select Unit")]
         [Required(ErrorMessage = "Unit is missing")]
         public int? UnitCode { get; set; }
+        [Remote(action: "CheckRate", controller: "Enquiry", AdditionalFields = "Rate")]
         [Required(ErrorMessage = "Rate is missing")]
         public decimal? Rate { get; set; }
         public bool IsUpdate { get; set; }

@@ -21,6 +21,7 @@ $(document).ready(function () {
             $('.zoom-fab-label').toggleClass('scale-out');
             $('#zoomBtn>i').toggleClass("fa-plus");
             $('#zoomBtn>i').toggleClass("fa-close");
+            $(".box").toggleClass('blur');        
         });
 
     } catch (ex) {

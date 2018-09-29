@@ -43,6 +43,11 @@ function BindOrReloadCustomerTable(action) {
                 break;
             case 'Export':                
                 DataTablePagingViewModel.Length = -1;
+                CustomerAdvanceSearchViewModel.DataTablePaging = DataTablePagingViewModel;
+                CustomerAdvanceSearchViewModel.SearchTerm = $('#SearchTerm').val() == "" ? null : $('#SearchTerm').val();
+                $('#AdvanceSearch').val(JSON.stringify(CustomerAdvanceSearchViewModel));
+                $('#FormExcelExport').submit();
+                return true;
                 break;
             default:
                 break;
@@ -54,14 +59,7 @@ function BindOrReloadCustomerTable(action) {
         //apply datatable plugin on Customer table
         _dataTable.customerList = $('#tblCustomer').DataTable(
         {
-            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',
-            buttons: [{
-                extend: 'excel',
-                exportOptions:
-                             {
-                                 columns: [1,2,3,4,5,6]
-                             }
-            }],
+            dom: '<"pull-right"Bf>rt<"bottom"ip><"clear">',         
             ordering: false,
             searching: false,
             paging: true,
@@ -104,28 +102,16 @@ function BindOrReloadCustomerTable(action) {
             destroy: true,
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
-                debugger;
+
                 $('.dataTables_wrapper div.bottom div').addClass('col-md-6');
                 $('#tblCustomer').fadeIn(100);
-                if (action == undefined)
-                {
-                    $('.excelExport').hide();
+                if (action == undefined) {
                     OnServerCallComplete();
                 }
-                if (action === 'Export') {
-                    if (json.data.length > 0) {
-                        if (json.data[0].TotalCount > 1000) {
-                            setTimeout(function () { 
-                                MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                            },10000)
-                        }
-                    }
-                    $(".buttons-excel").trigger('click');
-                    BindOrReloadCustomerTable();                    
-                }
             }
+           
         });
-        $(".buttons-excel").hide();        
+            
     }
     catch (e) {
         console.log(e.message);
@@ -138,8 +124,7 @@ function ResetCustomerList() {
 }
 //function export data to excel
 function ExportCustomerData() {
-    $('.excelExport').show();
-    OnServerCallBegin();
+
     BindOrReloadCustomerTable('Export');
 }
 // add customer section
@@ -155,7 +140,8 @@ function AddCustomer() {
 }
 
 function EditCustomer(this_Obj)
-{
+{ 
+    _parentFormID = "CustomerForm";
     var customer = _dataTable.customerList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
     $("#divCustomerForm").load("Customer/CustomerForm?id=" + customer.ID, function () {
