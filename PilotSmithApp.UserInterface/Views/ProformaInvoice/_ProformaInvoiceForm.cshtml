@@ -89,7 +89,7 @@
                     {
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
-                                @Html.Label("SaleOrder", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Sale Order", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
                                 @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })

@@ -78,24 +78,25 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     saleInvoiceVM = Mapper.Map<SaleInvoice, SaleInvoiceViewModel>(_saleInvoiceBusiness.GetSaleInvoice(id));
                     saleInvoiceVM.IsUpdate = true;
+                    saleInvoiceVM.PreparedBy = saleInvoiceVM.PreparedBy != Guid.Empty ? saleInvoiceVM.PreparedBy : null;
                     AppUA appUA = Session["AppUA"] as AppUA;
                     saleInvoiceVM.IsDocLocked = saleInvoiceVM.DocumentOwners.Contains(appUA.UserName);
 
-                    if (saleInvoiceVM.QuoteID != Guid.Empty && saleInvoiceVM.QuoteID != null)
-                    {
-                        saleInvoiceVM.DocumentType = "Quotation";
-                        saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
-                    }
-                    if (saleInvoiceVM.SaleOrderID != null && saleInvoiceVM.SaleOrderID != Guid.Empty)
-                    {
-                        saleInvoiceVM.DocumentType = "SaleOrder";
-                        saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
-                    }
-                    if (saleInvoiceVM.ProfInvID != null && saleInvoiceVM.ProfInvID != Guid.Empty)
-                    {
-                        saleInvoiceVM.DocumentType = "ProformaInvoice";
-                        saleInvoiceVM.ProformaInvoiceSelectList = _proformaInvoiceBusiness.GetProformaInvoiceForSelectList(proformaInvoiceID);
-                    }
+                    //if (saleInvoiceVM.QuoteID != Guid.Empty && saleInvoiceVM.QuoteID != null)
+                    //{
+                    //    saleInvoiceVM.DocumentType = "Quotation";
+                    //    saleInvoiceVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quotationID);
+                    //}
+                    //if (saleInvoiceVM.SaleOrderID != null && saleInvoiceVM.SaleOrderID != Guid.Empty)
+                    //{
+                    //    saleInvoiceVM.DocumentType = "SaleOrder";
+                    //    saleInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
+                    //}
+                    //if (saleInvoiceVM.ProfInvID != null && saleInvoiceVM.ProfInvID != Guid.Empty)
+                    //{
+                    //    saleInvoiceVM.DocumentType = "ProformaInvoice";
+                    //    saleInvoiceVM.ProformaInvoiceSelectList = _proformaInvoiceBusiness.GetProformaInvoiceForSelectList(proformaInvoiceID);
+                    //}
                 }
                 else if (id == Guid.Empty && quotationID != null)
                 {
@@ -199,10 +200,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion SaleInvoice Form
 
         #region SaleInvoice Detail Add
-        public ActionResult AddSaleInvoiceDetail()
+        public ActionResult AddSaleInvoiceDetail(bool update)
         {
             SaleInvoiceDetailViewModel saleInvoiceDetailVM = new SaleInvoiceDetailViewModel();
-            saleInvoiceDetailVM.IsUpdate = false;
+            saleInvoiceDetailVM.IsUpdate = update;
             return PartialView("_AddSaleInvoiceDetail", saleInvoiceDetailVM);
         }
         #endregion SaleInvoice Detail Add
@@ -1032,6 +1033,53 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion Get SaleInvoice By SaleInvoiceIDs
+
+
+        #region CheckQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckQty(decimal Qty)
+        {
+
+            if (Qty == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckQty
+        #region CheckRate
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckRate(decimal Rate)
+        {
+
+            if (Rate == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckRate
+        #region CheckRate
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckChargeAmount(decimal ChargeAmount)
+        {
+
+            if (ChargeAmount == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckRate
 
         #region ButtonStyling
         [HttpGet]
