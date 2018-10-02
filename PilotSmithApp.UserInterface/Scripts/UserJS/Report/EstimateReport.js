@@ -169,8 +169,8 @@ function BindOrReloadEstimateReportTable(action) {
 
             ],
             columnDefs: [{ className: "text-right", "targets": [9] },
-                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 10] },
-                         { className: "text-center", "targets": [] },
+                         { className: "text-left", "targets": [0, 2, 3, 4, 5, 6, 7, 8, 10] },
+                         { className: "text-center", "targets": [1] },
                            { "targets": [0], "width": "12%" },
                            { "targets": [1], "width": "12%" },
                            { "targets": [2], "width": "12%" },

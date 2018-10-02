@@ -1,4 +1,5 @@
 ﻿var _activeColor = "rgb(50,230,127)";
+var _activeColorRed = "rgb(250, 128, 114)";
 function CreateEnquiryFollowupSummary() {
     Chart.defaults.global.legend.labels.usePointStyle = true;
     var chrt = document.getElementById("enquiryChart").getContext("2d");
@@ -31,16 +32,20 @@ function CreateEnquiryFollowupSummary() {
                  pointBorderColor: '#33a9e0',
                  pointHoverRadius: 9,
                  pointRadius: 8,
-             } 
-
+             }, {
+                 label: "Followups not done",             
+                 backgroundColor: colors,             
+             }
+         
         ]
-
     };
 
 
-    options = {
+
+    options = {     
         scales: {
             xAxes: [{
+                barThickness:73,
                 gridLines: {
                     display: false,
                     
@@ -79,15 +84,16 @@ function CreateEnquiryFollowupSummary() {
         legend: {
             display: true,
             labels: {
-                generateLabels: function(chart) {//given to change the color of the label dot fill
+                generateLabels: function (chart) {//given to change the color of the label dot fill
                     labels = Chart.defaults.global.legend.labels.generateLabels(chart);
                     labels[0].fillStyle = _activeColor;
+                    labels[1].fillStyle = _activeColorRed;
                     return labels;
                 },
-                fontColor: 'green',
+                fontColor: 'black',            
                 boxWidth: 0,
             },
-            fillColor:'green'
+            fillColor: 'green',         
 
         }
         
