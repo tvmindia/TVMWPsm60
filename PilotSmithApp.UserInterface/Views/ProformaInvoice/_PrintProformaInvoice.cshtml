@@ -114,8 +114,19 @@
                     CessAmt = Math.Round((decimal)mp.CessAmt, 2);
                     <tr style="text-align: right;font-family: Arial; color: #000;padding: 4px">
                         <td style="width:3%;text-align: center;padding: 4px;font-size:10px;vertical-align:top;">@slno</td>
-                        <td style="width:26%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
-                        <td style="width:6%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
+                        @{
+                            if (Model.InvoiceType == "SB")
+                            {
+                                <td style="width:23%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.OtherCharge.Description</td>
+                                <td style="width:5%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.OtherCharge.SACCode</td>
+                            }
+                            else
+                            {
+                                <td style="width:26%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                                <td style="width:6%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
+                            }
+                        }
+
                         <td style="width:5%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                         <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.Rate</td>
                         <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.Discount</td>
