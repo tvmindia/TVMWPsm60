@@ -147,11 +147,13 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Product Spec")]
         public string ProductSpec { get; set; }
         [Display(Name = "Quantity")]
+        [Remote(action: "CheckQty", controller: "ProformaInvoice", AdditionalFields = "Qty")]
         [Required(ErrorMessage ="Quantity is missing")]
         public decimal? Qty { get; set; }
         [Display(Name = "Select Unit")]
         public int? UnitCode { get; set; }
         [Required(ErrorMessage = "Rate is missing")]
+        [Remote(action: "CheckRate", controller: "ProformaInvoice", AdditionalFields = "Rate")]
         public decimal? Rate { get; set; }
         public decimal? Discount { get; set; }
         [Display(Name = "Select Tax Type")]
@@ -186,6 +188,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int? OtherChargeCode { get; set; }
         [Required(ErrorMessage = "Charge Amount is missing")]
         [Display(Name = "Charge Amount")]
+        [Remote(action: "CheckChargeAmount", controller: "ProformaInvoice", AdditionalFields = "ChargeAmount")]
         public decimal? ChargeAmount { get; set; }
         [Display(Name = "Select Tax Type")]
         public int? TaxTypeCode { get; set; }

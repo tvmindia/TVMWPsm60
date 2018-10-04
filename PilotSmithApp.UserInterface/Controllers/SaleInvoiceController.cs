@@ -1065,7 +1065,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion CheckRate
-        #region CheckRate
+        #region CheckChargeAmount
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckChargeAmount(decimal ChargeAmount)
         {
@@ -1079,7 +1079,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion CheckRate
+        #endregion CheckChargeAmount
 
         #region ButtonStyling
         [HttpGet]

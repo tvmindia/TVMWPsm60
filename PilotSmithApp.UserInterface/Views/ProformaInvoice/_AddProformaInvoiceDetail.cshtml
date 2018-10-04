@@ -10,12 +10,21 @@
 
                 @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
+          @if (Model.IsUpdate)
+          {
+              <div class="col-md-12">
+                 <span class="form-control newinput" id="spanProductName" style="background-color:#eeeeee"></span>
+               </div>
+          }
+          else
+          {
             <div class="col-md-12">
                 <div class="divProductSelectList">
                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
                 </div>
             </div>
+          }
             @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductRequired", "required")
@@ -24,15 +33,26 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
-            <div class="col-md-12">
-                <div class="divProductModelSelectList">
-                    <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
-                    @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
+            @if (Model.IsUpdate)
+            {
+              <div class="col-md-12">
+                 <span class="form-control newinput" id="spanProductModelName" style="background-color:#eeeeee"></span>
+              </div>
+            }
+            else
+            {
+
+                <div class="col-md-12">
+                    <div class="divProductModelSelectList">
+                        <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                        @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
+                    </div>
                 </div>
+            }
                 @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
                 <!-- This hidden field will keep the information whether the field is required or not -->
                 @Html.Hidden("hdnProductModelRequired", "required")
-            </div>
+            
         </div>
         <div id="divProductBasicInfo">
             @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
@@ -167,6 +187,14 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProformaInvoiceDetail");
         try {
+             @if (Model.IsUpdate)
+             {
+
+             }
+             else
+             { 
+                 <text>
+
             $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val(), function () {
                 $('#divModelPopProformaInvoice #ProductID').change(function () {
                     if ($('#divProductBasicInfo') != undefined) {
@@ -186,6 +214,9 @@
                     }
                 });
             });
+            </text>
+        }
+
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
             $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
                 $('#divModelPopProformaInvoice .CalculateGST').change(function () {
