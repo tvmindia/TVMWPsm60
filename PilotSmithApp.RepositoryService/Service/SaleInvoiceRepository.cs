@@ -118,6 +118,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleInvoice.ProfInvID= (sdr["ProfInvID"].ToString() != "" ? Guid.Parse(sdr["ProfInvID"].ToString()) : saleInvoice.ProfInvID);
                                         saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? sdr["ProfInvNo"].ToString() : saleInvoice.ProformaInvoice.ProfInvNo);
                                         saleInvoice.TallyStatus= (sdr["TallyStatus"].ToString() != "" ? int.Parse(sdr["TallyStatus"].ToString()) : saleInvoice.TallyStatus);
+                                        saleInvoice.InvoiceType = (sdr["InvocieType"].ToString() != "" ? (sdr["InvocieType"].ToString()) : saleInvoice.InvoiceType);
                                     }
                                     saleInvoiceList.Add(saleInvoice);
                                 }
@@ -303,6 +304,13 @@ namespace PilotSmithApp.RepositoryService.Service
                                     string CompanyAddress3 = (sdr["CompanyAddress3"].ToString() != "" ? sdr["CompanyAddress3"].ToString() : saleInvoice.CompanyAddress3);
                                     saleInvoice.CompanyAddress3 = CompanyAddress3.Replace("\\n", "<br />");
                                     saleInvoice.PurchaseOrdNo= (sdr["PurchaseOrdNo"].ToString() != "" ? sdr["PurchaseOrdNo"].ToString() : saleInvoice.PurchaseOrdNo);
+                                    saleInvoice.SaleOrder = new SaleOrder();
+                                    saleInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? (sdr["SaleOrderNo"].ToString()) : saleInvoice.SaleOrder.SaleOrderNo);
+                                    saleInvoice.Quotation = new Quotation();
+                                    saleInvoice.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? (sdr["QuoteNo"].ToString()) : saleInvoice.Quotation.QuoteNo);
+                                    saleInvoice.ProformaInvoice = new ProformaInvoice();
+                                    saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? (sdr["ProfInvNo"].ToString()) : saleInvoice.ProformaInvoice.ProfInvNo);
+                                    
                                 }
                         }
                     }

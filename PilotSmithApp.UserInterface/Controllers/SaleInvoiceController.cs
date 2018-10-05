@@ -59,10 +59,10 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region SaleInvoice Other Charge Detail 
         [AuthSecurityFilter(ProjectObject = "SaleInvoice", Mode = "R")]
-        public ActionResult SaleInvoiceOtherChargeDetail()
+        public ActionResult SaleInvoiceOtherChargeDetail(bool update)
         {
             SaleInvoiceOtherChargeViewModel saleInvocieOtherChargeVM = new SaleInvoiceOtherChargeViewModel();
-            saleInvocieOtherChargeVM.IsUpdate = false;
+            saleInvocieOtherChargeVM.IsUpdate = update;
             return PartialView("_SaleInvoiceOtherCharge", saleInvocieOtherChargeVM);
         }
         #endregion SaleInvoice Other Charge Detail 
@@ -209,10 +209,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion SaleInvoice Detail Add
 
         #region SaleInvoice Detail Add
-        public ActionResult AddSaleInvoiceServiceBill()
+        public ActionResult AddSaleInvoiceServiceBill(bool update)
         {
             SaleInvoiceDetailViewModel saleInvoiceDetailVM = new SaleInvoiceDetailViewModel();
-            saleInvoiceDetailVM.IsUpdate = false;
+            saleInvoiceDetailVM.IsUpdate = update;
             saleInvoiceDetailVM.Qty = 1;//by default one
             saleInvoiceDetailVM.UnitCode = 4;////by default select Nos as unit
             return PartialView("_SaleInvoiceServiceBill", saleInvoiceDetailVM);

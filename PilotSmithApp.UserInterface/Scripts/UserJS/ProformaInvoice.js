@@ -1313,6 +1313,7 @@ function InvoiceTypeOnChange(curObj) {
     $(".cancel").click(function () {
         $('#InvoiceType').val('RB').trigger('change');
     });
+    $('#hdnInvoiceType').val($('#InvoiceType').val());
     //if (curObj == 'SB') {
     //    $('#btnAddServiceBill').css("display", "block")
     //    $('#btnAddItems').css("display", "none");
