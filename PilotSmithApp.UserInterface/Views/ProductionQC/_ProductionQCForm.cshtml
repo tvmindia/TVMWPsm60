@@ -118,44 +118,46 @@
                 <div id="divCustomerBasicInfo">
                     @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
                 </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    @if (Model.IsUpdate)
-                    {
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
+                            @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
-                    }
-                    else
-                    {
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="col-md-12">
+                                <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-12">
+                                <div class="divBranchSelectList">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                    @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
+                                </div>
+                            </div>
+                        }
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBranchRequired", "required")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBranchdisabled", false)
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                    <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            <div class="divBranchSelectList">
+                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12">
+                            <div class="divDocumentStatusSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
-                            </div>                         
+                                @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "PQC" })*@
+                            </div>
                         </div>
-                    }
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnBranchRequired", "required")
-                    <!-- This hidden field will keep the information whether the field is disabled or not -->
-                    @Html.Hidden("hdnBranchdisabled", false)
-                    @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnDocumentStatusRequired", "required")
+                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "PQC" })*@
-                        </div>
-                    </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnDocumentStatusRequired", "required")
-                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                 </div>
             </div>
             @*@if (Model.IsUpdate)
