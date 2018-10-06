@@ -153,11 +153,20 @@ function BindOrReloadEstimateReportTable(action) {
             pageLength: 8,
             autoWidth: false,
             columns: [
-              
-               { "data": "EstimateNo", "defaultContent": "<i>-</i>" },
-               { "data": "EstimateDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },           
+              {
+                  "data": "EstimateNo", render: function (data, type, row) {
+                      return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.EstimateDateFormatted + "</br>" + row.EstimateNo;
+                  }, "defaultContent": "<i>-</i>"
+              },
+               //{ "data": "EstimateNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "EstimateDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },           
          
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "PreparedBy", "defaultContent": "<i>-</i>" },           
@@ -175,20 +184,20 @@ function BindOrReloadEstimateReportTable(action) {
                 
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [9] },
-                         { className: "text-left", "targets": [0, 2, 3, 4, 5, 6, 7, 8, 10] },
-                         { className: "text-center", "targets": [1] },
-                           { "targets": [0], "width": "12%" },
-                           { "targets": [1], "width": "12%" },
-                           { "targets": [2], "width": "12%" },
-                           { "targets": [3], "width": "12%" },
-                           { "targets": [4], "width": "12%" },
-                           { "targets": [5], "width": "12%" },
-                           { "targets": [6], "width": "12%" },
-                           { "targets": [7], "width": "12%" },
-                           { "targets": [8], "width": "12%" },
-                           { "targets": [9], "width": "12%" },
-                           { "targets": [10], "width": "12%" },
+            columnDefs: [{ className: "text-right", "targets": [7] },
+                         { className: "text-left", "targets": [ 1,2, 3, 4, 5, 6, 8] },
+                         { className: "text-center", "targets": [0] },
+                           { "targets": [0], "width": "15%" },
+                           { "targets": [1], "width": "15%" },
+                           { "targets": [2], "width": "7%" },
+                           { "targets": [3], "width": "7%" },
+                           { "targets": [4], "width": "7%" },
+                           { "targets": [5], "width": "9%" },
+                           { "targets": [6], "width": "10%" },
+                           { "targets": [7], "width": "10%" },
+                           { "targets": [8], "width": "20%" },
+                           //{ "targets": [9], "width": "10%" },
+                           //{ "targets": [10], "width": "10%" },
                            
             ],
             destroy: true,

@@ -262,6 +262,7 @@
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
+    <Content Include="Content\images\phone.png" />
     <Content Include="Content\images\ProductImage\catphoto.png" />
     <Content Include="Content\images\ProductImage\chillyclaner.png" />
     <Content Include="Content\images\contact.png" />
@@ -294,11 +295,13 @@
     <Content Include="Content\images\production.png" />
     <Content Include="Content\images\Recall.png" />
     <Content Include="Content\images\rupee.png" />
-    <Content Include="Content\images\saleorder.png" />
+    <Content Include="Content\images\sortasc.png" />
+    <Content Include="Content\images\sortdesc.png" />
     <Content Include="Content\images\SuppPord.png" />
     <Content Include="Content\images\tallyblack.png" />
     <Content Include="Content\images\tallywhite.png" />
     <Content Include="Content\images\tallyxml.PNG" />
+    <Content Include="Content\images\time.png" />
     <Content Include="Content\images\timeline.png" />
     <Content Include="Content\images\xml-file.png" />
     <Content Include="Content\images\xml.png" />
