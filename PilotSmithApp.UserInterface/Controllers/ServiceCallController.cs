@@ -126,29 +126,29 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ServiceCall Detail Add
         [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "R")]
-        public ActionResult AddServiceCallDetail()
+        public ActionResult AddServiceCallDetail(bool update)
         {
             ServiceCallDetailViewModel serviceCallDetailVM = new ServiceCallDetailViewModel();
-            serviceCallDetailVM.IsUpdate = false;
+            serviceCallDetailVM.IsUpdate = update;
             return PartialView("_AddServiceCallDetail", serviceCallDetailVM);
         }
         #endregion ServiceCall Detail Add
 
         #region ServiceCall Charges Add
         [AuthSecurityFilter(ProjectObject = "ServiceCall", Mode = "R")]
-        public ActionResult AddServiceCallCharge()
+        public ActionResult AddServiceCallCharge(bool update)
         {
             ServiceCallChargeViewModel serviceCallChargeVM = new ServiceCallChargeViewModel();
-            serviceCallChargeVM.IsUpdate = false;
+            serviceCallChargeVM.IsUpdate = update;
             return PartialView("_AddServiceCallCharge", serviceCallChargeVM);
         }
         #endregion ServiceCall Charges Add
 
         #region ServiceCall Spare Add
-        public ActionResult AddServiceCallDetailSpare()
+        public ActionResult AddServiceCallDetailSpare(bool update)
         {
             ServiceCallDetailViewModel serviceCallDetailVM = new ServiceCallDetailViewModel();
-            serviceCallDetailVM.IsUpdate = false;
+            serviceCallDetailVM.IsUpdate = update;
             return PartialView("_AddServiceCallDetailSpare", serviceCallDetailVM);
         }
         #endregion ServiceCall Spare Add
