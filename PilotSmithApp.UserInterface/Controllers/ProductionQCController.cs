@@ -100,10 +100,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion ProductionQC Form
         #region ProductionQC Detail Add
-        public ActionResult AddProductionQCDetail()
+        public ActionResult AddProductionQCDetail(bool update)
         {
             ProductionQCDetailViewModel productionQCDetailVM = new ProductionQCDetailViewModel();
-            productionQCDetailVM.IsUpdate = false;
+            productionQCDetailVM.IsUpdate = update;
             return PartialView("_AddProductionQCDetail", productionQCDetailVM);
         }
         #endregion ProductionQC Detail Add
@@ -316,7 +316,20 @@ namespace PilotSmithApp.UserInterface.Controllers
         //    return PartialView("_ProductionQCSelectList", productionQCVM);
         //}
         //#endregion ProductionQCSelectList
+        #region CheckQCQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckQCQty(decimal? QCQty,decimal? QCQtyPrevious, decimal? ProducedQty)
+        {
+            int checkQC = Convert.ToInt32(ProducedQty) - Convert.ToInt32(QCQtyPrevious);
+            if (QCQty > checkQC)
+            {               
+                return Json("<p><span id=spanQCQty style='vertical-align: 2px'>QCQty greater than prod. qty</span><i class='fa fa-exclamation' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
+            }
 
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckQCQty
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProductionQC", Mode = "R")]
