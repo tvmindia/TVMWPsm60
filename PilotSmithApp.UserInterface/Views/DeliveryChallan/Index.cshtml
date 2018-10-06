@@ -98,7 +98,7 @@
                         @Html.DropDownListFor(model => model.AdvDocumentOwnerID, EmptySelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                <div class="col-md-6 no-right-padding">
+                @*<div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvEmailSentStatus, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -112,7 +112,7 @@
                         }
                         @Html.DropDownListFor(model => model.AdvEmailSentStatus, EmailStatus, "Select status", new { @class = "form-control newinput ", @style = "width:100 % !important", @id = "AdvEmailSentStatus" })
                     </div>
-                </div>
+                </div>*@
 
 
 
@@ -137,7 +137,7 @@
                     </div>
                 </div>
             </div>
-            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID });
+            @Html.Hidden("RedirectToDocument", "", htmlAttributes: new { @class = "", Value = ViewBag.ID })
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>

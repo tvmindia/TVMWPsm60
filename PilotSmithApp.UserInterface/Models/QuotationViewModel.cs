@@ -96,6 +96,7 @@ namespace PilotSmithApp.UserInterface.Models
         public AreaViewModel Area { get; set; }
         public PSAUserViewModel PSAUser { get; set; }
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        public string EstimateNo { get; set; }
         public bool ImageCheck { get; set; }
     }
     public class QuotationAdvanceSearchViewModel

@@ -106,6 +106,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrder.PSAUser = new PSAUser();
                                         productionOrder.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : productionOrder.PSAUser.LoginName);
                                         productionOrder.EmailSentYN= (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionOrder.EmailSentYN);
+                                        productionOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : productionOrder.SaleOrderNo);
                                     }
                                     productionOrderList.Add(productionOrder);
                                 }

@@ -29,6 +29,9 @@ function BindOrReloadEnquiryReportTable(action) {
         EnquiryReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -38,7 +41,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('1').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');
                 $('.divboxASearch #AdvReferenceTypeCode').val('').trigger('change');
@@ -50,9 +53,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvStateCode').val('').trigger('change');
                 $('.divboxASearch #AdvDistrictCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerCategoryCode').val('').trigger('change');
-
-                
-                
+                             
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
@@ -73,18 +74,16 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvStateCode').val('');
                 $('.divboxASearch #AdvDistrictCode').val('');
                 $('.divboxASearch #AdvCustomerCategoryCode').val('');
-
-                
-                
+                               
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm==SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "")&&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "1") &&
                     ($('.divboxASearch #AdvReferencePersonCode').val() == "")&&
                     ($('.divboxASearch #AdvReferenceTypeCode').val() == "") &&
                     ($('.divboxASearch #AdvEnquiryGradeCode').val() == "")&&
@@ -94,9 +93,7 @@ function BindOrReloadEnquiryReportTable(action) {
                     ($('.divboxASearch #AdvCountryCode').val() == "") &&
                     ($('.divboxASearch #AdvStateCode').val() == "") &&
                     ($('.divboxASearch #AdvDistrictCode').val() == "")&&
-                    ($('.divboxASearch #AdvCustomerCategoryCode').val() == "")
-
-                    
+                    ($('.divboxASearch #AdvCustomerCategoryCode').val() == "")                    
                     ) {
                     return true;
                 }
@@ -200,7 +197,11 @@ function BindOrReloadEnquiryReportTable(action) {
 
                { "data": "EnquiryGrade.Description", "defaultContent": "<i>-</i>" },
 
-               { "data": "Amount", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Amount", render: function (data, type, row) {
+                       return formatCurrency(row.Amount)
+                   }, "defaultContent": "<i>-</i>"
+               },
                
 
                  //{

@@ -300,7 +300,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<DeliveryChallanViewModel> deliveryChallanVMList = Mapper.Map<List<DeliveryChallan>, List<DeliveryChallanViewModel>>(_deliveryChallanBusiness.GetAllDeliveryChallan(Mapper.Map<DeliveryChallanAdvanceSearchViewModel, DeliveryChallanAdvanceSearch>(deliveryChallanAdvanceSearchVM)));
                         var deliveryChallanworkSheet = excel.Workbook.Worksheets.Add("CancellationChallan");
                         DeliveryChallanViewModel[] deliveryChallanVMListArray = deliveryChallanVMList.ToArray();
-                        deliveryChallanworkSheet.Cells[1, 1].LoadFromCollection(deliveryChallanVMListArray.Select(x => new {CancellationChallanNo = x.DelvChallanNo, ChallanDate = x.DelvChallanDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName,SaleOrderNo = x.SaleOrder.SaleOrderNo,ProductionOrderNo = x.ProductionOrder.ProdOrderNo, Area = x.Area.Description, Plant = x.Plant.Description, DocumentOwner = x.PSAUser.LoginName, Branch = x.Branch.Description, ApprovalStatus = x.ApprovalStatus.Description, EmailSent = x.EmailSentYN == true ? "YES" : "NO" //}
+                        deliveryChallanworkSheet.Cells[1, 1].LoadFromCollection(deliveryChallanVMListArray.Select(x => new {CancellationChallanNo = x.DelvChallanNo, ChallanDate = x.DelvChallanDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName,SaleOrderNo = x.SaleOrder.SaleOrderNo,ProductionOrderNo = x.ProductionOrder.ProdOrderNo, Area = x.Area.Description, Plant = x.Plant.Description, DocumentOwner = x.PSAUser.LoginName, Branch = x.Branch.Description, ApprovalStatus = x.ApprovalStatus.Description//}
                         }), true, TableStyles.Light1);
 
                         int finalRowsDLC = deliveryChallanworkSheet.Dimension.End.Row;
@@ -319,7 +319,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         deliveryChallanworkSheet.Column(9).AutoFit();
                         deliveryChallanworkSheet.Column(10).AutoFit();
                         deliveryChallanworkSheet.Column(11).AutoFit();
-                        deliveryChallanworkSheet.Column(12).AutoFit();
+                        //deliveryChallanworkSheet.Column(12).AutoFit();
 
                         break;
                     case "PIV":

@@ -118,6 +118,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQC.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionQC.EmailSentYN);
                                         productionQC.Area = new Area();
                                         productionQC.Area.Description = (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : productionQC.Area.Description);
+                                        productionQC.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString():productionQC.ProdOrderNo);
                                     }
                                     productionQCList.Add(productionQC);
                                 }

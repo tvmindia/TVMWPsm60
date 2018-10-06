@@ -80,7 +80,8 @@
                                 @Html.Label("Quotation", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })
+                                @*@Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })*@
+                                <span class="form-control newinput" id="spanQuoteID" style="background-color:#eeeeee"></span>
                             </div>
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
@@ -92,7 +93,8 @@
                                 @Html.Label("SaleOrder", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
+                                @*@Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })*@
+                                <span class="form-control newinput" id="spanSaleOrderID" style="background-color:#eeeeee"></span>
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
@@ -179,7 +181,7 @@
                         @if (Model.IsUpdate)
                         {
                             <div class="col-md-12">
-                                <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
+                                <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
                             </div>
                         }
                         else
@@ -188,7 +190,7 @@
                                 <div class="divBranchSelectList">
                                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
-                                </div>                            
+                                </div>
                             </div>
                         }
                         <!-- This hidden field will keep the information whether the field is required or not -->
@@ -329,7 +331,7 @@
                     @if (Model.IsUpdate || Model.QuoteID != null || Model.SaleOrderID != null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -538,12 +540,12 @@
 <script>
     $(document).ready(function () {
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')          
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
             @if (Model.IsUpdate||Model.QuoteID!=null||Model.SaleOrderID!=null)
          {
-           
+
          }
          else
          {
@@ -554,11 +556,11 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
-        @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null))
+            @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null))
         {
             <text>
-        $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-        });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
             </text>
         }
         }
@@ -746,4 +748,3 @@
         }
     });
 </script>
-
