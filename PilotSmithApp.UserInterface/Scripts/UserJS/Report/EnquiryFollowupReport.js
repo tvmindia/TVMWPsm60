@@ -29,6 +29,9 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
         EnquiryFollowupReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SerachValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -53,7 +56,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
 
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SerachValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&                   
                     ($('.divboxASearch #AdvCustomer').val() == "") &&                   
                     ($('.divboxASearch #AdvStatus').val() == "") &&

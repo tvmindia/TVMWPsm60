@@ -26,6 +26,7 @@
             <div class="col-md-12">
                 <div class="input-group">
                     @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -45,7 +46,7 @@
                     DateTime dt = pSASysCommon.GetCurrentDateTime();
                     List<SelectListItem> productionOrderDateRange = new List<SelectListItem>();
                     productionOrderDateRange.Add(new SelectListItem
-                    { Text = "ALL", Value =""  , Selected = true });
+                    { Text = "ALL", Value = "", Selected = true });
                     productionOrderDateRange.Add(new SelectListItem
                     { Text = "Last 3 Months", Value = dt.AddMonths(-3).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
                     productionOrderDateRange.Add(new SelectListItem
@@ -87,7 +88,7 @@
                     </div>
                 </div>
 
-            
+
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvCustomer, htmlAttributes: new { @class = "control-label" })
@@ -183,9 +184,9 @@
                     <div class="col-md-12">
                         @Html.DropDownListFor(model => model.AdvBranchCode, EmptySelectList, "Select branch", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
-                </div>  
-              
-                
+                </div>
+
+
 
 
                 <div class="col-md-6 no-right-padding">
@@ -224,7 +225,7 @@
                         @Html.DropDownListFor(model => model.AdvDocumentOwnerID, EmptySelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-               
+
 
                 <div class="col-md-12">&nbsp;</div>
                 @*<div class="col-md-12 no-left-padding">
@@ -247,26 +248,26 @@
     </div>
     <div class="row tableContainer">
         <div class="excelExport" style="display:none;"></div>
-        <div class="col-md-12"  style="overflow-x:auto;"> 
-            <table id="tblProductionOrderReport" class="table table-striped" cellspacing="0" style="width:2200px!important;display:none;">
+        <div class="col-md-12" style="overflow-x:auto;">
+            <table id="tblProductionOrderReport" class="table table-striped" cellspacing="0" style="width:2200px!important;">
                 <thead>
                     <tr class="text-center TableHead">
                         <th>Prod. Ord. No.</th>
                         <th>Date</th>
                         <th>Customer</th>
                         <th>Cont. Person</th>
-                        <th>Exp. Del. Date</th>   
-                        <th>Ref. By</th> 
-                        <th>Area</th>    
-                        <th>Plant</th>                
+                        <th>Exp. Del. Date</th>
+                        <th>Ref. By</th>
+                        <th>Area</th>
+                        <th>Plant</th>
                         <th>Prod. Name</th>
                         <th>Prod. Model</th>
-                        <th>Prod. Spec.</th> 
-                        <th>Qty</th>                       
+                        <th>Prod. Spec.</th>
+                        <th>Qty</th>
                         <th>Amount</th>
                         <th>Sale Ord. No.</th>
-                        <th>Doc. Status</th>  
-                        <th>Remarks</th>                      
+                        <th>Doc. Status</th>
+                        <th>Remarks</th>
                     </tr>
                 </thead>
             </table>
@@ -274,6 +275,7 @@
     </div>
 
 </section>
+
 
 @using (Html.BeginForm("DownloadExcel", "Report", FormMethod.Post, new { id = "FormExcelExport" }))
 {

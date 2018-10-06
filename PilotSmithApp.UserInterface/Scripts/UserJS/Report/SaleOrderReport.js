@@ -36,6 +36,9 @@ function BindOrReloadSaleOrderReportTable(action) {
         SaleOrderReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -47,7 +50,7 @@ function BindOrReloadSaleOrderReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('16').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvPreparedBy').val('').trigger('change');
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
@@ -92,13 +95,13 @@ function BindOrReloadSaleOrderReportTable(action) {
                
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "16") &&
                     ($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
@@ -110,7 +113,7 @@ function BindOrReloadSaleOrderReportTable(action) {
                     ($('.divboxASearch #AdvApprovalStatusCode').val() == "")
                     && ($('.divboxASearch #AdvDelFromDate').val() == "")
                     && ($('.divboxASearch #AdvDelToDate').val() == "")
-                    && ($('.divboxASearch #AdvReportType').val() == "")                  
+                    //&& ($('.divboxASearch #AdvReportType').val() == "")                  
                     && ($('.divboxASearch #AdvProduct').val() == "")
                     && ($('.divboxASearch #AdvProductModel').val() == "")
                     ) {

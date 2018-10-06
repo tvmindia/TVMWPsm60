@@ -258,6 +258,7 @@ function EditSaleOrder(this_Obj) {
             OnServerCallComplete();
             openNav();
             $('#lblSaleOrderInfo').text(SaleOrder.SaleOrderNo);
+            $('#spanQuoteID').text(SaleOrder.Quotation.QuoteNo);
             //$('#CustomerID').trigger('change');
             if ($('#IsDocLocked').val() == "True") {
                 debugger;

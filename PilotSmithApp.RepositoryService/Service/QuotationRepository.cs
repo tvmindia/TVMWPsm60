@@ -118,6 +118,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotation.ApprovalStatus.Code= (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : quotation.ApprovalStatus.Code);
                                         quotation.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? (sdr["ApprovalStatus"].ToString()) : quotation.ApprovalStatus.Description);
                                         quotation.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse (sdr["EmailSentYN"].ToString()) : quotation.EmailSentYN);
+                                        quotation.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : quotation.EstimateNo);
                                     }
                                     quotationList.Add(quotation);
                                 }
@@ -197,7 +198,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.Branch.Description= (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : quotation.Branch.Description);
                                     quotation.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.BranchCode);
                                     quotation.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.Branch.Code);
-                                    quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);
+                                    quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);                                                                   
                                 }
                         }
                     }

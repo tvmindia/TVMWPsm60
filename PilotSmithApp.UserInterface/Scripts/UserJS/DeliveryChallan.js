@@ -238,6 +238,7 @@ function EditDeliveryChallan(this_Obj) {
             //$("#divDeliveryChallanForm #SaleOrderID").prop('disabled', true);
             //$("#divDeliveryChallanForm #ProdOrderID").prop('disabled', true);
             openNav();
+            $('#spanSaleOrderID').text(DeliveryChallan.SaleOrder.SaleOrderNo);
             if ($('#IsDocLocked').val() == "True") {
                 ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit", DeliveryChallan.ID);
             }

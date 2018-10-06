@@ -83,8 +83,9 @@
                                 @Html.Label("Sale Order", htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
-                                @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })
+                                @*@Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search SaleOrder", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
+                                @Html.ValidationMessageFor(model => model.SaleOrderID, "", new { @class = "text-danger" })*@
+                                <span class="form-control newinput" id="spanSaleOrderID" style="background-color:#eeeeee"></span>
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>

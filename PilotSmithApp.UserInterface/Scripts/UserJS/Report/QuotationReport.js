@@ -29,6 +29,9 @@ function BindOrReloadQuotationReportTable(action) {
         QuotationReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -40,7 +43,7 @@ function BindOrReloadQuotationReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('5').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvPreparedBy').val('').trigger('change');              
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
@@ -75,13 +78,13 @@ function BindOrReloadQuotationReportTable(action) {
                 
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "5") &&
                     ($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
@@ -182,7 +185,11 @@ function BindOrReloadQuotationReportTable(action) {
                  { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
                  { "data": "ApprovalStatus.Description", "defaultContent": "<i>-</i>" },
 
-               { "data": "Amount", "defaultContent": "<i>-</i>" },
+                {
+                    "data": "Amount", render: function (data, type, row) {
+                        return formatCurrency(row.Amount)
+                    }, "defaultContent": "<i>-</i>"
+                },
                { "data": "Notes", "defaultContent": "<i>-</i>" },
 
 

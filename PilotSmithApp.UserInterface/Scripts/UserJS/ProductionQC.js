@@ -231,6 +231,7 @@ function EditProductionQC(this_Obj) {
             //$('#CustomerID').trigger('change');
             OnServerCallComplete();
             openNav();
+            $('#spanProdOrderID').text(ProductionQC.ProdOrderNo);
             if ($('#IsDocLocked').val() == "True") {
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", ProductionQC.ID);
             }

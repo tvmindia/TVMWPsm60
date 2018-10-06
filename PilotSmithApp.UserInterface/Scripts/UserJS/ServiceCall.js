@@ -222,7 +222,7 @@ function EditServiceCall(this_Obj) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
             }
             else {
-                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",ServiceCall.ID);
             }
             BindServiceCallDetailList(ServiceCall.ID);
             BindServiceCallChargeDetailList(ServiceCall.ID)
@@ -1010,7 +1010,7 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",id);
             }
             BindServiceCallDetailList(id);
             BindServiceCallChargeDetailList(id)

@@ -81,6 +81,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
         public bool ShowRate { get; set; }
         public bool ShowAmount { get; set; }
+        public string SaleOrderNo { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel

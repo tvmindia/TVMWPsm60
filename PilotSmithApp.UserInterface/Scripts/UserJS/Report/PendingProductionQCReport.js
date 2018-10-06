@@ -35,6 +35,9 @@ function BindOrReloadPendingProductionQCReportTable(action) {
         PendingProductionQCReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -46,14 +49,14 @@ function BindOrReloadPendingProductionQCReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('7').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
                 $('.divboxASearch #AdvStateCode').val('').trigger('change');
                 $('.divboxASearch #AdvDistrictCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerCategoryCode').val('').trigger('change');
                 $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');
-                $('.divboxASearch #AdvReportType').val('').trigger('change');
+               // $('.divboxASearch #AdvReportType').val('').trigger('change');
                 $('#DateFilter').val('').trigger('change');
                 $('.divboxASearch #AdvProduct').val('').trigger('change');
                 $('.divboxASearch #AdvProductModel').val('').trigger('change');
@@ -79,7 +82,7 @@ function BindOrReloadPendingProductionQCReportTable(action) {
                 $('.divboxASearch #AdvCustomerCategoryCode').val('');
                 $('.divboxASearch #AdvReferencePersonCode').val('');
 
-                $('.divboxASearch #AdvReportType').val('');
+               // $('.divboxASearch #AdvReportType').val('');
                 $('#DateFilter').val('');
                 $('.divboxASearch #AdvProduct').val('');
                 $('.divboxASearch #AdvProductModel').val('');
@@ -87,14 +90,14 @@ function BindOrReloadPendingProductionQCReportTable(action) {
 
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
-                    ($('.divboxASearch #AdvPreparedBy').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "7") &&
+                    //($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
                      ($('.divboxASearch #AdvCountryCode').val() == "") &&
@@ -103,10 +106,10 @@ function BindOrReloadPendingProductionQCReportTable(action) {
                     ($('.divboxASearch #AdvCustomerCategoryCode').val() == "") &&
                     ($('.divboxASearch #AdvReferencePersonCode').val() == "")
 
-                    && ($('.divboxASearch #AdvReportType').val() == "")
+                   // && ($('.divboxASearch #AdvReportType').val() == "")
                     && ($('.divboxASearch #AdvProduct').val() == "")
                     && ($('.divboxASearch #AdvProductModel').val() == "")
-                    && ($('.divboxASearch #AdvPlantCode').val('') == "")
+                    && ($('.divboxASearch #AdvPlantCode').val() == "")
 
                     ) {
                     return true;
@@ -184,10 +187,8 @@ function BindOrReloadPendingProductionQCReportTable(action) {
             lengthChange: false,
             autoWidth: false,
             "bAutoWidth": false,                
-            //fixedHeader: {
-            //    header: true
-            //},
-            //sScrollXInner: "100%",
+            scrollX: "500px",
+            fixedHeader: true,
             processing: true,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -212,7 +213,11 @@ function BindOrReloadPendingProductionQCReportTable(action) {
                { "data": "Product.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }8,
                { "data": "ProductModel.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }9,
                { "data": "ProductSpec", "defaultContent": "<i>-</i>"},//, "width": "50px" }10,
-               { "data": "Amount", "defaultContent": "<i>-</i>"},//, "width": "50px" }11,
+                {
+                    "data": "Amount", render: function (data, type, row) {
+                        return formatCurrency(row.Amount)
+                    }, "defaultContent": "<i>-</i>"
+                },//, "width": "50px" }11,
                { "data": "ProdOrdQty", "defaultContent": "<i>-</i>"},//, "width": "50px" }12,
                { "data": "ProductionQCNo", "defaultContent": "<i>-</i>"},//, "width": "50px" }13,
                { "data": "ProdQCQty", "defaultContent": "<i>-</i>"},//, "width": "50px" }14,
@@ -222,9 +227,9 @@ function BindOrReloadPendingProductionQCReportTable(action) {
 
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [11] },
-                         { className: "text-left", "targets": [0,1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16,17] },
-                         { className: "text-center", "targets": [] },
+            columnDefs: [{ className: "text-right", "targets": [11,12,14,15] },
+                         { className: "text-left", "targets": [0,2, 3,5, 6, 7, 8, 10,13,16,17] },
+                         { className: "text-center", "targets": [1,4] },
                            { "targets": [0], "width": "8%" },
                            { "targets": [1], "width": "5%" },
                            { "targets": [2], "width": "5%" },

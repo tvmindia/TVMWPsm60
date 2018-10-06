@@ -23,7 +23,7 @@ namespace PilotSmithApp.RepositoryService.Service
         {
             _databaseFactory = databaseFactory;
         }
-        #region Get All Quotation
+        #region Get All SaleOrder
         public List<SaleOrder> GetAllSaleOrder(SaleOrderAdvanceSearch saleOrderAdvanceSearch)
         {
             List<SaleOrder> saleOrderList = null;
@@ -137,7 +137,7 @@ namespace PilotSmithApp.RepositoryService.Service
 
             return saleOrderList;
         }
-        #endregion Get All Quotation
+        #endregion Get All SaleOrder
         #region GetSaleOrderForSelectListOnDemand
         public List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm)
         {

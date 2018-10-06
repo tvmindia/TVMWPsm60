@@ -29,6 +29,7 @@
             <div class="col-md-12">
                 <div class="input-group">
                     @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -245,8 +246,8 @@
     </div>
     <div class="row tableContainer">
         <div class="excelExport" style="display:none;"></div>
-        <div class="col-md-12"  style="overflow-x:auto;">
-            <table id="tblProductionQCReport" class="table table-striped" cellspacing="0" style="width:2200px!important;display:none;">
+        <div class="col-md-12" style="overflow-x:auto;">
+            <table id="tblProductionQCReport" class="table table-striped" cellspacing="0" style="width:2200px!important;">
                 <thead>
                     <tr class="text-center TableHead">
                         <th>Prod. Ord. No.</th>

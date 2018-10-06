@@ -24,8 +24,8 @@ $(document).ready(function ()
                { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="Edit(this)"<i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                 { className: "text-left", "targets": [1, 2, 3,4,5, 6] },
-                 { className: "text-center", "targets": [7] }
+                 { className: "text-left", "targets": [1, 2, 3,4,5] },
+                 { className: "text-center", "targets": [6,7] }
              ,{ "targets": [5],"render": function (data, type, row) {
                      if (row.Active == true) {
                          return 'Yes';

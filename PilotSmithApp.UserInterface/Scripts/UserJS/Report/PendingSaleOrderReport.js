@@ -35,6 +35,9 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
         PendingSaleOrderReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -46,7 +49,7 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('16').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvPreparedBy').val('').trigger('change');
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
@@ -93,13 +96,13 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                 
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "16") &&
                     ($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
@@ -114,7 +117,7 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                      && ($('.divboxASearch #AdvProduct').val() == "")
                     && ($('.divboxASearch #AdvProductModel').val() == "")                 
                 
-                    && ($('#ReportType').val() == "1")
+                    && (($('#ReportType').val() == "1") || ($('#ReportType').val() == "2"))
                     &&($('#DateFilter').val() == "")
                     
                     ) {
@@ -214,14 +217,18 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                  { "data": "PendingQty", "defaultContent": "<i>-</i>" },
 
                { "data": "Unit.Description", "defaultContent": "<i>-</i>" },
-                 { "data": "Amount", "defaultContent": "<i>-</i>" },
+                 {
+                     "data": "Amount", render: function (data, type, row) {
+                         return formatCurrency(row.Amount)
+                     }, "defaultContent": "<i>-</i>"
+                 },
                  { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },          
                
             ],
-            columnDefs: [{ className: "text-right", "targets": [10] },
-                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8,9, 11,12] },
-                         { className: "text-center", "targets": [] },
+            columnDefs: [{ className: "text-right", "targets": [7, 8, 10] },
+                         { className: "text-left", "targets": [0, 2, 3, 4, 5, 6, 9, 11,12] },
+                         { className: "text-center", "targets": [1] },
                            { "targets": [0], "width": "12%" },
                            { "targets": [1], "width": "12%" },
                            { "targets": [2], "width": "12%" },

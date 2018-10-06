@@ -220,6 +220,8 @@ function EditProformaInvoice(this_Obj) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
+            $('#spanQuoteID').text(ProformaInvoice.Quotation.QuoteNo);
+            $('#spanSaleOrderID').text(ProformaInvoice.SaleOrder.SaleOrderNo);
             //$('#CustomerID').trigger('change');
             debugger;
             if ($('#IsDocLocked').val() == "True") {
