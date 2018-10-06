@@ -39,6 +39,9 @@ function BindOrReloadProformaInvoiceTable(action) {
         ProformaInvoiceAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val());
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -65,8 +68,8 @@ function BindOrReloadProformaInvoiceTable(action) {
                 $('.divboxASearch #AdvApprovalStatusCode').val('');
                 $('#AdvEmailSentStatus').val('');
                 break;
-            case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
+            case 'Search':             
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "")) {
                     return true;
                 }
                 break;
@@ -212,6 +215,7 @@ function EditProformaInvoice(this_Obj) {
     var ProformaInvoice = _dataTable.ProformaInvoiceList.row($(this_Obj).parents('tr')).data();
     $('#lblProformaInvoiceInfo').text(ProformaInvoice.ProfInvNo);
     //this will return form body(html)
+    
     $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + ProformaInvoice.ID, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
@@ -230,11 +234,17 @@ function EditProformaInvoice(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(ProformaInvoice.ID);
-            
+            $('#hdnInvoiceType').val(ProformaInvoice.InvoiceType);
+            if (ProformaInvoice.InvoiceType == "SB") {
+                $('#btnAddItems').css("display", "none");
+                $('#btnAddOtherExpenses').css("display", "none");
+                $('#divProformaInvoiceOtherChargesDetailList').hide();
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
+       
     });
 }
 function ResetProformaInvoice() {
@@ -273,6 +283,7 @@ function SaveProformaInvoice() {
     $('#DetailJSON').val(JSON.stringify(ProformaInvoiceDetailList));
     $('#OtherChargesDetailJSON').val(JSON.stringify(ProformaInvoiceOtherChargesDetailList));
     $('#btnInsertUpdateProformaInvoice').trigger('click');
+    
 }
 function ApplyFilterThenSearch() {
     $(".searchicon").addClass('filterApplied');
@@ -293,16 +304,24 @@ function SaveSuccessProformaInvoice(data, status) {
                 $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", _result.ID);
                     BindProformaInvoiceDetailList(_result.ID);
-                    BindProformaInvoiceOtherChargesDetailList(_result.ID);
+                    if ($("#hdnInvoiceType").val() == "RB") {
+                        BindProformaInvoiceOtherChargesDetailList(_result.ID);
+                    }
                     CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblProformaInvoiceInfo').text(_result.ProformaInvoiceNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProformaInvoiceForm #hdnCustomerID').val());
+                    if ($("#hdnInvoiceType").val() == "SB") {
+                        $('#btnAddItems').css("display", "none");
+                        $('#btnAddOtherExpenses').css("display", "none");
+                        $('#divProformaInvoiceOtherChargesDetailList').hide();
+
+                    }
                 });
                 ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", _result.ID);
                 BindOrReloadProformaInvoiceTable('Init');
-                notyAlert('success', _result.Message);
+                notyAlert('success', _result.Message);          
                 break;
             case "ERROR":
                 notyAlert('error', _message);
@@ -317,6 +336,7 @@ function SaveSuccessProformaInvoice(data, status) {
     }
 }
 function DeleteProformaInvoice() {
+    debugger
     notyConfirm('Are you sure to delete?', 'DeleteProformaInvoiceItem("' + $('#ProformaInvoiceForm #ID').val() + '")');
 }
 function DeleteProformaInvoiceItem(id) {
@@ -394,7 +414,6 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
              },
              {
                  "data": "Product.HSNCode", render: function (data, type, row) {
-                     debugger;
                      //if ((row.OtherCharge.SACCode == null || row.OtherCharge.SACCode == "") && (row.Product.HSNCode !== null || row.Product.HSNCode=="")) {
                      //    return row.Product.HSNCode;
                      //}
@@ -523,7 +542,7 @@ function GetProformaInvoiceDetailListByProformaInvoiceID(id, IsSaleOrder, IsQuot
 
 //Add ProformaInvoice Detail
 function AddProformaInvoiceDetailList() {
-    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceDetail", function () {
+    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceDetail?update=false", function () {
         $('#lblModelPopProformaInvoice').text('ProformaInvoice Detail')
         $('#divModelPopProformaInvoice').modal('show');
     });
@@ -534,19 +553,24 @@ function AddProformaInvoiceDetailToList() {
     $("#FormProformaInvoiceDetail").submit(function () { });
 
     if ($('#FormProformaInvoiceDetail #IsUpdate').val() == 'True') {
-        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() >0) && ($('#Qty').val() >0) && ($('#UnitCode').val() != "")) {
             var proformaInvoiceDetailList = _dataTable.ProformaInvoiceDetailList.rows().data();
             debugger;
-            proformaInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-            proformaInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+            //proformaInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+            //proformaInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+            proformaInvoiceDetailList[_datatablerowindex].Product.Code = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[0].trim() : "";
+            proformaInvoiceDetailList[_datatablerowindex].Product.Name = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[1].trim() : "";
+
+
             proformaInvoiceDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
-            proformaInvoiceDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-            proformaInvoiceDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+            //proformaInvoiceDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+            //proformaInvoiceDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
             ProductModel = new Object;
             Unit = new Object;
             OtherCharge = new Object;
             OtherCharge.SACCode = null;
-            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+          //  ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+            ProductModel.Name = $('#spanProductModelName').text();
             proformaInvoiceDetailList[_datatablerowindex].ProductModel = ProductModel;
             proformaInvoiceDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
             proformaInvoiceDetailList[_datatablerowindex].Qty = $('#Qty').val();
@@ -572,7 +596,7 @@ function AddProformaInvoiceDetailToList() {
         }
     }
     else {
-        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() >0) && ($('#Qty').val() >0) && ($('#UnitCode').val() != "")) {
             if (_dataTable.ProformaInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.ProformaInvoiceDetailList.clear().rows.add(GetProformaInvoiceDetailListByProformaInvoiceID(_emptyGuid)).draw(false);
                 var proformaInvoiceDetailVM = _dataTable.ProformaInvoiceDetailList.rows().data();
@@ -673,28 +697,30 @@ function EditProformaInvoiceDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceDetail = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceDetail", function () {
+    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceDetail?update=true", function () {
         $('#lblModelPopProformaInvoice').text('ProformaInvoice Detail')
         $('#FormProformaInvoiceDetail #IsUpdate').val('True');
         $('#FormProformaInvoiceDetail #ID').val(proformaInvoiceDetail.ID);
         $("#FormProformaInvoiceDetail #ProductID").val(proformaInvoiceDetail.ProductID)
         $("#FormProformaInvoiceDetail #hdnProductID").val(proformaInvoiceDetail.ProductID)
+        $('#spanProductName').text(proformaInvoiceDetail.Product.Code + "-" + proformaInvoiceDetail.Product.Name)
+        $('#spanProductModelName').text(proformaInvoiceDetail.ProductModel.Name)
         $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
         });
 
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        }
-        else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        }
+        //if ($('#hdnProductID').val() != _emptyGuid) {
+        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+        //}
+        //else {
+        //    $('.divProductModelSelectList').empty();
+        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        //}
         $("#FormProformaInvoiceDetail #ProductModelID").val(proformaInvoiceDetail.ProductModelID);
         $("#FormProformaInvoiceDetail #hdnProductModelID").val(proformaInvoiceDetail.ProductModelID);
-        if ($('#hdnProductModelID').val() != _emptyGuid) {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
+        //if ($('#hdnProductModelID').val() != _emptyGuid) {
+        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
+        //    });
+        //}
         $('#FormProformaInvoiceDetail #ProductSpec').val(proformaInvoiceDetail.ProductSpec);
         $('#FormProformaInvoiceDetail #Qty').val(proformaInvoiceDetail.Qty);
         $('#FormProformaInvoiceDetail #UnitCode').val(proformaInvoiceDetail.UnitCode);
@@ -769,7 +795,7 @@ function DeleteProformaInvoiceDetail(ID) {
 
 //OtherExpense------------------
 function AddOtherExpenseDetailList() {
-    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/ProformaInvoiceOtherChargeDetail", function () {
+    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/ProformaInvoiceOtherChargeDetail?update=false", function () {
         $('#lblModelPopProformaInvoice').text('OtherExpense Detail')
         $('#divModelPopProformaInvoice').modal('show');
     });
@@ -780,12 +806,13 @@ function AddOtherExpenseDetailToList() {
     $("#FormOtherExpenseDetail").submit(function () { });
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
         debugger;
-        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() != "")) {
+        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() >0)) {
             var proformaInvoiceOtherExpenseDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
-            proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $('#spanOtherCharge').text() != "" ? $('#spanOtherCharge').text().split("-")[0].trim() : "";
+            //  proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
             proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             proformaInvoiceOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelProformaInvoicePopBody #ChargeAmount").val();
-            proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
+            proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelProformaInvoicePopBody #hdnOtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #hdnOtherChargeCode").val() : _emptyGuid;
             TaxType = new Object;
             if ($('#divModelProformaInvoicePopBody #TaxTypeCode').val() != null) {
                 proformaInvoiceOtherExpenseDetailList[_datatablerowindex].TaxTypeCode = $('#divModelProformaInvoicePopBody #TaxTypeCode').val().split('|')[0];
@@ -806,7 +833,7 @@ function AddOtherExpenseDetailToList() {
     }
     else {
         debugger;
-        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() != "")) {
+        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() >0)) {
             if (_dataTable.ProformaInvoiceOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.ProformaInvoiceOtherChargesDetailList.clear().rows.add(GetProformaInvoiceOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
                 var proformaInvoiceOtherExpenseDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
@@ -1025,11 +1052,12 @@ function EditProformaInvoiceOtherChargesDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.ProformaInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceOtherChargesDetail = _dataTable.ProformaInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/ProformaInvoiceOtherChargeDetail", function () {
+    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/ProformaInvoiceOtherChargeDetail?update=true", function () {
         debugger;
         $('#lblModelPopQuotation').text('OtherCharges Detail')
         $('#FormOtherExpenseDetail #IsUpdate').val('True');
         $('#FormOtherExpenseDetail #ID').val(proformaInvoiceOtherChargesDetail.ID);
+        $('#spanOtherCharge').text(proformaInvoiceOtherChargesDetail.OtherCharge.Description)
         $("#FormOtherExpenseDetail #OtherChargeCode").val(proformaInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(proformaInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #ChargeAmount").val(proformaInvoiceOtherChargesDetail.ChargeAmount);
@@ -1270,16 +1298,52 @@ function SaveSuccessProformaInvoiceEmailSend(data, status) {
 //---------------------------------------InvoiCeTypeOnChange-------------------------------
 function InvoiceTypeOnChange(curObj) {
     if (curObj == 'SB') {
-        $('#btnAddServiceBill').css("display", "block")
-        $('#btnAddItems').css("display", "none");
+        debugger;
+        notyConfirm('Are you sure?', 'ClearProformaInvoiceDetailList();', 'This will clear the detail section and will allow to add service items only !', "Continue", 0);
+        
     }
     else {
+       
         $('#btnAddServiceBill').css("display", "none");
         $('#btnAddItems').css("display", "block")
+        $('#btnAddOtherExpenses').css("display", "block");
+        $('#divProformaInvoiceOtherChargesDetailList').show();
+       
     }
+    $(".cancel").click(function () {
+        $('#InvoiceType').val('RB').trigger('change');
+    });
+    $('#hdnInvoiceType').val($('#InvoiceType').val());
+    //if (curObj == 'SB') {
+    //    $('#btnAddServiceBill').css("display", "block")
+    //    $('#btnAddItems').css("display", "none");
+    //}
+    //else {
+    //    $('#btnAddServiceBill').css("display", "none");
+    //    $('#btnAddItems').css("display", "block")
+    //}
+}
+
+function ClearProformaInvoiceDetailList()
+{
+    debugger;
+  
+    $(".sweet-alert.showSweetAlert").hide();
+    $(".sweet-overlay").hide();
+    $("#divServiceBill").append("<span class='form-control newinput' style='background-color:#eeeeee'>" + "Service Bill" + '</span>');
+ // $('#InvoiceType').attr("disabled", "disabled");
+    $("#divInvoiceType").hide();
+    $('#btnAddServiceBill').css("display", "block")
+    $('#btnAddItems').css("display", "none"); 
+    $('#btnAddOtherExpenses').css("display", "none");
+    var proformaInvoiceDetailList = [];
+    _dataTable.ProformaInvoiceDetailList.clear().rows.add(proformaInvoiceDetailList).draw(false);
+    $('#divProformaInvoiceOtherChargesDetailList').hide();
+    $('#hdnInvoiceType').val($('#InvoiceType').val());
+    ClearCalculatedFields();
 }
 function AddProformaInvoiceServiceBillList() {
-    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceServiceBill", function () {
+    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceServiceBill?update=false", function () {
         $('#lblModelPopProformaInvoice').text('Service Invoice Detail')
         $('#divModelPopProformaInvoice').modal('show');
     });
@@ -1290,11 +1354,12 @@ function AddProformaInvoiceServiceBillToDetailList() {
     $("#FormProformaInvoiceServiceBill").submit(function () { });
 
     if ($('#FormProformaInvoiceServiceBill #IsUpdate').val() == 'True') {
-        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() > 0) && ($('#Qty').val() > 0) && ($('#UnitCode').val() != "")) {
             var proformaInvoiceDetailList = _dataTable.ProformaInvoiceDetailList.rows().data();
             proformaInvoiceDetailList[_datatablerowindex].Product = new Object();
-            proformaInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
-            proformaInvoiceDetailList[_datatablerowindex].OtherChargeCode = $("#OtherChargeCode").val();
+         //   proformaInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            proformaInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $('#spanOtherCharge').text() != "" ? $('#spanOtherCharge').text().split("-")[0].trim() : "";
+            proformaInvoiceDetailList[_datatablerowindex].OtherChargeCode = $("#hdnOtherChargeCode").val();
             proformaInvoiceDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             proformaInvoiceDetailList[_datatablerowindex].Qty = $('#Qty').val();
             proformaInvoiceDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
@@ -1319,7 +1384,7 @@ function AddProformaInvoiceServiceBillToDetailList() {
         }
     }
     else {
-        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() >0) && ($('#Qty').val() >0) && ($('#UnitCode').val() != "")) {
             if (_dataTable.ProformaInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.ProformaInvoiceDetailList.clear().rows.add(GetProformaInvoiceDetailListByProformaInvoiceID(_emptyGuid)).draw(false);
                 var proformaInvoiceDetailVM = _dataTable.ProformaInvoiceDetailList.rows().data();
@@ -1400,13 +1465,14 @@ function AddProformaInvoiceServiceBillToDetailList() {
 }
 
 function EditProformaInvoiceServiceBill(this_Obj) {
+    debugger;
     _datatablerowindex = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceDetail = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceServiceBill", function () {
+    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceServiceBill?update=true", function () {
         $('#lblModelPopProformaInvoice').text('ProformaInvoice Detail')
         $('#FormProformaInvoiceServiceBill #IsUpdate').val('True');
         $('#FormProformaInvoiceServiceBill #ID').val(proformaInvoiceDetail.ID);
-
+        $('#spanOtherCharge').text(proformaInvoiceDetail.OtherCharge.Description)
         $("#FormProformaInvoiceServiceBill #OtherChargeCode").val(proformaInvoiceDetail.OtherChargeCode)
         $("#FormProformaInvoiceServiceBill #hdnOtherChargeCode").val(proformaInvoiceDetail.OtherChargeCode)
 
@@ -1436,7 +1502,7 @@ function EditProformaInvoiceServiceBill(this_Obj) {
     });
 }
 function EditRedirectToDocument(id) {
-
+    debugger;
     OnServerCallBegin();
 
     $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + id, function (responseTxt, statusTxt, xhr) {

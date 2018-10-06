@@ -179,7 +179,7 @@
                         @if (Model.IsUpdate)
                         {
                             <div class="col-md-12">
-                                <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
+                                <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
                             </div>
                         }
                         else
@@ -188,7 +188,7 @@
                                 <div class="divBranchSelectList">
                                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
-                                </div>                            
+                                </div>
                             </div>
                         }
                         <!-- This hidden field will keep the information whether the field is required or not -->
@@ -209,15 +209,33 @@
                         @Html.HiddenFor(model => model.BillLocationCode, htmlAttributes: new { @class = "", @id = "hdnBillLocationCode" })
                     </div>
                 </div>
-                @if (!Model.IsUpdate)
-                {
-                    <div class="form-group col-md-12 no-right-padding">
-                        <div class="col-md-6 no-padding">
+
+                <div class="form-group col-md-12 no-right-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.InvoiceType, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        @if (Model.IsUpdate)
+                        {
+
                             <div class="col-md-12">
-                                @Html.LabelFor(model => model.InvoiceType, htmlAttributes: new { @class = "control-label" })
+                                @{
+                                if (Model.InvoiceType == "RB")
+                                {
+                                <span class="form-control newinput" style="background-color:#eeeeee">Regular Bill</span>
+                                }
+                                else if (Model.InvoiceType == "SB")
+                                {
+                                <span class="form-control newinput" style="background-color:#eeeeee">Service Bill</span>
+                                    }
+                                }
                             </div>
+                        }
+                        else
+                        {
+
                             <div class="col-md-12">
-                                <div>
+                                <div id="divInvoiceType">
                                     @{
                                         List<SelectListItem> TypeList = new List<SelectListItem>();
                                         TypeList.Add(new SelectListItem
@@ -227,11 +245,16 @@
                                     }
                                     @Html.DropDownListFor(model => model.InvoiceType, TypeList, new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100 %", onchange = "InvoiceTypeOnChange(this.value)", })
                                 </div>
-                                @* @Html.HiddenFor(model => model.InvoiceType, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })*@
+                                <div id="divServiceBill">
+                                </div>
                             </div>
-                        </div>
-                    </div>
                                         }
+                        @Html.HiddenFor(model => model.InvoiceType, htmlAttributes: new { @class = "", @id = "hdnInvoiceType"})
+
+
+                    </div>
+                </div>
+
             </div>
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
@@ -329,7 +352,7 @@
                     @if (Model.IsUpdate || Model.QuoteID != null || Model.SaleOrderID != null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -384,23 +407,23 @@
                         if (Model.InvoiceType == "SB")
                         {
                             <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
 
                         }
                         else
                         {
                             <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
 
                         }
                     }
                     else
                     {
                         <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
                     }
                 }
             </div>
@@ -425,22 +448,24 @@
                     </thead>
                 </table>
             </div>
-            <div class="form-group col-md-7 ">
-                <table id="tblProformaInvoiceOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                    <thead>
-                        <tr class="text-center TableHead">
-                            <th style="width:20%">Other Charge</th>
-                            <th style="width:15%">SAC Code</th>
-                            <th style="width:15%">Charge Amount(₹)</th>
-                            <th style="width:15%">GST(₹)</th>
-                            <th style="width:15%">Additional Tax(₹)</th>
-                            <th style="width:15%">Total(₹)</th>
-                            <th style="width:5%">...</th>
-                        </tr>
-                    </thead>
-                </table>
+            <div class="form-group col-md-7">
+                <div class="col-md-12 no-padding" id="divProformaInvoiceOtherChargesDetailList">
+                    <table id="tblProformaInvoiceOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                        <thead>
+                            <tr class="text-center TableHead">
+                                <th style="width:20%">Other Charge</th>
+                                <th style="width:15%">SAC Code</th>
+                                <th style="width:15%">Charge Amount(₹)</th>
+                                <th style="width:15%">GST(₹)</th>
+                                <th style="width:15%">Additional Tax(₹)</th>
+                                <th style="width:15%">Total(₹)</th>
+                                <th style="width:5%">...</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
-            <div class="col-md-5" style="padding-right:1.5%">
+            <div class="col-md-5" style="padding-right:1.5%;">
                 <table class="table dataTable no-footer DetailSummerybox">
                     <tbody>
                         <tr>
@@ -505,45 +530,45 @@
             </div>
         </div>
     </div>
-    <div class="col-md-11 divbox1">
-        <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Notes</div>
+        <div class="col-md-11 divbox1">
+            <div class="col-md-12 divbox2">
+                <div class="col-md-12 headSeperator">Notes</div>
 
-            <div class="form-group col-md-12">
-                <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                <div class="form-group col-md-12">
+                    <div class="col-md-12 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                            @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
-                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
-                    </div>
+                    <div class="col-md-12">&nbsp;</div>
                 </div>
-                <div class="col-md-12">&nbsp;</div>
             </div>
         </div>
-    </div>
-    <div class="col-md-11 divbox1">
-        <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Proforma Invoice Attachments</div>
-            @Html.Partial("_Fileupload")
+        <div class="col-md-11 divbox1">
+            <div class="col-md-12 divbox2">
+                <div class="col-md-12 headSeperator">Proforma Invoice Attachments</div>
+                @Html.Partial("_Fileupload")
+            </div>
         </div>
-    </div>
-    <div class="" hidden="hidden">
-        <div class="col-md-offset-2 col-md-10">
-            <input id="btnInsertUpdateProformaInvoice" type="submit" value="Create" class="btn btn-default" />
+        <div class="" hidden="hidden">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnInsertUpdateProformaInvoice" type="submit" value="Create" class="btn btn-default" />
+            </div>
         </div>
-    </div>
                     }
 <script>
     $(document).ready(function () {
         try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')          
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
+            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=PIV&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=')
             @if (Model.IsUpdate||Model.QuoteID!=null||Model.SaleOrderID!=null)
          {
-           
+
          }
          else
          {
@@ -554,11 +579,11 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
-        @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null))
+            @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null))
         {
             <text>
-        $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-        });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
             </text>
         }
         }
@@ -746,4 +771,3 @@
         }
     });
 </script>
-
