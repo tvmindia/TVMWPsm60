@@ -106,6 +106,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Product Specification")]
         public string ProductSpec { get; set; }
         [Display(Name ="QC Quantity")]
+        [Remote(action: "CheckQCQty", controller: "ProductionQC", AdditionalFields = "QCQty,QCQtyPrevious,ProducedQty")]
         public decimal? QCQty { get; set; }
         public DateTime QCDate { get; set; }
         [Required(ErrorMessage = "QC By is missing")]

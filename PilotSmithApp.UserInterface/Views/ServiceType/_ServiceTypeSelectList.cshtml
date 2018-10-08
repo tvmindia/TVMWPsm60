@@ -1,11 +1,11 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ServiceTypeViewModel
 @if (@ViewBag.IsRequired == "required")
 {
-    @Html.DropDownList("ServiceTypeCode", Model.ServiceTypeSelectList, "--Select document status--", new { @class = "form-control newinput", @required = "", @title = "The Document status is missing", @style = "width:100%!important", @onchange = "$('#hdnServiceTypeCode').val(this.value)" })
+    @Html.DropDownList("ServiceTypeCode", Model.ServiceTypeSelectList, "--Select Service Type--", new { @class = "form-control newinput", @required = "", @title = "The Service Type is missing", @style = "width:100%!important", @onchange = "$('#hdnServiceTypeCode').val(this.value)" })
 }
 else
 {
-    @Html.DropDownList("ServiceTypeCode", Model.ServiceTypeSelectList, "--Select document status--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnServiceTypeCode').val(this.value)" })
+    @Html.DropDownList("ServiceTypeCode", Model.ServiceTypeSelectList, "--Select Service Type--", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnServiceTypeCode').val(this.value)" })
 }
 
 @Html.ValidationMessage("ServiceTypeCode", "", new { @class = "text-danger" })

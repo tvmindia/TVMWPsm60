@@ -118,6 +118,13 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormOtherExpenseDetail");
         try {
+             @if (Model.IsUpdate)
+             {
+
+             }
+            else
+            {
+            <text>
             $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val(), function () {
                 $('.divOtherChargeSelectList #OtherChargeCode').change(function () {
                     debugger;
@@ -126,6 +133,8 @@
                     $('#hdnOtherChargeSACCode').val(otherCharge.SACCode);
                 });
             });
+             </text>
+            }
             $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
                 $('#divModelPopSaleInvoice .CalculateGST').change(function () {
                     debugger;

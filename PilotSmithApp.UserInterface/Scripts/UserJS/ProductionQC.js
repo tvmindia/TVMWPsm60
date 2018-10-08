@@ -449,7 +449,7 @@ function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {
 function AddProductionQCDetailToList() {
     $("#FormProductionQCDetail").submit(function () { });
     if ($('#FormProductionQCDetail #IsUpdate').val() == 'True') {
-        if (($('#QCDateFormatted').val() != "") && ($('#QCBy').val() != "")) {
+        if (($('#QCDateFormatted').val() != "") && ($('#QCBy').val() != "") && ($('#divQCQty span').text() == "")) {
             debugger;
             var productionQCDetailList = _dataTable.ProductionQCDetailList.rows().data();
             productionQCDetailList[_datatablerowindex].QCQty = $('#FormProductionQCDetail #QCQty').val();
@@ -468,12 +468,15 @@ function EditProductionQCDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).index();
     var productionQCDetail = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelProductionQCPopBody").load("ProductionQC/AddProductionQCDetail", function () {
+    $("#divModelProductionQCPopBody").load("ProductionQC/AddProductionQCDetail?update=true", function () {
         $('#lblModelPopProductionQC').text('ProductionQC Detail')
         $('#FormProductionQCDetail #IsUpdate').val('True');
         $('#FormProductionQCDetail #ID').val(productionQCDetail.ID);
         $("#FormProductionQCDetail #ProductID").val(productionQCDetail.ProductID)
         $("#FormProductionQCDetail #hdnProductID").val(productionQCDetail.ProductID)
+        $('#spanProductName').text(productionQCDetail.Product.Code + "-" + productionQCDetail.Product.Name)
+        $('#spanProductModelName').text(productionQCDetail.ProductModel.Name)
+
         $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
         });
 
@@ -495,6 +498,8 @@ function EditProductionQCDetail(this_Obj) {
         $('#FormProductionQCDetail #QCDateFormatted').val(productionQCDetail.QCDateFormatted);
         $('#FormProductionQCDetail #QCBy').val(productionQCDetail.QCBy);
         $('#FormProductionQCDetail #hdnQCBy').val(productionQCDetail.QCBy);
+        $('#FormProductionQCDetail #hdnQCQtyPrevious').val(productionQCDetail.QCQtyPrevious);
+        $('#FormProductionQCDetail #hdnProducedQty').val(productionQCDetail.ProducedQty);
         $('#divModelPopProductionQC').modal('show');
     });
 }
