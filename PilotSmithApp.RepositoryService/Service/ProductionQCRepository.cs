@@ -184,6 +184,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionQC.Customer = new Customer();
                                     productionQC.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : productionQC.Customer.CompanyName);
                                     productionQC.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionQC.Customer.ID);
+                                    productionQC.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionQC.ProdOrderNo);
                                 }
                         }
                     }

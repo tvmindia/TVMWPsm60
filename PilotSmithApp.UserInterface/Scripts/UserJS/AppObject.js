@@ -11,6 +11,8 @@ $(document).ready(function () {
              order: [],
              searching: true,
              paging: true,
+             autoWidth: false,
+             ordering: false,
              data: null,
              columns: [
                { "data": "ID" },
@@ -23,8 +25,10 @@ $(document).ready(function () {
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false }, {
                  "targets": [5], "render": function (data, type, row) {
                      return '<a href="/AppObject/Subobjects?id=' + row.ID + '&appId=' + row.AppID + '&code=SETT" >Manage Sub-objects</a>'
-                 } 
-             }
+                 },
+               
+             },
+             {className:"text-centre","targets":[3,4]}
              ]
          });
         $('#hdnID').val(EmptyGuid);

@@ -210,7 +210,7 @@ function EditEstimate(this_Obj) {
         if (statusTxt == "success") {
          OnServerCallComplete();
          openNav();
-         $('#spanEnquiryID').text(Estimate.Enquiry.EnquiryNo);
+        // $('#spanEnquiryID').text(Estimate.Enquiry.EnquiryNo);
         if ($('#IsDocLocked').val() == "True") {
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", Estimate.ID);
         }

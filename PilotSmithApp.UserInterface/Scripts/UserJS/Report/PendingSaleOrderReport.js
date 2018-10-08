@@ -114,14 +114,13 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                     ($('.divboxASearch #AdvApprovalStatusCode').val() == "")
                     && ($('.divboxASearch #AdvDelFromDate').val() == "")
                     && ($('.divboxASearch #AdvDelToDate').val() == "")
-                     && ($('.divboxASearch #AdvProduct').val() == "")
-                    && ($('.divboxASearch #AdvProductModel').val() == "")                 
-                
-                    && (($('#ReportType').val() == "1") || ($('#ReportType').val() == "2"))
+                    && ($('.divboxASearch #AdvProduct').val() == "")
+                    && ($('.divboxASearch #AdvProductModel').val() == "")                                
+                    && ($('#ReportType').val() == "1")||($('#ReportType').val() == "2")
                     &&($('#DateFilter').val() == "")
                     
                     ) {
-                    return true;
+                    return true
                 }
                 break;
             case 'Export':

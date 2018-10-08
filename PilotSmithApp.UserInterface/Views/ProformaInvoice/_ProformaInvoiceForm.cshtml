@@ -81,7 +81,7 @@
                             </div>
                             <div class="col-md-12">
                                 @*@Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })*@
-                                <span class="form-control newinput" id="spanQuoteID" style="background-color:#eeeeee"></span>
+                                <span class="form-control newinput" id="spanQuoteID" style="background-color:#eeeeee">@Model.Quotation.QuoteNo</span>
                             </div>
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
@@ -94,7 +94,7 @@
                             </div>
                             <div class="col-md-12">
                                 @*@Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })*@
-                                <span class="form-control newinput" id="spanSaleOrderID" style="background-color:#eeeeee"></span>
+                                <span class="form-control newinput" id="spanSaleOrderID" style="background-color:#eeeeee">@Model.SaleOrder.SaleOrderNo</span>
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
