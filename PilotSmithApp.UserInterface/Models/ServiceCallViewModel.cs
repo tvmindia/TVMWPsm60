@@ -117,7 +117,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? ProductModelID { get; set; }
         [Display(Name = "Specification")]
         public string ProductSpec { get; set; }
-        [Display(Name = "Guarantee Y/N")]
+        [Display(Name = "Select Guarantee Y/N")]
         public bool? GuaranteeYN { get; set; }
         public DateTime? InstalledDate { get; set; }
         [Display(Name = "Select Service Status")]
