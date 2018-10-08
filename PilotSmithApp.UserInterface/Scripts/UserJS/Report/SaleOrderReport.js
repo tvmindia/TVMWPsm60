@@ -207,16 +207,40 @@ function BindOrReloadSaleOrderReportTable(action) {
             pageLength: 8,
             autoWidth: false,
             columns: [
-
-               { "data": "SaleOrderNo", "defaultContent": "<i>-</i>" },
-               { "data": "SaleOrderDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
-               { "data": "Product.Name", "defaultContent": "<i>-</i>" },
-                { "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductSpec", "defaultContent": "<i>-</i>" },
-                { "data": "Qty", "defaultContent": "<i>-</i>" },
-               { "data": "Unit.Description", "defaultContent": "<i>-</i>" },
+                {
+                    "data": "SaleOrderNo", render: function (data, type, row) {
+                        return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.SaleOrderDateFormatted + "</br>" + row.SaleOrderNo;
+                    }, "defaultContent": "<i>-</i>"
+                },
+               //{ "data": "SaleOrderNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "SaleOrderDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Product.Name", render: function (data, type, row) {
+                       return data + "</br>" + row.ProductModel.Name;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Product.Name", "defaultContent": "<i>-</i>" },
+                //{ "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "ProductSpec", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + data + '</p>' + (data == null ? " " : data.substring(0, 110) + (data.length > 50 ? '...' : ''))
+                        
+                   }, "defaultContent": "<i>-</i>"
+               },
+               {
+                   "data": "Qty", render: function (data, type, row) {
+                       return data + "&nbsp;" + row.Unit.Description;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               // { "data": "Qty", "defaultContent": "<i>-</i>" },
+               //{ "data": "Unit.Description", "defaultContent": "<i>-</i>" },
                  {
                      "data": "Amount", render: function (data, type, row) {
                          return formatCurrency(row.Amount)
@@ -226,23 +250,28 @@ function BindOrReloadSaleOrderReportTable(action) {
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [9,7] },
-                         { className: "text-left", "targets": [0, 2, 3, 4, 5, 6,  8, 10, 11] },
-                         { className: "text-center", "targets": [1] },
-                           { "targets": [0], "width": "12%" },
-                           { "targets": [1], "width": "12%" },
-                           { "targets": [2], "width": "12%" },
-                           { "targets": [3], "width": "12%" },
-                           { "targets": [4], "width": "12%" },
-                           { "targets": [5], "width": "12%" },
-                           { "targets": [6], "width": "12%" },
-                           { "targets": [7], "width": "12%" },
-                           { "targets": [8], "width": "12%" },
-                           { "targets": [9], "width": "12%" },
-                           { "targets": [10], "width": "12%" },
-                            { "targets": [11], "width": "12%" },
+            columnDefs: [{ className: "text-right", "targets": [7] },
+                         { className: "text-left", "targets": [0, 1, 3, 4, 5, 6] },
+                         { className: "text-center", "targets": [0,] },
+                           { "targets": [0], "width": "15%" },
+                           { "targets": [1], "width": "15%" },
+                           { "targets": [2], "width": "17%" },
+                           { "targets": [3], "width": "25%" },
+                           { "targets": [4], "width": "5%" },
+                           { "targets": [5], "width": "8%" },
+                           { "targets": [6], "width": "5%" },
+                           { "targets": [7], "width": "10%" },
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;
