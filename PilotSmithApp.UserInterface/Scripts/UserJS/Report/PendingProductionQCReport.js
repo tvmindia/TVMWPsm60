@@ -186,9 +186,6 @@ function BindOrReloadPendingProductionQCReportTable(action) {
             paging: true,          
             lengthChange: false,
             autoWidth: false,
-            "bAutoWidth": false,                
-            scrollX: "500px",
-            fixedHeader: true,
             processing: true,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -201,18 +198,38 @@ function BindOrReloadPendingProductionQCReportTable(action) {
             },
             pageLength: 8,        
             columns: [
-
-               { "data": "ProductionOrderNo", "defaultContent": "<i>-</i>"},//, "width": "50px" }0,
-               { "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>"},//, "width": "50px" 1},
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>"},//, "width": "50px" }2,
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>"},//, "width": "50px" }3,
+                {
+                    "data": "ProductionOrderNo", render: function (data, type, row) {
+                        return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ProdOrderDateFormatted + "</br>" + row.ProductionOrderNo;
+                    }, "defaultContent": "<i>-</i>"
+                },
+               //{ "data": "ProductionOrderNo", "defaultContent": "<i>-</i>"},//, "width": "50px" }0,
+               //{ "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>"},//, "width": "50px" 1},
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },//, "width": "50px" }2,
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>"},//, "width": "50px" }3,
                { "data": "ExpectedDelvDateFormatted", "defaultContent": "<i>-</i>"},//, "width": "50px" }4,
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }5,
                { "data": "Area.Description", "defaultContent": "<i>-</i>"},//, "width": "50px" }6,
                { "data": "Plant.Description", "defaultContent": "<i>-</i>"},//, "width": "50px" }7,
-               { "data": "Product.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }8,
-               { "data": "ProductModel.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }9,
-               { "data": "ProductSpec", "defaultContent": "<i>-</i>"},//, "width": "50px" }10,
+               {
+                   "data": "Product.Name", render: function (data, type, row) {
+                       return data + "</br>" + row.ProductModel.Name;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Product.Name", "defaultContent": "<i>-</i>" },//, "width": "50px" }8,
+               //{ "data": "ProductModel.Name", "defaultContent": "<i>-</i>"},//, "width": "50px" }9,
+                {
+                    "data": "ProductSpec", render: function (data, type, row) {
+                        return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + data + '</p>' + (data == null ? " " : data.substring(0, 110) + (data.length > 110 ? '...' : ''))
+
+                    }, "defaultContent": "<i>-</i>"
+                },
+               //{ "data": "ProductSpec", "defaultContent": "<i>-</i>" },//, "width": "50px" }10,
                 {
                     "data": "Amount", render: function (data, type, row) {
                         return formatCurrency(row.Amount)
@@ -227,31 +244,37 @@ function BindOrReloadPendingProductionQCReportTable(action) {
 
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [11,12,14,15] },
-                         { className: "text-left", "targets": [0,2, 3,5, 6, 7, 8, 10,13,16,17] },
-                         { className: "text-center", "targets": [1,4] },
-                           { "targets": [0], "width": "8%" },
-                           { "targets": [1], "width": "5%" },
+            columnDefs: [{ className: "text-right", "targets": [11,12,14] },
+                         { className: "text-left", "targets": [1,2, 3,5, 6, 7, 8, 10,13] },
+                         { className: "text-center", "targets": [0,4] },
+                           { "targets": [0], "width": "9%" },
+                           { "targets": [1], "width": "8%" },
                            { "targets": [2], "width": "5%" },
                            { "targets": [3], "width": "5%" },
-                           { "targets": [4], "width": "8%" },
-                           { "targets": [5], "width": "8%" },
-                           { "targets": [6], "width": "5%" },
-                           { "targets": [7], "width": "5%" },
-                           { "targets": [8], "width": "8%" },
-                           { "targets": [9], "width": "8%" },
-                           { "targets": [10], "width": "20%" },
+                           { "targets": [4], "width": "5%" },
+                           { "targets": [5], "width": "7%" },
+                           { "targets": [6], "width": "7%" },
+                           { "targets": [7], "width": "16%" },
+                           { "targets": [8], "width": "6%" },
+                           { "targets": [9], "width": "5%" },
+                           { "targets": [10], "width": "5%" },
                            { "targets": [11], "width": "5%" },
-                           { "targets": [12], "width": "8%" },
-                           { "targets": [13], "width": "8%" },
-                           { "targets": [14], "width": "10%" },
-                           { "targets": [15], "width": "10%" },
-                           { "targets": [16], "width": "10%" },
-                           { "targets": [17], "width": "10%" },
+                           { "targets": [12], "width": "7%" },
+                           { "targets": [13], "width": "7%" },
+                           { "targets": [14], "width": "10%" }
 
 
             ],
-            destroy: true,          
+            destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;

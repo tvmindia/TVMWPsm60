@@ -201,6 +201,7 @@ function BindOrReloadEstimateReportTable(action) {
                            
             ],
             destroy: true,
+            
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;
