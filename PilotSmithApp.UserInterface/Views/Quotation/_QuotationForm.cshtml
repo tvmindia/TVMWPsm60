@@ -71,23 +71,25 @@
                         @Html.ValidationMessageFor(model => model.QuoteDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.QuoteRefNo, htmlAttributes: new { @class = "control-label" })
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.QuoteRefNo, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.QuoteRefNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                            @Html.ValidationMessageFor(model => model.QuoteRefNo, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.QuoteRefNo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                        @Html.ValidationMessageFor(model => model.QuoteRefNo, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                        @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 no-padding">

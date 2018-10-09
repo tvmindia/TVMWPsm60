@@ -143,35 +143,37 @@
                         @Html.ValidationMessageFor(model => model.ExpectedDelvDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divBankSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label" })
                         </div>
-                    </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnBankRequired", "")
-                    <!-- This hidden field will keep the information whether the field is disabled or not -->
-                    @Html.Hidden("hdnBankdisabled", false)
-                    @Html.HiddenFor(model => model.BankCode, htmlAttributes: new { @class = "", @id = "hdnBankCode" })
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        <div class="col-md-12">
+                            <div class="divBankSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
+                            </div>
                         </div>
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBankRequired", "")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBankdisabled", false)
+                        @Html.HiddenFor(model => model.BankCode, htmlAttributes: new { @class = "", @id = "hdnBankCode" })
                     </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnDocumentStatusRequired", "required")
-                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12">
+                            <div class="divDocumentStatusSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                            </div>
+                        </div>
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnDocumentStatusRequired", "required")
+                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                    </div>
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">

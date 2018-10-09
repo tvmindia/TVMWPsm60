@@ -358,7 +358,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetEstimateReport]";
-                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(estimateReport.SearchTerm) ? "" : estimateReport.SearchTerm;
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = estimateReport.SearchTerm;
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = estimateReport.DataTablePaging.Start;
                         if (estimateReport.DataTablePaging.Length == -1)
                         {

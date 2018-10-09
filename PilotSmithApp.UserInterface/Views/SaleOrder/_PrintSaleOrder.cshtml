@@ -158,6 +158,7 @@
                             }
 
 
+                        
                         <td colspan="5" style="font:12px;border-top:solid .5px;padding-top:8px;">
                             <table style="width:100%">
                                 <tr class="">
@@ -248,12 +249,12 @@
                             <b><i>Indian Rupees @tot only </i></b>
                         </td>
                     </tr>
-                    <tr><td colspan="10">&nbsp;</td></tr>
+                    <tr><td colspan="11">&nbsp;</td></tr>
                     <tr>
                         @{
                             var mailbodyFooter = @Model.MailBodyFooter;
                             mailbodyFooter = mailbodyFooter.Replace("\r\n", "<br />");
-                            <td colspan="5" style="font-size:12px;">@Html.Raw(@mailbodyFooter)</td>
+                            <td colspan="6" style="font-size:12px;">@Html.Raw(@mailbodyFooter)</td>
                             <td colspan="5"></td>
                         }
                     </tr>
