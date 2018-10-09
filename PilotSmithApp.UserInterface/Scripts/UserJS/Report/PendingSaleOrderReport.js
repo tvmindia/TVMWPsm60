@@ -344,5 +344,5 @@ function RadioButtonOnChange() {
 
     }
 
-    BindOrReloadPendingSaleOrderReportTable('Search');
+    BindOrReloadPendingSaleOrderReportTable('Apply');
 }
