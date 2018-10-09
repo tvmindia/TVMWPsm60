@@ -299,12 +299,8 @@
     <Content Include="Content\images\sortdesc.png" />
     <Content Include="Content\images\SuppPord.png" />
     <Content Include="Content\images\tallyblack.png" />
-    <Content Include="Content\images\tallywhite.png" />
-    <Content Include="Content\images\tallyxml.PNG" />
     <Content Include="Content\images\time.png" />
     <Content Include="Content\images\timeline.png" />
-    <Content Include="Content\images\xml-file.png" />
-    <Content Include="Content\images\xml.png" />
     <Content Include="Content\MailTemplate\DocumentApproved.html" />
     <Content Include="Content\MailTemplate\DocumentEmailBody.html" />
     <Content Include="Content\MailTemplate\DocumentRejected.html" />
