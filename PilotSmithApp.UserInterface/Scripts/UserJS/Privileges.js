@@ -12,6 +12,8 @@ $(document).ready(function () {
              order: [],
              searching: true,
              paging: true,
+             autoWidth: false,
+             ordering: false,
              data: GetAllPrivileges(PrivilegesViewModel),
              columns: [
                { "data": "ID" },
@@ -23,8 +25,8 @@ $(document).ready(function () {
                { "data": null, "orderable": false, "defaultContent": '<a href="#" onclick="Edit(this)"<i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>' }
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                 { className: "text-left", "targets": [1, 2, 3, 4, 5] },
-                 { className: "text-center", "targets": [6] }]
+                 { className: "text-left", "targets": [1, 2, 3, 4] },
+                 { className: "text-center", "targets": [5,6] }]
          });
     }
     catch (e) {

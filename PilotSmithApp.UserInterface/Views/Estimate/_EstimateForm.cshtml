@@ -45,7 +45,7 @@
                                 <div class="divEnquirySelectList">
                                     @*@Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnEnquiryID').val(this.value)" })
                                         @Html.ValidationMessageFor(model => model.EnquiryID, "", new { @class = "text-danger" })*@
-                                    <span class="form-control newinput" id="spanEnquiryID" style="background-color:#eeeeee"></span>
+                                    <span class="form-control newinput" id="spanEnquiryID" style="background-color:#eeeeee">@Model.Enquiry.EnquiryNo</span>
                                 </div>
                             </div>
                             @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })

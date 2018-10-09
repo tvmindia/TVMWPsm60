@@ -321,6 +321,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                     string mailfrom = (sdr["MailFromAddress"].ToString() != "" ? (sdr["MailFromAddress"].ToString()) : saleOrder.MailFrom);
                                     saleOrder.MailFrom = mailfrom.Replace("\n", "<br />");
                                     saleOrder.ApproverLevel= (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : saleOrder.ApproverLevel);
+                                    saleOrder.Quotation = new Quotation();
+                                    saleOrder.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : saleOrder.Quotation.QuoteNo);
+                                    saleOrder.Enquiry = new Enquiry();
+                                    saleOrder.Enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : saleOrder.Enquiry.EnquiryNo);
                                 }
                         }
                     }

@@ -41,7 +41,7 @@
                             <div class="col-md-12">
                                 @*@Html.DropDownListFor(model => model.ProdOrderID, Model.ProdOrderSelectList, "Search Production Order", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnProdOrderID').val(this.value)" })*@
                                 @*@Html.ValidationMessageFor(model => model.ProdOrderID, "", new { @class = "text-danger" })*@
-                                <span class="form-control newinput" id="spanProdOrderID" style="background-color:#eeeeee"></span>
+                                <span class="form-control newinput" id="spanProdOrderID" style="background-color:#eeeeee">@Model.ProdOrderNo</span>
                             </div>
                             @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "", @id = "hdnProdOrderID" })
                         </div>

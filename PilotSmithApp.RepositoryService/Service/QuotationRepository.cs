@@ -198,7 +198,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.Branch.Description= (sdr["Branch"].ToString() != "" ? sdr["Branch"].ToString() : quotation.Branch.Description);
                                     quotation.BranchCode = (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.BranchCode);
                                     quotation.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.Branch.Code);
-                                    quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);                                                                   
+                                    quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);
+                                    quotation.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : quotation.EstimateNo);
                                 }
                         }
                     }

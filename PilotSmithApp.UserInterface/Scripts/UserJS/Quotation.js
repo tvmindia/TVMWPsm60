@@ -225,7 +225,7 @@ function EditQuotation(this_Obj) {
             OnServerCallComplete();
             openNav();
             $('#lblQuotationInfo').text(Quotation.QuoteNo);
-            $('#spanEstimateID').text(Quotation.EstimateNo);
+           // $('#spanEstimateID').text(Quotation.EstimateNo);
             //$('#CustomerID').trigger('change');
             if ($('#IsDocLocked').val() == "True") {
 

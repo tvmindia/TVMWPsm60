@@ -12,6 +12,8 @@ $(document).ready(function ()
              order: [],
              searching: true,
              paging: true,
+             autoWidth: false,
+             ordering:false,
              data: GetAllUsers(UserViewModel),
              columns: [
                { "data": "ID" },
@@ -144,7 +146,9 @@ function ChangeRolesData(this_Obj)
             var ds = {};
             ds = GetDataFromServer("User/GetRolesView/", data);
             $('#divRoleList').html(ds);
-            fillUser($("#ID").val());
+            if ($("#ID").val() != EmptyGuid) {
+                fillUser($("#ID").val());
+            }                       
         }
     }
     catch (e) {

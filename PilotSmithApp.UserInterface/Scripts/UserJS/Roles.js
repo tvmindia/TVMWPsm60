@@ -12,6 +12,8 @@ $(document).ready(function () {
              order: [],
              searching: true,
              paging: true,
+             autoWidth: false,
+             ordering: false,
              data: GetAllRoles(RolesViewModel),
              columns: [
                { "data": "ID" },
@@ -23,7 +25,7 @@ $(document).ready(function () {
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                  { className: "text-left", "targets": [1, 2, 3] },
-                 { className: "text-center", "targets": [4] }
+                 { className: "text-center", "targets": [4,5] }
             ]
          });
     }
