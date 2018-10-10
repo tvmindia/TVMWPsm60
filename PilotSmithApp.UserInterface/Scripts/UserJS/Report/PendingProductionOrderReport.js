@@ -220,44 +220,39 @@ function BindOrReloadPendingProductionOrderReportTable(action) {
                         return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ProdOrderDateFormatted + "</br>" + row.ProductionOrderNo;
                     }, "defaultContent": "<i>-</i>"
                 },
-               //{ "data": "ProductionOrderNo", "defaultContent": "<i>-</i>" },
-               //{ "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
                        return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
                    }, "defaultContent": "<i>-</i>"
                },
-               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "ExpectedDelvDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
-               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
-               { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
                {
                    "data": "Product.Name", render: function (data, type, row) {
                        return data + "</br>" + row.ProductModel.Name;
                    }, "defaultContent": "<i>-</i>"
                },
-               //{ "data": "Product.Name", "defaultContent": "<i>-</i>" },
-               //{ "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
                {
                    "data": "ProductSpec", render: function (data, type, row) {
-                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + data + '</p>' + (data == null ? " " : data.substring(0, 220) + (data.length > 220 ? '...' : ''))
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
 
                    }, "defaultContent": "<i>-</i>"
                },
-               //{ "data": "ProductSpec", "defaultContent": "<i>-</i>" },               
-                {
-                    "data": "Amount", render: function (data, type, row) {
-                        return formatCurrency(row.Amount)
-                    }, "defaultContent": "<i>-</i>"
-                },
-               { "data": "Qty", "defaultContent": "<i>-</i>" },
                { "data": "SaleOrdNo", "defaultContent": "<i>-</i>" },
                { "data": "SaleOrderQty", "defaultContent": "<i>-</i>" },
+               { "data": "Qty", "defaultContent": "<i>-</i>" },
                { "data": "PendingQty", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Amount", render: function (data, type, row) {
+                       return formatCurrency(row.Amount)
+                   }, "defaultContent": "<i>-</i>"
+               },
+               { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
+               { "data": "Area.Description", "defaultContent": "<i>-</i>" },
+               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "Progress", "defaultContent": "<i>-</i>" },
                { "data": "ForecastDateFormatted", "defaultContent": "<i>-</i>" },
+               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
+               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
 
             ],
             columnDefs: [{ className: "text-right", "targets": [8] },

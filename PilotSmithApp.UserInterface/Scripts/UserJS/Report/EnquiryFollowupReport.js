@@ -122,32 +122,25 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                //{ "data": "FollowupDateFormatted", "defaultContent": "<i>-</i>" },
                //{ "data": "FollowupTimeFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Priority", "defaultContent": "<i>-</i>" },
-               { "data": "Status", "defaultContent": "<i>-</i>" },
-               //{ "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.ContactPerson", render: function (data, type, row) {
                        return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/phone.png' height='10px'>" + "&nbsp;" + row.ContactNo;
                    }, "defaultContent": "<i>-</i>"
                },
-               //{ "data": "ContactNo", "defaultContent": "<i>-</i>" },
-
+               { "data": "Status", "defaultContent": "<i>-</i>" },
                { "data": "FollowupRemarks", "defaultContent": "<i>-</i>" },
-              
-   
-
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
                          { className: "text-left", "targets": [ 5,6] },
                          { className: "text-center", "targets": [0,1,2,3,4] },
                            { "targets": [0], "width": "20%" },
                            { "targets": [1], "width": "10%" },
-                           { "targets": [2], "width": "10%" },
-                           { "targets": [3], "width": "15%" },
-                           { "targets": [4], "width": "15%" },
                            { "targets": [5], "width": "10%" },
+                           { "targets": [2], "width": "15%" },
+                           { "targets": [3], "width": "15%" },
+                           { "targets": [4], "width": "10%" },
                            { "targets": [6], "width": "20%" },
                            //{ "targets": [7], "width": "10%" },
                            //{ "targets": [8], "width": "17%" }

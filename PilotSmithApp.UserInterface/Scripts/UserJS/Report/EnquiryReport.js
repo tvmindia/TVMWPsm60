@@ -186,17 +186,15 @@ function BindOrReloadEnquiryReportTable(action) {
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
+               { "data": "EnquiryGrade.Description", "defaultContent": "<i>-</i>" },
                {
                    "data": "Area.Description", "defaultContent": "<i>-</i>"
                },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                { "data": "Employee.Name", "defaultContent": "<i>-</i>" },
-
-               { "data": "EnquiryGrade.Description", "defaultContent": "<i>-</i>" },
-
+               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
+               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                {
                    "data": "Amount", render: function (data, type, row) {
                        return formatCurrency(row.Amount)
@@ -217,12 +215,12 @@ function BindOrReloadEnquiryReportTable(action) {
                            { "targets": [0], "width": "17%" },
                            { "targets": [1], "width": "18%" },
                            { "targets": [2], "width": "20%" },
-                           { "targets": [3], "width": "5%" },
                            { "targets": [4], "width": "5%" },
-                           { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "5%" },
-                           { "targets": [7], "width": "5%" },
                            { "targets": [8], "width": "5%" },
+                           { "targets": [5], "width": "5%" },
+                           { "targets": [7], "width": "5%" },
+                           { "targets": [3], "width": "5%" },
+                           { "targets": [6], "width": "5%" },
                            { "targets": [9], "width": "5%" },
                            { "targets": [10], "width": "10%" }
 

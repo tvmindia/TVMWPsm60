@@ -188,18 +188,22 @@ function BindOrReloadQuotationReportTable(action) {
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                 { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "PreparedBy", "defaultContent": "<i>-</i>" },              
-             
+               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               { "data": "ApprovalStatus.Description", "defaultContent": "<i>-</i>" },
                 { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
-                 { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-                 { "data": "ApprovalStatus.Description", "defaultContent": "<i>-</i>" },
+                 
+                 
 
                 {
                     "data": "Amount", render: function (data, type, row) {
                         return formatCurrency(row.Amount)
                     }, "defaultContent": "<i>-</i>"
                 },
-               { "data": "Notes", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Notes", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
+                   }, "defaultContent": "<i>-</i>" },
 
 
 
@@ -212,15 +216,24 @@ function BindOrReloadQuotationReportTable(action) {
                            { "targets": [2], "width": "8%" },
                            { "targets": [3], "width": "7%" },
                            { "targets": [4], "width": "7%" },
-                           { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "7%" },
+                           { "targets": [7], "width": "5%" },
+                           { "targets": [9], "width": "7%" },
                            { "targets": [7], "width": "5%" },
                            { "targets": [8], "width": "8%" },
-                           { "targets": [9], "width": "7%" },
-                           { "targets": [10], "width": "14%" },
+                           { "targets": [5], "width": "7%" },
+                           { "targets": [6], "width": "14%" },
 
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;

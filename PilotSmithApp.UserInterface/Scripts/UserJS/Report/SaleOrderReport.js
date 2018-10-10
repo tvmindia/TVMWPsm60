@@ -230,7 +230,7 @@ function BindOrReloadSaleOrderReportTable(action) {
                 //{ "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
                {
                    "data": "ProductSpec", render: function (data, type, row) {
-                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + data + '</p>' + (data == null ? " " : data.substring(0, 110) + (data.length > 50 ? '...' : ''))
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
                         
                    }, "defaultContent": "<i>-</i>"
                },
@@ -239,6 +239,8 @@ function BindOrReloadSaleOrderReportTable(action) {
                        return data + "&nbsp;" + row.Unit.Description;
                    }, "defaultContent": "<i>-</i>"
                },
+               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
+               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                // { "data": "Qty", "defaultContent": "<i>-</i>" },
                //{ "data": "Unit.Description", "defaultContent": "<i>-</i>" },
                  {
@@ -246,8 +248,7 @@ function BindOrReloadSaleOrderReportTable(action) {
                          return formatCurrency(row.Amount)
                      }, "defaultContent": "<i>-</i>"
                  },
-                 { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
-               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
+                 
 
             ],
             columnDefs: [{ className: "text-right", "targets": [7] },

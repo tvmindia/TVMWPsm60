@@ -179,9 +179,11 @@ function BindOrReloadEstimateReportTable(action) {
                         return formatCurrency(row.Amount)
                     }, "defaultContent": "<i>-</i>"
                 },
-               { "data": "Notes", "defaultContent": "<i>-</i>" },
-
-                
+               {
+                   "data": "Notes", render: function (data, type, row) {
+                       debugger;
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
+                   }, "defaultContent": "<i>-</i>" },
 
             ],
             columnDefs: [{ className: "text-right", "targets": [7] },
@@ -201,7 +203,15 @@ function BindOrReloadEstimateReportTable(action) {
                            
             ],
             destroy: true,
-            
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;

@@ -79,7 +79,7 @@
                             @Html.LabelFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12" id="divEnquiryGradeSelectList">
-                            @Html.DropDownListFor(model => model.EnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "--Select grade--", new { @class = "form-control newinput", @onchange = "$('#hdnGradeCode').val(this.value)" })
+                            @Html.DropDownListFor(model => model.EnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "--Select grade--", new { @class = "form-control newinput", @onchange = "$('#hdnGradeCode').val(this.value)",@style="Width:100%;" })
                             @Html.HiddenFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "", @id = "hdnGradeCode" })
                         </div>
                     </div>

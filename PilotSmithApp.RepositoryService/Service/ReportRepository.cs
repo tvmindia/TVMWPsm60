@@ -860,6 +860,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderReportObj.Plant.Description= (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : productionOrderReportObj.Plant.Description);
                                         productionOrderReportObj.ReferencePerson = new ReferencePerson();
                                         productionOrderReportObj.ReferencePerson.Name= (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : productionOrderReportObj.ReferencePerson.Name);
+                                        productionOrderReportObj.Branch = new Branch();
+                                        productionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionOrderReportObj.Branch.Description);
+                                        productionOrderReportObj.PSAUser = new PSAUser();
+                                        productionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionOrderReportObj.PSAUser.LoginName);
                                     }
                                     productionOrderReportList.Add(productionOrderReportObj);
                                 }
@@ -988,6 +992,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionOrderReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : pendingProductionOrderReportObj.Plant.Description);
                                         pendingProductionOrderReportObj.ReferencePerson = new ReferencePerson();
                                         pendingProductionOrderReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : pendingProductionOrderReportObj.ReferencePerson.Name);
+                                        pendingProductionOrderReportObj.Branch = new Branch();
+                                        pendingProductionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingProductionOrderReportObj.Branch.Description);
+                                        pendingProductionOrderReportObj.PSAUser = new PSAUser();
+                                        pendingProductionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingProductionOrderReportObj.PSAUser.LoginName);
                                     }
                                     pendingProductionOrderReportList.Add(pendingProductionOrderReportObj);
                                 }
