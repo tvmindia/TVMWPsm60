@@ -4234,7 +4234,13 @@ S2.define('select2/dropdown/attachBody',[
   };
 
   AttachBody.prototype._positionDropdown = function () {
-    var $window = $(window);
+
+      forceBelow = typeof forceBelow !== 'undefined' ? forceBelow : false;     
+      if (forceBelow) {
+          enoughRoomBelow = true;
+      }
+
+      var $window = $(window);
 
     var isCurrentlyAbove = this.$dropdown.hasClass('select2-dropdown--above');
     var isCurrentlyBelow = this.$dropdown.hasClass('select2-dropdown--below');
@@ -4261,8 +4267,11 @@ S2.define('select2/dropdown/attachBody',[
       bottom: $window.scrollTop() + $window.height()
     };
 
-    var enoughRoomAbove = viewport.top < (offset.top - dropdown.height);
-    var enoughRoomBelow = viewport.bottom > (offset.bottom + dropdown.height);
+  //  var enoughRoomAbove = viewport.top < (offset.top - dropdown.height);
+  //  var enoughRoomBelow = viewport.bottom > (offset.bottom + dropdown.height);
+
+    var enoughRoomBelow = true;
+    var enoughRoomAbove = false;
 
     var css = {
       left: offset.left,

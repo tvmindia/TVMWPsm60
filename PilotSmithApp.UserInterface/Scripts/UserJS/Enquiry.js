@@ -135,7 +135,7 @@ function BindOrReloadEnquiryTable(action) {
                },
                {
                    "data": "RequirementSpec", render: function (data, type, row) {
-                       return '<div style="width:100%;text-overflow: ellipsis;overflow: hidden; class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Requirement Specification" data-content="' + data + '</p>"/>' + (data == null ? " " : data.substring(0, 50)+(data.length>50?'...':''))//if (data.length > 30){var newdata = data.substring(0, 30);return newdata + ' <a style="color:rgba(94, 66, 209, 0.8);"> More.. ▼</a>';}else{return data ;}
+                       return '<div style="width:100%;text-overflow: ellipsis;overflow: hidden; class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Requirement Specification" data-content="' + data + '</p>' + (data == null ? " " : data.substring(0, 50)+(data.length>50?'...':''))//if (data.length > 30){var newdata = data.substring(0, 30);return newdata + ' <a style="color:rgba(94, 66, 209, 0.8);"> More.. ▼</a>';}else{return data ;}
 
                    }, "defaultContent": "<i>-</i>"
                },
