@@ -562,6 +562,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 ExcelPackage excel = new ExcelPackage();
                 object ResultFromJS = null;
                 string ReadableFormat = null;
+                string columnString = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K,L1:L,M1:M";
                 switch (excelExportVM.DocumentType)
                 {
                     case "ENQ":
@@ -588,11 +589,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Grade =x.EnquiryGrade.Description,
                         Amount =x.Amount
                         }), true, TableStyles.Light1);
+
+                        int finalRowsENQ = enquiryreportworkSheet.Dimension.End.Row;
+                        string columnStringENQ = columnString + finalRowsENQ.ToString();
+                        enquiryreportworkSheet.Cells[columnStringENQ].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
                         enquiryreportworkSheet.Column(1).AutoFit();
                         enquiryreportworkSheet.Column(2).AutoFit();
                         enquiryreportworkSheet.Column(3).AutoFit();
                         enquiryreportworkSheet.Column(4).Width = 40;
                         enquiryreportworkSheet.Column(5).Width = 40;
+                        enquiryreportworkSheet.Column(5).Style.WrapText = true;
                         enquiryreportworkSheet.Column(6).AutoFit();
                         enquiryreportworkSheet.Column(7).AutoFit();
                         enquiryreportworkSheet.Column(8).AutoFit();
@@ -624,6 +631,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                            Remarks=x.FollowupRemarks                            
                             
                         }), true, TableStyles.Light1);
+
+                        int finalRowsEnquiryFollowUp = enquiryfollowupreportworkSheet.Dimension.End.Row;
+                        string columnStringEnquiryFollowUp = columnString + finalRowsEnquiryFollowUp.ToString();
+                        enquiryfollowupreportworkSheet.Cells[columnStringEnquiryFollowUp].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
                         enquiryfollowupreportworkSheet.Column(1).AutoFit();
                         enquiryfollowupreportworkSheet.Column(2).AutoFit();
                         enquiryfollowupreportworkSheet.Column(3).AutoFit();
@@ -633,7 +645,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryfollowupreportworkSheet.Column(7).AutoFit();
                         enquiryfollowupreportworkSheet.Column(8).Width = 40;
                         enquiryfollowupreportworkSheet.Column(9).AutoFit();   
-                        enquiryfollowupreportworkSheet.Column(10).AutoFit();
+                        enquiryfollowupreportworkSheet.Column(10).Width = 40;
+                        enquiryfollowupreportworkSheet.Column(10).Style.WrapText = true;
 
                         break;
                     case "EstimateReport":
@@ -658,6 +671,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                            Amount = x.Amount,
                            Notes = x.Notes
                         }), true, TableStyles.Light1);
+
+                        int finalRowsEstimateReport = estimatereportworkSheet.Dimension.End.Row;
+                        string columnStringEstimateReport = columnString + finalRowsEstimateReport.ToString();
+                        estimatereportworkSheet.Cells[columnStringEstimateReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
                         estimatereportworkSheet.Column(1).AutoFit();
                         estimatereportworkSheet.Column(2).AutoFit();
                         estimatereportworkSheet.Column(3).AutoFit();
@@ -668,7 +686,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         estimatereportworkSheet.Column(8).AutoFit();
                         estimatereportworkSheet.Column(9).AutoFit();
                         estimatereportworkSheet.Column(10).AutoFit();
-                        estimatereportworkSheet.Column(11).AutoFit();                       
+                        estimatereportworkSheet.Column(11).AutoFit();
+                        estimatereportworkSheet.Column(11).Style.WrapText = true;
                         break;
                     case "QuotationReport":
                         fileName = "QuotationReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -694,6 +713,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Amount = x.Amount,
                             Notes = x.Notes
                         }), true, TableStyles.Light1);
+
+                        int finalRowsQuotationReport = quotationreportworkSheet.Dimension.End.Row;
+                        string columnStringQuotationReport = columnString + finalRowsQuotationReport.ToString();
+                        quotationreportworkSheet.Cells[columnStringQuotationReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
                         quotationreportworkSheet.Column(1).AutoFit();
                         quotationreportworkSheet.Column(2).AutoFit();
                         quotationreportworkSheet.Column(3).AutoFit();
@@ -706,7 +730,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         quotationreportworkSheet.Column(10).AutoFit();
                         quotationreportworkSheet.Column(11).AutoFit();
                         quotationreportworkSheet.Column(12).AutoFit();
-                        quotationreportworkSheet.Column(13).AutoFit();
+                        quotationreportworkSheet.Column(13).Width = 40;
+                        quotationreportworkSheet.Column(13).Style.WrapText = true;
 
                         break;
                     case "SaleOrderReport":
@@ -733,6 +758,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                             DocumentOwner=x.PSAUser.LoginName
 
                         }), true, TableStyles.Light1);
+
+
+                        int finalRowsSaleOrderReport = saleorderreportworkSheet.Dimension.End.Row;
+                        string columnStringSaleOrderReport = columnString + finalRowsSaleOrderReport.ToString();
+                        saleorderreportworkSheet.Cells[columnStringSaleOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
                         saleorderreportworkSheet.Column(1).AutoFit();
                         saleorderreportworkSheet.Column(2).AutoFit();
                         saleorderreportworkSheet.Column(3).Width = 40;
@@ -740,6 +771,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         saleorderreportworkSheet.Column(5).AutoFit();
                         saleorderreportworkSheet.Column(6).AutoFit();
                         saleorderreportworkSheet.Column(7).Width = 40;
+                        saleorderreportworkSheet.Column(7).Style.WrapText = true;
                         saleorderreportworkSheet.Column(8).AutoFit();
                         saleorderreportworkSheet.Column(9).AutoFit();
                         saleorderreportworkSheet.Column(10).AutoFit();
@@ -778,6 +810,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                             DocumentOwner = x.PSAUser.LoginName
 
                         }), true, TableStyles.Light1);
+
+                        int finalRowsPendingSaleOrderReport = pendingSaleorderreportworkSheet.Dimension.End.Row;
+                        string columnStringPendingSaleOrderReport = columnString + finalRowsPendingSaleOrderReport.ToString();
+                        pendingSaleorderreportworkSheet.Cells[columnStringPendingSaleOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
                         pendingSaleorderreportworkSheet.Column(1).AutoFit();
                         pendingSaleorderreportworkSheet.Column(2).AutoFit();
                         pendingSaleorderreportworkSheet.Column(3).Width = 40;
@@ -785,6 +822,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         pendingSaleorderreportworkSheet.Column(5).AutoFit();
                         pendingSaleorderreportworkSheet.Column(6).AutoFit();
                         pendingSaleorderreportworkSheet.Column(7).Width = 40;
+                        pendingSaleorderreportworkSheet.Column(7).Style.WrapText = true;
                         pendingSaleorderreportworkSheet.Column(8).AutoFit();
                         pendingSaleorderreportworkSheet.Column(9).AutoFit();
                         pendingSaleorderreportworkSheet.Column(10).AutoFit();
@@ -821,6 +859,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                             DocumentStatus=x.DocumentStatus.Description,
                             Remarks = x.Remarks
                         }), true, TableStyles.Light1);
+
+                        int finalRowsProductionOrderReport = productionorderreportworkSheet.Dimension.End.Row;
+                        string columnStringProductionOrderReport = columnString + finalRowsProductionOrderReport.ToString();
+                        productionorderreportworkSheet.Cells[columnStringProductionOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
                         productionorderreportworkSheet.Column(1).AutoFit();
                         productionorderreportworkSheet.Column(2).AutoFit();
                         productionorderreportworkSheet.Column(3).Width = 40;
@@ -828,6 +871,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionorderreportworkSheet.Column(5).AutoFit();
                         productionorderreportworkSheet.Column(6).AutoFit();
                         productionorderreportworkSheet.Column(7).Width = 40;
+                        productionorderreportworkSheet.Column(7).Style.WrapText = true;
                         productionorderreportworkSheet.Column(8).AutoFit();
                         productionorderreportworkSheet.Column(9).AutoFit();
                         productionorderreportworkSheet.Column(10).AutoFit();
@@ -836,7 +880,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionorderreportworkSheet.Column(13).AutoFit();
                         productionorderreportworkSheet.Column(14).AutoFit();
                         productionorderreportworkSheet.Column(15).AutoFit();
-                        productionorderreportworkSheet.Column(16).AutoFit();
+                        productionorderreportworkSheet.Column(16).Width = 40;
+                        productionorderreportworkSheet.Column(16).Style.WrapText = true;
 
                         break;
 
@@ -869,17 +914,24 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Progress = x.Progress,
                             ForecastCompleteDate=x.ForecastDateFormatted
                         }), true, TableStyles.Light1);
+
+                        int finalRowsPendingProductionOrderReport = pendingproductionorderreportworkSheet.Dimension.End.Row;
+                        string columnStringPendingProductionOrderReport = columnString + finalRowsPendingProductionOrderReport.ToString();
+                        pendingproductionorderreportworkSheet.Cells[columnStringPendingProductionOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
+
                         pendingproductionorderreportworkSheet.Column(1).AutoFit();
                         pendingproductionorderreportworkSheet.Column(2).AutoFit();
                         pendingproductionorderreportworkSheet.Column(3).Width = 40;
                         pendingproductionorderreportworkSheet.Column(4).AutoFit();
                         pendingproductionorderreportworkSheet.Column(5).AutoFit();
                         pendingproductionorderreportworkSheet.Column(6).AutoFit();
-                        pendingproductionorderreportworkSheet.Column(7).Width = 40;
+                        pendingproductionorderreportworkSheet.Column(7).AutoFit();
                         pendingproductionorderreportworkSheet.Column(8).AutoFit();
                         pendingproductionorderreportworkSheet.Column(9).AutoFit();
                         pendingproductionorderreportworkSheet.Column(10).AutoFit();
-                        pendingproductionorderreportworkSheet.Column(11).AutoFit();
+                        pendingproductionorderreportworkSheet.Column(11).Width = 40;
+                        pendingproductionorderreportworkSheet.Column(11).Style.WrapText = true;
                         pendingproductionorderreportworkSheet.Column(12).AutoFit();
                         pendingproductionorderreportworkSheet.Column(13).AutoFit();
                         pendingproductionorderreportworkSheet.Column(14).AutoFit();
@@ -917,22 +969,30 @@ namespace PilotSmithApp.UserInterface.Controllers
                             DocumentStatus = x.DocumentStatus.Description,
                             Remarks = x.Remarks
                         }), true, TableStyles.Light1);
+
+                        int finalRowsProductionQCStandardReport = productionqcreportworkSheet.Dimension.End.Row;
+                        string columnStringProductionQCStandardReport = columnString + finalRowsProductionQCStandardReport.ToString();
+                        productionqcreportworkSheet.Cells[columnStringProductionQCStandardReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
+
                         productionqcreportworkSheet.Column(1).AutoFit();
                         productionqcreportworkSheet.Column(2).AutoFit();
                         productionqcreportworkSheet.Column(3).Width = 40;
                         productionqcreportworkSheet.Column(4).AutoFit();
                         productionqcreportworkSheet.Column(5).AutoFit();
                         productionqcreportworkSheet.Column(6).AutoFit();
-                        productionqcreportworkSheet.Column(7).Width = 40;
+                        productionqcreportworkSheet.Column(7).AutoFit();
                         productionqcreportworkSheet.Column(8).AutoFit();
                         productionqcreportworkSheet.Column(9).AutoFit();
                         productionqcreportworkSheet.Column(10).AutoFit();
-                        productionqcreportworkSheet.Column(11).AutoFit();
+                        productionqcreportworkSheet.Column(11).Width = 40;
+                        productionqcreportworkSheet.Column(11).Style.WrapText = true;
                         productionqcreportworkSheet.Column(12).AutoFit();
                         productionqcreportworkSheet.Column(13).AutoFit();
                         productionqcreportworkSheet.Column(14).AutoFit();
                         productionqcreportworkSheet.Column(15).AutoFit();
                         productionqcreportworkSheet.Column(16).Width = 40;
+                        productionqcreportworkSheet.Column(16).Style.WrapText = true;
 
                         break;
 
@@ -965,6 +1025,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                             DocumentStatus = x.DocumentStatus.Description,
                             Remarks = x.Remarks
                         }), true, TableStyles.Light1);
+
+                        int finalRowsPendingProductionQCReport = pendingproductionqcreportworkSheet.Dimension.End.Row;
+                        string columnStringPendingProductionQCReport = columnString + finalRowsPendingProductionQCReport.ToString();
+                        pendingproductionqcreportworkSheet.Cells[columnStringPendingProductionQCReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
+
                         pendingproductionqcreportworkSheet.Column(1).AutoFit();
                         pendingproductionqcreportworkSheet.Column(2).AutoFit();
                         pendingproductionqcreportworkSheet.Column(3).Width = 40;
@@ -975,13 +1041,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                         pendingproductionqcreportworkSheet.Column(8).AutoFit();
                         pendingproductionqcreportworkSheet.Column(9).AutoFit();
                         pendingproductionqcreportworkSheet.Column(10).AutoFit();
-                        pendingproductionqcreportworkSheet.Column(11).AutoFit();
+                        pendingproductionqcreportworkSheet.Column(11).Width = 40;
+                        pendingproductionqcreportworkSheet.Column(11).Style.WrapText = true;
                         pendingproductionqcreportworkSheet.Column(12).AutoFit();
                         pendingproductionqcreportworkSheet.Column(13).AutoFit();
                         pendingproductionqcreportworkSheet.Column(14).AutoFit();
                         pendingproductionqcreportworkSheet.Column(15).AutoFit();
                         pendingproductionqcreportworkSheet.Column(16).AutoFit();
                         pendingproductionqcreportworkSheet.Column(17).Width = 40;
+                        pendingproductionqcreportworkSheet.Column(17).Style.WrapText = true;
 
                         break;
 
