@@ -154,7 +154,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllDocumentApproval
 
         #region GetApprovalHistory
-        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        //[AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public string GetApprovalHistory(string documentID, string documentTypeCode)
             {
             try
