@@ -9,12 +9,21 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.OtherChargeCode, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
+           @if (Model.IsUpdate)
+           {
+              <div class="col-md-12">
+                 <span class="form-control newinput" id="spanOtherCharge" style="background-color:#eeeeee"></span>
+               </div>
+           }
+           else
+           {
             <div class="col-md-12">
                 <div class="divOtherChargeSelectList">
                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("OtherChargeSelectList", "OtherCharge", new { required = "required" })*@
                 </div>
             </div>
+           }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnOtherChargeRequired", "required")
             @Html.HiddenFor(model => model.OtherChargeCode, htmlAttributes: new { @class = "", @id = "hdnOtherChargeCode" })
@@ -138,6 +147,14 @@
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProformaInvoiceServiceBill");
         try {
+            @if (Model.IsUpdate)
+             {
+
+              }
+              else
+               { 
+               <text>
+
             $('.divOtherChargeSelectList').load('/OtherCharge/OtherChargeSelectList?required=' + $('#hdnOtherChargeRequired').val(), function () {
                 $('.divOtherChargeSelectList #OtherChargeCode').change(function () {
                     debugger;
@@ -146,6 +163,8 @@
                     $('#hdnOtherChargeSACCode').val(otherCharge.SACCode);
                 });
             });
+              </text>
+                  }
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
             $('.divTaxTypeSelectList').load('/TaxType/TaxTypeSelectList?required=' + $('#hdnTaxTypeRequired').val(), function () {
                 $('#divModelPopProformaInvoice .CalculateGST').change(function () {

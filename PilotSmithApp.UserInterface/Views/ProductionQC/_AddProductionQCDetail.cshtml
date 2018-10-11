@@ -5,17 +5,28 @@
 {
     @Html.HiddenFor(model => model.ProdQCID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.QCQtyPrevious, htmlAttributes: new { @class = "" , @id = "hdnQCQtyPrevious" })
+    @Html.HiddenFor(model => model.ProducedQty, htmlAttributes: new { @class = "", @id = "hdnProducedQty" })
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
-            <div class="col-md-12">
-                <div class="divProductSelectList">
-                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                    @*@Html.Action("ProductSelectList", "Product", new { required = "required", disabled=true })*@
-                </div>              
-            </div>
+            @if (Model.IsUpdate)
+            {
+                <div class="col-md-12">
+                    <span class="form-control newinput" id="spanProductName" style="background-color:#eeeeee"></span>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12">
+                    <div class="divProductSelectList">
+                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("ProductSelectList", "Product", new { required = "required", disabled=true })*@
+                    </div>
+                </div>
+            }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductRequired", "required")
             @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
@@ -24,12 +35,21 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
+             @if (Model.IsUpdate)
+            {
+                <div class="col-md-12">
+                    <span class="form-control newinput" id="spanProductModelName" style="background-color:#eeeeee"></span>
+                </div>
+            }
+            else
+            {
             <div class="col-md-12">
                 <div class="divProductModelSelectList">
                     <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
                 </div>              
             </div>
+             }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductModelRequired", "required")
             @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
@@ -61,7 +81,7 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.QCQty, htmlAttributes: new { @class = "control-label " })
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12" id="divQCQty">
                 @Html.EditorFor(model => model.QCQty, new { htmlAttributes = new { @class = "form-control newinput", @onkeypress = "return isNumber(event)" } })
                 @Html.ValidationMessageFor(model => model.QCQty, "", new { @class = "text-danger" })
             </div>
@@ -95,46 +115,54 @@
             $(document).ready(function () {
                 $.validator.unobtrusive.parse("#FormProductionQCDetail");
                 try {
+                    @if (Model.IsUpdate)
+                     {
+                     }
+                     else
+                     {
+                        <text>
                     $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val() + '&disabled=true', function () {
                         $('#divModelPopProductionQC #ProductID').change(function () {
-                            if ($('#divProductBasicInfo') != undefined) {
+                             if ($('#divProductBasicInfo') != undefined) {
                                 $('#divModelPopProductionQC #divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
                                     $('#divModelPopProductionQC #ProductSpec').val($('#divModelPopProductionQC #spnProductName').text());
-                                });
-                            }
-                            if ($('.divProductModelSelectList') != undefined) {
+                                 });
+                             }
+                             if ($('.divProductModelSelectList') != undefined) {
                                 $('#dropLoad').addClass('fa fa-spinner fa-spin');
-                                if (this.value != "") {
+                                 if (this.value != "") {
                                     $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + this.value)
-                                }
-                                else {
+                                     }
+                                 else {
                                     $('.divProductModelSelectList').empty();
                                     $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-                                }
-                            }
-                        });
-                    });
+                                 }
+                             }
+                         });
+                     });
+                    </text>
+}
                     $('.divQCBySelectList').load('/Employee/QCBySelectList?required=' + $('#hdnQCByRequired').val())
                 }
                 catch (e) {
                     console.log(e.message);
                 }
-                try {
-                    $('input.datepicker').datepicker({
-                        format: "dd-M-yyyy",
-                        maxViewMode: 0,
-                        todayBtn: "linked",
-                        clearBtn: true,
-                        autoclose: true,
-                        todayHighlight: true
+                    try {
+                        $('input.datepicker').datepicker({
+                            format: "dd-M-yyyy",
+                            maxViewMode: 0,
+                            todayBtn: "linked",
+                            clearBtn: true,
+                            autoclose: true,
+                            todayHighlight: true
+                        });
+                    }
+                    catch (e) {
+                        console.log(e.message);
+                    }
+                    $('#divModelPopProductionQC #ProductID,#divModelPopProductionQC #QCBy').select2({
+                        dropdownParent: $("#divModelPopProductionQC")
                     });
-                }
-                catch (e) {
-                    console.log(e.message);
-                }
-                $('#divModelPopProductionQC #ProductID,#divModelPopProductionQC #QCBy').select2({
-                    dropdownParent: $("#divModelPopProductionQC")
+                    $('.select2').addClass('form-control newinput');
                 });
-                $('.select2').addClass('form-control newinput');
-            });
         </script>

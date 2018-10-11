@@ -113,6 +113,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         proformaInvoice.SaleOrder = new SaleOrder();
                                         proformaInvoice.SaleOrderID= (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : proformaInvoice.SaleOrderID);
                                         proformaInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : proformaInvoice.SaleOrder.SaleOrderNo);
+                                        proformaInvoice.InvoiceType = (sdr["InvocieType"].ToString() != "" ? (sdr["InvocieType"].ToString()) : proformaInvoice.InvoiceType);
                                     }
                                     proformaInvoiceList.Add(proformaInvoice);
                                 }

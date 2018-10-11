@@ -19,12 +19,21 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
+            @if (Model.IsUpdate)
+              {
+              <div class="col-md-12">
+                 <span class="form-control newinput" id="spanProductName" style="background-color:#eeeeee"></span>
+               </div>
+               }
+            else
+              {
             <div class="col-md-12">
                 <div class="divProductSelectList">
                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                     @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
                 </div>
             </div>
+              }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductRequired", "required")
             @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
@@ -33,12 +42,21 @@
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
+             @if (Model.IsUpdate)
+            {
+              <div class="col-md-12">
+                 <span class="form-control newinput" id="spanProductModelName" style="background-color:#eeeeee"></span>
+              </div>
+            }
+            else
+            {
             <div class="col-md-12">
                 <div class="divProductModelSelectList">
                     <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
                     @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "required" })*@
                 </div>
             </div>
+             }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @*@Html.Hidden("hdnProductModelRequired", "required")*@
             @Html.ValidationMessage("ProductModelID", "Product Model Required", new { @class = "text-danger", @style = "display:none;", @id = "msgProductModel" })
@@ -64,7 +82,7 @@
                     @Html.LabelFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.GuaranteeYN, yesNoList, htmlAttributes: new { @class = "form-control newinput" })
+                    @Html.DropDownListFor(model => model.GuaranteeYN, yesNoList, htmlAttributes: new { @class = "form-control newinput", @style="width: 100%;" })
                     @Html.HiddenFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "" })
                 </div>
             </div>
@@ -75,7 +93,7 @@
                     @Html.LabelFor(model => model.InstalledDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id = "InstalledDate" } })
+                    @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id = "InstalledDate", @autocomplete = "off" } })
                     @Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })
                     @*@Html.ValidationMessage("InstalledDateFormatted", "Installed Date Required", new { @class = "text-danger", @style = "display:none;", @id = "msgInstalledDate" })*@
                 </div>
@@ -147,13 +165,16 @@
         catch (e) {
             console.log(e.message);
         }
+        try {
+            $('#divModelPopServiceCall #GuaranteeYN').select2({
+                dropdownParent: $("#divModelPopServiceCall"),
+                w02idth: "100%"
+            });
 
-        $('#divModelPopServiceCall #GuaranteeYN').select2({
-            dropdownParent: $("#divModelPopServiceCall"),
-            width: "100%"
-        });
-
-        $('.select2').addClass('form-control newinput');
-
+            $('.select2').addClass('form-control newinput');
+        }
+        catch (e) {
+            console.log(e.message);
+        }
     });
 </script>

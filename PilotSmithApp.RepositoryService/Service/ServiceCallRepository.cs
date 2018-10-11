@@ -276,6 +276,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         serviceCallDetail.Spare = new Spare();
                                         serviceCallDetail.SpareID= (sdr["SpareID"].ToString() != "" ? Guid.Parse(sdr["SpareID"].ToString()) : Guid.Empty);
                                         serviceCallDetail.Spare.Name = (sdr["Spare"].ToString() != "" ? sdr["Spare"].ToString() : string.Empty);
+                                        serviceCallDetail.Spare.Code = (sdr["SpareCode"].ToString() != "" ? sdr["SpareCode"].ToString() : serviceCallDetail.Spare.Code);
                                     }
                                     serviceCallDetailList.Add(serviceCallDetail);
                                 }

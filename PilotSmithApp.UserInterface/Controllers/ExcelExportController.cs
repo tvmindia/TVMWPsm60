@@ -274,10 +274,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<ServiceCallViewModel> serviceCallVMList = Mapper.Map<List<ServiceCall>, List<ServiceCallViewModel>>(_serviceCallBusiness.GetAllServiceCall(Mapper.Map<ServiceCallAdvanceSearchViewModel, ServiceCallAdvanceSearch>(serviceCallAdvanceSearchVM)));
                         var serviceCallworkSheet = excel.Workbook.Worksheets.Add("ServiceCall");
                         ServiceCallViewModel[] serviceCallVMListArray = serviceCallVMList.ToArray();
-                        serviceCallworkSheet.Cells[1, 1].LoadFromCollection(serviceCallVMListArray.Select(x => new { ServiceCallNo = x.ServiceCallNo, ServiceCallDate = x.ServiceCallDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, Area = x.Area.Description,AttendedBy= x.Employee.Name,ServicedBy=x.ServicedByName,ServiceDate=x.ServiceDateFormatted, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description }), true, TableStyles.Light1);
+                        serviceCallworkSheet.Cells[1, 1].LoadFromCollection(serviceCallVMListArray.Select(x => new { ServiceCallNo = x.ServiceCallNo, ServiceCallDate = x.ServiceCallDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, Area = x.Area.Description,AttendedBy= x.Employee.Name,ServicedBy=x.ServicedByName,ServiceDate=x.ServiceDateFormatted, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description,ServiceType=x.ServiceType.Name }), true, TableStyles.Light1);
 
                         int finalRowsSRC = serviceCallworkSheet.Dimension.End.Row;
-                        string columnStringSRC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J" + finalRowsSRC.ToString();
+                        string columnStringSRC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,k1.k" + finalRowsSRC.ToString();
                         serviceCallworkSheet.Cells[columnStringSRC].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         serviceCallworkSheet.Column(1).AutoFit();
@@ -290,6 +290,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         serviceCallworkSheet.Column(8).AutoFit();
                         serviceCallworkSheet.Column(9).AutoFit();
                         serviceCallworkSheet.Column(10).AutoFit();
+                        serviceCallworkSheet.Column(11).AutoFit();
                         break;
                     case "DLC":
                         fileName = "CancellationChallan" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");

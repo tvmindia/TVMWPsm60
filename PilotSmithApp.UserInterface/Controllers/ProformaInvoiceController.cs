@@ -53,10 +53,10 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ProformaInvoice Other Charge Detail 
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
-        public ActionResult ProformaInvoiceOtherChargeDetail()
+        public ActionResult ProformaInvoiceOtherChargeDetail(bool update)
         {
             ProformaInvoiceOtherChargeViewModel proformaInvocieOtherChargeVM = new ProformaInvoiceOtherChargeViewModel();
-            proformaInvocieOtherChargeVM.IsUpdate = false;
+            proformaInvocieOtherChargeVM.IsUpdate = update;
             return PartialView("_ProformaInvoiceOtherCharge", proformaInvocieOtherChargeVM);
         }
         #endregion ProformaInvoice Other Charge Detail 
@@ -72,6 +72,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     proformaInvoiceVM = Mapper.Map<ProformaInvoice, ProformaInvoiceViewModel>(_proformaInvoiceBusiness.GetProformaInvoice(id));
                     proformaInvoiceVM.IsUpdate = true;
+                    proformaInvoiceVM.PreparedBy = proformaInvoiceVM.PreparedBy != Guid.Empty ? proformaInvoiceVM.PreparedBy : null;
                     AppUA appUA = Session["AppUA"] as AppUA;
                     proformaInvoiceVM.IsDocLocked = proformaInvoiceVM.DocumentOwners.Contains(appUA.UserName);
 
@@ -163,19 +164,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion ProformaInvoice Form
 
         #region ProformaInvoice Detail Add
-        public ActionResult AddProformaInvoiceDetail()
+        public ActionResult AddProformaInvoiceDetail(bool update)
         {
             ProformaInvoiceDetailViewModel proformaInvoiceDetailVM = new ProformaInvoiceDetailViewModel();
-            proformaInvoiceDetailVM.IsUpdate = false;
+            proformaInvoiceDetailVM.IsUpdate = update;
             return PartialView("_AddProformaInvoiceDetail", proformaInvoiceDetailVM);
         }
         #endregion ProformaInvoice Detail Add
 
         #region ProformaInvoice ServiceBill Add
-        public ActionResult AddProformaInvoiceServiceBill()
+        public ActionResult AddProformaInvoiceServiceBill(bool update)
         {
             ProformaInvoiceDetailViewModel proformaInvoiceDetailVM = new ProformaInvoiceDetailViewModel();
-            proformaInvoiceDetailVM.IsUpdate = false;
+            proformaInvoiceDetailVM.IsUpdate = update;
             proformaInvoiceDetailVM.Qty = 1;//by default one
             proformaInvoiceDetailVM.UnitCode = 4;////by default select Nos as unit
             return PartialView("_ProformaInvoiceServiceBill", proformaInvoiceDetailVM);
@@ -762,6 +763,53 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_PrintProformaInvoice", proformaInvoiceVM);
         }
         #endregion Print ProformaInvoice
+
+        #region CheckQty
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckQty(decimal Qty)
+        {
+
+            if (Qty == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckQty
+        #region CheckRate
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckRate(decimal Rate)
+        {
+
+            if (Rate == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckRate
+        #region CheckChargeAmount
+        [AcceptVerbs("Get", "Post")]
+        public ActionResult CheckChargeAmount(decimal ChargeAmount)
+        {
+
+            if (ChargeAmount == 0)
+            {
+
+                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion CheckChargeAmount
+
 
         #region ButtonStyling
         [HttpGet]

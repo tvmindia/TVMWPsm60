@@ -202,9 +202,6 @@ function BindOrReloadPendingProductionOrderReportTable(action) {
             paging: true,
             lengthChange: false,
             autoWidth: false,
-            scrollX: "500px",
-            fixedHeader: true,
-            //scrollCollapse: true,
             processing: true,
             language: {
                 "processing": "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"
@@ -218,18 +215,38 @@ function BindOrReloadPendingProductionOrderReportTable(action) {
             pageLength: 8,
             autoWidth: false,
             columns: [
-
-               { "data": "ProductionOrderNo", "defaultContent": "<i>-</i>" },
-               { "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+                {
+                    "data": "ProductionOrderNo", render: function (data, type, row) {
+                        return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ProdOrderDateFormatted + "</br>" + row.ProductionOrderNo;
+                    }, "defaultContent": "<i>-</i>"
+                },
+               //{ "data": "ProductionOrderNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "ExpectedDelvDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
-               { "data": "Product.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductSpec", "defaultContent": "<i>-</i>" },               
+               {
+                   "data": "Product.Name", render: function (data, type, row) {
+                       return data + "</br>" + row.ProductModel.Name;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Product.Name", "defaultContent": "<i>-</i>" },
+               //{ "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "ProductSpec", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + data + '</p>' + (data == null ? " " : data.substring(0, 220) + (data.length > 220 ? '...' : ''))
+
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "ProductSpec", "defaultContent": "<i>-</i>" },               
                 {
                     "data": "Amount", render: function (data, type, row) {
                         return formatCurrency(row.Amount)
@@ -243,30 +260,35 @@ function BindOrReloadPendingProductionOrderReportTable(action) {
                { "data": "ForecastDateFormatted", "defaultContent": "<i>-</i>" },
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [11,12,14,15] },
-                         { className: "text-left", "targets": [0, 2, 3, 5, 6, 7, 8, 10,, 13,16] },
-                         { className: "text-center", "targets": [1,4,17] },
-                           { "targets": [0], "width": "8%" },
-                           { "targets": [1], "width": "5%" },
-                           { "targets": [2], "width": "8%" },
-                           { "targets": [3], "width": "5%" },
-                           { "targets": [4], "width": "8%" },
+            columnDefs: [{ className: "text-right", "targets": [8] },
+                         { className: "text-left", "targets": [1,2, 3, 5, 6, 7, 10] },
+                         { className: "text-center", "targets": [0,4,9,11,12,13,14] },
+                           { "targets": [0], "width": "8.5%" },
+                           { "targets": [1], "width": "8.5%" },
+                           { "targets": [2], "width": "4%" },
+                           { "targets": [3], "width": "4%" },
+                           { "targets": [4], "width": "5%" },
                            { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "5%" },
-                           { "targets": [7], "width": "5%" },
-                           { "targets": [8], "width": "8%" },
-                           { "targets": [9], "width": "8%" },
-                           { "targets": [10], "width": "13%" },
+                           { "targets": [6], "width": "10%" },
+                           { "targets": [7], "width": "20%" },
+                           { "targets": [8], "width": "5%" },
+                           { "targets": [9], "width": "5%" },
+                           { "targets": [10], "width": "5%" },
+                           { "targets": [10], "width": "5%" },
                            { "targets": [12], "width": "5%" },
                            { "targets": [13], "width": "5%" },
-                           { "targets": [14], "width": "6%" },
-                           { "targets": [15], "width": "5%" },
-                           { "targets": [16], "width": "6%" },
-                           { "targets": [17], "width": "12%" },
-
-
+                           { "targets": [14], "width": "5%" },
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;

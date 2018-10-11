@@ -59,6 +59,9 @@ function BindOrReloadSaleInvoiceTable(action) {
         SaleInvoiceAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val());
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -86,7 +89,7 @@ function BindOrReloadSaleInvoiceTable(action) {
                 $('#AdvEmailSentStatus').val('');
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "") && ($('#AdvApprovalStatusCode').val() == "")) {
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "") && ($('.divboxASearch #AdvToDate').val() == "") && ($('.divboxASearch #AdvAreaCode').val() == "") && ($('.divboxASearch #AdvCustomerID').val() == "") && ($('.divboxASearch #AdvBranchCode').val() == "") && ($('.divboxASearch #AdvDocumentStatusCode').val() == "") && ($('.divboxASearch #AdvDocumentOwnerID').val() == "") && ($('#AdvEmailSentStatus').val() == "")) {
                     return true;
                 }
                 break;
@@ -255,6 +258,7 @@ function EditSaleInvoice(this_Obj) {
             else {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", SaleInvoice.ID);
             }
+
             BindSaleInvoiceDetailList(SaleInvoice.ID);
             BindSaleInvoiceOtherChargesDetailList(SaleInvoice.ID);
             $('#lblSaleInvoiceInfo').text(SaleInvoice.SaleInvNo);
@@ -262,6 +266,13 @@ function EditSaleInvoice(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(SaleInvoice.ID);
+            debugger;
+            if (SaleInvoice.InvoiceType == "SB") {
+                $('#btnAddItems').css("display", "none");
+                $('#btnAddOtherExpenses').css("display", "none");
+                $('#divSaleInvoiceOtherChargesDetailList').hide();
+               
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -320,12 +331,21 @@ function SaveSuccessSaleInvoice(data, status) {
                 $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", _result.ID);
                     BindSaleInvoiceDetailList(_result.ID);
-                    BindSaleInvoiceOtherChargesDetailList(_result.ID);
+                    if ($("#hdnInvoiceType").val() == "RB") {
+                        BindSaleInvoiceOtherChargesDetailList(_result.ID);
+                    }
                     CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#lblSaleInvoiceInfo').text(_result.SaleInvoiceNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleInvoiceForm #hdnCustomerID').val());
+                    if ($("#hdnInvoiceType").val() == "SB") {
+                        $('#btnAddItems').css("display", "none");
+                        $('#btnAddOtherExpenses').css("display", "none");
+                        $('#divSaleInvoiceOtherChargesDetailList').hide();
+                        $("#divInvoiceType").hide();
+
+                    }
                 });
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", _result.ID);
                 BindOrReloadSaleInvoiceTable('Init');
@@ -560,7 +580,7 @@ function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, I
 
 //Add SaleInvoice Detail
 function AddSaleInvoiceDetailList() {
-    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceDetail", function () {
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceDetail?update=false", function () {
         $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
         $('#divModelPopSaleInvoice').modal('show');
     });
@@ -570,19 +590,23 @@ function AddSaleInvoiceDetailToList() {
     $("#FormSaleInvoiceDetail").submit(function () { });
 
     if ($('#FormSaleInvoiceDetail #IsUpdate').val() == 'True') {
-        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() > 0) && ($('#Qty').val() > 0) && ($('#UnitCode').val() != "")) {
             var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
-            saleInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-            saleInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+            //saleInvoiceDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+            //saleInvoiceDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+            saleInvoiceDetailList[_datatablerowindex].Product.Code = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[0].trim() : "";
+            saleInvoiceDetailList[_datatablerowindex].Product.Name = $('#spanProductName').text() != "" ? $('#spanProductName').text().split("-")[1].trim() : "";
+
             saleInvoiceDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
-            saleInvoiceDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-            saleInvoiceDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+           // saleInvoiceDetailList[_datatablerowindex].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+         //   saleInvoiceDetailList[_datatablerowindex].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
             ProductModel = new Object;
             Unit = new Object;
             OtherCharge = new Object();
             OtherCharge.SACCode = null;
             OtherCharge.Description = null;
-            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+           // ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+            ProductModel.Name= $('#spanProductModelName').text();
             saleInvoiceDetailList[_datatablerowindex].ProductModel = ProductModel;
             saleInvoiceDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
             saleInvoiceDetailList[_datatablerowindex].Qty = $('#Qty').val();
@@ -607,7 +631,7 @@ function AddSaleInvoiceDetailToList() {
         }
     }
     else {
-        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() > 0) && ($('#Qty').val() > 0) && ($('#UnitCode').val() != "")) {
             if (_dataTable.SaleInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
@@ -710,28 +734,30 @@ function EditSaleInvoiceDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceDetail", function () {
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceDetail?update=true", function () {
         $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
         $('#FormSaleInvoiceDetail #IsUpdate').val('True');
         $('#FormSaleInvoiceDetail #ID').val(saleInvoiceDetail.ID);
         $("#FormSaleInvoiceDetail #ProductID").val(saleInvoiceDetail.ProductID)
         $("#FormSaleInvoiceDetail #hdnProductID").val(saleInvoiceDetail.ProductID)
+        $('#spanProductName').text(saleInvoiceDetail.Product.Code + "-" + saleInvoiceDetail.Product.Name)
+        $('#spanProductModelName').text(saleInvoiceDetail.ProductModel.Name)
         $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
         });
 
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        }
-        else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        }
+        //if ($('#hdnProductID').val() != _emptyGuid) {
+        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+        //}
+        //else {
+        //    $('.divProductModelSelectList').empty();
+        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+        //}
         $("#FormSaleInvoiceDetail #ProductModelID").val(saleInvoiceDetail.ProductModelID);
         $("#FormSaleInvoiceDetail #hdnProductModelID").val(saleInvoiceDetail.ProductModelID);
-        if ($('#hdnProductModelID').val() != _emptyGuid) {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
+        //if ($('#hdnProductModelID').val() != _emptyGuid) {
+        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
+        //    });
+        //}
         $('#FormSaleInvoiceDetail #ProductSpec').val(saleInvoiceDetail.ProductSpec);
         $('#FormSaleInvoiceDetail #Qty').val(saleInvoiceDetail.Qty);
         $('#FormSaleInvoiceDetail #UnitCode').val(saleInvoiceDetail.UnitCode);
@@ -803,7 +829,7 @@ function DeleteSaleInvoiceDetail(ID) {
 }
 //OtherExpense------------------
 function AddOtherExpenseDetailList() {
-    $("#divModelSaleInvoicePopBody").load("SaleInvoice/SaleInvoiceOtherChargeDetail", function () {
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/SaleInvoiceOtherChargeDetail?update=false", function () {
         $('#lblModelPopSaleInvoice').text('OtherExpense Detail')
         $('#divModelPopSaleInvoice').modal('show');
     });
@@ -812,12 +838,13 @@ function AddOtherExpenseDetailToList() {
     debugger;
     $("#FormOtherExpenseDetail").submit(function () { });
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
-        if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() != "")) {
+        if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() >0)) {
             var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
-            saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+          //  saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $('#spanOtherCharge').text() != "" ? $('#spanOtherCharge').text().split("-")[0].trim() : "";
             saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             saleInvoiceOtherExpenseDetailList[_datatablerowindex].ChargeAmount = $("#divModelSaleInvoicePopBody #ChargeAmount").val();
-            saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode").val() : _emptyGuid;
+            saleInvoiceOtherExpenseDetailList[_datatablerowindex].OtherChargeCode = $("#divModelSaleInvoicePopBody #hdnOtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #hdnOtherChargeCode").val() : _emptyGuid;
             TaxType = new Object;
             if ($('#divModelSaleInvoicePopBody #TaxTypeCode').val() != null) {
                 saleInvoiceOtherExpenseDetailList[_datatablerowindex].TaxTypeCode = $('#divModelSaleInvoicePopBody #TaxTypeCode').val().split('|')[0];
@@ -837,7 +864,7 @@ function AddOtherExpenseDetailToList() {
         }
     }
     else {
-        if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() != "")) {
+        if (($('#divModelSaleInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelSaleInvoicePopBody #ChargeAmount').val() >0)) {
             if (_dataTable.SaleInvoiceOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceOtherChargesDetailList.clear().rows.add(GetSaleInvoiceOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
                 var saleInvoiceOtherExpenseDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
@@ -1063,10 +1090,11 @@ function EditSaleInvoiceOtherChargesDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceOtherChargesDetail = _dataTable.SaleInvoiceOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelSaleInvoicePopBody").load("SaleInvoice/SaleInvoiceOtherChargeDetail", function () {
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/SaleInvoiceOtherChargeDetail?update=true", function () {
         $('#lblModelPopQuotation').text('OtherCharges Detail')
         $('#FormOtherExpenseDetail #IsUpdate').val('True');
         $('#FormOtherExpenseDetail #ID').val(saleInvoiceOtherChargesDetail.ID);
+        $('#spanOtherCharge').text(saleInvoiceOtherChargesDetail.OtherCharge.Description)
         $("#FormOtherExpenseDetail #OtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #hdnOtherChargeCode").val(saleInvoiceOtherChargesDetail.OtherChargeCode);
         $("#FormOtherExpenseDetail #ChargeAmount").val(saleInvoiceOtherChargesDetail.ChargeAmount);
@@ -1267,6 +1295,7 @@ function ClearCalculatedFields() {
     $('#lblCessAmount').text('0.00');
     $('#lblGrandTotal').text('0.00');
     $('#lblOtherChargeAmount').text('0.00');
+    $('#Discount').val('0.00');
 }
 
 function CalculateGrandTotal(value) {
@@ -1384,20 +1413,57 @@ function SaveSuccessSaleInvoiceEmailSend(data, status) {
 //---------------------------------------InvoiCeTypeOnChange-------------------------------
 function InvoiceTypeOnChange(curObj)
 {
-    if(curObj=='SB')
-    {
-        $('#btnAddServiceBill').css("display", "block")
-        $('#btnAddItems').css("display", "none");
+    debugger;
+    if (curObj == 'SB') {
+        debugger;
+        notyConfirm('Are you sure?', 'ClearSaleInvoiceDetailList();', 'This will clear the detail section and will allow to add service items only !', "Continue", 0);
+
     }
-    else
-    {
+    else {
+
         $('#btnAddServiceBill').css("display", "none");
         $('#btnAddItems').css("display", "block")
+        $('#btnAddOtherExpenses').css("display", "block");
+        $('#divSaleInvoiceOtherChargesDetailList').show();
+
     }
+    $(".cancel").click(function () {
+        $('#InvoiceType').val('RB').trigger('change');
+    });
+    $('#hdnInvoiceType').val($('#InvoiceType').val());
+    //if(curObj=='SB')
+    //{
+    //    $('#btnAddServiceBill').css("display", "block")
+    //    $('#btnAddItems').css("display", "none");
+    //}
+    //else
+    //{
+    //    $('#btnAddServiceBill').css("display", "none");
+    //    $('#btnAddItems').css("display", "block")
+    //}
 }
+
+function ClearSaleInvoiceDetailList() {
+    debugger;
+
+    $(".sweet-alert.showSweetAlert").hide();
+    $(".sweet-overlay").hide();
+    $("#divServiceBill").append("<span class='form-control newinput' style='background-color:#eeeeee'>" + "Service Bill" + '</span>');
+    // $('#InvoiceType').attr("disabled", "disabled");
+    $("#divInvoiceType").hide();
+    $('#btnAddServiceBill').css("display", "block")
+    $('#btnAddItems').css("display", "none");
+    $('#btnAddOtherExpenses').css("display", "none");
+    var SaleInvoiceDetailList = [];
+    _dataTable.SaleInvoiceDetailList.clear().rows.add(SaleInvoiceDetailList).draw(false);
+    $('#divSaleInvoiceOtherChargesDetailList').hide();
+    $('#hdnInvoiceType').val($('#InvoiceType').val());
+    ClearCalculatedFields();
+}
+
 function AddSaleInvoiceServiceBillList()
 {
-    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill", function () {
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill?update=false", function () {
         $('#lblModelPopSaleInvoice').text('Service Invoice Detail')
         $('#divModelPopSaleInvoice').modal('show');
     });
@@ -1408,11 +1474,12 @@ function AddSaleInvoiceServiceBillToDetailList() {
     $("#FormSaleInvoiceServiceBill").submit(function () { });
 
     if ($('#FormSaleInvoiceServiceBill #IsUpdate').val() == 'True') {
-        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() >0) && ($('#Qty').val() >0) && ($('#UnitCode').val() != "")) {
             var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data();
 
-            saleInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
-            saleInvoiceDetailList[_datatablerowindex].OtherChargeCode = $("#OtherChargeCode").val();
+          //  saleInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelSaleInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelSaleInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
+            saleInvoiceDetailList[_datatablerowindex].OtherCharge.Description = $('#spanOtherCharge').text() != "" ? $('#spanOtherCharge').text().split("-")[0].trim() : "";
+            saleInvoiceDetailList[_datatablerowindex].OtherChargeCode = $("#hdnOtherChargeCode").val();
             saleInvoiceDetailList[_datatablerowindex].OtherCharge.SACCode = $("#hdnOtherChargeSACCode").val();
             saleInvoiceDetailList[_datatablerowindex].Qty = $('#Qty').val();
             saleInvoiceDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
@@ -1437,7 +1504,7 @@ function AddSaleInvoiceServiceBillToDetailList() {
         }
     }
     else {
-        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() != "") && ($('#Qty').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#OtherChargeCode').val() != "") && ($('#Rate').val() >0) && ($('#Qty').val() >0) && ($('#UnitCode').val() != "")) {
             if (_dataTable.SaleInvoiceDetailList.rows().data().length === 0) {
                 _dataTable.SaleInvoiceDetailList.clear().rows.add(GetSaleInvoiceDetailListBySaleInvoiceID(_emptyGuid)).draw(false);
                 var saleInvoiceDetailVM = _dataTable.SaleInvoiceDetailList.rows().data();
@@ -1520,11 +1587,11 @@ function EditSaleInvoiceServiceBill(this_Obj)
 {
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill", function () {
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceServiceBill?update=true", function () {
         $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
         $('#FormSaleInvoiceServiceBill #IsUpdate').val('True');
         $('#FormSaleInvoiceServiceBill #ID').val(saleInvoiceDetail.ID);
-
+        $('#spanOtherCharge').text(saleInvoiceDetail.OtherCharge.Description)
         $("#FormSaleInvoiceServiceBill #OtherChargeCode").val(saleInvoiceDetail.OtherChargeCode)
         $("#FormSaleInvoiceServiceBill #hdnOtherChargeCode").val(saleInvoiceDetail.OtherChargeCode)
        

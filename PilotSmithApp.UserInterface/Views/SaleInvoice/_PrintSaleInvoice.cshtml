@@ -86,17 +86,17 @@
         <thead>
             <tr style="vertical-align:top">
                 <th style="width:3%;text-align: center;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">N0.</th>
-                <th style="width:26%; text-align: left;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">PRODUCT</th>
-                <th style="width:6%; text-align: left;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">HSN</th>
-                <th style="width:5%; text-align: left;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">QTY</th>
+                <th style="width:27%; text-align: left;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">PRODUCT</th>
+                <th style="width:8%; text-align: left;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">HSN</th>
+                <th style="width:6%; text-align: left;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">QTY</th>
                 <th style="width:8%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">RATE</th>
                 <th style="width:8%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">DISC</th>
                 @*  <th style="width:11%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">Taxable Amt</th>*@
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">CGST</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">SGST</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">IGST</th>
-                <th style="width:8%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">CESS</th>
-                <th style="width:12%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">AMOUNT</th>
+                <th style="width:9%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">CGST</th>
+                <th style="width:9%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">SGST</th>
+                <th style="width:9%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">IGST</th>
+                @*<th style="width:8%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">CESS</th>*@
+                <th style="width:13%; text-align: right;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">AMOUNT</th>
             </tr>
         </thead>
         <tbody>
@@ -115,17 +115,28 @@
                     CessAmt = Math.Round((decimal)mp.CessAmt, 2);
                     <tr style="text-align: right;font-family: Arial; color: #000;padding: 4px">
                         <td style="width:3%;text-align: center;padding: 4px;font-size:10px;vertical-align:top;">@slno</td>
-                        <td style="width:26%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
-                        <td style="width:6%;text-align: center;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
-                        <td style="width:5%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
+                        @{
+                            if (Model.InvoiceType == "SB")
+                            {
+                                <td style="width:27%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.OtherCharge.Description</td>
+                                <td style="width:8%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.OtherCharge.SACCode</td>
+                            }
+                            else
+                            {
+                                <td style="width:27%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                                <td style="width:8%;text-align: center;padding: 4px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
+                            }
+                        }
+                        
+                        <td style="width:6%; text-align: left;padding: 4px;font-size:10px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                         <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.Rate</td>
                         <td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@mp.Discount</td>
                         @*<td style="width:11%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemtaxableAmount</td>*@
                         <td style="width:9%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span> </td>
                         <td style="width:9%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@SGSTAmt<br /><span style="font-size:8px;">(@mp.SGSTPerc %)</span> </td>
                         <td style="width:9%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span> </td>
-                        <td style="width:9%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@CessAmt</td>
-                        <td style="width:12%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
+                        @*<td style="width:9%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@CessAmt</td>*@
+                        <td style="width:13%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
                     </tr>
                     slno = slno + 1;
                     totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
@@ -142,7 +153,7 @@
                 @{
                     var table1Sum = pSASysCommon.ConvertToCurrencyStandards((double)grossAmt, "IND");
                 }
-                <td colspan="11" style="border-top:solid 1.5px;border-top-color: #000;font-size:10px;text-align:right;padding-top: 5px">
+                <td colspan="10" style="border-top:solid 1.5px;border-top-color: #000;font-size:10px;text-align:right;padding-top: 5px">
                     <b>@table1Sum</b>
                 </td>
             </tr>

@@ -134,7 +134,8 @@
                                 @Html.Label("Quotation", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })
+                                <span class="form-control newinput" id="spanQuotation" style="background-color:#eeeeee">@Model.Quotation.QuoteNo</span>
+                                @*@Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })*@
                             </div>
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
@@ -143,10 +144,11 @@
                     {
                         <div class="col-md-12 no-padding" id="divSaleOrderSelectList">
                             <div class="col-md-12">
-                                @Html.Label("SaleOrder", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Sale Order", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })
+                                <span class="form-control newinput" id="spanSaleOrder" style="background-color:#eeeeee">@Model.SaleOrder.SaleOrderNo</span>
+                                @*@Html.DropDownListFor(model => model.SaleOrderID, Model.SaleOrderSelectList, "Search Sale Order", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnSaleOrderID').val(this.value)", @disabled = "" })*@
                             </div>
                             @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderID" })
                         </div>
@@ -155,10 +157,11 @@
                     {
                         <div class="col-md-12 no-padding" id="divProformaInvoiceSelectList">
                             <div class="col-md-12">
-                                @Html.Label("ProformaInvoice", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Proforma Invoice", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.ProfInvID, Model.ProformaInvoiceSelectList, "Search Proforma Invoice", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProfInvID').val(this.value)", @disabled = "" })
+                                <span class="form-control newinput" id="spanProformaInvoice" style="background-color:#eeeeee">@Model.ProformaInvoice.ProfInvNo</span>
+                                @*@Html.DropDownListFor(model => model.ProfInvID, Model.ProformaInvoiceSelectList, "Search Proforma Invoice", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnProfInvID').val(this.value)", @disabled = "" })*@
                             </div>
                             @Html.HiddenFor(model => model.ProfInvID, htmlAttributes: new { @class = "", @id = "hdnProfInvID" })
                         </div>
@@ -227,7 +230,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="divPreparedBySelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"></i></span>
                                 @* binding from javascript document ready function using div class *@
                                 @*@Html.Action("AttendedBySelectList", "Employee", new { required = "", postingParams = "ResponsiblePersonID" })*@
                             </div>
@@ -244,18 +247,18 @@
                         </div>
                         @if (Model.IsUpdate)
                         {
-                            <div class="col-md-12">
-                                <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
-                            </div>
+                        <div class="col-md-12">
+                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
+                        </div>
                         }
                         else
                         {
-                            <div class="col-md-12">
-                                <div class="divBranchSelectList">
-                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        <div class="col-md-12">
+                            <div class="divBranchSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
-                                </div>
                             </div>
+                        </div>
                         }
                         <!-- This hidden field will keep the information whether the field is required or not -->
                         @Html.Hidden("hdnBranchRequired", "required")
@@ -279,34 +282,50 @@
                         @Html.HiddenFor(model => model.BillLocationCode, htmlAttributes: new { @class = "", @id = "hdnBillLocationCode" })
                     </div>
                 </div>
-                @if (!Model.IsUpdate)
-                {
+               
                     <div class="form-group col-md-12 no-right-padding">
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.InvoiceType, htmlAttributes: new { @class = "control-label" })
                             </div>
-                            <div class="col-md-12">
-                                <div>
+                            @if (Model.IsUpdate)
+                            {
+
+                                <div class="col-md-12">
                                     @{
-                                        List<SelectListItem> TypeList = new List<SelectListItem>();
-                                        TypeList.Add(new SelectListItem
-                                        { Text = "Regular Bill", Value = "RB", Selected = true });
-                                        TypeList.Add(new SelectListItem
-                                        { Text = "Service Bill", Value = "SB" });
+                                        if (Model.InvoiceType == "RB")
+                                        {
+                                            <span class="form-control newinput" style="background-color:#eeeeee">Regular Bill</span>
+                                        }
+                                        else if (Model.InvoiceType == "SB")
+                                        {
+                                            <span class="form-control newinput" style="background-color:#eeeeee">Service Bill</span>
+                                        }
                                     }
-                                    @Html.DropDownListFor(model => model.InvoiceType, TypeList, new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100 %", onchange = "InvoiceTypeOnChange(this.value)", })
                                 </div>
-                                @* @Html.HiddenFor(model => model.InvoiceType, htmlAttributes: new { @class = "", @id = "hdnDocumentOwnerID" })*@
-                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-12">
+                                                <div id="divInvoiceType">
+                                                    @{
+                                                        List<SelectListItem> TypeList = new List<SelectListItem>();
+                                                        TypeList.Add(new SelectListItem
+                                                        { Text = "Regular Bill", Value = "RB", Selected = true });
+                                                        TypeList.Add(new SelectListItem
+                                                        { Text = "Service Bill", Value = "SB" });
+                                                    }
+                                                    @Html.DropDownListFor(model => model.InvoiceType, TypeList, new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100 %", onchange = "InvoiceTypeOnChange(this.value)", })
+                                                </div>
+                                                <div id="divServiceBill">
+                                                </div>
+                                            </div>
+                                                        }
+                                 @Html.HiddenFor(model => model.InvoiceType, htmlAttributes: new { @class = "", @id = "hdnInvoiceType" })
+                            
                         </div>
                     </div>
-                                        }
-
-
-
-
-
+                 
             </div>
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
@@ -401,10 +420,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate || Model.QuoteID != null||Model.SaleOrderID!=null||Model.ProfInvID!=null)
+                    @if (Model.IsUpdate || Model.QuoteID != null || Model.SaleOrderID != null || Model.ProfInvID != null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -484,38 +503,40 @@
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
             @Html.HiddenFor(model => model.OtherChargesDetailJSON, htmlAttributes: new { @class = "" })
             <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
-                <table id="tblSaleInvoiceDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                    <thead>
-                        <tr class="text-center TableHead">
-                            <th style="width:15%">Product</th>
-                            <th style="width:10%">HSN Code</th>
-                            <th style="width:10%">Quantity</th>
-                            <th style="width:10%">Rate(₹)</th>
-                            <th style="width:10%">Discount(₹)</th>
-                            <th style="width:10%">Taxable(₹)</th>
-                            <th style="width:10%">GST(₹)</th>
-                            <th style="width:10%">Cess(₹)</th>
-                            <th style="width:10%">Total(₹)</th>
-                            <th style="width:5%">...</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+                    <table id="tblSaleInvoiceDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                        <thead>
+                            <tr class="text-center TableHead">
+                                <th style="width:15%">Product</th>
+                                <th style="width:10%">HSN Code</th>
+                                <th style="width:10%">Quantity</th>
+                                <th style="width:10%">Rate(₹)</th>
+                                <th style="width:10%">Discount(₹)</th>
+                                <th style="width:10%">Taxable(₹)</th>
+                                <th style="width:10%">GST(₹)</th>
+                                <th style="width:10%">Cess(₹)</th>
+                                <th style="width:10%">Total(₹)</th>
+                                <th style="width:5%">...</th>
+                            </tr>
+                        </thead>
+                    </table>  
+                </div>
             <div class="form-group col-md-7 ">
-                <table id="tblSaleInvoiceOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                    <thead>
-                        <tr class="text-center TableHead">
-                            <th style="width:20%">Other Charge</th>
-                            <th style="width:15%">SAC Code</th>
-                            <th style="width:15%">Charge Amount(₹)</th>
-                            <th style="width:15%">GST(₹)</th>
-                            <th style="width:15%">Additional Tax(₹)</th>
-                            <th style="width:15%">Total(₹)</th>
-                            <th style="width:5%">...</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+                <div class="col-md-12 no-padding" id="divSaleInvoiceOtherChargesDetailList">
+                    <table id="tblSaleInvoiceOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                        <thead>
+                            <tr class="text-center TableHead">
+                                <th style="width:20%">Other Charge</th>
+                                <th style="width:15%">SAC Code</th>
+                                <th style="width:15%">Charge Amount(₹)</th>
+                                <th style="width:15%">GST(₹)</th>
+                                <th style="width:15%">Additional Tax(₹)</th>
+                                <th style="width:15%">Total(₹)</th>
+                                <th style="width:5%">...</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                </div>
             <div class="col-md-5" style="padding-right:1.5%">
                 <table class="table dataTable no-footer DetailSummerybox">
                     <tbody>
@@ -630,11 +651,11 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
          }
-        @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null||Model.ProfInvID!=null))
+            @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null||Model.ProfInvID!=null))
         {
             <text>
-        $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-        });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
             </text>
         }
         }
@@ -758,6 +779,9 @@
             console.log(e.message);
         }
         try {
+            @if (!Model.IsUpdate)
+              {
+                <text>
             $('#SaleInvoiceForm #SaleOrderID').change(function () {
                 OnServerCallBegin();
                 $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid + "&saleOrderID=" + this.value, function () {
@@ -769,15 +793,26 @@
                     BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true, false)
                     CalculateTotal();
                     $('#DocumentType').prop('disabled', true);
+                    $("input[type=radio][value=Quotation]").attr("disabled", true);
+                    $("input[type=radio][value=ProformaInvoice]").attr("disabled", true);
                     $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });
+            </text>
+              }
+              else
+              {
+
+              }
         }
         catch (e) {
             console.log(e.message);
         }
         try {
+            @if (!Model.IsUpdate)
+            {
+                <text>
             $('#SaleInvoiceForm #QuoteID').change(function () {
                 OnServerCallBegin();
                 $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + _emptyGuid + "&quotationID=" + this.value, function () {
@@ -789,15 +824,25 @@
                     BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false, false)
                     CalculateTotal();
                     $("input[type=radio][value=SaleOrder]").attr("disabled", true);
+                    $("input[type=radio][value=ProformaInvoice]").attr("disabled", true);
                     $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });
+            </text>
+        }
+    else
+    {
+
+              }
         }
         catch (e) {
             console.log(e.message);
         }
         try {
+            @if (!Model.IsUpdate)
+             {
+                 <text>
             $('#SaleInvoiceForm #ProfInvID').change(function () {
                 debugger;
                 OnServerCallBegin();
@@ -816,6 +861,12 @@
                 });
 
             });
+            </text>
+        }
+    else
+    {
+
+              }
         }
         catch (e) {
             console.log(e.message);
