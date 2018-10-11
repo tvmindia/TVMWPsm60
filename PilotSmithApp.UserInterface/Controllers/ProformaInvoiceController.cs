@@ -794,21 +794,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion CheckRate
-        #region CheckChargeAmount
-        [AcceptVerbs("Get", "Post")]
-        public ActionResult CheckChargeAmount(decimal ChargeAmount)
-        {
-
-            if (ChargeAmount == 0)
-            {
-
-                return Json("<p><span style='vertical-align: 2px'>Value could not be zero!</span></p>", JsonRequestBehavior.AllowGet);
-            }
-
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion CheckChargeAmount
+        
 
 
         #region ButtonStyling

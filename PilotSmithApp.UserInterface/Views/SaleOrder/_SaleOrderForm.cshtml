@@ -25,7 +25,7 @@
                     <div class="col-md-12" style="font-size:14px">
                         @Html.Label("Create Document From: ")
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true }) @Html.Label("Quotation")
+                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true, @tabindex = "-1" }) @Html.Label("Quotation")
                         </span>
                         <span style="margin-left:10px">
                             @Html.RadioButtonFor(model => model.DocumentType, "Enquiry") @Html.Label("Enquiry")
@@ -706,6 +706,23 @@
                 }
             });
             $('.select2').addClass('form-control newinput');
+
+
+            $(document).on('focus', '.select2', function (e) {
+                if (e.originalEvent) {
+                    var s2element = $(this).siblings('select');
+                    s2element.select2('open');
+                    // Set focus back to select2 element on closing.
+                    s2element.on('select2:closing', function (e) {
+                        s2element.select2('focus');
+                    });
+                }
+            });
+
+            $(document).on("select2-open", function () {
+                $(this).select2('positionDropdown', true);
+            });
+
         }
         catch (e) {
             console.log(e.message);

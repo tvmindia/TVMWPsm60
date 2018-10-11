@@ -176,6 +176,20 @@
                 dropdownParent: $("#divModelMasterPopUp2")
             });
             $('.select2').addClass('form-control newinput');
+            $(document).on('focus', '.select2', function (e) {
+                if (e.originalEvent) {
+                    var s2element = $(this).siblings('select');
+                    s2element.select2('open');
+                    // Set focus back to select2 element on closing.
+                    s2element.on('select2:closing', function (e) {
+                        s2element.select2('focus');
+                    });
+                }
+            });
+
+            $(document).on("select2-open", function () {
+                $(this).select2('positionDropdown', true);
+            });
         }
         catch (e) {
             console.log(e.message);
