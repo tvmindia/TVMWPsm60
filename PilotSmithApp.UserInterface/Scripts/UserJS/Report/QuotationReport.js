@@ -43,7 +43,7 @@ function BindOrReloadQuotationReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('5').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvPreparedBy').val('').trigger('change');              
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
@@ -63,7 +63,7 @@ function BindOrReloadQuotationReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('');
                 $('.divboxASearch #AdvCustomer').val('');
                 $('.divboxASearch #AdvBranchCode').val('');
-                $('.divboxASearch #AdvDocumentStatusCode');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
                 $('.divboxASearch #AdvPreparedBy').val('');
                 $('.divboxASearch #AdvAmountFrom').val('');
@@ -84,7 +84,7 @@ function BindOrReloadQuotationReportTable(action) {
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "5") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
                     ($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
@@ -175,52 +175,55 @@ function BindOrReloadQuotationReportTable(action) {
                         return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.QuoteDateFormatted + "</br>" + row.QuoteNo;
                     }, "defaultContent": "<i>-</i>"
                 },
-               //{ "data": "QuoteNo", "defaultContent": "<i>-</i>" },
-               //{ "data": "QuoteDateFormatted", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
                        return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
                    }, "defaultContent": "<i>-</i>"
                },
-               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
-
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
-                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
+               { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "PreparedBy", "defaultContent": "<i>-</i>" },              
-             
-                { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
+               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               { "data": "ApprovalStatus.Description", "defaultContent": "<i>-</i>" },
+               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
-                 { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-                 { "data": "ApprovalStatus.Description", "defaultContent": "<i>-</i>" },
-
-                {
+               {
                     "data": "Amount", render: function (data, type, row) {
                         return formatCurrency(row.Amount)
                     }, "defaultContent": "<i>-</i>"
-                },
-               { "data": "Notes", "defaultContent": "<i>-</i>" },
-
-
-
+               },
+               {
+                   "data": "Notes", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
+                   }, "defaultContent": "<i>-</i>"
+               },
             ],
             columnDefs: [{ className: "text-right", "targets": [9] },
-                         { className: "text-left", "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9,10] },
-                         { className: "text-center", "targets": [0] },
+                         { className: "text-left", "targets": [1, 2, 3, 4, 7, 6, 8, 9,10] },
+                         { className: "text-center", "targets": [0,5] },
                            { "targets": [0], "width": "17%" },
                            { "targets": [1], "width": "15%" },
                            { "targets": [2], "width": "8%" },
                            { "targets": [3], "width": "7%" },
                            { "targets": [4], "width": "7%" },
                            { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "7%" },
-                           { "targets": [7], "width": "5%" },
-                           { "targets": [8], "width": "8%" },
                            { "targets": [9], "width": "7%" },
+                           { "targets": [7], "width": "5%" },
+                           { "targets": [6], "width": "8%" },
+                           { "targets": [8], "width": "7%" },
                            { "targets": [10], "width": "14%" },
 
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;

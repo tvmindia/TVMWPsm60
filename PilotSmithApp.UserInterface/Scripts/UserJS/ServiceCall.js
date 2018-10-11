@@ -460,7 +460,7 @@ function AddServiceCallDetailToList() {
 
         if ($('#FormServiceCallDetail #IsUpdate').val() == 'True') {
             //if (($('#spanProductName').text() != "") && ($('#spanProductModelName').text() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').length <= 1 || ($('#spanProductModelName').length > 1 && $('#spanProductModelName').val() != "")))
-            if (($('#spanProductName').text() != "") && ($('#InstalledDate').val() != "") )
+            if (($('#spanProductName').text() != "") && (($('#spanProductModelName').text() != "") || ($('#ProductModelID').val() != "")) && ($('#InstalledDate').val() != ""))
             {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
@@ -508,7 +508,7 @@ function AddServiceCallDetailToList() {
             }
         }
         else {
-            if (($('#ProductID').val() != "")  && ($('#InstalledDate').val() != "")) {
+            if (($('#ProductID').val() != "") && (($('#ProductModelID').val() != "") || ($('#spanProductModelName').text() != ""))  && ($('#InstalledDate').val() != "")) {
                     if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
                     debugger;

@@ -144,7 +144,7 @@
                 int slno = 1;
                 foreach (var mp in Model.ProformaInvoiceDetailList)
                 {
-                    decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, CessAmt = 0;
+                    decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0;
                     itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
                     CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
                     SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
@@ -206,14 +206,14 @@
             </tr>
 
             <tr>
-                <td colspan="11" style="vertical-align:top;padding-top:20px;">
+                <td colspan="10" style="vertical-align:top;padding-top:20px;">
                     @if (Model.ProformaInvoiceOtherChargeDetailList.Count != 0)
                     {
                         decimal sum = 0;
                         <table id="OtherChargeDetailsTable" style="font-family: arial;width: 100%; line-height: 14px;" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <td colspan="6"><b>Other Charges</b></td>
+                                    <td colspan="7"><b>Other Charges</b></td>
                                 </tr>
                                 <tr style="vertical-align:top">
                                     <th style="width:7%;text-align: center;padding: 4px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000; ">NO.</th>
@@ -269,7 +269,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6"></td>
+                <td colspan="5"></td>
                 <td colspan="5" style="font:12px;padding-top:20px;">
                     <table style="width:100%;line-height: 20px;">
                         <tr class="">
@@ -349,18 +349,19 @@
                 </td>
             </tr>
             <tr>
-                <td style="padding-top:20px;font-size:12px" colspan="6">
+                <td style="padding-top:20px;font-size:12px" colspan="7">
                     <b><u>Declaration</u></b>
                 </td>
-                <td style="padding-top:20px;font-size:12px" colspan="4">
+                <td style="padding-top:20px;font-size:12px" colspan="3">
                     <b>@Html.Raw(@Model.SignatureStamp)</b>
                 </td>
             </tr>
             <tr style="vertical-align:bottom;font-size:12px">
-                <td colspan="6">
+                <td colspan="5">
                     @Html.Raw(@Model.MailBodyFooter)
                 </td>
-                <td colspan="4">
+                <td colspan="2"><br /></td>
+                <td colspan="3">
                     <b>@Html.Raw(@Model.SignatureStampLine2)</b>
                 </td>
             </tr>

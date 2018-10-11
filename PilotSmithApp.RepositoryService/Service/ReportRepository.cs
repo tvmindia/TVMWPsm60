@@ -358,7 +358,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         }
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetEstimateReport]";
-                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(estimateReport.SearchTerm) ? "" : estimateReport.SearchTerm;
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = estimateReport.SearchTerm;
                         cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = estimateReport.DataTablePaging.Start;
                         if (estimateReport.DataTablePaging.Length == -1)
                         {
@@ -860,6 +860,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderReportObj.Plant.Description= (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : productionOrderReportObj.Plant.Description);
                                         productionOrderReportObj.ReferencePerson = new ReferencePerson();
                                         productionOrderReportObj.ReferencePerson.Name= (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : productionOrderReportObj.ReferencePerson.Name);
+                                        productionOrderReportObj.Branch = new Branch();
+                                        productionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionOrderReportObj.Branch.Description);
+                                        productionOrderReportObj.PSAUser = new PSAUser();
+                                        productionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionOrderReportObj.PSAUser.LoginName);
                                     }
                                     productionOrderReportList.Add(productionOrderReportObj);
                                 }
@@ -988,6 +992,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionOrderReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : pendingProductionOrderReportObj.Plant.Description);
                                         pendingProductionOrderReportObj.ReferencePerson = new ReferencePerson();
                                         pendingProductionOrderReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : pendingProductionOrderReportObj.ReferencePerson.Name);
+                                        pendingProductionOrderReportObj.Branch = new Branch();
+                                        pendingProductionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingProductionOrderReportObj.Branch.Description);
+                                        pendingProductionOrderReportObj.PSAUser = new PSAUser();
+                                        pendingProductionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingProductionOrderReportObj.PSAUser.LoginName);
                                     }
                                     pendingProductionOrderReportList.Add(pendingProductionOrderReportObj);
                                 }
@@ -1105,6 +1113,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQCReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : productionQCReportObj.Plant.Description);
                                         productionQCReportObj.ReferencePerson = new ReferencePerson();
                                         productionQCReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : productionQCReportObj.ReferencePerson.Name);
+                                        productionQCReportObj.Branch = new Branch();
+                                        productionQCReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionQCReportObj.Branch.Description);
+                                        productionQCReportObj.PSAUser = new PSAUser();
+                                        productionQCReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionQCReportObj.PSAUser.LoginName);
                                     }
                                     productionQCStandardReportList.Add(productionQCReportObj);
                                 }
@@ -1219,6 +1231,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionQCReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : pendingProductionQCReportObj.Plant.Description);
                                         pendingProductionQCReportObj.ReferencePerson = new ReferencePerson();
                                         pendingProductionQCReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : pendingProductionQCReportObj.ReferencePerson.Name);
+                                        pendingProductionQCReportObj.Branch = new Branch();
+                                        pendingProductionQCReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingProductionQCReportObj.Branch.Description);
+                                        pendingProductionQCReportObj.PSAUser = new PSAUser();
+                                        pendingProductionQCReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingProductionQCReportObj.PSAUser.LoginName);
                                     }
                                     pendingroductionQCReportList.Add(pendingProductionQCReportObj);
                                 }

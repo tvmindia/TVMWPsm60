@@ -61,7 +61,7 @@
                             @Html.LabelFor(model => model.CustomerCategoryList, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            @Html.ListBoxFor(model => model.CustomerCategoryList, Model.CustomerCategory.CustomerCategorySelectList, new { @class = "form-control newinput", @style = "padding:4px 12px;" })
+                            @Html.ListBoxFor(model => model.CustomerCategoryList, Model.CustomerCategory.CustomerCategorySelectList, new { @class = "form-control newinput", @style = "padding:4px 12px;width:100%;" })
                         </div>
                     </div>
 
@@ -112,7 +112,7 @@
                             @Html.LabelFor(model => model.ContactTitle, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            @Html.DropDownListFor(model => model.ContactTitle, Model.Titles.TitlesSelectList, "-- select title --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;" })
+                            @Html.DropDownListFor(model => model.ContactTitle, Model.Titles.TitlesSelectList, "-- select title --", new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100%;" })
                             @Html.ValidationMessageFor(model => model.ContactTitle, "", new { @class = "text-danger" })
                         </div>
                     </div>

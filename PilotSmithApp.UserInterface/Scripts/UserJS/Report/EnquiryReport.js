@@ -41,7 +41,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('1').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');
                 $('.divboxASearch #AdvReferenceTypeCode').val('').trigger('change');
@@ -62,7 +62,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('');
                 $('.divboxASearch #AdvCustomer').val('');
                 $('.divboxASearch #AdvBranchCode').val('');
-                $('.divboxASearch #AdvDocumentStatusCode');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
                 $('.divboxASearch #AdvReferencePersonCode').val('');
                 $('.divboxASearch #AdvReferenceTypeCode').val('');
@@ -83,7 +83,7 @@ function BindOrReloadEnquiryReportTable(action) {
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "")&&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "1") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
                     ($('.divboxASearch #AdvReferencePersonCode').val() == "")&&
                     ($('.divboxASearch #AdvReferenceTypeCode').val() == "") &&
                     ($('.divboxASearch #AdvEnquiryGradeCode').val() == "")&&
@@ -176,58 +176,41 @@ function BindOrReloadEnquiryReportTable(action) {
                        return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.EnquiryDateFormatted + "</br>" + row.EnquiryNo;
                    }, "defaultContent": "<i>-</i>"
                },
-               //{ "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
-               //{ "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
-               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                {
                    "data": "Customer.CompanyName", render: function (data, type, row) {
                        return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
+               { "data": "EnquiryGrade.Description", "defaultContent": "<i>-</i>" },
                {
                    "data": "Area.Description", "defaultContent": "<i>-</i>"
                },
-               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
-               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
-               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                { "data": "Employee.Name", "defaultContent": "<i>-</i>" },
-
-               { "data": "EnquiryGrade.Description", "defaultContent": "<i>-</i>" },
-
+               { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
+               { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
+               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                {
                    "data": "Amount", render: function (data, type, row) {
                        return formatCurrency(row.Amount)
                    }, "defaultContent": "<i>-</i>"
                },
-               
-
-                 //{
-                 //    "data": "Branch.Description", render: function (data, type, row) {
-                 //        return "<b>Doc.Owner-</b>" + row.PSAUser.UserName + "</br>" + "<b>Doc.Status-</b>" + row.DocumentStatus.Description;
-                 //    }, "defaultContent": "<i>-</i>"
-                 //},           
-                 
             ],
             columnDefs: [{ className: "text-right", "targets": [10] },
-                         { className: "text-left", "targets": [1,2,3,4,5,6,7,9,8] },
-                         { className: "text-center", "targets": [0] },
+                         { className: "text-left", "targets": [1,2,3,4,5,6,9,8] },
+                         { className: "text-center", "targets": [0,7] },
                            { "targets": [0], "width": "17%" },
                            { "targets": [1], "width": "18%" },
                            { "targets": [2], "width": "20%" },
-                           { "targets": [3], "width": "5%" },
                            { "targets": [4], "width": "5%" },
-                           { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "5%" },
-                           { "targets": [7], "width": "5%" },
                            { "targets": [8], "width": "5%" },
+                           { "targets": [5], "width": "5%" },
+                           { "targets": [7], "width": "5%" },
+                           { "targets": [3], "width": "5%" },
+                           { "targets": [6], "width": "5%" },
                            { "targets": [9], "width": "5%" },
                            { "targets": [10], "width": "10%" }
-
-
-
             ],
             destroy: true,
             //for performing the import operation after the data loaded
