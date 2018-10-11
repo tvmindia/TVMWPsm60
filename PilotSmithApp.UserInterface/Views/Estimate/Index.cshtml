@@ -19,7 +19,8 @@
             <div class="col-md-12">&nbsp;</div>
             <div class="col-md-12">
                 <div class="input-group">
-                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()" ,@onkeypress= "RedirectSearchClick(event,this)" } })
+                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -61,7 +62,7 @@
                         @Html.LabelFor(model => model.AdvCustomerID, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvCustomerID, EmptySelectList, "Select customer",new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvCustomerID, EmptySelectList, "Select customer", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-right-padding">
@@ -128,7 +129,7 @@
                         <th style="width:10%">Area</th>
                         <th style="width:10%">Referred By</th>
                         <th style="width:10%">Doc.Owner</th>
-                        <th style="width:17%">Other Details</th>                        
+                        <th style="width:17%">Other Details</th>
                         <th style="width:5%">...</th>
                     </tr>
                 </thead>

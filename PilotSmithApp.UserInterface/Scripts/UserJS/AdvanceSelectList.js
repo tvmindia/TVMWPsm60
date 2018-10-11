@@ -59,6 +59,13 @@ $(document).ready(function () {
         console.log(e.message);
     }
 
+    //try{
+    //    BindDocumentTypeSelectList()
+    //}
+    //catch(e){
+    //    console.log(e.message);
+    //}
+
     $('.select2').addClass('form-control newinput');
 });
 
@@ -256,3 +263,20 @@ function BindPositionSelectList() {
         }
     });
 }
+
+//Document type selectlist//
+//function BindDocumentTypeSelectList() {
+//    $('#AdvDocumentTypeCode').select2({
+//        ajax:{
+//            type: 'POST',
+//            dataType: 'json',
+//            url: "DocumentType/GetDocumentTypeSelectListOnDemand/",
+//            delay: 50,
+//            data: function (term) {
+//                return {
+//                    results: data.items
+//                };
+//            },
+//        }
+//    });
+//}

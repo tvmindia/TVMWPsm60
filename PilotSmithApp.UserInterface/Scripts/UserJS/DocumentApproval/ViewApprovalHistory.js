@@ -36,6 +36,9 @@ function BindOrReloadApprovalHistory(action) {
         DocumentTypeViewModel = new Object();
 
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -48,6 +51,17 @@ function BindOrReloadApprovalHistory(action) {
                 //$('#ShowAll').val('false');
                 break;
             case 'Init':
+                break;
+            case 'Search':
+                if((SearchTerm==SearchValue)&&
+                  ($('#FromDate').val()=="")&&
+                    ($('#ToDate').val()=="")&&
+                    ($('#DocumentTypeCode').val()=="")&&
+                    ($('#ApprovalStatus').val()=="")&&
+                    ($('#ApproverLevel').val() == "")) {
+
+                    return true;
+                }
                 break;
             case 'Apply':
                 break;
@@ -73,7 +87,7 @@ function BindOrReloadApprovalHistory(action) {
                     extend: 'excel',
                     exportOptions:
                     {
-                        columns: [1, 2, 3, 4, 5]
+                        columns: [1, 2, 3, 4, 5, 6]
                     }
                 }],
                 order: false,
@@ -96,8 +110,9 @@ function BindOrReloadApprovalHistory(action) {
                     { "data": "ApproverLevel", "defaultContent": "<i>-</i>" },
                     { "data": "DocumentStatus", "defaultContent": "<i>-</i>" },
                     { "data": "DocumentCreatedBy", "defaultContent": "<i>-</i>" },
-                    {
-                        "data": "ApprovalLogID", "orderable": false, render: function (data, type, row) {
+                    { "data": "DocumentOwner", "defaultContent": "<i>-</i>" },
+                   {
+                        "data": "null", "orderable": false, render: function (data, type, row) {
                             debugger;
                             return '<a href="#" class="actionLink" onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>'
                         }, "defaultContent": "<i>-</i>"

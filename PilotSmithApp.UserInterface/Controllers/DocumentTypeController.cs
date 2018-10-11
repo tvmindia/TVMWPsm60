@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
+using AutoMapper;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -39,5 +40,20 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_DocumentTypeSelectList", documentTypeVM);
         }
         #endregion DocumentType SelectList
+
+        #region DocumentType SelectList On Demand
+        [HttpPost]
+        public ActionResult GetDocumentTypeSelectListOnDemand(string searchTerm)
+        {
+            List<SelectListItem> DocumentTypeVMList = _documentTypeBusiness.GetDocumentTypeSelectList();
+            var list = DocumentTypeVMList != null ? (from docType in DocumentTypeVMList.Where(x => x.Text.ToLower().Contains(searchTerm.ToLower())).ToList()
+                                                     select new Select2Model
+                                                     {
+                                                         text = docType.Text,
+                                                         id = docType.Value
+                                                     }).ToList() : new List<Select2Model>();
+            return Json(new { items = list }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion DocumentType SelectList On Demand
     }
 }

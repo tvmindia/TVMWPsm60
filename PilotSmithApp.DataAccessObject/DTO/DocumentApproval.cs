@@ -25,7 +25,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
             public Guid LastApprovedUserID { get; set; }
             public string LatestDocumentStatus { get; set; }
             public Boolean IsNextApprover { get; set; }
-
+            public string DocumentOwner { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public List<DocumentApproval> DocumentApprovalList { get; set; }
