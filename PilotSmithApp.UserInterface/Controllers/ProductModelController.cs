@@ -121,7 +121,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion ProductModelSelectList
         #region ProductModel Basic Information
-        [AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
+        //[AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult ProductModelBasicInfo(Guid ID)
         {
             ProductModelViewModel productModelVM = new ProductModelViewModel();
