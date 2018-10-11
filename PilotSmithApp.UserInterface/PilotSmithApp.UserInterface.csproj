@@ -263,13 +263,10 @@
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
     <Content Include="Content\images\phone.png" />
-    <Content Include="Content\images\ProductImage\catphoto.png" />
-    <Content Include="Content\images\ProductImage\chillyclaner.png" />
     <Content Include="Content\images\contact.png" />
     <Content Include="Content\images\contract.png" />
     <Content Include="Content\images\CustPOrd.png" />
     <Content Include="Content\images\datePicker.png" />
-    <Content Include="Content\images\ProductImage\destoner.png" />
     <Content Include="Content\images\document.png" />
     <Content Include="Content\images\email.png" />
     <Content Include="Content\images\enquiry.png" />
@@ -1139,6 +1136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\images\ProductImage\" />
     <Folder Include="Content\ProductImages\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\ApprovalStatus\" />
