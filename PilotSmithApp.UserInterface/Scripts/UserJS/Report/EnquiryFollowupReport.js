@@ -119,8 +119,6 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                        return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + data + "&nbsp;&nbsp;<img src='../Content/images/time.png' height='10px'>" + "&nbsp;" + row.FollowupTimeFormatted + "</br>" + row.EnquiryNo;
                    }, "defaultContent": "<i>-</i>"
                },
-               //{ "data": "FollowupDateFormatted", "defaultContent": "<i>-</i>" },
-               //{ "data": "FollowupTimeFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Priority", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
@@ -130,17 +128,21 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": "Status", "defaultContent": "<i>-</i>" },
-               { "data": "FollowupRemarks", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "FollowupRemarks", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
+                   }, "defaultContent": "<i>-</i>"
+               },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
-                         { className: "text-left", "targets": [ 5,6] },
-                         { className: "text-center", "targets": [0,1,2,3,4] },
+                         { className: "text-left", "targets": [ 3,4,6] },
+                         { className: "text-center", "targets": [0,1,5,2] },
                            { "targets": [0], "width": "20%" },
                            { "targets": [1], "width": "10%" },
                            { "targets": [5], "width": "10%" },
-                           { "targets": [2], "width": "15%" },
-                           { "targets": [3], "width": "15%" },
-                           { "targets": [4], "width": "10%" },
+                           { "targets": [4], "width": "13%" },
+                           { "targets": [3], "width": "17%" },
+                           { "targets": [2], "width": "10%" },
                            { "targets": [6], "width": "20%" },
                            //{ "targets": [7], "width": "10%" },
                            //{ "targets": [8], "width": "17%" }
@@ -157,6 +159,15 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                           //}
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;

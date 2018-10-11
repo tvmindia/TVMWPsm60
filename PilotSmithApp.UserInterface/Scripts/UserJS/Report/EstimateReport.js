@@ -41,7 +41,7 @@ function BindOrReloadEstimateReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('3').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');                
                 $('.divboxASearch #AdvPreparedBy').val('').trigger('change');              
                 $('.divboxASearch #AdvAmountFrom').val('').trigger('change');
@@ -58,7 +58,7 @@ function BindOrReloadEstimateReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('');
                 $('.divboxASearch #AdvCustomer').val('');
                 $('.divboxASearch #AdvBranchCode').val('');
-                $('.divboxASearch #AdvDocumentStatusCode');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
                 $('.divboxASearch #AdvPreparedBy').val('');               
                 $('.divboxASearch #AdvAmountFrom').val('');
@@ -75,7 +75,7 @@ function BindOrReloadEstimateReportTable(action) {
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "3") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
                     ($('.divboxASearch #AdvPreparedBy').val() == "") &&                   
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "")  &&
@@ -187,8 +187,8 @@ function BindOrReloadEstimateReportTable(action) {
 
             ],
             columnDefs: [{ className: "text-right", "targets": [7] },
-                         { className: "text-left", "targets": [ 1,2, 3, 4, 5, 6, 8] },
-                         { className: "text-center", "targets": [0] },
+                         { className: "text-left", "targets": [ 1,2, 3, 5, 6, 8] },
+                         { className: "text-center", "targets": [0,4] },
                            { "targets": [0], "width": "15%" },
                            { "targets": [1], "width": "15%" },
                            { "targets": [2], "width": "7%" },

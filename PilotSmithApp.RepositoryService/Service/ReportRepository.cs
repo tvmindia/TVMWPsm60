@@ -1113,6 +1113,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQCReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : productionQCReportObj.Plant.Description);
                                         productionQCReportObj.ReferencePerson = new ReferencePerson();
                                         productionQCReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : productionQCReportObj.ReferencePerson.Name);
+                                        productionQCReportObj.Branch = new Branch();
+                                        productionQCReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionQCReportObj.Branch.Description);
+                                        productionQCReportObj.PSAUser = new PSAUser();
+                                        productionQCReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionQCReportObj.PSAUser.LoginName);
                                     }
                                     productionQCStandardReportList.Add(productionQCReportObj);
                                 }
@@ -1227,6 +1231,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionQCReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : pendingProductionQCReportObj.Plant.Description);
                                         pendingProductionQCReportObj.ReferencePerson = new ReferencePerson();
                                         pendingProductionQCReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : pendingProductionQCReportObj.ReferencePerson.Name);
+                                        pendingProductionQCReportObj.Branch = new Branch();
+                                        pendingProductionQCReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingProductionQCReportObj.Branch.Description);
+                                        pendingProductionQCReportObj.PSAUser = new PSAUser();
+                                        pendingProductionQCReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingProductionQCReportObj.PSAUser.LoginName);
                                     }
                                     pendingroductionQCReportList.Add(pendingProductionQCReportObj);
                                 }

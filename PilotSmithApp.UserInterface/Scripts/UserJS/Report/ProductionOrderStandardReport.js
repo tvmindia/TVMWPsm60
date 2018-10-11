@@ -50,7 +50,7 @@ function BindOrReloadProductionOrderReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('7').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                // $('.divboxASearch #AdvPreparedBy').val('').trigger('change');
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
@@ -77,7 +77,7 @@ function BindOrReloadProductionOrderReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('');
                 $('.divboxASearch #AdvCustomer').val('');
                 $('.divboxASearch #AdvBranchCode').val('');
-                $('.divboxASearch #AdvDocumentStatusCode');
+                $('.divboxASearch #AdvDocumentStatusCode').val('');
                 $('.divboxASearch #AdvDocumentOwnerID').val('');
                // $('.divboxASearch #AdvPreparedBy').val('');
                 $('.divboxASearch #AdvAmountFrom').val('');
@@ -104,7 +104,7 @@ function BindOrReloadProductionOrderReportTable(action) {
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "7") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
                     //($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
@@ -257,22 +257,24 @@ function BindOrReloadProductionOrderReportTable(action) {
 
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [8,9] },
-                         { className: "text-left", "targets": [1, 2, 3, 5, 6,7,10] },
-                         { className: "text-center", "targets": [0,4] },
+            columnDefs: [{ className: "text-right", "targets": [7] },
+                         { className: "text-left", "targets": [1, 2, 5, 8,4,10] },
+                         { className: "text-center", "targets": [0,3,6,11] },
                            { "targets": [0], "width": "10%" },
-                           { "targets": [1], "width": "8.5%" },
-                           { "targets": [2], "width": "8.5%" },
-                           { "targets": [3], "width": "5%" },
-                           { "targets": [4], "width": "5%" },
-                           { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "8%" },
-                           { "targets": [7], "width": "15%" },
+                           { "targets": [1], "width": "8%" },
+                           { "targets": [3], "width": "8%" },
+                           { "targets": [6], "width": "5%" },
+                           { "targets": [7], "width": "8%" },
                            { "targets": [8], "width": "5%" },
-                           { "targets": [9], "width": "7.5%" },
-                           { "targets": [10], "width": "7.5%" },
+                           { "targets": [4], "width": "8%" },
+                           { "targets": [5], "width": "11%" },
+                           { "targets": [2], "width": "5%" },
+                           { "targets": [9], "width": "5%" },
+                           { "targets": [10], "width": "5%" },
                            { "targets": [11], "width": "5%" },
-                           { "targets": [12], "width": "10%" },
+                           { "targets": [12], "width": "5%" },
+                           { "targets": [13], "width": "5%" },
+                           { "targets": [14], "width": "7%" },
             ],
             destroy: true,
             rowCallback: function (row, data) {
