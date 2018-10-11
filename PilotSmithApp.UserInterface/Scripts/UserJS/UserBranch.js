@@ -113,20 +113,14 @@ function SetDefaultUserInBranch(this_Obj) {
 
 //Function On Save 
 function SaveChanges() {
-    debugger;
-    var userBranchtbl = _dataTables.UserInBranchTable.row().data();
-    if (userBranchtbl.HasAccess == false) {
-        // alert('Cant perform save without branch');
-        notyAlert('error', 'Cant perform save without branch', 'Warning!');
-    }
-    else {
-        $("#btnSave").trigger('click');
-        if ($('#UserID').val() != "") {
+    $("#btnSave").trigger('click');
+    if ($('#UserID').val() != "") {
 
-            var hasAccessBranchCode = [];
-            $.each($("input[name='HasAccess']:checked"), function () {
-                hasAccessBranchCode.push($(this).val());
-            });
+        var hasAccessBranchCode = [];
+        $.each($("input[name='HasAccess']:checked"), function () {
+            hasAccessBranchCode.push($(this).val());
+        });
+        if (hasAccessBranchCode.length > 0) {
             var userId = $('#UserID').val();
             var defaultBranchCode = $("input[name='IsDefault']:checked").val();
             var data = { "userId": userId, "hasAccess": hasAccessBranchCode.toString(), "isDefault": defaultBranchCode };
@@ -149,8 +143,11 @@ function SaveChanges() {
                     break;
             }
         }
+        else {
+            notyAlert('error', "Minimum one branch access is required!");
+        }
     }
-   
+
 }
 
 //To check the branch isdefault and to set its  HasAccess on HasAccessCheckBox click
