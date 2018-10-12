@@ -17,13 +17,17 @@
     selectListItem.Add(new SelectListItem
     { Text = "Yes", Value = "true", Selected = false });
 }
+@*@{
+    List<SelectListItem> EmptySelectList = new List<SelectListItem>();
+}*@
 <section class="content" id="main">
     <div class="row">
         <div class="form-group col-md-6">
             <div class="col-md-12">&nbsp;</div>
             <div class="col-md-12">
                 <div class="input-group">
-                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()" } })
+                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -62,19 +66,19 @@
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.DocumentTypeCode, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            @Html.DropDownListFor(model => model.DocumentTypeCode, Model.DocumentType.DocumentTypeSelectList,"--Select document type--", new { @class = "form-control BlockEnter newinput" ,@style="width:100%"})
-                        </div>
                     </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.DocumentTypeCode, Model.DocumentType.DocumentTypeSelectList, "--Select document type--", new { @class = "form-control BlockEnter newinput", @style = "width:100%" })
+                    </div>
+                </div>
                 <div class="col-md-6 no-right-padding" title="By default only current level approval pending documents are displayed">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.ShowAll, htmlAttributes: new { @class = "control-label" })
-                       </div>
-                        <div class="col-md-12">
-                            @Html.DropDownListFor(model => model.ShowAll, selectListItem, new { @class = "form-control BlockEnter newinput", @style = "width:100%" })
-                        </div>
                     </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.ShowAll, selectListItem, new { @class = "form-control BlockEnter newinput", @style = "width:100%" })
+                    </div>
+                </div>
                 <div class="col-md-12">&nbsp;</div>
                 <div class="col-md-12 no-left-padding">
                     <div class="col-md-12">
@@ -100,6 +104,7 @@
                         <th>Document Date</th>
                         <th>Approval Level</th>
                         <th>Created By</th>
+                        <th>Document Owner</th>
                         <th>...</th>
                 </thead>
             </table>
@@ -175,4 +180,5 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJs/DocumentApproval/ApproveDocument")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/selectmin")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/AdvanceSelectList")
 }

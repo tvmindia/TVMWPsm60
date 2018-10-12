@@ -33,8 +33,10 @@ function BindOrReloadDocumentApprovals(action) {
         DocumentApprovalAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DocumentTypeViewModel = new Object();
-
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -45,6 +47,12 @@ function BindOrReloadDocumentApprovals(action) {
                 $('#ShowAll').val('false');
                 break;
             case 'Init':
+                break;
+            case 'Search':
+                if ((SearchTerm == SearchValue) && ($('#FromDate').val('') == "") && ($('#ToDate').val('') == "")
+                    && ($('#DocumentTypeCode').val('') == "") && ($('#ShowAll').val()=="")) {
+                    return true;
+                }
                 break;
             case 'Apply':
                 break;
@@ -90,16 +98,17 @@ function BindOrReloadDocumentApprovals(action) {
                     { "data": "DocumentDateFormatted", "defaultContent": "<i>-</i>" },
                     { "data": "ApproverLevel", "defaultContent": "<i>-</i>" },
                     { "data": "DocumentCreatedBy", "defaultContent": "<i>-</i>" },
-                    {
-                        "data": "ApprovalLogID", "orderable": false, render: function (data, type, row) {
+                    { "data": "DocumentOwner", "defaultContent": "<i>-</i>" },
+                   {
+                        "data": "null", "orderable": false, render: function (data, type, row) {
                             debugger;
                             return '<a href="#" class="actionLink" onclick="Edit(this)" ><i class="glyphicon glyphicon-share-alt" aria-hidden="true"></i></a>'
                         }, "defaultContent": "<i>-</i>"
                     }
                 ],
                 columnDefs: [{ "targets": [], "visible": false, "searchable": false },
-                    { className: "text-left", "targets": [2,3] },
-                    { className: "text-center", "targets": [4,5] }],
+                    { className: "text-left", "targets": [3] },
+                    { className: "text-center", "targets": [2,4,5] }],
                 destroy: true,
                 //for performing the import operation after the data loaded
                 initComplete: function (settings, json) {
@@ -112,13 +121,13 @@ function BindOrReloadDocumentApprovals(action) {
                     if (action === 'Export') {
                         if (json.data.length > 0) {
                             if (json.data[0].TotalCount > 1000) {
-                                setTimeout(function () {
+                                //setTimeout(function () {
                                     MasterAlert("info", 'We are able to download maximum 1000 rows of data, There exist more than 1000 rows of data please filter and download')
-                                }, 10000)
+                                //}, 10000)
                             }
                         }
                         $(".buttons-excel").trigger('click');
-                        BindOrReloadQuotationTable();
+                        BindOrReloadDocumentApprovals();
                     }
                 }
             });

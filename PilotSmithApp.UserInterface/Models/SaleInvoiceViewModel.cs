@@ -202,7 +202,6 @@ namespace PilotSmithApp.UserInterface.Models
         public int? OtherChargeCode { get; set; }
         [Required(ErrorMessage = "Charge Amount is missing")]
         [Display(Name = "Charge Amount")]
-        [Remote(action: "CheckChargeAmount", controller: "SaleInvoice", AdditionalFields = "ChargeAmount")]
         public decimal? ChargeAmount { get; set; }
         [Display(Name = "Select Tax Type")]
         public int? TaxTypeCode { get; set; }

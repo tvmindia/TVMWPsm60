@@ -36,12 +36,13 @@
             <div class="col-md-12">&nbsp;</div>
             <div class="col-md-12">
                 <div class="input-group">
-                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()" } })
+                    @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()" , @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
                     <div class="input-group-btn">
-                        <button class="btn searchbtn" type="submit" onclick="BindOrReloadDocumentApprovals('Search')"><i class="fa fa-search" style="font-size:18px;"></i></button>
+                        <button class="btn searchbtn" type="submit" onclick="BindOrReloadApprovalHistory('Search')"><i class="fa fa-search" style="font-size:18px;"></i></button>
                     </div>
                 </div>
             </div>
@@ -122,6 +123,7 @@
                         <th>Approval Level</th>
                         <th>Approval Status</th>
                         <th>Created By</th>
+                        <th>Document Owner</th>
                         <th>...</th>
                 </thead>
             </table>

@@ -808,7 +808,7 @@ function AddOtherExpenseDetailToList() {
     $("#FormOtherExpenseDetail").submit(function () { });
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
         debugger;
-        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() >0)) {
+        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() != "")) {
             var proformaInvoiceOtherExpenseDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();
             proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $('#spanOtherCharge').text() != "" ? $('#spanOtherCharge').text().split("-")[0].trim() : "";
             //  proformaInvoiceOtherExpenseDetailList[_datatablerowindex].OtherCharge.Description = $("#divModelProformaInvoicePopBody #OtherChargeCode").val() != "" ? $("#divModelProformaInvoicePopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
@@ -835,7 +835,7 @@ function AddOtherExpenseDetailToList() {
     }
     else {
         debugger;
-        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() >0)) {
+        if (($('#divModelProformaInvoicePopBody #OtherChargeCode').val() != "") && ($('#divModelProformaInvoicePopBody #ChargeAmount').val() != "")) {
             if (_dataTable.ProformaInvoiceOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.ProformaInvoiceOtherChargesDetailList.clear().rows.add(GetProformaInvoiceOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
                 var proformaInvoiceOtherExpenseDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data();

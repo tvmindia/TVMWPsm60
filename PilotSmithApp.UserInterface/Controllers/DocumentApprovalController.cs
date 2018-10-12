@@ -106,6 +106,12 @@ namespace PilotSmithApp.UserInterface.Controllers
             {
                 Formatting = Formatting.None
             };
+            //if (documentApprovalAdvanceSearchVM.DataTablePaging.Length == -1)
+            //{
+            //    int totalResult = documentApprovalList.Count != 0 ? documentApprovalList[0].TotalCount : 0;
+            //    int filteredResult = documentApprovalList.Count != 0 ? documentApprovalList[0].FilteredCount : 0;
+            //    documentApprovalList = documentApprovalList.Skip(0).Take(filteredResult > 10000 ? 10000 : filteredResult).ToList();
+            //}
             return Json(new
             {
                 draw = model.draw,
@@ -316,10 +322,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset All";
                     toolboxVM.resetbtn.Event = "ResetPendingDocList();";
                     //----added for export button--------------
-                    toolboxVM.PrintBtn.Visible = true;
-                    toolboxVM.PrintBtn.Text = "Export";
-                    toolboxVM.PrintBtn.Title = "Export";
-                    toolboxVM.PrintBtn.Event = "ExportPendingDocs();";
+                    toolboxVM.ExportBtn.Visible = true;
+                    toolboxVM.ExportBtn.Text = "Export";
+                    toolboxVM.ExportBtn.Title = "Export";
+                    toolboxVM.ExportBtn.Event = "ExportPendingDocs();";
                     //---------------------------------------
                     break;
 
@@ -345,10 +351,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset All";
                     toolboxVM.resetbtn.Event = "ResetApprovalHistory();";
                     //---------------------------------------
-                    toolboxVM.PrintBtn.Visible = true;
-                    toolboxVM.PrintBtn.Text = "Export";
-                    toolboxVM.PrintBtn.Title = "Export";
-                    toolboxVM.PrintBtn.Event = "ExportApprovalHistory();";
+                    toolboxVM.ExportBtn.Visible = true;
+                    toolboxVM.ExportBtn.Text = "Export";
+                    toolboxVM.ExportBtn.Title = "Export";
+                    toolboxVM.ExportBtn.Event = "ExportApprovalHistory();";
                     break;
 
                 default:

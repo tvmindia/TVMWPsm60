@@ -84,7 +84,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                         int finalRowsENQ = enquiryworkSheet.Dimension.End.Row;
                         //Convert into a string for the range.
-                        string columnStringENQ = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I" + finalRowsENQ.ToString();
+                        string columnStringENQ = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I" + finalRowsENQ.ToString();
                         //Convert the range to align top
                         enquiryworkSheet.Cells[columnStringENQ].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
@@ -111,7 +111,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         estimateworkSheet.Cells[1, 1].LoadFromCollection(estimateVMListArray.Select(x => new { EstimateNo = x.EstimateNo, EstimateDate = x.EstimateDateFormatted, EnquiryNo = x.Enquiry.EnquiryNo, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, Area = x.Area.Description, ReferredBy = x.ReferencePerson.Name, DocumentOwner = x.UserName, DocumentStatus = x.DocumentStatus.Description, Branch = x.Branch.Description }), true, TableStyles.Light1);
 
                         int finalRowsEST = estimateworkSheet.Dimension.End.Row;
-                        string columnStringEST = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J" + finalRowsEST.ToString(); 
+                        string columnStringEST = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J" + finalRowsEST.ToString(); 
                         estimateworkSheet.Cells[columnStringEST].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         estimateworkSheet.Column(1).AutoFit();
@@ -137,7 +137,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         quotationworkSheet.Cells[1, 1].LoadFromCollection(quotationVMListArray.Select(x => new { QuotationNo = x.QuoteNo, QuotationDate = x.QuoteDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, Area = x.Area.Description, ReferredBy = x.ReferencePerson.Name, DocumentOwner = x.PSAUser.LoginName, DocumentStatus = x.DocumentStatus.Description, Branch = x.Branch.Description, ApprovalStatus = x.ApprovalStatus.Description, EmailSent = x.EmailSentYN == true ? "Yes" : "No" }), true, TableStyles.Light1);
 
                         int finalRowsQUO = quotationworkSheet.Dimension.End.Row;
-                        string columnStringQUO = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,K1.K" + finalRowsQUO.ToString();
+                        string columnStringQUO = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K" + finalRowsQUO.ToString();
                         quotationworkSheet.Cells[columnStringQUO].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         quotationworkSheet.Column(1).AutoFit();
@@ -164,7 +164,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         saleOrderworkSheet.Cells[1, 1].LoadFromCollection(saleOrderVMListArray.Select(x => new { SaleOrderNo = x.SaleOrderNo, SaleOrderDate = x.SaleOrderDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName,  ReferredBy = x.ReferencePerson.Name, QuotationNo=x.Quotation.QuoteNo, EnquiryNo=x.Enquiry.EnquiryNo, Area = x.Area.Description, DocumentOwner = x.PSAUser.LoginName, DocumentStatus = x.DocumentStatus.Description, Branch = x.Branch.Description, ApprovalStatus = x.ApprovalStatus.Description,EmailSent=x.EmailSentYN==true?"Yes":"No" }), true, TableStyles.Light1);
 
                         int finalRowsSOD = saleOrderworkSheet.Dimension.End.Row;
-                        string columnStringSOD = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,K1.K,L1.L,M1.M" + finalRowsSOD.ToString();
+                        string columnStringSOD = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K,L1:L,M1:M" + finalRowsSOD.ToString();
                         saleOrderworkSheet.Cells[columnStringSOD].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         saleOrderworkSheet.Column(1).AutoFit();
@@ -193,7 +193,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionOrderworkSheet.Cells[1, 1].LoadFromCollection(productionOrderVMListArray.Select(x => new { ProductionOrderNo = x.ProdOrderNo,ProductionOrderDate = x.ProdOrderDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, Area = x.Area.Description, DocumentOwner = x.PSAUser.LoginName, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description,  ApprovalStatus = x.ApprovalStatus.Description , EmailSent = x.EmailSentYN==true?"YES":"NO"}), true, TableStyles.Light1);
 
                         int finalRowsPOD = productionOrderworkSheet.Dimension.End.Row;
-                        string columnStringPOD = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J" + finalRowsPOD.ToString();
+                        string columnStringPOD = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J" + finalRowsPOD.ToString();
                         productionOrderworkSheet.Cells[columnStringPOD].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         productionOrderworkSheet.Column(1).AutoFit();
@@ -219,7 +219,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionQCworkSheet.Cells[1, 1].LoadFromCollection(productionQCVMListArray.Select(x => new { ProductionQCNo = x.ProdQCNo, ProductionQCDate = x.ProdQCDateFormatted,ProductionOrderNo = x.ProdOrderNo, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, Area = x.Area.Description,Plant = x.Plant.Description ,DocumentOwner = x.PSAUser.LoginName, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description, ApprovalStatus = x.ApprovalStatus.Description ,EmailSent = x.EmailSentYN == true ? "YES" : "NO" }), true, TableStyles.Light1);
 
                         int finalRowsPQC = productionQCworkSheet.Dimension.End.Row;
-                        string columnStringPQC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,K1.K,L1.L" + finalRowsPQC.ToString();
+                        string columnStringPQC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K,L1:L" + finalRowsPQC.ToString();
                         productionQCworkSheet.Cells[columnStringPQC].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         productionQCworkSheet.Column(1).AutoFit();
@@ -248,7 +248,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         saleInvoiceworkSheet.Cells[1, 1].LoadFromCollection(saleInvoiceVMListArray.Select(x => new { SaleInvoiceNo = x.SaleInvNo, SaleInvoiceDate = x.SaleInvDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName,SaleOrderNo = x.SaleOrder.SaleOrderNo,QuotationNo = x.Quotation.QuoteNo,ProfInvNo=x.ProformaInvoice.ProfInvNo ,Area = x.Area.Description,  DocumentOwner = x.PSAUser.LoginName, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description, ApprovalStatus = x.ApprovalStatus.Description,EmailSent = x.EmailSentYN == true ? "YES" : "NO" }), true, TableStyles.Light1);
 
                         int finalRowsSIV = saleInvoiceworkSheet.Dimension.End.Row;
-                        string columnStringSIV = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,K1.K,L1.L,M1.M" + finalRowsSIV.ToString();
+                        string columnStringSIV = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K,L1:L,M1:M" + finalRowsSIV.ToString();
                         saleInvoiceworkSheet.Cells[columnStringSIV].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         saleInvoiceworkSheet.Column(1).AutoFit();
@@ -277,7 +277,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         serviceCallworkSheet.Cells[1, 1].LoadFromCollection(serviceCallVMListArray.Select(x => new { ServiceCallNo = x.ServiceCallNo, ServiceCallDate = x.ServiceCallDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, Area = x.Area.Description,AttendedBy= x.Employee.Name,ServicedBy=x.ServicedByName,ServiceDate=x.ServiceDateFormatted, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description,ServiceType=x.ServiceType.Name }), true, TableStyles.Light1);
 
                         int finalRowsSRC = serviceCallworkSheet.Dimension.End.Row;
-                        string columnStringSRC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,k1.k" + finalRowsSRC.ToString();
+                        string columnStringSRC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K,L1:L,M1:M" + finalRowsSRC.ToString();
                         serviceCallworkSheet.Cells[columnStringSRC].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
                         serviceCallworkSheet.Column(1).AutoFit();
@@ -305,7 +305,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         }), true, TableStyles.Light1);
 
                         int finalRowsDLC = deliveryChallanworkSheet.Dimension.End.Row;
-                        string columnStringDLC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,K1.K,L1.L" + finalRowsDLC.ToString();
+                        string columnStringDLC = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K,L1:L,M1:M" + finalRowsDLC.ToString();
                         deliveryChallanworkSheet.Cells[columnStringDLC].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
 
@@ -335,7 +335,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         proformaInvoiceworkSheet.Cells[1, 1].LoadFromCollection(proformaInvoiceVMListArray.Select(x => new { ProfInvoiceNo = x.ProfInvNo, ProfInvoiceDate = x.ProfInvDateFormatted, ContactPerson = x.Customer.ContactPerson, CompanyName = x.Customer.CompanyName, SaleOrderNo = x.SaleOrder.SaleOrderNo, QuotationNo = x.Quotation.QuoteNo, Area = x.Area.Description, DocumentOwner = x.PSAUser.LoginName, Branch = x.Branch.Description, DocumentStatus = x.DocumentStatus.Description, ApprovalStatus = x.ApprovalStatus.Description, EmailSent = x.EmailSentYN == true ? "YES" : "NO" }), true, TableStyles.Light1);
 
                         int finalRowsPIV = proformaInvoiceworkSheet.Dimension.End.Row;
-                        string columnStringPIV = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1.I,J1.J,K1.K,L1.L" + finalRowsPIV.ToString();
+                        string columnStringPIV = "A1:A,B1:B,C1:C,D1:D,E1:E,F1:F,G1:G,H1:H,I1:I,J1:J,K1:K,L1:L,M1:M" + finalRowsPIV.ToString();
                         proformaInvoiceworkSheet.Cells[columnStringPIV].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
 
 

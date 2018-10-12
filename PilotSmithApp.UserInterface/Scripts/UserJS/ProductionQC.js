@@ -463,6 +463,10 @@ function AddProductionQCDetailToList() {
             _datatablerowindex = -1;
         }
     }
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover'
+    });
 }
 function EditProductionQCDetail(this_Obj) {
     debugger;

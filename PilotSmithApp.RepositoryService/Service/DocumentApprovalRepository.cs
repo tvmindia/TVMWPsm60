@@ -90,7 +90,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                        // documentApproval.IsNextApprover = (sdr["isNextApprover"].ToString() != "" ? bool.Parse(sdr["isNextApprover"].ToString()) : documentApproval.IsNextApprover);
                                         documentApproval.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : documentApproval.TotalCount);
                                         documentApproval.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : documentApproval.FilteredCount);
-
+                                        documentApproval.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : documentApproval.DocumentOwner);
                                     }
                                     documentApprovalList.Add(documentApproval);
                                 }
@@ -537,7 +537,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         // documentApproval.IsNextApprover = (sdr["isNextApprover"].ToString() != "" ? bool.Parse(sdr["isNextApprover"].ToString()) : documentApproval.IsNextApprover);
                                         documentApproval.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : documentApproval.TotalCount);
                                         documentApproval.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : documentApproval.FilteredCount);
-
+                                        documentApproval.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? sdr["DocumentOwner"].ToString() : documentApproval.DocumentOwner);
                                     }
                                     documentApprovalList.Add(documentApproval);
                                 }

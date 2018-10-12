@@ -70,7 +70,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
         #endregion InsertUpdateProduct
         #region Product Basic Information
-        [AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
+        //[AuthSecurityFilter(ProjectObject = "Product", Mode = "R")]
         public ActionResult ProductBasicInfo(Guid ID)
         {
             ProductViewModel productVM = new ProductViewModel();
