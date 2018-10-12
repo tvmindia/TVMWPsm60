@@ -85,7 +85,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View(documentApprovalAdvanceSearchVM);
         }
 
-        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        //[AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public ActionResult ApprovalHistoryList(string DocType, string DocID)
         {
             ViewBag.DocumentID = DocID;
@@ -154,7 +154,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion GetAllDocumentApproval
 
         #region GetApprovalHistory
-        //[AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
+        [AuthSecurityFilter(ProjectObject = "DocumentApproval", Mode = "R")]
         public string GetApprovalHistory(string documentID, string documentTypeCode)
             {
             try
