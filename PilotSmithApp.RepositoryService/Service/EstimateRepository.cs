@@ -227,6 +227,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateDetail.Unit = new Unit();
                                         estimateDetail.Unit.Description = (sdr["Description"].ToString() != "" ? sdr["Description"].ToString() : estimateDetail.Unit.Description);
                                         estimateDetail.SpecTag = (sdr["SpecTag"].ToString() != "" ? Guid.Parse(sdr["SpecTag"].ToString()) : estimateDetail.SpecTag);
+                                        estimateDetail.ProductModel.ImageURL = (sdr["ImageURL"].ToString() != "" ? sdr["ImageURL"].ToString() : estimateDetail.ProductModel.ImageURL);
                                     }
                                     estimateDetailList.Add(estimateDetail);
                                 }

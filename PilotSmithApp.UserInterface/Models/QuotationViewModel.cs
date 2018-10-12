@@ -158,6 +158,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? IGSTPerc { get; set; }
         public bool IsUpdate { get; set; }
         public Guid SpecTag { get; set; }
+        public string ImageURL { get;  set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public ProductViewModel Product { get; set; }
         public ProductModelViewModel ProductModel { get; set; }
