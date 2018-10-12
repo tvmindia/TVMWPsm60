@@ -290,6 +290,8 @@
     <Content Include="Content\images\Pilot1.png" />
     <Content Include="Content\images\PilotLogo.png" />
     <Content Include="Content\images\production.png" />
+    <Content Include="Content\images\radio-off.png" />
+    <Content Include="Content\images\radio-on.png" />
     <Content Include="Content\images\Recall.png" />
     <Content Include="Content\images\rupee.png" />
     <Content Include="Content\images\sortasc.png" />
