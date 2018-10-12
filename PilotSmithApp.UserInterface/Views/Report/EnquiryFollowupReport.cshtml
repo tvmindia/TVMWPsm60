@@ -24,6 +24,7 @@
             <div class="col-md-12">
                 <div class="input-group">
                     @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -68,8 +69,8 @@
                     <div class="col-md-12">
                         @Html.DropDownListFor(model => model.AdvCustomer, Model.Customer.CustomerList, "Select customer and contact person", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
-                </div>               
-                
+                </div>
+
                 <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvFollowupPriority, htmlAttributes: new { @class = "control-label" })
@@ -85,8 +86,8 @@
                             { Text = "Medium", Value = "2", Selected = false });
                             PrioritySelectList.Add(new SelectListItem
                             { Text = "High", Value = "1", Selected = false });                        }
-                      
-                                @Html.DropDownListFor(model => model.AdvFollowupPriority, PrioritySelectList, "Select priority", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+
+                        @Html.DropDownListFor(model => model.AdvFollowupPriority, PrioritySelectList, "Select priority", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-left-padding">
@@ -94,7 +95,7 @@
                         @Html.LabelFor(model => model.AdvStatus, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @{ 
+                        @{
                             List<SelectListItem> FollowUpStatusSelectList = new List<SelectListItem>();
                             FollowUpStatusSelectList.Add(new SelectListItem
                             { Text = "Open", Value = "Open", Selected = false });
@@ -105,7 +106,7 @@
                         @Html.DropDownListFor(model => model.AdvStatus, FollowUpStatusSelectList, "Select status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-                
+
 
                 <div class="col-md-12">&nbsp;</div>
                 <div class="col-md-12 no-left-padding">
@@ -125,16 +126,16 @@
             <table id="tblEnquiryFollowupReport" class="table table-striped" cellspacing="0" style="width:100%;display:none;">
                 <thead>
                     <tr class="text-center TableHead">
-                        <th>Followup Date</th>
-                        <th>Followup Time</th>
+                        <th class="sortitemdesc">Followup Date & Time <br />Enquiry No</th>
+                        @*<th>Followup Time</th>*@
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Enquiry No</th>
+                        @*<th>Enquiry No</th>*@
                         <th>Enquiry Date</th>
                         <th>Customer</th>
-                        <th>Contact Person</th>
-                        <th>Contact No</th>
-                        <th>Remarks</th>                        
+                        <th>Contact</th>
+                        @*<th>Contact No</th>*@
+                        <th>Remarks</th>
                     </tr>
                 </thead>
             </table>

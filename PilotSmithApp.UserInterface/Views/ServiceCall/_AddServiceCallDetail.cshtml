@@ -82,7 +82,7 @@
                     @Html.LabelFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "control-label " })
                 </div>
                 <div class="col-md-12">
-                    @Html.DropDownListFor(model => model.GuaranteeYN, yesNoList, htmlAttributes: new { @class = "form-control newinput" })
+                    @Html.DropDownListFor(model => model.GuaranteeYN, yesNoList, htmlAttributes: new { @class = "form-control newinput", @style="width: 100%;" })
                     @Html.HiddenFor(model => model.GuaranteeYN, htmlAttributes: new { @class = "" })
                 </div>
             </div>
@@ -93,7 +93,7 @@
                     @Html.LabelFor(model => model.InstalledDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                 </div>
                 <div class="col-md-12">
-                    @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id = "InstalledDate",@autocomple="off" } })
+                    @Html.EditorFor(model => model.InstalledDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @id = "InstalledDate", @autocomplete = "off" } })
                     @Html.ValidationMessageFor(model => model.InstalledDateFormatted, "", new { @class = "text-danger" })
                     @*@Html.ValidationMessage("InstalledDateFormatted", "Installed Date Required", new { @class = "text-danger", @style = "display:none;", @id = "msgInstalledDate" })*@
                 </div>

@@ -210,6 +210,10 @@ namespace PilotSmithApp.RepositoryService.Service
                                     string CompanyAddress3 = (sdr["CompanyAddress3"].ToString() != "" ? sdr["CompanyAddress3"].ToString() : proformaInvoice.CompanyAddress3);
                                     proformaInvoice.CompanyAddress3 = CompanyAddress3.Replace("\\n", "<br />");
                                     proformaInvoice.PurchaseOrdNo = (sdr["PurchaseOrdNo"].ToString() != "" ? sdr["PurchaseOrdNo"].ToString() : proformaInvoice.PurchaseOrdNo);
+                                    proformaInvoice.Quotation = new Quotation();
+                                    proformaInvoice.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : proformaInvoice.Quotation.QuoteNo);
+                                    proformaInvoice.SaleOrder = new SaleOrder();
+                                    proformaInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : proformaInvoice.SaleOrder.SaleOrderNo);
                                 }
                         }
                     }

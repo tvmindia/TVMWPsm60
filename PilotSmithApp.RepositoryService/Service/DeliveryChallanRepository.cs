@@ -170,6 +170,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     deliveryChallan.Customer = new Customer();
                                     deliveryChallan.Customer.CompanyName= (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : deliveryChallan.Customer.CompanyName);
                                     deliveryChallan.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : deliveryChallan.Customer.ID);
+                                    deliveryChallan.SaleOrder = new SaleOrder();
+                                    deliveryChallan.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : deliveryChallan.SaleOrder.SaleOrderNo);
                                 }
                         }
                     }

@@ -36,6 +36,9 @@ function BindOrReloadProductionQCReportTable(action) {
         ProductionQCStandardReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -47,14 +50,14 @@ function BindOrReloadProductionQCReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('7').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');                
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
                 $('.divboxASearch #AdvStateCode').val('').trigger('change');
                 $('.divboxASearch #AdvDistrictCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerCategoryCode').val('').trigger('change');
                 $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');             
-                $('.divboxASearch #AdvReportType').val('').trigger('change');               
+               // $('.divboxASearch #AdvReportType').val('').trigger('change');               
                 $('#DateFilter').val('').trigger('change');
                 $('.divboxASearch #AdvProduct').val('').trigger('change');
                 $('.divboxASearch #AdvProductModel').val('').trigger('change');
@@ -80,7 +83,7 @@ function BindOrReloadProductionQCReportTable(action) {
                 $('.divboxASearch #AdvCustomerCategoryCode').val('');
                 $('.divboxASearch #AdvReferencePersonCode').val('');           
              
-                $('.divboxASearch #AdvReportType').val('');
+               // $('.divboxASearch #AdvReportType').val('');
                 $('#DateFilter').val('');
                 $('.divboxASearch #AdvProduct').val('');
                 $('.divboxASearch #AdvProductModel').val('');
@@ -88,14 +91,14 @@ function BindOrReloadProductionQCReportTable(action) {
 
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
-                    ($('.divboxASearch #AdvPreparedBy').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "7") &&
+                   // ($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
                      ($('.divboxASearch #AdvCountryCode').val() == "") &&
@@ -104,10 +107,10 @@ function BindOrReloadProductionQCReportTable(action) {
                     ($('.divboxASearch #AdvCustomerCategoryCode').val() == "") &&
                     ($('.divboxASearch #AdvReferencePersonCode').val() == "")                 
                    
-                    && ($('.divboxASearch #AdvReportType').val() == "")
+                   // && ($('.divboxASearch #AdvReportType').val() == "")
                     && ($('.divboxASearch #AdvProduct').val() == "")
                     && ($('.divboxASearch #AdvProductModel').val() == "")
-                    && ($('.divboxASearch #AdvPlantCode').val('') == "")
+                    && ($('.divboxASearch #AdvPlantCode').val() == "")
 
                     ) {
                     return true;
@@ -197,19 +200,43 @@ function BindOrReloadProductionQCReportTable(action) {
             pageLength: 8,
             autoWidth: false,
             columns: [
-
-               { "data": "ProductionOrderNo", "defaultContent": "<i>-</i>" },
-               { "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+                {
+                    "data": "ProductionOrderNo", render: function (data, type, row) {
+                        return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.ProdOrderDateFormatted + "</br>" + row.ProductionOrderNo;
+                    }, "defaultContent": "<i>-</i>"
+                },
+               //{ "data": "ProductionOrderNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "ProdOrderDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
                { "data": "ExpectedDelvDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "ReferencePerson.Name", "defaultContent": "<i>-</i>" },
                { "data": "Area.Description", "defaultContent": "<i>-</i>" },
                { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
-               { "data": "Product.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductSpec", "defaultContent": "<i>-</i>" },
-               { "data": "Amount", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Product.Name", render: function (data, type, row) {
+                       return data + "</br>" + row.ProductModel.Name;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Product.Name", "defaultContent": "<i>-</i>" },
+               //{ "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "ProductSpec", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + data + '</p>' + (data == null ? " " : data.substring(0, 110) + (data.length > 110 ? '...' : ''))
+
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "ProductSpec", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Amount", render: function (data, type, row) {
+                       return formatCurrency(row.Amount)
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "ProdOrdQty", "defaultContent": "<i>-</i>" },
                { "data": "ProductionQCNo", "defaultContent": "<i>-</i>" },
                { "data": "ProdQCQty", "defaultContent": "<i>-</i>" },
@@ -218,30 +245,36 @@ function BindOrReloadProductionQCReportTable(action) {
 
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [11] },
-                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 13, 14, 15, 16] },
-                         { className: "text-center", "targets": [] },
-                           { "targets": [0], "width": "8%" },
-                           { "targets": [1], "width": "5%" },
-                           { "targets": [2], "width": "8%" },
+            columnDefs: [{ className: "text-right", "targets": [8] },
+                         { className: "text-left", "targets": [1, 2, 3, 5, 6, 7, 4, 10,13] },
+                         { className: "text-center", "targets": [0,9,11,12] },
+                           { "targets": [0], "width": "8.5%" },
+                           { "targets": [1], "width": "8.5%" },
+                           { "targets": [2], "width": "7%" },
                            { "targets": [3], "width": "5%" },
-                           { "targets": [4], "width": "8%" },
+                           { "targets": [4], "width": "5%" },
                            { "targets": [5], "width": "5%" },
-                           { "targets": [6], "width": "5%" },
-                           { "targets": [7], "width": "5%" },
-                           { "targets": [8], "width": "8%" },
-                           { "targets": [9], "width": "8%" },
-                           { "targets": [10], "width": "13%" },
+                           { "targets": [6], "width": "8.5%" },
+                           { "targets": [7], "width": "15%" },
+                           { "targets": [8], "width": "7%" },
+                           { "targets": [9], "width": "7%" },
+                           { "targets": [10], "width": "5%" },
                            { "targets": [11], "width": "5%" },
-                           { "targets": [12], "width": "8%" },
-                           { "targets": [13], "width": "5%" },
-                           { "targets": [14], "width": "8%" },
-                           { "targets": [15], "width": "8%" },
-                           { "targets": [16], "width": "10%" },
+                           { "targets": [12], "width": "5%" },
+                           { "targets": [13], "width": "8.5%" }
 
 
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;

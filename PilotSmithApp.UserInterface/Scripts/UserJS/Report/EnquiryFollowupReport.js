@@ -29,6 +29,9 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
         EnquiryFollowupReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SerachValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -53,7 +56,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
 
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SerachValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&                   
                     ($('.divboxASearch #AdvCustomer').val() == "") &&                   
                     ($('.divboxASearch #AdvStatus').val() == "") &&
@@ -111,16 +114,25 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
             pageLength: 8,
             autoWidth: false,
             columns: [
-             
-               { "data": "FollowupDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "FollowupTimeFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "FollowupDateFormatted", render: function (data, type, row) {
+                       return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + data + "&nbsp;&nbsp;<img src='../Content/images/time.png' height='10px'>" + "&nbsp;" + row.FollowupTimeFormatted + "</br>" + row.EnquiryNo;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "FollowupDateFormatted", "defaultContent": "<i>-</i>" },
+               //{ "data": "FollowupTimeFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Priority", "defaultContent": "<i>-</i>" },
                { "data": "Status", "defaultContent": "<i>-</i>" },
-               { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
                { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
                { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },         
-               { "data": "ContactNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.ContactPerson", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/phone.png' height='10px'>" + "&nbsp;" + row.ContactNo;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "ContactNo", "defaultContent": "<i>-</i>" },
 
                { "data": "FollowupRemarks", "defaultContent": "<i>-</i>" },
               
@@ -128,18 +140,17 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
 
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
-                         { className: "text-left", "targets": [ 0,1,2,3,4,5, 6, 7,8,9] },
-                         { className: "text-center", "targets": [] },
-                           { "targets": [0], "width": "12%" },
-                           { "targets": [1], "width": "12%" },
+                         { className: "text-left", "targets": [ 5,6] },
+                         { className: "text-center", "targets": [0,1,2,3,4] },
+                           { "targets": [0], "width": "20%" },
+                           { "targets": [1], "width": "10%" },
                            { "targets": [2], "width": "10%" },
-                           { "targets": [3], "width": "10%" },
-                           { "targets": [4], "width": "12%" },
-                           { "targets": [5], "width": "12%" },
-                           { "targets": [6], "width": "12%" },
-                           { "targets": [7], "width": "10%" },
-                           { "targets": [8], "width": "12%" },
-
+                           { "targets": [3], "width": "15%" },
+                           { "targets": [4], "width": "15%" },
+                           { "targets": [5], "width": "10%" },
+                           { "targets": [6], "width": "20%" },
+                           //{ "targets": [7], "width": "10%" },
+                           //{ "targets": [8], "width": "17%" }
                           //{
                           //    targets: [2],
                           //    render: function (data, type, row) {

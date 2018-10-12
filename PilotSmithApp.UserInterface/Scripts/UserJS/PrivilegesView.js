@@ -2,7 +2,7 @@
 var EmptyGuid = "00000000-0000-0000-0000-000000000000";
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
-
+    debugger;
    // ChangeButtonPatchView("Privileges", "ButtonPatchDiv", "List"); //ControllerName,id of the container div,Name of the action
     try {
         var PrivilegesViewModel = new Object();
@@ -12,6 +12,8 @@ $(document).ready(function () {
              order: [],
              searching: true,
              paging: true,
+             autoWidth: false,
+             ordering: false,
              data: GetAllPrivileges(PrivilegesViewModel),
              columns: [
                { "data": "ID" },
@@ -22,7 +24,8 @@ $(document).ready(function () {
                { "data": "commonDetails.CreatedDatestr", "defaultContent": "<i>-</i>" },
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
-                 { className: "text-left", "targets": [1, 2, 3, 4, 5] }
+                 { className: "text-left", "targets": [1, 2, 3, 4] },
+                 {className:"text-centre","targets":[5]}
                 ]
          });
     }

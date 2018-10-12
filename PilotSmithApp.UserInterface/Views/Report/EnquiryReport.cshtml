@@ -23,6 +23,7 @@
             <div class="col-md-12">
                 <div class="input-group">
                     @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -143,7 +144,7 @@
                         @Html.LabelFor(model => model.AdvReferenceTypeCode, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.AdvReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList , "Select reference type", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.DropDownListFor(model => model.AdvReferenceTypeCode, Model.ReferenceType.ReferenceTypeSelectList, "Select reference type", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
                 <div class="col-md-6 no-left-padding">
@@ -153,7 +154,7 @@
                     <div class="col-md-12">
                         @Html.DropDownListFor(model => model.AdvEnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "Select grade", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
-                </div>                
+                </div>
 
                 <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
@@ -178,9 +179,9 @@
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.AdvAmountTo, new { htmlAttributes = new { @class = "form-control newinput", @style = "width:100 % !important" } })
                     </div>
-                </div>                           
+                </div>
 
-             
+
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvCustomerCategoryCode, htmlAttributes: new { @class = "control-label" })
@@ -189,10 +190,10 @@
                         @Html.DropDownListFor(model => model.AdvCustomerCategoryCode, EmptySelectList, "Select Customer Category", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-               
+
 
                 <div class="col-md-12">&nbsp;</div>
-               
+
             </div>
 
             <div class="col-md-12">
@@ -211,10 +212,10 @@
             <table id="tblEnquiryReport" class="table table-striped" cellspacing="0" style="width:100%;display:none;">
                 <thead>
                     <tr class="text-center TableHead">
-                        <th>Enquiry No</th>
-                        <th>Date</th>
+                        <th class="sortitemasc">Enquiry Date &<br />No.</th>
+                        @*<th class="sortitem">Date</th>*@
                         <th>Customer</th>
-                        <th>Contact Person</th>
+                        @*<th>Contact Person</th>*@
                         <th>Requirement Spec.</th>
                         <th>Area</th>
                         <th>Branch</th>
@@ -223,8 +224,8 @@
                         <th>Document Owner</th>
                         <th>Attended By</th>
                         <th>Grade</th>
-                        <th>Amount</th>               
-                       
+                        <th>Amount</th>
+
                     </tr>
                 </thead>
             </table>
@@ -232,6 +233,7 @@
     </div>
 
 </section>
+
 
 
 @using (Html.BeginForm("DownloadExcel", "Report", FormMethod.Post, new { id = "FormExcelExport" }))

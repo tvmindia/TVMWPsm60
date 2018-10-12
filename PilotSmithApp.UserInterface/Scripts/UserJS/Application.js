@@ -12,6 +12,8 @@ $(document).ready(function () {
              order: [],
              searching: true,
              paging: true,
+             autoWidth: false,
+             ordering: false,
              data: GetAllApplication(ApplicationViewModel),
              columns: [
                { "data": "ID" },
@@ -21,7 +23,7 @@ $(document).ready(function () {
              ],
              columnDefs: [{ "targets": [0], "visible": false, "searchable": false },
                  { className: "text-left", "targets": [1] },
-                 { className: "text-center", "targets": [2] }
+                 { className: "text-center", "targets": [2,3] }
              ]
          });
     }

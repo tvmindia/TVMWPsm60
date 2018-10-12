@@ -35,6 +35,9 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
         PendingSaleOrderReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -46,7 +49,7 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('16').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvPreparedBy').val('').trigger('change');
                 $('.divboxASearch #AdvCountryCode').val('').trigger('change');
@@ -60,16 +63,16 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                 $('#ReportType').val("1").trigger('change');
                 $('.divboxASearch #AdvDelFromDate').val('');
                 $('.divboxASearch #AdvDelToDate').val('');
-                $('#DateFilter').val('').trigger('change');             
+                $('#DateFilter').val('').trigger('change');
                 $('#productionOrder')[0].checked = true;
-                
+
 
 
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
-                $('.divboxASearch #AdvToDate').val('');                
+                $('.divboxASearch #AdvToDate').val('');
                 $('.divboxASearch #AdvAreaCode').val('');
                 $('.divboxASearch #AdvCustomer').val('');
                 $('.divboxASearch #AdvBranchCode').val('');
@@ -90,16 +93,16 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                 $('.divboxASearch #AdvProductModel').val('');
                 $('#ReportType').val('1');
                 $('#DateFilter').val('');
-                
+
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm == SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "") &&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "16") &&
                     ($('.divboxASearch #AdvPreparedBy').val() == "") &&
                     ($('.divboxASearch #AdvAmountFrom').val() == "") &&
                     ($('.divboxASearch #AdvAmountTo').val() == "") &&
@@ -111,14 +114,13 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                     ($('.divboxASearch #AdvApprovalStatusCode').val() == "")
                     && ($('.divboxASearch #AdvDelFromDate').val() == "")
                     && ($('.divboxASearch #AdvDelToDate').val() == "")
-                     && ($('.divboxASearch #AdvProduct').val() == "")
-                    && ($('.divboxASearch #AdvProductModel').val() == "")                 
-                
-                    && ($('#ReportType').val() == "1")
+                    && ($('.divboxASearch #AdvProduct').val() == "")
+                    && ($('.divboxASearch #AdvProductModel').val() == "")                                
+                    && ($('#ReportType').val() == "1")||($('#ReportType').val() == "2")
                     &&($('#DateFilter').val() == "")
                     
                     ) {
-                    return true;
+                    return true
                 }
                 break;
             case 'Export':
@@ -180,7 +182,7 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
         PendingSaleOrderReportViewModel.DateFilter = $('#DateFilter').val();
         PendingSaleOrderReportViewModel.AdvProduct = $('.divboxASearch #AdvProduct').val();
         PendingSaleOrderReportViewModel.AdvProductModel = $('.divboxASearch #AdvProductModel').val();
-        
+
         //apply datatable plugin on pending sale order report table
         _dataTable.PendingSaleOrderReportList = $("#tblPendingSaleOrderReport").DataTable(
         {
@@ -202,40 +204,80 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
             pageLength: 8,
             autoWidth: false,
             columns: [
+                {
+                    "data": "SaleOrderNo", render: function (data, type, row) {
+                        return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.SaleOrderDateFormatted + "</br>" + row.SaleOrderNo;
+                    }, "defaultContent": "<i>-</i>"
+                },
+               //{ "data": "SaleOrderNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "SaleOrderDateFormatted", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Product.Name", render: function (data, type, row) {
+                       return data + "</br>" + row.ProductModel.Name;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "Product.Name", "defaultContent": "<i>-</i>" },
+               // { "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
+               //{ "data": "ProductSpec", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "ProductSpec", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + data + '</p>' + (data == null ? " " : data.substring(0, 110) + (data.length > 50 ? '...' : ''))
 
-               { "data": "SaleOrderNo", "defaultContent": "<i>-</i>" },
-               { "data": "SaleOrderDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
-               { "data": "Product.Name", "defaultContent": "<i>-</i>" },
-                { "data": "ProductModel.Name", "defaultContent": "<i>-</i>" },
-               { "data": "ProductSpec", "defaultContent": "<i>-</i>" },
-                { "data": "Qty", "defaultContent": "<i>-</i>" },                
-                 { "data": "PendingQty", "defaultContent": "<i>-</i>" },
+                   }, "defaultContent": "<i>-</i>"
+               },
+               {
+                   "data": "Qty", render: function (data, type, row) {
+                       return data + "&nbsp;" + row.Unit.Description;
+                   }, "defaultContent": "<i>-</i>"
+               },
+                //{ "data": "Qty", "defaultContent": "<i>-</i>" },    
+                {
+                    "data": "PendingQty", render: function (data, type, row) {
+                        return data + "&nbsp;" + row.Unit.Description;
+                    }, "defaultContent": "<i>-</i>"
+                },
+                 //{ "data": "PendingQty", "defaultContent": "<i>-</i>" },
 
-               { "data": "Unit.Description", "defaultContent": "<i>-</i>" },
-                 { "data": "Amount", "defaultContent": "<i>-</i>" },
+               //{ "data": "Unit.Description", "defaultContent": "<i>-</i>" },
+                 {
+                     "data": "Amount", render: function (data, type, row) {
+                         return formatCurrency(row.Amount)
+                     }, "defaultContent": "<i>-</i>"
+                 },
                  { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
-               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },          
-               
+               { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
+
             ],
-            columnDefs: [{ className: "text-right", "targets": [10] },
-                         { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8,9, 11,12] },
-                         { className: "text-center", "targets": [] },
-                           { "targets": [0], "width": "12%" },
-                           { "targets": [1], "width": "12%" },
-                           { "targets": [2], "width": "12%" },
-                           { "targets": [3], "width": "12%" },
-                           { "targets": [4], "width": "12%" },
-                           { "targets": [5], "width": "12%" },
-                           { "targets": [6], "width": "12%" },
-                           { "targets": [7], "width": "12%" },
-                           { "targets": [8], "width": "12%" },
-                           { "targets": [9], "width": "12%" },
-                           { "targets": [10], "width": "12%" },
-                            { "targets": [11], "width": "12%" },
+            columnDefs: [{ className: "text-right", "targets": [6] },
+                         { className: "text-left", "targets": [1, 2, 3, 4, 5, 7,8] },
+                         { className: "text-center", "targets": [0] },
+                           { "targets": [0], "width": "15%" },
+                           { "targets": [1], "width": "15%" },
+                           { "targets": [2], "width": "15%" },
+                           { "targets": [3], "width": "25%" },
+                           { "targets": [4], "width": "5%" },
+                           { "targets": [5], "width": "5%" },
+                           { "targets": [6], "width": "8%" },
+                           { "targets": [7], "width": "7%" },
+                            { "targets": [8], "width":"5%" }
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;
@@ -244,7 +286,7 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                 if (action == undefined) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
-                }               
+                }
             }
         });
 
@@ -288,13 +330,12 @@ function DateFilterOnchange() {
 }
 
 
-function RadioButtonOnChange()
-{
+function RadioButtonOnChange() {
     debugger;
     if ($("#productionOrder").is(':checked')) {
-       var  reportType1 = $("#productionOrder").val();
-       $('#ReportType').val(reportType1);
-     
+        var reportType1 = $("#productionOrder").val();
+        $('#ReportType').val(reportType1);
+
 
     }
     else {
@@ -303,5 +344,5 @@ function RadioButtonOnChange()
 
     }
 
-    BindOrReloadPendingSaleOrderReportTable('Search');
+    BindOrReloadPendingSaleOrderReportTable('Apply');
 }

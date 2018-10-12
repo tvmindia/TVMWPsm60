@@ -29,6 +29,7 @@
             <div class="col-md-12">
                 <div class="input-group">
                     @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -230,7 +231,7 @@
 
 
                 <div class="col-md-12">&nbsp;</div>
-             
+
             </div>
             <div class="col-md-12">&nbsp;</div>
             <div class="col-md-12">
@@ -246,27 +247,27 @@
     <div class="row tableContainer">
         <div class="excelExport" style="display:none;"></div>
         <div class="col-md-12" id="divPendingProductionOrderReport" style="overflow-x:auto;display:none;">
-            <table id="tblPendingProductionOrderReport" class="table table-striped" cellspacing="0" style="width:2200px!important;">
+            <table id="tblPendingProductionOrderReport" class="table table-striped" cellspacing="0" style="width:200%!important;">
                 <thead>
                     <tr class="text-center TableHead">
-                        <th>Prod. Ord. No.</th>
-                        <th>Date</th>
+                        <th class="sortitemasc">Prod. Order Date&<br />No.</th>
+                        @*<th>Date</th>*@
                         <th>Customer</th>
-                        <th>Cont. Person</th>
-                        <th>Exp. Del. Date</th>
+                        @*<th>Cont. Person</th>*@
+                        <th>Expected Del. Date</th>
                         <th>Ref. By</th>
                         <th>Area</th>
                         <th>Plant</th>
-                        <th>Prod. Name</th>
-                        <th>Prod. Model</th>
-                        <th>Prod. Spec.</th>                     
-                        <th>Amt</th>
-                        <th>Prod. Ord. Qty</th>
+                        <th>Product Name</th>
+                        @*<th>Prod. Model</th>*@
+                        <th>Product Spec.</th>
+                        <th>Amount</th>
+                        <th>Prod. Order Qty</th>
                         <th>Sale Ord. No.</th>
                         <th>Sale Ord. Qty.</th>
-                        <th>Pend. Qty</th>
-                        <th>Progress(%)</th> 
-                        <th>Forecast Compl. Date</th>                       
+                        <th>Pending Qty</th>
+                        <th>Progress(%)</th>
+                        <th>Forecast Compl. Date</th>
                     </tr>
                 </thead>
             </table>

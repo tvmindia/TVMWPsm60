@@ -101,9 +101,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Document Owner")]
         public Guid AdvDocumentOwnerID { get; set; }
         public PSAUserViewModel PSAUser { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
         public ReferenceTypeViewModel ReferenceType { get; set; }
         [Display(Name = "Reference Type")]
@@ -256,9 +256,9 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public string QuoteDateFormatted { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
     }
 
@@ -293,9 +293,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Referred By")]
         public int? AdvReferencePersonCode { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }
@@ -371,9 +371,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Referred By")]
         public int? AdvReferencePersonCode { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }
@@ -444,9 +444,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Customer")]
         public string AdvCustomer { get; set; }
         public AreaViewModel Area { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }
@@ -531,9 +531,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Customer")]
         public string AdvCustomer { get; set; }
         public AreaViewModel Area { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }
@@ -614,9 +614,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Production Order To")]
         public string AdvToDate { get; set; }
         public AreaViewModel Area { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }
@@ -693,9 +693,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Production Order To")]
         public string AdvToDate { get; set; }
         public AreaViewModel Area { get; set; }
-        [Display(Name = "Amount <=")]
-        public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }

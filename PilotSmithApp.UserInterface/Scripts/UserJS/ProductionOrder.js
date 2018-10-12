@@ -222,6 +222,7 @@ function EditProductionOrder(this_Obj) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
+           // $('#spanSaleOrderID').text(productionOrder.SaleOrderNo);
             if ($('#IsDocLocked').val() == "True") {
                 debugger;
                 switch ($('#LatestApprovalStatus').val()) {

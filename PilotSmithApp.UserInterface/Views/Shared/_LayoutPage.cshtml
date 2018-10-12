@@ -11,6 +11,40 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/AdminLTE/css/plugins")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/bootstrapdatepicker")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/boot")
+    <style>
+        table tr th {
+            vertical-align: top !important;
+        }
+
+        table tr td {
+            vertical-align: top !important;
+        }
+
+        .sortitemdesc {
+            background-color: #89f5f582;
+            background-image: url("../../Content/images/sortasc.png");
+            background-repeat: no-repeat;
+            background-Position: 95% 75%;
+            text-align: left;
+            border-bottom: 2px solid #2b1313 !important;
+            padding-left: 1.5% !important;
+        }
+
+        .sortitemasc {
+            background-color: #89f5f582;
+            background-image: url("../../Content/images/sortdesc.png");
+            background-repeat: no-repeat;
+            background-Position: 95% 75%;
+            text-align: left;
+            border-bottom: 2px solid #2b1313 !important;
+            padding-left: 1.5% !important;
+        }
+        /*.bottom{
+            position:absolute;
+            bottom:0;
+            width:96%;
+        }*/
+    </style>
     @RenderSection("styles", required: false)
 
 </head>
@@ -372,7 +406,6 @@
         </div>
     </div>
     <!-- ApprovalHistory List end -->
-
     <!-- TakeOwnership -->
 
     <div class="modal fade" id="divModelTakeOwnershipPopUp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -413,7 +446,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="col-md-12">
-                                            @Html.Label("[Note: Document Ownership will be changed to "+ @User.Identity.Name+"]", htmlAttributes: new { @class = "control-label", @style = "font-size: 11px;font-style: italic;" })
+                                            @Html.Label("[Note: Document Ownership will be changed to " + @User.Identity.Name + "]", htmlAttributes: new { @class = "control-label", @style = "font-size: 11px;font-style: italic;" })
                                             <b><span id="spanNewOwner"></span></b>
                                         </div>
                                     </div>
@@ -440,7 +473,6 @@
         </div>
     </div>
     <!-- TakeOwnership end -->
-
     <!-- PRELOADER -->
     <div class="spn_hol" id="divLoader">
         <div class="spinner">
@@ -462,8 +494,16 @@
             opacity: .3,
             alwaysVisible: false,
         });
-    </script>    
+    </script>
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/userpluginjs")
     @RenderSection("scripts", required: false)
 </body>
 </html>
+<script>
+    // for blocking the browser back button
+    history.pushState(null, document.title, location.href);
+    window.addEventListener('popstate', function (event) {
+        history.pushState(null, document.title, location.href);
+        //history.pushState(null, null, 'Back_button_is_not_available');
+    });
+</script>

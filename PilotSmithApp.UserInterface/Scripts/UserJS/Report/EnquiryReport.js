@@ -29,6 +29,9 @@ function BindOrReloadEnquiryReportTable(action) {
         EnquiryReportViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SearchValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -38,7 +41,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvAreaCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');
                 $('.divboxASearch #AdvBranchCode').val('').trigger('change');
-                $('.divboxASearch #AdvDocumentStatusCode').val('').trigger('change');
+                $('.divboxASearch #AdvDocumentStatusCode').val('1').trigger('change');
                 $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
                 $('.divboxASearch #AdvReferencePersonCode').val('').trigger('change');
                 $('.divboxASearch #AdvReferenceTypeCode').val('').trigger('change');
@@ -50,9 +53,7 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvStateCode').val('').trigger('change');
                 $('.divboxASearch #AdvDistrictCode').val('').trigger('change');
                 $('.divboxASearch #AdvCustomerCategoryCode').val('').trigger('change');
-
-                
-                
+                             
                 break;
             case 'Init':
                 $('#SearchTerm').val('');
@@ -73,18 +74,16 @@ function BindOrReloadEnquiryReportTable(action) {
                 $('.divboxASearch #AdvStateCode').val('');
                 $('.divboxASearch #AdvDistrictCode').val('');
                 $('.divboxASearch #AdvCustomerCategoryCode').val('');
-
-                
-                
+                               
                 break;
             case 'Search':
-                if (($('#SearchTerm').val() == "") && ($('.divboxASearch #AdvFromDate').val() == "")
+                if ((SearchTerm==SearchValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&
                     ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvCustomer').val() == "") &&
                     ($('.divboxASearch #AdvAreaCode').val() == "")&&
                     ($('.divboxASearch #AdvBranchCode').val() == "") &&
-                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentStatusCode').val() == "1") &&
                     ($('.divboxASearch #AdvReferencePersonCode').val() == "")&&
                     ($('.divboxASearch #AdvReferenceTypeCode').val() == "") &&
                     ($('.divboxASearch #AdvEnquiryGradeCode').val() == "")&&
@@ -94,9 +93,7 @@ function BindOrReloadEnquiryReportTable(action) {
                     ($('.divboxASearch #AdvCountryCode').val() == "") &&
                     ($('.divboxASearch #AdvStateCode').val() == "") &&
                     ($('.divboxASearch #AdvDistrictCode').val() == "")&&
-                    ($('.divboxASearch #AdvCustomerCategoryCode').val() == "")
-
-                    
+                    ($('.divboxASearch #AdvCustomerCategoryCode').val() == "")                    
                     ) {
                     return true;
                 }
@@ -174,20 +171,20 @@ function BindOrReloadEnquiryReportTable(action) {
             pageLength: 8,
             autoWidth: false,
             columns: [
-               //{
-               //    "data": "EnquiryNo", render: function (data, type, row) {
-               //        return row.EnquiryNo + "</br>" + "<img src='./Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.EnquiryDateFormatted;
-               //    }, "defaultContent": "<i>-</i>"
-               //},
-               { "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
-               { "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
-               { "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
-               //{
-               //    "data": "Customer.CompanyName", render: function (data, type, row) {
-               //        return "<img src='./Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='./Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
-               //    }, "defaultContent": "<i>-</i>"
-               //},
+               {
+                   "data": "EnquiryNo", render: function (data, type, row) {
+                       return "<img src='../Content/images/datePicker.png' height='10px'>" + "&nbsp;" + row.EnquiryDateFormatted + "</br>" + row.EnquiryNo;
+                   }, "defaultContent": "<i>-</i>"
+               },
+               //{ "data": "EnquiryNo", "defaultContent": "<i>-</i>" },
+               //{ "data": "EnquiryDateFormatted", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.CompanyName", "defaultContent": "<i>-</i>" },
+               //{ "data": "Customer.ContactPerson", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Customer.CompanyName", render: function (data, type, row) {
+                       return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
                {
                    "data": "Area.Description", "defaultContent": "<i>-</i>"
@@ -200,7 +197,11 @@ function BindOrReloadEnquiryReportTable(action) {
 
                { "data": "EnquiryGrade.Description", "defaultContent": "<i>-</i>" },
 
-               { "data": "Amount", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "Amount", render: function (data, type, row) {
+                       return formatCurrency(row.Amount)
+                   }, "defaultContent": "<i>-</i>"
+               },
                
 
                  //{
@@ -210,22 +211,20 @@ function BindOrReloadEnquiryReportTable(action) {
                  //},           
                  
             ],
-            columnDefs: [{ className: "text-right", "targets": [12] },
-                         { className: "text-left", "targets": [0, 1, 2,3,4,5,6,7,9,8,10,11] },
-                         { className: "text-center", "targets": [] },
-                           { "targets": [0], "width": "12%" },
-                           { "targets": [1], "width": "12%" },
-                           { "targets": [2], "width": "12%" },
-                           { "targets": [3], "width": "12%" },
-                           { "targets": [4], "width": "12%" },
-                           { "targets": [5], "width": "12%" },
-                           { "targets": [6], "width": "12%" },
-                           { "targets": [7], "width": "12%" },
-                           { "targets": [8], "width": "12%" },
-                           { "targets": [9], "width": "12%" },
-                           { "targets": [10], "width": "12%" },
-                           { "targets": [11], "width": "12%" },
-                           { "targets": [12], "width": "12%" },
+            columnDefs: [{ className: "text-right", "targets": [10] },
+                         { className: "text-left", "targets": [1,2,3,4,5,6,7,9,8] },
+                         { className: "text-center", "targets": [0] },
+                           { "targets": [0], "width": "17%" },
+                           { "targets": [1], "width": "18%" },
+                           { "targets": [2], "width": "20%" },
+                           { "targets": [3], "width": "5%" },
+                           { "targets": [4], "width": "5%" },
+                           { "targets": [5], "width": "5%" },
+                           { "targets": [6], "width": "5%" },
+                           { "targets": [7], "width": "5%" },
+                           { "targets": [8], "width": "5%" },
+                           { "targets": [9], "width": "5%" },
+                           { "targets": [10], "width": "10%" }
 
 
 

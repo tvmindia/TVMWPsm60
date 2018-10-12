@@ -40,8 +40,8 @@ $(document).ready(function () {
              ],
              columnDefs: [{ "targets": [], "visible": false, "searchable": false },
                   { className: "text-right", "targets": [] },
-                   { className: "text-left", "targets": [0,1] },
-             { className: "text-center", "targets": [2] }
+                   { className: "text-left", "targets": [0] },
+             { className: "text-center", "targets": [1,2] }
 
              ]
          });
@@ -114,35 +114,43 @@ function SetDefaultUserInBranch(this_Obj) {
 //Function On Save 
 function SaveChanges() {
     debugger;
-    $("#btnSave").trigger('click');
-    if ($('#UserID').val() != "") {
+    var userBranchtbl = _dataTables.UserInBranchTable.row().data();
+    if (userBranchtbl.HasAccess == false) {
+        // alert('Cant perform save without branch');
+        notyAlert('error', 'Cant perform save without branch', 'Warning!');
+    }
+    else {
+        $("#btnSave").trigger('click');
+        if ($('#UserID').val() != "") {
 
-        var hasAccessBranchCode = [];
-        $.each($("input[name='HasAccess']:checked"), function () {
-            hasAccessBranchCode.push($(this).val());
-        });
-        var userId = $('#UserID').val();
-        var defaultBranchCode = $("input[name='IsDefault']:checked").val();
-        var data = { "userId": userId, "hasAccess": hasAccessBranchCode.toString(), "isDefault": defaultBranchCode };
-        _jsonData = GetDataFromServer("UserInBranch/InserUpdateUserInBranch/", data);
-        debugger;
-        if (_jsonData != '') {
-            _jsonData = JSON.parse(_jsonData);
-            _message = _jsonData.Message;
-            _status = _jsonData.Status;
-            _result = _jsonData.Record;
-        }
-        switch (_status) {
-            case "OK":
-                notyAlert('success', _result.Message);
-                break;
-            case "ERROR":
-                notyAlert('error', _message);
-                break;
-            default:
-                break;
+            var hasAccessBranchCode = [];
+            $.each($("input[name='HasAccess']:checked"), function () {
+                hasAccessBranchCode.push($(this).val());
+            });
+            var userId = $('#UserID').val();
+            var defaultBranchCode = $("input[name='IsDefault']:checked").val();
+            var data = { "userId": userId, "hasAccess": hasAccessBranchCode.toString(), "isDefault": defaultBranchCode };
+            _jsonData = GetDataFromServer("UserInBranch/InserUpdateUserInBranch/", data);
+            debugger;
+            if (_jsonData != '') {
+                _jsonData = JSON.parse(_jsonData);
+                _message = _jsonData.Message;
+                _status = _jsonData.Status;
+                _result = _jsonData.Record;
+            }
+            switch (_status) {
+                case "OK":
+                    notyAlert('success', _result.Message);
+                    break;
+                case "ERROR":
+                    notyAlert('error', _message);
+                    break;
+                default:
+                    break;
+            }
         }
     }
+   
 }
 
 //To check the branch isdefault and to set its  HasAccess on HasAccessCheckBox click

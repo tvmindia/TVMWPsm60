@@ -23,6 +23,9 @@ function BindOrReloadAreaTable(action) {
         AreaAdvanceSearchViewModel = new Object();
         DataTablePagingViewModel = new Object();
         DataTablePagingViewModel.Length = 0;
+        var SerachValue = $('#hdnSearchTerm').val();
+        var SearchTerm = $('#SearchTerm').val();
+        $('#hdnSearchTerm').val($('#SearchTerm').val())
         //switch case to check the operation
         switch (action) {
             case 'Reset':
@@ -31,8 +34,8 @@ function BindOrReloadAreaTable(action) {
             case 'Init':
                 break;
             case 'Search':
-                if ($('#SearchTerm').val() == '') {
-                    return true;
+                if (SearchTerm == SerachValue) {
+                    return false;
                 }
                 break;
             case 'Export':
@@ -51,7 +54,7 @@ function BindOrReloadAreaTable(action) {
                     extend: 'excel',
                     exportOptions:
                                  {
-                                     columns: [ 1, 2, 3, 4]
+                                     columns: [ 0 ,1, 2, 3, 4]
                                  }
                 }],
                 ordering: false,

@@ -14,7 +14,7 @@
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model=> model.ApproverLevel,htmlAttributes:new { @class=""})
+    @Html.HiddenFor(model => model.ApproverLevel, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
@@ -43,8 +43,11 @@
                                 @Html.Label("Estimate", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.EstimateID, Model.EstimateSelectList, "Search Estimate", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnEstimateID').val(this.value)" })
-                                @Html.ValidationMessageFor(model => model.EstimateID, "", new { @class = "text-danger" })
+                                <div class="divEstimateSelectList">
+                                    @*@Html.DropDownListFor(model => model.EstimateID, Model.EstimateSelectList, "Search Estimate", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnEstimateID').val(this.value)" })
+                                      @Html.ValidationMessageFor(model => model.EstimateID, "", new { @class = "text-danger" })*@
+                                    <span class="form-control newinput" id="spanEstimateID" style="background-color:#eeeeee">@Model.EstimateNo</span>
+                                </div>
                             </div>
                             @Html.HiddenFor(model => model.EstimateID, htmlAttributes: new { @class = "", @id = "hdnEstimateID" })
                         </div>
@@ -147,7 +150,7 @@
                     @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Branch.Description</span>
+                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
                         </div>
                     }
                     else
@@ -155,7 +158,7 @@
                         <div class="col-md-12">
                             <div class="divBranchSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            </div>                          
+                            </div>
                         </div>
                     }
                     <!-- This hidden field will keep the information whether the field is required or not -->
@@ -265,10 +268,10 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate||Model.EstimateID!=null)
+                    @if (Model.IsUpdate || Model.EstimateID != null)
                     {
                         <div class="col-md-12">
-                            <span class="form-control newinput"style="background-color:#eeeeee" >@Model.Customer.CompanyName</span>
+                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
                         </div>
                     }
                     else
@@ -278,7 +281,7 @@
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             </div>
                         </div>
-                    }                 
+                    }
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -479,15 +482,15 @@
                 //$('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
                 //$('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
             });
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });        
             </text>
             }
-           @if (!Model.IsUpdate&&Model.EstimateID!=null)
+            @if (!Model.IsUpdate&&Model.EstimateID!=null)
              {
                 <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
             });
-                </text>
+            </text>
              }
         }
         catch (e) {

@@ -118,6 +118,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQC.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionQC.EmailSentYN);
                                         productionQC.Area = new Area();
                                         productionQC.Area.Description = (sdr["Area"].ToString() != "" ? sdr["Area"].ToString() : productionQC.Area.Description);
+                                        productionQC.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString():productionQC.ProdOrderNo);
                                     }
                                     productionQCList.Add(productionQC);
                                 }
@@ -183,6 +184,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionQC.Customer = new Customer();
                                     productionQC.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : productionQC.Customer.CompanyName);
                                     productionQC.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : productionQC.Customer.ID);
+                                    productionQC.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionQC.ProdOrderNo);
                                 }
                         }
                     }

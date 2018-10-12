@@ -106,6 +106,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrder.PSAUser = new PSAUser();
                                         productionOrder.PSAUser.LoginName = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : productionOrder.PSAUser.LoginName);
                                         productionOrder.EmailSentYN= (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionOrder.EmailSentYN);
+                                        productionOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : productionOrder.SaleOrderNo);
                                     }
                                     productionOrderList.Add(productionOrder);
                                 }
@@ -181,6 +182,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     string mailFrom = (sdr["MailFromAddress"].ToString() != "" ? sdr["MailFromAddress"].ToString() : productionOrder.MailFrom);
                                     productionOrder.MailFrom = mailFrom.Replace("\n", "<br />");
                                     productionOrder.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : productionOrder.ApproverLevel);
+                                    productionOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : productionOrder.SaleOrderNo);
                                 }
                         }
                     }

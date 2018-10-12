@@ -26,6 +26,7 @@
             <div class="col-md-12">
                 <div class="input-group">
                     @Html.EditorFor(model => model.SearchTerm, new { htmlAttributes = new { @class = "form-control newinput", @placeholder = "Search....", @onfocus = "CloseAdvanceSearch()", @onkeypress = "RedirectSearchClick(event,this)" } })
+                    @Html.Hidden("hdnSearchTerm")
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
@@ -35,36 +36,36 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3"  style="padding-top:15px;">
+        <div class="col-md-3" style="padding-top:15px;">
             <div class="col-md-12">
                 @*@Html.LabelFor(model => model.DateFilter, htmlAttributes: new { @class = "control-label" })*@
             </div>
             <div class="col-md-12">
                 @{
-                                PSASysCommon pSASysCommon = new PSASysCommon();
-                                DateTime dt = pSASysCommon.GetCurrentDateTime();                              
-                                List <SelectListItem> saleOrderDateRange = new List<SelectListItem>();
-                                saleOrderDateRange.Add(new SelectListItem
-                                { Text = "ALL", Value = "", Selected = true });
-                                saleOrderDateRange.Add(new SelectListItem
-                                { Text = "Last 3 Months", Value =dt.AddMonths(-3).ToString("dd-MMM-yyyy")+"||"+ dt.ToString("dd-MMM-yyyy")});
-                                saleOrderDateRange.Add(new SelectListItem
-                                { Text = "Last 6 Months", Value =dt.AddMonths(-6).ToString("dd-MMM-yyyy") +"||"+ dt.ToString("dd-MMM-yyyy")});
-                                saleOrderDateRange.Add(new SelectListItem
-                                { Text = "Last 12 Months", Value = dt.AddMonths(-12).ToString("dd-MMM-yyyy")+"||"+ dt.ToString("dd-MMM-yyyy")});
+                    PSASysCommon pSASysCommon = new PSASysCommon();
+                    DateTime dt = pSASysCommon.GetCurrentDateTime();
+                    List<SelectListItem> saleOrderDateRange = new List<SelectListItem>();
+                    saleOrderDateRange.Add(new SelectListItem
+                    { Text = "ALL", Value = "", Selected = true });
+                    saleOrderDateRange.Add(new SelectListItem
+                    { Text = "Last 3 Months", Value = dt.AddMonths(-3).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+                    saleOrderDateRange.Add(new SelectListItem
+                    { Text = "Last 6 Months", Value = dt.AddMonths(-6).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+                    saleOrderDateRange.Add(new SelectListItem
+                    { Text = "Last 12 Months", Value = dt.AddMonths(-12).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
 
-                            }
-                            @Html.DropDownListFor(model => model.DateFilter, saleOrderDateRange, "--- Quick Filter ---", new { @class = "form-control newinput ", @style = "width:100 % !important", @onchange = "DateFilterOnchange('Search');", @id = "DateFilter" })
+                }
+                @Html.DropDownListFor(model => model.DateFilter, saleOrderDateRange, "--- Quick Filter ---", new { @class = "form-control newinput ", @style = "width:100 % !important", @onchange = "DateFilterOnchange('Search');", @id = "DateFilter", @autofocus = "autofocus" })
             </div>
         </div>
-       
-            <div class="col-md-3" id="btnPatchSaleOrderList" style="min-height:25px">
 
-                @{
-                    @Html.Action("ChangeButtonStyle", "Report", new { actionType = "List" });
-                }
-            </div>
-        </div>  
+        <div class="col-md-3" id="btnPatchSaleOrderList" style="min-height:25px">
+
+            @{
+                @Html.Action("ChangeButtonStyle", "Report", new { actionType = "List" });
+            }
+        </div>
+    </div>
 
     <div class="divboxASearch">
         <div class="col-md-12 divbox2">
@@ -83,7 +84,7 @@
                         @Html.LabelFor(model => model.AdvToDate, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.AdvToDate, new { htmlAttributes = new { @class = "form-control newinput datepicker"} })
+                        @Html.EditorFor(model => model.AdvToDate, new { htmlAttributes = new { @class = "form-control newinput datepicker" } })
                     </div>
                 </div>
 
@@ -169,7 +170,7 @@
                         @Html.DropDownListFor(model => model.AdvPreparedBy, Model.Employee.EmployeeSelectList, "Select prepared person", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-              
+
 
                 <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
@@ -181,10 +182,10 @@
                 </div>
                 <div class="col-md-6 no-right-padding">
                     <div class="col-md-12">
-                            @Html.LabelFor(model => model.AdvProductModel, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                        </div>@Html.DropDownListFor(model => model.AdvProductModel, Model.ProductModel.ProductModelSelectList, "Select product model", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                        @Html.LabelFor(model => model.AdvProductModel, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                    </div>@Html.DropDownListFor(model => model.AdvProductModel, Model.ProductModel.ProductModelSelectList, "Select product model", new { @class = "form-control newinput ", @style = "width:100 % !important" })
 
 
                 </div>
@@ -241,7 +242,7 @@
                         @Html.DropDownListFor(model => model.AdvDocumentOwnerID, EmptySelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-               
+
 
                 <div class="col-md-12">&nbsp;</div>
                 @*<div class="col-md-12 no-left-padding">
@@ -268,15 +269,15 @@
             <table id="tblSaleOrderReport" class="table table-striped" cellspacing="0" style="width:100%;display:none;">
                 <thead>
                     <tr class="text-center TableHead">
-                        <th>Sale Order No.</th>
-                        <th>Date</th>
+                        <th class="sortitemasc">Sale Order Date &<br />No.</th>
+                        @*<th>Date</th>*@
                         <th>Customer</th>
-                        <th>Contact Person</th>
-                        <th>Product Name</th>
-                        <th>Product Model</th>
+                        @*<th>Contact Person</th>*@
+                        <th>Product</th>
+                        @*<th>Product Model</th>*@
                         <th>Product Spec.</th>
                         <th>Qty</th>
-                        <th>Unit</th>
+                        @*<th>Unit</th>*@
                         <th>Amount</th>
                         <th>Branch</th>
                         <th>Owner</th>
@@ -287,6 +288,8 @@
     </div>
 
 </section>
+
+
 
 @using (Html.BeginForm("DownloadExcel", "Report", FormMethod.Post, new { id = "FormExcelExport" }))
 {

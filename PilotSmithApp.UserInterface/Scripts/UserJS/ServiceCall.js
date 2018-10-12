@@ -225,11 +225,12 @@ function EditServiceCall(this_Obj) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
             }
             else {
-                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",ServiceCall.ID);
             }
             BindServiceCallDetailList(ServiceCall.ID);
             BindServiceCallChargeDetailList(ServiceCall.ID)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
+            $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(ServiceCall.ID);
             CalculateTotal();
@@ -250,6 +251,7 @@ function ResetServiceCall() {
             clearUploadControl();
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
+            $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#hdnCustomerID').val());
             PaintImages($('#ServiceCallForm #ID').val());
         }
         else {
@@ -292,8 +294,10 @@ function EditServiceCallDetail(this_Obj) {
             $('#FormServiceCallDetail #ProductSpec').val(serviceCallDetail.ProductSpec);
             switch (serviceCallDetail.GuaranteeYN) {
                 case true:
+                case 'True':
                     serviceCallDetail.GuaranteeYN = 'True'
                     break;
+                case 'False':
                 case false:
                     serviceCallDetail.GuaranteeYN = 'False'
                     break;
@@ -417,7 +421,12 @@ function BindServiceCallDetailList(id) {
              { "data": "GuaranteeYN", render: function (data, type, row) { if (data === "True" || data === "true" || data === true) { return "Yes" } else if (data === "False" || data === "false" || data === false) { return "No" } else { return "Not Set" } }, "defaultContent": "<i></i>" },
              { "data": "InstalledDateFormatted", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "DocumentStatus.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": null, "orderable": false, render: function (data, type, row) { debugger; return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="' + (row.Spare.Code !== "" ? 'EditServiceCallDetailSpare(this)' : 'EditServiceCallDetail(this)') + '" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-"; }, "defaultContent": "<i></i>" },
+             {
+                 "data": null, "orderable": false, render: function (data, type, row) {
+                     debugger;
+                     return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="' + (row.Spare.Code != "" && row.Spare.Code != null ? 'EditServiceCallDetailSpare(this)' : 'EditServiceCallDetail(this)') + '" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-";
+                 }, "defaultContent": "<i></i>"
+             },
              ],
              columnDefs: [
                  { "targets": [1,4,3,2], "width": "15%" },
@@ -450,7 +459,8 @@ function AddServiceCallDetailToList() {
         $("#FormServiceCallDetail").submit(function () { });
 
         if ($('#FormServiceCallDetail #IsUpdate').val() == 'True') {
-            if (($('#spanProductName').text() != "") && ($('#spanProductModelName').text() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#spanProductModelName')[0].length > 1 && $('#spanProductModelName').val() != "")))
+            //if (($('#spanProductName').text() != "") && ($('#spanProductModelName').text() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').length <= 1 || ($('#spanProductModelName').length > 1 && $('#spanProductModelName').val() != "")))
+            if (($('#spanProductName').text() != "") && ($('#InstalledDate').val() != "") )
             {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
@@ -498,7 +508,7 @@ function AddServiceCallDetailToList() {
             }
         }
         else {
-            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID')[0].length <= 1 || ($('#ProductModelID')[0].length > 1 && $('#ProductModelID').val() != ""))) {
+            if (($('#ProductID').val() != "")  && ($('#InstalledDate').val() != "")) {
                     if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
                     debugger;
@@ -676,9 +686,11 @@ function BindServiceCallChargeDetailList(id) {
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditServiceCallChargeDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteServiceCallChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"},
              ],
              columnDefs: [
-                 //{ "targets": [0], "width": "30%" },
-                 //{ "targets": [1, 2], "width": "20%" },
-                 //{ "targets": [3], "width": "20%" },
+                 { "targets": [0], "width": "35%" },
+                 { "targets": [1], "width": "18%" },
+                 { "targets": [2], "width": "12%" },
+                 { "targets": [3,4,5], "width": "10%" },
+                 { "targets": [6], "width": "5%" },
                  { className: "text-right", "targets": [ 2, 3, 4, 5] },
                  { className: "text-left", "targets": [0,1] },
                  { className: "text-center", "targets": [6] }
@@ -872,7 +884,7 @@ function SaveSuccessServiceCall(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID, function () {
-                    ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit");
+                    ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", _result.ID);
                     $('#lblServiceCallInfo').text(_result.ServiceCallNo);
                     BindServiceCallChargeDetailList(_result.ID);
                     BindServiceCallDetailList(_result.ID);
@@ -880,6 +892,8 @@ function SaveSuccessServiceCall(data, status) {
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
+                    $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#hdnCustomerID').val());
+                    //$('#DocumentID').val(_result.ID);
                 });
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit");
                 BindOrReloadServiceCallTable('Init');
@@ -1026,7 +1040,6 @@ function DeleteServiceCallChargeDetail(ID) {
 function EditRedirectToDocument(id) {
 
     OnServerCallBegin();
-
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + id, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
@@ -1036,7 +1049,7 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", id);
             }
             else {
-                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument");
+                ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",id);
             }
             BindServiceCallDetailList(id);
             BindServiceCallChargeDetailList(id)
@@ -1214,8 +1227,10 @@ function EditServiceCallDetailSpare(this_Obj) {
             $("#FormServiceCallDetailSpare #hdnSpareID").val(serviceCallDetail.SpareID);
             switch (serviceCallDetail.GuaranteeYN) {
                 case true:
+                case 'True':
                     serviceCallDetail.GuaranteeYN = 'True'
                     break;
+                case 'False':
                 case false:
                     serviceCallDetail.GuaranteeYN = 'False'
                     break;

@@ -85,7 +85,10 @@
                                 @Html.Label("Quotation", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })
+                                <div class="divQuotationSelectList">
+                                    <span class="form-control newinput" id="spanQuoteID" style="background-color:#eeeeee">@Model.Quotation.QuoteNo</span>
+                                </div>
+                                @*@Html.DropDownListFor(model => model.QuoteID, Model.QuotationSelectList, "Search Quotation", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnQuoteID').val(this.value)", @disabled = "" })*@
                             </div>
                             @Html.HiddenFor(model => model.QuoteID, htmlAttributes: new { @class = "", @id = "hdnQuoteID" })
                         </div>
@@ -97,7 +100,8 @@
                                 @Html.Label("Enquiry", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
-                                @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)", @disabled = "" })
+                                <span class="form-control newinput" id="spanEnquiryID" style="background-color:#eeeeee">@Model.Enquiry.EnquiryNo</span>
+                                @*@Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)", @disabled = "" })*@
                             </div>
                             @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "", @id = "hdnEnquiryID" })
                         </div>
@@ -602,7 +606,7 @@
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
             });
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });          
             </text>
             }
              @if ((!Model.IsUpdate) && (Model.EnquiryID!=null||Model.QuoteID!=null))
