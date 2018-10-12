@@ -256,6 +256,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                     Product = estimateDetailVM.Product,
                                                     ProductModel = estimateDetailVM.ProductModel,
                                                     Unit = estimateDetailVM.Unit,
+                                                    ImageURL = estimateDetailVM.ProductModel.ImageURL,
                                                     TaxType = new TaxTypeViewModel()
                                                     {
                                                         ValueText = "",
