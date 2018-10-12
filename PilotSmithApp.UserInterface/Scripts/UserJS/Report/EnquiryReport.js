@@ -181,7 +181,11 @@ function BindOrReloadEnquiryReportTable(action) {
                        return "<img src='../Content/images/contact.png' height='10px'>" + "&nbsp;" + (row.Customer.ContactPerson == null ? "" : row.Customer.ContactPerson) + "</br>" + "<img src='../Content/images/organisation.png' height='10px'>" + "&nbsp;" + data;
                    }, "defaultContent": "<i>-</i>"
                },
-               { "data": "RequirementSpec", "defaultContent": "<i>-</i>" },
+               {
+                   "data": "RequirementSpec", render: function (data, type, row) {
+                       return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
+                   }, "defaultContent": "<i>-</i>"
+               },
                { "data": "EnquiryGrade.Description", "defaultContent": "<i>-</i>" },
                {
                    "data": "Area.Description", "defaultContent": "<i>-</i>"
@@ -213,6 +217,15 @@ function BindOrReloadEnquiryReportTable(action) {
                            { "targets": [10], "width": "10%" }
             ],
             destroy: true,
+            rowCallback: function (row, data) {
+                setTimeout(function () {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        'trigger': 'hover',
+                        'placement': 'top'
+                    });
+                }, 500);
+            },
             //for performing the import operation after the data loaded
             initComplete: function (settings, json) {
                 debugger;
