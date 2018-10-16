@@ -467,15 +467,15 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation, IsProformaInvoi
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "Rate", render: function (data, type, row) { return roundoff(parseFloat(data)) }, "defaultContent": "<i></i>"
+                 "data": "Rate", render: function (data, type, row) { return formatCurrency(roundoff(parseFloat(data))) }, "defaultContent": "<i></i>"
              },
-             { "data": "Discount", render: function (data, type, row) { return roundoff(parseFloat(data)) }, "defaultContent": "<i></i>" },
+             { "data": "Discount", render: function (data, type, row) { return formatCurrency(roundoff(parseFloat(data))) }, "defaultContent": "<i></i>" },
              {//Taxable
                  "data": "Rate", render: function (data, type, row) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + Taxable + '" data-content="Net Total : ₹ ' + Total + '<br/> Discount : ₹ -' + Discount + '</p>"/>' + roundoff(parseFloat(Taxable))
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + formatCurrency(Taxable) + '" data-content="Net Total : ₹ ' + formatCurrency(Total) + '<br/> Discount : ₹ -' + formatCurrency(Discount) + '</p>"/>' + formatCurrency(roundoff(parseFloat(Taxable)))
                  }, "defaultContent": "<i></i>"
              },
              {//GST
@@ -490,12 +490,12 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation, IsProformaInvoi
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(SGSTAmt) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
             {//Cess
                 "data": "CessAmt", render: function (data, type, row) {
-                    return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + data
+                    return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + formatCurrency(data)
                 }, "defaultContent": "<i></i>"
             },
             {
@@ -509,7 +509,7 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation, IsProformaInvoi
                     var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
                     var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt) + parseFloat(row.CessAmt))
-                    return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                    return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + formatCurrency(GrandTotal) + '" data-content="Taxable : ₹ ' + formatCurrency(TaxableAmt) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '</p>"/>' + formatCurrency(GrandTotal)
                 }, "defaultContent": "<i></i>"
             },
             {
@@ -978,7 +978,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsP
              {
                  "data": "OtherCharge.SACCode", "defaultContent": "<i></i>"
              },
-             { "data": "ChargeAmount", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+             { "data": "ChargeAmount", render: function (data, type, row) { return formatCurrency(data) }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
@@ -988,7 +988,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsP
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + GSTAmt + '" data-content=" SGST ' + SGST + '% : ₹ ' + roundoff(parseFloat(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + roundoff(parseFloat(CGSTAmt)) + '<br/> IGST ' + IGST + '% : ₹ ' + roundoff(parseFloat(IGSTAmt)) + '</p>"/>' + GSTAmt
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -1008,7 +1008,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsP
                          AddlTax = 0;
                          row.AddlTaxPerc = 0;
                      }
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Additional Tax :' + row.AddlTaxPerc + '%</p>"/>' + roundoff(AddlTax)
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Additional Tax :' + row.AddlTaxPerc + '%</p>"/>' + formatCurrency(roundoff(AddlTax))
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -1022,7 +1022,7 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsP
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt) + parseFloat(row.AddlTaxAmt))
 
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + Total + '" data-content="Charge Amount : ₹ ' + data + '<br/>GST : ₹ ' + GSTAmt + '<br/>Additional Tax : ₹ ' + row.AddlTaxAmt + '</p>"/>' + Total
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + formatCurrency(Total) + '" data-content="Charge Amount : ₹ ' + formatCurrency(data) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '<br/>Additional Tax : ₹ ' + formatCurrency(row.AddlTaxAmt) + '</p>"/>' + formatCurrency(Total)
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':"-" },
@@ -1300,7 +1300,7 @@ function ClearCalculatedFields() {
 
 function CalculateGrandTotal(value) {
     var GrandTotal = roundoff(parseFloat($('#lblGrossAmount').text()) - parseFloat(value != "" ? value : 0))
-    $('#lblGrandTotal').text(GrandTotal);
+    $('#lblGrandTotal').text(formatCurrency(GrandTotal));
 }
 
 

@@ -372,11 +372,11 @@ function BindEnquiryDetailList(id) {
                      return data +" "+ row.Unit.Description
                  }, "defaultContent": "<i></i>"
              },
-             { "data": "Rate", render: function (data, type, row) { return roundoff(data,2) }, "defaultContent": "<i></i>" },
+             { "data": "Rate", render: function (data, type, row) { return formatCurrency(roundoff(data,2)) }, "defaultContent": "<i></i>" },
              {
                  "data": "Rate", render: function (data, type, row) {
 
-                     return roundoff(parseFloat(data) * parseFloat(row.Qty), 2)
+                     return formatCurrency(roundoff(parseFloat(data) * parseFloat(row.Qty), 2))
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEnquiryDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEnquiryDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a> ' : "-" },
