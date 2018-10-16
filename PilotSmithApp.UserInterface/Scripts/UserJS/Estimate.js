@@ -379,21 +379,21 @@ function BindEstimateDetailList(id,IsEnquiry) {
                  }, "defaultContent": "<i></i>"
              },
              //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "CostRate", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i></i>" },
-             { "data": "SellingRate", render: function (data, type, row) { return roundoff(data) }, "defaultContent": "<i></i>" },
+             { "data": "CostRate", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
+             { "data": "SellingRate", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
              { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "TotalCostPrice", render: function (data, type, row)
                  {
                      var Result = roundoff(parseFloat(row.CostRate) * parseFloat(row.Qty));                     
-                     return Result;
+                     return formatCurrency(Result);
                  }, "defaultContent": "<i></i>"
              },
              {
                  "data": "TotalSellingPrice", render: function (data, type, row)
                  {
                      var Result = roundoff(parseFloat(row.SellingRate) * parseFloat(row.Qty));
-                     return Result;
+                     return formatCurrency(Result);
                  }, "defaultContent": "<i></i>"
              },
             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },

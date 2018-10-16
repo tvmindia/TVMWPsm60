@@ -1,17 +1,56 @@
 ﻿@model PilotSmithApp.UserInterface.Models.ProductModelViewModel
+@using PilotSmithApp.DataAccessObject.DTO
+@using SAMTool.DataAccessObject.DTO;
 <div class="col-md-12 no-padding">
     <div class="col-md-12 box-body">
         <ul class="todo-list ui-sortable">
             <li style="border-bottom: 1px solid grey;width:50%;padding:5px 10px 5px 10px;">
                 <span class="control-label">@Html.DisplayNameFor(Model => Model.CostPrice):</span>
                 <!-- todo text -->
-                <span id="spnCostPrice">₹ @Model.CostPrice</span>
+                @if (Session["UserRights"] != null)
+                {
+                    PSASysCommon _pSASysCommon = new PSASysCommon();
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                    if (_permission.SubPermissionList.Count > 0)
+                    {
+                        var code = _permission.SubPermissionList.Where(sub => sub.Name == "Rate").Select(Sub => Sub.AccessCode);
+                        if (code.Contains("RWD"))
+                        {
+                            <span id="spnCostPrice">₹ @Model.CostPrice</span>
+
+                        }
+                    }
+                    else
+                    {
+                        <span id="spnCostPrice">####</span>
+                    }
+                }
+              
             </li>
 
             <li style="border-bottom: 1px solid grey;width:50%;padding:5px 10px 5px 10px;">
                 <span class="control-label">@Html.DisplayNameFor(Model => Model.SellingPrice):</span>
                 <!-- todo text -->
-                <span id="spnSellingPrice">₹ @Model.SellingPrice</span>
+                @if (Session["UserRights"] != null)
+                {
+                    PSASysCommon _pSASysCommon = new PSASysCommon();
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+                    if (_permission.SubPermissionList.Count > 0)
+                    {
+                        var code = _permission.SubPermissionList.Where(sub => sub.Name == "Rate").Select(sub => sub.AccessCode);
+                        if (code.Contains("RWD"))
+                        {
+                            <span id="spnSellingPrice">₹ @Model.SellingPrice</span>
+                        }
+                    }
+                    else
+                    {
+                        <span id="spnSellingPrice">####</span>
+                    }
+                }
+
             </li>
             <li style="border-bottom: 1px solid grey">
                 <span class="control-label">@Html.DisplayNameFor(Model => Model.Specification):</span>
@@ -19,9 +58,11 @@
                 <span id="spnProductName">@Html.Raw(Model.Specification)</span>
             </li>
         </ul>
+
         @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnProductModelUnitCode" })
         @Html.HiddenFor(model => model.StockQty, htmlAttributes: new { @class = "", @id = "hdnProductModelStockQty" })
         @Html.HiddenFor(model => model.Product.HSNCode, htmlAttributes: new { @class = "", @id = "hdnProductHSNCode" })
         @Html.HiddenFor(model => model.ImageURL, htmlAttributes: new { @class = "", @id = "hdnProductModelImage" })
+        @Html.HiddenFor(model=>model.SellingPrice,htmlAttributes:new { @class="",@id="hdnSellingPrice"})
     </div>
 </div>
