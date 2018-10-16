@@ -608,29 +608,10 @@ function AddProductionOrderDetailList() {
 }
 
 function AddProductionOrderDetailToList() {
-    debugger;
-    //$("#FormProductionOrderDetail").submit(function (event) {
-    //    debugger;
-    //    alert('Submitted');
-    //    e.preventDefault();
-    //    var error = false;
-
-    //    $(this).find('.required').each(function () {
-    //        if ($(this).val().length < 1) {
-    //            $(this).addClass('error');
-    //            error = true;
-    //        }
-    //    });
-    //    if (!error) {                     // if not any errors
-    //        $('#FormProductionOrderDetail').submit();  // you submit form
-    //    }
-    //});
-    if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True') {
-        //var item = $(this);
-        //var name = item.closest("tr").find("span[class='text-danger field-validation-error']");
-        if (($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "") && ($('#orderQtyID span').text() == "") && ($('#producedQtyID span').text() == "")) {
-            //if ((parseInt($('#SaleOrderQty').val()) <= parseInt($('#OrderQty').val())) && ((parseInt($('#SaleOrderQty').val()) <= parseInt($('#ProducedQty').val())))) {
-
+    debugger;    
+    //$('#FormProductionOrderDetail').submit();  // you submit form
+    if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True') {        
+        if (($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "") && ($('#orderQtyID span').text() == "") && ($('#producedQtyID span').text() == "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
             debugger;
             var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
             //productionOrderDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -673,16 +654,12 @@ function AddProductionOrderDetailToList() {
             _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
             $('#divModelPopProductionOrder').modal('hide');
             _datatablerowindex = -1;
-            //  }
-            //else {
-            //    $('#msgQty').append('SaleOrder Qty cannot be less than Production or Curr.Prod Order Qty')
-            //}
+            
         }
     }
     else {
-        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "")) {
+        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
             debugger;
-            // if ((parseInt($('#SaleOrderQty').val()) <= parseInt($('#OrderQty').val())) && ((parseInt($('#SaleOrderQty').val()) <= parseInt($('#ProducedQty').val())))) {
             if (_dataTable.ProductionOrderDetailList.rows().data().length === 0) {
                 _dataTable.ProductionOrderDetailList.clear().rows.add(GetProductionOrderDetailListByProductionOrderID(_emptyGuid)).draw(false);
 
@@ -818,6 +795,7 @@ function EditProductionOrderDetail(this_Obj) {
             $('#FormProductionOrderDetail #SaleOrderQty').val(productionOrderDetail.SaleOrderQty);
             $('#FormProductionOrderDetail #hdnSaleOrderIDForDetail').val($('#hdnSaleOrderID').val());
             $('#FormProductionOrderDetail #hdnSaleOrderDetailID').val(productionOrderDetail.SaleOrderDetailID);
+            $('#FormProductionOrderDetail #hdnProductionOrderDetailID').val(productionOrderDetail.ID);
             //$('#FormProductionOrderDetail #hdnPrevProducedQty').val(productionOrderDetail.PrevProducedQty);
             //$('#FormProductionOrderDetail #hdnTotalProducedQty').val(productionOrderDetail.TotalProducedQty);
             $('#FormProductionOrderDetail #ID').val(productionOrderDetail.ID);

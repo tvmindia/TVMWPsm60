@@ -21,6 +21,6 @@ namespace PilotSmithApp.BusinessService.Contract
         object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder);
         Task<bool> ProductionOrderEmailPush(ProductionOrder productionOrder);
         ProductionOrderSummary GetProductionOrderSummaryCount();
-        ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID);
+        ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID, Guid ProductionOrderDetailID);
     }
 }

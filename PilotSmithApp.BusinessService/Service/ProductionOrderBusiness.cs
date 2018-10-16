@@ -132,9 +132,9 @@ namespace PilotSmithApp.BusinessService.Service
             return _productionOrderRepository.GetProductionOrderSummaryCount();
         }
 
-        public ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID)
+        public ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID, Guid ProductionOrderDetailID)
         {
-            return _productionOrderRepository.ValidateProductionOrderDetailOrderQty(SaleOrderDetailID);
+            return _productionOrderRepository.ValidateProductionOrderDetailOrderQty(SaleOrderDetailID, ProductionOrderDetailID);
         }
     }
 }
