@@ -123,7 +123,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "Product Specfication is missing")]
         public string ProductSpec{get;set;}
         [Display(Name ="Order Qty")]
-        [Remote(action: "CheckOrderQty", controller: "ProductionOrder",AdditionalFields = "SaleOrderDetailID")]
+        [Remote(action: "CheckOrderQty", controller: "ProductionOrder",AdditionalFields = "SaleOrderDetailID,ID")]
         public decimal? OrderQty{get;set;}
         [Display(Name = "Produced Qty")]
         [Remote(action: "CheckProducedQty", controller: "ProductionOrder", AdditionalFields = "ProdOrderID,OrderQty,SaleOrderQty")]

@@ -669,7 +669,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion GetProductionOrderSummaryCount
 
         #region ValidateProductionOrderDetailOrderQty
-        public ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID)
+        public ProductionOrderDetail ValidateProductionOrderDetailOrderQty(Guid SaleOrderDetailID, Guid ProductionOrderDetailID)
         {
             ProductionOrderDetail productionOrderDetail = new ProductionOrderDetail();
             try
@@ -685,6 +685,10 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[ValidateProdutionOrderOrderQtyDetail]";
                         cmd.Parameters.Add("@SaleOrderDetailID", SqlDbType.UniqueIdentifier).Value = SaleOrderDetailID;
+                        if(ProductionOrderDetailID != Guid.Empty)
+                        cmd.Parameters.Add("@ProductionOrderDetailID", SqlDbType.UniqueIdentifier).Value = ProductionOrderDetailID;
+                        else
+                            cmd.Parameters.AddWithValue("@ProductionOrderDetailID", DBNull.Value);
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

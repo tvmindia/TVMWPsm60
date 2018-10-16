@@ -5,6 +5,11 @@
     @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.SaleOrderQty, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model=>model.SaleOrderID,htmlAttributes:new { @class="",@id="hdnSaleOrderIDForDetail"})
+    @Html.HiddenFor(model=>model.SaleOrderDetailID,htmlAttributes:new { @class="",@id="hdnSaleOrderDetailID"})
+    @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", @id = "hdnProductionOrderDetailID" })
+    @*@Html.HiddenFor(model => model.PrevProducedQty, htmlAttributes: new { @class = "",@id="hdnPrevProducedQty" })
+    @Html.HiddenFor(model => model.TotalProducedQty, htmlAttributes: new { @class = "" ,@id="hdnTotalProducedQty"})*@
     @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderIDForDetail" })
     @Html.HiddenFor(model => model.SaleOrderDetailID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderDetailID" })
     @Html.HiddenFor(model => model.Rate, htmlAttributes: new { @class = "", @id = "hdnSaleOrderRate" })
@@ -130,10 +135,9 @@
                         @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div id="orderQtyID" class="col-md-12">
-                        @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)", @onchange= "$('#ProducedQty').val(this.value)" } })
                         @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
                     </div>
-                    @*}*@
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
@@ -199,11 +203,9 @@
                         @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div id="orderQtyID" class="col-md-12">
-                        <div class="col-md-12">
                             @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
                             @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
                         </div>
-                    </div>
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
@@ -374,6 +376,12 @@
 <script>
     $(document).ready(function () {
         $.validator.unobtrusive.parse("#FormProductionOrderDetail");
+        $('#OrderQty').change(function () {
+            debugger
+            $('#ProducedQty').val(this.value);
+            $("#producedQtyID span").text("");
+            $("i").removeClass('fa fa-exclamation');
+        });
         try {
             @if (Model.IsUpdate)
         {

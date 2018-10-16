@@ -105,7 +105,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         item.IsDocLocked = item.DocumentOwners.Contains(appUA.UserName);
                         string[] owner = ((!string.IsNullOrEmpty(ConfigurationManager.AppSettings["owners"])) ? ConfigurationManager.AppSettings["owners"].Split(',') : null);
-                        if ((owner != null) && (owner.Any(item.ParentType.Contains)))
+                        if ((owner != null) && (owner.Any(item.ParentType.Equals)))
                         {
                             item.IsDocLocked = true;
                         }

@@ -551,7 +551,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (prodOrderDetailVM.ProducedQty > prodOrderDetailVM.OrderQty)
                 {
                     return Json("<p><span style='vertical-align: 2px'>Produced qty greater than Order qty </span> <i class='fa fa-exclamation' style='font-size:19px; color: red'></i></p>", JsonRequestBehavior.AllowGet);
-                }             
+                }
             }
            
            
@@ -564,8 +564,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckOrderQty(ProductionOrderDetailViewModel prodOrderDetailVM)
         {
-            ProductionOrderDetailViewModel prodOrderDetail = Mapper.Map<ProductionOrderDetail, ProductionOrderDetailViewModel>(_productionOrderBusiness.ValidateProductionOrderDetailOrderQty(prodOrderDetailVM.SaleOrderDetailID));
-            if (prodOrderDetail.SaleOrderQty != 0 && prodOrderDetail.TotalProdOrderQty != prodOrderDetail.SaleOrderQty)
+            ProductionOrderDetailViewModel prodOrderDetail = Mapper.Map<ProductionOrderDetail, ProductionOrderDetailViewModel>(_productionOrderBusiness.ValidateProductionOrderDetailOrderQty(prodOrderDetailVM.SaleOrderDetailID,prodOrderDetailVM.ID));
+            if (prodOrderDetail.SaleOrderQty != 0 && prodOrderDetail.TotalProdOrderQty < prodOrderDetail.SaleOrderQty)
             {
                 var Total = (prodOrderDetailVM.OrderQty + prodOrderDetail.TotalProdOrderQty);
                 if (Total > prodOrderDetail.SaleOrderQty)
