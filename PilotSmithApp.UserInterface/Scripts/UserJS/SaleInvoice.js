@@ -282,7 +282,7 @@ function EditSaleInvoice(this_Obj) {
 function ResetSaleInvoice() {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            debugger;
+            
             if ($('#IsUpdate').val() == "False") {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add", $('#SaleInvoiceForm #ID').val());
             }
@@ -302,14 +302,22 @@ function ResetSaleInvoice() {
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
-    });
+        if ($('#hdnInvoiceType').val() == "SB") {
+            $('#divSaleInvoiceOtherChargesDetailList').hide();
+        }
+    });    
 }
 function SaveSaleInvoice() {
     debugger;
     var saleInvoiceDetailList = _dataTable.SaleInvoiceDetailList.rows().data().toArray();
-    var saleInvoiceOtherChargesDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(saleInvoiceDetailList));
-    $('#OtherChargesDetailJSON').val(JSON.stringify(saleInvoiceOtherChargesDetailList));
+    if ($('#hdnInvoiceType').val() != "SB")
+    {
+        var saleInvoiceOtherChargesDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data().toArray();
+        $('#OtherChargesDetailJSON').val(JSON.stringify(saleInvoiceOtherChargesDetailList));
+    }
+   // var saleInvoiceOtherChargesDetailList = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data().toArray();  
+   // $('#OtherChargesDetailJSON').val(JSON.stringify(saleInvoiceOtherChargesDetailList));
     $('#btnInsertUpdateSaleInvoice').trigger('click');
 }
 function ApplyFilterThenSearch() {
