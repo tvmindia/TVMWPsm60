@@ -611,10 +611,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                 ResultFromJS = JsonConvert.DeserializeObject(proformaInvoiceVM.DetailJSON);
                 ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 proformaInvoiceVM.ProformaInvoiceDetailList = JsonConvert.DeserializeObject<List<ProformaInvoiceDetailViewModel>>(ReadableFormat);
-                ResultFromJS = JsonConvert.DeserializeObject(proformaInvoiceVM.OtherChargesDetailJSON);
-                ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
-                proformaInvoiceVM.ProformaInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<ProformaInvoiceOtherChargeViewModel>>(ReadableFormat);
-
+                if (proformaInvoiceVM.InvoiceType == "RB")
+                {
+                    ResultFromJS = JsonConvert.DeserializeObject(proformaInvoiceVM.OtherChargesDetailJSON);
+                    ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                    proformaInvoiceVM.ProformaInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<ProformaInvoiceOtherChargeViewModel>>(ReadableFormat);
+                }
                 object result = _proformaInvoiceBusiness.InsertUpdateProformaInvoice(Mapper.Map<ProformaInvoiceViewModel, ProformaInvoice>(proformaInvoiceVM));
 
                 if (proformaInvoiceVM.ID == Guid.Empty)

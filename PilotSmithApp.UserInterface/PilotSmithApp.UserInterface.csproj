@@ -294,6 +294,7 @@
     <Content Include="Content\images\radio-on.png" />
     <Content Include="Content\images\Recall.png" />
     <Content Include="Content\images\rupee.png" />
+    <Content Include="Content\images\saleorder.png" />
     <Content Include="Content\images\sortasc.png" />
     <Content Include="Content\images\sortdesc.png" />
     <Content Include="Content\images\SuppPord.png" />
