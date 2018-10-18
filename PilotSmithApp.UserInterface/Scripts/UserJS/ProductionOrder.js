@@ -540,7 +540,8 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
              rowCallback: function (row, data) {
                  debugger;
                  var table = $('#tblProductionOrderDetails').DataTable();
-                 if ((data.ShowRate == true) || (data.ShowAmount == true)) {
+                 //if ((data.ShowRate == true) || (data.ShowAmount == true)) {
+                 if($('#hdnShowRate').val()=="True"){
                      $('#prodordRate').show();
                      table.column(6).visible(true);
                      $('#prodordAmount').show();
@@ -598,7 +599,7 @@ function GetProductionOrderDetailListByProductionOrderID(id, IsSaleOrder) {
 
 function AddProductionOrderDetailList() {
     debugger;
-    $("#divModelProductionOrderPopBody").load("ProductionOrder/AddProductionOrderDetail?update=false", function () {
+    $("#divModelProductionOrderPopBody").load("ProductionOrder/AddProductionOrderDetail?update=false", function () {    
         $('#lblModelPopProductionOrder').text('ProductionOrder Detail')
         if (($('#FormProductionOrderDetail #SaleOrderQty').val() == "0") || ($('#FormProductionOrderDetail #SaleOrderQty').val() == 0)) {
             $('#FormProductionOrderDetail #OrderQty').attr('disabled', 'disabled');
@@ -779,7 +780,7 @@ function AddProductionOrderDetailToList() {
         'trigger': 'hover',
 
     });
-
+   // $.session.remove('Prod');
 }
 
 

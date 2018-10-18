@@ -97,6 +97,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                 }
                 //AppUA appUA = Session["AppUA"] as AppUA;
+                //Session["pro"] = 1;
                 Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
                 if (permission.SubPermissionList.Count > 0)
                 {
@@ -132,6 +133,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderDetailVM = new ProductionOrderDetailViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
             Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+            Session["ProdSession"] = 1;
             if (permission.SubPermissionList.Count > 0)
             {
                 string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
