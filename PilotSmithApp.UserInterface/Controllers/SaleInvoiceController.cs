@@ -404,8 +404,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         CGSTPerc = proformaInvoiceDetailVM.CGSTPerc,
                                                         SGSTPerc = proformaInvoiceDetailVM.SGSTPerc,
                                                         IGSTPerc = proformaInvoiceDetailVM.IGSTPerc,
-                                                        CessAmt = 0,
-                                                        CessPerc = 0,
+                                                        CessAmt = proformaInvoiceDetailVM.CessAmt,
+                                                        CessPerc = proformaInvoiceDetailVM.CessPerc,
                                                         Product = proformaInvoiceDetailVM.Product,
                                                         ProductModel = proformaInvoiceDetailVM.ProductModel,
                                                         Unit = proformaInvoiceDetailVM.Unit,
@@ -731,9 +731,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                 ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
                 ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceDetailViewModel>>(ReadableFormat);
+                if(saleInvoiceVM.InvoiceType=="RB")
+                {
                 ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.OtherChargesDetailJSON);
                 ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceOtherChargeViewModel>>(ReadableFormat);
+                }
                 object result = _saleInvoiceBusiness.InsertUpdateSaleInvoice(Mapper.Map<SaleInvoiceViewModel, SaleInvoice>(saleInvoiceVM));
                 if (saleInvoiceVM.ID == Guid.Empty)
                 {

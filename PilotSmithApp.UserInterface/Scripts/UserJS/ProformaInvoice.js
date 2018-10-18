@@ -276,14 +276,19 @@ function ResetProformaInvoice() {
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
+        if ($('#hdnInvoiceType').val() == "SB") {
+            $('#divProformaInvoiceOtherChargesDetailList').hide();
+        }
     });
 }
 function SaveProformaInvoice() {
     debugger;
     var ProformaInvoiceDetailList = _dataTable.ProformaInvoiceDetailList.rows().data().toArray();
-    var ProformaInvoiceOtherChargesDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(ProformaInvoiceDetailList));
-    $('#OtherChargesDetailJSON').val(JSON.stringify(ProformaInvoiceOtherChargesDetailList));
+    if ($('#hdnInvoiceType').val() != "SB") {
+        var ProformaInvoiceOtherChargesDetailList = _dataTable.ProformaInvoiceOtherChargesDetailList.rows().data().toArray();
+        $('#OtherChargesDetailJSON').val(JSON.stringify(ProformaInvoiceOtherChargesDetailList));
+    }
     $('#btnInsertUpdateProformaInvoice').trigger('click');
     
 }
