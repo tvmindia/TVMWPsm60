@@ -279,7 +279,7 @@ function EditSaleInvoice(this_Obj) {
         }
     });
 }
-function ResetSaleInvoice() {
+function ResetSaleInvoice(event) {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             
@@ -305,6 +305,35 @@ function ResetSaleInvoice() {
         if ($('#hdnInvoiceType').val() == "SB") {
             $('#divSaleInvoiceOtherChargesDetailList').hide();
         }
+
+        if (event.value == "Quotation") {
+            $('#RadioQuoteID').attr('checked', true);
+            $('#divSaleOrderSelectList').hide();
+            $('#divQuotationSelectList').show();
+            $('#divProformaInvoiceSelectList').hide();
+            $('#QuoteID').prop('disabled', false);
+            $('#SaleOrderID').prop('disabled', true);
+            $('#ProfInvID').prop('disabled', true);
+        }
+        else if (event.value == "SaleOrder") {
+            $('#RadioSaleOrderID').attr('checked', true);
+            $('#divSaleOrderSelectList').show();
+            $('#divQuotationSelectList').hide();
+            $('#divProformaInvoiceSelectList').hide();
+            $('#QuoteID').prop('disabled', true);
+            $('#SaleOrderID').prop('disabled', false);
+            $('#ProfInvID').prop('disabled', true);
+        }
+        else if (event.value == "ProformaInvoice") {
+            $('#RadioProfInvID').attr('checked', true);
+            $('#divSaleOrderSelectList').hide();
+            $('#divQuotationSelectList').hide();
+            $('#divProformaInvoiceSelectList').show();
+            $('#QuoteID').prop('disabled', true);
+            $('#SaleOrderID').prop('disabled', true);
+            $('#ProfInvID').prop('disabled', false);
+        }
+        
     });    
 }
 function SaveSaleInvoice() {

@@ -23,13 +23,13 @@
                     <div class="col-md-12" style="font-size:14px">
                         @Html.Label("Create Document From: ")
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true , @tabindex = "-1" }) @Html.Label("Quotation")
+                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true , @tabindex = "-1",@id="RadioQuoteID" }) @Html.Label("Quotation")
                         </span>
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "SaleOrder") @Html.Label("Sale Order")
+                            @Html.RadioButtonFor(model => model.DocumentType, "SaleOrder",new { @id="RadioSaleOrderID"}) @Html.Label("Sale Order")
                         </span>
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "ProformaInvoice") @Html.Label("Proforma Invoice")
+                            @Html.RadioButtonFor(model => model.DocumentType, "ProformaInvoice",new { @id = "RadioProfInvID" }) @Html.Label("Proforma Invoice")
                         </span>
                     </div>
                     if (Model.DocumentType == "Quotation")
@@ -792,10 +792,10 @@
                     BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false, false);
                     BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true, false)
                     CalculateTotal();
-                    $('#DocumentType').prop('disabled', true);
-                    $("input[type=radio][value=Quotation]").attr("disabled", true);
-                    $("input[type=radio][value=ProformaInvoice]").attr("disabled", true);
-                    $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
+                    //$('#DocumentType').prop('disabled', true);
+                    //$("input[type=radio][value=Quotation]").attr("disabled", true);
+                    //$("input[type=radio][value=ProformaInvoice]").attr("disabled", true);
+                    //$("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });
@@ -823,9 +823,9 @@
                     BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true, false);
                     BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false, false)
                     CalculateTotal();
-                    $("input[type=radio][value=SaleOrder]").attr("disabled", true);
-                    $("input[type=radio][value=ProformaInvoice]").attr("disabled", true);
-                    $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
+                    //$("input[type=radio][value=SaleOrder]").attr("disabled", true);
+                    //$("input[type=radio][value=ProformaInvoice]").attr("disabled", true);
+                    //$("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });
@@ -853,9 +853,9 @@
                         BindSaleInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, false, true);
                         BindSaleInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, false, true)
                         CalculateTotal();
-                        $("input[type=radio][value=SaleOrder]").attr("disabled", true);
-                        $("input[type=radio][value=Quotation]").attr("disabled", true);
-                        $("input[type=radio][value=ProformaInvoice]").attr('title', "Proforma Invoice  details has been listed, Reset to continue");
+                        //$("input[type=radio][value=SaleOrder]").attr("disabled", true);
+                        //$("input[type=radio][value=Quotation]").attr("disabled", true);
+                        //$("input[type=radio][value=ProformaInvoice]").attr('title', "Proforma Invoice  details has been listed, Reset to continue");
                         OnServerCallComplete();
                     });
                 });
@@ -874,28 +874,31 @@
         try {
             $('[name="DocumentType"]').change(function () {
                 if (this.value == "Quotation") {
-                    $('#divSaleOrderSelectList').hide();
-                    $('#divQuotationSelectList').show();
-                    $('#divProformaInvoiceSelectList').hide();
-                    $('#QuoteID').prop('disabled', false);
-                    $('#SaleOrderID').prop('disabled', true);
-                    $('#ProfInvID').prop('disabled', true);
+                    ResetSaleInvoice(this);
+                    //$('#divSaleOrderSelectList').hide();
+                    //$('#divQuotationSelectList').show();
+                    //$('#divProformaInvoiceSelectList').hide();
+                    //$('#QuoteID').prop('disabled', false);
+                    //$('#SaleOrderID').prop('disabled', true);
+                    //$('#ProfInvID').prop('disabled', true);
                 }
                 else if (this.value == "SaleOrder") {
-                    $('#divSaleOrderSelectList').show();
-                    $('#divQuotationSelectList').hide();
-                    $('#divProformaInvoiceSelectList').hide();
-                    $('#QuoteID').prop('disabled', true);
-                    $('#SaleOrderID').prop('disabled', false);
-                    $('#ProfInvID').prop('disabled', true);
+                    ResetSaleInvoice(this);
+                    //$('#divSaleOrderSelectList').show();
+                    //$('#divQuotationSelectList').hide();
+                    //$('#divProformaInvoiceSelectList').hide();
+                    //$('#QuoteID').prop('disabled', true);
+                    //$('#SaleOrderID').prop('disabled', false);
+                    //$('#ProfInvID').prop('disabled', true);
                 }
                 else if (this.value == "ProformaInvoice") {
-                    $('#divSaleOrderSelectList').hide();
-                    $('#divQuotationSelectList').hide();
-                    $('#divProformaInvoiceSelectList').show();
-                    $('#QuoteID').prop('disabled', true);
-                    $('#SaleOrderID').prop('disabled', true);
-                    $('#ProfInvID').prop('disabled', false);
+                    ResetSaleInvoice(this);
+                    //$('#divSaleOrderSelectList').hide();
+                    //$('#divQuotationSelectList').hide();
+                    //$('#divProformaInvoiceSelectList').show();
+                    //$('#QuoteID').prop('disabled', true);
+                    //$('#SaleOrderID').prop('disabled', true);
+                    //$('#ProfInvID').prop('disabled', false);
                 }
             });
         }

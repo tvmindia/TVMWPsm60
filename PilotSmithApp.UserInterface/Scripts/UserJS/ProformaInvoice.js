@@ -249,7 +249,7 @@ function EditProformaInvoice(this_Obj) {
        
     });
 }
-function ResetProformaInvoice() {
+function ResetProformaInvoice(event) {
     $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + $('#ProformaInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
@@ -279,8 +279,23 @@ function ResetProformaInvoice() {
         if ($('#hdnInvoiceType').val() == "SB") {
             $('#divProformaInvoiceOtherChargesDetailList').hide();
         }
+        if (event.value == "SaleOrder") {
+            $('#Sale').attr('checked', true);
+            $('#divSaleOrderSelectList').show();
+            $('#divQuotationSelectList').hide();
+            $('#QuoteID').prop('disabled', true);
+            $('#SaleOrderID').prop('disabled', false);
+        }
+        else if (event.value == "Quotation") {
+            $('#Quote').attr('cheked', true);
+            $('#divSaleOrderSelectList').hide();
+            $('#divQuotationSelectList').show();
+            $('#QuoteID').prop('disabled', false);
+            $('#SaleOrderID').prop('disabled', true);
+        }
     });
 }
+
 function SaveProformaInvoice() {
     debugger;
     var ProformaInvoiceDetailList = _dataTable.ProformaInvoiceDetailList.rows().data().toArray();

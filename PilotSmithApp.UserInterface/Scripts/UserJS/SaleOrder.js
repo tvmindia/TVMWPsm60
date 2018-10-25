@@ -304,7 +304,8 @@ function EditSaleOrder(this_Obj) {
         }
     });
 }
-function ResetSaleOrder() {
+function ResetSaleOrder(event) {
+    debugger;
     $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
@@ -360,8 +361,24 @@ function ResetSaleOrder() {
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
+        if (event.value == "Quotation") {
+            $('#RadioQuoteID').attr('checked', true);
+            $('#divEnquirySelectList').hide();
+            $('#divQuotationSelectList').show();
+            $('#QuoteID').prop('disabled', false);
+            $('#EnquiryID').prop('disabled', true);
+        }
+        else if (event.value == "Enquiry") {
+            $('#RadioEnquiryID').attr('checked', true);
+            $('#divEnquirySelectList').show();
+            $('#divQuotationSelectList').hide();
+            $('#QuoteID').prop('disabled', true);
+            $('#EnquiryID').prop('disabled', false);
+        }
     });
 }
+
+
 function SaveSaleOrder() {
     var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(saleOrderDetailList));

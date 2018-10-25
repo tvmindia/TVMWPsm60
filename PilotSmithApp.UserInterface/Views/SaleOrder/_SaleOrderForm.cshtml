@@ -25,10 +25,10 @@
                     <div class="col-md-12" style="font-size:14px">
                         @Html.Label("Create Document From: ")
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true, @tabindex = "-1" }) @Html.Label("Quotation")
+                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true, @tabindex = "-1",@id="RadioQuoteID" }) @Html.Label("Quotation")
                         </span>
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "Enquiry") @Html.Label("Enquiry")
+                            @Html.RadioButtonFor(model => model.DocumentType, "Enquiry",new { @id="RadioEnquiryID"}) @Html.Label("Enquiry")
                         </span>
                     </div>
                     if (Model.DocumentType == "Quotation")
@@ -742,8 +742,8 @@
                     BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true);
                     CalculateTotal();
                     debugger;
-                    $("input[type=radio][value=Enquiry]").attr("disabled", true);
-                    $("input[type=radio][value=Enquiry]").attr('title', "Quotation details has been listed, Reset to continue");
+                  //$("input[type=radio][value=Enquiry]").attr("disabled", true);
+                  //$("input[type=radio][value=Enquiry]").attr('title', "Quotation details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 
@@ -762,8 +762,8 @@
                     BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true, false)
                     BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false);
                     CalculateTotal();
-                    $('#DocumentType').prop('disabled', true);
-                    $("#DocumentType").attr('title', "Enquiry details has been listed, Reset to continue");
+                    //$('#DocumentType').prop('disabled', true);
+                    //$("#DocumentType").attr('title', "Enquiry details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
 
@@ -776,16 +776,18 @@
         try {
             $('[name="DocumentType"]').change(function () {
                 if (this.value == "Quotation") {
-                    $('#divEnquirySelectList').hide();
-                    $('#divQuotationSelectList').show();
-                    $('#QuoteID').prop('disabled', false);
-                    $('#EnquiryID').prop('disabled', true);
+                    ResetSaleOrder(this);
+                    //$('#divEnquirySelectList').hide();
+                    //$('#divQuotationSelectList').show();
+                    //$('#QuoteID').prop('disabled', false);
+                    //$('#EnquiryID').prop('disabled', true);
                 }
                 else if (this.value == "Enquiry") {
-                    $('#divEnquirySelectList').show();
-                    $('#divQuotationSelectList').hide();
-                    $('#QuoteID').prop('disabled', true);
-                    $('#EnquiryID').prop('disabled', false);
+                    ResetSaleOrder(this);
+                    //$('#divEnquirySelectList').show();
+                    //$('#divQuotationSelectList').hide();
+                    //$('#QuoteID').prop('disabled', true);
+                    //$('#EnquiryID').prop('disabled', false);
                 }
             });
         }
