@@ -17,6 +17,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string QuoteRefNo { get; set; }
         public DateTime QuoteDate { get; set; }
         [Display(Name = "Estimate")]
+        [Required(ErrorMessage ="Estimate is missing")]
         public Guid? EstimateID { get; set; }
         [Display(Name = "Select Customer")]
         public Guid? CustomerID { get; set; }

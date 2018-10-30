@@ -17,7 +17,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string DelvChallanRefNo { get; set; }
         public DateTime DelvChallanDate { get; set; }
         [Display(Name = "Sale Order")]
-        [Required(ErrorMessage ="Select Document")]
+        [Required(ErrorMessage ="Sale order is missing")]
         public Guid? SaleOrderID { get; set; }
         [Display(Name = "Prouction Order")]
         [Required(ErrorMessage = "Select Document")]

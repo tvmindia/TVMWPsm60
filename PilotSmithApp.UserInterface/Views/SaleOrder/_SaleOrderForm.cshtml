@@ -45,7 +45,7 @@
 
                         <div class="col-md-12 no-padding" id="divEnquirySelectList" style="display:none;">
                             <div class="col-md-12">
-                                @Html.Label("Search and select a Enquiry", htmlAttributes: new { @class = "control-label" })
+                                @Html.Label("Search and select an Enquiry", htmlAttributes: new { @class = "control-label" })
                             </div>
                             <div class="col-md-12">
                                 @Html.DropDownListFor(model => model.EnquiryID, Model.EnquirySelectList, "Search Enquiry", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEnquiryID').val(this.value)" })
