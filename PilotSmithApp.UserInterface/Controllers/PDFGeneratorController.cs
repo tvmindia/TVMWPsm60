@@ -204,7 +204,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public void Download(PDFToolsViewModel pDFTools)
         {
             string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
-            string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString() + " - " + pDFTools.CustomerName.ToString() + ".pdf");
+            string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString().Replace("/", "").Replace("-", "") + ".pdf");
+            // string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString() + " - " + pDFTools.CustomerName.ToString() + ".pdf");
             StringReader reader = new StringReader(htmlBody.ToString());
             Document pdfDoc = new Document(PageSize.A4, 42.5197f, 28.3465f, 155.732f, 141.732f);
             PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
@@ -239,7 +240,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                 bytes = memoryStream.ToArray();
                 memoryStream.Close();
             }
-            string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString() + " - " + pDFTools.CustomerName.ToString() + ".pdf");
+            string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString().Replace("/", "").Replace("-", "") + ".pdf");
+            //string contentFileName = pDFTools.ContentFileName.ToString() == null ? "Document.pdf" : (pDFTools.ContentFileName.ToString() + " - " + pDFTools.CustomerName.ToString() + ".pdf");
             List<PdfReader> readerList = new List<PdfReader>();
             PdfReader pdfReader = new PdfReader(bytes);
             readerList.Add(pdfReader);

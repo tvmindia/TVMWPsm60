@@ -639,7 +639,7 @@
                 @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContent" })
                 @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContent" })
                 @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
-                @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileName" })
+                @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = Model.QuoteNo, @id = "hdnContentFileName" })
                 @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "",Value=Model.Customer.CompanyName })
                 @Html.HiddenFor(model => model.Customer.CompanyName, htmlAttributes: new { @class = "" })
                 if (Model.LatestApprovalStatus == 4)
