@@ -467,12 +467,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult PrintQuotation(QuotationViewModel quotationVM)
         {
             bool emailFlag = quotationVM.EmailFlag;
+            bool imageInclude = quotationVM.ImageCheck;
             //QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
             quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
             quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
             ViewBag.ImgURL = "http://" + HttpContext.Request.Url.Authority + "/";
             quotationVM.PDFTools = new PDFToolsViewModel();
+            quotationVM.ImageCheck = imageInclude;
             return PartialView("_PrintQuotation", quotationVM);
         }
         #endregion Print Quotation

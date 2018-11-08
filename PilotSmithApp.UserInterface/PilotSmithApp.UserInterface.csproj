@@ -297,7 +297,9 @@
     <Content Include="Content\images\saleorder.png" />
     <Content Include="Content\images\sortasc.png" />
     <Content Include="Content\images\sortdesc.png" />
+    <Content Include="Content\images\soruis.png" />
     <Content Include="Content\images\SuppPord.png" />
+    <Content Include="Content\images\swalimage.png" />
     <Content Include="Content\images\tallyblack.png" />
     <Content Include="Content\images\time.png" />
     <Content Include="Content\images\timeline.png" />
