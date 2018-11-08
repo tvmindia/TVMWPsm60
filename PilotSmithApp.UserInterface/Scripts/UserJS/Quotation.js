@@ -914,12 +914,12 @@ function PrintQuotation() {
 function (isConfirm) {
     debugger;
     if (isConfirm) {
-        $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&&ImageCheck=' + true, function () {
+        $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&ImageCheck=' + true, function () {
             $('#lblModelPrintQuotation').text('Print Quotation');           
             $('#divModelPrintQuotation').modal('show');
         });
     } else {
-        $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&&ImageCheck=' + false, function () {
+        $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&ImageCheck=' + false, function () {
             $('#lblModelPrintQuotation').text('Print Quotation');            
             $('#divModelPrintQuotation').modal('show');
         });
