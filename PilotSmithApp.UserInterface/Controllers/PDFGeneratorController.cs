@@ -220,7 +220,6 @@ namespace PilotSmithApp.UserInterface.Controllers
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.End();
         }
-        [HttpPost]
         public void DownloadWithTerms(PDFToolsViewModel pDFTools)
         {
             string htmlBody = pDFTools.Content == null ? "" : pDFTools.Content.Replace("<br>", "<br/>").ToString().Replace("workAround:image\">", "workAround:image\"/>");
