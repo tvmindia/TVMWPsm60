@@ -60,6 +60,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSAUser PSAUser { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
         public string EstimateNo { get; set; }
+        public bool PrintFlag { get; set; }
     }
     public class QuotationAdvanceSearch
     {

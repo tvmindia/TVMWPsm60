@@ -402,6 +402,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = quotation.MailBodyHeader;
                         cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = quotation.MailBodyFooter;
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = quotation.EmailSentYN;
+                        cmd.Parameters.Add("@IsPrint", SqlDbType.Bit).Value = quotation.PrintFlag;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = quotation.EmailSentTo;
                         cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = quotation.Cc;
                         cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = quotation.Bcc;

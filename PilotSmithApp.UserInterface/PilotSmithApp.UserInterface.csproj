@@ -1132,6 +1132,9 @@
     <Content Include="Views\DashBoard\_EnquiryCountSummary.cshtml" />
     <Content Include="Views\SysSetting\Index.cshtml" />
     <Content Include="Views\SysSetting\_AddSysSetting.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Quotation\_PrintQuotationDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

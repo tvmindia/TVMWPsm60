@@ -897,34 +897,44 @@ function EmailQuotation() {
 }
 function PrintQuotation() {
     debugger;
-    
-    swal({
-        title: "Include images?",
-        text: "This will include images in your quotation print!",
-        //type: "info",
-        showCancelButton: true,
-        confirmButtonClass: "btn btn-openid",
-        cancelButtonClass:"btn btn-openid",
-        confirmButtonText: "Include",
-        cancelButtonText: "Not include",
-        imageUrl: 'Content/images/swalimage.png',
-        closeOnConfirm: true,
-        closeOnCancel: true
-    },
-function (isConfirm) {
+    //$("#divModelPrintPreviewQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + "&PrintFlag=True", function () {
+    //    $('#lblModelPrintPreviewQuotation').text('Print Quotation');
+    //    $('#divModelPrintPreviewQuotation').modal('show');
+    //});
+    $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&ImageCheck=' + false, function () {
+        $('#lblModelPrintQuotation').text('Print Quotation');
+        $('#divModelPrintQuotation').modal('show');
+    });
+    //swal({
+    //    title: "Include images?",
+    //    text: "This will include images in your quotation print!",
+    //    //type: "info",
+    //    showCancelButton: true,
+    //    confirmButtonClass: "btn btn-openid",
+    //    cancelButtonClass:"btn btn-openid",
+    //    confirmButtonText: "Include",
+    //    cancelButtonText: "Not include",
+    //    imageUrl: 'Content/images/swalimage.png',
+    //    closeOnConfirm: true,
+    //    closeOnCancel: true
+    //},
+}
+function PrintPreviewQuotation() {
     debugger;
-    if (isConfirm) {
+    //if (isConfirm) {
+    
         $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&ImageCheck=' + true, function () {
-            $('#lblModelPrintQuotation').text('Print Quotation');           
+            $('#lblModelPrintQuotation').text('Print Quotation');
+            $('#divModelPrintPreviewQuotation').modal('hide');
             $('#divModelPrintQuotation').modal('show');
         });
-    } else {
-        $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&ImageCheck=' + false, function () {
-            $('#lblModelPrintQuotation').text('Print Quotation');            
-            $('#divModelPrintQuotation').modal('show');
-        });
-    }
-});
+    //} else {
+    //    $("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + '&ImageCheck=' + false, function () {
+    //        $('#lblModelPrintQuotation').text('Print Quotation');            
+    //        $('#divModelPrintQuotation').modal('show');
+    //    });
+    //}
+//});
 
 }
 function SendQuotationEmail() {
@@ -967,7 +977,21 @@ function UpdateQuotationEmailInfo() {
     $('#imagecheck').prop("checked")
     $('#FormUpdateQuotationEmailInfo #ID').val($('#QuotationForm #ID').val());
 }
+function UpdateQuotationPrintInfo() {
+    debugger;
+ 
+    $('#imagecheck').prop("checked")
+    $('#HeaderCheck').prop("checked")
+    $('#FormUpdateQuotationPrintInfo #ID').val($('#QuotationForm #ID').val());
 
+    
+    // $('#FormPrintQuotation').submit();
+    //$("#divModelPrintQuotationBody").load("Quotation/PrintQuotation?ID=" + $('#QuotationForm #ID').val() + "&PrintFlag=false", function () {
+        
+    //  //  $('#divModelPrintPreviewQuotation').modal('hide');
+    //   // $('#divModelPrintQuotation').modal('show');
+    //    });
+}
 //function ChangeValueCheckBox(element) {
 //    debugger;
 //    if (element.checked) {
@@ -989,7 +1013,54 @@ function DownloadQuotation() {
     //var customerName = $("#QuotationForm #CustomerID option:selected").text();
     //$('#hdnCustomerName').val(customerName);   
 }
+function SaveSuccessUpdateQuotationPrintInfo(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                //MasterAlert("success", _result.Message)
+               
+                $("#divQuotationPrintcontainer").load("Quotation/PrintDetailQuotation?ID=" + $('#QuotationForm #ID').val() + "&ImageCheck=" + $('#imagecheck').prop("checked"), function () {
+                    //$('#lblModelPrintQuotation').text('Print Quotation');
+                    var bodyContent = $('#divQuotationPrintcontainer').html();
+                    var headerContent = $('#hdnHeadContentPrint').html();
+                    $('#hdnContentPrint').val(bodyContent);
+                    $('#hdnHeadContentPrint').val(headerContent);
+                    var customerName = $("#QuotationForm #CustomerID option:selected").text();
+                    $('#hdnCustomerNamePrint').val(customerName);
 
+                    //$('#lblModelPrintQuotation').text('Print Quotation');
+                    // $('#divQuotationPrintcontainer').show();
+                   
+                    if ($('#HeaderCheck').prop("checked") == true) {
+                        $('#hdnPrintFlag').val(false);
+                        $('#FormPrintQuotation').submit();
+                    }
+                    else {
+                        $('#hdnPrintFlag').val(true);
+                        $('#FormPrintQuotation').submit();
+                    }
+                  
+                });
+                break;
+            case "ERROR":
+                //MasterAlert("success", _message)
+                $('#divModelEmailQuotation').modal('hide');
+                break;
+            default:
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
 function SaveSuccessUpdateQuotationEmailInfo(data, status) {
     try {
         debugger;
@@ -1004,6 +1075,7 @@ function SaveSuccessUpdateQuotationEmailInfo(data, status) {
                 $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=False" + "&ImageCheck=" + $('#imagecheck').prop("checked"), function () {
                     $('#lblModelEmailQuotation').text('Email Attachment')
                 });
+
                 break;
             case "ERROR":
                 //MasterAlert("success", _message)

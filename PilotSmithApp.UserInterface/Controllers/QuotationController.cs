@@ -444,6 +444,42 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion UpdateQuotationEmailInfo
+        #region UpdateQuotationPrintInfo
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public string UpdateQuotationPrintInfo(QuotationViewModel quotationVM)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                quotationVM.PSASysCommon = new PSASysCommonViewModel();
+                quotationVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                quotationVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                quotationVM.IsPrint = true;
+               
+                object result = _quotationBusiness.UpdateQuotationEmailInfo(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
+             
+                if (quotationVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+
+        #endregion UpdateQuotationPrintInfo
         #region Email Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult EmailQuotation(QuotationViewModel quotationVM)
@@ -466,16 +502,35 @@ namespace PilotSmithApp.UserInterface.Controllers
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult PrintQuotation(QuotationViewModel quotationVM)
         {
-            bool emailFlag = quotationVM.EmailFlag;
+            bool printFlag = quotationVM.PrintFlag;
+            bool ImageCheck = quotationVM.ImageCheck;
             bool imageInclude = quotationVM.ImageCheck;
             //QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
             quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
             quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
+            quotationVM.PrintFlag = printFlag;
+            quotationVM.ImageCheck = ImageCheck;
             ViewBag.ImgURL = "http://" + HttpContext.Request.Url.Authority + "/";
             quotationVM.PDFTools = new PDFToolsViewModel();
             quotationVM.ImageCheck = imageInclude;
             return PartialView("_PrintQuotation", quotationVM);
+        }
+        public ActionResult PrintDetailQuotation(QuotationViewModel quotationVM)
+        {
+            bool printFlag = quotationVM.PrintFlag;
+            bool ImageCheck = quotationVM.ImageCheck;
+            bool imageInclude = quotationVM.ImageCheck;
+            //QuotationViewModel quotationVM = new QuotationViewModel();
+            quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
+            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
+            quotationVM.PrintFlag = printFlag;
+            quotationVM.ImageCheck = ImageCheck;
+            ViewBag.ImgURL = "http://" + HttpContext.Request.Url.Authority + "/";
+            quotationVM.PDFTools = new PDFToolsViewModel();
+            quotationVM.ImageCheck = imageInclude;
+            return PartialView("_PrintQuotationDetail", quotationVM);
         }
         #endregion Print Quotation
         #region EmailSent

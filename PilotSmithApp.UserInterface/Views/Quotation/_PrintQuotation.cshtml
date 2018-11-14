@@ -7,8 +7,48 @@
     IsLetterHeadSelectList.Add(new SelectListItem
     { Text = "Letter head", Value = "False", Selected = false });
 }
+
+<div style="padding:0px 30px 0px 30px;">
+    @{
+
+        using (Ajax.BeginForm("UpdateQuotationPrintInfo", "Quotation", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessUpdateQuotationPrintInfo", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormUpdateQuotationPrintInfo" }))
+        {
+            @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+            <table style="width:100%;font-size:12px">
+                <tr>
+                    <td colspan="6">
+                        @Html.LabelFor(model => model.MailBodyHeader, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
+                        @Html.TextAreaFor(model => model.MailBodyHeader, 4, 0, new { @class = "form-control newinput" })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        @Html.LabelFor(model => model.MailBodyFooter, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
+                        @Html.TextAreaFor(model => model.MailBodyFooter, 4, 0, new { @class = "form-control newinput" })
+                    </td>
+                </tr>
+            </table>
+                <div class="col-md-12" style="padding:0px;">
+                    <div class="col-md-4" style="margin-top:2%;margin-left:0px !important;padding:0px;">
+                        @Html.Label("Include Product Images:", new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                        @Html.CheckBoxFor(model => model.ImageCheck, new { @checked = "checked", @id = "imagecheck" })
+                    </div>
+                    <div class="col-md-4" style="margin-top:2%;margin-left:0px !important;padding:0px;">
+                        @Html.Label("Print on LetterHead:", new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                        @Html.CheckBoxFor(model => model.HeaderCheck, new { @checked = "checked", @id = "HeaderCheck" })
+                    </div>
+                    <div class="col-md-4 modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="UpdateQuotationPrintInfo()">Save & Print <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                    </div>
+
+                </div>
+        }
+    }
+    <br />
+</div>
+
 <div id="divQuotationPrintcontainer" style="display:none;">
-    @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
+    @*@{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
         var tot = "";
         PSASysCommon pSASysCommon = new PSASysCommon();}
     <table style="width:100%;font-size:12px">
@@ -271,18 +311,18 @@
                 }
             </tr>
         </tbody>
-    </table>
+    </table>*@
 
 
 </div>
-<table style="width:100%;margin-top:15%;">
+@*<table style="width:100%;margin-top:15%;">
     <thead>
         <tr><th colspan="2"></th></tr>
     </thead>
     <tbody>
         <tr><td align="center"><a onclick="PostPrint(1)"><img class="printdoc" src="~/Content/images/LetterHeadSelect.jpg" style="width:80%" /></a></td><td align="center"><a onclick="PostPrint(0)"><img class="printdoc" src="~/Content/images/LetterHeadSelect_Blank.jpg" style="width:80%" /></a></td></tr>
     </tbody>
-</table>
+</table>*@
 @using (Html.BeginForm("PrintPDFWithTerms", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormPrintQuotation", target = "_blank" }))
 {
     @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentPrint" })
@@ -299,6 +339,7 @@
 
 <script>
     $(document).ready(function () {
+        debugger;
         var bodyContent = $('#divQuotationPrintcontainer').html();
         var headerContent = $('#hdnHeadContentPrint').html();
         $('#hdnContentPrint').val(bodyContent);
@@ -306,17 +347,17 @@
         var customerName = $("#QuotationForm #CustomerID option:selected").text();
         $('#hdnCustomerNamePrint').val(customerName);
     });
-    function PostPrint(val) {
-        debugger;
-        if (val == 1) {
-            $('#hdnPrintFlag').val(true);
-            $('#FormPrintQuotation').submit();
-        }
-        if (val == 0) {
-            $('#hdnPrintFlag').val(false);
-            $('#FormPrintQuotation').submit();
-        }
-        $('#divModelPrintQuotation').modal('hide');
-    }
+    //function PostPrint(val) {
+    //    debugger;
+    //    if (val == 1) {
+    //        $('#hdnPrintFlag').val(true);
+    //        $('#FormPrintQuotation').submit();
+    //    }
+    //    if (val == 0) {
+    //        $('#hdnPrintFlag').val(false);
+    //        $('#FormPrintQuotation').submit();
+    //    }
+    //    $('#divModelPrintQuotation').modal('hide');
+    //}
 </script>
 
