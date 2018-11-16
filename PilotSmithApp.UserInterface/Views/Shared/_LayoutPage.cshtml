@@ -48,8 +48,8 @@
     @RenderSection("styles", required: false)
 
 </head>
-<body class="hold-transition skin-green-light sidebar-mini">
-    <div class="wrapper">
+<body class="hold-transition skin-green-light fixed sidebar-mini sidebar-mini-expand-feature" style="height: auto; min-height: 100%;">
+    <div class="wrapper" style="height: auto; min-height: 100%;">
         <header class="main-header">
             <a href="@Url.Action("Index", "Dashboard")" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -57,13 +57,14 @@
                 <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg"><img src="~/Content/images/logo1New.png" /></span>
             </a>
+            
             <!-- Header Navbar: style can be found in header.less -->
-            <nav class="navbar navbar-fixed-top">
+            <nav class="navbar navbar-static-top">
                 <!-- Sidebar toggle button-->
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
-                <span class="main-header title">@ViewBag.Title</span>
+                <span class="title">@ViewBag.Title</span>
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
@@ -171,7 +172,7 @@
         @Html.Action("_MenuNavBar", "DynamicUI")
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper" style="margin-top:4%;min-height:88vh!important;">
+        <div class="content-wrapper" style="min-height:88vh!important;">
             <div class="container-fluid">
                 @RenderBody()
 
@@ -485,7 +486,7 @@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrap")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/bootstrapdatepicker")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/AdminLTE")
-    <script>
+    @*<script>
 
         $('.sidebar-menu').slimscroll({
             //Add your options here
@@ -494,7 +495,7 @@
             opacity: .3,
             alwaysVisible: false,
         });
-    </script>
+    </script>*@
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/userpluginjs")
     @RenderSection("scripts", required: false)
 </body>
