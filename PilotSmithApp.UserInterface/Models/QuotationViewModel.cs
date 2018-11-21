@@ -102,6 +102,9 @@ namespace PilotSmithApp.UserInterface.Models
         public bool HeaderCheck { get; set; } = true;
         public bool PrintFlag { get; set; }
         public bool IsPrint { get; set; }
+        public Guid? CopyFrom { get; set; }
+        public string CopyQuoteNo { get; set; }
+
     }
     public class QuotationAdvanceSearchViewModel
     {

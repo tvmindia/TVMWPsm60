@@ -14,6 +14,7 @@ $(document).ready(function () {
                 EditQuotation(this);
         });
         if ($('#RedirectToDocument').val() != "") {
+            debugger
             if ($('#RedirectToDocument').val() === _emptyGuid) {
                 AddQuotation();
             }
@@ -163,7 +164,10 @@ function BindOrReloadQuotationTable(action) {
                    }, "defaultContent": "<i>-</i>"
                },
 
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotation(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditQuotation(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true" data-title="Edit"></i></a>' },
+               //{ "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="CopyQuotation(this)" style="color: #DB8B0B;" ><i class="fa fa-copy" aria-hidden="true" title="Copy and Create new Quotation"></i></a>' },
+           { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="CopyQuotation(this)" style="color: #DB8B0B;" ><i class="fa fa-copy" aria-hidden="true" data-title="Copy and Create" ></i></a>' },
+          
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
                           { className: "text-left", "targets": [0, 1, 2, 3, 4, 5] },
@@ -174,6 +178,7 @@ function BindOrReloadQuotationTable(action) {
                             { "targets": [4], "width": "15%" },
                             { "targets": [5], "width": "22%" },
                             { "targets": [6], "width": "3%" },
+                            { "targets": [7], "width": "3%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -224,7 +229,19 @@ function EditQuotation(this_Obj) {
     OnServerCallBegin();
     var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
     //this will return form body(html)
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + Quotation.ID, function (responseTxt, statusTxt, xhr) {
+    var str;
+    if (Quotation.CopyFrom != _emptyGuid)
+    {
+        str = "Quotation/CopyQuotationForm?copyFrom=&id=" + Quotation.ID;
+    }
+    else
+    {
+        str = "Quotation/QuotationForm?id=" + Quotation.ID;
+    }
+    //str = "Quotation/QuotationForm?id=";
+    //str = "Quotation/CopyQuotation?id="
+    $("#divQuotationForm").load(str , function (responseTxt, statusTxt, xhr) {
+        debugger;
         if (statusTxt == "success") {
             debugger;
             OnServerCallComplete();
@@ -269,6 +286,29 @@ function EditQuotation(this_Obj) {
             clearUploadControl();
             PaintImages(Quotation.ID);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+}
+
+function CopyQuotation(this_Obj) {
+    debugger;
+    OnServerCallBegin();
+    var Quotation = _dataTable.QuotationList.row($(this_Obj).parents('tr')).data();
+    $("#divQuotationForm").load("Quotation/CopyQuotationForm?copyFrom=" + Quotation.ID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblQuotationInfo').text('<<Quotation No.>>');
+            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
+           // $('#hdnQuoteNo').val(Quotation.QuoteNo);
+            BindQuotationDetailList(Quotation.ID);
+            BindQuotationOtherChargesDetailList(Quotation.ID);
+            CalculateTotal();
+            clearUploadControl();
+            PaintImages(Quotation.ID);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -328,6 +368,7 @@ function ResetQuotation() {
     });
 }
 function SaveQuotation() {
+    debugger;
     var quotationDetailList = _dataTable.QuotationDetailList.rows().data().toArray();
     $('#DetailJSON').val(JSON.stringify(quotationDetailList));
     var otherChargesDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data().toArray();
@@ -342,6 +383,7 @@ function ApplyFilterThenSearch() {
 function SaveSuccessQuotation(data, status) {
     try {
         debugger;
+        var str;
         var _jsonData = JSON.parse(data)
         //message field will return error msg only
         _message = _jsonData.Message;
@@ -350,7 +392,16 @@ function SaveSuccessQuotation(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID, function () {
+                if (_result.CopyFrom != _emptyGuid)
+                {
+                    str = "Quotation/CopyQuotationForm?copyFrom=&id=" +  _result.ID ;
+                  
+                 } 
+                else
+                {
+                    str="Quotation/QuotationForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID
+                }
+                $("#divQuotationForm").load(str, function () {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                     $('#lblQuotationInfo').text(_result.QuotationNo);
                     BindQuotationDetailList(_result.ID);
@@ -431,7 +482,7 @@ function BindQuotationOtherChargesDetailList(id) {
              columns: [
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "OtherCharge.SACCode", "defaultContent": "<i></i>" },
-             { "data": "ChargeAmount", render: function (data, type, row) { return formatCurrency(data) }, "defaultContent": "<i></i>" },
+             { "data": "ChargeAmount", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
              {
                  "data": "ChargeAmount", render: function (data, type, row) {
                      debugger;
@@ -1456,9 +1507,25 @@ function CalculateTotal() {
 function EditRedirectToDocument(id) {
     debugger;
     OnServerCallBegin();
+    var result;
+    var data = { "id": id };
+    _jsonData = GetDataFromServer("Quotation/GetQuotation/", data);
+    if (_jsonData != '') {
+        _jsonData = JSON.parse(_jsonData);
+        result = _jsonData.Record;
+    }
+
+    var str;
+    if (result.copyFrom != _emptyGuid) {
+        str = "Quotation/CopyQuotationForm?copyFrom=&id=" + id;
+    }
+    else {
+        str = "Quotation/QuotationForm?id=" + id;
+    }
+
 
     //this will return form body(html)
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+    $("#divQuotationForm").load(str, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();

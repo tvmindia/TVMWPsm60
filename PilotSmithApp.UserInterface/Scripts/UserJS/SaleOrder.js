@@ -169,18 +169,20 @@ function BindOrReloadSaleOrderTable(action) {
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="CopySaleOrder(this)" style="color: #DB8B0B;" ><i class="fa fa-copy" aria-hidden="true" data-title="Copy and Create" ></i></a>' },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
                          { className: "text-left", "targets": [0, 1, 2, 3, 4, 5, 6] },
-                         { className: "text-center", "targets": [7] },
+                         { className: "text-center", "targets": [7,8] },
                            { "targets": [0], "width": "12%" },
                            { "targets": [1], "width": "12%" },
                            { "targets": [2], "width": "12%" },
                            { "targets": [3], "width": "9%" },
                            { "targets": [4], "width": "9%" },
                            { "targets": [5], "width": "13%" },
-                           { "targets": [6], "width": "22%" },
+                           { "targets": [6], "width": "23%" },
                            { "targets": [7], "width": "5%" },
+                             { "targets": [8], "width": "5%" },
             ],
             destroy: true,
             //for performing the import operation after the data loaded
@@ -255,8 +257,19 @@ function EditSaleOrder(this_Obj) {
     debugger;
     OnServerCallBegin();
     var SaleOrder = _dataTable.SaleOrderList.row($(this_Obj).parents('tr')).data();
+
+    var str;
+    if (SaleOrder.CopyFrom != _emptyGuid) {
+        str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + SaleOrder.ID;
+    }
+    else {
+        str = "SaleOrder/SaleOrderForm?id=" + SaleOrder.ID;
+    }
+
+
+
     //this will return form body(html)
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + SaleOrder.ID , function (responseTxt, statusTxt, xhr) {
+    $("#divSaleOrderForm").load(str, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -304,6 +317,30 @@ function EditSaleOrder(this_Obj) {
         }
     });
 }
+
+function CopySaleOrder(this_Obj) {
+    debugger;
+    OnServerCallBegin();
+    var SaleOrder = _dataTable.SaleOrderList.row($(this_Obj).parents('tr')).data();
+    $("#divSaleOrderForm").load("SaleOrder/CopySaleOrderForm?copyFrom=" + SaleOrder.ID, function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == "success") {
+            OnServerCallComplete();
+            openNav();
+            $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
+            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+            BindSaleOrderDetailList(SaleOrder.ID, false, false);
+            BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
+            // $('#hdnQuoteNo').val(Quotation.QuoteNo);
+            CalculateTotal();
+            clearUploadControl();
+            PaintImages(SaleOrder.ID);
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+}
+
 function ResetSaleOrder(event) {
     debugger;
     $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() , function (responseTxt, statusTxt, xhr) {
@@ -394,6 +431,7 @@ function ApplyFilterThenSearch() {
 function SaveSuccessSaleOrder(data, status) {
     try {
         debugger;
+        var str;
         var _jsonData = JSON.parse(data)
         //message field will return error msg only
         _message = _jsonData.Message;
@@ -402,7 +440,15 @@ function SaveSuccessSaleOrder(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID, function () {
+                if (_result.CopyFrom != _emptyGuid) {
+                    str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + _result.ID;
+
+                }
+                else {
+                    str = "SaleOrder/SaleOrderForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID
+                }
+
+                $("#divSaleOrderForm").load(str, function () {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
                     BindSaleOrderDetailList(_result.ID, false, false);
                     BindSaleOrderOtherChargesDetailList(_result.ID, false);
@@ -1473,9 +1519,23 @@ function CalculateTotal() {
 function EditRedirectToDocument(id) {
     debugger;
     OnServerCallBegin();
+    var result;
+    var data = { "id": id };
+    _jsonData = GetDataFromServer("SaleOrder/GetSaleOrder/", data);
+    if (_jsonData != '') {
+        _jsonData = JSON.parse(_jsonData);
+        result = _jsonData.Record;
+    }
 
+    var str;
+    if (result.copyFrom != _emptyGuid) {
+        str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + id;
+    }
+    else {
+        str = "SaleOrder/SaleOrderForm?id=" + id;
+    }
     //this will return form body(html)
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+    $("#divSaleOrderForm").load(str, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();

@@ -20,38 +20,39 @@ namespace PilotSmithApp.UserInterface.Controllers
     {
         AppConst _appConstant = new AppConst();
         PSASysCommon _pSASysCommon = new PSASysCommon();
-        IQuotationBusiness _quotationBusiness;       
+        IQuotationBusiness _quotationBusiness;
         IEstimateBusiness _estimateBusiness;
-        ICommonBusiness _commonBusiness;       
-        IDocumentStatusBusiness _documentStatusBusiness;        
+        ICommonBusiness _commonBusiness;
+        IDocumentStatusBusiness _documentStatusBusiness;
         SecurityFilter.ToolBarAccess _tool;
 
-        public QuotationController(IQuotationBusiness quotationBusiness,           
+        public QuotationController(IQuotationBusiness quotationBusiness,
             IEstimateBusiness estimateBusiness,
-            ICommonBusiness commonBusiness,            
-            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool
+            ICommonBusiness commonBusiness,
+            IDocumentStatusBusiness documentStatusBusiness, SecurityFilter.ToolBarAccess tool
             )
         {
-            _quotationBusiness = quotationBusiness;           
+            _quotationBusiness = quotationBusiness;
             _estimateBusiness = estimateBusiness;
-            _commonBusiness = commonBusiness;            
-            _documentStatusBusiness = documentStatusBusiness;           
-            _tool = tool;   
-           
+            _commonBusiness = commonBusiness;
+            _documentStatusBusiness = documentStatusBusiness;
+            _tool = tool;
+
         }
         // GET: Quotation
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.ID = id;
+          
             QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();
             quotationAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
-            quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");         
-            return View(quotationAdvanceSearchVM);           
+            quotationAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");
+            return View(quotationAdvanceSearchVM);
         }
         #region Quotation Form
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public ActionResult QuotationForm(Guid id,Guid? estimateID)
+        public ActionResult QuotationForm(Guid id, Guid? estimateID)
         {
             QuotationViewModel quotationVM = null;
             try
@@ -60,13 +61,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(id));
                     quotationVM.IsUpdate = true;
-                    
+
                     AppUA appUA = Session["AppUA"] as AppUA;
                     quotationVM.IsDocLocked = quotationVM.DocumentOwners.Contains(appUA.UserName);
                     quotationVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(estimateID);
 
                 }
-                else if(id==Guid.Empty&&estimateID==null)
+                else if (id == Guid.Empty && estimateID == null)
                 {
                     quotationVM = new QuotationViewModel();
                     quotationVM.IsUpdate = false;
@@ -81,9 +82,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     //quotationVM.Customer.CompanyName = "-";
                     quotationVM.IsDocLocked = false;
                 }
-                else if(id == Guid.Empty && estimateID != null)
+                else if (id == Guid.Empty && estimateID != null)
                 {
-                    EstimateViewModel estimateVM = Mapper.Map<Estimate,EstimateViewModel>(_estimateBusiness.GetEstimate((Guid)estimateID));
+                    EstimateViewModel estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate((Guid)estimateID));
                     quotationVM = new QuotationViewModel();
                     quotationVM.IsUpdate = false;
                     quotationVM.ID = Guid.Empty;
@@ -113,6 +114,68 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_QuotationForm", quotationVM);
         }
         #endregion Quotation Form
+        #region Copy Quotation 
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public ActionResult CopyQuotationForm(Guid? copyFrom, Guid? id)
+        {
+            QuotationViewModel quotationVM = null;
+            try
+            {
+                if (id == null)
+                {
+                    quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation((Guid)copyFrom));
+                    ViewBag.QuoteNo = quotationVM.QuoteNo;
+                    quotationVM.CopyFrom = quotationVM.ID;
+                    quotationVM.ID = Guid.Empty;
+                    quotationVM.QuoteNo = null;
+                    quotationVM.DocumentStatus.Description = "-";
+                    quotationVM.LatestApprovalStatus = null;
+                    quotationVM.EmailSentYN = null;
+                    quotationVM.Branch.Description = "-";
+                    quotationVM.IsUpdate = false;
+                }
+                else
+                {
+                    quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation((Guid)id));
+                    quotationVM.IsUpdate = true;
+
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    quotationVM.IsDocLocked = quotationVM.DocumentOwners.Contains(appUA.UserName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return PartialView("_CopyQuotation", quotationVM);
+        }
+        #endregion Copy Quotation 
+
+
+        #region Get Quotation 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public string GetQuotation(Guid? id)
+        {
+          //  QuotationViewModel quotationVM = null;
+           
+
+            try
+            {
+                object result = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation((Guid)id));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion Get Quotation 
+
+
         #region Quotation Detail Add
         public ActionResult AddQuotationDetail(bool update)
         {
@@ -165,7 +228,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         {
                             Description = null,
                         },
-                        TaxType=new TaxTypeViewModel()
+                        TaxType = new TaxTypeViewModel()
                         {
                             ValueText = "",
                         }
@@ -200,10 +263,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     {
                         ID = Guid.Empty,
                         QuoteID = Guid.Empty,
-                        ChargeAmount=0,
-                        OtherCharge=new OtherChargeViewModel()
+                        ChargeAmount = 0,
+                        OtherCharge = new OtherChargeViewModel()
                         {
-                            Description= "",
+                            Description = "",
                         },
                         TaxType = new TaxTypeViewModel()
                         {
@@ -236,32 +299,33 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<QuotationDetailViewModel> quotationItemViewModelList = new List<QuotationDetailViewModel>();
                 if (estimateID != Guid.Empty)
                 {
-                    List<EstimateDetailViewModel> estimateVMList = Mapper.Map<List<EstimateDetail>,List<EstimateDetailViewModel>>(_estimateBusiness.GetEstimateDetailListByEstimateID(estimateID));
-                    quotationItemViewModelList=(from estimateDetailVM in estimateVMList
-                                                select new QuotationDetailViewModel {
-                                                    ID = Guid.Empty,
-                                                    QuoteID = Guid.Empty,
-                                                    ProductID = estimateDetailVM.ProductID,
-                                                    ProductModelID = estimateDetailVM.ProductModelID,
-                                                    ProductSpec = estimateDetailVM.ProductSpec,
-                                                    ProductSpecHtml= estimateDetailVM.ProductSpec,
-                                                    Qty = estimateDetailVM.Qty,
-                                                    UnitCode = estimateDetailVM.UnitCode,
-                                                    Rate = estimateDetailVM.SellingRate,
-                                                    CGSTPerc = 0,
-                                                    IGSTPerc = 0,
-                                                    SGSTPerc = 0,
-                                                    Discount = 0,
-                                                    SpecTag = estimateDetailVM.SpecTag,
-                                                    Product = estimateDetailVM.Product,
-                                                    ProductModel = estimateDetailVM.ProductModel,
-                                                    Unit = estimateDetailVM.Unit,
-                                                    ImageURL = estimateDetailVM.ProductModel.ImageURL,
-                                                    TaxType = new TaxTypeViewModel()
-                                                    {
-                                                        ValueText = "",
-                                                    }
-                                                }).ToList();
+                    List<EstimateDetailViewModel> estimateVMList = Mapper.Map<List<EstimateDetail>, List<EstimateDetailViewModel>>(_estimateBusiness.GetEstimateDetailListByEstimateID(estimateID));
+                    quotationItemViewModelList = (from estimateDetailVM in estimateVMList
+                                                  select new QuotationDetailViewModel
+                                                  {
+                                                      ID = Guid.Empty,
+                                                      QuoteID = Guid.Empty,
+                                                      ProductID = estimateDetailVM.ProductID,
+                                                      ProductModelID = estimateDetailVM.ProductModelID,
+                                                      ProductSpec = estimateDetailVM.ProductSpec,
+                                                      ProductSpecHtml = estimateDetailVM.ProductSpec,
+                                                      Qty = estimateDetailVM.Qty,
+                                                      UnitCode = estimateDetailVM.UnitCode,
+                                                      Rate = estimateDetailVM.SellingRate,
+                                                      CGSTPerc = 0,
+                                                      IGSTPerc = 0,
+                                                      SGSTPerc = 0,
+                                                      Discount = 0,
+                                                      SpecTag = estimateDetailVM.SpecTag,
+                                                      Product = estimateDetailVM.Product,
+                                                      ProductModel = estimateDetailVM.ProductModel,
+                                                      Unit = estimateDetailVM.Unit,
+                                                      ImageURL = estimateDetailVM.ProductModel.ImageURL,
+                                                      TaxType = new TaxTypeViewModel()
+                                                      {
+                                                          ValueText = "",
+                                                      }
+                                                  }).ToList();
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationItemViewModelList, Message = "Success" });
             }
@@ -386,7 +450,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 quotationVM.QuotationDetailList = JsonConvert.DeserializeObject<List<QuotationDetailViewModel>>(ReadableFormat);
                 ResultFromJS = JsonConvert.DeserializeObject(quotationVM.OtherChargesDetailJSON);
                 ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
-                quotationVM.QuotationOtherChargeList= JsonConvert.DeserializeObject<List<QuotationOtherChargeViewModel>>(ReadableFormat);
+                quotationVM.QuotationOtherChargeList = JsonConvert.DeserializeObject<List<QuotationOtherChargeViewModel>>(ReadableFormat);
                 object result = _quotationBusiness.InsertUpdateQuotation(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
 
                 if (quotationVM.ID == Guid.Empty)
@@ -456,9 +520,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                 quotationVM.PSASysCommon.UpdatedBy = appUA.UserName;
                 quotationVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
                 quotationVM.IsPrint = true;
-               
+
                 object result = _quotationBusiness.UpdateQuotationEmailInfo(Mapper.Map<QuotationViewModel, Quotation>(quotationVM));
-             
+
                 if (quotationVM.ID == Guid.Empty)
                 {
                     return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
@@ -488,14 +552,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool ImageCheck = quotationVM.ImageCheck;
             //QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
-            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>,List <QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
             quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
             quotationVM.EmailFlag = emailFlag;
             quotationVM.ImageCheck = ImageCheck;
             ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
             ViewBag.ImgURL = "http://" + HttpContext.Request.Url.Authority + "/";
             quotationVM.PDFTools = new PDFToolsViewModel();
-            return PartialView("_EmailQuotation",quotationVM);
+            return PartialView("_EmailQuotation", quotationVM);
         }
         #endregion Email Quotation
         #region Print Quotation
@@ -565,25 +629,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             catch (Exception ex)
             {
                 AppConstMessage cm = _appConstant.GetMessage(ex.Message);
-                return JsonConvert.SerializeObject(new { Status = "ERROR",Record="", Message = cm.Message });
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
             }
         }
         #endregion EmailSent
         #region Get QUotation SelectList On Demand
         public ActionResult GetQuotationSelectListOnDemand(string searchTerm)
         {
-            List<Quotation> quotationList = string.IsNullOrEmpty(searchTerm)?null:_quotationBusiness.GetQuotationForSelectListOnDemand(searchTerm);
+            List<Quotation> quotationList = string.IsNullOrEmpty(searchTerm) ? null : _quotationBusiness.GetQuotationForSelectListOnDemand(searchTerm);
             var list = new List<Select2Model>();
-            if (quotationList!=null)
+            if (quotationList != null)
             {
                 foreach (Quotation quotation in quotationList)
-            {
-                list.Add(new Select2Model()
                 {
-                    text = quotation.QuoteNo,
-                    id = quotation.ID.ToString()
-                });
-            }
+                    list.Add(new Select2Model()
+                    {
+                        text = quotation.QuoteNo,
+                        id = quotation.ID.ToString()
+                    });
+                }
             }
             return Json(new { items = list }, JsonRequestBehavior.AllowGet);
         }
@@ -629,7 +693,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ToolboxViewModel toolboxVM = new ToolboxViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Quotation");                  
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "Quotation");
             switch (actionType)
             {
                 case "List":
@@ -850,10 +914,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.PrintBtn.DisableReason = "Not Approved";
                     toolboxVM.PrintBtn.Event = "";
 
-                   
+
                     break;
 
-                case "Approved":                                        
+                case "Approved":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
@@ -912,14 +976,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.PrintBtn.Text = "Print";
                     toolboxVM.PrintBtn.Title = "Print Document";
                     toolboxVM.PrintBtn.Event = "PrintQuotation()";
-                 
+
                     //toolboxVM.RecallBtn.Visible = true;
                     //toolboxVM.RecallBtn.Text = "Recall";
                     //toolboxVM.RecallBtn.Title = "Document Recall";
                     //toolboxVM.SendForApprovalBtn.Disable = true;
                     //toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
                     //toolboxVM.RecallBtn.Event = "";
-                    
+
                     break;
 
                 case "Recalled":

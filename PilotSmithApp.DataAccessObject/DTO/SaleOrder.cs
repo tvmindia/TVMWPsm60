@@ -74,6 +74,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ApprovalStatus ApprovalStatus { get; set; }
         public Quotation Quotation { get; set; }
         public Enquiry Enquiry { get; set; }
+        public Guid CopyFrom { get; set; }
+        public string CopySaleOrderNo { get; set; }
     }
 
     public class SaleOrderAdvanceSearch

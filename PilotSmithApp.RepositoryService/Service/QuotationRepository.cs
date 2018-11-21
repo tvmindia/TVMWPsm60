@@ -119,7 +119,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotation.ApprovalStatus.Description = (sdr["ApprovalStatus"].ToString() != "" ? (sdr["ApprovalStatus"].ToString()) : quotation.ApprovalStatus.Description);
                                         quotation.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse (sdr["EmailSentYN"].ToString()) : quotation.EmailSentYN);
                                         quotation.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : quotation.EstimateNo);
-                                    }
+                                        quotation.CopyFrom = (sdr["CopyFrom"].ToString() != "" ? Guid.Parse(sdr["CopyFrom"].ToString()) : quotation.CopyFrom);
+                                 }
                                     quotationList.Add(quotation);
                                 }
                             }
@@ -200,6 +201,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.Branch.Code);
                                     quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);
                                     quotation.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : quotation.EstimateNo);
+                                    quotation.CopyFrom = (sdr["CopyFrom"].ToString() != "" ? Guid.Parse(sdr["CopyFrom"].ToString()) : quotation.CopyFrom);
+                                    quotation.CopyQuoteNo = (sdr["CopyQuoteNo"].ToString() != "" ? sdr["CopyQuoteNo"].ToString() : quotation.CopyQuoteNo);
                                 }
                         }
                     }
@@ -293,7 +296,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #region Insert Update Quotation
         public object InsertUpdateQuotation(Quotation quotation)
         {
-            SqlParameter outputStatus, outputID, outputQuotationNo = null;
+            SqlParameter outputStatus, outputID, outputQuotationNo, outputCopyFromID = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -309,6 +312,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = quotation.IsUpdate;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = quotation.ID;
+                        cmd.Parameters.Add("@CopyFromID", SqlDbType.UniqueIdentifier).Value = quotation.CopyFrom;
                         cmd.Parameters.Add("@QuoteRefNo", SqlDbType.VarChar, 20).Value = quotation.QuoteRefNo;
                         cmd.Parameters.Add("@QuoteNo", SqlDbType.VarChar, 20).Value = quotation.QuoteNo;
                         cmd.Parameters.Add("@QuoteDate", SqlDbType.DateTime).Value = quotation.QuoteDateFormatted;
@@ -344,6 +348,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         outputID.Direction = ParameterDirection.Output;
                         outputQuotationNo = cmd.Parameters.Add("@QuoteNoOut", SqlDbType.VarChar, 20);
                         outputQuotationNo.Direction = ParameterDirection.Output;
+                        outputCopyFromID = cmd.Parameters.Add("@CopyFromIDOut", SqlDbType.UniqueIdentifier);
+                        outputCopyFromID.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -360,7 +366,8 @@ namespace PilotSmithApp.RepositoryService.Service
                             QuotationNo = quotation.QuoteNo,
                             EstimateID=quotation.EstimateID,
                             Status = outputStatus.Value.ToString(),
-                            Message = quotation.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
+                            CopyFrom= Guid.Parse(outputCopyFromID.Value.ToString()),
+                        Message = quotation.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
                         };
                     default:
                         break;
@@ -377,6 +384,7 @@ namespace PilotSmithApp.RepositoryService.Service
                 QuotationNo = quotation.QuoteNo,
                 EstimateID = quotation.EstimateID,
                 Status = outputStatus.Value.ToString(),
+                CopyFrom = Guid.Parse(outputCopyFromID.Value.ToString()),
                 Message = quotation.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
             };
         }

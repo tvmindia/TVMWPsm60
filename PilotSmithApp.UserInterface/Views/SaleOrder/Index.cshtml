@@ -10,6 +10,40 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/css/select2")
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
 }
+
+<style>
+    [data-title]:hover:after {
+        opacity: 1;
+        transition: all 0.1s ease 0.5s;
+        visibility: visible;
+    }
+
+    [data-title]:after {
+        content: attr(data-title);
+        background-color: black;
+        color: white;
+        font-size: 12px;
+        padding: 3px 7px 3px 7px;
+        position: absolute;
+        white-space: nowrap;
+        z-index: 98;
+        bottom: -1.6em;
+        right: 100%;
+        white-space: nowrap;
+        box-shadow: 1px 1px 3px #222222;
+        opacity: 0;
+        border: 1px solid #111111;
+        visibility: hidden;
+    }
+
+    [data-title] {
+        position: relative;
+    }
+</style>
+
+
+
+
 @{
     List<SelectListItem> EmptySelectList = new List<SelectListItem>();
 }
@@ -160,6 +194,7 @@
                         <th>Other Details</th>
                         <th>Status</th>
                         <th>...</th>
+                        <th>...</th>
                     </tr>
                 </thead>
             </table>
@@ -263,6 +298,26 @@
 
     </div>
 </div>
+@*<div class="modal fade" id="divModelPrintSaleOrder" tabindex="-1" role="dialog" aria-labelledby="SaleOrder" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width:60%;">
+        <div class="clearfix" style="background-color:#068a78;">
+            <div class="col-md-12 no-padding" style="background-color:white">
+                <div class="modal-header text-center">
+                    <label style="font-size:20px;" id="lblModelPrintQuotation"></label>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color: black;font-size: 2em;">&times;</span>
+                    </button>
+                </div>
+                <div class="no-padding" id="divModelPrintSaleOrderBody">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>*@
+
+
 @using (Html.BeginForm("DownloadExcel", "ExcelExport", FormMethod.Post, new { id = "FormExcelExport" }))
 {
     @Html.Hidden("AdvanceSearch", null, htmlAttributes: new { @class = "control-label" })

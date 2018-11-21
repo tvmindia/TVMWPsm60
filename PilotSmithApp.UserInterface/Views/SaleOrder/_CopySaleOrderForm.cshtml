@@ -1,14 +1,16 @@
 ﻿
-@model PilotSmithApp.UserInterface.Models.QuotationViewModel
+@model PilotSmithApp.UserInterface.Models.SaleOrderViewModel
 <style>
     .todo-list > li {
         background: #ffffff;
         border-left: none;
     }
 </style>
-@using (Ajax.BeginForm("InsertUpdateQuotation", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotation", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "QuotationForm" }))
+@using (Ajax.BeginForm("InsertUpdateSaleOrder", "SaleOrder", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessSaleOrder", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "SaleOrderForm" }))
 {
-    @*@Html.AntiForgeryToken()*@  
+    @*@Html.AntiForgeryToken()*@
+    @Html.HiddenFor(model => model.CopyFrom, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.CopySaleOrderNo, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
@@ -20,76 +22,103 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
-                @if (!Model.IsUpdate)
-                {
-                    <div class="col-md-12 no-padding" id="divEnquirySelectList">
-                        <div class="col-md-12">
-                            @Html.Label("Search and select an Estimate", htmlAttributes: new { @class = "control-label lblrequired" })
-                        </div>
-                        <div class="col-md-12">
-                            @Html.DropDownListFor(model => model.EstimateID, Model.EstimateSelectList, "Search Estimate", new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnEstimateID').val(this.value)" })
-
-                            @Html.ValidationMessageFor(model => model.EstimateID, "", new { @class = "text-danger" })
-                        </div>
-                        @Html.HiddenFor(model => model.EstimateID, htmlAttributes: new { @class = "", @id = "hdnEstimateID" })
-                    </div>
-                }
-                else
-                {
-                    if (Model.EstimateID != null)
+                @{
+                    if (Model.CopyFrom != Guid.Empty)
                     {
-                        <div class="col-md-12 no-padding" id="divEnquirySelectList">
-                            <div class="col-md-12">
-                                @Html.Label("Estimate", htmlAttributes: new { @class = "control-label" })
+
+                        <div class="col-md-12">
+                            <div class="col-md-12 form-control newinput" style="background-color:#f7d1a7 !important;">
+
+
+                                <span style="font-size:12px">Copied From SaleOrder :</span>
+                              
+                                @{
+                                    if (!Model.IsUpdate)
+                                    {
+                                        <span style="font-weight: bold;font-size:12px;">@ViewBag.SaleOrderNo</span>
+                                        <a href="/SaleOrder?ID=@Model.CopyFrom" target="_blank">Open in new tab</a>
+                                    }
+                                    else
+                                    {  <span style="font-weight: bold;font-size:12px;">@Model.CopySaleOrderNo</span>
+                                    <a href="/SaleOrder?ID=@Model.CopyFrom" target="_blank" style="font-size:10px">Open in new tab</a>
+                                    }
+                                }
+
+
                             </div>
-                            <div class="col-md-12">
-                                <div class="divEstimateSelectList">
-                                    @*@Html.DropDownListFor(model => model.EstimateID, Model.EstimateSelectList, "Search Estimate", new { @class = "form-control newinput", @style = "width:100%!important", @disabled = "", @onchange = "$('#hdnEstimateID').val(this.value)" })
-                                      @Html.ValidationMessageFor(model => model.EstimateID, "", new { @class = "text-danger" })*@
-                                    <span class="form-control newinput" id="spanEstimateID" style="background-color:#eeeeee">@Model.EstimateNo</span>
-                                </div>
-                            </div>
-                            @Html.HiddenFor(model => model.EstimateID, htmlAttributes: new { @class = "", @id = "hdnEstimateID" })
+
                         </div>
-                    }
-                }
+
+                                        }
+                                    }
+                
+                   
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.QuoteNo, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.SaleOrderNo, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.QuoteNo, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "readonly", @placeholder = "<<Autogenerated>>" } })
-                        @Html.ValidationMessageFor(model => model.QuoteNo, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.SaleOrderNo, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "readonly", @placeholder = "<<Autogenerated>>" } })
+                        @Html.ValidationMessageFor(model => model.SaleOrderNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                        @Html.LabelFor(model => model.SaleOrderDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.QuoteDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                        @Html.ValidationMessageFor(model => model.QuoteDateFormatted, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.SaleOrderDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.SaleOrderDateFormatted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.SaleOrderRefNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.SaleOrderRefNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.SaleOrderRefNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ExpectedDelvDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.ExpectedDelvDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.ExpectedDelvDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.QuoteRefNo, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.BankCode, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.QuoteRefNo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                            @Html.ValidationMessageFor(model => model.QuoteRefNo, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                            <div class="divBankSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
 
+                            </div>
+                        </div>
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBankRequired", "")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBankdisabled", false)
+                        @Html.HiddenFor(model => model.BankCode, htmlAttributes: new { @class = "", @id = "hdnBankCode" })
+                    </div>
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
                         <div class="col-md-12">
-                            @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                            @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
+                            <div class="divDocumentStatusSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                            </div>
                         </div>
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnDocumentStatusRequired", "required")
+                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                     </div>
                 </div>
                 <div class="col-md-6 no-padding">
@@ -124,29 +153,6 @@
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                        @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
-                        </div>
-                    </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnDocumentStatusRequired", "required")
-                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     @if (Model.IsUpdate)
@@ -171,25 +177,19 @@
                 </div>
 
             </div>
-            @*@if (Model.IsUpdate)
-                {*@
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
                     <div class="Shadow2data clearfix">
-
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Document Status</div>
                         </div>
                         <div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
                         </div>
-
-
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Email Status</div>
                         </div>
                         <div class="form-group col-md-12">
-
                             @if (Model.EmailSentYN == null)
                             {
                                 <div class="lblStatusDisplay">-</div>
@@ -204,10 +204,9 @@
                             }
                         </div>
                         <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus)</div>
+                            <div class="rightAmtCaption">Approval Status</div>
                         </div>
                         <div class="form-group col-md-12">
-
                             @if (Model.LatestApprovalStatus == null)
                             {
                                 <div class="lblStatusDisplay">-</div>
@@ -223,7 +222,6 @@
                         <div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.Branch.Description</div>
                         </div>
-
                         @if (Model.IsUpdate)
                         {
                             <div class="col-md-12"></div>
@@ -236,7 +234,7 @@
                                         </div>
                                         <div class="col-md-10 no-padding">
                                             <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.QuoteNo" documentType="QUO" documentCurrentOwner="@Model.DocumentOwner"><span style="font-size:18px;">Take ownership</span></a>
+                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.SaleOrderNo" documentType="SOD" documentCurrentOwner="@Model.DocumentOwner"><span style="font-size:18px;">Take ownership</span></a>
                                         </div>
                                     </div>
                                 }
@@ -254,14 +252,15 @@
                                 }
                             </div>
                         }
+
                     </div>
 
                 </div>
             </div>
-            @*}*@
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
+
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">Customer Details</div>
@@ -270,7 +269,7 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate || Model.EstimateID != null)
+                    @if (Model.IsUpdate || Model.EnquiryID != null || Model.QuoteID != null)
                     {
                         <div class="col-md-12">
                             <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
@@ -284,6 +283,7 @@
                             </div>
                         </div>
                     }
+
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnCustomerRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -300,7 +300,7 @@
                         @Html.LabelFor(model => model.MailingAddress, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.MailingAddress, 5, 60, new { @class = "form-control newinput" })
+                        @Html.TextAreaFor(model => model.MailingAddress, 5, 0, new { @class = "form-control newinput" })
                         @Html.ValidationMessageFor(model => model.MailingAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -309,30 +309,24 @@
                         @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 60, new { @class = "form-control newinput" })
+                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 0, new { @class = "form-control newinput" })
                         @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">
-                Quotation Details
-                @{
-                    if (Model.IsDocLocked || !Model.IsUpdate)
+                SaleOrder Details
+                @if (Model.IsDocLocked || !Model.IsUpdate)
+                {
+                    if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null)
                     {
-                        if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null)
-                        {
-                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        }
+                        <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                        <a class="btn btn-openid pull-right" onclick="AddSaleOrderDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
                     }
                     else
                     {
@@ -340,41 +334,49 @@
                         <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
                     }
                 }
+                else
+                {
+                    <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                    <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                }
             </div>
 
             @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
             @Html.HiddenFor(model => model.OtherChargesDetailJSON, htmlAttributes: new { @class = "" })
             <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
-                <table id="tblQuotationDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                <table id="tblSaleOrderDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                     <thead>
                         <tr class="text-center TableHead">
-                            <th style="width:23%">Product Code</th>
-                            <th style="width:10%">HSN Code</th>
-                            <th style="width:10%">Quantity</th>
+                            <th style="width:20%">Product</th>
+                            <th style="width:15%">HSN Code</th>
+                            <th style="width:5%">Quantity</th>
                             <th style="width:10%">Rate(₹)</th>
-                            <th style="width:10%">Discount(₹)</th>
+                            <th style="width:5%">Discount(₹)</th>
                             <th style="width:10%">Taxable(₹)</th>
                             <th style="width:10%">GST(₹)</th>
+                            <th style="width:10%">Cess</th>
                             <th style="width:10%">Total(₹)</th>
-                            <th style="width:7%">...</th>
+                            <th style="width:5%">...</th>
                         </tr>
                     </thead>
                 </table>
             </div>
-            <div class="form-group col-md-7 ">
-                <table id="tblQuotationOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+            <div class="form-group col-md-7">
+                <table id="tblSaleOrderOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
                     <thead>
                         <tr class="text-center TableHead">
                             <th style="width:20%">Other Charge</th>
-                            <th style="width:20%">SAC Code</th>
-                            <th style="width:20%">Charge Amount(₹)</th>
+                            <th style="width:10%">SAC Code</th>
+                            <th style="width:10%">Charge Amount(₹)</th>
                             <th style="width:10%">GST(₹)</th>
-                            <th style="width:20%">Total(₹)</th>
+                            <th style="width:10%">Additional Tax(₹)</th>
+                            <th style="width:10%">Total(₹)</th>
                             <th style="width:10%">...</th>
                         </tr>
                     </thead>
                 </table>
             </div>
+
             <div class="col-md-5" style="padding-right:1.5%">
                 <table class="table dataTable no-footer DetailSummerybox">
                     <tbody>
@@ -392,6 +394,15 @@
                             </td>
                             <td class="ApplyCurrency" style="text-align: right">
                                 <label class="control-label " for="" id="lblTaxTotal">00.00</label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label" for="lblCessAmount">Cess Amount</label>
+                            </td>
+                            <td class="ApplyCurrency" style="text-align: right">
+                                <label class="control-label " for="" id="lblCessAmount">00.00</label>
                             </td>
                         </tr>
                         <tr>
@@ -431,9 +442,69 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Other Details</div>
+            <div class="form-group col-md-12">
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.PurchaseOrdNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.PurchaseOrdNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.PurchaseOrdNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.PurchaseOrdDateFormatted, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.PurchaseOrdDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                        @Html.ValidationMessageFor(model => model.PurchaseOrdDateFormatted, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group col-md-12">
+                @*<div class="col-md-4 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.CarrierCode, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.Action("CarrierSelectList", "Carrier", new { required = "" })
+                            @Html.HiddenFor(model => model.CarrierCode, htmlAttributes: new { @class = "", @id = "hdnCarrierCode" })
+                        </div>
+                    </div>*@
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvanceAmount, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.AdvanceAmount, new { htmlAttributes = new { @class = "form-control newinput Amount", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.AdvanceAmount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">Notes</div>
+
             <div class="form-group col-md-12">
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
@@ -456,43 +527,42 @@
     </div>
     <div class="" hidden="hidden">
         <div class="col-md-offset-2 col-md-10">
-            <input id="btnInsertUpdateQuotation" type="submit" value="Create" class="btn btn-default" />
+            <input id="btnInsertUpdateSaleOrder" type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
-                    }
+}
 <script>
     $(document).ready(function () {
         try {
-            $.validator.unobtrusive.parse("#QuotationForm");
+            $.validator.unobtrusive.parse("#SaleOrderForm");
         }
         catch (e) {
             console.log(e.message);
         }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SOD&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
-            @if (Model.IsUpdate||Model.EstimateID!=null)
+            $('.divBankSelectList').load('/Bank/BankSelectList?required=' + $('#hdnBankRequired').val())
+            @if (Model.IsUpdate||Model.EnquiryID!=null||Model.QuoteID!=null)
             {
 
             }
             else
             {
                 <text>
-            debugger;
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
-                //$('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-                //$('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+
             });
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });        
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
             }
-            @if (!Model.IsUpdate&&Model.EstimateID!=null)
+             @if ((!Model.IsUpdate) && (Model.EnquiryID!=null||Model.QuoteID!=null))
              {
-                <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-            });
-            </text>
+                 <text>
+             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+             });
+                 </text>
              }
         }
         catch (e) {
@@ -518,14 +588,14 @@
                 //Pass the controller name
                 var FileObject = new Object;
                 if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
-                    FileObject.ParentID = (($('#QuotationForm #ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#QuotationForm #ID').val()) : $('#hdnFileDupID').val());
+                    FileObject.ParentID = (($('#SaleOrderForm #ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#SaleOrderForm #ID').val()) : $('#hdnFileDupID').val());
                 }
                 else {
-                    FileObject.ParentID = ($('#QuotationForm #ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#QuotationForm #ID').val();
+                    FileObject.ParentID = ($('#SaleOrderForm #ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#SaleOrderForm #ID').val();
                 }
 
 
-                FileObject.ParentType = "Quotation";
+                FileObject.ParentType = "SaleOrder";
                 FileObject.Controller = "FileUpload";
                 UploadFile(FileObject);
             });
@@ -534,7 +604,55 @@
             console.log(e.message);
         }
         try {
-            $('#QuotationGradeCode').select2({});
+            $('#SaleOrderGradeCode').select2({});
+            $('#QuoteID').val($('#hdnQuoteID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnQuoteID').val());
+            $('#SaleOrderForm #QuoteID').select2({
+                language: {
+                    noResults: function (params) {
+                        return "Search result will shows here";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "Quotation/GetQuotationSelectListOnDemand/",
+                    delay: 250,
+                    data: function (term) {
+                        return {
+                            'searchTerm': term.term //search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    },
+                }
+            });
+            $('#EnquiryID').val($('#hdnEnquiryID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEnquiryID').val());
+            $('#SaleOrderForm #EnquiryID').select2({
+                language: {
+                    noResults: function (params) {
+                        return "Search result will shows here";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    dataType: 'json',
+                    url: "Enquiry/GetEnquiryForSelectListOnDemand/",
+                    delay: 250,
+                    data: function (term) {
+                        return {
+                            'searchTerm': term.term //search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    },
+                }
+            });
             $('.select2').addClass('form-control newinput');
 
 
@@ -558,59 +676,72 @@
             console.log(e.message);
         }
         try {
-            $('#QuotationForm #EstimateID').change(function () {
-                debugger;
+            $('#SaleOrderForm #QuoteID').change(function () {
                 OnServerCallBegin();
-                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function (responseTxt, statusTxt, xhr) {
-                    if (statusTxt == "success") {
-                        OnServerCallComplete();
-                        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val(), function () {
-                            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-                            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
-                        });
-                        ClearCalculatedFields();
-                        BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
-                        BindQuotationOtherChargesDetailList("00000000-0000-0000-0000-000000000000");
-                        CalculateTotal();
-                    }
+                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&quoteID=" + this.value, function () {
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
+                        $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                        $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+                    });
+                    ClearCalculatedFields();
+                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false, true);
+                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true);
+                    CalculateTotal();
+                    debugger;
+                  //$("input[type=radio][value=Enquiry]").attr("disabled", true);
+                  //$("input[type=radio][value=Enquiry]").attr('title', "Quotation details has been listed, Reset to continue");
+                    OnServerCallComplete();
                 });
+
             });
         }
         catch (e) {
             console.log(e.message);
         }
         try {
-            $('#EstimateID').val($('#hdnEstimateID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEstimateID').val());
-            $('#EstimateID').select2({
-                language: {
-                    noResults: function (params) {
-                        return "Search result will shows here";
-                    }
-                },
-                ajax: {
-                    type: 'POST',
-                    dataType: 'json',
-                    url: "Estimate/GetEstimateForSelectListOnDemand/",
-                    delay: 250,
-                    data: function (term) {
-                        return {
-                            'searchTerm': term.term //search term
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.items
-                        };
-                    },
+            $('#SaleOrderForm #EnquiryID').change(function () {
+                OnServerCallBegin();
+                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
+                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
+                    debugger;
+                    ClearCalculatedFields();
+                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true, false)
+                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false);
+                    CalculateTotal();
+                    //$('#DocumentType').prop('disabled', true);
+                    //$("#DocumentType").attr('title', "Enquiry details has been listed, Reset to continue");
+                    OnServerCallComplete();
+                });
+
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+        }
+
+        try {
+            $('[name="DocumentType"]').change(function () {
+                if (this.value == "Quotation") {
+                    ResetSaleOrder(this);
+                    //$('#divEnquirySelectList').hide();
+                    //$('#divQuotationSelectList').show();
+                    //$('#QuoteID').prop('disabled', false);
+                    //$('#EnquiryID').prop('disabled', true);
+                }
+                else if (this.value == "Enquiry") {
+                    ResetSaleOrder(this);
+                    //$('#divEnquirySelectList').show();
+                    //$('#divQuotationSelectList').hide();
+                    //$('#QuoteID').prop('disabled', true);
+                    //$('#EnquiryID').prop('disabled', false);
                 }
             });
-            $('.select2').addClass('form-control newinput');
         }
         catch (e) {
             console.log(e.message);
         }
         try {
-            if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True") {
+            if ($('#SaleOrderForm #IsDocLocked').val() == "False" && $('#SaleOrderForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
@@ -630,3 +761,4 @@
         }
     });
 </script>
+

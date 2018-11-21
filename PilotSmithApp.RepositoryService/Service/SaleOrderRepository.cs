@@ -122,6 +122,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrder.Quotation.QuoteNo= (sdr["QuoteNo"].ToString() != "" ? (sdr["QuoteNo"].ToString()) : saleOrder.Quotation.QuoteNo);
                                         saleOrder.Enquiry = new Enquiry();
                                         saleOrder.Enquiry.EnquiryNo= (sdr["EnquiryNo"].ToString() != "" ? (sdr["EnquiryNo"].ToString()) : saleOrder.Enquiry.EnquiryNo);
+                                        saleOrder.CopyFrom = (sdr["CopyFrom"].ToString() != "" ? Guid.Parse(sdr["CopyFrom"].ToString()) : saleOrder.CopyFrom);
                                     }
                                     saleOrderList.Add(saleOrder);
                                 }
@@ -325,6 +326,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : saleOrder.Quotation.QuoteNo);
                                     saleOrder.Enquiry = new Enquiry();
                                     saleOrder.Enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : saleOrder.Enquiry.EnquiryNo);
+                                    saleOrder.CopyFrom = (sdr["CopyFrom"].ToString() != "" ? Guid.Parse(sdr["CopyFrom"].ToString()) : saleOrder.CopyFrom);
+                                    saleOrder.CopySaleOrderNo = (sdr["CopySaleOrderNo"].ToString() != "" ? sdr["CopySaleOrderNo"].ToString() : saleOrder.CopySaleOrderNo);
+
                                 }
                         }
                     }
@@ -417,7 +421,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #region Insert Update SaleOrder
         public object InsertUpdateSaleOrder(SaleOrder saleOrder)
         {
-            SqlParameter outputStatus, outputID, outputSaleOrderNo = null;
+            SqlParameter outputStatus, outputID, outputSaleOrderNo, outputCopyFromID = null;
             try
             {
                 using (SqlConnection con = _databaseFactory.GetDBConnection())
@@ -433,6 +437,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = saleOrder.IsUpdate;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = saleOrder.ID;
+                        cmd.Parameters.Add("@CopyFromID", SqlDbType.UniqueIdentifier).Value = saleOrder.CopyFrom;
                         cmd.Parameters.Add("@SaleOrderRefNo", SqlDbType.VarChar, 20).Value = saleOrder.SaleOrderRefNo;
                         cmd.Parameters.Add("@SaleOrderNo", SqlDbType.VarChar, 20).Value = saleOrder.SaleOrderNo;
                         cmd.Parameters.Add("@SaleOrderDate", SqlDbType.DateTime).Value = saleOrder.SaleOrderDateFormatted;
@@ -474,6 +479,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         outputID.Direction = ParameterDirection.Output;
                         outputSaleOrderNo = cmd.Parameters.Add("@SaleOrderNoOut", SqlDbType.VarChar, 20);
                         outputSaleOrderNo.Direction = ParameterDirection.Output;
+                        outputCopyFromID = cmd.Parameters.Add("@CopyFromIDOut", SqlDbType.UniqueIdentifier);
+                        outputCopyFromID.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -491,6 +498,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             QuoteID = saleOrder.QuoteID,
                             EnquiryID = saleOrder.EnquiryID,
                             Status = outputStatus.Value.ToString(),
+                            CopyFrom = Guid.Parse(outputCopyFromID.Value.ToString()),
                             Message = saleOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
                         };
                     default:
@@ -509,6 +517,7 @@ namespace PilotSmithApp.RepositoryService.Service
                 QuoteID = saleOrder.QuoteID,
                 EnquiryID = saleOrder.EnquiryID,
                 Status = outputStatus.Value.ToString(),
+                CopyFrom = Guid.Parse(outputCopyFromID.Value.ToString()),
                 Message = saleOrder.IsUpdate ? _appConstant.UpdateSuccess : _appConstant.InsertSuccess
             };
         }

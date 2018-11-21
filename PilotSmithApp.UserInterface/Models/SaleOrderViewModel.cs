@@ -115,6 +115,9 @@ namespace PilotSmithApp.UserInterface.Models
         public ReferencePersonViewModel ReferencePerson { get; set; }
         public QuotationViewModel Quotation { get; set; }
         public EnquiryViewModel Enquiry { get; set; }
+        public bool IsPrint { get; set; }
+        public Guid? CopyFrom { get; set; }
+        public string CopySaleOrderNo { get; set; }
     }
 
     public class SaleOrderAdvanceSearchViewModel

@@ -1135,6 +1135,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Quotation\_PrintQuotationDetail.cshtml" />
+    <Content Include="Views\Quotation\_CopyQuotation.cshtml" />
+    <Content Include="Views\SaleOrder\_CopySaleOrderForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
