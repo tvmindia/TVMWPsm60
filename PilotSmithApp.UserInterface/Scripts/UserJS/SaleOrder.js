@@ -168,7 +168,7 @@ function BindOrReloadSaleOrderTable(action) {
                            + "</br>" + "<b>Appr.Status-</b>" + row.ApprovalStatus.Description;
                    }, "defaultContent": "<i>-</i>"
                },
-               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>' },
+               { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="EditSaleOrder(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true" data-title="Edit"></i></a>' },
                { "data": null, "orderable": false, "defaultContent": '<a href="#" class="actionLink"  onclick="CopySaleOrder(this)" style="color: #DB8B0B;" ><i class="fa fa-copy" aria-hidden="true" data-title="Copy and Create" ></i></a>' },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },

@@ -44,15 +44,15 @@
             <tr><td colspan="6">&nbsp;</td></tr>
             @*<tr><td>Quotation No</td><td colspan="2">: @Model.QuoteNo</td><td>Ref. Quotation No.</td><td colspan="2">: @Model.QuoteRefNo</td></tr>
             <tr><td>Quotation Date</td><td colspan="2">: @Model.QuoteDateFormatted</td><td></td><td></td><td></td></tr>*@
-            <tr><td  colspan="2" >Quotation No &nbsp;&nbsp;&nbsp;&nbsp;: @Model.QuoteNo</td><td colspan="4"></td></tr>
-            <tr><td  colspan="2" >Quotation Date &nbsp;: @Model.QuoteDateFormatted</td><td colspan="4"></td></tr>
+            <tr><td  colspan="2" style="font-size:11px;">Quotation No &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;<b>@Model.QuoteNo</b> </td><td colspan="4"></td></tr>
+            <tr><td  colspan="2" style="font-size:11px;">Quotation Date &nbsp;: @Model.QuoteDateFormatted</td><td colspan="4"></td></tr>
             <tr><td colspan="6">&nbsp;</td></tr>
 
             <tr>
                 @{
                     var mailBodyHeader = @Model.MailBodyHeader;
                     mailBodyHeader = mailBodyHeader.Replace("\r\n", "<br />");
-                    <td colspan="6" style="font-size:12px;">@Html.Raw(mailBodyHeader)</td>
+                    <td colspan="6" style="font-size:11px;">@Html.Raw(mailBodyHeader)</td>
                 }
             </tr>
             <tr><td colspan="6">&nbsp;</td></tr>
