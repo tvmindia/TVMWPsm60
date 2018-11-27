@@ -68,7 +68,10 @@ namespace PilotSmithApp.UserInterface.Models
         //[Required(ErrorMessage = "subject is missing")]
         [Display(Name = "Subject")]
         public string Subject { get; set; }
-
+        [Display(Name = "Currency code")]
+        public string CurrencyCode { get; set; }
+        [Display(Name = "Currency rate")]
+        public decimal CurrencyRate { get; set; }
         //Aditional Fields
 
         public string MailFrom { get; set; }
@@ -118,6 +121,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsPrint { get; set; }
         public Guid? CopyFrom { get; set; }
         public string CopySaleOrderNo { get; set; }
+        public CurrencyViewModel Currency { get; set; }
         public int IsFileExist { get; set; }
     }
 

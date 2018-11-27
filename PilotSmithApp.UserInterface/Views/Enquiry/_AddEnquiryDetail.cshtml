@@ -3,6 +3,7 @@
 {
 @Html.HiddenFor(model => model.EnquiryID, htmlAttributes: new { @class = "" })
 @Html.HiddenFor(model=>model.IsUpdate, htmlAttributes: new { @class = "" })
+@Html.HiddenFor(model=>model.RateInINR,htmlAttributes:new { @class="",@id="hdnRateInINR"})
 <div class="form-group col-md-12 no-padding">
     <div class="col-md-12 no-padding">
         <div class="col-md-12">
@@ -97,7 +98,8 @@
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-6 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label lblrequired" })
+                @*<span class="control-label lblrequired">Rate(<span class="control-label lblrequired" id="DetailpopCurrencyCode">INR</span>)</span>*@ 
+                @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label lblrequired"})  (<span class="control-label lblrequired" id="DetailpopCurrencyCode"> INR </span>)
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
@@ -134,6 +136,9 @@
         });
         $('.select2').addClass('form-control newinput');
 
+        //For currency
+        $('#DetailpopCurrencyCode').text($('#hdnCurrencyCode').val())
+      
 
 
         //$('#ProductID').change(function () {

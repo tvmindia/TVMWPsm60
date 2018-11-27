@@ -28,6 +28,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         IAreaBusiness _areaBusiness;
         IReferencePersonBusiness _referencePersonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
+        ICurrencyBusiness _currencyBusiness;
         //private IUserBusiness _userBusiness;
         SecurityFilter.ToolBarAccess _tool;
 
@@ -35,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             IBranchBusiness branchBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
             ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
             IReferencePersonBusiness referencePersonBusiness, IDocumentStatusBusiness documentStatusBusiness, 
-            SecurityFilter.ToolBarAccess tool)
+            SecurityFilter.ToolBarAccess tool,ICurrencyBusiness currencyBusiness)
         {
             _enquiryBusiness = enquiryBusiness;
             _customerBusiness = customerBusiness;
@@ -46,7 +47,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _referencePersonBusiness = referencePersonBusiness;
             _documentStatusBusiness = documentStatusBusiness;           
             _tool = tool;
-
+            _currencyBusiness = currencyBusiness;
         }
         // GET: Enquiry
         [AuthSecurityFilter(ProjectObject = "Enquiry", Mode = "R")]
@@ -89,7 +90,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                         },
                     };
-                    
+                    enquiryVM.Currency = new CurrencyViewModel();
                 }
                 else
                 {
@@ -101,6 +102,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     enquiryVM.Branch = new BranchViewModel();
                     enquiryVM.Branch.Description = "-";
                     enquiryVM.IsDocLocked = false;
+                    enquiryVM.CurrencyRate = 1;
+                    enquiryVM.CurrencyCode = "INR";
                     enquiryVM.Customer = new CustomerViewModel
                     {
                         //CompanyName = "-",
@@ -115,6 +118,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     EnquiryGradeSelectList = _enquiryGradeBusiness.GetEnquiryGradeSelectList()
                 };
+                enquiryVM.Currency = new CurrencyViewModel()
+                {
+                    CurrencyList =Mapper.Map<List<Currency>,List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                };
             }
             catch (Exception ex)
             {
@@ -128,6 +135,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             EnquiryDetailViewModel enquiryDetailVM = new EnquiryDetailViewModel();
             enquiryDetailVM.IsUpdate = update;
+            //enquiryDetailVM.DetailCurrencyRate = 1;
             return PartialView("_AddEnquiryDetail", enquiryDetailVM);
         }
         #endregion Enquiry Detail Add

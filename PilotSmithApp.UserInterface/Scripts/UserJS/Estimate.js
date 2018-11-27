@@ -526,7 +526,9 @@ function AddEstimateDetailToList() {
                         productSpec = productSpec.replace(/\n/g, ' ');
                         for (var i = 0; i < estimateDetailList.length; i++) {
                             if ((estimateDetailList[i].ProductID == $('#ProductID').val()) && (estimateDetailList[i].ProductModelID == $('#ProductModelID').val()
-                                && (estimateDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (estimateDetailList[i].UnitCode == $('#UnitCode').val())))) {
+                                && (estimateDetailList[i].ProductSpec == null ? "" : estimateDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (estimateDetailList[i].UnitCode == $('#UnitCode').val())
+                                && (estimateDetailList[i].CostRate == $('#CostRate').val()) && (estimateDetailList[i].SellingRate == $('#SellingRate').val())
+                                ))) {
                                 estimateDetailList[i].Qty = parseFloat(estimateDetailList[i].Qty) + parseFloat($('#Qty').val());
                                 checkpoint = 1;
                                 break;
@@ -679,4 +681,10 @@ function EditRedirectToDocument(id) {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
     });
+}
+
+function ClearEstimateform() {
+    debugger;
+    ResetEstimate();
+    $('.showSweetAlert .cancel').click();
 }

@@ -210,6 +210,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     serviceCall.DocumentOwnerID = (sdr["DocumentOwnerID"].ToString() != "" ? Guid.Parse(sdr["DocumentOwnerID"].ToString()) : serviceCall.DocumentOwnerID);
                                     serviceCall.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : serviceCall.DocumentOwners);
                                     serviceCall.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : serviceCall.DocumentOwner);
+                                    serviceCall.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : serviceCall.CurrencyCode);
+                                    serviceCall.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : serviceCall.CurrencyRate);
                                 }
                         }
                     }
@@ -394,6 +396,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = serviceCall.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = serviceCall.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = serviceCall.PSASysCommon.UpdatedDate;
+                        cmd.Parameters.Add("@CurrencyCode", SqlDbType.VarChar).Value = serviceCall.CurrencyCode;
+                        cmd.Parameters.Add("@currencyRate", SqlDbType.Decimal).Value = serviceCall.CurrencyRate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);

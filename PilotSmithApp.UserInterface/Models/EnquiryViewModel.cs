@@ -35,6 +35,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage ="Branch Code is missing")]
         [Display(Name = "Select Branch")]
         public int? BranchCode { get; set; }
+        [Display(Name ="Currency code")]
+        public string CurrencyCode { get; set; }
+        [Display(Name ="Currency rate")]
+        public decimal CurrencyRate { get; set; }
         //Additional properties
         public string DetailJSON { get; set; }
         [Display(Name ="Enquiry Date")]
@@ -59,6 +63,7 @@ namespace PilotSmithApp.UserInterface.Models
         public AreaViewModel Area { get; set;}
         public List<EnquiryDetailViewModel> EnquiryDetailList { get; set; }
         public List<SelectListItem> EnquirySelectList { get; set; }
+        public CurrencyViewModel Currency { get; set; }       
     }
     public class EnquiryAdvanceSearchViewModel
     {
@@ -112,6 +117,8 @@ namespace PilotSmithApp.UserInterface.Models
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+       // public decimal DetailCurrencyRate { get; set; } //for set hidden value in detail for conversion purpose
+        public decimal RateInINR { get; set; }  //for saving the actual Rate in INR 
     }
 
     public class EnquirySummaryViewModel

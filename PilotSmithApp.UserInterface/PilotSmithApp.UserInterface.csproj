@@ -262,6 +262,7 @@
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
+    <Content Include="Content\images\loginuser.png" />
     <Content Include="Content\images\phone.png" />
     <Content Include="Content\images\contact.png" />
     <Content Include="Content\images\contract.png" />
@@ -799,6 +800,7 @@
     <Compile Include="Controllers\CarrierController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\CustomerCategoryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
@@ -863,6 +865,7 @@
     <Compile Include="Models\CarrierViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
+    <Compile Include="Models\CurrencyViewModel.cs" />
     <Compile Include="Models\CustomerCategoryViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\DeliveryChallanViewModel.cs" />
@@ -1137,6 +1140,8 @@
     <Content Include="Views\Quotation\_PrintQuotationDetail.cshtml" />
     <Content Include="Views\Quotation\_CopyQuotation.cshtml" />
     <Content Include="Views\SaleOrder\_CopySaleOrderForm.cshtml" />
+    <Content Include="Views\Shared\_CurrencyPopup.cshtml" />
+    <Content Include="Views\Currency\_CurrencySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

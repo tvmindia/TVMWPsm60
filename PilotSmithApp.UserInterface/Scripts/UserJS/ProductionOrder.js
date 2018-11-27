@@ -1126,3 +1126,9 @@ function EditRedirectToDocument(id) {
         }
     });
 }
+
+function ClearProdform() {
+    debugger;
+    ResetProductionOrder();
+    $('.showSweetAlert .cancel').click();
+}

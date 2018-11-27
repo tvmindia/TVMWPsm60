@@ -38,24 +38,24 @@ else
             if ($('#divProductBasicInfo') != undefined) {
                 debugger;
                 //var HSNCode = $('#hdnProductHSNCode').val();
-                $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value), function () {
+                var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + (this.value == "" ? '00000000-0000-0000-0000-000000000000' : this.value + "&rate=" + curRate), function () {
                     $('#ProductSpec').val($('#spnProductName').text());
-                    $('#Rate').val($('#spnSellingPrice').text().replace('₹ ', '').trim());
-                    $('#CostRate').val($('#spnCostPrice').text().replace('₹ ', ' ').trim());
-                    $('#SellingRate').val($('#spnSellingPrice').text().replace('₹ ', ' ').trim());
-                        $('#UnitCode').val($('#hdnProductModelUnitCode').val());
-                        $('#hdnUnitCode').val($('#hdnProductModelUnitCode').val());
-                        $('#UnitCode').trigger('change');
-                        debugger;
-                        if ($('#FormQuotationDetail').length != 0)
-                        {
-                            var editor = new wysihtml5.Editor("ProductSpec", {
-                                toolbar: "toolbar",
-                                //stylesheets: "css/stylesheet.css",
-                                parserRules: wysihtml5ParserRules
-                            });
-                        }
-                        
+                    $('#Rate').val($('#spnSellingPrice').text().trim());
+                    $('#CostRate').val($('#spnCostPrice').text().trim());
+                    $('#SellingRate').val($('#spnSellingPrice').text().trim());
+                    $('#UnitCode').val($('#hdnProductModelUnitCode').val());
+                    $('#hdnUnitCode').val($('#hdnProductModelUnitCode').val());
+                    $('#UnitCode').trigger('change');
+                    debugger;
+                    if ($('#FormQuotationDetail').length != 0) {
+                        var editor = new wysihtml5.Editor("ProductSpec", {
+                            toolbar: "toolbar",
+                            //stylesheets: "css/stylesheet.css",
+                            parserRules: wysihtml5ParserRules
+                        });
+                    }
+
                 });
             }
         });

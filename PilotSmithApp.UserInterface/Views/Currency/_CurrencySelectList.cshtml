@@ -1,0 +1,30 @@
+﻿@model PilotSmithApp.UserInterface.Models.CurrencyViewModel
+@{
+    var SelectListattributes = new object();
+    var onclickevent = "";
+}
+@if (@ViewBag.IsRequired == "required")
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Currency is missing", @onchange = "$('#hdnCurrencyCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @required = "", @style = "width:100%!important", @title = "Currency is missing", @onchange = "$('#hdnCurrencyCode').val(this.value)" };
+}
+else
+{
+    SelectListattributes = ViewBag.propertydisable ? (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnCurrencyCode').val(this.value)", disabled = "disabled" } : (object)new { @class = "form-control newinput", @style = "width:100%!important", @onchange = "$('#hdnCurrencyCode').val(this.value)" };
+}
+
+@*@Html.DropDownList("Code", Model.CurrencySelectList, "--Select Currency--", SelectListattributes)*@
+
+@Html.ValidationMessage("Code", "", new { @class = "text-danger" })
+<script>
+    $(document).ready(function () {
+        debugger;      
+        if ($('#hdnCurrencyCode').val())
+        {
+            $('#Code').val($('#hdnCurrencyCode').val());
+        }
+        $('#Code').select2({
+            dropdownParent: $('.divCurrencySelectList')
+        });
+        $('.select2').addClass('form-control newinput');
+    });
+</script>

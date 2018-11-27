@@ -151,6 +151,7 @@ namespace PilotSmithApp.UserInterface.App_Start
                 config.CreateMap<EnquiryCountSummaryViewModel, EnquiryCountSummary>().ReverseMap();
                 config.CreateMap<SysSettingViewModel, SysSetting>().ReverseMap();
                 config.CreateMap<SysSettingAdvanceSearchViewModel, SysSettingAdvanceSearch>().ReverseMap();
+                config.CreateMap<CurrencyViewModel, Currency>().ReverseMap();
             });
         }
     }

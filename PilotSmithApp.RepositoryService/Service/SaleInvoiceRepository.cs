@@ -310,7 +310,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? (sdr["QuoteNo"].ToString()) : saleInvoice.Quotation.QuoteNo);
                                     saleInvoice.ProformaInvoice = new ProformaInvoice();
                                     saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? (sdr["ProfInvNo"].ToString()) : saleInvoice.ProformaInvoice.ProfInvNo);
-                                    
+                                    saleInvoice.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : saleInvoice.CurrencyCode);
+                                    saleInvoice.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : saleInvoice.CurrencyRate);
                                 }
                         }
                     }
@@ -469,6 +470,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = saleInvoice.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = saleInvoice.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = saleInvoice.PSASysCommon.CreatedDate;
+                        cmd.Parameters.Add("@CurrencyCode", SqlDbType.VarChar).Value = saleInvoice.CurrencyCode;
+                        cmd.Parameters.Add("@CurrencyRate", SqlDbType.Decimal).Value = saleInvoice.CurrencyRate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);

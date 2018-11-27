@@ -202,6 +202,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);
                                     quotation.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : quotation.EstimateNo);
                                     quotation.CopyFrom = (sdr["CopyFrom"].ToString() != "" ? Guid.Parse(sdr["CopyFrom"].ToString()) : quotation.CopyFrom);
+                                    quotation.CopyQuoteNo = (sdr["CopyQuoteNo"].ToString() != "" ? sdr["CopyQuoteNo"].ToString() : quotation.CopyQuoteNo);
+                                    quotation.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : quotation.CurrencyRate);
+                                    quotation.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : quotation.CurrencyCode);
                                   quotation.CopyQuoteNo = (sdr["CopyQuoteNo"].ToString() != "" ? sdr["CopyQuoteNo"].ToString() : quotation.CopyQuoteNo);
                                     quotation.IsFileExist = (sdr["IsFileExist"].ToString() != "" ? int.Parse(sdr["IsFileExist"].ToString()) : quotation.IsFileExist);
                                 }
@@ -352,6 +355,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quotation.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.UpdatedDate;
+                        cmd.Parameters.Add("@CurrencyCode", SqlDbType.VarChar).Value = quotation.CurrencyCode;
+                        cmd.Parameters.Add("@CurrencyRate", SqlDbType.Decimal).Value = quotation.CurrencyRate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);

@@ -35,6 +35,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
         public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
+
         //Additional fields
         public string Cc { get; set; }
         public string Bcc { get; set; }
@@ -63,6 +66,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool PrintFlag { get; set; }
         public Guid CopyFrom { get; set; }
         public string CopyQuoteNo { get; set; }
+        public Currency Currency { get; set; }
         public int IsFileExist { get; set; }
     }
     public class QuotationAdvanceSearch

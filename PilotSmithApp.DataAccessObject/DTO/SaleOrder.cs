@@ -40,6 +40,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Cc { get; set; }
         public string Bcc { get; set; }
         public string Subject { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
 
         //Aditional Fields
         public string OtherChargeDetailXML { get; set; }
@@ -76,6 +78,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Enquiry Enquiry { get; set; }
         public Guid CopyFrom { get; set; }
         public string CopySaleOrderNo { get; set; }
+        public Currency Currency { get; set; }
         public int IsFileExist { get; set; }
         
     }

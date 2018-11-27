@@ -176,6 +176,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     enquiry.Customer = new Customer();
                                     enquiry.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiry.Customer.CompanyName);
                                     enquiry.Customer.ID= (sdr["CustomerID"].ToString() != "" ? Guid.Parse(sdr["CustomerID"].ToString()) : enquiry.Customer.ID);
+                                    enquiry.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : enquiry.CurrencyCode);
+                                    enquiry.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? decimal.Parse(sdr["CurrencyRate"].ToString()) : enquiry.CurrencyRate);
                                 }
                         }
                     }
@@ -290,6 +292,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = enquiry.GeneralNotes;
                         cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiry.DocumentOwnerID;
                         cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = enquiry.BranchCode;
+                        cmd.Parameters.Add("@CurrencyCode", SqlDbType.VarChar, 5).Value = enquiry.CurrencyCode;
+                        cmd.Parameters.Add("@CurrencyRate", SqlDbType.Decimal).Value = enquiry.CurrencyRate;
                         //-----------------------//
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = enquiry.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = enquiry.PSASysCommon.CreatedDate;

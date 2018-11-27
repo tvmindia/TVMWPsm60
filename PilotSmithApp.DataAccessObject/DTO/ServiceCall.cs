@@ -25,6 +25,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? ServiceTypeCode { get; set; }
         public string ReferenceInvoice { get; set; }
         public DateTime? ReferenceInvoiceDate { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
 
         //Additional Fields
         public string[] DocumentOwners { get; set; }
@@ -50,6 +52,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public List<SaleInvoice> SaleInvoiceList { get; set; }
         public string ReferenceInvoiceDateFormatted { get; set; }
         public ServiceType ServiceType { get; set; }
+        public Currency Currency { get; set; }
     }
 
     public class ServiceCallAdvanceSearch
