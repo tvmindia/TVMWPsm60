@@ -28,6 +28,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Cc { get; set; }
         public string Bcc { get; set; }
         public string Subject { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
 
         //Aditional Fields
         public string MailFrom { get; set; }
@@ -52,6 +54,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSAUser PSAUser { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
         public string SaleOrderNo { get; set; }
+        public Currency Currency { get; set; }
     }
 
     public class ProductionOrderAdvanceSearch

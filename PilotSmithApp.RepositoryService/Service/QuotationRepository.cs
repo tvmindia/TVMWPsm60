@@ -200,6 +200,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.Branch.Code= (sdr["BranchCode"].ToString() != "" ? int.Parse(sdr["BranchCode"].ToString()) : quotation.Branch.Code);
                                     quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);
                                     quotation.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : quotation.EstimateNo);
+                                    quotation.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : quotation.CurrencyRate);
+                                    quotation.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : quotation.CurrencyCode);
                                 }
                         }
                     }
@@ -338,6 +340,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = quotation.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = quotation.PSASysCommon.UpdatedDate;
+                        cmd.Parameters.Add("@CurrencyCode", SqlDbType.VarChar).Value = quotation.CurrencyCode;
+                        cmd.Parameters.Add("@CurrencyRate", SqlDbType.Decimal).Value = quotation.CurrencyRate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);

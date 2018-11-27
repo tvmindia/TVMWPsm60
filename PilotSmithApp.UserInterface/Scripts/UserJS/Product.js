@@ -78,6 +78,7 @@ function BindOrReloadProductTable(action)
                 { "data": "Code", "defaultContent": "<i>-</i>" },
                 { "data": "Name", "defaultContent": "<i>-</i>" },               
                 { "data": "ProductCategory.Description", "defaultContent": "<i>-</i>" },
+                {"data":"Purpose","defaultContent":"<i>-</i>"},
                 { "data": "IntroducedDateFormatted", "defaultContent": "<i>-</i>" },
                 { "data": "Company.Name", "defaultContent": "<i>-</i>" },
                 { "data": "HSNCode", "defaultContent": "<i>-</i>" },
@@ -86,7 +87,16 @@ function BindOrReloadProductTable(action)
                 }
                 ],
                 columnDefs: [
-                { className: "text-center", "targets": [3,5] },
+                { className: "text-center", "targets": [4, 6, 7] },
+                { "targets": [0], "width": "10%" },
+                { "targets": [1], "width": "15%" },
+                { "targets": [2], "width": "15%" },
+                { "targets": [3], "width": "20%" },
+                { "targets": [4], "width": "10%" },
+                { "targets": [5], "width": "15%" },
+                { "targets": [6], "width": "10%" },
+                { "targets": [7], "width": "5%" },
+
                 ],
                 destroy: true,
                 //for performing the import operation after the data loaded

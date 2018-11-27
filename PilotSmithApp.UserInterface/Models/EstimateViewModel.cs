@@ -34,7 +34,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Select Branch")]
         [Required(ErrorMessage ="Branch is missing")]
         public int? BranchCode { get; set; }
-
+        [Display(Name = "Currency code")]
+        public string CurrencyCode { get; set; }
+        [Display(Name = "Currency rate")]
+        public decimal CurrencyRate { get; set; }
         //Aditional Fields
         public string DetailJSON { get; set; }
         [Display(Name = "Estimate Date")]
@@ -65,6 +68,7 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> EnquirySelectList { get; set; }
         public AreaViewModel Area { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }
+        public CurrencyViewModel Currency { get; set; }
     }
 
     public class EstimateAdvanceSearchViewModel

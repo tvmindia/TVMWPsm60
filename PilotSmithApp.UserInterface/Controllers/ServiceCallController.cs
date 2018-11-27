@@ -30,11 +30,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         SecurityFilter.ToolBarAccess _tool;
         ISaleInvoiceBusiness _saleInvoiceBusiness;
         IServiceTypeBusiness _serviceTypeBusiness;
+        ICurrencyBusiness _currencyBusiness;
+
         public ServiceCallController(IServiceCallBusiness serviceCallBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, ICommonBusiness commonBusiness, IAreaBusiness areaBusiness,
             IDocumentStatusBusiness documentStatusBusiness, IEmployeeBusiness employeeBusiness,
             ISaleInvoiceBusiness saleInvoiceBusiness, SecurityFilter.ToolBarAccess tool,
-            IServiceTypeBusiness serviceTypeBusiness)
+            IServiceTypeBusiness serviceTypeBusiness,ICurrencyBusiness currencyBusiness)
         {
             _serviceCallBusiness = serviceCallBusiness;
             _customerBusiness = customerBusiness;
@@ -46,6 +48,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _tool = tool;
             _saleInvoiceBusiness = saleInvoiceBusiness;
             _serviceTypeBusiness = serviceTypeBusiness;
+            _currencyBusiness = currencyBusiness;
         }
         #endregion Constructor Injection 
 
@@ -94,6 +97,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                         },
                     };
+                    serviceCallVM.Currency = new CurrencyViewModel();
 
                 }
                 else //(id == Guid.Empty)
@@ -113,8 +117,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                             TitlesSelectList = _customerBusiness.GetTitleSelectList(),
                         },
                     };
-                }
-               
+                    serviceCallVM.CurrencyCode = "INR";
+                    serviceCallVM.CurrencyRate = 1;
+                    serviceCallVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
+                }               
             }
             catch (Exception ex)
             {

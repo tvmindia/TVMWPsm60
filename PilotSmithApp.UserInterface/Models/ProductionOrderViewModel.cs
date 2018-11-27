@@ -46,6 +46,11 @@ namespace PilotSmithApp.UserInterface.Models
         public string Bcc { get; set; }
         [Display(Name = "Subject")]
         public string Subject { get; set; }
+        [Display(Name = "Currency code")]
+        public string CurrencyCode { get; set; }
+        [Display(Name = "Currency rate")]
+        public decimal CurrencyRate { get; set; }
+
         //Aditional Fields
 
         public string MailFrom { get; set; }
@@ -82,6 +87,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool ShowRate { get; set; }
         public bool ShowAmount { get; set; }
         public string SaleOrderNo { get; set; }
+        public CurrencyViewModel Currency { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel

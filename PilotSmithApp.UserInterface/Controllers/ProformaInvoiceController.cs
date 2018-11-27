@@ -26,11 +26,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICommonBusiness _commonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;
         SecurityFilter.ToolBarAccess _tool;
+        ICurrencyBusiness _currencyBusiness;
         public ProformaInvoiceController(IProformaInvoiceBusiness proformaInvoiceBusiness,
             ISaleOrderBusiness saleOrderBusiness,
             IQuotationBusiness quotationBusiness,
             ICommonBusiness commonBusiness,
-            IDocumentStatusBusiness documentBusiness,SecurityFilter.ToolBarAccess tool
+            IDocumentStatusBusiness documentBusiness,SecurityFilter.ToolBarAccess tool,
+            ICurrencyBusiness currencyBusiness
             )
         {
             _proformaInvoiceBusiness = proformaInvoiceBusiness;
@@ -39,6 +41,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;
             _documentStatusBusiness = documentBusiness;
             _tool = tool;
+            _currencyBusiness = currencyBusiness;
         }
         // GET: ProformaInvoice
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
@@ -86,6 +89,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         proformaInvoiceVM.DocumentType = "SaleOrder";
                         proformaInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
                     }
+                    proformaInvoiceVM.Currency = new CurrencyViewModel();
                 }
                 else if (id == Guid.Empty && quotationID != null)
                 {
@@ -107,6 +111,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     proformaInvoiceVM.Branch.Description = "-";
                     proformaInvoiceVM.Customer = quotationVM.Customer;
                     proformaInvoiceVM.IsDocLocked = false;
+                    proformaInvoiceVM.CurrencyCode = quotationVM.CurrencyCode;
+                    proformaInvoiceVM.CurrencyRate = quotationVM.CurrencyRate;
+                    proformaInvoiceVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
                 }
                 else if (id == Guid.Empty && saleorderID != null)
                 {
@@ -128,6 +138,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     proformaInvoiceVM.Branch.Description = "-";
                     proformaInvoiceVM.Customer = saleorderVM.Customer;
                     proformaInvoiceVM.IsDocLocked = false;
+                    proformaInvoiceVM.CurrencyCode = saleorderVM.CurrencyCode;
+                    proformaInvoiceVM.CurrencyRate = saleorderVM.CurrencyRate;
+                    proformaInvoiceVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
                 }
                 else
                 {
@@ -146,6 +162,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     proformaInvoiceVM.Customer = new CustomerViewModel();
                     proformaInvoiceVM.Customer.CompanyName = "-";
                     proformaInvoiceVM.IsDocLocked = false;
+                    proformaInvoiceVM.CurrencyCode = "INR";
+                    proformaInvoiceVM.CurrencyRate = 1;
+                    proformaInvoiceVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
                 }
                 //proformaInvoiceVM.Customer = new CustomerViewModel
                 //{

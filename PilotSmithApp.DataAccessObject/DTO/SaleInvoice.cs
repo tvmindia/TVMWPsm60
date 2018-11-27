@@ -41,6 +41,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Bcc { get; set; }
         public string Subject { get; set; }
         public int TallyStatus { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
 
         //additional Fields
         public string DetailXML { get; set; }
@@ -92,6 +94,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public SaleOrder SaleOrder { get; set; }
         public string ProductDetail { get; set; }
         public ProformaInvoice ProformaInvoice { get; set; }
+        public Currency Currency { get; set; }
     }
     public class SaleInvoiceAdvanceSearch
     {

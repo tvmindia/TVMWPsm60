@@ -797,6 +797,7 @@
     <Compile Include="Controllers\CarrierController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\CurrencyController.cs" />
     <Compile Include="Controllers\CustomerCategoryController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
@@ -861,6 +862,7 @@
     <Compile Include="Models\CarrierViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\CountryViewModel.cs" />
+    <Compile Include="Models\CurrencyViewModel.cs" />
     <Compile Include="Models\CustomerCategoryViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\DeliveryChallanViewModel.cs" />
@@ -1130,6 +1132,8 @@
     <Content Include="Views\DashBoard\_EnquiryCountSummary.cshtml" />
     <Content Include="Views\SysSetting\Index.cshtml" />
     <Content Include="Views\SysSetting\_AddSysSetting.cshtml" />
+    <Content Include="Views\Shared\_CurrencyPopup.cshtml" />
+    <Content Include="Views\Currency\_CurrencySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

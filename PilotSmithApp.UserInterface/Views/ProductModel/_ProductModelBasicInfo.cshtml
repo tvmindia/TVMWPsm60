@@ -27,7 +27,7 @@
                         // var code = _permission.SubPermissionList.Where(sub => sub.Name == "Rate").Select(Sub => Sub.AccessCode);
                         if ((_permission.SubPermissionList.Count > 0))
                         {
-                            <span id="spnCostPrice">₹ @Model.CostPrice</span>
+                            <span id="spnCostPrice">@Model.CostPrice</span>
                         }
                         else
                         {
@@ -38,7 +38,7 @@
                     }
                     else
                     {
-                        <span id="spnCostPrice">₹ @Model.CostPrice</span>
+                        <span id="spnCostPrice">@Model.CostPrice</span>
                     }
                 }
 
@@ -57,7 +57,7 @@
                         if (_permission.SubPermissionList.Count > 0)
                         {
                             //var code = _permission.SubPermissionList.Where(sub => sub.Name == "Rate").Select(sub => sub.AccessCode);
-                            <span id="spnSellingPrice">₹ @Model.SellingPrice</span>
+                            <span id="spnSellingPrice">@Model.SellingPrice</span>
                         }
                         else
                         {
@@ -66,7 +66,7 @@
                     }
                     else
                     {
-                        <span id="spnSellingPrice">₹ @Model.SellingPrice</span>
+                        <span id="spnSellingPrice">@Model.SellingPrice</span>
                     }
                     Session["ProdSession"] = null;
                 }

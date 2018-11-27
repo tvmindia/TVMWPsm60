@@ -151,7 +151,8 @@
 
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })
+                        @*<span class="control-label">Rate (<span class="control-label" id="detailCurRate">INR</span>)</span>*@ 
+                        @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })  (<span class="control-label" id="detailCurRate"> INR </span>)
                     </div>
                     <div class="col-md-12">
                         @Html.EditorFor(model => model.Rate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency CalculateGST", @onkeypress = "return isNumber(event)" } })
@@ -422,6 +423,9 @@
         });
 
         $('.select2').addClass('form-control newinput');
+
+        //For Currency
+        $('#detailCurRate').text($('#hdnCurrencyCode').val())
 
         try {
             $('input.datepicker').datepicker({

@@ -660,19 +660,19 @@ color: #e32;
     background-color:#00c0ef05;
 }
 input.ApplyCurrency {
-    background-image: url('../Content/images/rupee.png');
+    /*background-image: url('../Content/images/rupee.png');*/
     background-Position: 1% center;
     background-Repeat: no-repeat;
     background-size: 12px;
 }
 input.ApplyPercentage {
-    background-image: url('../Content/images/percentage.png');
+    /*background-image: url('../Content/images/percentage.png');*/
     background-Position: 2% center;
     background-Repeat: no-repeat;
     background-size: 12px;
 }
 td.ApplyCurrency {
-    background-image: url('../Content/images/rupee.png');
+    /*background-image: url('../Content/images/rupee.png');*/
     background-Position: 1% center;
     background-Repeat: no-repeat;
     background-size: 12px;

@@ -1281,3 +1281,9 @@ function GetOtherCharge(value) {
     }
 
 }
+
+function ClearServiceCallform() {
+    debugger;
+    ResetServiceCall();
+    $('.showSweetAlert .cancel').click();
+}

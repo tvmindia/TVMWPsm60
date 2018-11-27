@@ -103,6 +103,15 @@
             </div>
         </div>
 
+         <div class="col-md-12 no-padding">
+             <div class="col-md-12">
+                 @Html.LabelFor(model => model.Purpose, htmlAttributes: new { @class = "control-label" })
+             </div>
+             <div class="col-md-12">
+                 @Html.TextAreaFor(model => model.Purpose,4,0, new { @class = "form-control newinput" })
+                 @Html.ValidationMessageFor(model => model.Purpose, "", new { @class = "text-danger" })
+             </div>
+         </div>
         
     </div>
     <div class="col-md-11 divbox1" style="margin-left: 0% !important;width: 96.666667% !important;">

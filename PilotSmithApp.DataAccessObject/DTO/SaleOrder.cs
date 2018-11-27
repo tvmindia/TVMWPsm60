@@ -40,6 +40,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Cc { get; set; }
         public string Bcc { get; set; }
         public string Subject { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
 
         //Aditional Fields
         public string OtherChargeDetailXML { get; set; }
@@ -74,6 +76,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ApprovalStatus ApprovalStatus { get; set; }
         public Quotation Quotation { get; set; }
         public Enquiry Enquiry { get; set; }
+        public Currency Currency { get; set; }
     }
 
     public class SaleOrderAdvanceSearch

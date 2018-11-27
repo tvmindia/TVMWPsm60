@@ -122,12 +122,17 @@ namespace PilotSmithApp.UserInterface.Controllers
         #endregion ProductModelSelectList
         #region ProductModel Basic Information
         //[AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
-        public ActionResult ProductModelBasicInfo(Guid ID)
+        public ActionResult ProductModelBasicInfo(Guid ID,decimal rate)
         {
             ProductModelViewModel productModelVM = new ProductModelViewModel();
             if (ID != Guid.Empty)
             {
                 productModelVM = Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(ID));
+                if (rate != 0)
+                {
+                    productModelVM.SellingPrice = productModelVM.SellingPrice!=0? Math.Round(Convert.ToDecimal(productModelVM.SellingPrice / rate),2):0;
+                    productModelVM.CostPrice = productModelVM.CostPrice!=0? Math.Round(Convert.ToDecimal(productModelVM.CostPrice / rate),2):0;
+                }              
             }
             return PartialView("_ProductModelBasicInfo", productModelVM);
         }

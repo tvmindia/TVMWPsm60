@@ -325,6 +325,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleOrder.Quotation.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? sdr["QuoteNo"].ToString() : saleOrder.Quotation.QuoteNo);
                                     saleOrder.Enquiry = new Enquiry();
                                     saleOrder.Enquiry.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? sdr["EnquiryNo"].ToString() : saleOrder.Enquiry.EnquiryNo);
+                                    saleOrder.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : saleOrder.CurrencyCode);
+                                    saleOrder.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : saleOrder.CurrencyRate);
                                 }
                         }
                     }
@@ -468,6 +470,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = saleOrder.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = saleOrder.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = saleOrder.PSASysCommon.UpdatedDate;
+                        cmd.Parameters.Add("@CurrencyCode", SqlDbType.VarChar).Value = saleOrder.CurrencyCode;
+                        cmd.Parameters.Add("@CurrencyRate", SqlDbType.Decimal).Value = saleOrder.CurrencyRate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);

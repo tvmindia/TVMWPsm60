@@ -183,6 +183,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.MailFrom = mailFrom.Replace("\n", "<br />");
                                     productionOrder.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : productionOrder.ApproverLevel);
                                     productionOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : productionOrder.SaleOrderNo);
+                                    productionOrder.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : productionOrder.CurrencyCode);
+                                    productionOrder.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : productionOrder.CurrencyRate);
                                 }
                         }
                     }
@@ -328,6 +330,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = productionOrder.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = productionOrder.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = productionOrder.PSASysCommon.CreatedDate;
+                        cmd.Parameters.Add("@CurrencyCode", SqlDbType.VarChar).Value = productionOrder.CurrencyCode;
+                        cmd.Parameters.Add("@CurrencyRate", SqlDbType.Decimal).Value = productionOrder.CurrencyRate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         outputID = cmd.Parameters.Add("@IDOut", SqlDbType.UniqueIdentifier);

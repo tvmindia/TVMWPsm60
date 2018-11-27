@@ -59,6 +59,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Required(ErrorMessage = "subject is missing")]
         [Display(Name = "Subject")]
         public string Subject { get; set; }
+        [Display(Name = "Currency code")]
+        public string CurrencyCode { get; set; }
+        [Display(Name = "Currency rate")]
+        public decimal CurrencyRate { get; set; }
 
         //additional Fields
         public string DocumentType { get; set; }
@@ -109,6 +113,7 @@ namespace PilotSmithApp.UserInterface.Models
         public QuotationViewModel Quotation { get; set; }
         public SaleOrderViewModel SaleOrder { get; set; }
         public PDFToolsViewModel PDFTools { get; set; }
+        public CurrencyViewModel Currency { get; set; }
     }
 
     public class ProformaInvoiceAdvanceSearchViewModel

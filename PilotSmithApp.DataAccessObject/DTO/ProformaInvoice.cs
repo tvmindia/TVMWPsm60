@@ -39,6 +39,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Cc { get; set; }
         public string Bcc { get; set; }
         public string Subject { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
 
         //additional Fields
         public string DetailXML { get; set; }
@@ -80,6 +82,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ReferenceNo { get; set; }
         public Quotation Quotation { get; set; }
         public SaleOrder SaleOrder { get; set; }
+        public Currency Currency { get; set; }
     }
 
     public class ProformaInvoiceAdvanceSearch

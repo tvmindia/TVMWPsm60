@@ -440,7 +440,7 @@ function BindQuotationOtherChargesDetailList(id) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -454,7 +454,7 @@ function BindQuotationOtherChargesDetailList(id) {
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt))
                      //return Total
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total : ₹ ' + formatCurrency(Total) + '" data-content="Charge Amount : ₹ ' + formatCurrency(data) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '</p>"/>' + formatCurrency(Total)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total :  ' + formatCurrency(Total) + '" data-content="Charge Amount :  ' + formatCurrency(data) + '<br/>GST :  ' + formatCurrency(GSTAmt) + '</p>"/>' + formatCurrency(Total)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -526,7 +526,7 @@ function BindQuotationDetailList(id, IsEstimated) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = roundoff(Total - Discount)
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-placement="left" data-title="<p align=left>Taxable : ₹ ' + formatCurrency(Taxable) + '" data-content="Net Total : ₹ ' + formatCurrency(Total) + '<br/> Discount : ₹ -' + formatCurrency(Discount) + '</p>"/>' + formatCurrency(Taxable)
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-placement="left" data-title="<p align=left>Taxable :  ' + formatCurrency(Taxable) + '" data-content="Net Total :  ' + formatCurrency(Total) + '<br/> Discount :  -' + formatCurrency(Discount) + '</p>"/>' + formatCurrency(Taxable)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -542,7 +542,7 @@ function BindQuotationDetailList(id, IsEstimated) {
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -557,7 +557,7 @@ function BindQuotationDetailList(id, IsEstimated) {
                      var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
                      var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Grand Total : ₹ ' + formatCurrency(GrandTotal) + '" data-content="Taxable : ₹ ' + formatCurrency(TaxableAmt) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '</p>"/>' + formatCurrency(GrandTotal)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Grand Total :  ' + formatCurrency(GrandTotal) + '" data-content="Taxable :  ' + formatCurrency(TaxableAmt) + '<br/>GST :  ' + formatCurrency(GSTAmt) + '</p>"/>' + formatCurrency(GrandTotal)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -714,7 +714,9 @@ function AddQuotationDetailToList() {
                         productSpec = productSpec.replace(/\n/g, ' ');
                         for (var i = 0; i < quotationDetailList.length; i++) {
                             if ((quotationDetailList[i].ProductID == $('#ProductID').val()) && (quotationDetailList[i].ProductModelID == $('#ProductModelID').val()
-                                && (quotationDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (quotationDetailList[i].UnitCode == $('#UnitCode').val())))) {
+                                && (quotationDetailList[i].ProductSpec == null ? "" : quotationDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (quotationDetailList[i].UnitCode == $('#UnitCode').val())
+                                && (quotationDetailList[i].Rate == $('#divModelQuotationPopBody #Rate').val())
+                                ))) {
                                 quotationDetailList[i].Qty = parseFloat(quotationDetailList[i].Qty) + parseFloat($('#Qty').val());
                                 checkpoint = 1;
                                 break;
@@ -1450,3 +1452,8 @@ function GetOtherCharge(value)
     
 }
 
+function ClearQuotationform() {
+    debugger;
+    ResetQuotation();
+    $('.showSweetAlert .cancel').click();
+}
