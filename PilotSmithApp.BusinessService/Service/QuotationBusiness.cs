@@ -33,13 +33,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _quotationRepository.GetAllQuotation(quotationAdvanceSearch);
         }
-        public List<QuotationDetail> GetQuotationDetailListByQuotationID(Guid quoteID)
+        public List<QuotationDetail> GetQuotationDetailListByQuotationID(Guid quoteID, bool isCopy)
         {
-            return _quotationRepository.GetQuotationDetailListByQuotationID(quoteID);
+            return _quotationRepository.GetQuotationDetailListByQuotationID(quoteID,isCopy);
         }
-        public List<QuotationOtherCharge> GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        public List<QuotationOtherCharge> GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID, bool isCopy)
         {
-            return _quotationRepository.GetQuotationOtherChargesDetailListByQuotationID(quotationID);
+            return _quotationRepository.GetQuotationOtherChargesDetailListByQuotationID(quotationID,isCopy);
         }
         public object InsertUpdateQuotation(Quotation quotation)
         {

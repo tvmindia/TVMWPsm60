@@ -332,7 +332,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<DeliveryChallanDetailViewModel> deliveryChallanItemViewModelList = new List<DeliveryChallanDetailViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID).Where(x=>x.Qty!=x.PrevDelQty).ToList());
+                    List<SaleOrderDetailViewModel> saleOrderDetailVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID,false).Where(x=>x.Qty!=x.PrevDelQty).ToList());
                     deliveryChallanItemViewModelList = (from saleOrderDetailVM in saleOrderDetailVMList
                                                         select new DeliveryChallanDetailViewModel
                                                         {

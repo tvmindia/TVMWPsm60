@@ -163,6 +163,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleInvoiceVM.Branch.Description = "-";
                     saleInvoiceVM.Customer = proformaInvoiceVM.Customer;
                     saleInvoiceVM.IsDocLocked = false;
+                   
+                   saleInvoiceVM.InvoiceType = proformaInvoiceVM.InvoiceType=="SB"? proformaInvoiceVM.InvoiceType:"RB";
                 }
                 else   
                 {
@@ -291,7 +293,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<SaleInvoiceDetailViewModel> saleInvoiceItemViewModelList = new List<SaleInvoiceDetailViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderDetailViewModel> saleOrderVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
+                    List<SaleOrderDetailViewModel> saleOrderVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID,false));
                     foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderVMList)
                     {
                         SaleInvoiceDetailViewModel saleInvoiceDetailVM = new SaleInvoiceDetailViewModel()
@@ -340,7 +342,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<SaleInvoiceDetailViewModel> saleInvoiceItemViewModelList = new List<SaleInvoiceDetailViewModel>();
                 if (quoteID != Guid.Empty)
                 {
-                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID));
+                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID,false));
                     saleInvoiceItemViewModelList = (from quotationDetailVM in quotationDetailVMList
                                                   select new SaleInvoiceDetailViewModel
                                                   {
@@ -411,6 +413,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                         Unit = proformaInvoiceDetailVM.Unit,
                                                         TaxType = proformaInvoiceDetailVM.TaxType,
                                                         OtherCharge = proformaInvoiceDetailVM.OtherCharge,
+                                                        OtherChargeCode= proformaInvoiceDetailVM.OtherCharge.Code,
 
                                                     }).ToList();
                 }
@@ -452,7 +455,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else
                 {
-                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID));
+                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID,false));
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationOtherChargeViewModelList, Message = "Success" });
             }
@@ -514,7 +517,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<SaleInvoiceOtherChargeViewModel> saleInvoiceOtherChargeViewModelList = new List<SaleInvoiceOtherChargeViewModel>();
                 if (quoteID != Guid.Empty)
                 {
-                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID));
+                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID,false));
                     saleInvoiceOtherChargeViewModelList = (from quotationOtherChargeVM in quotationOtherChargeVMList
                                                          select new SaleInvoiceOtherChargeViewModel
                                                          {
@@ -552,7 +555,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<SaleInvoiceOtherChargeViewModel> saleInvoiceOtherChargeViewModelList = new List<SaleInvoiceOtherChargeViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeVMList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID));
+                    List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeVMList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID,false));
                     saleInvoiceOtherChargeViewModelList = (from quotationOtherChargeVM in saleOrderOtherChargeVMList
                                                            select new SaleInvoiceOtherChargeViewModel
                                                            {
@@ -731,9 +734,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                 ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.DetailJSON);
                 ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceDetailViewModel>>(ReadableFormat);
-                if(saleInvoiceVM.InvoiceType=="RB")
+                if (saleInvoiceVM.InvoiceType == "RB")
                 {
-                ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.OtherChargesDetailJSON);
+                    ResultFromJS = JsonConvert.DeserializeObject(saleInvoiceVM.OtherChargesDetailJSON);
                 ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                 saleInvoiceVM.SaleInvoiceOtherChargeDetailList = JsonConvert.DeserializeObject<List<SaleInvoiceOtherChargeViewModel>>(ReadableFormat);
                 }

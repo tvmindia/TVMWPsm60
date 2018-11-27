@@ -272,6 +272,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         proformaInvoiceDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : proformaInvoiceDetail.ProductModel.Name);
 
                                         proformaInvoiceDetail.OtherCharge = new OtherCharge();
+                                        proformaInvoiceDetail.OtherCharge.Code = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : proformaInvoiceDetail.OtherCharge.Code);
                                         proformaInvoiceDetail.OtherCharge.Description = (sdr["OtherChargeCodeDesc"].ToString() != "" ? (sdr["OtherChargeCodeDesc"].ToString()) : proformaInvoiceDetail.OtherCharge.Description);
                                         proformaInvoiceDetail.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : proformaInvoiceDetail.OtherChargeCode);
                                         proformaInvoiceDetail.OtherCharge.SACCode = (sdr["SACCode"].ToString() != "" ? sdr["SACCode"].ToString() : proformaInvoiceDetail.OtherCharge.SACCode);

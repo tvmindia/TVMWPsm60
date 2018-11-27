@@ -130,14 +130,14 @@ namespace PilotSmithApp.BusinessService.Service
                                                                  Selected = false
                                                              }).ToList() : new List<SelectListItem>();
         }
-        public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
+        public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID, bool isCopy)
         {
-            return _saleOrderRepository.GetSaleOrderDetailListBySaleOrderID(saleOrderID);
+            return _saleOrderRepository.GetSaleOrderDetailListBySaleOrderID(saleOrderID, isCopy);
         }
 
-        public List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID)
+        public List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID, bool isCopy)
         {
-            return _saleOrderRepository.GetSaleOrderOtherChargesDetailListBySaleOrderID(SaleOrderID);
+            return _saleOrderRepository.GetSaleOrderOtherChargesDetailListBySaleOrderID(SaleOrderID,isCopy);
         }
 
         public SaleOrderSummary GetSaleOrderSummaryCount()

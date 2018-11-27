@@ -202,7 +202,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.ApproverLevel = (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : quotation.ApproverLevel);
                                     quotation.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? sdr["EstimateNo"].ToString() : quotation.EstimateNo);
                                     quotation.CopyFrom = (sdr["CopyFrom"].ToString() != "" ? Guid.Parse(sdr["CopyFrom"].ToString()) : quotation.CopyFrom);
-                                    quotation.CopyQuoteNo = (sdr["CopyQuoteNo"].ToString() != "" ? sdr["CopyQuoteNo"].ToString() : quotation.CopyQuoteNo);
+                                  quotation.CopyQuoteNo = (sdr["CopyQuoteNo"].ToString() != "" ? sdr["CopyQuoteNo"].ToString() : quotation.CopyQuoteNo);
+                                    quotation.IsFileExist = (sdr["IsFileExist"].ToString() != "" ? int.Parse(sdr["IsFileExist"].ToString()) : quotation.IsFileExist);
                                 }
                         }
                     }
@@ -218,7 +219,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion Get Quotation
         #region GetQuotationDetailListByQuotationID
-        public List<QuotationDetail> GetQuotationDetailListByQuotationID(Guid quotationID)
+        public List<QuotationDetail> GetQuotationDetailListByQuotationID(Guid quotationID,bool isCopy)
         {
             List<QuotationDetail> quotationDetailList = new List<QuotationDetail>();
             try
@@ -243,7 +244,15 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     QuotationDetail quotationDetail = new QuotationDetail();
                                     {
-                                        quotationDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationDetail.ID);
+                                        if(isCopy)
+                                        {
+                                            quotationDetail.ID = Guid.Empty;
+                                        }
+                                        else
+                                        {
+                                            quotationDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationDetail.ID);
+                                        }
+                                       
                                         quotationDetail.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : quotationDetail.QuoteID);
                                         quotationDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : quotationDetail.ProductSpec);
                                         quotationDetail.ProductSpecHtml = (sdr["ProductSpecHtml"].ToString() != "" ? sdr["ProductSpecHtml"].ToString() : quotationDetail.ProductSpecHtml);
@@ -313,6 +322,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = quotation.IsUpdate;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = quotation.ID;
                         cmd.Parameters.Add("@CopyFromID", SqlDbType.UniqueIdentifier).Value = quotation.CopyFrom;
+                        cmd.Parameters.Add("@CopyQuoteNo", SqlDbType.VarChar, 20).Value = quotation.CopyQuoteNo;
                         cmd.Parameters.Add("@QuoteRefNo", SqlDbType.VarChar, 20).Value = quotation.QuoteRefNo;
                         cmd.Parameters.Add("@QuoteNo", SqlDbType.VarChar, 20).Value = quotation.QuoteNo;
                         cmd.Parameters.Add("@QuoteDate", SqlDbType.DateTime).Value = quotation.QuoteDateFormatted;
@@ -654,7 +664,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion GetQuotationForSelectListOnDemand
 
         #region GetQuotationOtherChargeListByQuotationID
-        public List<QuotationOtherCharge> GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        public List<QuotationOtherCharge> GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID, bool isCopy)
         {
             List<QuotationOtherCharge> quotationOtherChargeList = new List<QuotationOtherCharge>();
             try
@@ -679,7 +689,15 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     QuotationOtherCharge quotationOtherCharge = new QuotationOtherCharge();
                                     {
-                                        quotationOtherCharge.ID= (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationOtherCharge.ID);
+                                        if(isCopy)
+                                        {
+                                            quotationOtherCharge.ID = Guid.Empty;
+                                        }
+                                        else
+                                        {
+                                            quotationOtherCharge.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : quotationOtherCharge.ID);
+                                        }
+                                        
                                         quotationOtherCharge.QuoteID = (sdr["QuoteID"].ToString() != "" ? Guid.Parse(sdr["QuoteID"].ToString()) : quotationOtherCharge.QuoteID);
                                         quotationOtherCharge.OtherChargeCode= (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : quotationOtherCharge.OtherChargeCode);
                                         quotationOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : quotationOtherCharge.ChargeAmount);

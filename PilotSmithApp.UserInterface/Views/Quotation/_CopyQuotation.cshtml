@@ -9,6 +9,7 @@
 @using (Ajax.BeginForm("InsertUpdateQuotation", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotation", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "QuotationForm" }))
 {
     @*@Html.AntiForgeryToken()*@
+    @Html.Hidden("hdnCopyFrom", Model.CopyFrom)
     @Html.HiddenFor(model => model.CopyFrom, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.CopyQuoteNo, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
@@ -18,7 +19,8 @@
     @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ApproverLevel, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
-    <div class="col-md-11 divbox1">
+    @Html.HiddenFor(model => model.IsFileExist, htmlAttributes: new { @class = "" })
+     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
@@ -31,7 +33,7 @@
 
                         @*<div class="col-md-5 no-left-padding">*@
                         @* @Html.Label("Copied Quotation From   :", htmlAttributes: new { @class = "control-label" })*@
-                        <span style="font-size:12px">Copied From Quotation :</span>
+                        @*<span style="font-size:12px">Copied From Quotation :</span>*@
                         @*</div>
 
                             <div class="col-md-7">*@
@@ -40,17 +42,28 @@
                         @*<a href="@Url.Action("","Quotation",  new  { ID=Model.ID })">@ViewBag.QuoteNo</a>*@
                         @* <a href="@Url.Content("~/Quotation?ID=" + Model.ID )">@ViewBag.QuoteNo</a>*@
                         @{
-                            if (!Model.IsUpdate)
-                            {
-                                <span style="font-weight: bold;font-size:12px;">@ViewBag.QuoteNo</span>
-                                    <a href="/Quotation?ID=@Model.CopyFrom" target="_blank">Open in new tab</a>
-                            }
+//if (!Model.IsUpdate)
+//{
+                                @*<span style="font-weight: bold;font-size:12px;">@Model.CopyQuoteNo</span>
+                                    <a href="/Quotation?ID=@Model.CopyFrom" target="_blank">Open in new tab</a>*@
+                            @*}
                             else
                             {  <span style="font-weight: bold;font-size:12px;">@Model.CopyQuoteNo</span>
                             <a href="/Quotation?ID=@Model.CopyFrom" target="_blank" style="font-size:10px">Open in new tab</a>
-                            }
+                            }*@
                         }
-
+                        @if (Model.IsFileExist == 1)
+                        {
+                            <span style="font-size:12px">Copied From Quotation :</span><span style="font-weight: bold;font-size:12px;">@Model.CopyQuoteNo</span>
+                                    <a onclick="RedirectingCopiedQuotation()" style="font-size:10px">Open in new tab</a>
+                                    <a href="/Quotation?ID=@Model.CopyFrom" id="anchorOpenSODInTab" target="_blank" style="font-size:10px"></a>
+                        }
+                        else
+                        {
+                            <span style="font-size:12px">Copied From Quotation :</span><span style="font-weight: bold;font-size:12px;">@Model.CopyQuoteNo</span>
+                                    <a onclick="RedirectingCopiedQuotation()" style="font-size:12px">Quotation Deleted</a>
+                                    <a href="/Quotation?ID=@Model.CopyFrom" id="anchorOpenSODInTab" target="_blank" style="font-size:10px"></a>
+                        }
 
                     </div>
 
@@ -277,7 +290,7 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate || Model.EstimateID != null)
+                    @if (Model.IsUpdate )
                     {
                         <div class="col-md-12">
                             <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
@@ -479,7 +492,7 @@
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
-            @if (Model.IsUpdate||Model.EstimateID!=null)
+            @if (Model.IsUpdate)
             {
 
             }
@@ -494,7 +507,7 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
             }
-            @if (!Model.IsUpdate&&Model.EstimateID!=null)
+            @if (!Model.IsUpdate)
              {
                 <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
@@ -564,58 +577,7 @@
         catch (e) {
             console.log(e.message);
         }
-        try {
-            $('#QuotationForm #EstimateID').change(function () {
-                debugger;
-                OnServerCallBegin();
-                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function (responseTxt, statusTxt, xhr) {
-                    if (statusTxt == "success") {
-                        OnServerCallComplete();
-                        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val(), function () {
-                            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-                            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
-                        });
-                        ClearCalculatedFields();
-                        BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
-                        BindQuotationOtherChargesDetailList("00000000-0000-0000-0000-000000000000");
-                        CalculateTotal();
-                    }
-                });
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            $('#EstimateID').val($('#hdnEstimateID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEstimateID').val());
-            $('#EstimateID').select2({
-                language: {
-                    noResults: function (params) {
-                        return "Search result will shows here";
-                    }
-                },
-                ajax: {
-                    type: 'POST',
-                    dataType: 'json',
-                    url: "Estimate/GetEstimateForSelectListOnDemand/",
-                    delay: 250,
-                    data: function (term) {
-                        return {
-                            'searchTerm': term.term //search term
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.items
-                        };
-                    },
-                }
-            });
-            $('.select2').addClass('form-control newinput');
-        }
-        catch (e) {
-            console.log(e.message);
-        }
+      
         try {
             if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")

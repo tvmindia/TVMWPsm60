@@ -76,6 +76,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Enquiry Enquiry { get; set; }
         public Guid CopyFrom { get; set; }
         public string CopySaleOrderNo { get; set; }
+        public int IsFileExist { get; set; }
+        
     }
 
     public class SaleOrderAdvanceSearch
