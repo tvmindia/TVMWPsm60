@@ -66,6 +66,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public bool PrintFlag { get; set; }
         public Guid CopyFrom { get; set; }
         public string CopyQuoteNo { get; set; }
+        public Currency Currency { get; set; }
     }
     public class QuotationAdvanceSearch
     {
