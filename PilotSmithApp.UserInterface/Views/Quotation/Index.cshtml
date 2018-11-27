@@ -11,13 +11,13 @@
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/PSAForms")
 }
 <style>
- [data-title]:hover:after {
+ #tblQuotation [data-title]:hover:after {
     opacity: 1;
     transition: all 0.1s ease 0.5s;
     visibility: visible;
     
 }
-[data-title]:after {
+#tblQuotation [data-title]:after {
     content: attr(data-title);
     background-color: black;
     color: white;
@@ -36,7 +36,7 @@
     visibility: hidden;
     font-family:'Segoe UI'!important;
 }
-[data-title] {
+#tblQuotation [data-title] {
     position: relative;
 }
     </style>
