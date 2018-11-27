@@ -17,15 +17,164 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
+
+                <!--Currency start-->
+                @*<div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.HiddenFor(model => model.CurrencyCode, htmlAttributes: new { @class = "", @id = "hdnCurrencyCode" })
+                            @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
+                            @Html.Label("Configure currency", htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12 no-padding">
+                            <div class="col-md-12" style="display:inline-flex;font-weight:500;">
+                                <select class="form-control newinput" disabled>
+                                    <option>INR</option>
+                                </select>
+                                <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />
+                                @if (Model.IsUpdate)
+                                {
+                                    <select class="form-control newinput" style="border-left:1px solid black" disabled>
+                                        <option>@Model.CurrencyCode</option>
+                                    </select>
+                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;border-left:1px solid black;text-align:right;" />
+                                }
+                                else
+                                {
+                                    if ((Model.QuoteID == null && Model.SaleOrderID == null) )
+                                    {
+                                        <select class="form-control newinput changeCurrency" style="border-left:1px solid black">
+                                            @{
+                                                foreach (var cur in Model.Currency.CurrencyList)
+                                                {
+                                                    <option value="@cur.Code" title="@cur.Description">@cur.Code</option>
+                                                }
+                                            }
+
+                                        </select>
+                                        <input class="form-control newinput changeCurrency" type="number" min="0" style="width:100%;border-left:1px solid black;text-align:right;" value="@Model.CurrencyRate" />
+
+                                                }
+                                                else
+                                                {
+                                                    <select class="form-control newinput" style="border-left:1px solid black" disabled>
+                                                        <option>@Model.CurrencyCode</option>
+                                                    </select>
+                                                    <input class="form-control newinput changeCurrency" type="number" min="0" style="width:100%;border-left:1px solid black;text-align:right;" value="@Model.CurrencyRate" />
+
+                                                    }
+                                                }
+                            </div>
+                        </div>
+                    </div>
+                    @if (!Model.IsUpdate)
+                {
+                        <div class="col-md-6 no-padding">
+                            <div class="col-md-12">
+                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 30px 6.5px 15px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
+                                    <h4>Default currency: INR</h4>
+
+                                    <p>Changing currency will reset document</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>*@
+
+
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-6">
+                            @Html.HiddenFor(model => model.CurrencyCode, htmlAttributes: new { @class = "", @id = "hdnCurrencyCode" })
+                            @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
+                            @Html.Label("Select currency", htmlAttributes: new { @class = "control-label lblrequired" })
+                            <label class="control-label lblrequired" style="margin-left:30px!important;">Rate</label>
+                        </div>
+                        <div class="col-md-12 no-padding">
+                            <div class="col-md-12" style="display:inline-flex;font-weight:500;">
+                                @*<select class="form-control newinput" disabled>
+                            <option>INR</option>
+                        </select>
+                        <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />*@
+                                @if (Model.IsUpdate)
+                                {
+                                    <select class="form-control newinput" disabled title="Cannot change currency">
+                                        <option>@Model.CurrencyCode</option>
+                                    </select>
+                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;" title="Cannot change rate" />
+                                }
+                                else
+                                {
+                                    if ((Model.QuoteID == null && Model.SaleOrderID == null))
+                                    {
+                                        <select class="form-control newinput changeCurrency">
+                                            @{
+                                                foreach (var cur in Model.Currency.CurrencyList)
+                                                {
+                                                    <option value="@cur.Code" title="@cur.Description">@cur.Code</option>
+                                                }
+                                            }
+
+                                        </select>
+                                        <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                                }
+                                                else
+                                                {
+                                                    <select class="form-control newinput" disabled title="Cannot change currency">
+                                                        <option>@Model.CurrencyCode</option>
+                                                    </select>
+                                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                                }
+
+                                                <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;" value="@Model.CurrencyRate" />
+
+                                                }
+                                @*<select class="form-control newinput" disabled>
+                            <option>INR</option>
+                        </select>*@
+                                <input class="form-control newinput" type="text" readonly style="width:100%;text-align:left;background-color:rgba(2, 166, 143, 0.06);border-bottom:none;" value="INR" />
+                            </div>
+                        </div>
+                    </div>
+                    @if (!Model.IsUpdate)
+                    {
+                        <div class="col-md-6 no-padding">
+                            <div class="col-md-12">
+                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 30px 6.5px 15px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
+                                    <h4><i class="fa fa-info-circle"></i> note</h4>
+
+                                    <p>Changing currency will reset document</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-6 no-padding">
+                            <div class="col-md-12">
+                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 30px 6.5px 15px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
+                                    <h4><i class="fa fa-info-circle"></i> note</h4>
+
+                                    <p>Currency cannot change in edit mode</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!--Currency end-->
+
                 @if (!Model.IsUpdate)
                 {
                     <div class="col-md-12" style="font-size:14px">
                         @Html.Label("Create Document From: ")
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true ,@tabindex="-1",@id="Quote" }) @Html.Label("Quotation")
+                            @Html.RadioButtonFor(model => model.DocumentType, "Quotation", new { @checked = true, @tabindex = "-1", @id = "Quote" }) @Html.Label("Quotation")
                         </span>
                         <span style="margin-left:10px">
-                            @Html.RadioButtonFor(model => model.DocumentType, "SaleOrder",new { @id="Sale"}) @Html.Label("Sale Order")
+                            @Html.RadioButtonFor(model => model.DocumentType, "SaleOrder", new { @id = "Sale" }) @Html.Label("Sale Order")
                         </span>
                     </div>
                     if (Model.DocumentType == "Quotation")
@@ -222,36 +371,36 @@
 
                             <div class="col-md-12">
                                 @{
-                                if (Model.InvoiceType == "RB")
-                                {
-                                <span class="form-control newinput" style="background-color:#eeeeee">Regular Bill</span>
-                                }
-                                else if (Model.InvoiceType == "SB")
-                                {
-                                <span class="form-control newinput" style="background-color:#eeeeee">Service Bill</span>
+                                    if (Model.InvoiceType == "RB")
+                                    {
+                                        <span class="form-control newinput" style="background-color:#eeeeee">Regular Bill</span>
+                                    }
+                                    else if (Model.InvoiceType == "SB")
+                                    {
+                                        <span class="form-control newinput" style="background-color:#eeeeee">Service Bill</span>
                                     }
                                 }
                             </div>
-                        }
-                        else
-                        {
+                                    }
+                                    else
+                                    {
 
-                            <div class="col-md-12">
-                                <div id="divInvoiceType">
-                                    @{
-                                        List<SelectListItem> TypeList = new List<SelectListItem>();
-                                        TypeList.Add(new SelectListItem
-                                        { Text = "Regular Bill", Value = "RB", Selected = true });
-                                        TypeList.Add(new SelectListItem
-                                        { Text = "Service Bill", Value = "SB" });
-                                    }
-                                    @Html.DropDownListFor(model => model.InvoiceType, TypeList, new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100 %", onchange = "InvoiceTypeOnChange(this.value)", })
-                                </div>
-                                <div id="divServiceBill">
-                                </div>
-                            </div>
-                                        }
-                        @Html.HiddenFor(model => model.InvoiceType, htmlAttributes: new { @class = "", @id = "hdnInvoiceType"})
+                                        <div class="col-md-12">
+                                            <div id="divInvoiceType">
+                                                @{
+                                                    List<SelectListItem> TypeList = new List<SelectListItem>();
+                                                    TypeList.Add(new SelectListItem
+                                                    { Text = "Regular Bill", Value = "RB", Selected = true });
+                                                    TypeList.Add(new SelectListItem
+                                                    { Text = "Service Bill", Value = "SB" });
+                                                }
+                                                @Html.DropDownListFor(model => model.InvoiceType, TypeList, new { @class = "form-control newinput", value = -1, style = "padding:4px 12px;width:100 %", onchange = "InvoiceTypeOnChange(this.value)", })
+                                            </div>
+                                            <div id="divServiceBill">
+                                            </div>
+                                        </div>
+                                                    }
+                        @Html.HiddenFor(model => model.InvoiceType, htmlAttributes: new { @class = "", @id = "hdnInvoiceType" })
 
 
                     </div>
@@ -409,23 +558,23 @@
                         if (Model.InvoiceType == "SB")
                         {
                             <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
 
                         }
                         else
                         {
                             <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
 
                         }
                     }
                     else
                     {
                         <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                            <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                        <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
                     }
                 }
             </div>
@@ -439,12 +588,12 @@
                             <th style="width:15%">Product</th>
                             <th style="width:10%">HSN Code</th>
                             <th style="width:10%">Quantity</th>
-                            <th style="width:10%">Rate(₹)</th>
-                            <th style="width:10%">Discount(₹)</th>
-                            <th style="width:10%">Taxable(₹)</th>
-                            <th style="width:10%">GST(₹)</th>
-                            <th style="width:10%">Cess(₹)</th>
-                            <th style="width:10%">Total(₹)</th>
+                            <th style="width:10%">Rate(<span id="spanRate">@Model.CurrencyCode</span>)</th>
+                            <th style="width:10%">Discount(<span id="spanDiscount">@Model.CurrencyCode</span>)</th>
+                            <th style="width:10%">Taxable(<span id="spanTaxable">@Model.CurrencyCode</span>)</th>
+                            <th style="width:10%">GST</th>
+                            <th style="width:10%">Cess</th>
+                            <th style="width:10%">Total(<span id="spanTotal">@Model.CurrencyCode</span>)</th>
                             <th style="width:5%">...</th>
                         </tr>
                     </thead>
@@ -457,10 +606,10 @@
                             <tr class="text-center TableHead">
                                 <th style="width:20%">Other Charge</th>
                                 <th style="width:15%">SAC Code</th>
-                                <th style="width:15%">Charge Amount(₹)</th>
-                                <th style="width:15%">GST(₹)</th>
-                                <th style="width:15%">Additional Tax(₹)</th>
-                                <th style="width:15%">Total(₹)</th>
+                                <th style="width:15%">Charge Amount(<span id="spanchargeAmount">@Model.CurrencyCode</span>)</th>
+                                <th style="width:15%">GST</th>
+                                <th style="width:15%">Additional Tax</th>
+                                <th style="width:15%">Total(<span id="spanOCTotal">@Model.CurrencyCode</span>)</th>
                                 <th style="width:5%">...</th>
                             </tr>
                         </thead>
@@ -532,30 +681,30 @@
             </div>
         </div>
     </div>
-        <div class="col-md-11 divbox1">
-            <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">Notes</div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Notes</div>
 
-                <div class="form-group col-md-12">
-                    <div class="col-md-12 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
-                            @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
-                        </div>
+            <div class="form-group col-md-12">
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
                     </div>
-                    <div class="col-md-12">&nbsp;</div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                    </div>
                 </div>
+                <div class="col-md-12">&nbsp;</div>
             </div>
         </div>
-        <div class="col-md-11 divbox1">
-            <div class="col-md-12 divbox2">
-                <div class="col-md-12 headSeperator">Proforma Invoice Attachments</div>
-                @Html.Partial("_Fileupload")
-            </div>
+    </div>
+    <div class="col-md-11 divbox1">
+        <div class="col-md-12 divbox2">
+            <div class="col-md-12 headSeperator">Proforma Invoice Attachments</div>
+            @Html.Partial("_Fileupload")
         </div>
+    </div>
         <div class="" hidden="hidden">
             <div class="col-md-offset-2 col-md-10">
                 <input id="btnInsertUpdateProformaInvoice" type="submit" value="Create" class="btn btn-default" />
@@ -579,6 +728,26 @@
 
             });
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
+          
+            $('.changeCurrency').change(function () {
+                if (_dataTable.ProformaInvoiceDetailList.rows().count() > 0) {
+                    notyConfirm('Do you want to continue?', 'ClearProformaInvoiceform();', 'This will reset the form !', "Continue");
+                    return false;
+                }
+                if (this.nodeName == "SELECT") {
+                    $('#hdnCurrencyCode').val(this.value)
+                    $('#spanRate').text(this.value)
+                    $('#spanDiscound').text(this.value)
+                    $('#spanTaxable').text(this.value)
+                    $('#spanTotal').text(this.value)
+                    $('#spanchargeAmount').text(this.value)
+                    $('#spanOCTotal').text(this.value)
+                    $('#idCurRateForAutofocus').focus();
+                }
+                if (this.nodeName == "INPUT") {
+                    $('#hdnCurrencyRate').val(this.value)
+                }
+            });
             </text>
          }
             @if ((!Model.IsUpdate) && (Model.QuoteID!=null||Model.SaleOrderID!=null))
@@ -586,6 +755,14 @@
             <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
             });
+           
+            $('.changeCurrency').change(function () {
+                debugger;
+                if (this.nodeName == "INPUT") {
+                    $('#hdnCurrencyRate').val(this.value)
+                }
+            });
+            
             </text>
         }
         }
@@ -704,7 +881,7 @@
         try {
             $('#ProformaInvoiceForm #SaleOrderID').change(function () {
                 debugger;
-                OnServerCallBegin();               
+                OnServerCallBegin();
                 $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + _emptyGuid + "&saleOrderID=" + this.value, function () {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProformaInvoiceForm #hdnCustomerID').val(), function () {
                         $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
@@ -712,9 +889,9 @@
                     });
                     BindProformaInvoiceDetailList("00000000-0000-0000-0000-000000000000", true, false);
                     BindProformaInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false, true)
-                    CalculateTotal();                    
-                   // $('#DocumentType').prop('disabled', true);
-                   // $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
+                    CalculateTotal();
+                    // $('#DocumentType').prop('disabled', true);
+                    // $("#DocumentType").attr('title', "SaleOrder details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });
@@ -734,8 +911,8 @@
                     BindProformaInvoiceDetailList("00000000-0000-0000-0000-000000000000", false, true);
                     BindProformaInvoiceOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true, false)
                     CalculateTotal();
-                   // $("input[type=radio][value=SaleOrder]").attr("disabled", true);
-                   // $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
+                    // $("input[type=radio][value=SaleOrder]").attr("disabled", true);
+                    // $("input[type=radio][value=SaleOrder]").attr('title', "Quotation  details has been listed, Reset to continue");
                     OnServerCallComplete();
                 });
             });
@@ -751,7 +928,7 @@
                     //$('#divQuotationSelectList').show();
                     //$('#QuoteID').prop('disabled', false);
                     //$('#SaleOrderID').prop('disabled', true);
-                   
+
                 }
                 else if (this.value == "SaleOrder") {
                     ResetProformaInvoice(this);
@@ -759,7 +936,7 @@
                     //$('#divQuotationSelectList').hide();
                     //$('#QuoteID').prop('disabled', true);
                     //$('#SaleOrderID').prop('disabled', false);
-                   
+
                 }
             });
         }

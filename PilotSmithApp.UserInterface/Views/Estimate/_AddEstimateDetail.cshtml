@@ -98,7 +98,8 @@
         <div class="col-md-12 no-padding">
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.CostRate, htmlAttributes: new { @class = "control-label " })
+                    @*<span class="control-label lblrequired">CostRate(<span class="control-label lblrequired" id="detailCurCostRate">INR</span>)</span>*@ 
+                    @Html.LabelFor(model => model.CostRate, htmlAttributes: new { @class = "control-label " })  (<span class="control-label" id="detailCurCostRate"> INR </span>)
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.CostRate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
@@ -108,7 +109,8 @@
 
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @Html.LabelFor(model => model.SellingRate, htmlAttributes: new { @class = "control-label " })
+                    @*<span class="control-label lblrequired">SellingRate(<span class="control-label lblrequired" id="detailCurSellingRate">INR</span>)</span>*@ 
+                    @Html.LabelFor(model => model.SellingRate, htmlAttributes: new { @class = "control-label " })  (<span class="control-label" id="detailCurSellingRate"> INR </span>)
                 </div>
                 <div class="col-md-12">
                     @Html.EditorFor(model => model.SellingRate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
@@ -158,6 +160,11 @@
             dropdownParent: $("#divModelPopEstimate")
         });
         $('.select2').addClass('form-control newinput');
+
+        //For currency
+        $('#detailCurCostRate').text($('#hdnCurrencyCode').val())
+        $('#detailCurSellingRate').text($('#hdnCurrencyCode').val())
+
         //$('#ProductID').change(function () {
         //    if ($('#divProductBasicInfo') != undefined) {
         //        debugger;

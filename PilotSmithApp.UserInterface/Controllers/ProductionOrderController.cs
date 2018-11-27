@@ -25,10 +25,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICommonBusiness _commonBusiness;       
         IDocumentStatusBusiness _documentStatusBusiness;
         SecurityFilter.ToolBarAccess _tool;
+        ICurrencyBusiness _currencyBusiness;
         public ProductionOrderController(IProductionOrderBusiness productionOrderBusiness,
             ISaleOrderBusiness saleOrderBusiness,
             ICommonBusiness commonBusiness,             
-            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool            
+            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool,
+            ICurrencyBusiness currencyBusiness            
             )
         {
             _productionOrderBusiness = productionOrderBusiness;
@@ -36,6 +38,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;                   
             _documentStatusBusiness = documentStatusBusiness;
             _tool = tool;
+            _currencyBusiness = currencyBusiness;
         }
         // GET: ProductOrder
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
@@ -62,7 +65,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.IsUpdate = true;
                     //AppUA appUA = Session["AppUA"] as AppUA;
                     productionOrderVM.IsDocLocked = productionOrderVM.DocumentOwners.Contains(appUA.UserName);
-                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);                   
+                    productionOrderVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleOrderID);
+                    productionOrderVM.Currency = new CurrencyViewModel();                   
                 }
                 else if (id == Guid.Empty && saleOrderID==null)
                 {
@@ -77,7 +81,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.Branch.Description = "-";
                     //productionOrderVM.Customer = new CustomerViewModel();
                     //productionOrderVM.Customer.CompanyName = "-";
-                    productionOrderVM.IsDocLocked = false;                   
+                    productionOrderVM.IsDocLocked = false;
+                    productionOrderVM.CurrencyCode = "INR";
+                    productionOrderVM.CurrencyRate = 1;
+                    productionOrderVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
                 }
                 else if(id==Guid.Empty && saleOrderID!=null)
                 {
@@ -94,6 +104,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     productionOrderVM.IsDocLocked = false;
                     productionOrderVM.Branch.Description = "-";
                     productionOrderVM.Customer = saleOrderVM.Customer;
+                    productionOrderVM.CurrencyCode = saleOrderVM.CurrencyCode;
+                    productionOrderVM.CurrencyRate = saleOrderVM.CurrencyRate;
+                    productionOrderVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
 
                 }
                 //AppUA appUA = Session["AppUA"] as AppUA;

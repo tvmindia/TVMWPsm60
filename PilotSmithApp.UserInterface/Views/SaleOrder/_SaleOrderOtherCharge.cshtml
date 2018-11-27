@@ -22,7 +22,8 @@
         </div>
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
-                @Html.LabelFor(model => model.ChargeAmount, htmlAttributes: new { @class = "control-label lblrequired" })
+                @*<span class="control-label lblrequired">Amount (<span class="control-label lblrequired" id="otherchargeCurAmount">INR</span>)</span>*@ 
+                @Html.LabelFor(model => model.ChargeAmount, htmlAttributes: new { @class = "control-label lblrequired" })  (<span class="control-label lblrequired" id="otherchargeCurAmount"> INR </span>)
             </div>
             <div class="col-md-12">
                 @Html.EditorFor(model => model.ChargeAmount, new { htmlAttributes = new { @class = "form-control ApplyCurrency  newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
@@ -134,5 +135,7 @@
         });
         $('.select2').addClass('form-control newinput');
         
+        //For currency
+        $('#otherchargeCurAmount').text($('#hdnCurrencyCode').val())
     });
 </script>

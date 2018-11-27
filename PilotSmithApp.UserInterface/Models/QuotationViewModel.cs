@@ -57,6 +57,10 @@ namespace PilotSmithApp.UserInterface.Models
         public int? BranchCode { get; set; }
         [Display(Name = "Discount")]
         public decimal Discount { get; set; }
+        [Display(Name = "Currency code")]
+        public string CurrencyCode { get; set; }
+        [Display(Name = "Currency rate")]
+        public decimal CurrencyRate { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         //Additional fields
 
@@ -105,6 +109,7 @@ namespace PilotSmithApp.UserInterface.Models
         public Guid? CopyFrom { get; set; }
         public string CopyQuoteNo { get; set; }
 
+        public CurrencyViewModel Currency { get; set; }
     }
     public class QuotationAdvanceSearchViewModel
     {

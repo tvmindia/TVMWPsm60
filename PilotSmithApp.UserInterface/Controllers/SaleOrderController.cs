@@ -25,18 +25,20 @@ namespace PilotSmithApp.UserInterface.Controllers
         IEnquiryBusiness _enquiryBusiness;       
         ICommonBusiness _commonBusiness;      
         IDocumentStatusBusiness _documentStatusBusiness;
-        SecurityFilter.ToolBarAccess _tool;    
-       
+        SecurityFilter.ToolBarAccess _tool;
+        ICurrencyBusiness _currencyBusiness;
+
         #region Constructor Injection
         public SaleOrderController(ISaleOrderBusiness saleOrderBusiness, IQuotationBusiness quotationBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
-            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool)
+            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool,ICurrencyBusiness currencyBusiness)
         {
             _saleOrderBusiness = saleOrderBusiness;
             _quotationBusiness = quotationBusiness;
             _enquiryBusiness = enquiryBusiness;
             _commonBusiness = commonBusiness;            
             _documentStatusBusiness = documentStatusBusiness;
-            _tool = tool;         
+            _tool = tool;
+            _currencyBusiness = currencyBusiness;     
         }
         #endregion Constructor Injection
         // GET: SaleOrder
@@ -70,7 +72,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleOrderVM.DocumentType = "Quotation";
                     saleOrderVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quoteID);
                 }
-
+                saleOrderVM.Currency = new CurrencyViewModel();
             }
             else if (id == Guid.Empty && quoteID != null)
             {
@@ -90,6 +92,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                 saleOrderVM.Branch.Description = "-";
                 saleOrderVM.Customer = quotationVM.Customer;
                 saleOrderVM.IsDocLocked = false;
+                saleOrderVM.CurrencyCode = quotationVM.CurrencyCode;
+                saleOrderVM.CurrencyRate = quotationVM.CurrencyRate;
+                saleOrderVM.Currency = new CurrencyViewModel()
+                {
+                    CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                };
             }
             else if (id == Guid.Empty && enquiryID != null)
             {
@@ -108,6 +116,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                 saleOrderVM.Branch.Description = "-";
                 saleOrderVM.Customer = enquiryVM.Customer;
                 saleOrderVM.IsDocLocked = false;
+                saleOrderVM.CurrencyCode = enquiryVM.CurrencyCode;
+                saleOrderVM.CurrencyRate = enquiryVM.CurrencyRate;
+                saleOrderVM.Currency = new CurrencyViewModel()
+                {
+                    CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                };
             }
             else
             {
@@ -124,6 +138,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                 saleOrderVM.Customer = new CustomerViewModel();
                 saleOrderVM.Customer.CompanyName = "-";
                 saleOrderVM.IsDocLocked = false;
+                saleOrderVM.CurrencyCode = "INR";
+                saleOrderVM.CurrencyRate = 1;
+                saleOrderVM.Currency = new CurrencyViewModel()
+                {
+                    CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                };
             }
             return PartialView("_SaleOrderForm", saleOrderVM);
         }

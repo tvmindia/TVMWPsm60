@@ -551,7 +551,7 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -581,7 +581,7 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                      var AddlTax = parseFloat(GSTAmt * row.AddlTaxPerc / 100);
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt) + parseFloat(AddlTax))
                      //return Total
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total : ₹ ' + formatCurrency(Total) + '" data-content="Charge Amount : ₹ ' + formatCurrency(data) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '<br/>Additional Tax : ₹ ' + formatCurrency(row.AddlTaxAmt) + '</p>"/>' + formatCurrency(Total)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total :  ' + formatCurrency(Total) + '" data-content="Charge Amount :  ' + formatCurrency(data) + '<br/>GST :  ' + formatCurrency(GSTAmt) + '<br/>Additional Tax :  ' + formatCurrency(row.AddlTaxAmt) + '</p>"/>' + formatCurrency(Total)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -661,7 +661,7 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Taxable : ₹ ' + formatCurrency(Taxable) + '" data-content="Net Total : ₹ ' + formatCurrency(Total) + '<br/> Discount : ₹ -' + formatCurrency(Discount) + '</p>"/>' + formatCurrency(Taxable)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Taxable :  ' + formatCurrency(Taxable) + '" data-content="Net Total :  ' + formatCurrency(Total) + '<br/> Discount :  -' + formatCurrency(Discount) + '</p>"/>' + formatCurrency(Taxable)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -677,7 +677,7 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -695,7 +695,7 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      var GSTAmt = CGSTAmt + SGSTAmt + IGSTAmt;
                      //var TaxAmount = Taxable + parseFloat(GSTAmt);
                      var Cess = roundoff(parseFloat(GSTAmt * row.CessPerc / 100));
-                     return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + formatCurrency(Cess)
+                     return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess -</i>' + formatCurrency(Cess)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -711,7 +711,7 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      var TaxAmount = TaxableAmt + parseFloat(GSTAmt);
                      var Cess = roundoff(parseFloat(GSTAmt * row.CessPerc / 100));
                      var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt) + parseFloat(Cess))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Grand Total : ₹ ' + formatCurrency(GrandTotal) + '" data-content="Taxable : ₹ ' + formatCurrency(TaxableAmt) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '<br/>Cess : ₹ ' + formatCurrency(row.CessAmt) + '</p>"/>' + formatCurrency(GrandTotal)
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Grand Total :  ' + formatCurrency(GrandTotal) + '" data-content="Taxable :  ' + formatCurrency(TaxableAmt) + '<br/>GST :  ' + formatCurrency(GSTAmt) + '<br/>Cess :  ' + formatCurrency(row.CessAmt) + '</p>"/>' + formatCurrency(GrandTotal)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -872,7 +872,7 @@ function AddSaleOrderDetailToList() {
                 saleOrderDetailList[0].Qty = $('#divModelSaleOrderPopBody #Qty').val();
                 saleOrderDetailList[0].UnitCode = $('#divModelSaleOrderPopBody #UnitCode').val();
                 saleOrderDetailList[0].Unit.Description = $("#divModelSaleOrderPopBody #UnitCode").val() != "" ? $("#divModelSaleOrderPopBody #UnitCode option:selected").text().trim() : "";
-                saleOrderDetailList[0].Rate = $('#divModelSaleOrderPopBody #Rate').val();
+                saleOrderDetailList[0].Rate = $('#divModelSaleOrderPopBody #Rate').val()!=""?$('#divModelSaleOrderPopBody #Rate').val():0;
                 saleOrderDetailList[0].Discount = $('#divModelSaleOrderPopBody #Discount').val() != "" ? $('#divModelSaleOrderPopBody #Discount').val() : 0;
                 saleOrderDetailList[0].TaxTypeCode =$('#divModelSaleOrderPopBody #TaxTypeCode').val()!=null? $('#divModelSaleOrderPopBody #TaxTypeCode').val().split('|')[0]:"";
                 saleOrderDetailList[0].TaxType.ValueText = $('#divModelSaleOrderPopBody #TaxTypeCode').val();
@@ -894,7 +894,9 @@ function AddSaleOrderDetailToList() {
                     productSpec = productSpec.replace(/\n/g, ' ');
                     for (var i = 0; i < saleOrderDetailList.length; i++) {
                         if ((saleOrderDetailList[i].ProductID == $('#ProductID').val()) && (saleOrderDetailList[i].ProductModelID == $('#ProductModelID').val()
-                            && (saleOrderDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (saleOrderDetailList[i].UnitCode == $('#UnitCode').val())))) {
+                            && (saleOrderDetailList[i].ProductSpec == null ? "" : saleOrderDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (saleOrderDetailList[i].UnitCode == $('#UnitCode').val())
+                            && (saleOrderDetailList[i].Rate == $('#divModelSaleOrderPopBody #Rate').val())
+                            ))) {
                             saleOrderDetailList[i].Qty = parseFloat(saleOrderDetailList[i].Qty) + parseFloat($('#Qty').val());
                             checkpoint = 1;
                             break;
@@ -1608,4 +1610,10 @@ function GetOtherCharge(value) {
 
     }
 
+}
+
+function ClearSaleOrderform() {
+    debugger;
+    ResetSaleOrder();
+    $('.showSweetAlert .cancel').click();
 }

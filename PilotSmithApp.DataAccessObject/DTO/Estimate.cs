@@ -21,6 +21,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string GeneralNotes { get; set; }
         public Guid? DocumentOwnerID { get; set; }
         public int? BranchCode { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
 
         //Aditional Fields
         public string DetailXML { get; set; }
@@ -42,6 +44,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Employee Employee { get; set; }
         public Area Area { get; set; }
         public ReferencePerson ReferencePerson { get; set; }
+        public Currency Currency { get; set; }
     }
 
     public class EstimateAdvanceSearch

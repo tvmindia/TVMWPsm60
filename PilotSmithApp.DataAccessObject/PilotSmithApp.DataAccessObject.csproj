@@ -54,6 +54,7 @@
     <Compile Include="DTO\Carrier.cs" />
     <Compile Include="DTO\Company.cs" />
     <Compile Include="DTO\Country.cs" />
+    <Compile Include="DTO\Currency.cs" />
     <Compile Include="DTO\CustomerCategory.cs" />
     <Compile Include="DTO\DeliveryChallan.cs" />
     <Compile Include="DTO\Department.cs" />

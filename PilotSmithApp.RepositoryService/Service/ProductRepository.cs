@@ -58,6 +58,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CompanyID", SqlDbType.UniqueIdentifier).Value = product.CompanyID;
                         cmd.Parameters.Add("@HSNCode", SqlDbType.VarChar).Value = product.HSNCode;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = product.hdnPopupFileID;
+                        cmd.Parameters.Add("@Purpose", SqlDbType.NVarChar, 255).Value = product.Purpose;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = product.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = product.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = product.PSASysCommon.UpdatedBy;
@@ -140,6 +141,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         product.Company = new Company();
                                         product.Company.Name = (sdr["CompanyName"].ToString() != "" ? (sdr["CompanyName"].ToString()) : product.Company.Name);
                                         product.HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : product.HSNCode);
+                                        product.Purpose = (sdr["Purpose"].ToString() != "" ? sdr["Purpose"].ToString() : product.Purpose);
                                         product.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : product.TotalCount);
                                         product.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : product.FilteredCount);
                                     }
@@ -195,6 +197,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     product.Company = new Company();
                                     product.Company.Name = (sdr["CompanyName"].ToString() != "" ? (sdr["CompanyName"].ToString()) : product.Company.Name);
                                     product.HSNCode = (sdr["HSNCode"].ToString() != "" ? sdr["HSNCode"].ToString() : product.HSNCode);
+                                    product.Purpose = (sdr["Purpose"].ToString() != "" ? sdr["Purpose"].ToString() : product.Purpose);
                                 }
                             }
                         }

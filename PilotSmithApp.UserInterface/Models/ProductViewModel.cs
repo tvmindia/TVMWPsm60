@@ -24,6 +24,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string HSNCode { get; set; }
         [Display(Name ="Name In Tally")]
         public string TallyName { get; set; }
+        [Display(Name="Purpose")]
+        public string Purpose { get; set; }
 
         //Additional Fields
         [Display(Name = "Introduced Date")]

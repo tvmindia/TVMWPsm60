@@ -733,3 +733,8 @@ function EditRedirectToDocument(id)
     });
 }
 
+function ClearEnquiryform() {
+    debugger;
+    ResetEnquiry();
+    $('.showSweetAlert .cancel').click();
+}

@@ -464,7 +464,7 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      var Total = roundoff(parseFloat(data != "" ? data : 0) * parseInt(row.Qty != "" ? row.Qty : 1))
                      var Discount = roundoff(parseFloat(row.Discount != "" ? row.Discount : 0))
                      var Taxable = Total - Discount
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable : ₹ ' + formatCurrency(Taxable) + '" data-content="Net Total : ₹ ' + formatCurrency(Total) + '<br/> Discount : ₹ -' + formatCurrency(Discount) + '</p>"/>' + formatCurrency(roundoff(parseFloat(Taxable)))
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Taxable :  ' + formatCurrency(Taxable) + '" data-content="Net Total :  ' + formatCurrency(Total) + '<br/> Discount :  -' + formatCurrency(Discount) + '</p>"/>' + formatCurrency(roundoff(parseFloat(Taxable)))
                  }, "defaultContent": "<i></i>"
              },
              {//GST
@@ -479,12 +479,12 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
             {//Cess
                 "data": "CessAmt", render: function (data, type, row) {
-                    return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess(₹) -</i>' + formatCurrency(data)
+                    return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess -</i>' + formatCurrency(data)
                 }, "defaultContent": "<i></i>"
             },
             {
@@ -498,7 +498,7 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
                     var IGSTAmt = parseFloat(TaxableAmt * IGST / 100)
                     var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
                     var GrandTotal = roundoff(((parseFloat(row.Rate != "" ? row.Rate : 0) * parseInt(row.Qty != "" ? row.Qty : 1)) - parseFloat(row.Discount != "" ? row.Discount : 0)) + parseFloat(GSTAmt) + parseFloat(row.CessAmt))
-                    return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + formatCurrency(GrandTotal) + '" data-content="Taxable : ₹ ' + formatCurrency(TaxableAmt) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '</p>"/>' + formatCurrency(GrandTotal)
+                    return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Grand Total :  ' + formatCurrency(GrandTotal) + '" data-content="Taxable :  ' + formatCurrency(TaxableAmt) + '<br/>GST :  ' + formatCurrency(GSTAmt) + '</p>"/>' + formatCurrency(GrandTotal)
                 }, "defaultContent": "<i></i>"
             },
             {
@@ -638,7 +638,7 @@ function AddProformaInvoiceDetailToList() {
                 proformaInvoiceDetailVM[0].Qty = $('#divModelProformaInvoicePopBody #Qty').val();
                 proformaInvoiceDetailVM[0].UnitCode = $('#divModelProformaInvoicePopBody #UnitCode').val();
                 proformaInvoiceDetailVM[0].Unit.Description = $("#divModelProformaInvoicePopBody #UnitCode").val() != "" ? $("#divModelProformaInvoicePopBody #UnitCode option:selected").text().trim() : "";
-                proformaInvoiceDetailVM[0].Rate = $('#divModelProformaInvoicePopBody #Rate').val();
+                proformaInvoiceDetailVM[0].Rate = $('#divModelProformaInvoicePopBody #Rate').val()!=""?$('#divModelProformaInvoicePopBody #Rate').val():0;
                 proformaInvoiceDetailVM[0].Discount = $('#divModelProformaInvoicePopBody #Discount').val() != "" ? $('#divModelProformaInvoicePopBody #Discount').val() : 0;
                 proformaInvoiceDetailVM[0].TaxTypeCode =$('#divModelProformaInvoicePopBody #TaxTypeCode').val()!=null? $('#divModelProformaInvoicePopBody #TaxTypeCode').val().split('|')[0]:"";
                 proformaInvoiceDetailVM[0].TaxType.ValueText = $('#divModelProformaInvoicePopBody #TaxTypeCode').val();
@@ -660,7 +660,9 @@ function AddProformaInvoiceDetailToList() {
                     productSpec = productSpec.replace(/\n/g, ' ');
                     for (var i = 0; i < proformaInvoiceDetailVM.length; i++) {
                         if ((proformaInvoiceDetailVM[i].ProductID == $('#ProductID').val()) && (proformaInvoiceDetailVM[i].ProductModelID == $('#ProductModelID').val()
-                            && (proformaInvoiceDetailVM[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (proformaInvoiceDetailVM[i].UnitCode == $('#UnitCode').val())))) {
+                            && (proformaInvoiceDetailVM[i].ProductSpec == null ? "" : proformaInvoiceDetailVM[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (proformaInvoiceDetailVM[i].UnitCode == $('#UnitCode').val())
+                            && (proformaInvoiceDetailVM[i].Rate == $('#divModelProformaInvoicePopBody #Rate').val())
+                            ))) {
                             proformaInvoiceDetailVM[i].Qty = parseFloat(proformaInvoiceDetailVM[i].Qty) + parseFloat($('#Qty').val());
                             checkpoint = 1;
                             break;
@@ -978,7 +980,7 @@ function BindProformaInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder)
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -1012,7 +1014,7 @@ function BindProformaInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
                      var Total = roundoff(parseFloat(data) + parseFloat(GSTAmt) + parseFloat(row.AddlTaxAmt))
 
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total : ₹ ' + formatCurrency(Total) + '" data-content="Charge Amount : ₹ ' + formatCurrency(data) + '<br/>GST : ₹ ' + formatCurrency(GSTAmt) + '<br/>Additional Tax : ₹ ' + formatCurrency(row.AddlTaxAmt) + '</p>"/>' + formatCurrency(Total)
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total :  ' + formatCurrency(Total) + '" data-content="Charge Amount :  ' + formatCurrency(data) + '<br/>GST :  ' + formatCurrency(GSTAmt) + '<br/>Additional Tax :  ' + formatCurrency(row.AddlTaxAmt) + '</p>"/>' + formatCurrency(Total)
                  }, "defaultContent": "<i></i>"
              },
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProformaInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
@@ -1578,4 +1580,9 @@ function GetOtherCharge(value) {
 
     }
 
+}
+function ClearProformaInvoiceform() {
+    debugger;
+    ResetProformaInvoice();
+    $('.showSweetAlert .cancel').click();
 }

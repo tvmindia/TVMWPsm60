@@ -60,7 +60,10 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Subject")]
         public string Subject { get; set; }
         public int TallyStatus { get; set; }
-
+        [Display(Name = "Currency code")]
+        public string CurrencyCode { get; set; }
+        [Display(Name = "Currency rate")]
+        public decimal CurrencyRate { get; set; }
         //additional Fields
         public string DocumentType { get; set; }
         public string DetailJSON { get; set; }
@@ -126,6 +129,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ProformaInvoiceViewModel ProformaInvoice { get; set; }
         public PDFToolsViewModel PDFTools { get; set; }
         public string ProductDetail { get; set; }
+        public CurrencyViewModel Currency { get; set; }
     }
     public class SaleInvoiceAdvanceSearchViewModel
     {

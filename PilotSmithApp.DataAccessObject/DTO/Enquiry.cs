@@ -23,6 +23,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? BranchCode { get; set; }
         public string DetailXML { get; set; }
         public Guid hdnFileID { get; set; }
+        public string CurrencyCode { get; set; }
+        public decimal CurrencyRate { get; set; }
+
         //Additional properties
         public string EnquiryDateFormatted { get; set;}
         public int TotalCount { get; set; }
@@ -39,6 +42,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Area Area { get; set;}
         public PSASysCommon PSASysCommon { get; set; }
         public List<EnquiryDetail> EnquiryDetailList { get; set; }
+        public Currency Currency { get; set; }
     }
     public class EnquiryAdvanceSearch
     {

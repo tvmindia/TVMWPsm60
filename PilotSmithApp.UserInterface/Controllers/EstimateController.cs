@@ -29,11 +29,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IReferencePersonBusiness _referencePersonBusiness;
         IDocumentStatusBusiness _documentStatusBusiness;    
         SecurityFilter.ToolBarAccess _tool;
+        ICurrencyBusiness _currencyBusiness;
 
         public EstimateController(IEstimateBusiness estimateBusiness, ICustomerBusiness customerBusiness,
             IBranchBusiness branchBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
             IAreaBusiness areaBusiness, IReferencePersonBusiness referencePersonBusiness,
-            IDocumentStatusBusiness documentStatusBusiness, SecurityFilter.ToolBarAccess tool)
+            IDocumentStatusBusiness documentStatusBusiness, SecurityFilter.ToolBarAccess tool,ICurrencyBusiness currencyBusiness)
         {
             _estimateBusiness = estimateBusiness;
             _customerBusiness = customerBusiness;
@@ -44,7 +45,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _referencePersonBusiness = referencePersonBusiness;
             _documentStatusBusiness = documentStatusBusiness;           
             _tool = tool;
-
+            _currencyBusiness = currencyBusiness;
         }
         // GET: Estimate
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
@@ -72,6 +73,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     AppUA appUA = Session["AppUA"] as AppUA;
                     estimateVM.IsDocLocked = estimateVM.DocumentOwners.Contains(appUA.UserName);
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
+                    estimateVM.Currency = new CurrencyViewModel();
 
                 }
                 else if(id==Guid.Empty && enquiryID==null)
@@ -88,6 +90,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     //estimateVM.Customer = new CustomerViewModel();
                     //estimateVM.Customer.CompanyName = "-";
                     estimateVM.IsDocLocked = false;
+                    estimateVM.CurrencyCode = "INR";
+                    estimateVM.CurrencyRate = 1;
+                    estimateVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
                 }
                 else if(id==Guid.Empty && enquiryID!=null)
                 {
@@ -104,6 +112,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.Branch.Description = "-";
                     estimateVM.Customer = enquiryVM.Customer;
                     estimateVM.IsDocLocked = false;
+                    estimateVM.CurrencyCode = enquiryVM.CurrencyCode;
+                    estimateVM.CurrencyRate = enquiryVM.CurrencyRate;
+                    estimateVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
                 }
                 
             }

@@ -52,6 +52,7 @@
     <Compile Include="Contract\ICommonRepository.cs" />
     <Compile Include="Contract\ICompanyRepository.cs" />
     <Compile Include="Contract\ICountryRepository.cs" />
+    <Compile Include="Contract\ICurrencyRepository.cs" />
     <Compile Include="Contract\ICustomerCategoryRepository.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IDatabaseFactory.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Service\CommonRepository.cs" />
     <Compile Include="Service\CompanyRepository.cs" />
     <Compile Include="Service\CountryRepository.cs" />
+    <Compile Include="Service\CurrencyRepository.cs" />
     <Compile Include="Service\CustomerCategoryRepository.cs" />
     <Compile Include="Service\CustomerRepository.cs" />
     <Compile Include="Service\DatabaseFactory.cs" />
