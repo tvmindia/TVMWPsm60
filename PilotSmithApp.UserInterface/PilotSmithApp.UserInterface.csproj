@@ -297,7 +297,9 @@
     <Content Include="Content\images\saleorder.png" />
     <Content Include="Content\images\sortasc.png" />
     <Content Include="Content\images\sortdesc.png" />
+    <Content Include="Content\images\soruis.png" />
     <Content Include="Content\images\SuppPord.png" />
+    <Content Include="Content\images\swalimage.png" />
     <Content Include="Content\images\tallyblack.png" />
     <Content Include="Content\images\time.png" />
     <Content Include="Content\images\timeline.png" />
@@ -1132,6 +1134,11 @@
     <Content Include="Views\DashBoard\_EnquiryCountSummary.cshtml" />
     <Content Include="Views\SysSetting\Index.cshtml" />
     <Content Include="Views\SysSetting\_AddSysSetting.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Quotation\_PrintQuotationDetail.cshtml" />
+    <Content Include="Views\Quotation\_CopyQuotation.cshtml" />
+    <Content Include="Views\SaleOrder\_CopySaleOrderForm.cshtml" />
     <Content Include="Views\Shared\_CurrencyPopup.cshtml" />
     <Content Include="Views\Currency\_CurrencySelectList.cshtml" />
     <None Include="Web.Debug.config">

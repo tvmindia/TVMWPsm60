@@ -103,6 +103,12 @@ namespace PilotSmithApp.UserInterface.Models
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
         public string EstimateNo { get; set; }
         public bool ImageCheck { get; set; }
+        public bool HeaderCheck { get; set; } = true;
+        public bool PrintFlag { get; set; }
+        public bool IsPrint { get; set; }
+        public Guid? CopyFrom { get; set; }
+        public string CopyQuoteNo { get; set; }
+
         public CurrencyViewModel Currency { get; set; }
     }
     public class QuotationAdvanceSearchViewModel

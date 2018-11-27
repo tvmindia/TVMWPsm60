@@ -7,8 +7,48 @@
     IsLetterHeadSelectList.Add(new SelectListItem
     { Text = "Letter head", Value = "False", Selected = false });
 }
+
+<div style="padding:0px 30px 0px 30px;">
+    @{
+
+        using (Ajax.BeginForm("UpdateQuotationPrintInfo", "Quotation", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessUpdateQuotationPrintInfo", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormUpdateQuotationPrintInfo" }))
+        {
+            @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
+            <table style="width:100%;font-size:12px">
+                <tr>
+                    <td colspan="6">
+                        @Html.LabelFor(model => model.MailBodyHeader, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
+                        @Html.TextAreaFor(model => model.MailBodyHeader, 4, 0, new { @class = "form-control newinput" })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        @Html.LabelFor(model => model.MailBodyFooter, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
+                        @Html.TextAreaFor(model => model.MailBodyFooter, 4, 0, new { @class = "form-control newinput" })
+                    </td>
+                </tr>
+            </table>
+                <div class="col-md-12" style="padding:0px;">
+                    <div class="col-md-4" style="margin-top:2%;margin-left:0px !important;padding:0px;">
+                        @Html.Label("Include Product Images:", new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                        @Html.CheckBoxFor(model => model.ImageCheck, new { @checked = "checked", @id = "imagecheck" })
+                    </div>
+                    <div class="col-md-4" style="margin-top:2%;margin-left:0px !important;padding:0px;">
+                        @Html.Label("Print on LetterHead:", new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
+                        @Html.CheckBoxFor(model => model.HeaderCheck, new { @checked = "checked", @id = "HeaderCheck" })
+                    </div>
+                    <div class="col-md-4 modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="UpdateQuotationPrintInfo()">Save & Print <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+                    </div>
+
+                </div>
+        }
+    }
+    <br />
+</div>
+
 <div id="divQuotationPrintcontainer" style="display:none;">
-    @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
+    @*@{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
         var tot = "";
         PSASysCommon pSASysCommon = new PSASysCommon();}
     <table style="width:100%;font-size:12px">
@@ -18,29 +58,32 @@
         </thead>
         <tbody>
             <tr><td colspan="6">&nbsp;</td></tr>
-            <tr><td colspan="3" style="padding-left:30px;vertical-align:top;">
-        <b>To,</b><br />
-        <span>
-            @Model.Customer.CompanyName <br />
-            @{
-                if (Model.MailingAddress != null)
-                {
-                    @Html.Raw(Model.MailingAddress.Replace("\n", "<br />"))<br />
-                }
-            }
+            <tr>
+                <td colspan="3" style="padding-left:30px;vertical-align:top;">
+                    <b>To,</b><br />
+                    <span>
+                        @Model.Customer.CompanyName <br />
+                        @{
+                            if (Model.MailingAddress != null)
+                            {
+                                @Html.Raw(Model.MailingAddress.Replace("\n", "<br />"))<br />
+                            }
+                        }
 
-        </span>
-            </td><td colspan="3" style="padding-left:30px;vertical-align:top;">
-            <b>Delivery Address,</b><br />
-            <span>
-                @{
-                    if (Model.ShippingAddress != null)
-                    {
-                        @Html.Raw(Model.ShippingAddress.Replace("\n", "<br />"))
-                    }
-                }
-            </span>
-            </td></tr>
+                    </span>
+                </td>
+                <td colspan="3" style="padding-left:30px;vertical-align:top;">
+                    <b>Delivery Address,</b><br />
+                    <span>
+                        @{
+                            if (Model.ShippingAddress != null)
+                            {
+                                @Html.Raw(Model.ShippingAddress.Replace("\n", "<br />"))
+                            }
+                        }
+                    </span>
+                </td>
+            </tr>
             <tr><td colspan="6">&nbsp;</td></tr>
             <tr><td>Quotation No</td><td colspan="2">: @Model.QuoteNo</td><td>Ref. Quotation No.</td><td colspan="2">: @Model.QuoteRefNo</td></tr>
             <tr><td>Quotation Date</td><td colspan="2">: @Model.QuoteDateFormatted</td><td></td><td></td><td></td></tr>
@@ -60,14 +103,21 @@
         <thead>
             <tr>
                 <th style="width:4%;text-align: center;font-size:12px;border-bottom:dotted 1pt; ">NO.</th>
-                <th colspan="2" style="width:36%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                @if (Model.ImageCheck)
+                {
+                <th colspan="2" style="width:31%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                }
+                else
+                {
+                    <th style="width:31%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">ITEM</th>
+                }
                 <th style="width:6%;text-align:left;font-size:12px;border-bottom:dotted 1pt;">HSN</th>
                 <th style="width:8%; text-align: left;font-size:12px;border-bottom:dotted 1pt;">QTY</th>
                 <th style="width:8%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">RATE</th>
                 <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">DISCOUNT</th>
-                <th style="width:6%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
-                <th style="width:6%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CGST</th>
-                <th style="width:6%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">IGST</th>
+                <th style="width:8%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">SGST</th>
+                <th style="width:8%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">CGST</th>
+                <th style="width:8%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">IGST</th>
                 <th style="width:10%; text-align: right;font-size:12px;border-bottom:dotted 1pt;">AMOUNT</th>
             </tr>
         </thead>
@@ -89,7 +139,9 @@
                     itemgrandTotal = itemtaxableAmount + itemgSTAmount;
                     <tr>
                         <td style="width:4%;text-align: center;font-size:12px;vertical-align:top;">@slno</td>
-                        @{if (@mp.ProductModel.ImageURL != null)
+                        @if (Model.ImageCheck)
+                        {
+                            if (@mp.ProductModel.ImageURL != null)
                             {
                                 <td style="width:14%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" style="width:70pt;object-fit: scale-down;workAround:image"></td>
 
@@ -98,8 +150,12 @@
                             {
                                 <td style="width:14%;vertical-align:central;padding:5px"></td>
                             }
+                            <td style="width:17%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
                         }
-                        <td style="width:17%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
+                        else
+                        {
+                            <td style="width:31%; text-align: left;font-size:12px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@Html.Raw(mp.ProductSpecHtml)</td>
+                        }
                         <td style="width:6%;text-align:left;font-size:12px;vertical-align:top;">@mp.Product.HSNCode</td>
                         <td style="width:8%; text-align: left;font-size:12px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                         <td style="width:8%; text-align: right;font-size:12px;vertical-align:top;">@mp.Rate</td>
@@ -109,16 +165,16 @@
                         <td style="width:8%; text-align: right;font-size:12px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
                         <td style="width:10%; text-align: right;font-size:12px;vertical-align:top;">@itemgrandTotal</td>
                     </tr>
-                                    slno = slno + 1;
-                                    totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
-                                    totalCGST = totalCGST + (decimal)CGSTAmt;
-                                    totalSGST = totalSGST + (decimal)SGSTAmt;
-                                    totalIGST = totalIGST + (decimal)IGSTAmt;
-                                }
-                                grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
-                                grandTotal = grossAmt - ((decimal)Model.Discount);
-                                GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
-                            }
+                    slno = slno + 1;
+                    totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
+                    totalCGST = totalCGST + (decimal)CGSTAmt;
+                    totalSGST = totalSGST + (decimal)SGSTAmt;
+                    totalIGST = totalIGST + (decimal)IGSTAmt;
+                }
+                grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
+                grandTotal = grossAmt - ((decimal)Model.Discount);
+                GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
+            }
             <tr>
                 <td colspan="6" style="border-top:solid .5px;vertical-align:top;padding-top:12px;">
                     @if (Model.QuotationOtherChargeList.Count != 0)
@@ -255,34 +311,35 @@
                 }
             </tr>
         </tbody>
-    </table>
+    </table>*@
 
 
 </div>
-<table style="width:100%;margin-top:15%;">
+@*<table style="width:100%;margin-top:15%;">
     <thead>
         <tr><th colspan="2"></th></tr>
     </thead>
     <tbody>
         <tr><td align="center"><a onclick="PostPrint(1)"><img class="printdoc" src="~/Content/images/LetterHeadSelect.jpg" style="width:80%" /></a></td><td align="center"><a onclick="PostPrint(0)"><img class="printdoc" src="~/Content/images/LetterHeadSelect_Blank.jpg" style="width:80%" /></a></td></tr>
     </tbody>
-</table>
-    @using (Html.BeginForm("PrintPDFWithTerms", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormPrintQuotation",target = "_blank" }))
-    {
-        @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentPrint" })
-        @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContentPrint" })
-        @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileNamePrint" })
-        @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerNamPrint" })
-        @Html.HiddenFor(model => model.PDFTools.IsWithLetterHead, htmlAttributes: new { @id = "hdnPrintFlag"})
+</table>*@
+@using (Html.BeginForm("PrintPDFWithTerms", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormPrintQuotation", target = "_blank" }))
+{
+    @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentPrint" })
+    @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContentPrint" })
+    @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileNamePrint" })
+    @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerNamPrint" })
+    @Html.HiddenFor(model => model.PDFTools.IsWithLetterHead, htmlAttributes: new { @id = "hdnPrintFlag" })
 
-        @*<button type="submit" class="btn btn-openid" style="color:white;text-decoration:none;">Continue <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>*@
+    @*<button type="submit" class="btn btn-openid" style="color:white;text-decoration:none;">Continue <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>*@
 
 
 
-    }
+}
 
 <script>
     $(document).ready(function () {
+        debugger;
         var bodyContent = $('#divQuotationPrintcontainer').html();
         var headerContent = $('#hdnHeadContentPrint').html();
         $('#hdnContentPrint').val(bodyContent);
@@ -290,20 +347,17 @@
         var customerName = $("#QuotationForm #CustomerID option:selected").text();
         $('#hdnCustomerNamePrint').val(customerName);
     });
-    function PostPrint(val)
-    {
-        debugger;
-        if(val==1)
-        {
-            $('#hdnPrintFlag').val(true);            
-            $('#FormPrintQuotation').submit();
-        }
-        if(val==0)
-        {
-            $('#hdnPrintFlag').val(false);          
-            $('#FormPrintQuotation').submit();
-        }
-        $('#divModelPrintQuotation').modal('hide');
-    }
+    //function PostPrint(val) {
+    //    debugger;
+    //    if (val == 1) {
+    //        $('#hdnPrintFlag').val(true);
+    //        $('#FormPrintQuotation').submit();
+    //    }
+    //    if (val == 0) {
+    //        $('#hdnPrintFlag').val(false);
+    //        $('#FormPrintQuotation').submit();
+    //    }
+    //    $('#divModelPrintQuotation').modal('hide');
+    //}
 </script>
 

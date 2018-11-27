@@ -148,6 +148,75 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_SaleOrderForm", saleOrderVM);
         }
         #endregion SaleOrderForm Form
+
+        #region Copy SaleOrderForm 
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public ActionResult CopySaleOrderForm(Guid? copyFrom, Guid? id)
+        {
+            SaleOrderViewModel saleOrderVM = null;
+            try
+            {
+                if (id == null)
+                {
+                    
+                    saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)copyFrom));
+                    ViewBag.SaleOrderNo = saleOrderVM.SaleOrderNo;
+                    saleOrderVM.CopyFrom = saleOrderVM.ID;
+                    saleOrderVM.ID = Guid.Empty;
+                    saleOrderVM.SaleOrderNo = null;              
+                    saleOrderVM.DocumentType = "Quotation";
+                    saleOrderVM.DocumentStatus = new DocumentStatusViewModel()
+                    {
+                        Description = "-",
+                    };
+                    saleOrderVM.Branch = new BranchViewModel();
+                    saleOrderVM.Branch.Description = "-";
+                    saleOrderVM.LatestApprovalStatus = null;
+                    saleOrderVM.EmailSentYN = null;
+                    saleOrderVM.Branch.Description = "-";
+                    saleOrderVM.IsUpdate = false;
+
+
+                }
+                else
+                {
+                   
+                    saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)id));
+                    saleOrderVM.IsUpdate = true;
+                    AppUA appUA = Session["AppUA"] as AppUA;
+                    saleOrderVM.IsDocLocked = saleOrderVM.DocumentOwners.Contains(appUA.UserName);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return PartialView("_CopySaleOrderForm", saleOrderVM);
+        }
+        #endregion Copy SaleOrderForm 
+
+        #region Get SaleOrder 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public string GetSaleOrder(Guid? id)
+        {
+           
+
+            try
+            {
+                object result =  Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)id));
+                return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
+
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+        }
+        #endregion Get SaleOrder 
+
         #region Get SaleOrder SelectList On Demand
         public ActionResult GetSaleOrderSelectListOnDemand(string searchTerm)
         {
