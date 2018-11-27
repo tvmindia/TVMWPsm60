@@ -30,9 +30,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         public QuotationController(IQuotationBusiness quotationBusiness,
             IEstimateBusiness estimateBusiness,
             ICommonBusiness commonBusiness,
-            IDocumentStatusBusiness documentStatusBusiness, SecurityFilter.ToolBarAccess tool
-            ICommonBusiness commonBusiness,            
-            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool,ICurrencyBusiness currencyBusiness
+            IDocumentStatusBusiness documentStatusBusiness,            
+            SecurityFilter.ToolBarAccess tool,ICurrencyBusiness currencyBusiness
             )
         {
             _quotationBusiness = quotationBusiness;
