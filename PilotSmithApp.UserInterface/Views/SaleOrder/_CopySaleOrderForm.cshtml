@@ -9,7 +9,8 @@
 @using (Ajax.BeginForm("InsertUpdateSaleOrder", "SaleOrder", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessSaleOrder", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "SaleOrderForm" }))
 {
     @*@Html.AntiForgeryToken()*@
-    @Html.HiddenFor(model => model.CopyFrom, htmlAttributes: new { @class = "" })
+    @Html.Hidden("hdnCopyFrom", Model.CopyFrom)
+    @Html.HiddenFor(model => model.CopyFrom, htmlAttributes: new { @class = ""})
     @Html.HiddenFor(model => model.CopySaleOrderNo, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
@@ -18,7 +19,8 @@
     @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.ApproverLevel, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
-    <div class="col-md-11 divbox1">
+    @Html.HiddenFor(model => model.IsFileExist, htmlAttributes: new { @class = "" })
+      <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
@@ -29,30 +31,27 @@
                         <div class="col-md-12">
                             <div class="col-md-12 form-control newinput" style="background-color:#f7d1a7 !important;">
 
-
-                                <span style="font-size:12px">Copied From SaleOrder :</span>
-                              
-                                @{
-                                    if (!Model.IsUpdate)
-                                    {
-                                        <span style="font-weight: bold;font-size:12px;">@ViewBag.SaleOrderNo</span>
-                                        <a href="/SaleOrder?ID=@Model.CopyFrom" target="_blank">Open in new tab</a>
-                                    }
-                                    else
-                                    {  <span style="font-weight: bold;font-size:12px;">@Model.CopySaleOrderNo</span>
-                                    <a href="/SaleOrder?ID=@Model.CopyFrom" target="_blank" style="font-size:10px">Open in new tab</a>
-                                    }
+                                @if (Model.IsFileExist == 1)
+                                {
+                                    <span style="font-size:12px">Copied From SaleOrder :</span><span style="font-weight: bold;font-size:12px;">@Model.CopySaleOrderNo</span>
+                                    <a onclick="RedirectingCopiedSaleOrder()" style="font-size:10px">Open in new tab</a>
+                                    <a href="/SaleOrder?ID=@Model.CopyFrom" id="anchorOpenSODInTab" target="_blank" style="font-size:10px"></a>
                                 }
-
+                                else
+                                {
+                                    <span style="font-size:12px">Copied From SaleOrder :</span><span style="font-weight: bold;font-size:12px;">@Model.CopySaleOrderNo</span>
+                                    <a onclick="RedirectingCopiedSaleOrder()" style="font-size:12px">Quotation Deleted</a>
+                                    <a href="/SaleOrder?ID=@Model.CopyFrom" id="anchorOpenSODInTab" target="_blank" style="font-size:10px"></a>
+                                }
 
                             </div>
 
                         </div>
 
-                                        }
-                                    }
-                
-                   
+                    }
+                }
+
+
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.SaleOrderNo, htmlAttributes: new { @class = "control-label" })
@@ -269,7 +268,7 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    @if (Model.IsUpdate || Model.EnquiryID != null || Model.QuoteID != null)
+                    @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
                             <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
@@ -530,9 +529,10 @@
             <input id="btnInsertUpdateSaleOrder" type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
-}
+                    }
 <script>
     $(document).ready(function () {
+        debugger;
         try {
             $.validator.unobtrusive.parse("#SaleOrderForm");
         }
@@ -544,7 +544,7 @@
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SOD&required=' + $('#hdnDocumentStatusRequired').val())
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
             $('.divBankSelectList').load('/Bank/BankSelectList?required=' + $('#hdnBankRequired').val())
-            @if (Model.IsUpdate||Model.EnquiryID!=null||Model.QuoteID!=null)
+            @if (Model.IsUpdate)
             {
 
             }
@@ -557,12 +557,12 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
             </text>
             }
-             @if ((!Model.IsUpdate) && (Model.EnquiryID!=null||Model.QuoteID!=null))
+            @if ((!Model.IsUpdate))
              {
                  <text>
-             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-             });
-                 </text>
+            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
+            </text>
              }
         }
         catch (e) {
@@ -606,53 +606,9 @@
         try {
             $('#SaleOrderGradeCode').select2({});
             $('#QuoteID').val($('#hdnQuoteID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnQuoteID').val());
-            $('#SaleOrderForm #QuoteID').select2({
-                language: {
-                    noResults: function (params) {
-                        return "Search result will shows here";
-                    }
-                },
-                ajax: {
-                    type: 'POST',
-                    dataType: 'json',
-                    url: "Quotation/GetQuotationSelectListOnDemand/",
-                    delay: 250,
-                    data: function (term) {
-                        return {
-                            'searchTerm': term.term //search term
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.items
-                        };
-                    },
-                }
-            });
+
             $('#EnquiryID').val($('#hdnEnquiryID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEnquiryID').val());
-            $('#SaleOrderForm #EnquiryID').select2({
-                language: {
-                    noResults: function (params) {
-                        return "Search result will shows here";
-                    }
-                },
-                ajax: {
-                    type: 'POST',
-                    dataType: 'json',
-                    url: "Enquiry/GetEnquiryForSelectListOnDemand/",
-                    delay: 250,
-                    data: function (term) {
-                        return {
-                            'searchTerm': term.term //search term
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.items
-                        };
-                    },
-                }
-            });
+
             $('.select2').addClass('form-control newinput');
 
 
@@ -675,49 +631,8 @@
         catch (e) {
             console.log(e.message);
         }
-        try {
-            $('#SaleOrderForm #QuoteID').change(function () {
-                OnServerCallBegin();
-                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&quoteID=" + this.value, function () {
-                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
-                        $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-                        $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
-                    });
-                    ClearCalculatedFields();
-                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", false, true);
-                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", true);
-                    CalculateTotal();
-                    debugger;
-                  //$("input[type=radio][value=Enquiry]").attr("disabled", true);
-                  //$("input[type=radio][value=Enquiry]").attr('title', "Quotation details has been listed, Reset to continue");
-                    OnServerCallComplete();
-                });
 
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            $('#SaleOrderForm #EnquiryID').change(function () {
-                OnServerCallBegin();
-                $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + _emptyGuid + "&enquiryID=" + this.value, function () {
-                    $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
-                    debugger;
-                    ClearCalculatedFields();
-                    BindSaleOrderDetailList("00000000-0000-0000-0000-000000000000", true, false)
-                    BindSaleOrderOtherChargesDetailList("00000000-0000-0000-0000-000000000000", false);
-                    CalculateTotal();
-                    //$('#DocumentType').prop('disabled', true);
-                    //$("#DocumentType").attr('title', "Enquiry details has been listed, Reset to continue");
-                    OnServerCallComplete();
-                });
 
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
 
         try {
             $('[name="DocumentType"]').change(function () {

@@ -67,6 +67,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Guid CopyFrom { get; set; }
         public string CopyQuoteNo { get; set; }
         public Currency Currency { get; set; }
+        public int IsFileExist { get; set; }
     }
     public class QuotationAdvanceSearch
     {

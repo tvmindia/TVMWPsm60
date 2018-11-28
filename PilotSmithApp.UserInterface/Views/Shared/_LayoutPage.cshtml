@@ -96,7 +96,7 @@
                                 <li class="dropdown notifications-menu">
                                     <a href="@Url.Action("Index", "DashBoard", new { isUser = true})">
                                         <i class="fa fa-dashboard" style="font-size:17px"> </i>
-                                        <span class="hidden-xs"><strong>User Dashboard</strong></span>
+                                        <span class="hidden-xs">User Dashboard</span>
                                     </a>
                                 </li>
                                 //}
@@ -132,30 +132,31 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                                <span class="hidden-xs"><strong>@User.Identity.Name</strong></span>
+                                <img src="@Url.Content("~/Content/images/loginuser.png")" class="user-image" alt="User Image">
+                                <span class="hidden-xs">@User.Identity.Name</span>
                             </a>
                             <ul class="dropdown-menu">
+                                <li class="user-header">
+                                    <img src="@Url.Content("~/Content/images/loginuser.png")" class="img-circle" alt="User Image">
 
-                                <!-- Menu Body -->
-                                <li class="user-body">
-                                    @{
-                                        if (Session["AppUA"] != null)
-                                        {
-                                            AppUA _appUA = Session["AppUA"] as AppUA;
-                                            <span>Role : @_appUA.RolesCSV </span>
-                                        }
-
-
-                                    }
-                                </li>
+                                    <p>
+                                        @User.Identity.Name
+                                        @{
+                                            if (Session["AppUA"] != null)
+                                            {
+                                                AppUA _appUA = Session["AppUA"] as AppUA;
+                                                <small>Role : @_appUA.RolesCSV </small>
+                                            }
+                                        }                                        
+                                    </p>
+                                </li>                                
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
-                                    <div class="pull-left">
+                                    @*<div class="pull-left">
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                    </div>
-                                    <div class="pull-right">
-                                        <a href="/Account/Logout" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>*@
+                                    <div class="">
+                                        <a href="/Account/Logout" class="btn btn-default btn-flat" style="width:100%;"><i class="fa fa-sign-out"></i> Sign out</a>
                                     </div>
                                 </li>
                             </ul>

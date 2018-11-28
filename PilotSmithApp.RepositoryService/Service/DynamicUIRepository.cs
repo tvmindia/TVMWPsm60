@@ -71,5 +71,36 @@ namespace PilotSmithApp.RepositoryService.Service
 
             return menuList;
         }
+
+        public Boolean IsFileExisting(Guid id, string doctype)
+        {
+            bool result;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[IsFileExisting]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@DocType", SqlDbType.NVarChar, -1).Value = doctype;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        result = bool.Parse(cmd.ExecuteScalar().ToString());
+                     
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
     }
 }

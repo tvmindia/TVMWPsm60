@@ -588,6 +588,10 @@ function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, I
         else if (IsProformaInvoice) {
             var data = { "proformaInvoiceID": $('#SaleInvoiceForm #hdnProfInvID').val() };
             _jsonData = GetDataFromServer("SaleInvoice/GetSaleInvoiceDetailListByProfInvIDFromProformaInvoice/", data);
+            if ($('#hdnInvoiceType').val() == "SB") {
+                $('#divSaleInvoiceOtherChargesDetailList').hide();
+            }
+            
         }
         else {
             var data = { "saleInvoiceID": id };
@@ -599,6 +603,7 @@ function GetSaleInvoiceDetailListBySaleInvoiceID(id, IsSaleOrder, IsQuotation, I
             _message = _jsonData.Message;
             _status = _jsonData.Status;
             saleInvoiceDetailList = _jsonData.Records;
+          
         }
         if (_status == "OK") {
             return saleInvoiceDetailList;

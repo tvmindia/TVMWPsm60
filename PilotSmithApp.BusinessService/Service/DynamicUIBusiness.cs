@@ -21,5 +21,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _dynamicUIRepository.GetAllMenues();
         }
+        public Boolean IsFileExisting(Guid id, string doctype)
+        {
+            return _dynamicUIRepository.IsFileExisting(id,doctype);
+        }
     }
 }

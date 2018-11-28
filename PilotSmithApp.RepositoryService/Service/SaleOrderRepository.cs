@@ -331,6 +331,7 @@ namespace PilotSmithApp.RepositoryService.Service
 
                                     saleOrder.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : saleOrder.CurrencyCode);
                                     saleOrder.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : saleOrder.CurrencyRate);
+                                    saleOrder.IsFileExist = (sdr["IsFileExist"].ToString() != "" ? int.Parse(sdr["IsFileExist"].ToString()) : saleOrder.IsFileExist);
                                     saleOrder.Currency = new Currency();
                                     saleOrder.Currency.Description = (sdr["CurrencyDescription"].ToString() != "" ? sdr["CurrencyDescription"].ToString() : saleOrder.Currency.Description);
                                 }
@@ -348,7 +349,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetSaleOrder
         #region GetSaleOrderDetailListBySaleOrderID
-        public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
+        public List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID, bool isCopy)
         {
             List<SaleOrderDetail> saleOrderDetailList = new List<SaleOrderDetail>();
             try
@@ -373,7 +374,14 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     SaleOrderDetail saleOrderDetail = new SaleOrderDetail();
                                     {
-                                        saleOrderDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleOrderDetail.ID);
+                                        if (isCopy)
+                                        {
+                                            saleOrderDetail.ID = Guid.Empty;
+                                        }
+                                        else
+                                        {
+                                            saleOrderDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleOrderDetail.ID);
+                                        }
                                         saleOrderDetail.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleOrderDetail.SaleOrderID);
                                         saleOrderDetail.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : saleOrderDetail.Qty);
                                         saleOrderDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : saleOrderDetail.ProductSpec);
@@ -442,6 +450,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@IsUpdate", SqlDbType.Bit).Value = saleOrder.IsUpdate;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = saleOrder.ID;
                         cmd.Parameters.Add("@CopyFromID", SqlDbType.UniqueIdentifier).Value = saleOrder.CopyFrom;
+                        cmd.Parameters.Add("@CopySaleOrderNo", SqlDbType.VarChar, 20).Value = saleOrder.CopySaleOrderNo;
                         cmd.Parameters.Add("@SaleOrderRefNo", SqlDbType.VarChar, 20).Value = saleOrder.SaleOrderRefNo;
                         cmd.Parameters.Add("@SaleOrderNo", SqlDbType.VarChar, 20).Value = saleOrder.SaleOrderNo;
                         cmd.Parameters.Add("@SaleOrderDate", SqlDbType.DateTime).Value = saleOrder.SaleOrderDateFormatted;
@@ -739,7 +748,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion Delete SaleOrder OtherCharge
 
         #region GetSaleOrderOtherChargeListBySaleOrderID
-        public List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID)
+        public List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID, bool isCopy)
         {
             List<SaleOrderOtherCharge> saleorderOtherChargeList = new List<SaleOrderOtherCharge>();
             try
@@ -764,7 +773,17 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     SaleOrderOtherCharge saleOrderOtherCharge = new SaleOrderOtherCharge();
                                     {
-                                        saleOrderOtherCharge.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleOrderOtherCharge.ID);
+                                        if (isCopy)
+                                        {
+                                            saleOrderOtherCharge.ID = Guid.Empty;
+                                        }
+                                        else
+                                        {
+                                            saleOrderOtherCharge.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : saleOrderOtherCharge.ID);
+                                        }
+
+
+                                        
                                         saleOrderOtherCharge.SaleOrderID = (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : saleOrderOtherCharge.SaleOrderID);
                                         saleOrderOtherCharge.OtherChargeCode = (sdr["OtherChargeCode"].ToString() != "" ? int.Parse(sdr["OtherChargeCode"].ToString()) : saleOrderOtherCharge.OtherChargeCode);
                                         saleOrderOtherCharge.ChargeAmount = (sdr["ChargeAmount"].ToString() != "" ? decimal.Parse(sdr["ChargeAmount"].ToString()) : saleOrderOtherCharge.ChargeAmount);

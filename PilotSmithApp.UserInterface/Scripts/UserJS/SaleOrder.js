@@ -5,6 +5,8 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _isCopy = false;
+
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -257,9 +259,10 @@ function EditSaleOrder(this_Obj) {
     debugger;
     OnServerCallBegin();
     var SaleOrder = _dataTable.SaleOrderList.row($(this_Obj).parents('tr')).data();
-
+   
     var str;
     if (SaleOrder.CopyFrom != _emptyGuid) {
+        
         str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + SaleOrder.ID;
     }
     else {
@@ -271,6 +274,7 @@ function EditSaleOrder(this_Obj) {
     //this will return form body(html)
     $("#divSaleOrderForm").load(str, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            debugger;
             OnServerCallComplete();
             openNav();
             $('#lblSaleOrderInfo').text(SaleOrder.SaleOrderNo);
@@ -328,6 +332,7 @@ function CopySaleOrder(this_Obj) {
             openNav();
             $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
             ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
+            _isCopy = true;
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
             // $('#hdnQuoteNo').val(Quotation.QuoteNo);
@@ -784,7 +789,7 @@ function GetSaleOrderDetailListBySaleOrderID(id, IsEnquiry, IsQuotation) {
         }
         else {
             var data = { "saleOrderID": id };
-            _jsonData = GetDataFromServer("SaleOrder/GetSaleOrderDetailListBySaleOrderID/", data);
+            _jsonData = GetDataFromServer("SaleOrder/GetSaleOrderDetailListBySaleOrderID?isCopy=" + _isCopy, data);
         }
 
         if (_jsonData != '') {
@@ -1375,7 +1380,7 @@ function GetSaleOrderOtherChargesDetailListBySaleOrderID(id, IsQuotation) {
         }
         else {
             var data = { "saleOrderID": id };
-            _jsonData = GetDataFromServer("SaleOrder/GetSaleOrderOtherChargesDetailListBySaleOrderID/", data);
+            _jsonData = GetDataFromServer("SaleOrder/GetSaleOrderOtherChargesDetailListBySaleOrderID?isCopy=" + _isCopy, data);
         }
 
         if (_jsonData != '') {
@@ -1517,6 +1522,27 @@ function CalculateTotal() {
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
     $('#Discount').trigger('onchange');
     $('#lblCessAmount').text(roundoff(CessAmt));
+}
+function RedirectingCopiedSaleOrder()
+{
+    debugger;
+   
+    $.get("DynamicUI/IsFileExisting?id=" + $('#hdnCopyFrom').val() + "&doctype=SOD", function (data) {
+        debugger;
+       // var JsonResult = JSON.parse(data)
+        if (data=="True") {
+         //   $('#anchorOpenSODInTab').trigger('click');
+   
+            $("#anchorOpenSODInTab")[0].click();
+        }
+        else {
+            notyAlert('error', "Quotation not exist!");
+
+          //  alert("Quotation not exist!");
+        }
+       
+    });
+  
 }
 function EditRedirectToDocument(id) {
     debugger;

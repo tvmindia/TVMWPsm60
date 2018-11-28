@@ -108,6 +108,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsPrint { get; set; }
         public Guid? CopyFrom { get; set; }
         public string CopyQuoteNo { get; set; }
+        public int IsFileExist { get; set; }
 
         public CurrencyViewModel Currency { get; set; }
     }

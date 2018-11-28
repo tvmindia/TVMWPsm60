@@ -160,8 +160,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     
                     saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)copyFrom));
-                    ViewBag.SaleOrderNo = saleOrderVM.SaleOrderNo;
+                    //   ViewBag.SaleOrderNo = saleOrderVM.SaleOrderNo;
+                    saleOrderVM.IsFileExist = 1;
                     saleOrderVM.CopyFrom = saleOrderVM.ID;
+                    saleOrderVM.CopySaleOrderNo = saleOrderVM.SaleOrderNo;
                     saleOrderVM.ID = Guid.Empty;
                     saleOrderVM.SaleOrderNo = null;              
                     saleOrderVM.DocumentType = "Quotation";
@@ -175,7 +177,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleOrderVM.EmailSentYN = null;
                     saleOrderVM.Branch.Description = "-";
                     saleOrderVM.IsUpdate = false;
-
+                    saleOrderVM.SaleOrderDateFormatted = null;
+                    saleOrderVM.ExpectedDelvDateFormatted = null;
+                    saleOrderVM.BranchCode = null;
 
                 }
                 else
@@ -289,7 +293,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region GetSaleOrderDetailListBySaleOrderID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
-        public string GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID)
+        public string GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID, bool isCopy)
         {
             try
             {
@@ -338,7 +342,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else
                 {
-                    saleOrderItemViewModelList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
+                    saleOrderItemViewModelList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID, isCopy));
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderItemViewModelList, Message = "Success" });
             }
@@ -359,7 +363,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<SaleOrderDetailViewModel> saleOrderItemViewModelList = new List<SaleOrderDetailViewModel>();
                 if (quoteID != Guid.Empty)
                 {
-                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID));
+                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID,false));
                     saleOrderItemViewModelList = (from quotationDetailVM in quotationDetailVMList
                                                   select new SaleOrderDetailViewModel
                                                   {
@@ -444,7 +448,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Get SaleOrder OtherChargeList By SaleOrderID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
-        public string GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid saleOrderID)
+        public string GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid saleOrderID, bool isCopy)
         {
             try
             {
@@ -469,7 +473,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else
                 {
-                    saleOrderOtherChargeViewModelList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID));
+                    saleOrderOtherChargeViewModelList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID,isCopy));
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = saleOrderOtherChargeViewModelList, Message = "Success" });
             }
@@ -491,7 +495,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeViewModelList = new List<SaleOrderOtherChargeViewModel>();
                 if (quoteID != Guid.Empty)
                 {
-                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID));
+                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID,false));
                     saleOrderOtherChargeViewModelList = (from quotationOtherChargeVM in quotationOtherChargeVMList
                                                          select new SaleOrderOtherChargeViewModel
                                                   {
@@ -668,8 +672,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool emailFlag = saleOrderVM.EmailFlag;
             //SaleOrderViewModel saleOrderVM = new SaleOrderViewModel();
             saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder(saleOrderVM.ID));
-            saleOrderVM.SaleOrderDetailList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderVM.ID));
-            saleOrderVM.SaleOrderOtherChargeList= Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderVM.ID));
+            saleOrderVM.SaleOrderDetailList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderVM.ID,false));
+            saleOrderVM.SaleOrderOtherChargeList= Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderVM.ID,false));
             saleOrderVM.EmailFlag = emailFlag;
             @ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
             saleOrderVM.PDFTools = new PDFToolsViewModel();
@@ -719,8 +723,8 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             bool emailFlag = saleOderVM.EmailFlag;
             saleOderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder(saleOderVM.ID));
-            saleOderVM.SaleOrderDetailList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOderVM.ID));
-            saleOderVM.SaleOrderOtherChargeList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOderVM.ID));
+            saleOderVM.SaleOrderDetailList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOderVM.ID,false));
+            saleOderVM.SaleOrderOtherChargeList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOderVM.ID,false));
             saleOderVM.PDFTools = new PDFToolsViewModel();
             return PartialView("_PrintSaleOrder", saleOderVM);
         }
@@ -1084,6 +1088,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.PrintBtn.Visible = true;
                     toolboxVM.PrintBtn.Text = "Print";
                     toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.DisableReason = "Document Locked";
                     toolboxVM.PrintBtn.Event = "PrintSaleOrder()";
 
                     toolboxVM.SendForApprovalBtn.Visible = true;

@@ -142,15 +142,20 @@ namespace PilotSmithApp.UserInterface.Controllers
                 if (id == null)
                 {
                     quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation((Guid)copyFrom));
-                    ViewBag.QuoteNo = quotationVM.QuoteNo;
+                    // ViewBag.QuoteNo = quotationVM.QuoteNo;
+                    quotationVM.IsFileExist = 1;
                     quotationVM.CopyFrom = quotationVM.ID;
+                    quotationVM.CopyQuoteNo = quotationVM.QuoteNo;
                     quotationVM.ID = Guid.Empty;
                     quotationVM.QuoteNo = null;
                     quotationVM.DocumentStatus.Description = "-";
                     quotationVM.LatestApprovalStatus = null;
                     quotationVM.EmailSentYN = null;
                     quotationVM.Branch.Description = "-";
-                    quotationVM.IsUpdate = false;                   
+                    quotationVM.IsUpdate = false;
+                    quotationVM.QuoteDateFormatted = null;
+                    quotationVM.ValidUpToDateFormatted = null;
+                    quotationVM.BranchCode = null;
                 }
                 else
                 {
@@ -214,7 +219,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Get Quotation DetailList By QuotationID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public string GetQuotationDetailListByQuotationID(Guid quotationID)
+        public string GetQuotationDetailListByQuotationID(Guid quotationID,bool isCopy)
         {
             try
             {
@@ -255,7 +260,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else
                 {
-                    quotationItemViewModelList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationID));
+                    quotationItemViewModelList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationID,isCopy));
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationItemViewModelList, Message = "Success" });
             }
@@ -270,7 +275,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Get Quotation OtherChargeList By QuotationID
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
-        public string GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID)
+        public string GetQuotationOtherChargesDetailListByQuotationID(Guid quotationID, bool isCopy)
         {
             try
             {
@@ -295,7 +300,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else
                 {
-                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID));
+                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID,isCopy));
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationOtherChargeViewModelList, Message = "Success" });
             }
@@ -570,8 +575,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool ImageCheck = quotationVM.ImageCheck;
             //QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
-            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
-            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID,false));
+            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID, false));
             quotationVM.EmailFlag = emailFlag;
             quotationVM.ImageCheck = ImageCheck;
             ViewBag.path = "http://" + HttpContext.Request.Url.Authority + "/Content/images/logo1.PNG";
@@ -589,8 +594,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool imageInclude = quotationVM.ImageCheck;
             //QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
-            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
-            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID,false));
+            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID,false));
             quotationVM.PrintFlag = printFlag;
             quotationVM.ImageCheck = ImageCheck;
             ViewBag.ImgURL = "http://" + HttpContext.Request.Url.Authority + "/";
@@ -605,8 +610,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             bool imageInclude = quotationVM.ImageCheck;
             //QuotationViewModel quotationVM = new QuotationViewModel();
             quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(quotationVM.ID));
-            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID));
-            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quotationVM.ID,false));
+            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationVM.ID,false));
             quotationVM.PrintFlag = printFlag;
             quotationVM.ImageCheck = ImageCheck;
             ViewBag.ImgURL = "http://" + HttpContext.Request.Url.Authority + "/";
@@ -1062,6 +1067,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.PrintBtn.Visible = true;
                     toolboxVM.PrintBtn.Text = "Print";
                     toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.DisableReason = "Document Locked";
                     toolboxVM.PrintBtn.Event = "PrintQuotation()";
 
                     toolboxVM.RecallBtn.Visible = true;

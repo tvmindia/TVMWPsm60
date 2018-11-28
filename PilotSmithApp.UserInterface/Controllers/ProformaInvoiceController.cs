@@ -277,7 +277,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<ProformaInvoiceDetailViewModel> proformaInvoiceItemViewModelList = new List<ProformaInvoiceDetailViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderDetailViewModel> saleOrderVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID));
+                    List<SaleOrderDetailViewModel> saleOrderVMList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderID,false));
                     foreach (SaleOrderDetailViewModel saleOrderDetailVM in saleOrderVMList)
                     {
                         ProformaInvoiceDetailViewModel proformaInvoiceDetailVM = new ProformaInvoiceDetailViewModel()
@@ -326,7 +326,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<ProformaInvoiceDetailViewModel> proformaInvoiceItemViewModelList = new List<ProformaInvoiceDetailViewModel>();
                 if (quoteID != Guid.Empty)
                 {
-                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID));
+                    List<QuotationDetailViewModel> quotationDetailVMList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(quoteID,false));
                     proformaInvoiceItemViewModelList = (from quotationDetailVM in quotationDetailVMList
                                                     select new ProformaInvoiceDetailViewModel
                                                     {
@@ -390,7 +390,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 else
                 {
-                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID));
+                    quotationOtherChargeViewModelList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quotationID,false));
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = quotationOtherChargeViewModelList, Message = "Success" });
             }
@@ -452,7 +452,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<ProformaInvoiceOtherChargeViewModel> proformaInvoiceOtherChargeViewModelList = new List<ProformaInvoiceOtherChargeViewModel>();
                 if (quoteID != Guid.Empty)
                 {
-                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID));
+                    List<QuotationOtherChargeViewModel> quotationOtherChargeVMList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(quoteID,false));
                     proformaInvoiceOtherChargeViewModelList = (from quotationOtherChargeVM in quotationOtherChargeVMList
                                                            select new ProformaInvoiceOtherChargeViewModel
                                                            {
@@ -490,7 +490,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                 List<ProformaInvoiceOtherChargeViewModel> proformaInvoiceOtherChargeViewModelList = new List<ProformaInvoiceOtherChargeViewModel>();
                 if (saleOrderID != Guid.Empty)
                 {
-                    List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeVMList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID));
+                    List<SaleOrderOtherChargeViewModel> saleOrderOtherChargeVMList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderID,false));
                     proformaInvoiceOtherChargeViewModelList = (from quotationOtherChargeVM in saleOrderOtherChargeVMList
                                                            select new ProformaInvoiceOtherChargeViewModel
                                                            {

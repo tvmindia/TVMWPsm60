@@ -5,6 +5,7 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _isCopy = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -303,12 +304,15 @@ function CopyQuotation(this_Obj) {
             openNav();
             $('#lblQuotationInfo').text('<<Quotation No.>>');
             ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
-           // $('#hdnQuoteNo').val(Quotation.QuoteNo);
+            // $('#hdnQuoteNo').val(Quotation.QuoteNo);
+             _isCopy = true;
             BindQuotationDetailList(Quotation.ID);
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
             clearUploadControl();
             PaintImages(Quotation.ID);
+            $('#lblQuotationInfo').val('');
+           
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -654,7 +658,7 @@ function GetQuotationDetailListByQuotationID(id, IsEstimated) {
         }
         else {
             var data = { "quotationID": id };
-            _jsonData = GetDataFromServer("Quotation/GetQuotationDetailListByQuotationID/", data);
+            _jsonData = GetDataFromServer("Quotation/GetQuotationDetailListByQuotationID?isCopy="+_isCopy, data);
         }
 
         if (_jsonData != '') {
@@ -1375,7 +1379,7 @@ function GetQuotationOtherChargesDetailListByQuotationID(id) {
         var quotationOtherChargesDetailList = [];
 
         var data = { "quotationID": id };
-        _jsonData = GetDataFromServer("Quotation/GetQuotationOtherChargesDetailListByQuotationID/", data);
+        _jsonData = GetDataFromServer("Quotation/GetQuotationOtherChargesDetailListByQuotationID?isCopy=" + _isCopy, data);
 
 
         if (_jsonData != '') {
@@ -1507,6 +1511,27 @@ function CalculateTotal() {
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
     $('#Discount').trigger('onchange');
 }
+function RedirectingCopiedQuotation() {
+    debugger;
+
+    $.get("DynamicUI/IsFileExisting?id=" + $('#hdnCopyFrom').val() + "&doctype=QUO", function (data) {
+        debugger;
+        // var JsonResult = JSON.parse(data)
+        if (data == "True") {
+            //   $('#anchorOpenSODInTab').trigger('click');
+        
+            $("#anchorOpenSODInTab")[0].click();
+        }
+        else {
+            notyAlert('error', "Quotation not exist!");
+
+            //  alert("Quotation not exist!");
+        }
+
+    });
+
+}
+
 function EditRedirectToDocument(id) {
     debugger;
     OnServerCallBegin();
@@ -1521,9 +1546,11 @@ function EditRedirectToDocument(id) {
     var str;
     if (result.copyFrom != _emptyGuid) {
         str = "Quotation/CopyQuotationForm?copyFrom=&id=" + id;
+       
     }
     else {
         str = "Quotation/QuotationForm?id=" + id;
+        
     }
 
 

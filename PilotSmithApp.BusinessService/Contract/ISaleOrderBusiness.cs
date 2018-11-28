@@ -14,14 +14,14 @@ namespace PilotSmithApp.BusinessService.Contract
         List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm);
         List<SelectListItem> GetSaleOrderForSelectList(Guid? id);
         SaleOrder GetSaleOrder(Guid id);
-        List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID);
+        List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID, bool isCopy);
         object InsertUpdateSaleOrder(SaleOrder saleOrder);
         object DeleteSaleOrder(Guid id);
         object DeleteSaleOrderDetail(Guid id);
         object DeleteSaleOrderOtherChargeDetail(Guid id);
         object UpdateSaleOrderEmailInfo(SaleOrder saleOrder);
         Task<bool> QuoteEmailPush(SaleOrder saleOrder);
-        List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID);
+        List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID, bool isCopy);
         SaleOrderSummary GetSaleOrderSummaryCount();
     }
 }

@@ -5,6 +5,7 @@ using PilotSmithApp.DataAccessObject.DTO;
 using PilotSmithApp.UserInterface.Models;
 using PilotSmithApp.BusinessService.Contracts;
 using System.Web.SessionState;
+using System;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -41,6 +42,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             return PartialView("PopUpUnderConstruction");
         }
-
+        public string IsFileExisting(Guid id,string doctype)
+        {
+          var result  = _dynamicUIBusiness.IsFileExisting(id,doctype);
+            return result.ToString();
+        }
     }
 }
