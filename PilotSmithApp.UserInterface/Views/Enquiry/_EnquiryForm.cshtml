@@ -23,7 +23,7 @@
                             @Html.HiddenFor(model => model.CurrencyCode, htmlAttributes: new { @class = "", @id = "hdnCurrencyCode" })
                             @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
                             @Html.Label("Select currency", htmlAttributes: new { @class = "control-label lblrequired" })
-                            <label class="control-label lblrequired" style="margin-left:30px!important;">Rate</label>
+                            <label class="control-label lblrequired" style="margin-left:8%!important;">Rate</label>
                         </div>                      
                         <div class="col-md-12 no-padding">
                             <div class="col-md-12" style="display:inline-flex;font-weight:500;">
@@ -33,7 +33,7 @@
                         <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />*@
                                 @if (Model.IsUpdate)
                                 {
-                                    <select class="form-control newinput" disabled title="Cannot change currency">
+                                    <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;">
                                         <option>@Model.CurrencyCode</option>
                                     </select>
                                     <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
@@ -41,7 +41,7 @@
                                 }
                                 else
                                 {
-                                    <select class="form-control newinput changeCurrency">
+                                    <select class="form-control newinput changeCurrency" style="width:100%;">
                                         @{
                                             foreach (var cur in Model.Currency.CurrencyList)
                                             {

@@ -216,6 +216,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     proformaInvoice.SaleOrder.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? sdr["SaleOrderNo"].ToString() : proformaInvoice.SaleOrder.SaleOrderNo);
                                     proformaInvoice.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : proformaInvoice.CurrencyCode);
                                     proformaInvoice.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : proformaInvoice.CurrencyRate);
+                                    proformaInvoice.Currency = new Currency();
+                                    proformaInvoice.Currency.Description = (sdr["CurrencyDescription"].ToString() != "" ? sdr["CurrencyDescription"].ToString() : proformaInvoice.Currency.Description);
                                 }
                         }
                     }

@@ -331,6 +331,8 @@ namespace PilotSmithApp.RepositoryService.Service
 
                                     saleOrder.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : saleOrder.CurrencyCode);
                                     saleOrder.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : saleOrder.CurrencyRate);
+                                    saleOrder.Currency = new Currency();
+                                    saleOrder.Currency.Description = (sdr["CurrencyDescription"].ToString() != "" ? sdr["CurrencyDescription"].ToString() : saleOrder.Currency.Description);
                                 }
                         }
                     }

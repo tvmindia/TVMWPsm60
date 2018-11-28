@@ -205,6 +205,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     quotation.CopyQuoteNo = (sdr["CopyQuoteNo"].ToString() != "" ? sdr["CopyQuoteNo"].ToString() : quotation.CopyQuoteNo);
                                     quotation.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : quotation.CurrencyRate);
                                     quotation.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : quotation.CurrencyCode);
+                                    quotation.Currency = new Currency();
+                                    quotation.Currency.Description = (sdr["CurrencyDescription"].ToString() != "" ? sdr["CurrencyDescription"].ToString() : quotation.Currency.Description);
                                 }
                         }
                     }

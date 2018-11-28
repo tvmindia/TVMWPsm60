@@ -27,7 +27,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
             string words = "";
             switch (countryCode)
             {
-                case "IND":
+                case "INR":
                     int value = Convert.ToInt32(Math.Round(number));
 
                     var unitsMap = new[] { "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
@@ -67,7 +67,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
                     }
 
                     break;
-                case "USA":
+                default:
                     string[] numbersArr = new string[] { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
                     string[] tensArr = new string[] { "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninty" };
                     string[] suffixesArr = new string[] { "Thousand", "Million", "Billion", "Trillion", "Quadrillion", "Quintillion", "Sextillion", "Septillion", "Octillion", "Nonillion", "Decillion", "Undecillion", "Duodecillion", "Tredecillion", "Quattuordecillion", "Quindecillion", "Sexdecillion", "Septdecillion", "Octodecillion", "Novemdecillion", "Vigintillion" };
@@ -141,13 +141,21 @@ namespace PilotSmithApp.DataAccessObject.DTO
             double todaysValue = 0;
             switch (countryCode)
             {
-                case "IND":
+                case "INR":
                     todaysValue = Math.Round(value) * 1;
                     currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-IN"));
                     break;
-                case "USA":
-                    todaysValue = Math.Round(value) * 67.51;
+                //case "USA":
+                //    todaysValue = Math.Round(value) * 67.51;
+                //    currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"));
+                //    break;
+                case "USD":
+                    todaysValue = Math.Round(value) * 1;
                     currencyFormatted = todaysValue.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"));
+                    break;
+                default:
+                    todaysValue = Math.Round(value) * 1;
+                    currencyFormatted = string.Format("{0:N}", todaysValue);
                     break;
             }
             return currencyFormatted;

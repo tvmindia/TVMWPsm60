@@ -312,6 +312,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     saleInvoice.ProformaInvoice.ProfInvNo = (sdr["ProfInvNo"].ToString() != "" ? (sdr["ProfInvNo"].ToString()) : saleInvoice.ProformaInvoice.ProfInvNo);
                                     saleInvoice.CurrencyCode = (sdr["CurrencyCode"].ToString() != "" ? sdr["CurrencyCode"].ToString() : saleInvoice.CurrencyCode);
                                     saleInvoice.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : saleInvoice.CurrencyRate);
+                                    saleInvoice.Currency = new Currency();
+                                    saleInvoice.Currency.Description = (sdr["CurrencyDescription"].ToString() != "" ? sdr["CurrencyDescription"].ToString() : saleInvoice.Currency.Description);
                                 }
                         }
                     }

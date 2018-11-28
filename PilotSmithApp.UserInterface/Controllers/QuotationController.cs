@@ -150,7 +150,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.LatestApprovalStatus = null;
                     quotationVM.EmailSentYN = null;
                     quotationVM.Branch.Description = "-";
-                    quotationVM.IsUpdate = false;
+                    quotationVM.IsUpdate = false;                   
                 }
                 else
                 {
