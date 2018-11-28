@@ -18,78 +18,14 @@
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
 
-                <!--Currency start-->
-                @*<div class="col-md-12 no-padding">
-                    <div class="col-md-6 no-padding">
-                        <div class="col-md-12">
-                            @Html.HiddenFor(model => model.CurrencyCode, htmlAttributes: new { @class = "", @id = "hdnCurrencyCode" })
-                            @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
-                            @Html.Label("Configure currency", htmlAttributes: new { @class = "control-label lblrequired" })
-                        </div>
-                        <div class="col-md-12 no-padding">
-                            <div class="col-md-12" style="display:inline-flex;font-weight:500;">
-                                <select class="form-control newinput" disabled>
-                                    <option>INR</option>
-                                </select>
-                                <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />
-                                @if (Model.IsUpdate)
-                                {
-                                    <select class="form-control newinput" style="border-left:1px solid black" disabled>
-                                        <option>@Model.CurrencyCode</option>
-                                    </select>
-                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;border-left:1px solid black;text-align:right;" />
-                                }
-                                else
-                                {
-                                    if ((Model.QuoteID == null && Model.SaleOrderID == null) )
-                                    {
-                                        <select class="form-control newinput changeCurrency" style="border-left:1px solid black">
-                                            @{
-                                                foreach (var cur in Model.Currency.CurrencyList)
-                                                {
-                                                    <option value="@cur.Code" title="@cur.Description">@cur.Code</option>
-                                                }
-                                            }
-
-                                        </select>
-                                        <input class="form-control newinput changeCurrency" type="number" min="0" style="width:100%;border-left:1px solid black;text-align:right;" value="@Model.CurrencyRate" />
-
-                                                }
-                                                else
-                                                {
-                                                    <select class="form-control newinput" style="border-left:1px solid black" disabled>
-                                                        <option>@Model.CurrencyCode</option>
-                                                    </select>
-                                                    <input class="form-control newinput changeCurrency" type="number" min="0" style="width:100%;border-left:1px solid black;text-align:right;" value="@Model.CurrencyRate" />
-
-                                                    }
-                                                }
-                            </div>
-                        </div>
-                    </div>
-                    @if (!Model.IsUpdate)
-                {
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
-                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 30px 6.5px 15px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
-                                    <h4>Default currency: INR</h4>
-
-                                    <p>Changing currency will reset document</p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-                </div>*@
-
-
+                <!--Currency start-->               
                 <div class="col-md-12 no-padding">
                     <div class="col-md-6 no-padding">
-                        <div class="col-md-6">
+                        <div class="col-md-12" style="display:inline-flex">
                             @Html.HiddenFor(model => model.CurrencyCode, htmlAttributes: new { @class = "", @id = "hdnCurrencyCode" })
                             @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
                             @Html.Label("Select currency", htmlAttributes: new { @class = "control-label lblrequired" })
-                            <label class="control-label lblrequired" style="margin-left:30px!important;">Rate</label>
+                            <label class="control-label lblrequired lblrate">Rate</label>
                         </div>
                         <div class="col-md-12 no-padding">
                             <div class="col-md-12" style="display:inline-flex;font-weight:500;">
@@ -99,17 +35,17 @@
                         <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />*@
                                 @if (Model.IsUpdate)
                                 {
-                                    <select class="form-control newinput" disabled title="Cannot change currency">
+                                    <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
                                         <option>@Model.CurrencyCode</option>
                                     </select>
-                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
-                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;" title="Cannot change rate" />
+                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />
                                 }
                                 else
                                 {
                                     if ((Model.QuoteID == null && Model.SaleOrderID == null))
                                     {
-                                        <select class="form-control newinput changeCurrency">
+                                        <select class="form-control newinput changeCurrency" style="width:100%;min-width:68px;">
                                             @{
                                                 foreach (var cur in Model.Currency.CurrencyList)
                                                 {
@@ -118,23 +54,23 @@
                                             }
 
                                         </select>
-                                        <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                        <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
                                                 }
                                                 else
                                                 {
-                                                    <select class="form-control newinput" disabled title="Cannot change currency">
+                                                    <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
                                                         <option>@Model.CurrencyCode</option>
                                                     </select>
-                                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
                                                 }
 
-                                                <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;" value="@Model.CurrencyRate" />
+                                                <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;min-width:70px;" value="@Model.CurrencyRate" />
 
                                                 }
                                 @*<select class="form-control newinput" disabled>
                             <option>INR</option>
                         </select>*@
-                                <input class="form-control newinput" type="text" readonly style="width:100%;text-align:left;background-color:rgba(2, 166, 143, 0.06);border-bottom:none;" value="INR" />
+                                <input class="form-control newinput" type="text" readonly style="width:100%;text-align:left;background-color:rgba(2, 166, 143, 0.06);border-bottom:none;min-width:45px;" value="INR" />
                             </div>
                         </div>
                     </div>
@@ -142,7 +78,7 @@
                     {
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
-                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 30px 6.5px 15px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
+                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 0px 6.5px 10px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
                                     <h4><i class="fa fa-info-circle"></i> note</h4>
 
                                     <p>Changing currency will reset document</p>
@@ -154,7 +90,7 @@
                     {
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
-                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 30px 6.5px 15px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
+                                <div class="callout callout-info" style="background-color:#e8b67f!important;padding: 5px 0px 6.5px 10px;margin:0px;border-left: 8px solid #e66911;color: #543131 !important">
                                     <h4><i class="fa fa-info-circle"></i> note</h4>
 
                                     <p>Currency cannot change in edit mode</p>
