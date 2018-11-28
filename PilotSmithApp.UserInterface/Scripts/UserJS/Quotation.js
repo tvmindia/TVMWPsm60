@@ -320,9 +320,10 @@ function CopyQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
+    debugger;
     var str;
     if ($('#hdnCopyFrom').val() != _emptyGuid) {
-        str = "Quotation/CopyQuotationForm?copyFrom=&id=" + $('#QuotationForm #ID').val()
+        str = "Quotation/CopyQuotationForm?copyFrom="+$('#hdnCopyFrom').val()+"&id=" + $('#QuotationForm #ID').val()
 
     }
     else {
@@ -537,7 +538,7 @@ function BindQuotationOtherChargesDetailList(id) {
              columnDefs: [
                  { "targets": [0], "width": "30%" },
                  { "targets": [1, 2, 4], "width": "20%" },
-                 { "targets": [3, 5], "width": "10%" },
+                 { "targets": [3, 5], "width": "20%" },
                  { className: "text-right", "targets": [2, 3, 4] },
                  { className: "text-left", "targets": [0, 1] },
                  { className: "text-center", "targets": [5] }

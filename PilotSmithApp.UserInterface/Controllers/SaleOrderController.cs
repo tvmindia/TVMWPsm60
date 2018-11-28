@@ -156,7 +156,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             SaleOrderViewModel saleOrderVM = null;
             try
             {
-                if (id == null)
+                if (id == null|| id==Guid.Empty)
                 {
                     
                     saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)copyFrom));
@@ -174,12 +174,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleOrderVM.Branch = new BranchViewModel();
                     saleOrderVM.Branch.Description = "-";
                     saleOrderVM.LatestApprovalStatus = null;
-                    saleOrderVM.EmailSentYN = null;
-                    saleOrderVM.Branch.Description = "-";
+                    saleOrderVM.EmailSentYN = null;                   
                     saleOrderVM.IsUpdate = false;
                     saleOrderVM.SaleOrderDateFormatted = null;
                     saleOrderVM.ExpectedDelvDateFormatted = null;
                     saleOrderVM.BranchCode = null;
+                     saleOrderVM.Currency = new CurrencyViewModel()
+                {
+                    CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                };
 
                 }
                 else

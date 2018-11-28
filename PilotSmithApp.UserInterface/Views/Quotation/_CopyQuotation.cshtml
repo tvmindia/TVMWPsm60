@@ -24,7 +24,7 @@
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
-                @{
+                          @{
                     if (Model.CopyFrom != Guid.Empty)
                     {
 
@@ -55,7 +55,7 @@
                                 @if (Model.IsFileExist == 1)
                                 {
                                     <span style="font-size:12px">Copied From Quotation :</span><span style="font-weight: bold;font-size:12px;">@Model.CopyQuoteNo</span>
-                                    <a onclick="RedirectingCopiedQuotation()" style="font-size:10px">Open in new tab</a>
+                                    <a onclick="RedirectingCopiedQuotation()" style="font-size:10px;cursor:pointer;">Open in new tab</a>
                                     <a href="/Quotation?ID=@Model.CopyFrom" id="anchorOpenSODInTab" target="_blank" style="font-size:10px"></a>
                                 }
                                 else
@@ -73,6 +73,85 @@
                         @*</div>*@
                                     }
                 }
+
+                <!--Currency start-->
+                <div class="col-md-12 no-padding" style="margin-top: 10px;">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12" style="display:inline-flex">
+                            @Html.HiddenFor(model => model.CurrencyCode, htmlAttributes: new { @class = "", @id = "hdnCurrencyCode" })
+                            @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
+                            @Html.Label("Select currency", htmlAttributes: new { @class = "control-label lblrequired" })
+                            <label class="control-label lblrequired lblrate">Rate</label>
+                        </div>
+                        <div class="col-md-12 no-padding">
+                            <div class="col-md-12" style="display:inline-flex;font-weight:500;">
+                                @*<select class="form-control newinput" disabled>
+                            <option>INR</option>
+                        </select>
+                        <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />*@
+                                @if (Model.IsUpdate)
+                                {
+                                    <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
+                                        <option>@Model.CurrencyCode</option>
+                                    </select>
+                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />
+                                }
+                                else
+                                {
+                                    <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
+                                        <option>@Model.CurrencyCode</option>
+                                    </select>
+                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                    <input class="form-control newinput changeCurrency" type="number" value="@Model.CurrencyRate"  style="width:100%;text-align:left;min-width:70px;"  />
+
+                                    @*<select class="form-control newinput changeCurrency" style="width:100%;min-width:66px;">
+                                        @{
+                                            foreach (var cur in Model.Currency.CurrencyList)
+                                            {
+                                                <option value="@cur.Code" title="@cur.Description">@cur.Code</option>
+                                            }
+                                        }
+
+                                    </select>
+                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                    <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;min-width:70px;" value="@Model.CurrencyRate" />*@
+
+                                            }
+                                @*<select class="form-control newinput" disabled>
+                            <option>INR</option>
+                        </select>*@
+                                <input class="form-control newinput" type="text" readonly style="width:100%;text-align:left;background-color:rgba(2, 166, 143, 0.06);border-bottom:none;min-width:45px;" value="INR" />
+                            </div>
+                        </div>
+                    </div>
+                    @if (!Model.IsUpdate)
+                    {
+                        <div class="col-md-6 no-padding">
+                            <div class="col-md-12">
+                                <div class="callout callout-info currencyNote" style="background-color: #e8b67f!important; border-left: 8px solid #e66911;color: #543131 !important;padding: 5px 0px 6.5px 10px; margin: 0px;">
+                                    <h4><i class="fa fa-info-circle"></i> note</h4>
+
+                                    <p>Changing currency will reset document</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-6 no-padding">
+                            <div class="col-md-12">
+                                <div class="callout callout-info currencyNote" style="background-color: #e8b67f!important; border-left: 8px solid #e66911;color: #543131 !important;padding: 5px 0px 6.5px 10px; margin: 0px;">
+                                    <h4><i class="fa fa-info-circle"></i> note</h4>
+
+                                    <p>Currency cannot change in edit mode</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!--Currency end-->
+
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -372,11 +451,11 @@
                             <th style="width:23%">Product Code</th>
                             <th style="width:10%">HSN Code</th>
                             <th style="width:10%">Quantity</th>
-                            <th style="width:10%">Rate(₹)</th>
-                            <th style="width:10%">Discount(₹)</th>
-                            <th style="width:10%">Taxable(₹)</th>
-                            <th style="width:10%">GST(₹)</th>
-                            <th style="width:10%">Total(₹)</th>
+                            <th style="width:10%">Rate(<span id="spanRate">@Model.CurrencyCode</span>)</th>
+                            <th style="width:10%">Discount(<span id="spanDiscound">@Model.CurrencyCode</span>)</th>
+                            <th style="width:10%">Taxable(<span id="spanTaxable">@Model.CurrencyCode</span>)</th>
+                            <th style="width:10%">GST</th>
+                            <th style="width:10%">Total(<span id="spanTotal">@Model.CurrencyCode</span>)</th>
                             <th style="width:7%">...</th>
                         </tr>
                     </thead>
@@ -388,9 +467,9 @@
                         <tr class="text-center TableHead">
                             <th style="width:20%">Other Charge</th>
                             <th style="width:20%">SAC Code</th>
-                            <th style="width:20%">Charge Amount(₹)</th>
-                            <th style="width:10%">GST(₹)</th>
-                            <th style="width:20%">Total(₹)</th>
+                            <th style="width:20%">Charge Amount(<span id="spanchargeAmount">@Model.CurrencyCode</span>)</th>
+                            <th style="width:10%">GST</th>
+                            <th style="width:20%">Total(<span id="spanOCTotal">@Model.CurrencyCode</span>)</th>
                             <th style="width:10%">...</th>
                         </tr>
                     </thead>
@@ -506,12 +585,21 @@
                 //$('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
             });
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
-            </text>
+    
+      
+      </text>
             }
             @if (!Model.IsUpdate)
              {
                 <text>
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+            });
+
+            $('.changeCurrency').change(function () {
+                debugger;
+                if (this.nodeName == "INPUT") {
+                    $('#hdnCurrencyRate').val(this.value)
+                }
             });
             </text>
              }

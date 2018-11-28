@@ -139,7 +139,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             QuotationViewModel quotationVM = null;
             try
             {
-                if (id == null)
+                if (id == null || id==Guid.Empty)
                 {
                     quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation((Guid)copyFrom));
                     // ViewBag.QuoteNo = quotationVM.QuoteNo;
@@ -148,14 +148,22 @@ namespace PilotSmithApp.UserInterface.Controllers
                     quotationVM.CopyQuoteNo = quotationVM.QuoteNo;
                     quotationVM.ID = Guid.Empty;
                     quotationVM.QuoteNo = null;
+                    quotationVM.DocumentStatus = new DocumentStatusViewModel();
                     quotationVM.DocumentStatus.Description = "-";
                     quotationVM.LatestApprovalStatus = null;
                     quotationVM.EmailSentYN = null;
+                    quotationVM.Branch = new BranchViewModel();
                     quotationVM.Branch.Description = "-";
                     quotationVM.IsUpdate = false;
                     quotationVM.QuoteDateFormatted = null;
-                    quotationVM.ValidUpToDateFormatted = null;
+                    quotationVM.ValidUpToDateFormatted = null;                  
                     quotationVM.BranchCode = null;
+                    quotationVM.Currency = new CurrencyViewModel()
+                    {
+                        CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
+                    };
+
+
                 }
                 else
                 {

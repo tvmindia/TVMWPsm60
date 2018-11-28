@@ -351,7 +351,7 @@ function ResetSaleOrder(event) {
     var str;
     if ($('#hdnCopyFrom').val() != _emptyGuid) {
 
-        str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + $('#SaleOrderForm #ID').val();
+        str = "SaleOrder/CopySaleOrderForm?copyFrom="+$('#hdnCopyFrom').val()+"&id=" + $('#SaleOrderForm #ID').val();
     }
     else {
         str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val();
