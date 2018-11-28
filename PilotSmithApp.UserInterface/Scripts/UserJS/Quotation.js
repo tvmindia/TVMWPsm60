@@ -320,7 +320,15 @@ function CopyQuotation(this_Obj) {
     });
 }
 function ResetQuotation() {
-    $("#divQuotationForm").load("Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val(), function (responseTxt, statusTxt, xhr) {
+    var str;
+    if ($('#hdnCopyFrom').val() != _emptyGuid) {
+        str = "Quotation/CopyQuotationForm?copyFrom=&id=" + $('#QuotationForm #ID').val()
+
+    }
+    else {
+        str = "Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val()
+    }
+    $("#divQuotationForm").load(str, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 $("#divQuotationForm #EstimateID").prop('disabled', true);
@@ -1523,7 +1531,7 @@ function RedirectingCopiedQuotation() {
             $("#anchorOpenSODInTab")[0].click();
         }
         else {
-            notyAlert('error', "Quotation not exist!");
+            notyAlert('error', "Referred Quotation does not exist!");
 
             //  alert("Quotation not exist!");
         }

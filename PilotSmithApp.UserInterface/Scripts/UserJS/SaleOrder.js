@@ -348,7 +348,16 @@ function CopySaleOrder(this_Obj) {
 
 function ResetSaleOrder(event) {
     debugger;
-    $("#divSaleOrderForm").load("SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() , function (responseTxt, statusTxt, xhr) {
+    var str;
+    if ($('#hdnCopyFrom').val() != _emptyGuid) {
+
+        str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + $('#SaleOrderForm #ID').val();
+    }
+    else {
+        str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val();
+    }
+
+    $("#divSaleOrderForm").load(str , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                     //resides in customjs for sliding
@@ -1536,7 +1545,7 @@ function RedirectingCopiedSaleOrder()
             $("#anchorOpenSODInTab")[0].click();
         }
         else {
-            notyAlert('error', "Quotation not exist!");
+            notyAlert('error', "Referred SaleOrder does not exist!");
 
           //  alert("Quotation not exist!");
         }
