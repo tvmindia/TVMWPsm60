@@ -621,6 +621,8 @@
                     $('#spanChargeAmount').text(this.value)
                     $('#spanTotal').text(this.value)
                     $('#idCurRateForAutofocus').focus();
+                    $('#idCurRateForAutofocus').val(1);
+                    $('#hdnCurrencyRate').val(1);
                 }
                 if (this.nodeName == "INPUT") {
                     $('#hdnCurrencyRate').val(this.value)

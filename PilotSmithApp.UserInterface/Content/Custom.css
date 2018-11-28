@@ -714,7 +714,11 @@ td.ApplyCurrency {
     color: #337ab7;
     text-decoration: underline;
 }
-
+@media (min-width:768px){
+    .lblrate{
+        margin-left:20%;
+    }
+}
  
 @media screen and (max-height: 450px) {
   .overlay {overflow-y: auto;}
@@ -725,7 +729,11 @@ td.ApplyCurrency {
    
 }
 }
-
+@media (min-width:1500px){
+    .lblrate{
+        margin-left:27%;
+    }
+}
 
 .breadcrumb {
     font-size:11px!important;
