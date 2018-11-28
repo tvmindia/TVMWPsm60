@@ -541,7 +541,8 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                  debugger;
                  var table = $('#tblProductionOrderDetails').DataTable();
                  //if ((data.ShowRate == true) || (data.ShowAmount == true)) {
-                 if($('#hdnShowRate').val()=="True"){
+                 if ($('#hdnShowRate').val() == "True") {
+                     debugger;
                      $('#prodordRate').show();
                      table.column(6).visible(true);
                      $('#prodordAmount').show();
