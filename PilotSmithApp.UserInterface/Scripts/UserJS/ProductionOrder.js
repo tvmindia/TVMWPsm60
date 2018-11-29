@@ -233,12 +233,13 @@ function EditProductionOrder(this_Obj) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", productionOrder.ID);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
-                        }
-                        else {
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", productionOrder.ID);
-                        }
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", productionOrder.ID);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", productionOrder.ID);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
@@ -291,12 +292,13 @@ function ResetProductionOrder() {
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    if ($('#ApproverLevel').val() > 1) {
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
-                    }
-                    else {
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", $('#ID').val());
-                    }
+                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", $('#ID').val());
+                    //if ($('#ApproverLevel').val() > 1) {
+                    //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
+                    //}
+                    //else {
+                    //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", $('#ID').val());
+                    //}
                     break;
                 case "3":
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
@@ -1095,12 +1097,13 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", id);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
-                        }
-                        else {
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", id);
-                        }
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", id);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", id);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);

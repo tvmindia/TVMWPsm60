@@ -287,12 +287,13 @@ function EditSaleOrder(this_Obj) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
-                        }
-                        else {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", SaleOrder.ID);
-                        }
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", SaleOrder.ID);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
@@ -372,12 +373,13 @@ function ResetSaleOrder(event) {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    if ($('#ApproverLevel').val() > 1) {
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
-                    }
-                    else {
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", $('#ID').val());
-                    }
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", $('#ID').val());
+                    //if ($('#ApproverLevel').val() > 1) {
+                    //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
+                    //}
+                    //else {
+                    //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", $('#ID').val());
+                    //}
                     break;
                 case "3":
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
@@ -1584,12 +1586,13 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", id);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
-                        }
-                        else {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", id);
-                        }
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", id);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);

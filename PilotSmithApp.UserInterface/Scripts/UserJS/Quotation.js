@@ -258,12 +258,12 @@ function EditQuotation(this_Obj) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", Quotation.ID);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
-                        }
-                        else {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
-                        }
+                       // if ($('#ApproverLevel').val() > 1) {
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", Quotation.ID);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
+                        //}
 
                         break;
                     case "3":
@@ -271,6 +271,9 @@ function EditQuotation(this_Obj) {
                         break;
                     case "4":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                        break;
+                    //case "10":
+                    //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
                         break;
                     default:
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
@@ -342,7 +345,7 @@ function ResetQuotation() {
                 $("#QuotationForm #CustomerID").prop('disabled', false);
                 $('#lblQuotationInfo').text('<<Quotation No.>>');
             }
-
+            debugger;
             switch ($('#LatestApprovalStatus').val()) {
                 case "":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
@@ -351,18 +354,20 @@ function ResetQuotation() {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    if ($('#ApproverLevel').val() > 1) {
-                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
-                    }
-                    else {
-                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", $('#ID').val());
-                    }
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", $('#ID').val());
+                    //if ($('#ApproverLevel').val() > 1) {
+                    //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
+                    //}
+                    //else {
+                    //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", $('#ID').val());
+                    //}
                     break;
                 case "3":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
                     break;
                 case "4":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
+                    break;           
                     break;
                 default:
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", $('#ID').val());
@@ -1246,15 +1251,15 @@ function RecallDoc(documentTypeCode) {
                 case "OK":
                     notyAlert('success', _message);
                     ResetQuotation();
-                    debugger;
-                    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
-                        if (($('#ApproverLevel').val()) > 1) {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
-                        }
-                        else {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
-                        }
-                    });
+                    //debugger;
+                    //$("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
+                    //    if (($('#ApproverLevel').val()) > 1) {
+                    //        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#QuotationForm #ID').val());
+                    //    }
+                    //    else {
+                    //        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", $('#QuotationForm #ID').val());
+                    //    }
+                    //});
                     break;
                 case "ERROR":
                     notyAlert('error', _message);
@@ -1577,12 +1582,13 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", id);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
-                        }
-                        else {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", id);
-                        }
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", id);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", id);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);

@@ -36,7 +36,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string LandLine { get; set; }
         [Display(Name = "Mobile")]
         [StringLength(50, MinimumLength = 5)]
-        [RegularExpression(@"^((\+91-?)|0)?[0-9]{10}$", ErrorMessage = "Entered phone format is not valid.")]
+        //[RegularExpression(@"^((\+91-?)|0)?[0-9]{10}$", ErrorMessage = "Entered phone format is not valid.")]
         //[Remote(action: "CheckMobileNumberExist", controller: "Customer", AdditionalFields = nameof(IsUpdate))]
         public string Mobile { get; set; }
         [Display(Name = "Fax")]
