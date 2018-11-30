@@ -294,7 +294,7 @@
             <tr>
                 @{
                     PSASysCommon PSASysCommon = new PSASysCommon();
-                    tot = PSASysCommon.NumberToWords(double.Parse(grandTotal.ToString()), Model.CurrencyCode);
+                    tot = PSASysCommon.NumberToWords(Math.Round(double.Parse(grandTotal.ToString()),0), Model.CurrencyCode);
                 }
                 <td colspan="10" style="font-size:14px;padding-top:10px">
                     <span>Amount(In words)</span><br />

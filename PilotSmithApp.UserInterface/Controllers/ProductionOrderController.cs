@@ -555,6 +555,23 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(productionOrderVM.ID));
             productionOrderVM.ProductionOrderDetailList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(productionOrderVM.ID));
             productionOrderVM.PDFTools = new PDFToolsViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
+            //Session["ProdSession"] = 1;
+            if (permission.SubPermissionList.Count > 0)
+            {
+                string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                if (p.Contains("R") || p.Contains("W"))
+                {
+                    productionOrderVM.ShowRate = true;
+                    // productionOrderDetailVM.ShowAmount = true;
+                }
+                else
+                {
+                    productionOrderVM.ShowRate = false;
+                    // productionOrderDetailVM.ShowAmount = false;
+                }
+            }
             return PartialView("_PrintProductionOrder", productionOrderVM);
         }
         #endregion Print ProductionOrder 
