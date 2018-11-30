@@ -266,50 +266,69 @@ function EditServiceCallDetail(this_Obj) {
         debugger;
         _datatablerowindex = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).index();
         var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
-        $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail?update=true", function () {
-            debugger;
-            $('#lblModelPopServiceCall').text('Service Call Detail (Product)')
-            $('#FormServiceCallDetail #IsUpdate').val('True');
-            $('#FormServiceCallDetail #ID').val(serviceCallDetail.ID);
-            $("#FormServiceCallDetail #ProductID").val(serviceCallDetail.ProductID)
-            $("#FormServiceCallDetail #hdnProductID").val(serviceCallDetail.ProductID)
-            $('#spanProductName').text(serviceCallDetail.Product.Code + "-" + serviceCallDetail.Product.Name)
-            $('#spanProductModelName').text(serviceCallDetail.ProductModel.Name)
-            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-            });
+        $("#divModelServiceCallPopBody").load("ServiceCall/AddServiceCallDetail?update=true", function (responseTxt, statusTxt, xhr) {
+            if (statusTxt == 'success') {
+                debugger;
+                $('#lblModelPopServiceCall').text('Service Call Detail (Product)')
+                $('#FormServiceCallDetail #IsUpdate').val('True');
+                $('#FormServiceCallDetail #ID').val(serviceCallDetail.ID);
+                $("#FormServiceCallDetail #ProductID").val(serviceCallDetail.ProductID)
+                $("#FormServiceCallDetail #hdnProductID").val(serviceCallDetail.ProductID)
+                $('#spanProductName').text(serviceCallDetail.Product.Code + "-" + serviceCallDetail.Product.Name)
+                $('#spanProductModelName').text(serviceCallDetail.ProductModel.Name)
+                $("#FormServiceCallDetail #ProductModelID").val(serviceCallDetail.ProductModelID);
 
-            if ($('#hdnProductID').val() != _emptyGuid) {
-                $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+                $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                    if (statusTxt == 'success') {
+                        debugger;
+                        $("#FormServiceCallDetail #hdnProductModelID").val(serviceCallDetail.ProductModelID);
+                        if ($('#hdnProductModelID').val() != _emptyGuid) {
+                            var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=" + curRate, function () {
+                            
+                            });
+                        }
+                    }
+                    else {
+                        console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                    }
+                });
+
+
+
+
+                if ($('#hdnProductID').val() != _emptyGuid) {
+                    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+                }
+                else {
+                    $('.divProductModelSelectList').empty();
+                    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                }
+
+
+                $('#FormServiceCallDetail #ProductSpec').val(serviceCallDetail.ProductSpec);
+                switch (serviceCallDetail.GuaranteeYN) {
+                    case true:
+                    case 'True':
+                        serviceCallDetail.GuaranteeYN = 'True'
+                        break;
+                    case 'False':
+                    case false:
+                        serviceCallDetail.GuaranteeYN = 'False'
+                        break;
+                    default:
+                        serviceCallDetail.GuaranteeYN = ''
+                        break;
+                }
+                $('#FormServiceCallDetail #GuaranteeYN').val(serviceCallDetail.GuaranteeYN);
+                $('#FormServiceCallDetail #ServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
+                $('#FormServiceCallDetail #hdnServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
+                $('#FormServiceCallDetail #InstalledDate').val(serviceCallDetail.InstalledDateFormatted);
+                $('#divModelPopServiceCall').modal('show');
             }
             else {
-                $('.divProductModelSelectList').empty();
-                $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+                console.log("Error: " + xhr.status + ": " + xhr.statusText);
             }
-            $("#FormServiceCallDetail #ProductModelID").val(serviceCallDetail.ProductModelID);
-            $("#FormServiceCallDetail #hdnProductModelID").val(serviceCallDetail.ProductModelID);
-            if ($('#hdnProductModelID').val() != _emptyGuid) {
-                $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-                });
-            }
-            $('#FormServiceCallDetail #ProductSpec').val(serviceCallDetail.ProductSpec);
-            switch (serviceCallDetail.GuaranteeYN) {
-                case true:
-                case 'True':
-                    serviceCallDetail.GuaranteeYN = 'True'
-                    break;
-                case 'False':
-                case false:
-                    serviceCallDetail.GuaranteeYN = 'False'
-                    break;
-                default:
-                    serviceCallDetail.GuaranteeYN = ''
-                    break;
-            }
-            $('#FormServiceCallDetail #GuaranteeYN').val(serviceCallDetail.GuaranteeYN);
-            $('#FormServiceCallDetail #ServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
-            $('#FormServiceCallDetail #hdnServiceStatusCode').val(serviceCallDetail.ServiceStatusCode);
-            $('#FormServiceCallDetail #InstalledDate').val(serviceCallDetail.InstalledDateFormatted);
-            $('#divModelPopServiceCall').modal('show');
         });
     }
     catch (e) {

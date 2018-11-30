@@ -641,34 +641,53 @@ function EditDeliveryChallanDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).index();
     var deliveryChallanDetail = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function () {
-        $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
-        $('#FormDeliveryChallanDetail #IsUpdate').val('True');
-        $('#FormDeliveryChallanDetail #ID').val(deliveryChallanDetail.ID);
-        $("#FormDeliveryChallanDetail #ProductID").val(deliveryChallanDetail.ProductID)
-        $("#FormDeliveryChallanDetail #hdnProductID").val(deliveryChallanDetail.ProductID)
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-        });
+    $("#divModelDeliveryChallanPopBody").load("DeliveryChallan/AddDeliveryChallanDetail", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            $('#lblModelPopDeliveryChallan').text('CancellationChallan Detail')
+            $('#FormDeliveryChallanDetail #IsUpdate').val('True');
+            $('#FormDeliveryChallanDetail #ID').val(deliveryChallanDetail.ID);
+            $("#FormDeliveryChallanDetail #ProductID").val(deliveryChallanDetail.ProductID)
+            $("#FormDeliveryChallanDetail #hdnProductID").val(deliveryChallanDetail.ProductID)
 
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            $("#FormDeliveryChallanDetail #ProductModelID").val(deliveryChallanDetail.ProductModelID);
+
+
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormDeliveryChallanDetail #hdnProductModelID").val(deliveryChallanDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
+
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=1", function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
+
+
+
+            if ($('#hdnProductID').val() != _emptyGuid) {
+                $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            }
+            else {
+                $('.divProductModelSelectList').empty();
+                $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            }
+
+
+            $('#FormDeliveryChallanDetail #ProductSpec').val(deliveryChallanDetail.ProductSpec);
+            $('#FormDeliveryChallanDetail #OrderQty').val(deliveryChallanDetail.OrderQty);
+            $('#FormDeliveryChallanDetail #DelvQty').val(deliveryChallanDetail.DelvQty);
+            $('#FormDeliveryChallanDetail #UnitCode').val(deliveryChallanDetail.UnitCode);
+            $('#FormDeliveryChallanDetail #hdnUnitCode').val(deliveryChallanDetail.UnitCode);
+            $('#divModelPopDeliveryChallan').modal('show');
         }
         else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
-        $("#FormDeliveryChallanDetail #ProductModelID").val(deliveryChallanDetail.ProductModelID);
-        $("#FormDeliveryChallanDetail #hdnProductModelID").val(deliveryChallanDetail.ProductModelID);
-        if ($('#hdnProductModelID').val() != _emptyGuid) {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
-        $('#FormDeliveryChallanDetail #ProductSpec').val(deliveryChallanDetail.ProductSpec);
-        $('#FormDeliveryChallanDetail #OrderQty').val(deliveryChallanDetail.OrderQty);
-        $('#FormDeliveryChallanDetail #DelvQty').val(deliveryChallanDetail.DelvQty);
-        $('#FormDeliveryChallanDetail #UnitCode').val(deliveryChallanDetail.UnitCode);
-        $('#FormDeliveryChallanDetail #hdnUnitCode').val(deliveryChallanDetail.UnitCode);
-        $('#divModelPopDeliveryChallan').modal('show');
     });
 }
 

@@ -846,54 +846,68 @@ function EditQuotationDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).index();
     var quotationDetail = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail?update=true", function () {
-        $('#lblModelPopQuotation').text('Quotation Detail')
-        $('#FormQuotationDetail #IsUpdate').val('True');
-        $('#FormQuotationDetail #ID').val(quotationDetail.ID);
-        $("#FormQuotationDetail #ProductID").val(quotationDetail.ProductID)
-        $("#FormQuotationDetail #hdnProductID").val(quotationDetail.ProductID)
-        $('#spanProductName').text(quotationDetail.Product.Code + "-" + quotationDetail.Product.Name)
-        $('#spanProductModelName').text(quotationDetail.ProductModel.Name)
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-        });
+    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail?update=true", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            $('#lblModelPopQuotation').text('Quotation Detail')
+            $('#FormQuotationDetail #IsUpdate').val('True');
+            $('#FormQuotationDetail #ID').val(quotationDetail.ID);
+            //   $("#FormQuotationDetail #ProductID").val(quotationDetail.ProductID)
+            $("#FormQuotationDetail #hdnProductID").val(quotationDetail.ProductID)
+            $('#spanProductName').text(quotationDetail.Product.Code + "-" + quotationDetail.Product.Name)
+            $('#spanProductModelName').text(quotationDetail.ProductModel.Name)
 
-        //if ($('#hdnProductID').val() != _emptyGuid) {
-        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        //}
-        //else {
-        //    $('.divProductModelSelectList').empty();
-        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        //}
-        $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
-        $("#FormQuotationDetail #hdnProductModelID").val(quotationDetail.ProductModelID);
-        //if ($('#hdnProductModelID').val() != _emptyGuid) {
-        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-        //    });
-        //}
-        $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
-        $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
-        $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
-        $('#FormQuotationDetail #hdnUnitCode').val(quotationDetail.UnitCode);
-        $('#FormQuotationDetail #Rate').val(quotationDetail.Rate);
-        $('#FormQuotationDetail #Discount').val(quotationDetail.Discount);
-        $('#FormQuotationDetail #TaxTypeCode').val(quotationDetail.TaxType.ValueText);
-        $('#FormQuotationDetail #hdnTaxTypeCode').val(quotationDetail.TaxType.ValueText);
-        $('#FormQuotationDetail #hdnCGSTPerc').val(quotationDetail.CGSTPerc);
-        $('#FormQuotationDetail #hdnSGSTPerc').val(quotationDetail.SGSTPerc);
-        $('#FormQuotationDetail #hdnIGSTPerc').val(quotationDetail.IGSTPerc);
-        var TaxableAmt = ((parseFloat(quotationDetail.Rate) * parseInt(quotationDetail.Qty)) - parseFloat(quotationDetail.Discount))
-        var CGSTAmt = (TaxableAmt * parseFloat(quotationDetail.CGSTPerc)) / 100;
-        var SGSTAmt = (TaxableAmt * parseFloat(quotationDetail.SGSTPerc)) / 100;
-        var IGSTAmt = (TaxableAmt * parseFloat(quotationDetail.IGSTPerc)) / 100;
-        $('#FormQuotationDetail #CGSTPerc').val(CGSTAmt);
-        $('#FormQuotationDetail #SGSTPerc').val(SGSTAmt);
-        $('#FormQuotationDetail #IGSTPerc').val(IGSTAmt);
-        $('#divModelPopQuotation').modal('show');
-        var editor = new wysihtml5.Editor("ProductSpec", {
-            toolbar: "toolbar",
-            //stylesheets: "css/stylesheet.css",
-            parserRules: wysihtml5ParserRules
-        });
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormQuotationDetail #hdnProductModelID").val(quotationDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
+                        var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=" + curRate, function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
+            //if ($('#hdnProductID').val() != _emptyGuid) {
+            //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            //}
+            //else {
+            //    $('.divProductModelSelectList').empty();
+            //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //}
+            //   $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
+
+
+            $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
+            $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
+            $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
+            $('#FormQuotationDetail #hdnUnitCode').val(quotationDetail.UnitCode);
+            $('#FormQuotationDetail #Rate').val(quotationDetail.Rate);
+            $('#FormQuotationDetail #Discount').val(quotationDetail.Discount);
+            $('#FormQuotationDetail #TaxTypeCode').val(quotationDetail.TaxType.ValueText);
+            $('#FormQuotationDetail #hdnTaxTypeCode').val(quotationDetail.TaxType.ValueText);
+            $('#FormQuotationDetail #hdnCGSTPerc').val(quotationDetail.CGSTPerc);
+            $('#FormQuotationDetail #hdnSGSTPerc').val(quotationDetail.SGSTPerc);
+            $('#FormQuotationDetail #hdnIGSTPerc').val(quotationDetail.IGSTPerc);
+            var TaxableAmt = ((parseFloat(quotationDetail.Rate) * parseInt(quotationDetail.Qty)) - parseFloat(quotationDetail.Discount))
+            var CGSTAmt = (TaxableAmt * parseFloat(quotationDetail.CGSTPerc)) / 100;
+            var SGSTAmt = (TaxableAmt * parseFloat(quotationDetail.SGSTPerc)) / 100;
+            var IGSTAmt = (TaxableAmt * parseFloat(quotationDetail.IGSTPerc)) / 100;
+            $('#FormQuotationDetail #CGSTPerc').val(CGSTAmt);
+            $('#FormQuotationDetail #SGSTPerc').val(SGSTAmt);
+            $('#FormQuotationDetail #IGSTPerc').val(IGSTAmt);
+            $('#divModelPopQuotation').modal('show');
+            var editor = new wysihtml5.Editor("ProductSpec", {
+                toolbar: "toolbar",
+                //stylesheets: "css/stylesheet.css",
+                parserRules: wysihtml5ParserRules
+            });
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function ConfirmDeleteQuotationDetail(this_Obj) {
