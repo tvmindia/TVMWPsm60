@@ -778,54 +778,69 @@ function EditSaleInvoiceDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceDetail?update=true", function () {
-        $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
-        $('#FormSaleInvoiceDetail #IsUpdate').val('True');
-        $('#FormSaleInvoiceDetail #ID').val(saleInvoiceDetail.ID);
-        $("#FormSaleInvoiceDetail #ProductID").val(saleInvoiceDetail.ProductID)
-        $("#FormSaleInvoiceDetail #hdnProductID").val(saleInvoiceDetail.ProductID)
-        $('#spanProductName').text(saleInvoiceDetail.Product.Code + "-" + saleInvoiceDetail.Product.Name)
-        $('#spanProductModelName').text(saleInvoiceDetail.ProductModel.Name)
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-        });
+    $("#divModelSaleInvoicePopBody").load("SaleInvoice/AddSaleInvoiceDetail?update=true", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            $('#lblModelPopSaleInvoice').text('SaleInvoice Detail')
+            $('#FormSaleInvoiceDetail #IsUpdate').val('True');
+            $('#FormSaleInvoiceDetail #ID').val(saleInvoiceDetail.ID);
+            // $("#FormSaleInvoiceDetail #ProductID").val(saleInvoiceDetail.ProductID)
+            $("#FormSaleInvoiceDetail #hdnProductID").val(saleInvoiceDetail.ProductID)
+            $('#spanProductName').text(saleInvoiceDetail.Product.Code + "-" + saleInvoiceDetail.Product.Name)
+            $('#spanProductModelName').text(saleInvoiceDetail.ProductModel.Name)
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormSaleInvoiceDetail #hdnProductModelID").val(saleInvoiceDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
+                        var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=" + curRate, function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
 
-        //if ($('#hdnProductID').val() != _emptyGuid) {
-        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        //}
-        //else {
-        //    $('.divProductModelSelectList').empty();
-        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        //}
-        $("#FormSaleInvoiceDetail #ProductModelID").val(saleInvoiceDetail.ProductModelID);
-        $("#FormSaleInvoiceDetail #hdnProductModelID").val(saleInvoiceDetail.ProductModelID);
-        //if ($('#hdnProductModelID').val() != _emptyGuid) {
-        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-        //    });
-        //}
-        $('#FormSaleInvoiceDetail #ProductSpec').val(saleInvoiceDetail.ProductSpec);
-        $('#FormSaleInvoiceDetail #Qty').val(saleInvoiceDetail.Qty);
-        $('#FormSaleInvoiceDetail #UnitCode').val(saleInvoiceDetail.UnitCode);
-        $('#FormSaleInvoiceDetail #hdnUnitCode').val(saleInvoiceDetail.UnitCode);
-        $('#FormSaleInvoiceDetail #Rate').val(saleInvoiceDetail.Rate);
-        $('#FormSaleInvoiceDetail #Discount').val(saleInvoiceDetail.Discount);
-        if (saleInvoiceDetail.TaxTypeCode != 0) {
-            $('#FormSaleInvoiceDetail #TaxTypeCode').val(saleInvoiceDetail.TaxType.ValueText);
-            $('#FormSaleInvoiceDetail #hdnTaxTypeCode').val(saleInvoiceDetail.TaxType.ValueText);
+
+            //if ($('#hdnProductID').val() != _emptyGuid) {
+            //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            //}
+            //else {
+            //    $('.divProductModelSelectList').empty();
+            //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //}
+            //$("#FormSaleInvoiceDetail #ProductModelID").val(saleInvoiceDetail.ProductModelID);
+
+
+            $('#FormSaleInvoiceDetail #ProductSpec').val(saleInvoiceDetail.ProductSpec);
+            $('#FormSaleInvoiceDetail #Qty').val(saleInvoiceDetail.Qty);
+            $('#FormSaleInvoiceDetail #UnitCode').val(saleInvoiceDetail.UnitCode);
+            $('#FormSaleInvoiceDetail #hdnUnitCode').val(saleInvoiceDetail.UnitCode);
+            $('#FormSaleInvoiceDetail #Rate').val(saleInvoiceDetail.Rate);
+            $('#FormSaleInvoiceDetail #Discount').val(saleInvoiceDetail.Discount);
+            if (saleInvoiceDetail.TaxTypeCode != 0) {
+                $('#FormSaleInvoiceDetail #TaxTypeCode').val(saleInvoiceDetail.TaxType.ValueText);
+                $('#FormSaleInvoiceDetail #hdnTaxTypeCode').val(saleInvoiceDetail.TaxType.ValueText);
+            }
+            $('#FormSaleInvoiceDetail #hdnCGSTPerc').val(saleInvoiceDetail.CGSTPerc);
+            $('#FormSaleInvoiceDetail #hdnSGSTPerc').val(saleInvoiceDetail.SGSTPerc);
+            $('#FormSaleInvoiceDetail #hdnIGSTPerc').val(saleInvoiceDetail.IGSTPerc);
+            var TaxableAmt = ((parseFloat(saleInvoiceDetail.Rate) * parseInt(saleInvoiceDetail.Qty)) - parseFloat(saleInvoiceDetail.Discount))
+            var CGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.CGSTPerc)) / 100;
+            var SGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.SGSTPerc)) / 100;
+            var IGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.IGSTPerc)) / 100;
+            $('#FormSaleInvoiceDetail #CGSTPerc').val(CGSTAmt);
+            $('#FormSaleInvoiceDetail #SGSTPerc').val(SGSTAmt);
+            $('#FormSaleInvoiceDetail #IGSTPerc').val(IGSTAmt);
+            $('#FormSaleInvoiceDetail #CessPerc').val(saleInvoiceDetail.CessPerc);
+            $('#FormSaleInvoiceDetail #CessAmt').val(saleInvoiceDetail.CessAmt);
+
+            $('#divModelPopSaleInvoice').modal('show');
         }
-        $('#FormSaleInvoiceDetail #hdnCGSTPerc').val(saleInvoiceDetail.CGSTPerc);
-        $('#FormSaleInvoiceDetail #hdnSGSTPerc').val(saleInvoiceDetail.SGSTPerc);
-        $('#FormSaleInvoiceDetail #hdnIGSTPerc').val(saleInvoiceDetail.IGSTPerc);
-        var TaxableAmt = ((parseFloat(saleInvoiceDetail.Rate) * parseInt(saleInvoiceDetail.Qty)) - parseFloat(saleInvoiceDetail.Discount))
-        var CGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.CGSTPerc)) / 100;
-        var SGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.SGSTPerc)) / 100;
-        var IGSTAmt = (TaxableAmt * parseFloat(saleInvoiceDetail.IGSTPerc)) / 100;
-        $('#FormSaleInvoiceDetail #CGSTPerc').val(CGSTAmt);
-        $('#FormSaleInvoiceDetail #SGSTPerc').val(SGSTAmt);
-        $('#FormSaleInvoiceDetail #IGSTPerc').val(IGSTAmt);
-        $('#FormSaleInvoiceDetail #CessPerc').val(saleInvoiceDetail.CessPerc);
-        $('#FormSaleInvoiceDetail #CessAmt').val(saleInvoiceDetail.CessAmt);
-
-        $('#divModelPopSaleInvoice').modal('show');
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 

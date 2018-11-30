@@ -472,39 +472,53 @@ function EditProductionQCDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).index();
     var productionQCDetail = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelProductionQCPopBody").load("ProductionQC/AddProductionQCDetail?update=true", function () {
-        $('#lblModelPopProductionQC').text('ProductionQC Detail')
-        $('#FormProductionQCDetail #IsUpdate').val('True');
-        $('#FormProductionQCDetail #ID').val(productionQCDetail.ID);
-        $("#FormProductionQCDetail #ProductID").val(productionQCDetail.ProductID)
-        $("#FormProductionQCDetail #hdnProductID").val(productionQCDetail.ProductID)
-        $('#spanProductName').text(productionQCDetail.Product.Code + "-" + productionQCDetail.Product.Name)
-        $('#spanProductModelName').text(productionQCDetail.ProductModel.Name)
+    $("#divModelProductionQCPopBody").load("ProductionQC/AddProductionQCDetail?update=true", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            $('#lblModelPopProductionQC').text('ProductionQC Detail')
+            $('#FormProductionQCDetail #IsUpdate').val('True');
+            $('#FormProductionQCDetail #ID').val(productionQCDetail.ID);
+            //   $("#FormProductionQCDetail #ProductID").val(productionQCDetail.ProductID)
+            $("#FormProductionQCDetail #hdnProductID").val(productionQCDetail.ProductID)
+            $('#spanProductName').text(productionQCDetail.Product.Code + "-" + productionQCDetail.Product.Name)
+            $('#spanProductModelName').text(productionQCDetail.ProductModel.Name)
 
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-        });
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormProductionQCDetail #hdnProductModelID").val(productionQCDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
 
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&disabled=true&productID=" + $('#hdnProductID').val())
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=1", function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
+
+            //if ($('#hdnProductID').val() != _emptyGuid) {
+            //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&disabled=true&productID=" + $('#hdnProductID').val())
+            //}
+            //else {
+            //    $('.divProductModelSelectList').empty();
+            //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //}
+            //  $("#FormProductionQCDetail #ProductModelID").val(productionQCDetail.ProductModelID);
+
+
+            $('#FormProductionQCDetail #ProductSpec').val(productionQCDetail.ProductSpec);
+            $('#FormProductionQCDetail #QCQty').val(productionQCDetail.QCQty);
+            $('#FormProductionQCDetail #QCDateFormatted').val(productionQCDetail.QCDateFormatted);
+            $('#FormProductionQCDetail #QCBy').val(productionQCDetail.QCBy);
+            $('#FormProductionQCDetail #hdnQCBy').val(productionQCDetail.QCBy);
+            $('#FormProductionQCDetail #hdnQCQtyPrevious').val(productionQCDetail.QCQtyPrevious);
+            $('#FormProductionQCDetail #hdnProducedQty').val(productionQCDetail.ProducedQty);
+            $('#divModelPopProductionQC').modal('show');
         }
         else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
-        $("#FormProductionQCDetail #ProductModelID").val(productionQCDetail.ProductModelID);
-        $("#FormProductionQCDetail #hdnProductModelID").val(productionQCDetail.ProductModelID);
-        if ($('#hdnProductModelID').val() != _emptyGuid) {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
-        $('#FormProductionQCDetail #ProductSpec').val(productionQCDetail.ProductSpec);
-        $('#FormProductionQCDetail #QCQty').val(productionQCDetail.QCQty);
-        $('#FormProductionQCDetail #QCDateFormatted').val(productionQCDetail.QCDateFormatted);
-        $('#FormProductionQCDetail #QCBy').val(productionQCDetail.QCBy);
-        $('#FormProductionQCDetail #hdnQCBy').val(productionQCDetail.QCBy);
-        $('#FormProductionQCDetail #hdnQCQtyPrevious').val(productionQCDetail.QCQtyPrevious);
-        $('#FormProductionQCDetail #hdnProducedQty').val(productionQCDetail.ProducedQty);
-        $('#divModelPopProductionQC').modal('show');
     });
 }
 function ConfirmDeleteProductionQCDetail(this_Obj) {
