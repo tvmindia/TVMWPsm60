@@ -102,20 +102,20 @@
                         {
                             if (@mp.ProductModel.ImageURL != null)
                             {
-                                <td style="width:4%;vertical-align:central;padding:5px"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" style="width:70pt;object-fit: scale-down;workAround:image"></td>
+                                <td style="width:4%;vertical-align:central;"><img src="@ViewBag.ImgURL@mp.ProductModel.ImageURL" style="width:70pt;object-fit: scale-down;workAround:image"></td>
 
                             }
                             else
                             {
-                                <td style="width:4%;vertical-align:central;padding:5px"></td>
+                                <td style="width:4%;vertical-align:central;"></td>
                             }
                             if (@mp.ProductSpecHtml != null)
                             {
-                                <td style="width:29%; text-align: left;font-size:8px;vertical-align:top;">@Html.Raw(mp.ProductSpecHtml)</td>
+                                <td style="width:29%; text-align: left;font-size:8px;">@Html.Raw(mp.ProductSpecHtml)</td>
                             }
                             else
                             {
-                                <td style="width:29%; text-align: left;font-size:8px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name</td>
+                                <td style="width:29%; text-align: left;font-size:8px;">@mp.Product.Name - @mp.ProductModel.Name</td>
                             }
 
                         }
@@ -123,11 +123,11 @@
                         {
                             if (mp.ProductSpecHtml != null)
                             {
-                                <td style="width:33%; text-align: left;font-size:8px;vertical-align:top;">@Html.Raw(mp.ProductSpecHtml)</td>
+                                <td style="width:33%; text-align: left;font-size:8px;">@Html.Raw(mp.ProductSpecHtml)</td>
                             }
                             else
                             {
-                                <td style="width:33%; text-align: left;font-size:8px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name</td>
+                                <td style="width:33%; text-align: left;font-size:8px;">@mp.Product.Name - @mp.ProductModel.Name</td>
                             }
                         }
                             <td style="width:6%;text-align:left;font-size:8px;vertical-align:top;">@mp.Product.HSNCode</td>

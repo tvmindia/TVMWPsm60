@@ -325,7 +325,11 @@ function CopyQuotation(this_Obj) {
 function ResetQuotation() {
     debugger;
     var str;
-    if ($('#hdnCopyFrom').val() != _emptyGuid) {
+    if ($('#hdnCopyFrom').val() == undefined)
+    {
+        str = "Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val()
+    }
+   else if ($('#hdnCopyFrom').val() != _emptyGuid) {
         str = "Quotation/CopyQuotationForm?copyFrom="+$('#hdnCopyFrom').val()+"&id=" + $('#QuotationForm #ID').val()
 
     }

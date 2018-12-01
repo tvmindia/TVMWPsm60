@@ -350,7 +350,10 @@ function CopySaleOrder(this_Obj) {
 function ResetSaleOrder(event) {
     debugger;
     var str;
-    if ($('#hdnCopyFrom').val() != _emptyGuid) {
+    if ($('#hdnCopyFrom').val() == undefined) {
+        str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val()
+    }
+    else if ($('#hdnCopyFrom').val() != _emptyGuid) {
 
         str = "SaleOrder/CopySaleOrderForm?copyFrom="+$('#hdnCopyFrom').val()+"&id=" + $('#SaleOrderForm #ID').val();
     }
