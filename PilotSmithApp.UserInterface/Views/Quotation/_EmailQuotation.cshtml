@@ -216,14 +216,14 @@
                                     }
                                 }
 
-                                    <td style="width:7%;text-align:left;padding-top:5px;font-size:9px;vertical-align:top;">@mp.Product.HSNCode</td>
+                                    <td style="width:7%;text-align:left;padding-top:5px;font-size:8px;vertical-align:top;">@mp.Product.HSNCode</td>
                                     <td style="width:4%;text-align: left;padding-top:5px;font-size:9px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
-                                    <td style="width:9%;text-align: right;padding-top:5px;font-size:9px;vertical-align:top;">@mp.Rate</td>
-                                    <td style="width:5%;text-align: right;padding-top:5px;font-size:9px;vertical-align:top;">@mp.Discount</td>
-                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:9px;vertical-align:top;">@SGSTAmt<br /> <span style="font-size:8px;">(@mp.SGSTPerc %)</span></td>
-                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:9px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span></td>
-                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:9px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
-                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:9px;vertical-align:top;">@itemgrandTotal</td>
+                                    <td style="width:9%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@mp.Rate</td>
+                                    <td style="width:5%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@mp.Discount</td>
+                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@SGSTAmt<br /> <span style="font-size:8px;">(@mp.SGSTPerc %)</span></td>
+                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@CGSTAmt<br /><span style="font-size:8px;">(@mp.CGSTPerc %)</span></td>
+                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
+                                    <td style="width:10%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@itemgrandTotal</td>
                                 </tr>
                                     slno = slno + 1;
                                     totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
@@ -265,7 +265,7 @@
                                                 <tr>
 
                                                     <td style="width:6%;text-align: center;font-size:8px;padding-top:5px;vertical-align:top;">@slno</td>
-                                                    <td style="width:33%; text-align: left;font-size:8px;padding-top:5px;vertical-align:top;">@mp.OtherCharge.Description</td>
+                                                    <td style="width:33%; text-align: left;font-size:9px;padding-top:5px;vertical-align:top;">@mp.OtherCharge.Description</td>
                                                     <td style="width:15%; text-align: left;font-size:8px;padding-top:5px;vertical-align:top;">@mp.OtherCharge.SACCode</td>
                                                     <td style="width:16%; text-align: right;font-size:8px;padding-top:5px;vertical-align:top;">@mp.ChargeAmount</td>
                                                     <td style="width:14%; text-align: right;font-size:8px;padding-top:5px;vertical-align:top;">@GSTAmt</td>
