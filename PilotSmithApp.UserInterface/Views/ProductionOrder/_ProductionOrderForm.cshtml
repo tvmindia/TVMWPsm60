@@ -40,11 +40,23 @@
                         <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />*@
                                 @if (Model.IsUpdate)
                                 {
-                                    <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
-                                        <option>@Model.CurrencyCode</option>
-                                    </select>
-                                    <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
-                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />
+                                    if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus == 1 || Model.LatestApprovalStatus == 9)
+                                    {
+                                        <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
+                                            <option>@Model.CurrencyCode</option>
+                                        </select>
+                                        <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                        <input class="form-control newinput" type="number" value="@Model.CurrencyRate" id="idCurRateForAutofocus" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />
+                                    }
+                                    else if (Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == 3)
+                                    {
+                                        <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
+                                            <option>@Model.CurrencyCode</option>
+                                        </select>
+                                        <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+                                        @*<input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />*@
+                                        <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;min-width:70px;" value="@Model.CurrencyRate" />
+                                    }
                                 }
                                 else
                                 {
@@ -471,7 +483,11 @@
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=POD&required=' + $('#hdnDocumentStatusRequired').val())
             @if (Model.IsUpdate||Model.SaleOrderID!=null)
           {
-
+                  <text>
+            if ($('#hdnCurrencyCode').val()=="INR") {
+                $('#idCurRateForAutofocus').prop("disabled",true)
+            }
+                </text>
           }
           else
           {
@@ -480,7 +496,7 @@
 
             });
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
-          
+
             $('.changeCurrency').change(function () {
                 if (_dataTable.ProductionOrderDetailList.rows().count() > 0) {
                     notyConfirm('Do you want to continue?', 'ClearProdform();', 'This will reset the form !', "Continue");
@@ -488,6 +504,9 @@
                 }
                 if (this.nodeName == "SELECT") {
                     $('#hdnCurrencyCode').val(this.value)
+                    if (this.value != "INR") {
+                        $('#idCurRateForAutofocus').prop("disabled", false)
+                    }
                     $('#spanRate').text(this.value)
                     $('#spanAmount').text(this.value)
                     $('#idCurRateForAutofocus').focus();
@@ -498,7 +517,9 @@
                     $('#hdnCurrencyRate').val(this.value)
                 }
             });
-            
+            if ($('#hdnCurrencyCode').val() == "INR") {
+                $('#idCurRateForAutofocus').prop("disabled", true)
+            }
             </text>
           }
             @if ((!Model.IsUpdate) && (Model.SaleOrderID!=null))
@@ -507,7 +528,7 @@
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
             });
 
-            $('.changeCurrency').change(function () {                
+            $('.changeCurrency').change(function () {
                 if (this.nodeName == "INPUT") {
                     $('#hdnCurrencyRate').val(this.value)
                 }
