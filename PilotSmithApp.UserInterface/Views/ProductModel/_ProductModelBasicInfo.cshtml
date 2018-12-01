@@ -7,7 +7,7 @@
             <li style="border-bottom: 1px solid grey;width:50%;padding:5px 10px 5px 10px;">
                 <span class="control-label">@Html.DisplayNameFor(Model => Model.CostPrice):</span>
                 <!-- todo text -->
-                @{                  
+                @{
                     var Prod = "";
                     if (Session["ProdSession"] != null)
                     {
@@ -27,14 +27,21 @@
                         // var code = _permission.SubPermissionList.Where(sub => sub.Name == "Rate").Select(Sub => Sub.AccessCode);
                         if ((_permission.SubPermissionList.Count > 0))
                         {
-                            <span id="spnCostPrice">@Model.CostPrice</span>
+                            string p = _permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                            string q = _permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                            if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                            {
+                                <span id="spnCostPrice">@Model.CostPrice</span>
+                            }
+                            else
+                            {
+                                <span id="spnCostPrice">####</span>
+                            }
                         }
                         else
                         {
                             <span id="spnCostPrice">####</span>
                         }
-                      
-                        // }
                     }
                     else
                     {
@@ -56,8 +63,17 @@
                     {
                         if (_permission.SubPermissionList.Count > 0)
                         {
+                            string p = _permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                            string q = _permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
+                            if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                            {
+                                <span id="spnSellingPrice">@Model.SellingPrice</span>
+                            }
                             //var code = _permission.SubPermissionList.Where(sub => sub.Name == "Rate").Select(sub => sub.AccessCode);
-                            <span id="spnSellingPrice">@Model.SellingPrice</span>
+                            else
+                            {
+                            <span id="spnSellingPrice">####</span>
+                            }
                         }
                         else
                         {
@@ -78,6 +94,8 @@
                 <span id="spnProductName">@Html.Raw(Model.Specification)</span>
             </li>
         </ul>
+
+
 
         @Html.HiddenFor(model => model.UnitCode, htmlAttributes: new { @class = "", @id = "hdnProductModelUnitCode" })
         @Html.HiddenFor(model => model.StockQty, htmlAttributes: new { @class = "", @id = "hdnProductModelStockQty" })
