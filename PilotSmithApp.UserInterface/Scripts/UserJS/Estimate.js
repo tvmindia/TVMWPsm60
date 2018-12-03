@@ -423,7 +423,7 @@ function GetEstimateDetailListByEstimateID(id,IsEnquiry) {
         if (IsEnquiry)
         {
             var data = { "enquiryID": $('#EstimateForm #hdnEnquiryID').val() };
-            _jsonData = GetDataFromServer("Estimate/GetEstimateDetailListByEstimateIDWithEnquiry/", data);
+            _jsonData = GetDataFromServer("Estimate/GetEstimateDetailListByEstimateIDWithEnquiry?&costrate="+ $('#hdnCurrencyRate').val(),data);
         }
         else {
             var data = { "estimateID": id };
