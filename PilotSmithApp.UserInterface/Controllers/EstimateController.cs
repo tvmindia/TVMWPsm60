@@ -298,7 +298,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Get Estimate DetailList By EstimateID with Enquiry
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public string GetEstimateDetailListByEstimateIDWithEnquiry(Guid enquiryID)
+        public string GetEstimateDetailListByEstimateIDWithEnquiry(Guid enquiryID,decimal? costrate)
         {
             try
             {
@@ -307,16 +307,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                 {
                     List<EnquiryDetailViewModel> enquiryDetailVMList = Mapper.Map<List<EnquiryDetail>, List<EnquiryDetailViewModel>>(_enquiryBusiness.GetEnquiryDetailListByEnquiryID(enquiryID));
                     estimateItemViewModelList = (from enquiryDetailVM in enquiryDetailVMList
-                                          select new EstimateDetailViewModel
-                                          {
-                                              ID = Guid.Empty,
-                                              EstimateID = Guid.Empty,
-                                              ProductID = enquiryDetailVM.ProductID,
-                                              ProductModelID = enquiryDetailVM.ProductModelID,
-                                              ProductSpec = enquiryDetailVM.ProductSpec,
-                                              Qty = enquiryDetailVM.Qty,
-                                              UnitCode = enquiryDetailVM.UnitCode,
-                                              CostRate = enquiryDetailVM.ProductModel.CostPrice==null?0: enquiryDetailVM.ProductModel.CostPrice,
+                                                 select new EstimateDetailViewModel
+                                                 {
+                                                     ID = Guid.Empty,
+                                                     EstimateID = Guid.Empty,
+                                                     ProductID = enquiryDetailVM.ProductID,
+                                                     ProductModelID = enquiryDetailVM.ProductModelID,
+                                                     ProductSpec = enquiryDetailVM.ProductSpec,
+                                                     Qty = enquiryDetailVM.Qty,
+                                                     UnitCode = enquiryDetailVM.UnitCode,
+                                                     //CostRate = enquiryDetailVM.ProductModel.CostPrice==null?0: enquiryDetailVM.ProductModel.CostPrice,   
+                                                     CostRate = enquiryDetailVM.ProductModel.CostPrice != 0 ? Math.Round(Convert.ToDecimal(enquiryDetailVM.ProductModel.CostPrice / costrate), 2) : 0,                                     
                                               SellingRate = enquiryDetailVM.Rate==null?0: enquiryDetailVM.Rate,
                                               SpecTag = enquiryDetailVM.SpecTag,
                                               Product = enquiryDetailVM.Product,
