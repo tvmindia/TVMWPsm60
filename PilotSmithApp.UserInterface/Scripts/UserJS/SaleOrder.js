@@ -6,7 +6,7 @@ var _message = "";
 var _status = "";
 var _result = "";
 var _isCopy = false;
-
+var _isApproval = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -287,6 +287,7 @@ function EditSaleOrder(this_Obj) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
                         break;
                     case "1":
+                        _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
@@ -299,6 +300,7 @@ function EditSaleOrder(this_Obj) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
                         break;
                     default:
@@ -315,7 +317,7 @@ function EditSaleOrder(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
             });
             clearUploadControl();
-            PaintImages(SaleOrder.ID);
+            PaintImages(SaleOrder.ID, _isApproval);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -339,7 +341,7 @@ function CopySaleOrder(this_Obj) {
             // $('#hdnQuoteNo').val(Quotation.QuoteNo);
             CalculateTotal();
             clearUploadControl();
-            PaintImages(SaleOrder.ID);
+            PaintImages(SaleOrder.ID, _isApproval);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -376,6 +378,7 @@ function ResetSaleOrder(event) {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
                     break;
                 case "1":
+                    _isApproval = true;
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", $('#ID').val());
                     //if ($('#ApproverLevel').val() > 1) {
                     //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
@@ -388,6 +391,7 @@ function ResetSaleOrder(event) {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
                     break;
                 case "4":
+                    _isApproval = true;
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
                     break;
                 default:
@@ -410,7 +414,7 @@ function ResetSaleOrder(event) {
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
             CalculateTotal();
             clearUploadControl();
-            PaintImages($('#SaleOrderForm #ID').val());
+            PaintImages($('#SaleOrderForm #ID').val(), _isApproval);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
             });
         }
@@ -473,7 +477,7 @@ function SaveSuccessSaleOrder(data, status) {
                     BindSaleOrderOtherChargesDetailList(_result.ID, false);
                     CalculateTotal();
                     clearUploadControl();
-                    PaintImages(_result.ID);
+                    PaintImages(_result.ID, _isApproval);
                     $('#lblSaleOrderInfo').text(_result.SaleOrderNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
                 });
@@ -1255,6 +1259,7 @@ function RecallDoc(documentTypeCode) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _message);
+                    _isApproval = false;
                     ResetSaleOrder();
                     break;
                 case "ERROR":
@@ -1603,6 +1608,7 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", id);
                         break;
                     case "1":
+                        _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
@@ -1615,6 +1621,7 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
                         break;
                     default:
@@ -1631,7 +1638,7 @@ function EditRedirectToDocument(id) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
             });
             clearUploadControl();
-            PaintImages(id);
+            PaintImages(id, _isApproval);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

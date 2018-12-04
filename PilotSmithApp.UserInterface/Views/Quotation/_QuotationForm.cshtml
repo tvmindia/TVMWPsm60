@@ -761,6 +761,21 @@
                 $('#btnSelect').prop("onclick", null);
                 $('#btnSelect').css("background", "#b2aca4");
             }
+            debugger;
+            if ($('#LatestApprovalStatus').val() != '0') {
+                $('#btnUpload').attr("disabled", "disabled")
+                $('#btnUpload').attr("title", "Document Approved");
+                $('#btnUpload').prop("onclick", null);
+                $('#btnUpload').css("background", "#b2aca4");
+                $('#btnCancel').attr("disabled", "disabled")
+                $('#btnCancel').attr("title", "Document Approved");
+                $('#btnCancel').prop("onclick", null);
+                $('#btnCancel').css("background", "#b2aca4");
+                $('#btnSelect').attr("disabled", "disabled")
+                $('#btnSelect').attr("title", "Document Approved");
+                $('#btnSelect').prop("onclick", null);
+                $('#btnSelect').css("background", "#b2aca4");
+            }
         }
         catch (e) {
             console.log(e.message);

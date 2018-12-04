@@ -5,6 +5,7 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _isApproval = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -233,6 +234,7 @@ function EditProductionOrder(this_Obj) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", productionOrder.ID);
                         break;
                     case "1":
+                        _isApproval = true;
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", productionOrder.ID);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
@@ -245,6 +247,7 @@ function EditProductionOrder(this_Obj) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", productionOrder.ID);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
                         break;
                     default:
@@ -258,7 +261,7 @@ function EditProductionOrder(this_Obj) {
             BindProductionOrderDetailList(productionOrder.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(productionOrder.ID);
+            PaintImages(productionOrder.ID, _isApproval);
             $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
         }
         else {
@@ -292,6 +295,7 @@ function ResetProductionOrder() {
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", $('#ID').val());
                     break;
                 case "1":
+                    _isApproval = true;
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", $('#ID').val());
                     //if ($('#ApproverLevel').val() > 1) {
                     //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
@@ -304,6 +308,7 @@ function ResetProductionOrder() {
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
                     break;
                 case "4":
+                    _isApproval = true;
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
                     break;
                 default:
@@ -312,7 +317,7 @@ function ResetProductionOrder() {
             }
             BindProductionOrderDetailList($('#ID').val(), false);
             clearUploadControl();
-            PaintImages($('#ProductionOrderForm #ID').val());
+            PaintImages($('#ProductionOrderForm #ID').val(), _isApproval);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionOrderForm #hdnCustomerID').val());
         }
         else {
@@ -349,7 +354,7 @@ function SaveSuccessProductionOrder(data, status) {
                     ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                     BindProductionOrderDetailList(_result.ID);
                     clearUploadControl();
-                    PaintImages(_result.ID);
+                    PaintImages(_result.ID, _isApproval);
                     $('#lblProductionOrderInfo').text(_result.ProductionOrderNo);
                 });
                 ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
@@ -1062,6 +1067,7 @@ function RecallDoc(documentTypeCode) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _message);
+                    _isApproval = false;
                     ResetProductionOrder();
                     break;
                 case "ERROR":
@@ -1097,6 +1103,7 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", id);
                         break;
                     case "1":
+                        _isApproval = true;
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", id);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
@@ -1109,6 +1116,7 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", id);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
                         break;
                     default:
@@ -1122,7 +1130,7 @@ function EditRedirectToDocument(id) {
             BindProductionOrderDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(id);
+            PaintImages(id, _isApproval);
             $("#divProductionOrderForm #SaleOrderID").prop('disabled', true);
         }
         else {

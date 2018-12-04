@@ -6,6 +6,7 @@ var _message = "";
 var _status = "";
 var _result = "";
 var _isCopy = false;
+var _isApproval = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -23,6 +24,7 @@ $(document).ready(function () {
                 EditRedirectToDocument($('#RedirectToDocument').val());
             }
         }
+        
     }
     catch (e) {
         console.log(e.message);
@@ -258,7 +260,8 @@ function EditQuotation(this_Obj) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", Quotation.ID);
                         break;
                     case "1":
-                       // if ($('#ApproverLevel').val() > 1) {
+                        // if ($('#ApproverLevel').val() > 1) {
+                        _isApproval = true;
                             ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", Quotation.ID);
                         //}
                         //else {
@@ -270,6 +273,7 @@ function EditQuotation(this_Obj) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
                         break;
                     //case "10":
@@ -288,7 +292,7 @@ function EditQuotation(this_Obj) {
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(Quotation.ID);
+            PaintImages(Quotation.ID, _isApproval);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
         }
         else {
@@ -313,7 +317,7 @@ function CopyQuotation(this_Obj) {
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
             clearUploadControl();
-            PaintImages(Quotation.ID);
+            PaintImages(Quotation.ID, _isApproval);
             $('#lblQuotationInfo').val('');
            
         }
@@ -358,6 +362,7 @@ function ResetQuotation() {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", $('#ID').val());
                     break;
                 case "1":
+                    _isApproval = true;
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", $('#ID').val());
                     //if ($('#ApproverLevel').val() > 1) {
                     //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
@@ -370,6 +375,7 @@ function ResetQuotation() {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
                     break;
                 case "4":
+                    _isApproval = true;
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
                     break;           
                     break;
@@ -381,7 +387,7 @@ function ResetQuotation() {
             BindQuotationOtherChargesDetailList($('#ID').val());
             CalculateTotal();
             clearUploadControl();
-            PaintImages($('#QuotationForm #ID').val());
+            PaintImages($('#QuotationForm #ID').val(), _isApproval);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
         }
         else {
@@ -430,7 +436,7 @@ function SaveSuccessQuotation(data, status) {
                     BindQuotationOtherChargesDetailList(_result.ID);
                     CalculateTotal();
                     clearUploadControl();
-                    PaintImages(_result.ID);
+                    PaintImages(_result.ID, _isApproval);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
@@ -1268,6 +1274,7 @@ function RecallDoc(documentTypeCode) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _message);
+                    _isApproval = false;
                     ResetQuotation();
                     //debugger;
                     //$("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
@@ -1600,6 +1607,7 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", id);
                         break;
                     case "1":
+                        _isApproval = true;
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", id);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
@@ -1612,6 +1620,7 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
                         break;
                     default:
@@ -1627,7 +1636,7 @@ function EditRedirectToDocument(id) {
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(id);
+            PaintImages(id, _isApproval);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
 
         }
