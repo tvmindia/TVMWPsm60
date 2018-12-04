@@ -721,54 +721,67 @@ function EditProformaInvoiceDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).index();
     var proformaInvoiceDetail = _dataTable.ProformaInvoiceDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceDetail?update=true", function () {
-        $('#lblModelPopProformaInvoice').text('ProformaInvoice Detail')
-        $('#FormProformaInvoiceDetail #IsUpdate').val('True');
-        $('#FormProformaInvoiceDetail #ID').val(proformaInvoiceDetail.ID);
-        $("#FormProformaInvoiceDetail #ProductID").val(proformaInvoiceDetail.ProductID)
-        $("#FormProformaInvoiceDetail #hdnProductID").val(proformaInvoiceDetail.ProductID)
-        $('#spanProductName').text(proformaInvoiceDetail.Product.Code + "-" + proformaInvoiceDetail.Product.Name)
-        $('#spanProductModelName').text(proformaInvoiceDetail.ProductModel.Name)
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-        });
+    $("#divModelProformaInvoicePopBody").load("ProformaInvoice/AddProformaInvoiceDetail?update=true", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            $('#lblModelPopProformaInvoice').text('ProformaInvoice Detail')
+            $('#FormProformaInvoiceDetail #IsUpdate').val('True');
+            $('#FormProformaInvoiceDetail #ID').val(proformaInvoiceDetail.ID);
+            // $("#FormProformaInvoiceDetail #ProductID").val(proformaInvoiceDetail.ProductID)
+            $("#FormProformaInvoiceDetail #hdnProductID").val(proformaInvoiceDetail.ProductID)
+            $('#spanProductName').text(proformaInvoiceDetail.Product.Code + "-" + proformaInvoiceDetail.Product.Name)
+            $('#spanProductModelName').text(proformaInvoiceDetail.ProductModel.Name)
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormProformaInvoiceDetail #hdnProductModelID").val(proformaInvoiceDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
+                        var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=" + curRate, function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
 
-        //if ($('#hdnProductID').val() != _emptyGuid) {
-        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        //}
-        //else {
-        //    $('.divProductModelSelectList').empty();
-        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        //}
-        $("#FormProformaInvoiceDetail #ProductModelID").val(proformaInvoiceDetail.ProductModelID);
-        $("#FormProformaInvoiceDetail #hdnProductModelID").val(proformaInvoiceDetail.ProductModelID);
-        //if ($('#hdnProductModelID').val() != _emptyGuid) {
-        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-        //    });
-        //}
-        $('#FormProformaInvoiceDetail #ProductSpec').val(proformaInvoiceDetail.ProductSpec);
-        $('#FormProformaInvoiceDetail #Qty').val(proformaInvoiceDetail.Qty);
-        $('#FormProformaInvoiceDetail #UnitCode').val(proformaInvoiceDetail.UnitCode);
-        $('#FormProformaInvoiceDetail #hdnUnitCode').val(proformaInvoiceDetail.UnitCode);
-        $('#FormProformaInvoiceDetail #Rate').val(proformaInvoiceDetail.Rate);
-        $('#FormProformaInvoiceDetail #Discount').val(proformaInvoiceDetail.Discount);
-        if (proformaInvoiceDetail.TaxTypeCode != 0) {
-            $('#FormProformaInvoiceDetail #TaxTypeCode').val(proformaInvoiceDetail.TaxType.ValueText);
-            $('#FormProformaInvoiceDetail #hdnTaxTypeCode').val(proformaInvoiceDetail.TaxType.ValueText);
+            //if ($('#hdnProductID').val() != _emptyGuid) {
+            //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            //}
+            //else {
+            //    $('.divProductModelSelectList').empty();
+            //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //}
+            //    $("#FormProformaInvoiceDetail #ProductModelID").val(proformaInvoiceDetail.ProductModelID);
+
+            $('#FormProformaInvoiceDetail #ProductSpec').val(proformaInvoiceDetail.ProductSpec);
+            $('#FormProformaInvoiceDetail #Qty').val(proformaInvoiceDetail.Qty);
+            $('#FormProformaInvoiceDetail #UnitCode').val(proformaInvoiceDetail.UnitCode);
+            $('#FormProformaInvoiceDetail #hdnUnitCode').val(proformaInvoiceDetail.UnitCode);
+            $('#FormProformaInvoiceDetail #Rate').val(proformaInvoiceDetail.Rate);
+            $('#FormProformaInvoiceDetail #Discount').val(proformaInvoiceDetail.Discount);
+            if (proformaInvoiceDetail.TaxTypeCode != 0) {
+                $('#FormProformaInvoiceDetail #TaxTypeCode').val(proformaInvoiceDetail.TaxType.ValueText);
+                $('#FormProformaInvoiceDetail #hdnTaxTypeCode').val(proformaInvoiceDetail.TaxType.ValueText);
+            }
+            $('#FormProformaInvoiceDetail #hdnCGSTPerc').val(proformaInvoiceDetail.CGSTPerc);
+            $('#FormProformaInvoiceDetail #hdnSGSTPerc').val(proformaInvoiceDetail.SGSTPerc);
+            $('#FormProformaInvoiceDetail #hdnIGSTPerc').val(proformaInvoiceDetail.IGSTPerc);
+            var TaxableAmt = ((parseFloat(proformaInvoiceDetail.Rate) * parseInt(proformaInvoiceDetail.Qty)) - parseFloat(proformaInvoiceDetail.Discount))
+            var CGSTAmt = (TaxableAmt * parseFloat(proformaInvoiceDetail.CGSTPerc)) / 100;
+            var SGSTAmt = (TaxableAmt * parseFloat(proformaInvoiceDetail.SGSTPerc)) / 100;
+            var IGSTAmt = (TaxableAmt * parseFloat(proformaInvoiceDetail.IGSTPerc)) / 100;
+            $('#FormProformaInvoiceDetail #CGSTPerc').val(CGSTAmt);
+            $('#FormProformaInvoiceDetail #SGSTPerc').val(SGSTAmt);
+            $('#FormProformaInvoiceDetail #IGSTPerc').val(IGSTAmt);
+            $('#FormProformaInvoiceDetail #CessPerc').val(proformaInvoiceDetail.CessPerc);
+            $('#FormProformaInvoiceDetail #CessAmt').val(proformaInvoiceDetail.CessAmt);
+
+            $('#divModelPopProformaInvoice').modal('show');
         }
-        $('#FormProformaInvoiceDetail #hdnCGSTPerc').val(proformaInvoiceDetail.CGSTPerc);
-        $('#FormProformaInvoiceDetail #hdnSGSTPerc').val(proformaInvoiceDetail.SGSTPerc);
-        $('#FormProformaInvoiceDetail #hdnIGSTPerc').val(proformaInvoiceDetail.IGSTPerc);
-        var TaxableAmt = ((parseFloat(proformaInvoiceDetail.Rate) * parseInt(proformaInvoiceDetail.Qty)) - parseFloat(proformaInvoiceDetail.Discount))
-        var CGSTAmt = (TaxableAmt * parseFloat(proformaInvoiceDetail.CGSTPerc)) / 100;
-        var SGSTAmt = (TaxableAmt * parseFloat(proformaInvoiceDetail.SGSTPerc)) / 100;
-        var IGSTAmt = (TaxableAmt * parseFloat(proformaInvoiceDetail.IGSTPerc)) / 100;
-        $('#FormProformaInvoiceDetail #CGSTPerc').val(CGSTAmt);
-        $('#FormProformaInvoiceDetail #SGSTPerc').val(SGSTAmt);
-        $('#FormProformaInvoiceDetail #IGSTPerc').val(IGSTAmt);
-        $('#FormProformaInvoiceDetail #CessPerc').val(proformaInvoiceDetail.CessPerc);
-        $('#FormProformaInvoiceDetail #CessAmt').val(proformaInvoiceDetail.CessAmt);
-
-        $('#divModelPopProformaInvoice').modal('show');
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 

@@ -6,7 +6,7 @@ var _message = "";
 var _status = "";
 var _result = "";
 var _isCopy = false;
-
+var _isApproval = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -287,17 +287,20 @@ function EditSaleOrder(this_Obj) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
-                        }
-                        else {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", SaleOrder.ID);
-                        }
+                        _isApproval = true;
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", SaleOrder.ID);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
                         break;
                     default:
@@ -314,7 +317,7 @@ function EditSaleOrder(this_Obj) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
             });
             clearUploadControl();
-            PaintImages(SaleOrder.ID);
+            PaintImages(SaleOrder.ID, _isApproval);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -338,7 +341,7 @@ function CopySaleOrder(this_Obj) {
             // $('#hdnQuoteNo').val(Quotation.QuoteNo);
             CalculateTotal();
             clearUploadControl();
-            PaintImages(SaleOrder.ID);
+            PaintImages(SaleOrder.ID, _isApproval);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -349,7 +352,10 @@ function CopySaleOrder(this_Obj) {
 function ResetSaleOrder(event) {
     debugger;
     var str;
-    if ($('#hdnCopyFrom').val() != _emptyGuid) {
+    if ($('#hdnCopyFrom').val() == undefined) {
+        str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val()
+    }
+    else if ($('#hdnCopyFrom').val() != _emptyGuid) {
 
         str = "SaleOrder/CopySaleOrderForm?copyFrom="+$('#hdnCopyFrom').val()+"&id=" + $('#SaleOrderForm #ID').val();
     }
@@ -372,17 +378,20 @@ function ResetSaleOrder(event) {
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    if ($('#ApproverLevel').val() > 1) {
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
-                    }
-                    else {
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", $('#ID').val());
-                    }
+                    _isApproval = true;
+                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", $('#ID').val());
+                    //if ($('#ApproverLevel').val() > 1) {
+                    //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
+                    //}
+                    //else {
+                    //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", $('#ID').val());
+                    //}
                     break;
                 case "3":
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
                     break;
                 case "4":
+                    _isApproval = true;
                     ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
                     break;
                 default:
@@ -405,7 +414,7 @@ function ResetSaleOrder(event) {
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
             CalculateTotal();
             clearUploadControl();
-            PaintImages($('#SaleOrderForm #ID').val());
+            PaintImages($('#SaleOrderForm #ID').val(), _isApproval);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val(), function () {
             });
         }
@@ -468,7 +477,7 @@ function SaveSuccessSaleOrder(data, status) {
                     BindSaleOrderOtherChargesDetailList(_result.ID, false);
                     CalculateTotal();
                     clearUploadControl();
-                    PaintImages(_result.ID);
+                    PaintImages(_result.ID, _isApproval);
                     $('#lblSaleOrderInfo').text(_result.SaleOrderNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
                 });
@@ -971,54 +980,68 @@ function EditSaleOrderDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderDetail = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail?update=true", function () {
-        debugger;
-        $('#lblModelPopSaleOrder').text('SaleOrder Detail')
-        $('#FormSaleOrderDetail #IsUpdate').val('True');
-        $('#FormSaleOrderDetail #ID').val(saleOrderDetail.ID);
-        $("#FormSaleOrderDetail #ProductID").val(saleOrderDetail.ProductID)
-        $("#FormSaleOrderDetail #hdnProductID").val(saleOrderDetail.ProductID)
-        $('#productName').text(saleOrderDetail.Product.Code + "-" + saleOrderDetail.Product.Name)
-        $('#productModelName').text(saleOrderDetail.ProductModel.Name)
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-        });
+    $("#divModelSaleOrderPopBody").load("SaleOrder/AddSaleOrderDetail?update=true", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            debugger;
+            $('#lblModelPopSaleOrder').text('SaleOrder Detail')
+            $('#FormSaleOrderDetail #IsUpdate').val('True');
+            $('#FormSaleOrderDetail #ID').val(saleOrderDetail.ID);
+            //  $("#FormSaleOrderDetail #ProductID").val(saleOrderDetail.ProductID)
+            $("#FormSaleOrderDetail #hdnProductID").val(saleOrderDetail.ProductID)
+            $('#productName').text(saleOrderDetail.Product.Code + "-" + saleOrderDetail.Product.Name)
+            $('#productModelName').text(saleOrderDetail.ProductModel.Name)
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormSaleOrderDetail #hdnProductModelID").val(saleOrderDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
+                        var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=" + curRate, function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
 
-        if ($('#hdnProductID').val() != _emptyGuid) {
-            $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            //if ($('#hdnProductID').val() != _emptyGuid) {
+            //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            //}
+            //else {
+            //    $('.divProductModelSelectList').empty();
+            //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //}
+            // $("#FormSaleOrderDetail #ProductModelID").val(saleOrderDetail.ProductModelID);
+
+
+            $('#FormSaleOrderDetail #ProductSpec').val(saleOrderDetail.ProductSpec);
+            $('#FormSaleOrderDetail #Qty').val(saleOrderDetail.Qty);
+            $('#FormSaleOrderDetail #UnitCode').val(saleOrderDetail.UnitCode);
+            $('#FormSaleOrderDetail #hdnUnitCode').val(saleOrderDetail.UnitCode);
+            $('#FormSaleOrderDetail #Rate').val(saleOrderDetail.Rate);
+            $('#FormSaleOrderDetail #Discount').val(saleOrderDetail.Discount);
+            if (saleOrderDetail.TaxTypeCode != 0) {
+                $('#FormSaleOrderDetail #TaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
+                $('#FormSaleOrderDetail #hdnTaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
+            }
+            $('#FormSaleOrderDetail #hdnCGSTPerc').val(saleOrderDetail.CGSTPerc);
+            $('#FormSaleOrderDetail #hdnSGSTPerc').val(saleOrderDetail.SGSTPerc);
+            $('#FormSaleOrderDetail #hdnIGSTPerc').val(saleOrderDetail.IGSTPerc);
+            var TaxableAmt = ((parseFloat(saleOrderDetail.Rate) * parseInt(saleOrderDetail.Qty)) - parseFloat(saleOrderDetail.Discount))
+            var CGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.CGSTPerc)) / 100;
+            var SGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.SGSTPerc)) / 100;
+            var IGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.IGSTPerc)) / 100;
+            $('#FormSaleOrderDetail #CGSTPerc').val(CGSTAmt);
+            $('#FormSaleOrderDetail #SGSTPerc').val(SGSTAmt);
+            $('#FormSaleOrderDetail #IGSTPerc').val(IGSTAmt);
+            $('#FormSaleOrderDetail #CessPerc').val(saleOrderDetail.CessPerc);
+            $('#FormSaleOrderDetail #CessAmt').val(saleOrderDetail.CessAmt);
+            $('#divModelPopSaleOrder').modal('show');
         }
         else {
-            $('.divProductModelSelectList').empty();
-            $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
-        $("#FormSaleOrderDetail #ProductModelID").val(saleOrderDetail.ProductModelID);
-        $("#FormSaleOrderDetail #hdnProductModelID").val(saleOrderDetail.ProductModelID);
-        if ($('#hdnProductModelID').val() != _emptyGuid) {
-            $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-            });
-        }
-        $('#FormSaleOrderDetail #ProductSpec').val(saleOrderDetail.ProductSpec);
-        $('#FormSaleOrderDetail #Qty').val(saleOrderDetail.Qty);
-        $('#FormSaleOrderDetail #UnitCode').val(saleOrderDetail.UnitCode);
-        $('#FormSaleOrderDetail #hdnUnitCode').val(saleOrderDetail.UnitCode);
-        $('#FormSaleOrderDetail #Rate').val(saleOrderDetail.Rate);
-        $('#FormSaleOrderDetail #Discount').val(saleOrderDetail.Discount);
-        if (saleOrderDetail.TaxTypeCode!= 0) {
-            $('#FormSaleOrderDetail #TaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
-            $('#FormSaleOrderDetail #hdnTaxTypeCode').val(saleOrderDetail.TaxType.ValueText);
-        }
-        $('#FormSaleOrderDetail #hdnCGSTPerc').val(saleOrderDetail.CGSTPerc);
-        $('#FormSaleOrderDetail #hdnSGSTPerc').val(saleOrderDetail.SGSTPerc);
-        $('#FormSaleOrderDetail #hdnIGSTPerc').val(saleOrderDetail.IGSTPerc);
-        var TaxableAmt = ((parseFloat(saleOrderDetail.Rate) * parseInt(saleOrderDetail.Qty)) - parseFloat(saleOrderDetail.Discount))
-        var CGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.CGSTPerc)) / 100;
-        var SGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.SGSTPerc)) / 100;
-        var IGSTAmt = (TaxableAmt * parseFloat(saleOrderDetail.IGSTPerc)) / 100;
-        $('#FormSaleOrderDetail #CGSTPerc').val(CGSTAmt);
-        $('#FormSaleOrderDetail #SGSTPerc').val(SGSTAmt);
-        $('#FormSaleOrderDetail #IGSTPerc').val(IGSTAmt);
-        $('#FormSaleOrderDetail #CessPerc').val(saleOrderDetail.CessPerc);
-        $('#FormSaleOrderDetail #CessAmt').val(saleOrderDetail.CessAmt);
-        $('#divModelPopSaleOrder').modal('show');
     });
 }
 function ConfirmDeleteSaleOrderDetail(this_Obj) {
@@ -1236,6 +1259,7 @@ function RecallDoc(documentTypeCode) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _message);
+                    _isApproval = false;
                     ResetSaleOrder();
                     break;
                 case "ERROR":
@@ -1584,17 +1608,20 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", id);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
-                        }
-                        else {
-                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", id);
-                        }
+                        _isApproval = true;
+                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", id);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
                         break;
                     default:
@@ -1611,7 +1638,7 @@ function EditRedirectToDocument(id) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
             });
             clearUploadControl();
-            PaintImages(id);
+            PaintImages(id, _isApproval);
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

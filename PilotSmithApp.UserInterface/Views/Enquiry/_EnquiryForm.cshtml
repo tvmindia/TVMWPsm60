@@ -37,7 +37,8 @@
                                         <option>@Model.CurrencyCode</option>
                                     </select>
                                     <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
-                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />
+                                    @*<input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />*@
+                                    <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;min-width:70px;" value="@Model.CurrencyRate" />
                                 }
                                 else
                                 {
@@ -376,7 +377,11 @@
             $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('#hdnResponsiblePersonRequired').val())
             @if (Model.IsUpdate)
             {
-
+                 <text>
+            if ($('#hdnCurrencyCode').val()=="INR") {
+                $('#idCurRateForAutofocus').prop("disabled",true)
+            }
+                </text>
             }
             else
             {
@@ -393,21 +398,26 @@
                     debugger;
                     notyConfirm('Do you want to continue?', 'ClearEnquiryform();', 'This will reset the form !', "Continue");
                     return false;
-                    }              
-                    if (this.nodeName == "SELECT") {
-                        $('#hdnCurrencyCode').val(this.value)
-                        $('#spanRate').text(this.value)
-                        $('#spanTotal').text(this.value)
-                        $('#lblCurrencyCode').text(this.value)
-                        $('#idCurRateForAutofocus').focus();
-                        $('#idCurRateForAutofocus').val(1);
-                        $('#hdnCurrencyRate').val(1);
+                }
+                if (this.nodeName == "SELECT") {
+                    $('#hdnCurrencyCode').val(this.value)
+                    if (this.value != "INR") {
+                        $('#idCurRateForAutofocus').prop("disabled", false)
                     }
-                    if (this.nodeName == "INPUT") {
-                        $('#hdnCurrencyRate').val(this.value)
-                    }
-
-            });         
+                    $('#spanRate').text(this.value)
+                    $('#spanTotal').text(this.value)
+                    $('#lblCurrencyCode').text(this.value)
+                    $('#idCurRateForAutofocus').focus();
+                    $('#idCurRateForAutofocus').val(1);
+                    $('#hdnCurrencyRate').val(1);
+                }
+                if (this.nodeName == "INPUT") {
+                    $('#hdnCurrencyRate').val(this.value)
+                }              
+            });
+            if ($('#hdnCurrencyCode').val() == "INR") {
+                $('#idCurRateForAutofocus').prop("disabled", true)
+            }
             </text>
             }
             if ($('#EnquiryForm #IsDocLocked').val() == "False" && $('#EnquiryForm #IsUpdate').val() == "True") {

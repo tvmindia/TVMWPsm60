@@ -1135,12 +1135,9 @@
     <Content Include="Views\DashBoard\_EnquiryCountSummary.cshtml" />
     <Content Include="Views\SysSetting\Index.cshtml" />
     <Content Include="Views\SysSetting\_AddSysSetting.cshtml" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Quotation\_PrintQuotationDetail.cshtml" />
     <Content Include="Views\Quotation\_CopyQuotation.cshtml" />
     <Content Include="Views\SaleOrder\_CopySaleOrderForm.cshtml" />
-    <Content Include="Views\Shared\_CurrencyPopup.cshtml" />
     <Content Include="Views\Currency\_CurrencySelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

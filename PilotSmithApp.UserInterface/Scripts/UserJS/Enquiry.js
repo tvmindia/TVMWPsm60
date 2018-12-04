@@ -547,38 +547,51 @@ function EditEnquiryDetail(this_Obj)
     debugger;
     _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
     var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail?update=true", function () {
-        $('#lblModelPopEnquiry').text('Enquiry Detail')
-        $('#FormEnquiryDetail #IsUpdate').val('True');
-        $('#FormEnquiryDetail #ID').val(enquiryDetail.ID);
-        $("#FormEnquiryDetail #ProductID").val(enquiryDetail.ProductID)
-        $("#FormEnquiryDetail #hdnProductID").val(enquiryDetail.ProductID)
-        $('#spanProductName').text(enquiryDetail.Product.Code +"-" + enquiryDetail.Product.Name)
-        $('#spanProductModelName').text(enquiryDetail.ProductModel.Name)
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID="+$('#hdnProductID').val(), function () {
-        });
-        
+    $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail?update=true", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            $('#lblModelPopEnquiry').text('Enquiry Detail')
+            $('#FormEnquiryDetail #IsUpdate').val('True');
+            $('#FormEnquiryDetail #ID').val(enquiryDetail.ID);
+            //  $("#FormEnquiryDetail #ProductID").val(enquiryDetail.ProductID)
+            $("#FormEnquiryDetail #hdnProductID").val(enquiryDetail.ProductID)
+            $('#spanProductName').text(enquiryDetail.Product.Code + "-" + enquiryDetail.Product.Name)
+            $('#spanProductModelName').text(enquiryDetail.ProductModel.Name)
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormEnquiryDetail #hdnProductModelID").val(enquiryDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
+                        var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=" + curRate, function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
 
-        //if ($('#hdnProductID').val() != _emptyGuid) {
-        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        //}
-        //else {
-        //    $('.divProductModelSelectList').empty();
-        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        //}
-        $("#FormEnquiryDetail #ProductModelID").val(enquiryDetail.ProductModelID);
-        $("#FormEnquiryDetail #hdnProductModelID").val(enquiryDetail.ProductModelID);
-        //if($('#hdnProductModelID').val()!=_emptyGuid)
-        //{
-        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-        //    });
-        //}
-        $('#FormEnquiryDetail #ProductSpec').val(enquiryDetail.ProductSpec);
-        $('#FormEnquiryDetail #Qty').val(enquiryDetail.Qty);
-        $('#FormEnquiryDetail #UnitCode').val(enquiryDetail.UnitCode);
-        $('#FormEnquiryDetail #hdnUnitCode').val(enquiryDetail.UnitCode);
-        $('#FormEnquiryDetail #Rate').val(enquiryDetail.Rate);
-        $('#divModelPopEnquiry').modal('show');
+
+            //if ($('#hdnProductID').val() != _emptyGuid) {
+            //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            //}
+            //else {
+            //    $('.divProductModelSelectList').empty();
+            //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //}
+            //  $("#FormEnquiryDetail #ProductModelID").val(enquiryDetail.ProductModelID);
+
+
+            $('#FormEnquiryDetail #ProductSpec').val(enquiryDetail.ProductSpec);
+            $('#FormEnquiryDetail #Qty').val(enquiryDetail.Qty);
+            $('#FormEnquiryDetail #UnitCode').val(enquiryDetail.UnitCode);
+            $('#FormEnquiryDetail #hdnUnitCode').val(enquiryDetail.UnitCode);
+            $('#FormEnquiryDetail #Rate').val(enquiryDetail.Rate);
+            $('#divModelPopEnquiry').modal('show');
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function ConfirmDeleteEnquiryDetail(this_Obj) {

@@ -6,6 +6,7 @@ var _message = "";
 var _status = "";
 var _result = "";
 var _isCopy = false;
+var _isApproval = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -23,6 +24,7 @@ $(document).ready(function () {
                 EditRedirectToDocument($('#RedirectToDocument').val());
             }
         }
+        
     }
     catch (e) {
         console.log(e.message);
@@ -258,19 +260,24 @@ function EditQuotation(this_Obj) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", Quotation.ID);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
-                        }
-                        else {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
-                        }
+                        // if ($('#ApproverLevel').val() > 1) {
+                        _isApproval = true;
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", Quotation.ID);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
+                        //}
 
                         break;
                     case "3":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", Quotation.ID);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
+                        break;
+                    //case "10":
+                    //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
                         break;
                     default:
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
@@ -285,7 +292,7 @@ function EditQuotation(this_Obj) {
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(Quotation.ID);
+            PaintImages(Quotation.ID, _isApproval);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
         }
         else {
@@ -310,7 +317,7 @@ function CopyQuotation(this_Obj) {
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
             clearUploadControl();
-            PaintImages(Quotation.ID);
+            PaintImages(Quotation.ID, _isApproval);
             $('#lblQuotationInfo').val('');
            
         }
@@ -322,7 +329,11 @@ function CopyQuotation(this_Obj) {
 function ResetQuotation() {
     debugger;
     var str;
-    if ($('#hdnCopyFrom').val() != _emptyGuid) {
+    if ($('#hdnCopyFrom').val() == undefined)
+    {
+        str = "Quotation/QuotationForm?id=" + $('#QuotationForm #ID').val()
+    }
+   else if ($('#hdnCopyFrom').val() != _emptyGuid) {
         str = "Quotation/CopyQuotationForm?copyFrom="+$('#hdnCopyFrom').val()+"&id=" + $('#QuotationForm #ID').val()
 
     }
@@ -342,7 +353,7 @@ function ResetQuotation() {
                 $("#QuotationForm #CustomerID").prop('disabled', false);
                 $('#lblQuotationInfo').text('<<Quotation No.>>');
             }
-
+            debugger;
             switch ($('#LatestApprovalStatus').val()) {
                 case "":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
@@ -351,18 +362,22 @@ function ResetQuotation() {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", $('#ID').val());
                     break;
                 case "1":
-                    if ($('#ApproverLevel').val() > 1) {
-                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
-                    }
-                    else {
-                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", $('#ID').val());
-                    }
+                    _isApproval = true;
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", $('#ID').val());
+                    //if ($('#ApproverLevel').val() > 1) {
+                    //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
+                    //}
+                    //else {
+                    //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", $('#ID').val());
+                    //}
                     break;
                 case "3":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", $('#ID').val());
                     break;
                 case "4":
+                    _isApproval = true;
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#ID').val());
+                    break;           
                     break;
                 default:
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", $('#ID').val());
@@ -372,7 +387,7 @@ function ResetQuotation() {
             BindQuotationOtherChargesDetailList($('#ID').val());
             CalculateTotal();
             clearUploadControl();
-            PaintImages($('#QuotationForm #ID').val());
+            PaintImages($('#QuotationForm #ID').val(), _isApproval);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
         }
         else {
@@ -421,7 +436,7 @@ function SaveSuccessQuotation(data, status) {
                     BindQuotationOtherChargesDetailList(_result.ID);
                     CalculateTotal();
                     clearUploadControl();
-                    PaintImages(_result.ID);
+                    PaintImages(_result.ID, _isApproval);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
@@ -841,54 +856,68 @@ function EditQuotationDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).index();
     var quotationDetail = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail?update=true", function () {
-        $('#lblModelPopQuotation').text('Quotation Detail')
-        $('#FormQuotationDetail #IsUpdate').val('True');
-        $('#FormQuotationDetail #ID').val(quotationDetail.ID);
-        $("#FormQuotationDetail #ProductID").val(quotationDetail.ProductID)
-        $("#FormQuotationDetail #hdnProductID").val(quotationDetail.ProductID)
-        $('#spanProductName').text(quotationDetail.Product.Code + "-" + quotationDetail.Product.Name)
-        $('#spanProductModelName').text(quotationDetail.ProductModel.Name)
-        $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function () {
-        });
+    $("#divModelQuotationPopBody").load("Quotation/AddQuotationDetail?update=true", function (responseTxt, statusTxt, xhr) {
+        if (statusTxt == 'success') {
+            $('#lblModelPopQuotation').text('Quotation Detail')
+            $('#FormQuotationDetail #IsUpdate').val('True');
+            $('#FormQuotationDetail #ID').val(quotationDetail.ID);
+            //   $("#FormQuotationDetail #ProductID").val(quotationDetail.ProductID)
+            $("#FormQuotationDetail #hdnProductID").val(quotationDetail.ProductID)
+            $('#spanProductName').text(quotationDetail.Product.Code + "-" + quotationDetail.Product.Name)
+            $('#spanProductModelName').text(quotationDetail.ProductModel.Name)
 
-        //if ($('#hdnProductID').val() != _emptyGuid) {
-        //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
-        //}
-        //else {
-        //    $('.divProductModelSelectList').empty();
-        //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
-        //}
-        $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
-        $("#FormQuotationDetail #hdnProductModelID").val(quotationDetail.ProductModelID);
-        //if ($('#hdnProductModelID').val() != _emptyGuid) {
-        //    $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val(), function () {
-        //    });
-        //}
-        $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
-        $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
-        $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
-        $('#FormQuotationDetail #hdnUnitCode').val(quotationDetail.UnitCode);
-        $('#FormQuotationDetail #Rate').val(quotationDetail.Rate);
-        $('#FormQuotationDetail #Discount').val(quotationDetail.Discount);
-        $('#FormQuotationDetail #TaxTypeCode').val(quotationDetail.TaxType.ValueText);
-        $('#FormQuotationDetail #hdnTaxTypeCode').val(quotationDetail.TaxType.ValueText);
-        $('#FormQuotationDetail #hdnCGSTPerc').val(quotationDetail.CGSTPerc);
-        $('#FormQuotationDetail #hdnSGSTPerc').val(quotationDetail.SGSTPerc);
-        $('#FormQuotationDetail #hdnIGSTPerc').val(quotationDetail.IGSTPerc);
-        var TaxableAmt = ((parseFloat(quotationDetail.Rate) * parseInt(quotationDetail.Qty)) - parseFloat(quotationDetail.Discount))
-        var CGSTAmt = (TaxableAmt * parseFloat(quotationDetail.CGSTPerc)) / 100;
-        var SGSTAmt = (TaxableAmt * parseFloat(quotationDetail.SGSTPerc)) / 100;
-        var IGSTAmt = (TaxableAmt * parseFloat(quotationDetail.IGSTPerc)) / 100;
-        $('#FormQuotationDetail #CGSTPerc').val(CGSTAmt);
-        $('#FormQuotationDetail #SGSTPerc').val(SGSTAmt);
-        $('#FormQuotationDetail #IGSTPerc').val(IGSTAmt);
-        $('#divModelPopQuotation').modal('show');
-        var editor = new wysihtml5.Editor("ProductSpec", {
-            toolbar: "toolbar",
-            //stylesheets: "css/stylesheet.css",
-            parserRules: wysihtml5ParserRules
-        });
+            $('#divProductBasicInfo').load("Product/ProductBasicInfo?ID=" + $('#hdnProductID').val(), function (responseTxt, statusTxt, xhr) {
+                if (statusTxt == 'success') {
+                    debugger;
+                    $("#FormQuotationDetail #hdnProductModelID").val(quotationDetail.ProductModelID);
+                    if ($('#hdnProductModelID').val() != _emptyGuid) {
+                        var curRate = $('#hdnCurrencyRate').val() == undefined ? 0 : $('#hdnCurrencyRate').val();
+                        $('#divProductBasicInfo').load("ProductModel/ProductModelBasicInfo?ID=" + $('#hdnProductModelID').val() + "&rate=" + curRate, function () {
+                        });
+                    }
+                }
+                else {
+                    console.log("Error: " + xhr.status + ": " + xhr.statusText);
+                }
+            });
+            //if ($('#hdnProductID').val() != _emptyGuid) {
+            //    $('.divProductModelSelectList').load("ProductModel/ProductModelSelectList?required=required&productID=" + $('#hdnProductID').val())
+            //}
+            //else {
+            //    $('.divProductModelSelectList').empty();
+            //    $('.divProductModelSelectList').append('<span class="form-control newinput"><i id="dropLoad" class="fa fa-spinner"></i></span>');
+            //}
+            //   $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
+
+
+            $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
+            $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
+            $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
+            $('#FormQuotationDetail #hdnUnitCode').val(quotationDetail.UnitCode);
+            $('#FormQuotationDetail #Rate').val(quotationDetail.Rate);
+            $('#FormQuotationDetail #Discount').val(quotationDetail.Discount);
+            $('#FormQuotationDetail #TaxTypeCode').val(quotationDetail.TaxType.ValueText);
+            $('#FormQuotationDetail #hdnTaxTypeCode').val(quotationDetail.TaxType.ValueText);
+            $('#FormQuotationDetail #hdnCGSTPerc').val(quotationDetail.CGSTPerc);
+            $('#FormQuotationDetail #hdnSGSTPerc').val(quotationDetail.SGSTPerc);
+            $('#FormQuotationDetail #hdnIGSTPerc').val(quotationDetail.IGSTPerc);
+            var TaxableAmt = ((parseFloat(quotationDetail.Rate) * parseInt(quotationDetail.Qty)) - parseFloat(quotationDetail.Discount))
+            var CGSTAmt = (TaxableAmt * parseFloat(quotationDetail.CGSTPerc)) / 100;
+            var SGSTAmt = (TaxableAmt * parseFloat(quotationDetail.SGSTPerc)) / 100;
+            var IGSTAmt = (TaxableAmt * parseFloat(quotationDetail.IGSTPerc)) / 100;
+            $('#FormQuotationDetail #CGSTPerc').val(CGSTAmt);
+            $('#FormQuotationDetail #SGSTPerc').val(SGSTAmt);
+            $('#FormQuotationDetail #IGSTPerc').val(IGSTAmt);
+            $('#divModelPopQuotation').modal('show');
+            var editor = new wysihtml5.Editor("ProductSpec", {
+                toolbar: "toolbar",
+                //stylesheets: "css/stylesheet.css",
+                parserRules: wysihtml5ParserRules
+            });
+        }
+        else {
+            console.log("Error: " + xhr.status + ": " + xhr.statusText);
+        }
     });
 }
 function ConfirmDeleteQuotationDetail(this_Obj) {
@@ -1245,16 +1274,17 @@ function RecallDoc(documentTypeCode) {
             switch (_status) {
                 case "OK":
                     notyAlert('success', _message);
+                    _isApproval = false;
                     ResetQuotation();
-                    debugger;
-                    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
-                        if (($('#ApproverLevel').val()) > 1) {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", Quotation.ID);
-                        }
-                        else {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
-                        }
-                    });
+                    //debugger;
+                    //$("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=QUO", function () {
+                    //    if (($('#ApproverLevel').val()) > 1) {
+                    //        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", $('#QuotationForm #ID').val());
+                    //    }
+                    //    else {
+                    //        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", $('#QuotationForm #ID').val());
+                    //    }
+                    //});
                     break;
                 case "ERROR":
                     notyAlert('error', _message);
@@ -1577,17 +1607,20 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", id);
                         break;
                     case "1":
-                        if ($('#ApproverLevel').val() > 1) {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
-                        }
-                        else {
-                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", id);
-                        }
+                        _isApproval = true;
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", id);
+                        //if ($('#ApproverLevel').val() > 1) {
+                        //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
+                        //}
+                        //else {
+                        //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", id);
+                        //}
                         break;
                     case "3":
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", id);
                         break;
                     case "4":
+                        _isApproval = true;
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
                         break;
                     default:
@@ -1603,7 +1636,7 @@ function EditRedirectToDocument(id) {
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(id);
+            PaintImages(id, _isApproval);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
 
         }

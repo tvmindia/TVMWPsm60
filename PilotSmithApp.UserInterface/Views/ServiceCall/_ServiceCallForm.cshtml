@@ -53,7 +53,8 @@
                                         <option>@Model.CurrencyCode</option>
                                     </select>
                                     <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;border-bottom:none;text-align:right;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span>@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
-                                    <input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />
+                                    @*<input class="form-control newinput" type="number" value="@Model.CurrencyRate" readonly style="width:100%;text-align:left;min-width:70px;" title="Cannot change rate" />*@
+                                    <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;min-width:70px;" value="@Model.CurrencyRate" />
                                 }
                                 else
                                 {
@@ -545,6 +546,9 @@
                 $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#CustomerID').val());
             });
             
+            if ($('#hdnCurrencyCode').val() == "INR") {
+                $('#idCurRateForAutofocus').prop("disabled", true)
+            }
             </text>
                     }
                     else
@@ -566,6 +570,9 @@
                 }
                 if (this.nodeName == "SELECT") {
                     $('#hdnCurrencyCode').val(this.value)
+                    if (this.value != "INR") {
+                        $('#idCurRateForAutofocus').prop("disabled", false)
+                    }
                     $('#spanChargeAmount').text(this.value)
                     $('#spanTotal').text(this.value)
                     $('#idCurRateForAutofocus').focus();
@@ -578,7 +585,9 @@
 
             });
             
-            
+            if ($('#hdnCurrencyCode').val() == "INR") {
+                $('#idCurRateForAutofocus').prop("disabled", true)
+            }
             </text>
                     }
             $('.divServiceTypeSelectList').load('/ServiceType/ServiceTypeSelectList?required=' + $('#hdnServiceTypeRequired').val())
