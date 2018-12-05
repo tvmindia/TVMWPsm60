@@ -10,6 +10,7 @@ var _isApproval = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
+        debugger;
         BindOrReloadQuotationTable('Init');
         $('#tblQuotation tbody').on('dblclick', 'td', function () {
             if (this.textContent !== "No data available in table")
@@ -24,7 +25,7 @@ $(document).ready(function () {
                 EditRedirectToDocument($('#RedirectToDocument').val());
             }
         }
-        
+      
     }
     catch (e) {
         console.log(e.message);

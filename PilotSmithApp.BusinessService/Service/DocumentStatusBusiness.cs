@@ -29,5 +29,9 @@ namespace PilotSmithApp.BusinessService.Service
                                          Selected = documentStatus.Description == "OPEN"?true:false
                                      }).ToList():new List<SelectListItem>();
         }
+        public string CloseDocument(Guid id, string doctype, string docstatus)
+        {
+            return _documentStatusRepository.CloseDocument(id, doctype, docstatus);
+        }
     }
 }

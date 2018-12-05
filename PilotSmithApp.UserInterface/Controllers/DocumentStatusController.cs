@@ -43,6 +43,13 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_ServiceStatusSelectList", documentStatusVM);
         }
         #endregion ServiceStatus SelectList
-
+        #region Close Document
+     
+        public string CloseDocument(Guid id, string doctype, string docstatus)
+        {
+            var result = _documentStatusBusiness.CloseDocument(id, doctype, docstatus);
+            return result;
+        }
+        #endregion  Close Document
     }
 }

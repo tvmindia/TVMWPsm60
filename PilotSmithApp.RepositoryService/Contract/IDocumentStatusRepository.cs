@@ -10,5 +10,6 @@ namespace PilotSmithApp.RepositoryService.Contract
     public interface IDocumentStatusRepository
     {
         List<DocumentStatus> GetDocumentStatusSelectList(string code);
+        string CloseDocument(Guid id, string doctype, string docstatus);
     }
 }

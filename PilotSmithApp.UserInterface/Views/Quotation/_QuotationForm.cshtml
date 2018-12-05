@@ -5,6 +5,8 @@
         background: #ffffff;
         border-left: none;
     }
+  
+
 </style>
 @using (Ajax.BeginForm("InsertUpdateQuotation", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotation", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "QuotationForm" }))
 {
@@ -222,29 +224,6 @@
                 </div>
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
-                        @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                        @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
-                        </div>
-                    </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnDocumentStatusRequired", "required")
-                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
                         @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     @if (Model.IsUpdate)
@@ -267,6 +246,30 @@
                     @Html.Hidden("hdnBranchdisabled", false)
                     @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                 </div>
+                <div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                        @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @*<div class="col-md-6 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divDocumentStatusSelectList">
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnDocumentStatusRequired", "required")
+                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                </div>*@
+
 
             </div>
             @*@if (Model.IsUpdate)
@@ -275,84 +278,93 @@
                 <div class="boxstatus boxstatus2 shadow2">
                     <div class="Shadow2data clearfix">
 
+                        
+                        @*<div class="form-group col-md-12">
+                            <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                        </div>*@
+                        @if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus == 1 || Model.LatestApprovalStatus == 9)
+                        {
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Document Status</div>
                         </div>
                         <div class="form-group col-md-12">
-                            <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                            <label class="switch switch-flat">
+                                <input class="switch-input" type="checkbox"  checked/>
+                                <span class="switch-label" data-on="Open" data-off="Closed"></span>
+                                <span class="switch-handle"></span>
+                            </label>
                         </div>
-
-
-                        <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">Email Status</div>
-                        </div>
-                        <div class="form-group col-md-12">
-
-                            @if (Model.EmailSentYN == null)
-                            {
-                                <div class="lblStatusDisplay">-</div>
-                            }
-                            else if (Model.EmailSentYN == true)
-                            {
-                                <div class="lblStatusDisplay">✔ EMAIL SEND</div>
-                            }
-                            else
-                            {
-                                <div class="lblStatusDisplay">EMAIL NOT SEND</div>
-                            }
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus)</div>
-                        </div>
-                        <div class="form-group col-md-12">
-
-                            @if (Model.LatestApprovalStatus == null)
-                            {
-                                <div class="lblStatusDisplay">-</div>
-                            }
-                            else
-                            {
-                                <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
-                            }
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">Branch</div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="lblStatusDisplay">@Model.Branch.Description</div>
-                        </div>
-
-                        @if (Model.IsUpdate)
-                        {
-                            <div class="col-md-12"></div>
+                        }
                             <div class="form-group col-md-12">
-                                @if (!Model.IsDocLocked)
+                                <div class="rightAmtCaption">Email Status</div>
+                            </div>
+                            <div class="form-group col-md-12">
+
+                                @if (Model.EmailSentYN == null)
                                 {
-                                    <div class="col-md-12 no-padding">
-                                        <div class="col-md-2 no-padding">
-                                            <img src="~/Content/images/ownerlock.png" title="Document Locked" />
-                                        </div>
-                                        <div class="col-md-10 no-padding">
-                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.QuoteNo" documentType="QUO" documentCurrentOwner="@Model.DocumentOwner"><span style="font-size:18px;">Take ownership</span></a>
-                                        </div>
-                                    </div>
+                                    <div class="lblStatusDisplay">-</div>
+                                }
+                                else if (Model.EmailSentYN == true)
+                                {
+                                    <div class="lblStatusDisplay">✔ EMAIL SEND</div>
                                 }
                                 else
                                 {
-                                    <div class="col-md-12 no-padding">
-                                        <div class="col-md-2 no-padding">
-                                            <img src="~/Content/images/ownerunlock.png" />
-                                        </div>
-                                        <div class="col-md-10 no-padding">
-                                            <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
-                                            <span style="font-size:18px;">Holding ownership</span>
-                                        </div>
-                                    </div>
+                                    <div class="lblStatusDisplay">EMAIL NOT SEND</div>
                                 }
                             </div>
-                        }
-                    </div>
+                            <div class="form-group col-md-12">
+                                <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus)</div>
+                            </div>
+                            <div class="form-group col-md-12">
+
+                                @if (Model.LatestApprovalStatus == null)
+                                {
+                                    <div class="lblStatusDisplay">-</div>
+                                }
+                                else
+                                {
+                                    <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
+                                }
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="rightAmtCaption">Branch</div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="lblStatusDisplay">@Model.Branch.Description</div>
+                            </div>
+
+                            @if (Model.IsUpdate)
+                            {
+                                <div class="col-md-12"></div>
+                                <div class="form-group col-md-12">
+                                    @if (!Model.IsDocLocked)
+                                    {
+                                        <div class="col-md-12 no-padding">
+                                            <div class="col-md-2 no-padding">
+                                                <img src="~/Content/images/ownerlock.png" title="Document Locked" />
+                                            </div>
+                                            <div class="col-md-10 no-padding">
+                                                <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                                <a href="#" onclick="TakeOwnership(this)" documentNumber="@Model.QuoteNo" documentType="QUO" documentCurrentOwner="@Model.DocumentOwner"><span style="font-size:18px;">Take ownership</span></a>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-12 no-padding">
+                                            <div class="col-md-2 no-padding">
+                                                <img src="~/Content/images/ownerunlock.png" />
+                                            </div>
+                                            <div class="col-md-10 no-padding">
+                                                <span style="font-size:24px;">Owner - <span style="font-weight:300;">@Model.DocumentOwner</span></span><br />
+                                                <span style="font-size:18px;">Holding ownership</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
 
                 </div>
             </div>
@@ -560,6 +572,50 @@
                     }
 <script>
     $(document).ready(function () {
+        try {
+
+            debugger;
+            $('.switch-input').on('change', function () {
+                debugger;
+                var isChecked = $(this).is(':checked');
+                var selectedData;
+                var $switchLabel = $('.switch-label');
+                console.log('isChecked: ' + isChecked);
+
+                if (isChecked) {
+                    selectedData = $switchLabel.attr('data-on');
+
+                } else {
+                    selectedData = $switchLabel.attr('data-off');
+                }
+               
+
+                $.get("DocumentStatus/CloseDocument/?id=" + $('#QuotationForm #ID').val() + "&doctype=QUO" + "&docstatus=" + selectedData, function (data) {
+                    debugger;
+                    // var JsonResult = JSON.parse(data)
+                    if (data == "1") {
+                        //   $('#anchorOpenSODInTab').trigger('click');
+
+                        //notyAlert('success', "Document status changed successfully!");
+                    }
+                    else {
+                        notyAlert('error', "Failed to change document status!");
+
+                        //  alert("Quotation not exist!");
+                    }
+
+                });
+
+
+                //  console.log('Selected data: ' + selectedData);
+                //  alert(selectedData);
+            });
+
+
+        }
+        catch (e) {
+
+        }
         try {
             $.validator.unobtrusive.parse("#QuotationForm");
         }

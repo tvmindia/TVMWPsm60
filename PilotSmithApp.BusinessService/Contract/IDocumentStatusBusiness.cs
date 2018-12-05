@@ -10,5 +10,6 @@ namespace PilotSmithApp.BusinessService.Contract
     public interface IDocumentStatusBusiness
     {
         List<SelectListItem> GetSelectListForDocumentStatus(string code);
+        string CloseDocument(Guid id, string doctype, string docstatus);
     }
 }
