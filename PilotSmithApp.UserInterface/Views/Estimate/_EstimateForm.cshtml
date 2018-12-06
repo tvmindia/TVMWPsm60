@@ -148,16 +148,30 @@
                         @Html.ValidationMessageFor(model => model.EstimateNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                @if (Model.IsUpdate)
+                {
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.EstimateDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off", @data_toggle = "popover", @data_content = "Select date with in financial year", @data_placement = "top" } })
+                            @Html.ValidationMessageFor(model => model.EstimateDateFormatted, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.EstimateDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
-                        @Html.ValidationMessageFor(model => model.EstimateDateFormatted, "", new { @class = "text-danger" })
+                }
+                else
+                {
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.EstimateDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.EstimateDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
+                            @Html.ValidationMessageFor(model => model.EstimateDateFormatted, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
+                }
 
                 <div class="col-md-6 no-padding">
                     <div class="col-md-12">
@@ -174,7 +188,7 @@
                         @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
+                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off"} })
                         @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -392,6 +406,10 @@
 
 <script>
     $(document).ready(function () {
+
+        $('[data-toggle="popover"]').popover({
+        });
+
         try {
             $.validator.unobtrusive.parse("#EstimateForm");
         }
@@ -407,6 +425,34 @@
             if ($('#hdnCurrencyCode').val()=="INR") {
                 $('#idCurRateForAutofocus').prop("disabled",true)
             }
+
+            var estimateDate = $('#EstimateDateFormatted').val();
+            function getCurrentFinancialYear(estimateDate) {
+                debugger;
+                var startYear = "";
+                var endYear = "";
+                var docDate = new Date(estimateDate);
+                if ((docDate.getMonth() + 1) <= 3) {
+                    startYear = docDate.getFullYear() - 1;
+                    endYear = docDate.getFullYear();
+                }
+                else {
+                    startYear = docDate.getFullYear();
+                    endYear = docDate.getFullYear() + 1;
+                }
+                return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
+            }
+            $('#EstimateDateFormatted').datepicker({
+                format: "dd-M-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true,
+                startDate: getCurrentFinancialYear(estimateDate).startDate,
+                endDate: getCurrentFinancialYear(estimateDate).endDate
+            });
+
                 </text>
             }
             else
@@ -466,7 +512,7 @@
             console.log(e.message);
         }
         try {
-            $('input.datepicker').datepicker({
+            $('#EstimateDateFormatted,#ValidUpToDateFormatted').datepicker({
                 format: "dd-M-yyyy",
                 maxViewMode: 0,
                 todayBtn: "linked",
