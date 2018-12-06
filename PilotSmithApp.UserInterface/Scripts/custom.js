@@ -312,14 +312,8 @@ function GetDataFromServerTraditional(page, formData) {
 function ChangeButtonPatchView(Controller, Dom, Action,ExtraParam) {
     try
     {
-        var data = { actionType: Action, "id": ExtraParam };
-        var ds = {};
-        ds = GetDataFromServer(Controller + "/ChangeButtonStyle/", data);
-        if (ds == "Nochange") {
-            return 0;
-        }
-        $("#" + Dom).empty();
-        $("#" + Dom).html(ds);
+        $("#" + Dom).load(Controller + "/ChangeButtonStyle?actionType=" + Action + "&id=" + ExtraParam, function () {
+        });
     }
     catch(e)
     {
