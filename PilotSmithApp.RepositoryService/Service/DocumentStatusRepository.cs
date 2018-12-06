@@ -67,5 +67,55 @@ namespace PilotSmithApp.RepositoryService.Service
             return documentStatusList;
         }
         #endregion Get DocumentStatus SelectList
+
+        #region Close Document
+        public string CloseDocument(Guid id, string doctype, string docstatus)
+        {
+            SqlParameter outputStatus = null;
+            string status=null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[Closedocument]";
+                        cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@DocumentType", SqlDbType.NVarChar, -1).Value = doctype;
+                        cmd.Parameters.Add("@DocumentStatus", SqlDbType.NVarChar, -1).Value = docstatus;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        //result = bool.Parse(cmd.ExecuteScalar().ToString());
+                        outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                    switch (outputStatus.Value.ToString())
+                    {
+                        case "0":
+                            status= "Failed to change document status!";
+                            break;
+                        case "1":
+
+                            status= outputStatus.Value.ToString();
+                            break;
+                               
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return status;
+
+        }
+        #endregion Close Document
     }
 }
