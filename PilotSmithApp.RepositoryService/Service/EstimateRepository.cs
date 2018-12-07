@@ -273,7 +273,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@EstimateDate", SqlDbType.DateTime).Value = estimate.EstimateDateFormatted;
                         cmd.Parameters.Add("@EnquiryID", SqlDbType.UniqueIdentifier).Value = estimate.EnquiryID;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = estimate.CustomerID;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = estimate.DocumentStatusCode;
+                       // cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = estimate.DocumentStatusCode;
                         cmd.Parameters.Add("@ValidUpToDate", SqlDbType.DateTime).Value = estimate.ValidUpToDateFormatted;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = estimate.DetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = estimate.hdnFileID;

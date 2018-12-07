@@ -309,6 +309,9 @@ function EditSaleOrder(this_Obj) {
                 }
             }
             else {
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
             }
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
@@ -318,6 +321,13 @@ function EditSaleOrder(this_Obj) {
             });
             clearUploadControl();
             PaintImages(SaleOrder.ID, _isApproval);
+            if (SaleOrder.DocumentStatus.Description == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -365,6 +375,13 @@ function ResetSaleOrder(event) {
 
     $("#divSaleOrderForm").load(str , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                     //resides in customjs for sliding
                     openNav();
@@ -480,6 +497,13 @@ function SaveSuccessSaleOrder(data, status) {
                     PaintImages(_result.ID, _isApproval);
                     $('#lblSaleOrderInfo').text(_result.SaleOrderNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#SaleOrderForm #hdnCustomerID').val());
+                    if ($('#hdnDescription').val() == "OPEN") {
+                        $('.switch-input').prop('checked', true);
+
+                    } else {
+                        $('.switch-input').prop('checked', false);
+
+                    }
                 });
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
                 BindOrReloadSaleOrderTable('Init');
@@ -1630,6 +1654,9 @@ function EditRedirectToDocument(id) {
                 }
             }
             else {
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
             }
             BindSaleOrderDetailList(id, false, false);
@@ -1639,6 +1666,13 @@ function EditRedirectToDocument(id) {
             });
             clearUploadControl();
             PaintImages(id, _isApproval);
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

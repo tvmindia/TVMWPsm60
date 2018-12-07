@@ -283,7 +283,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@RequirementSpec", SqlDbType.NVarChar, -1).Value = enquiry.RequirementSpec;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = enquiry.CustomerID;
                         cmd.Parameters.Add("@GradeCode", SqlDbType.Int).Value = enquiry.EnquiryGradeCode;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = enquiry.DocumentStatusCode;
+                       // cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = enquiry.DocumentStatusCode;
                         cmd.Parameters.Add("@ReferredByCode", SqlDbType.Int).Value = enquiry.ReferredByCode;
                         cmd.Parameters.Add("@ResponsiblePersonID", SqlDbType.UniqueIdentifier).Value = enquiry.ResponsiblePersonID;
                         cmd.Parameters.Add("@AttendedByID", SqlDbType.UniqueIdentifier).Value = enquiry.AttendedByID;

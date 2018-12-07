@@ -320,7 +320,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = productionOrder.CustomerID;
                         cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value = productionOrder.ExpectedDelvDateFormatted;
                         cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = productionOrder.PreparedBy;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionOrder.DocumentStatusCode;
+                       // cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionOrder.DocumentStatusCode;
                         cmd.Parameters.Add("@DetailXML", SqlDbType.Xml).Value = productionOrder.DetailXML;
                         cmd.Parameters.Add("@FileDupID", SqlDbType.UniqueIdentifier).Value = productionOrder.hdnFileID;
                         cmd.Parameters.Add("@GeneralNotes", SqlDbType.NVarChar, -1).Value = productionOrder.GeneralNotes;

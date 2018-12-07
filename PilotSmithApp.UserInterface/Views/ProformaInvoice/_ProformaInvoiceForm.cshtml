@@ -13,7 +13,8 @@
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
-    <div class="col-md-11 divbox1">
+    @Html.HiddenFor(model => model.DocumentStatus.Description, htmlAttributes: new { @class = "", @id = "hdnDescription" })
+     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
@@ -219,23 +220,6 @@
                     </div>
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                        </div>
-                        <div class="col-md-12">
-                            <div class="divDocumentStatusSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
-                                @*  @Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "PIV" })*@
-                            </div>
-                        </div>
-                        <!-- This hidden field will keep the information whether the field is required or not -->
-                        @Html.Hidden("hdnDocumentStatusRequired", "required")
-                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                    </div>
-                </div>
-                <div class="form-group col-md-12 no-right-padding">
-                    <div class="col-md-6 no-padding">
-                        <div class="col-md-12">
                             @Html.LabelFor(model => model.ExpectedDelvDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
                         <div class="col-md-12">
@@ -243,6 +227,24 @@
                             @Html.ValidationMessageFor(model => model.ExpectedDelvDateFormatted, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    @*<div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-12">
+                            <div class="divDocumentStatusSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                               
+                            </div>
+                        </div>
+                       
+                        @Html.Hidden("hdnDocumentStatusRequired", "required")
+                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                    </div>*@
+                </div>
+                <div class="form-group col-md-12 no-right-padding">
+                   
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
@@ -257,6 +259,19 @@
                         <!-- This hidden field will keep the information whether the field is required or not -->
                         @Html.Hidden("hdnPreparedByRequired", "")
                         @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
+                    </div>
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.BillLocationCode, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            <div class="divBillLocationSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            </div>
+                        </div>
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBillLocationRequired", "")
+                        @Html.HiddenFor(model => model.BillLocationCode, htmlAttributes: new { @class = "", @id = "hdnBillLocationCode" })
                     </div>
                 </div>
                 <div class="form-group col-md-12 no-right-padding">
@@ -283,22 +298,6 @@
                         @Html.Hidden("hdnBranchRequired", "required")
                         @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
-                    <div class="col-md-6 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.BillLocationCode, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            <div class="divBillLocationSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            </div>
-                        </div>
-                        <!-- This hidden field will keep the information whether the field is required or not -->
-                        @Html.Hidden("hdnBillLocationRequired", "")
-                        @Html.HiddenFor(model => model.BillLocationCode, htmlAttributes: new { @class = "", @id = "hdnBillLocationCode" })
-                    </div>
-                </div>
-
-                <div class="form-group col-md-12 no-right-padding">
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.InvoiceType, htmlAttributes: new { @class = "control-label" })
@@ -343,17 +342,29 @@
                     </div>
                 </div>
 
+                
+
             </div>
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
                     <div class="Shadow2data clearfix">
-                        <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">Document Status</div>
-                        </div>
-                        <div class="form-group col-md-12">
+                        
+                        @*<div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
-                        </div>
-
+                        </div>*@
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="form-group col-md-12">
+                                <div class="rightAmtCaption">Document Status</div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="switch switch-flat">
+                                    <input class="switch-input" type="checkbox" checked />
+                                    <span class="switch-label" data-on="Open" data-off="Closed"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        }
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Email Status</div>
                         </div>
@@ -650,6 +661,49 @@
                     }
 <script>
     $(document).ready(function () {
+         try {
+
+            debugger;
+            $('.switch-input').on('change', function () {
+                debugger;
+                var isChecked = $(this).is(':checked');
+                var selectedData;
+                var $switchLabel = $('.switch-label');
+                console.log('isChecked: ' + isChecked);
+
+                if (isChecked) {
+                    selectedData = $switchLabel.attr('data-on');
+
+                } else {
+                    selectedData = $switchLabel.attr('data-off');
+                }
+
+                $.get("DocumentStatus/CloseDocument/?id=" + $('#ProformaInvoiceForm #ID').val() + "&doctype=PIV" + "&docstatus=" + selectedData, function (data) {
+                    debugger;
+                    // var JsonResult = JSON.parse(data)
+                    if (data == "1") {
+                        //   $('#anchorOpenSODInTab').trigger('click');
+                        BindOrReloadProformaInvoiceTable();
+                       // notyAlert('success', "Document status changed successfully!");
+                    }
+                    else {
+                        notyAlert('error', "Failed to change document status!");
+
+                        //  alert("Quotation not exist!");
+                    }
+
+                });
+
+               
+              //  console.log('Selected data: ' + selectedData);
+              //  alert(selectedData);
+            });
+
+
+        }
+        catch (e) {
+
+        }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList')
             $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=PIV&required=' + $('#hdnDocumentStatusRequired').val())

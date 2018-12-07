@@ -225,6 +225,9 @@ function EditServiceCall(this_Obj) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", ServiceCall.ID);
             }
             else {
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",ServiceCall.ID);
             }
             BindServiceCallDetailList(ServiceCall.ID);
@@ -234,7 +237,13 @@ function EditServiceCall(this_Obj) {
             clearUploadControl();
             PaintImages(ServiceCall.ID);
             CalculateTotal();
-            
+            if (ServiceCall.DocumentStatus.Description == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -245,6 +254,13 @@ function EditServiceCall(this_Obj) {
 function ResetServiceCall() {
     $("#divServiceCallForm").load("ServiceCall/ServiceCallForm?id=" + $('#ServiceCallForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
             $('#lblServiceCallInfo').text(($('#ServiceCallNo').val() !== "") ? $('#ServiceCallNo').val() : "Service Call Information");
             BindServiceCallDetailList($('#ID').val());
             BindServiceCallChargeDetailList($('#ID').val());
@@ -913,6 +929,12 @@ function SaveSuccessServiceCall(data, status) {
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ServiceCallForm #hdnCustomerID').val());
                     $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#hdnCustomerID').val());
                     //$('#DocumentID').val(_result.ID);
+                    if ($('#hdnDescription').val() == "OPEN") {
+                        $('.switch-input').prop('checked', true);
+
+                    } else {
+                        $('.switch-input').prop('checked', false);
+                    }
                 });
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit");
                 BindOrReloadServiceCallTable('Init');
@@ -1068,6 +1090,9 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "Edit", id);
             }
             else {
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",id);
             }
             BindServiceCallDetailList(id);
@@ -1076,6 +1101,13 @@ function EditRedirectToDocument(id) {
             clearUploadControl();
             PaintImages(id);
             CalculateTotal();
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

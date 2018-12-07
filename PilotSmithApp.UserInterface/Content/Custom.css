@@ -1511,7 +1511,7 @@ select{
 .switch-label:before {
 	content: attr(data-off);
 	right: 11px;
-	color: #aaaaaa;
+	color: #423b3b;
 	text-shadow: 0 1px rgba(255, 255, 255, 0.5);
 }
 .switch-label:after {
@@ -1580,7 +1580,7 @@ select{
 }
 .switch-flat .switch-label {
 	background: #FFF;
-	border: solid 2px #eceeef;
+	border: solid 2px #464242cc;
 	box-shadow: none;
 }
 .switch-flat .switch-label:after {
@@ -1589,7 +1589,7 @@ select{
 .switch-flat .switch-handle {
 	top: 6px;
 	left: 6px;
-	background: #dadada;
+	background:#464242cc;
 	width: 22px;
 	height: 22px;
 	box-shadow: none;
@@ -1606,3 +1606,9 @@ select{
 	background:#119564;
 	box-shadow: none;
 }
+ .switch-disabled {
+   border: solid 2px #eceeef !important;
+   color: #aaaaaa !important;
+   background: #dadada !important;
+
+ }

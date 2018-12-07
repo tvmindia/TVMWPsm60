@@ -344,7 +344,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = proformaInvoice.CustomerID;
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = proformaInvoice.MailingAddress;
                         cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = proformaInvoice.ShippingAddress;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = proformaInvoice.DocumentStatusCode;
+                       // cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = proformaInvoice.DocumentStatusCode;
                         cmd.Parameters.Add("@BillingLocationCode", SqlDbType.Int).Value = proformaInvoice.BillLocationCode;
                         cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value = proformaInvoice.ExpectedDelvDateFormatted;
                         cmd.Parameters.Add("@CashInvoiceYN", SqlDbType.Bit).Value = proformaInvoice.CashInvoiceYN;

@@ -256,6 +256,9 @@ function EditSaleInvoice(this_Obj) {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", SaleInvoice.ID);
             }
             else {
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", SaleInvoice.ID);
             }
 
@@ -273,6 +276,13 @@ function EditSaleInvoice(this_Obj) {
                 $('#divSaleInvoiceOtherChargesDetailList').hide();
                
             }
+            if (SaleInvoice.DocumentStatus.Description == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -282,7 +292,13 @@ function EditSaleInvoice(this_Obj) {
 function ResetSaleInvoice(event) {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
             if ($('#IsUpdate').val() == "False") {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add", $('#SaleInvoiceForm #ID').val());
             }
@@ -383,6 +399,14 @@ function SaveSuccessSaleInvoice(data, status) {
                         $("#divInvoiceType").hide();
 
                     }
+                    if ($('#hdnDescription').val() == "OPEN") {
+                        $('.switch-input').prop('checked', true);
+
+                    } else {
+                        $('.switch-input').prop('checked', false);
+                    }
+
+
                 });
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", _result.ID);
                 BindOrReloadSaleInvoiceTable('Init');
@@ -1680,7 +1704,7 @@ function EditSaleInvoiceServiceBill(this_Obj)
     });
 }
 function EditRedirectToDocument(id) {
-
+    debugger;
     OnServerCallBegin();
 
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + id, function (responseTxt, statusTxt, xhr) {
@@ -1692,6 +1716,9 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", id);
             }
             else {
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", id);
             }
             BindSaleInvoiceDetailList(id);
@@ -1700,6 +1727,20 @@ function EditRedirectToDocument(id) {
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
+            debugger;
+            if ($("#hdnInvoiceType").val() == "SB") {
+                $('#btnAddItems').css("display", "none");
+                $('#btnAddOtherExpenses').css("display", "none");
+                $('#divSaleInvoiceOtherChargesDetailList').hide();
+
+            }
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+
+            } else {
+                $('.switch-input').prop('checked', false);
+
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

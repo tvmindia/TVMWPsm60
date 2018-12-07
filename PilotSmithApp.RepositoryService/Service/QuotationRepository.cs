@@ -335,7 +335,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = quotation.CustomerID;
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = quotation.MailingAddress;
                         cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = quotation.ShippingAddress;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = quotation.DocumentStatusCode;
+                       // cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = quotation.DocumentStatusCode;
                         cmd.Parameters.Add("@ValidUpToDate", SqlDbType.DateTime).Value = quotation.ValidUpToDateFormatted;
                         cmd.Parameters.Add("@ReferredByCode", SqlDbType.Int).Value = quotation.ReferredByCode;
                         cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = quotation.PreparedBy;

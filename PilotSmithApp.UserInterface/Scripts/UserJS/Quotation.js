@@ -281,11 +281,16 @@ function EditQuotation(this_Obj) {
                     //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
                         break;
                     default:
+             
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
                         break;
                 }
             }
             else {
+           
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", Quotation.ID);
             }
             BindQuotationDetailList(Quotation.ID);
@@ -295,6 +300,17 @@ function EditQuotation(this_Obj) {
             clearUploadControl();
             PaintImages(Quotation.ID, _isApproval);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
+            debugger;
+         
+            if (Quotation.DocumentStatus.Description =="OPEN")
+            {
+                $('.switch-input').prop('checked', true);
+              
+            }else
+            {
+                $('.switch-input').prop('checked', false);
+             
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -343,6 +359,15 @@ function ResetQuotation() {
     }
     $("#divQuotationForm").load(str, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+                //  $('.switch-input').attr(':checked', ':checked');
+                //$('.switch-input').is(':checked') = true;
+            } else {
+                $('.switch-input').prop('checked', false);
+                //  $('.switch-input').removeAttr(':checked', ':checked');
+                // $('.switch-input').is(':checked') = false;
+            }
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 $("#divQuotationForm #EstimateID").prop('disabled', true);
                 //resides in customjs for sliding
@@ -354,7 +379,7 @@ function ResetQuotation() {
                 $("#QuotationForm #CustomerID").prop('disabled', false);
                 $('#lblQuotationInfo').text('<<Quotation No.>>');
             }
-            debugger;
+                    
             switch ($('#LatestApprovalStatus').val()) {
                 case "":
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
@@ -390,6 +415,8 @@ function ResetQuotation() {
             clearUploadControl();
             PaintImages($('#QuotationForm #ID').val(), _isApproval);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
+           
+
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -438,10 +465,19 @@ function SaveSuccessQuotation(data, status) {
                     CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID, _isApproval);
+                    if ($('#hdnDescription').val() == "OPEN") {
+                        $('.switch-input').prop('checked', true);
+                        
+                    } else {
+                        $('.switch-input').prop('checked', false);
+                        
+                    }
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
                 });
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
+                debugger;
                 BindOrReloadQuotationTable('Init');
+                
                 notyAlert('success', _result.Message);
                 break;
             case "ERROR":
@@ -1625,11 +1661,15 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
                         break;
                     default:
+
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
                         break;
                 }
             }
             else {
+                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                $('.switch-input').prop('disabled', true);
+                $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
             }
             BindQuotationDetailList(id);
@@ -1639,6 +1679,13 @@ function EditRedirectToDocument(id) {
             clearUploadControl();
             PaintImages(id, _isApproval);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
+            if ($('#hdnDescription').val() == "OPEN") {
+                $('.switch-input').prop('checked', true);
+               
+            } else {
+                $('.switch-input').prop('checked', false);
+             
+            }
 
         }
         else {

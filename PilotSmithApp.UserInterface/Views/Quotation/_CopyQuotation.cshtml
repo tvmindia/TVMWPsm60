@@ -5,6 +5,7 @@
         background: #ffffff;
         border-left: none;
     }
+
 </style>
 @using (Ajax.BeginForm("InsertUpdateQuotation", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotation", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "QuotationForm" }))
 {
@@ -20,6 +21,7 @@
     @Html.HiddenFor(model => model.ApproverLevel, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     @Html.HiddenFor(model => model.IsFileExist, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.DocumentStatus.Description, htmlAttributes: new { @class = "", @id = "hdnDescription" })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
@@ -204,87 +206,91 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divReferredByCodeSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
-                        </div>
-                    </div>
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnReferredByRequired", "")
-                    <!-- This hidden field will keep the information whether the field is disabled or not -->
-                    @Html.Hidden("hdnReferredBydisabled", false)
-                    @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        <div class="divPreparedBySelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
-                        </div>
-                    </div>
-                    
-                    @Html.Hidden("hdnPreparedByRequired", "")
-                    @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
-                </div>
-                
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
-                        @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    @if (Model.IsUpdate)
-                    {
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
+                            @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
                         </div>
-                    }
-                    else
-                    {
                         <div class="col-md-12">
-                            <div class="divBranchSelectList">
+                            <div class="divReferredByCodeSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
                             </div>
                         </div>
-                    }
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnBranchRequired", "required")
-                    <!-- This hidden field will keep the information whether the field is disabled or not -->
-                    @Html.Hidden("hdnBranchdisabled", false)
-                    @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-                </div>
-                @*<div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnReferredByRequired", "")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnReferredBydisabled", false)
+                        @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divDocumentStatusSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
                         </div>
-                    </div>*@
+                        <div class="col-md-12">
+                            <div class="divPreparedBySelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                            </div>
+                        </div>
+
+                        @Html.Hidden("hdnPreparedByRequired", "")
+                        @Html.HiddenFor(model => model.PreparedBy, htmlAttributes: new { @class = "", @id = "hdnPreparedBy" })
+                    </div>
+                    </div>
+                <div class="col-md-12 no-padding">
+                   
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="col-md-12">
+                                <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-12">
+                                <div class="divBranchSelectList">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                </div>
+                            </div>
+                        }
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBranchRequired", "required")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBranchdisabled", false)
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+                    </div>
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.TermReferenceNo, new { htmlAttributes = new { @class = "form-control newinput" } })
+                            @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    </div>
+                    @*<div class="col-md-6 no-padding">
+            <div class="col-md-12">
+                @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
+            </div>
+            <div class="col-md-12">
+                <div class="divDocumentStatusSelectList">
+                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                </div>
+            </div>*@
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @*@Html.Hidden("hdnDocumentStatusRequired", "required")
-                    @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                </div>*@
-   
+                @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+            </div>*@
 
-            </div>
+
+                </div>
             @*@if (Model.IsUpdate)
                 {*@
             <div class="form-group col-md-6 stausCombined">
@@ -297,7 +303,7 @@
                         <div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
                         </div>*@
-                        @if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus == 1 || Model.LatestApprovalStatus == 9)
+                        @if (Model.IsUpdate)
                         {
                             <div class="form-group col-md-12">
                                 <div class="rightAmtCaption">Document Status</div>
@@ -610,7 +616,7 @@
                     // var JsonResult = JSON.parse(data)
                     if (data == "1") {
                         //   $('#anchorOpenSODInTab').trigger('click');
-
+                        BindOrReloadQuotationTable();
                        // notyAlert('success', "Document status changed successfully!");
                     }
                     else {

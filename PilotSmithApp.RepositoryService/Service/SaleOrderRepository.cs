@@ -459,7 +459,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = saleOrder.CustomerID;
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = saleOrder.MailingAddress;
                         cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = saleOrder.ShippingAddress;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleOrder.DocumentStatusCode;
+                      //  cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleOrder.DocumentStatusCode;
                         cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value = saleOrder.ExpectedDelvDateFormatted;
                         cmd.Parameters.Add("@BankCode", SqlDbType.Int).Value = saleOrder.BankCode;
                         cmd.Parameters.Add("@ReferredByCode", SqlDbType.Int).Value = saleOrder.ReferredByCode;

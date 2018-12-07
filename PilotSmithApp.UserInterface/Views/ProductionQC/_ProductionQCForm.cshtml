@@ -12,7 +12,8 @@
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
-    <div class="col-md-11 divbox1">
+    @Html.HiddenFor(model => model.DocumentStatus.Description, htmlAttributes: new { @class = "", @id = "hdnDescription" })
+     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
@@ -145,20 +146,20 @@
                         @Html.Hidden("hdnBranchdisabled", false)
                         @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
                     </div>
-                    <div class="col-md-6 no-padding">
+                    @*<div class="col-md-6 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
                         <div class="col-md-12">
                             <div class="divDocumentStatusSelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                @*@Html.Action("DocumentStatusSelectList", "DocumentStatus", new { required = "required", code = "PQC" })*@
+                              
                             </div>
                         </div>
-                        <!-- This hidden field will keep the information whether the field is required or not -->
+                       
                         @Html.Hidden("hdnDocumentStatusRequired", "required")
                         @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                    </div>
+                    </div>*@
                 </div>
             </div>
             @*@if (Model.IsUpdate)
@@ -166,12 +167,23 @@
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
                     <div class="Shadow2data clearfix">
-                        <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">Document Status</div>
-                        </div>
-                        <div class="form-group col-md-12">
+                      
+                        @*<div class="form-group col-md-12">
                             <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
-                        </div>
+                        </div>*@
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="form-group col-md-12">
+                                <div class="rightAmtCaption">Document Status</div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="switch switch-flat">
+                                    <input class="switch-input" type="checkbox" checked />
+                                    <span class="switch-label" data-on="Open" data-off="Closed"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        }
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Approval Status</div>
                         </div>
@@ -319,6 +331,49 @@
 }
 <script>
     $(document).ready(function () {
+        try {
+
+            debugger;
+            $('.switch-input').on('change', function () {
+                debugger;
+                var isChecked = $(this).is(':checked');
+                var selectedData;
+                var $switchLabel = $('.switch-label');
+                console.log('isChecked: ' + isChecked);
+
+                if (isChecked) {
+                    selectedData = $switchLabel.attr('data-on');
+
+                } else {
+                    selectedData = $switchLabel.attr('data-off');
+                }
+
+                $.get("DocumentStatus/CloseDocument/?id=" + $('#ProductionQCForm #ID').val() + "&doctype=PQC" + "&docstatus=" + selectedData, function (data) {
+                    debugger;
+                    // var JsonResult = JSON.parse(data)
+                    if (data == "1") {
+                        //   $('#anchorOpenSODInTab').trigger('click');
+                        BindOrReloadProductionQCTable();
+                        // notyAlert('success', "Document status changed successfully!");
+                    }
+                    else {
+                        notyAlert('error', "Failed to change document status!");
+
+                        //  alert("Quotation not exist!");
+                    }
+
+                });
+
+
+                //  console.log('Selected data: ' + selectedData);
+                //  alert(selectedData);
+            });
+
+
+        }
+        catch (e) {
+
+        }
         try {
             $.validator.unobtrusive.parse("#ProductionQCForm");
         }

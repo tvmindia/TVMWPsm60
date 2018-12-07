@@ -377,7 +377,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@ServiceCallDate", SqlDbType.DateTime).Value = serviceCall.ServiceCallDateFormatted;
                         cmd.Parameters.Add("@ServiceCallTime", SqlDbType.DateTime).Value = serviceCall.ServiceCallTimeFormatted;
                         cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = serviceCall.CustomerID;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = serviceCall.DocumentStatusCode;
+                      //  cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = serviceCall.DocumentStatusCode;
                         cmd.Parameters.Add("@AttendedBy", SqlDbType.UniqueIdentifier).Value = serviceCall.AttendedBy;
                         cmd.Parameters.Add("@CalledPersonName", SqlDbType.VarChar, 50).Value = serviceCall.CalledPersonName;
                         cmd.Parameters.Add("@ServicedBy", SqlDbType.UniqueIdentifier).Value = serviceCall.ServicedBy;

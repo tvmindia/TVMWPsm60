@@ -442,7 +442,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = saleInvoice.CustomerID;
                         cmd.Parameters.Add("@MailingAddress", SqlDbType.NVarChar, -1).Value = saleInvoice.MailingAddress;
                         cmd.Parameters.Add("@ShippingAddress", SqlDbType.NVarChar, -1).Value = saleInvoice.ShippingAddress;
-                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleInvoice.DocumentStatusCode;
+                      //  cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = saleInvoice.DocumentStatusCode;
                         cmd.Parameters.Add("@BillingLocationCode", SqlDbType.Int).Value = saleInvoice.BillLocationCode;
                         cmd.Parameters.Add("@ExpectedDelvDate", SqlDbType.DateTime).Value = saleInvoice.ExpectedDelvDateFormatted;
                         cmd.Parameters.Add("@CashInvoiceYN", SqlDbType.Bit).Value = saleInvoice.CashInvoiceYN;
