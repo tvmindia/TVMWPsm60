@@ -101,15 +101,30 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
-                                @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="col-md-6 no-padding">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off", @data_toggle = "popover", @data_content = "Select date with in financial year",@data_placement="top" } })
+                                    @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                            <div class="col-md-12">
-                                @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
+                        }
+                        else
+                        {
+                            <div class="col-md-6 no-padding">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
 
                     <div class="col-md-12 no-padding">
@@ -384,6 +399,8 @@
                 }
 <script>
     $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({          
+        });
         try {
 
             debugger;
@@ -433,6 +450,35 @@
             if ($('#hdnCurrencyCode').val()=="INR") {
                 $('#idCurRateForAutofocus').prop("disabled",true)
             }
+            var enqDate = $('#EnquiryDateFormatted').val();
+            function getCurrentFinancialYear(enqDate)
+            {
+                debugger;
+                var startYear = "";
+                var endYear = "";
+                var docDate = new Date(enqDate);
+                if((docDate.getMonth()+1)<=3)
+                {
+                    startYear = docDate.getFullYear()-1;
+                    endYear = docDate.getFullYear();
+                }
+                else
+                {
+                    startYear = docDate.getFullYear();
+                    endYear = docDate.getFullYear() + 1;
+                }
+                return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
+            }                    
+            $('input.datepicker').datepicker({
+                format: "dd-M-yyyy",
+                maxViewMode: 0,
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true,
+                startDate: getCurrentFinancialYear(enqDate).startDate,
+                endDate: getCurrentFinancialYear(enqDate).endDate
+            });
                 </text>
             }
             else
@@ -499,14 +545,16 @@
             console.log(e.message);
         }
         try {
+            debugger;          
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",
                 maxViewMode: 0,
                 todayBtn: "linked",
                 clearBtn: true,
                 autoclose: true,
-                todayHighlight: true
+                todayHighlight: true             
             });
+
         }
         catch (e) {
             console.log(e.message);
