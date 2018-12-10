@@ -747,7 +747,8 @@ function AddProductionOrderDetailToList() {
                     var checkpoint = 0;
                     for (var i = 0; i < productionOrderDetailList.length; i++) {
                         if ((productionOrderDetailList[i].ProductID == $('#ProductID').val()) && (productionOrderDetailList[i].ProductModelID == $('#ProductModelID').val()
-                            && (productionOrderDetailList[i].ProductSpec == $('#ProductSpec').val()))) {
+                            && (productionOrderDetailList[i].ProductSpec == $('#ProductSpec').val()) && (productionOrderDetailList[i].UnitCode == $('#UnitCode').val()
+                            && (productionOrderDetailList[i].Rate == parseFloat($('#divModelProductionOrderPopBody #Rate').val()))))) {
                             productionOrderDetailList[i].ProducedQty = parseFloat(productionOrderDetailList[i].ProducedQty) + parseFloat($('#ProducedQty').val());
                             checkpoint = 1;
                             break;

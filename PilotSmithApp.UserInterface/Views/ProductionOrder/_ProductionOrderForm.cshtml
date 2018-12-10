@@ -561,6 +561,11 @@
                 $('#idCurRateForAutofocus').prop("disabled",true)
             }
 
+            $('.changeCurrency').change(function () {
+                if (this.nodeName == "INPUT") {
+                    $('#hdnCurrencyRate').val(this.value)
+                }
+            });
             var prodOrderDate = $('#ProdOrderDateFormatted').val();
             if (prodOrderDate != "") {
 

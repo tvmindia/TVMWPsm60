@@ -807,6 +807,11 @@
                 $('#idCurRateForAutofocus').prop("disabled",true)
             }
 
+            $('.changeCurrency').change(function () {
+                if (this.nodeName == "INPUT") {
+                    $('#hdnCurrencyRate').val(this.value)
+                }
+            });
             var saleInvDate = $('#SaleInvDateFormatted').val();
             if (saleInvDate != "") {
 

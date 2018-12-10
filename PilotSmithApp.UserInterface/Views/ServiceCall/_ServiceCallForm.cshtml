@@ -39,7 +39,7 @@
                             @Html.HiddenFor(model => model.CurrencyCode, htmlAttributes: new { @class = "", @id = "hdnCurrencyCode" })
                             @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
                             @Html.Label("Select currency", htmlAttributes: new { @class = "control-label lblrequired" })
-                            <label class="control-label lblrequired">Rate</label>
+                            <label class="control-label lblrequired lblrate">Rate</label>
                         </div>
                         <div class="col-md-12 no-padding">
                             <div class="col-md-12" style="display:inline-flex;font-weight:500;">
@@ -620,6 +620,12 @@
             if ($('#hdnCurrencyCode').val() == "INR") {
                 $('#idCurRateForAutofocus').prop("disabled", true)
             }
+
+            $('.changeCurrency').change(function () {
+                if (this.nodeName == "INPUT") {
+                    $('#hdnCurrencyRate').val(this.value)
+                }
+            });
             var serviceCallDate = $('#ServiceCallDateFormatted').val();
             function getCurrentFinancialYear(serviceCallDate) {
                 debugger;
