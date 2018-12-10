@@ -691,7 +691,7 @@
 
         }
         catch (e) {
-
+            console.log(e.message);
         }
 
         try {
@@ -727,52 +727,53 @@
                     endYear = docDate.getFullYear() + 1;
                 }
                 return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
-            if ($('#hdnCurrencyCode').val() == "INR") {
-                $('#idCurRateForAutofocus').prop("disabled", true)
-            }
-            $('#SaleOrderDateFormatted').datepicker({
-                format: "dd-M-yyyy",
-                maxViewMode: 0,
-                todayBtn: "linked",
-                clearBtn: true,
-                autoclose: true,
-                todayHighlight: true,
-                startDate: getCurrentFinancialYear(saleorderDate).startDate,
-                endDate: getCurrentFinancialYear(saleorderDate).endDate
-            });
-            </text>       
+                if ($('#hdnCurrencyCode').val() == "INR") {
+                    $('#idCurRateForAutofocus').prop("disabled", true)
+                }
+                $('#SaleOrderDateFormatted').datepicker({
+                    format: "dd-M-yyyy",
+                    maxViewMode: 0,
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    autoclose: true,
+                    todayHighlight: true,
+                    startDate: getCurrentFinancialYear(saleorderDate).startDate,
+                    endDate: getCurrentFinancialYear(saleorderDate).endDate
+                });
+                </text>       
             }
             else
             {
                 <text>
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
+                $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
 
-            });
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
+                });
+                $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
 
 
-            if ($('#hdnCurrencyCode').val() == "INR") {
-                $('#idCurRateForAutofocus').prop("disabled", true)
+                if ($('#hdnCurrencyCode').val() == "INR") {
+                    $('#idCurRateForAutofocus').prop("disabled", true)
+                }
+
+                </text>
             }
-
-            </text>
-            }
-            @if ((!Model.IsUpdate))
+                @if ((!Model.IsUpdate))
              {
                  <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-            });
+                $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+                });
 
-            $('.changeCurrency').change(function () {
-                debugger;
-                if (this.nodeName == "INPUT") {
-                    $('#hdnCurrencyRate').val(this.value)
-                }
-            });
+                $('.changeCurrency').change(function () {
+                    debugger;
+                    if (this.nodeName == "INPUT") {
+                        $('#hdnCurrencyRate').val(this.value)
+                    }
+                });
 
 
-            </text>
+                </text>
              }
+            }
         }
         catch (e) {
             console.log(e.message);
