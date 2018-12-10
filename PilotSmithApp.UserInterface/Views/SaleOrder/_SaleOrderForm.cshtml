@@ -1092,7 +1092,7 @@
                 $('#btnSelect').css("background", "#b2aca4");
             }
 
-            if ($('#LatestApprovalStatus').val() != '0') {
+            if ($('#LatestApprovalStatus').val() != '0' && $('#LatestApprovalStatus').val() != "") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Approved");
                 $('#btnUpload').prop("onclick", null);
