@@ -439,31 +439,35 @@
              {
                 <text>
             var delvchallanDate = $('#DelvChallanDateFormatted').val();
-            function getCurrentFinancialYear(delvchallanDate) {
-                debugger;
-                var startYear = "";
-                var endYear = "";
-                var docDate = new Date(delvchallanDate);
-                if ((docDate.getMonth() + 1) <= 3) {
-                    startYear = docDate.getFullYear() - 1;
-                    endYear = docDate.getFullYear();
+            if (delvchallanDate != "") {
+
+
+                function getCurrentFinancialYear(delvchallanDate) {
+                    debugger;
+                    var startYear = "";
+                    var endYear = "";
+                    var docDate = new Date(delvchallanDate);
+                    if ((docDate.getMonth() + 1) <= 3) {
+                        startYear = docDate.getFullYear() - 1;
+                        endYear = docDate.getFullYear();
+                    }
+                    else {
+                        startYear = docDate.getFullYear();
+                        endYear = docDate.getFullYear() + 1;
+                    }
+                    return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
                 }
-                else {
-                    startYear = docDate.getFullYear();
-                    endYear = docDate.getFullYear() + 1;
-                }
-                return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
+                $('#DelvChallanDateFormatted').datepicker({
+                    format: "dd-M-yyyy",
+                    maxViewMode: 0,
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    autoclose: true,
+                    todayHighlight: true,
+                    startDate: getCurrentFinancialYear(delvchallanDate).startDate,
+                    endDate: getCurrentFinancialYear(delvchallanDate).endDate
+                });
             }
-            $('#DelvChallanDateFormatted').datepicker({
-                format: "dd-M-yyyy",
-                maxViewMode: 0,
-                todayBtn: "linked",
-                clearBtn: true,
-                autoclose: true,
-                todayHighlight: true,
-                startDate: getCurrentFinancialYear(delvchallanDate).startDate,
-                endDate: getCurrentFinancialYear(delvchallanDate).endDate
-            });
                 </text>
              }
             else

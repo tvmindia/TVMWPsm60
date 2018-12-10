@@ -808,31 +808,35 @@
             }
 
             var saleInvDate = $('#SaleInvDateFormatted').val();
-            function getCurrentFinancialYear(saleInvDate) {
-                debugger;
-                var startYear = "";
-                var endYear = "";
-                var docDate = new Date(saleInvDate);
-                if ((docDate.getMonth() + 1) <= 3) {
-                    startYear = docDate.getFullYear() - 1;
-                    endYear = docDate.getFullYear();
+            if (saleInvDate != "") {
+
+
+                function getCurrentFinancialYear(saleInvDate) {
+                    debugger;
+                    var startYear = "";
+                    var endYear = "";
+                    var docDate = new Date(saleInvDate);
+                    if ((docDate.getMonth() + 1) <= 3) {
+                        startYear = docDate.getFullYear() - 1;
+                        endYear = docDate.getFullYear();
+                    }
+                    else {
+                        startYear = docDate.getFullYear();
+                        endYear = docDate.getFullYear() + 1;
+                    }
+                    return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
                 }
-                else {
-                    startYear = docDate.getFullYear();
-                    endYear = docDate.getFullYear() + 1;
-                }
-                return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
+                $('#SaleInvDateFormatted').datepicker({
+                    format: "dd-M-yyyy",
+                    maxViewMode: 0,
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    autoclose: true,
+                    todayHighlight: true,
+                    startDate: getCurrentFinancialYear(saleInvDate).startDate,
+                    endDate: getCurrentFinancialYear(saleInvDate).endDate
+                });
             }
-            $('#SaleInvDateFormatted').datepicker({
-                format: "dd-M-yyyy",
-                maxViewMode: 0,
-                todayBtn: "linked",
-                clearBtn: true,
-                autoclose: true,
-                todayHighlight: true,
-                startDate: getCurrentFinancialYear(saleInvDate).startDate,
-                endDate: getCurrentFinancialYear(saleInvDate).endDate
-            });
                 </text>
          }
          else
