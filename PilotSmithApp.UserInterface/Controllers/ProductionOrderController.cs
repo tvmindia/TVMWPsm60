@@ -148,11 +148,11 @@ namespace PilotSmithApp.UserInterface.Controllers
             ProductionOrderDetailViewModel productionOrderDetailVM = new ProductionOrderDetailViewModel();           
             productionOrderDetailVM = new ProductionOrderDetailViewModel();
             AppUA appUA = Session["AppUA"] as AppUA;
-            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
-            Session["ProdSession"] = 1;
-            if (permission.SubPermissionList.Count > 0)
+            Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "SellingPrice");
+            
+            if (permission!=null)
             {
-                string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
+                string p = permission.AccessCode;
                 if (p.Contains("R") || p.Contains("W"))
                 {
                     productionOrderDetailVM.ShowRate = true;
