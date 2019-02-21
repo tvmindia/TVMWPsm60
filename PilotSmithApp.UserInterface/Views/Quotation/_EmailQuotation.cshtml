@@ -68,9 +68,9 @@
         </div>
         <div style="padding:0px 30px 0px 30px;margin-left:51px;">
             <div id="divQuotationEmailcontainer">
-    @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
-                    var tot = "";
-                    PSASysCommon pSASysCommon = new PSASysCommon();}
+    @{ decimal itemtaxableAmount = 0, itemDiscountAmount = 0, totalItemDiscountAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0;
+        var tot = "";
+        PSASysCommon pSASysCommon = new PSASysCommon();}
     <table style="width:100%;font-size:11px">
         <thead>
             <tr><th colspan="6" style="text-align:center;text-decoration:underline;font-weight:100;font-size:16px;">Quotation</th></tr>
@@ -172,6 +172,7 @@
                         foreach (var mp in Model.QuotationDetailList)
                         {
                             decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, GSTAmt = 0;
+                            itemDiscountAmount = Math.Round((decimal)mp.Discount, 2);
                             itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
                             CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
                             SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
@@ -225,16 +226,17 @@
                                     <td style="width:10%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@IGSTAmt<br /><span style="font-size:8px;">(@mp.IGSTPerc %)</span></td>
                                     <td style="width:10%;text-align: right;padding-top:5px;font-size:8px;vertical-align:top;">@itemgrandTotal</td>
                                 </tr>
-                                    slno = slno + 1;
-                                    totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
-                                    totalCGST = totalCGST + (decimal)CGSTAmt;
-                                    totalSGST = totalSGST + (decimal)SGSTAmt;
-                                    totalIGST = totalIGST + (decimal)IGSTAmt;
-                                }
-                                        grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
-                                        grandTotal = grossAmt - ((decimal)Model.Discount);
-                                        GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
-                                    }
+                            slno = slno + 1;
+                            totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
+                            totalItemDiscountAmount = totalItemDiscountAmount + (decimal)@itemDiscountAmount;
+                            totalCGST = totalCGST + (decimal)CGSTAmt;
+                            totalSGST = totalSGST + (decimal)SGSTAmt;
+                            totalIGST = totalIGST + (decimal)IGSTAmt;
+                        }
+                        grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST, 2);
+                        grandTotal = grossAmt - ((decimal)Model.Discount);
+                        GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
+                    }
                     <tr>
                       
                         <td colspan="6" style="border-top:solid .5px;vertical-align:top;padding-top:9px;">
@@ -290,6 +292,15 @@
                         <td colspan="4" style="font:9px;border-top:solid .5px;padding-top:8px;">
                             <table style="width:100%">
                                 <tr class="">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:9px;border-bottom:solid .5px;text-align:left;" valign="top">
+                                        Total Item Discount
+                                    </td>
+
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:9px;border-bottom:solid .5px" align="right" valign="top">
+                                        @totalItemDiscountAmount
+                                    </td>
+                                </tr>
+                                <tr class="">
                                     <td style="vertical-align: top; padding-top: 1px;font-size:9px;border-bottom:solid .5px;text-align:left" valign="top">
                                         Total Taxable Amount
                                     </td>
@@ -308,7 +319,7 @@
                                         @GSTTotal
                                     </td>
                                 </tr>
-
+                                
                                 <tr class="">
                                     <td style="vertical-align: top; padding-top: 1px;font-size:9px;border-bottom:solid 1px;text-align:left;" valign="top">
                                         Other Items Amount

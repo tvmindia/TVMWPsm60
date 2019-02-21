@@ -1551,11 +1551,13 @@ function DeleteQuotationOtherChargeDetail(ID) {
     }
 }
 function CalculateTotal() {
-    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00;
+    debugger;
+    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, TotalDiscount=0.00;
     var quotationDetail = _dataTable.QuotationDetailList.rows().data();
     var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.rows().data();
     for (var i = 0; i < quotationDetail.length; i++) {
         var TaxableAmt = (parseFloat(quotationDetail[i].Rate != "" ? quotationDetail[i].Rate : 0) * parseInt(quotationDetail[i].Qty != "" ? quotationDetail[i].Qty : 1)) - parseFloat(quotationDetail[i].Discount != "" ? quotationDetail[i].Discount : 0)
+        var ItemDiscount=(parseFloat(quotationDetail[i].Discount != "" ? quotationDetail[i].Discount : 0));
         var CGST = parseFloat(quotationDetail[i].CGSTPerc != "" ? quotationDetail[i].CGSTPerc : 0);
         var SGST = parseFloat(quotationDetail[i].SGSTPerc != "" ? quotationDetail[i].SGSTPerc : 0);
         var IGST = parseFloat(quotationDetail[i].IGSTPerc != "" ? quotationDetail[i].IGSTPerc : 0);
@@ -1564,6 +1566,7 @@ function CalculateTotal() {
         var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
         var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
         var GrossTotalAmt = TaxableAmt + GSTAmt
+        TotalDiscount = roundoff(parseFloat(TotalDiscount) + parseFloat(ItemDiscount));
         TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
         TaxableTotal = roundoff(parseFloat(TaxableTotal) + parseFloat(TaxableAmt))
         GrossAmount = roundoff(parseFloat(GrossAmount) + GrossTotalAmt)
@@ -1582,6 +1585,7 @@ function CalculateTotal() {
     GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt))
     $('#lblTaxTotal').text(roundoff(TaxTotal));
     $('#lblItemTotal').text(roundoff(TaxableTotal));
+    $('#lblDiscountTotal').text(roundoff(TotalDiscount));
     $('#lblGrossAmount').text(GrossAmount);
     $('#lblGrandTotal').text(GrossAmount);
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
