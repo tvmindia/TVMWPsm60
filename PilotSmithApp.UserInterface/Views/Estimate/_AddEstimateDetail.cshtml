@@ -3,55 +3,56 @@
 {
     @Html.HiddenFor(model => model.EstimateID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.CostPriceHasAccess, htmlAttributes: new { @class = "" })
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
-           @if (Model.IsUpdate)
-             {
-              <div class="col-md-12">
-                 <span class="form-control newinput" id="spanProductName" style="background-color:#eeeeee"></span>
-              </div> 
-              }
-           else
-              {
+            @if (Model.IsUpdate)
+            {
+                <div class="col-md-12">
+                    <span class="form-control newinput" id="spanProductName" style="background-color:#eeeeee"></span>
+                </div>
+            }
+            else
+            {
 
-            <div class="col-md-12">
-                <div class="divProductSelectList">
-                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                    @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
-                </div>              
-            </div>
-              }
+                <div class="col-md-12">
+                    <div class="divProductSelectList">
+                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        @*@Html.Action("ProductSelectList", "Product", new { required = "required" })*@
+                    </div>
+                </div>
+            }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductRequired", "required")
             @Html.HiddenFor(model => model.ProductID, htmlAttributes: new { @class = "", @id = "hdnProductID" })
         </div>
-       
+
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
                 @Html.LabelFor(model => model.ProductModelID, htmlAttributes: new { @class = "control-label lblrequired" })
             </div>
-           @if (Model.IsUpdate)
+            @if (Model.IsUpdate)
             {
-                 <div class="col-md-12">
-                   <span class="form-control newinput" id="spanProductModelName" style="background-color:#eeeeee"></span>
-                 </div>
-              }
+                <div class="col-md-12">
+                    <span class="form-control newinput" id="spanProductModelName" style="background-color:#eeeeee"></span>
+                </div>
+            }
             else
             {
-            <div class="col-md-12">
-                <div class="divProductModelSelectList">
-                    <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
-                    @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "" })*@
-                </div>              
-            </div>
-             }
+                <div class="col-md-12">
+                    <div class="divProductModelSelectList">
+                        <span class="form-control newinput"><i id="dropLoad" class=""></i></span>
+                        @*@Html.Action("ProductModelSelectList", "ProductModel", new { required = "" })*@
+                    </div>
+                </div>
+            }
             <!-- This hidden field will keep the information whether the field is required or not -->
             @Html.Hidden("hdnProductModelRequired", "required")
             @Html.HiddenFor(model => model.ProductModelID, htmlAttributes: new { @class = "", @id = "hdnProductModelID" })
-        </div>      
+        </div>
         <div id="divProductBasicInfo">
             @Html.Action("ProductBasicInfo", "Product", new { ID = Guid.Empty })
         </div>
@@ -85,7 +86,7 @@
                     <div class="divUnitSelectList">
                         <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                         @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
-                    </div>                  
+                    </div>
                 </div>
                 <!-- This hidden field will keep the information whether the field is required or not -->
                 @Html.Hidden("hdnUnitRequired", "required")
@@ -96,20 +97,26 @@
         </div>
 
         <div class="col-md-12 no-padding">
-            <div class="col-md-6 no-padding">
-                <div class="col-md-12">
-                    @*<span class="control-label lblrequired">CostRate(<span class="control-label lblrequired" id="detailCurCostRate">INR</span>)</span>*@ 
-                    @Html.LabelFor(model => model.CostRate, htmlAttributes: new { @class = "control-label " })  (<span class="control-label" id="detailCurCostRate"> INR </span>)
-                </div>
-                <div class="col-md-12">
-                    @Html.EditorFor(model => model.CostRate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
-                    @Html.ValidationMessageFor(model => model.CostRate, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            @{
+                if (Model.CostPriceHasAccess == true)
+                {
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @*<span class="control-label lblrequired">CostRate(<span class="control-label lblrequired" id="detailCurCostRate">INR</span>)</span>*@
+                            @Html.LabelFor(model => model.CostRate, htmlAttributes: new { @class = "control-label " })  (<span class="control-label" id="detailCurCostRate"> INR </span>)
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.CostRate, new { htmlAttributes = new { @class = "form-control newinput Amount ApplyCurrency", @onkeypress = "return isNumber(event)" } })
+                            @Html.ValidationMessageFor(model => model.CostRate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+            }
+
 
             <div class="col-md-6 no-padding">
                 <div class="col-md-12">
-                    @*<span class="control-label lblrequired">SellingRate(<span class="control-label lblrequired" id="detailCurSellingRate">INR</span>)</span>*@ 
+                    @*<span class="control-label lblrequired">SellingRate(<span class="control-label lblrequired" id="detailCurSellingRate">INR</span>)</span>*@
                     @Html.LabelFor(model => model.SellingRate, htmlAttributes: new { @class = "control-label " })  (<span class="control-label" id="detailCurSellingRate"> INR </span>)
                 </div>
                 <div class="col-md-12">
@@ -132,23 +139,23 @@
         </div>
 
     </div>
-        <div class="modal-footer d-flex justify-content-center">
-            <button class="btn btn-default" id="btnAddEstimateDetail" onclick="AddEstimateDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-        </div>
-}
+    <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-default" id="btnAddEstimateDetail" onclick="AddEstimateDetailToList()" style="margin-right:3%;margin-top:2%">Add Details <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
+    </div>
+                }
 
 <script>
     $(document).ready(function () {
         try {
-     @if (Model.IsUpdate)
+            @if (Model.IsUpdate)
      {
 
      }
      else
-     { 
+     {
          <text>
-          $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
-         </text>
+            $('.divProductSelectList').load('/Product/ProductSelectList?required=' + $('#hdnProductRequired').val())
+            </text>
      }
             $('.divUnitSelectList').load('/Unit/UnitSelectList?required=' + $('#hdnUnitRequired').val())
         }

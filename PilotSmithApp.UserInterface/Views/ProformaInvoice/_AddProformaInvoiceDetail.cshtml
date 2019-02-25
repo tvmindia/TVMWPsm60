@@ -187,6 +187,7 @@
 }
 <script>
     $(document).ready(function () {
+        $.validator.setDefaults({ ignore: "#TaxTypeCode,#hdnTaxTypeCode" });
         $.validator.unobtrusive.parse("#FormProformaInvoiceDetail");
         try {
              @if (Model.IsUpdate)

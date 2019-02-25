@@ -236,7 +236,7 @@
         catch (e) {
             console.log(e.message);
         }
-        $.validator.unobtrusive.parse("#FormQuotationDetail");
+        
         $('#divModelPopQuotation #ProductID,#divModelPopQuotation #UnitCode,#divModelPopQuotation #TaxTypeCode').select2({
             dropdownParent: $("#divModelPopQuotation")
         });
@@ -245,5 +245,7 @@
         //For Currency
         $('#detailCurRate').text($('#hdnCurrencyCode').val())
         $('#detailCurDiscount').text($('#hdnCurrencyCode').val())
+        $.validator.setDefaults({ ignore: "#TaxTypeCode,#hdnTaxTypeCode" })
+        $.validator.unobtrusive.parse("#FormQuotationDetail");
     });
 </script>

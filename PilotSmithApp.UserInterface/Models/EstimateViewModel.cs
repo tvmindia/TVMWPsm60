@@ -127,5 +127,6 @@ namespace PilotSmithApp.UserInterface.Models
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
         public bool IsUpdate { get; set; }
+        public bool CostPriceHasAccess { get; set; }
     }
 }

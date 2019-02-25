@@ -9,24 +9,38 @@
 
 @{
 
-            DataTable Dt = Model.DataTable;
-            int i;
-            for (i = 0; i < Dt.Columns.Count; i++)
-            {
+    DataTable Dt = Model.DataTable;
+    int i;
+    for (i = 0; i < Dt.Columns.Count; i++)
+    {
         <div class="col-md-12 row SummaryRow">
+            @{if (Dt.Columns[i].Caption != "Warning")
+                {
+                    <div class="col-md-5 SummaryCaption">
+                        @Dt.Columns[i].ColumnName
+                    </div>
 
-            <div class="col-md-5 SummaryCaption">
-                @Dt.Columns[i].ColumnName
-            </div>
-
-            <div class="col-md-7 SummaryValue">
-                :&nbsp;   @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
-            </div>
-
+                    <div class="col-md-7 SummaryValue">
+                        :&nbsp;   @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
+                    </div>
+                    }
+                    else
+                    {
+                        if (Dt.Rows[0][Dt.Columns[i].ColumnName].ToString() != "")
+                    {
+                        <div class="col-md-5 SummaryCaption">
+                            <span style="color:red;font-size:x-large">&#9888;</span>&nbsp;<span style="color:red;">@Dt.Columns[i].ColumnName </span>
+                        </div>
+                        <div class="col-md-7 SummaryValue">
+                            <span style="color:red">@Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())</span>
+                        </div>
+                    }
+                }
+            }
         </div>
 
 
-    }
+                }
 
 }
 

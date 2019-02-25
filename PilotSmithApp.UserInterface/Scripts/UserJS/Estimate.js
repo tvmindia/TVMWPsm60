@@ -402,14 +402,26 @@ function BindEstimateDetailList(id,IsEnquiry) {
                  }, "defaultContent": "<i></i>"
              },
              //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             { "data": "CostRate", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
+             {
+                 "data": "CostRate", render: function (data, type, row) {
+                     if (row.CostPriceHasAccess == true)
+                         return formatCurrency(roundoff(data))
+                     else
+                         return "###";
+                 }, "defaultContent": "<i></i>"
+             },
              { "data": "SellingRate", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
              { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              {
                  "data": "TotalCostPrice", render: function (data, type, row)
                  {
-                     var Result = roundoff(parseFloat(row.CostRate) * parseFloat(row.Qty));                     
-                     return formatCurrency(Result);
+                     if (row.CostPriceHasAccess == true) {
+                         var Result = roundoff(parseFloat(row.CostRate) * parseFloat(row.Qty));
+                         return formatCurrency(Result);
+                     }
+                     else {
+                         return "###";
+                     }
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -429,6 +441,23 @@ function BindEstimateDetailList(id,IsEnquiry) {
                  { className: "text-right", "targets": [2,4 ,3,6,7] },
                  { className: "text-center", "targets": [8] }
              ],
+             rowCallback: function (row, data) {
+                 debugger;
+                 var table = $('#tblEstimateDetails').DataTable();
+                 if (data.CostPriceHasAccess == true) {
+                     debugger;
+                     $('#costRate').show();
+                     table.column(3).visible(true);
+                     $('#totalcostRate').show();
+                     table.column(6).visible(true);
+                 }
+                 else {
+                     $('#costRate').hide();
+                     table.column(3).visible(false);
+                     $('#totalcostRate').show();
+                     table.column(6).visible(false);
+                 }
+             },
              destroy:true
          });
     $('[data-toggle="popover"]').popover({
@@ -509,7 +538,10 @@ function AddEstimateDetailToList() {
                 estimateDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
                 Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                 estimateDetailList[_datatablerowindex].Unit = Unit;
-                estimateDetailList[_datatablerowindex].CostRate = $('#CostRate').val()!=""? $('#CostRate').val():0;
+                if ($('#CostPriceHasAccess').val() == true)
+                    estimateDetailList[_datatablerowindex].CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
+                else
+                    estimateDetailList[_datatablerowindex].CostRate = $('#hdnCostPrice').val() != "" ? $('#hdnCostPrice').val() : 0;
                 estimateDetailList[_datatablerowindex].SellingRate = $('#SellingRate').val() !=""?$('#SellingRate').val():0;
                 estimateDetailList[_datatablerowindex].DrawingNo = $('#DrawingNo').val();
                 _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
@@ -534,7 +566,10 @@ function AddEstimateDetailToList() {
                     estimateDetailList[0].Qty = $('#Qty').val() != "" ? $('#Qty').val() : 0;
                     estimateDetailList[0].UnitCode = $('#UnitCode').val();
                     estimateDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                    estimateDetailList[0].CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
+                    if ($('#CostPriceHasAccess').val() == true)
+                        estimateDetailList[0].CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
+                    else
+                        estimateDetailList[0].CostRate = $('#hdnCostPrice').val() != "" ? $('#hdnCostPrice').val() : 0;
                     estimateDetailList[0].SellingRate = $('#SellingRate').val() != "" ? $('#SellingRate').val() : 0;
                     estimateDetailList[0].DrawingNo = $('#DrawingNo').val();
                     _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
@@ -550,7 +585,7 @@ function AddEstimateDetailToList() {
                         for (var i = 0; i < estimateDetailList.length; i++) {
                             if ((estimateDetailList[i].ProductID == $('#ProductID').val()) && (estimateDetailList[i].ProductModelID == $('#ProductModelID').val()
                                 && (estimateDetailList[i].ProductSpec == null ? "" : estimateDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (estimateDetailList[i].UnitCode == $('#UnitCode').val())
-                                && (estimateDetailList[i].CostRate == $('#CostRate').val()) && (estimateDetailList[i].SellingRate == $('#SellingRate').val())
+                                && ($('#CostPriceHasAccess').val() == true ? estimateDetailList[i].CostRate == $('#CostRate').val() : estimateDetailList[i].CostRate == $('#hdnCostPrice').val()) && (estimateDetailList[i].SellingRate == $('#SellingRate').val())
                                 ))) {
                                 estimateDetailList[i].Qty = parseFloat(estimateDetailList[i].Qty) + parseFloat($('#Qty').val());
                                 checkpoint = 1;
@@ -581,7 +616,10 @@ function AddEstimateDetailToList() {
                             Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                             EstimateDetailVM.Unit = Unit;
                             EstimateDetailVM.UnitCode = $('#UnitCode').val();
-                            EstimateDetailVM.CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
+                            if ($('#CostPriceHasAccess').val() == true)
+                                EstimateDetailVM.CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
+                            else
+                                EstimateDetailVM.CostRate = $('#hdnCostPrice').val() != "" ? $('#hdnCostPrice').val() : 0;
                             EstimateDetailVM.SellingRate = $('#SellingRate').val() != "" ? $('#SellingRate').val() : 0;
                             EstimateDetailVM.DrawingNo = $('#DrawingNo').val();
                             _dataTable.EstimateDetailList.row.add(EstimateDetailVM).draw(false);

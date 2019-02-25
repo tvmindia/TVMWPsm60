@@ -27,7 +27,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         ICommonBusiness _commonBusiness;
         IAreaBusiness _areaBusiness;
         IReferencePersonBusiness _referencePersonBusiness;
-        IDocumentStatusBusiness _documentStatusBusiness;    
+        IDocumentStatusBusiness _documentStatusBusiness;
         SecurityFilter.ToolBarAccess _tool;
         ICurrencyBusiness _currencyBusiness;
 
@@ -43,7 +43,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;
             _areaBusiness = areaBusiness;
             _referencePersonBusiness = referencePersonBusiness;
-            _documentStatusBusiness = documentStatusBusiness;           
+            _documentStatusBusiness = documentStatusBusiness;
             _tool = tool;
             _currencyBusiness = currencyBusiness;
         }
@@ -57,14 +57,14 @@ namespace PilotSmithApp.UserInterface.Controllers
             estimateAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             estimateAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("EST");
             return View(estimateAdvanceSearchVM);
-        } 
+        }
 
         #region GetEstimateForm
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult EstimateForm(Guid id,Guid? enquiryID)
         {
             EstimateViewModel estimateVM = null;
-           try
+            try
             {
                 if (id != Guid.Empty)
                 {
@@ -76,7 +76,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     estimateVM.Currency = new CurrencyViewModel();
 
                 }
-                else if(id==Guid.Empty && enquiryID==null)
+                else if (id == Guid.Empty && enquiryID == null)
                 {
                     estimateVM = new EstimateViewModel();
                     estimateVM.IsUpdate = false;
@@ -97,7 +97,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
                     };
                 }
-                else if(id==Guid.Empty && enquiryID!=null)
+                else if (id == Guid.Empty && enquiryID != null)
                 {
                     EnquiryViewModel enquiryVM = Mapper.Map<Enquiry, EnquiryViewModel>(_enquiryBusiness.GetEnquiry((Guid)enquiryID));
                     estimateVM = new EstimateViewModel();
@@ -119,7 +119,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         CurrencyList = Mapper.Map<List<Currency>, List<CurrencyViewModel>>(_currencyBusiness.GetCurrencyForSelectList())
                     };
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -132,9 +132,20 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Estimate Detail Add
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
         public ActionResult AddEstimateDetail(bool update)
-         {
+        {
             EstimateDetailViewModel estimateDetailVM = new EstimateDetailViewModel();
             estimateDetailVM.IsUpdate = update;
+            AppUA appUA = Session["AppUA"] as AppUA;
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "CostPrice");
+            string p = _permission.AccessCode;
+            if ((p.Contains("R") || p.Contains("W")))
+            {
+                estimateDetailVM.CostPriceHasAccess = true;
+            }
+            else
+            {
+                estimateDetailVM.CostPriceHasAccess = false;
+            }
             return PartialView("_AddEstimateDetail", estimateDetailVM);
         }
         #endregion Estimate Detail Add
@@ -148,7 +159,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             estimateAdvanceSearchVM.DataTablePaging.Start = model.start;
             estimateAdvanceSearchVM.DataTablePaging.Length = (estimateAdvanceSearchVM.DataTablePaging.Length == 0) ? model.length : estimateAdvanceSearchVM.DataTablePaging.Length;
 
-           
+
 
             // action inside a standard controller
             List<EstimateViewModel> estimateVMList = Mapper.Map<List<Estimate>, List<EstimateViewModel>>(_estimateBusiness.GetAllEstimate(Mapper.Map<EstimateAdvanceSearchViewModel, EstimateAdvanceSearch>(estimateAdvanceSearchVM)));
@@ -216,7 +227,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ViewBag.IsRequired = required;
             EstimateViewModel estimateVM = new EstimateViewModel();
-            estimateVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(id==Guid.Empty?null:id);
+            estimateVM.EstimateSelectList = _estimateBusiness.GetEstimateForSelectList(id == Guid.Empty ? null : id);
             return PartialView("_EstimateSelectList", estimateVM);
         }
         #endregion EstimateSelectList
@@ -226,14 +237,14 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             List<EstimateViewModel> estimateVMList = string.IsNullOrEmpty(searchTerm) ? null : Mapper.Map<List<Estimate>, List<EstimateViewModel>>(_estimateBusiness.GetEstimateForSelectListOnDemand(searchTerm));
             var list = new List<Select2Model>();
-            if(estimateVMList!=null)
+            if (estimateVMList != null)
             {
                 foreach(EstimateViewModel estimateVM in estimateVMList)
                 {
                     list.Add(new Select2Model()
                     {
-                        text=estimateVM.EstimateNo,
-                        id=estimateVM.ID.ToString()
+                        text = estimateVM.EstimateNo,
+                        id = estimateVM.ID.ToString()
                     });
 
                 }
@@ -250,6 +261,10 @@ namespace PilotSmithApp.UserInterface.Controllers
             try
             {
                 List<EstimateDetailViewModel> estimateItemViewModelList = new List<EstimateDetailViewModel>();
+                AppUA appUA = Session["AppUA"] as AppUA;
+                Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "CostPrice");
+                string p = _permission.AccessCode;
+
                 if (estimateID == Guid.Empty)
                 {
                     EstimateDetailViewModel estimateDetailVM = new EstimateDetailViewModel()
@@ -262,7 +277,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         Qty = 0,
                         UnitCode = null,
                         CostRate = 0,
-                        SellingRate=0,
+                        SellingRate = 0,
                         Product = new ProductViewModel()
                         {
                             ID = Guid.Empty,
@@ -279,11 +294,33 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Description = null,
                         },
                     };
+                    if ((p.Contains("R") || p.Contains("W")))
+                    {
+                        estimateDetailVM.CostPriceHasAccess = true;
+                    }
+                    else
+                    {
+                        estimateDetailVM.CostPriceHasAccess = false;
+                    }
                     estimateItemViewModelList.Add(estimateDetailVM);
                 }
                 else
                 {
                     estimateItemViewModelList = Mapper.Map<List<EstimateDetail>, List<EstimateDetailViewModel>>(_estimateBusiness.GetEstimateDetailListByEstimateID(estimateID));
+                    if (estimateItemViewModelList != null)
+                    {
+                        foreach (EstimateDetailViewModel estimateDetailVM in estimateItemViewModelList)
+                        {
+                            if ((p.Contains("R") || p.Contains("W")))
+                            {
+                                estimateDetailVM.CostPriceHasAccess = true;
+                            }
+                            else
+                            {
+                                estimateDetailVM.CostPriceHasAccess = false;
+                            }
+                        }
+                    }
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = estimateItemViewModelList, Message = "Success" });
             }
@@ -298,7 +335,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         #region Get Estimate DetailList By EstimateID with Enquiry
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Estimate", Mode = "R")]
-        public string GetEstimateDetailListByEstimateIDWithEnquiry(Guid enquiryID,decimal? costrate)
+        public string GetEstimateDetailListByEstimateIDWithEnquiry(Guid enquiryID, decimal? costrate)
         {
             try
             {
@@ -317,13 +354,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                      Qty = enquiryDetailVM.Qty,
                                                      UnitCode = enquiryDetailVM.UnitCode,
                                                      //CostRate = enquiryDetailVM.ProductModel.CostPrice==null?0: enquiryDetailVM.ProductModel.CostPrice,   
-                                                     CostRate = enquiryDetailVM.ProductModel.CostPrice != 0 ? Math.Round(Convert.ToDecimal(enquiryDetailVM.ProductModel.CostPrice / costrate), 2) : 0,                                     
-                                              SellingRate = enquiryDetailVM.Rate==null?0: enquiryDetailVM.Rate,
-                                              SpecTag = enquiryDetailVM.SpecTag,
-                                              Product = enquiryDetailVM.Product,
-                                              ProductModel = enquiryDetailVM.ProductModel,
-                                              Unit = enquiryDetailVM.Unit,
-                                          }).ToList();
+                                                     CostRate = enquiryDetailVM.ProductModel.CostPrice != 0 ? Math.Round(Convert.ToDecimal(enquiryDetailVM.ProductModel.CostPrice / costrate), 2) : 0,
+                                                     SellingRate = enquiryDetailVM.Rate == null ? 0 : enquiryDetailVM.Rate,
+                                                     SpecTag = enquiryDetailVM.SpecTag,
+                                                     Product = enquiryDetailVM.Product,
+                                                     ProductModel = enquiryDetailVM.ProductModel,
+                                                     Unit = enquiryDetailVM.Unit,
+                                                 }).ToList();
 
                 }
                 return JsonConvert.SerializeObject(new { Status = "OK", Records = estimateItemViewModelList, Message = "Success" });
@@ -468,7 +505,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         toolboxVM.deletebtn.Title = "Delete";
                         toolboxVM.deletebtn.Event = "DeleteEstimate();";
                     }
-                    
+
 
                     break;
                 case "LockDocument":
