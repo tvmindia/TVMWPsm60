@@ -14,12 +14,13 @@
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     @Html.HiddenFor(model => model.DocumentStatus.Description, htmlAttributes: new { @class = "", @id = "hdnDescription" })
+    @Html.HiddenFor(model => model.CostPriceHasAccess, htmlAttributes: new { @class = "", @id = "hdnCostPriceHasAccess" })
     <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
 
             <div class="form-group col-md-6 ">
-                <!--Currency start-->               
+                <!--Currency start-->
                 <div class="col-md-12 no-padding">
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12" style="display:inline-flex">
@@ -188,7 +189,7 @@
                         @Html.LabelFor(model => model.ValidUpToDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
                     <div class="col-md-12">
-                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off"} })
+                        @Html.EditorFor(model => model.ValidUpToDateFormatted, new { htmlAttributes = new { @class = "form-control datepicker newinput", @autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.ValidUpToDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -263,19 +264,19 @@
                     </div>
 
                     @*<div class="col-md-6 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                        </div>
-                        <div class="col-md-12">
-                            <div class="divDocumentStatusSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
-                        </div>
-                       
-                        @Html.Hidden("hdnDocumentStatusRequired", "required")
-                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                    </div>*@
+                            <div class="col-md-12">
+                                <div class="divDocumentStatusSelectList">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+                                </div>
+                            </div>
+
+                            @Html.Hidden("hdnDocumentStatusRequired", "required")
+                            @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                        </div>*@
                 </div>
 
             </div>
@@ -283,11 +284,11 @@
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
                     <div class="Shadow2data clearfix">
-                      @if (Model.IsUpdate)
-                      {
-                        <div class="form-group col-md-12">
-                            <div class="rightAmtCaption">Document Status</div>
-                        </div>
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="form-group col-md-12">
+                                <div class="rightAmtCaption">Document Status</div>
+                            </div>
                             <div class="form-group col-md-12">
                                 <label class="switch switch-flat">
                                     <input class="switch-input" type="checkbox" checked />
@@ -295,10 +296,10 @@
                                     <span class="switch-handle"></span>
                                 </label>
                             </div>
-                      }
+                        }
                         @*<div class="form-group col-md-12">
-                            <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
-                        </div>*@
+                                <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                            </div>*@
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Branch</div>
                         </div>
@@ -368,10 +369,20 @@
                             <th>Product</th>
                             <th>HSN Code</th>
                             <th>Qty</th>
-                            <th id="costRate">Cost Price(<span id="spanCostPrice">@Model.CurrencyCode</span>)</th>
+                            @{
+                                if (Model.CostPriceHasAccess == true)
+                                {
+                                    <th id="costRate">Cost Price(<span id="spanCostPrice">@Model.CurrencyCode</span>)</th>
+                                }
+                            }
                             <th>Selling Price(<span id="spanSellingPrice">@Model.CurrencyCode</span>)</th>
                             <th>Drawing No</th>
-                            <th id="totalcostRate">Total Cost Price(<span id="spanTotCostPrice">@Model.CurrencyCode</span>)</th>
+                            @{
+                                if (Model.CostPriceHasAccess == true)
+                                {
+                                    <th id="totalcostRate">Total Cost Price(<span id="spanTotCostPrice">@Model.CurrencyCode</span>)</th>
+                                }
+                            }
                             <th>Total Selling Price(<span id="spanTotSellingPrice">@Model.CurrencyCode</span>)</th>
                             <th>...</th>
                         </tr>
@@ -413,7 +424,7 @@
             <input id="btnInsertUpdateEstimate" type="submit" value="Create" class="btn btn-default" />
         </div>
     </div>
-                                                }
+                                }
 
 <script>
     $(document).ready(function () {
@@ -472,8 +483,8 @@
             @if (Model.IsUpdate||Model.EnquiryID!=null)
             {
                   <text>
-            if ($('#hdnCurrencyCode').val()=="INR") {
-                $('#idCurRateForAutofocus').prop("disabled",true)
+            if ($('#hdnCurrencyCode').val() == "INR") {
+                $('#idCurRateForAutofocus').prop("disabled", true)
             }
             $('.changeCurrency').change(function () {
                 if (this.nodeName == "INPUT") {
@@ -508,7 +519,7 @@
                     endDate: getCurrentFinancialYear(estimateDate).endDate
                 });
             }
-                </text>
+            </text>
             }
             else
             {

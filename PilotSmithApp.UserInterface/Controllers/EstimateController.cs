@@ -64,13 +64,13 @@ namespace PilotSmithApp.UserInterface.Controllers
         public ActionResult EstimateForm(Guid id,Guid? enquiryID)
         {
             EstimateViewModel estimateVM = null;
+            AppUA appUA = Session["AppUA"] as AppUA;
             try
             {
                 if (id != Guid.Empty)
                 {
                     estimateVM = Mapper.Map<Estimate, EstimateViewModel>(_estimateBusiness.GetEstimate(id));
                     estimateVM.IsUpdate = true;
-                    AppUA appUA = Session["AppUA"] as AppUA;
                     estimateVM.IsDocLocked = estimateVM.DocumentOwners.Contains(appUA.UserName);
                     estimateVM.EnquirySelectList = _enquiryBusiness.GetEnquiryForSelectList(enquiryID);
                     estimateVM.Currency = new CurrencyViewModel();
@@ -124,6 +124,16 @@ namespace PilotSmithApp.UserInterface.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "CostPrice");
+            string p = _permission.AccessCode;
+            if ((p.Contains("R") || p.Contains("W")))
+            {
+                estimateVM.CostPriceHasAccess = true;
+            }
+            else
+            {
+                estimateVM.CostPriceHasAccess = false;
             }
             return PartialView("_EstimateForm", estimateVM);
         }

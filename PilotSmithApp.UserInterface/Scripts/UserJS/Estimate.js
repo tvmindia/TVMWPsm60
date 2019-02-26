@@ -375,91 +375,123 @@ function DeleteEstimateItem(id) {
 
 function BindEstimateDetailList(id,IsEnquiry) {
     debugger;
-    _dataTable.EstimateDetailList = $('#tblEstimateDetails').DataTable(
-         {
-             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
-             order: [],
-             searching: false,
-             paging: false,
-             ordering: false,
-             bInfo: false,
-             data: !IsEnquiry ? id == _emptyGuid ? null : GetEstimateDetailListByEstimateID(id,false) : GetEstimateDetailListByEstimateID(id,true),
-             language: {
-                 search: "_INPUT_",
-                 searchPlaceholder: "Search"
-             },
-             columns: [ 
+    if ($('#hdnCostPriceHasAccess').val() == "True") {
+        _dataTable.EstimateDetailList = $('#tblEstimateDetails').DataTable(
              {
-                 "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null?row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
-                 }, "defaultContent": "<i></i>"
-             },
-            { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
-             {
-                 "data": "Qty", render: function (data, type, row) {
-                     return data + " " + row.Unit.Description
-                 }, "defaultContent": "<i></i>"
-             },
-             //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             {
-                 "data": "CostRate", render: function (data, type, row) {
-                     if (row.CostPriceHasAccess == true)
-                         return formatCurrency(roundoff(data))
-                     else
-                         return "###";
-                 }, "defaultContent": "<i></i>"
-             },
-             { "data": "SellingRate", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
-             { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             {
-                 "data": "TotalCostPrice", render: function (data, type, row)
+                 dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+                 order: [],
+                 searching: false,
+                 paging: false,
+                 ordering: false,
+                 bInfo: false,
+                 data: !IsEnquiry ? id == _emptyGuid ? null : GetEstimateDetailListByEstimateID(id, false) : GetEstimateDetailListByEstimateID(id, true),
+                 language: {
+                     search: "_INPUT_",
+                     searchPlaceholder: "Search"
+                 },
+                 columns: [
                  {
-                     if (row.CostPriceHasAccess == true) {
-                         var Result = roundoff(parseFloat(row.CostRate) * parseFloat(row.Qty));
+                     "data": "Product.Code", render: function (data, type, row) {
+                         debugger;
+                         return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
+                     }, "defaultContent": "<i></i>"
+                 },
+                { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
+                 {
+                     "data": "Qty", render: function (data, type, row) {
+                         return data + " " + row.Unit.Description
+                     }, "defaultContent": "<i></i>"
+                 },
+                 //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                 {
+                     "data": "CostRate", render: function (data, type, row) {
+                         if (row.CostPriceHasAccess == true)
+                             return formatCurrency(roundoff(data))
+                         else
+                             return "###";
+                     }, "defaultContent": "<i></i>"
+                 },
+                 { "data": "SellingRate", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
+                 { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                 {
+                     "data": "TotalCostPrice", render: function (data, type, row) {
+                         if (row.CostPriceHasAccess == true) {
+                             var Result = roundoff(parseFloat(row.CostRate) * parseFloat(row.Qty));
+                             return formatCurrency(Result);
+                         }
+                         else {
+                             return "###";
+                         }
+                     }, "defaultContent": "<i></i>"
+                 },
+                 {
+                     "data": "TotalSellingPrice", render: function (data, type, row) {
+                         var Result = roundoff(parseFloat(row.SellingRate) * parseFloat(row.Qty));
                          return formatCurrency(Result);
-                     }
-                     else {
-                         return "###";
-                     }
-                 }, "defaultContent": "<i></i>"
-             },
+                     }, "defaultContent": "<i></i>"
+                 },
+                { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
+                 ],
+                 columnDefs: [
+                     { "targets": [0], "width": "23%" },
+                     { "targets": [1, 2, 3, 4, 5, 6, 7], "width": "10%" },
+                     { "targets": [8], "width": "7%" },
+                     { className: "text-left", "targets": [0, 1, 5] },
+                     { className: "text-right", "targets": [2, 4, 3, 6, 7] },
+                     { className: "text-center", "targets": [8] }
+                 ],
+                 destroy: true
+             });
+    }
+    else {
+        _dataTable.EstimateDetailList = $('#tblEstimateDetails').DataTable(
              {
-                 "data": "TotalSellingPrice", render: function (data, type, row)
+                 dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+                 order: [],
+                 searching: false,
+                 paging: false,
+                 ordering: false,
+                 bInfo: false,
+                 data: !IsEnquiry ? id == _emptyGuid ? null : GetEstimateDetailListByEstimateID(id, false) : GetEstimateDetailListByEstimateID(id, true),
+                 language: {
+                     search: "_INPUT_",
+                     searchPlaceholder: "Search"
+                 },
+                 columns: [
                  {
-                     var Result = roundoff(parseFloat(row.SellingRate) * parseFloat(row.Qty));
-                     return formatCurrency(Result);
-                 }, "defaultContent": "<i></i>"
-             },
-            { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
-             ],
-             columnDefs: [
-                 { "targets": [0], "width": "23%" },              
-                 { "targets": [1, 2, 3, 4, 5, 6, 7], "width": "10%" },
-                 {"targets":[8],"width":"7%"},
-                 { className: "text-left", "targets": [0,1,5] },
-                 { className: "text-right", "targets": [2,4 ,3,6,7] },
-                 { className: "text-center", "targets": [8] }
-             ],
-             rowCallback: function (row, data) {
-                 debugger;
-                 var table = $('#tblEstimateDetails').DataTable();
-                 if (data.CostPriceHasAccess == true) {
-                     debugger;
-                     $('#costRate').show();
-                     table.column(3).visible(true);
-                     $('#totalcostRate').show();
-                     table.column(6).visible(true);
-                 }
-                 else {
-                     $('#costRate').hide();
-                     table.column(3).visible(false);
-                     $('#totalcostRate').show();
-                     table.column(6).visible(false);
-                 }
-             },
-             destroy:true
-         });
+                     "data": "Product.Code", render: function (data, type, row) {
+                         debugger;
+                         return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-html="true" data-placement="top" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
+                     }, "defaultContent": "<i></i>"
+                 },
+                { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
+                 {
+                     "data": "Qty", render: function (data, type, row) {
+                         return data + " " + row.Unit.Description
+                     }, "defaultContent": "<i></i>"
+                 },
+                 //{ "data": "Unit.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                 { "data": "SellingRate", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
+                 { "data": "DrawingNo", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                 {
+                     "data": "TotalSellingPrice", render: function (data, type, row) {
+                         var Result = roundoff(parseFloat(row.SellingRate) * parseFloat(row.Qty));
+                         return formatCurrency(Result);
+                     }, "defaultContent": "<i></i>"
+                 },
+                { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
+                 ],
+                 columnDefs: [
+                     { "targets": [0], "width": "23%" },
+                     { "targets": [1, 2, 3, 4, 5], "width": "10%" },
+                     { "targets": [6], "width": "7%" },
+                     { className: "text-left", "targets": [0, 1, 5] },
+                     { className: "text-right", "targets": [2, 4, 3] },
+                     { className: "text-center", "targets": [6] }
+                 ],
+                 destroy: true
+             });
+    }
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
@@ -538,7 +570,7 @@ function AddEstimateDetailToList() {
                 estimateDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
                 Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                 estimateDetailList[_datatablerowindex].Unit = Unit;
-                if ($('#CostPriceHasAccess').val() == true)
+                if ($('#CostPriceHasAccess').val() == "True")
                     estimateDetailList[_datatablerowindex].CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
                 else
                     estimateDetailList[_datatablerowindex].CostRate = $('#hdnCostPrice').val() != "" ? $('#hdnCostPrice').val() : 0;
@@ -566,7 +598,7 @@ function AddEstimateDetailToList() {
                     estimateDetailList[0].Qty = $('#Qty').val() != "" ? $('#Qty').val() : 0;
                     estimateDetailList[0].UnitCode = $('#UnitCode').val();
                     estimateDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                    if ($('#CostPriceHasAccess').val() == true)
+                    if ($('#CostPriceHasAccess').val() == "True")
                         estimateDetailList[0].CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
                     else
                         estimateDetailList[0].CostRate = $('#hdnCostPrice').val() != "" ? $('#hdnCostPrice').val() : 0;
@@ -585,7 +617,7 @@ function AddEstimateDetailToList() {
                         for (var i = 0; i < estimateDetailList.length; i++) {
                             if ((estimateDetailList[i].ProductID == $('#ProductID').val()) && (estimateDetailList[i].ProductModelID == $('#ProductModelID').val()
                                 && (estimateDetailList[i].ProductSpec == null ? "" : estimateDetailList[i].ProductSpec.replace(/\n/g, ' ') == productSpec && (estimateDetailList[i].UnitCode == $('#UnitCode').val())
-                                && ($('#CostPriceHasAccess').val() == true ? estimateDetailList[i].CostRate == $('#CostRate').val() : estimateDetailList[i].CostRate == $('#hdnCostPrice').val()) && (estimateDetailList[i].SellingRate == $('#SellingRate').val())
+                                && ($('#CostPriceHasAccess').val() == "True" ? estimateDetailList[i].CostRate == $('#CostRate').val() : estimateDetailList[i].CostRate == $('#hdnCostPrice').val()) && (estimateDetailList[i].SellingRate == $('#SellingRate').val())
                                 ))) {
                                 estimateDetailList[i].Qty = parseFloat(estimateDetailList[i].Qty) + parseFloat($('#Qty').val());
                                 checkpoint = 1;
@@ -616,7 +648,7 @@ function AddEstimateDetailToList() {
                             Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                             EstimateDetailVM.Unit = Unit;
                             EstimateDetailVM.UnitCode = $('#UnitCode').val();
-                            if ($('#CostPriceHasAccess').val() == true)
+                            if ($('#CostPriceHasAccess').val() == "True")
                                 EstimateDetailVM.CostRate = $('#CostRate').val() != "" ? $('#CostRate').val() : 0;
                             else
                                 EstimateDetailVM.CostRate = $('#hdnCostPrice').val() != "" ? $('#hdnCostPrice').val() : 0;

@@ -114,22 +114,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                 }
                 //AppUA appUA = Session["AppUA"] as AppUA;
                 //Session["pro"] = 1;
-                Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
-                if (permission.SubPermissionList.Count > 0)
-                {
-                    string p = permission.SubPermissionList.First(li => li.Name == "Rate").AccessCode;
-                    string q = permission.SubPermissionList.First(li => li.Name == "Amount").AccessCode;
-                    if ((p.Contains("R") || p.Contains("W")) || (q.Contains("R") || q.Contains("W")))
+                Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "SellingPrice");
+                string p = _permission.AccessCode;
+                    if ((p.Contains("R") || p.Contains("W")))
                     {
                         productionOrderVM.ShowRate = true;
-                        productionOrderVM.ShowAmount = true;
                     }
                     else
                     {
                         productionOrderVM.ShowRate = false;
-                        productionOrderVM.ShowAmount = false;
                     }
-                }
+                
             }
             catch (Exception ex)
             {

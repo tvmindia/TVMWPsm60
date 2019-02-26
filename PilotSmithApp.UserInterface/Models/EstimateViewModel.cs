@@ -69,6 +69,7 @@ namespace PilotSmithApp.UserInterface.Models
         public AreaViewModel Area { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }
         public CurrencyViewModel Currency { get; set; }
+        public bool CostPriceHasAccess { get; set; }
     }
 
     public class EstimateAdvanceSearchViewModel

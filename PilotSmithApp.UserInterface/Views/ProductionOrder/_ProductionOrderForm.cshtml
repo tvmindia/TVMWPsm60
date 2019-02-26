@@ -449,8 +449,13 @@
                             <th>Prev Prod Order Qty</th>
                             <th>Curr Prod Order Qty</th>
                             <th>Produced Qty</th>
-                            <th id="prodordRate">Rate(<span id="spanRate">@Model.CurrencyCode</span>)</th>
-                            <th id="prodordAmount">Amount(<span id="spanAmount">@Model.CurrencyCode</span>)</th>
+                            @{
+                                if (Model.ShowRate == true)
+                                {
+                                    <th id="prodordRate">Rate(<span id="spanRate">@Model.CurrencyCode</span>)</th>
+                                    <th id="prodordAmount">Amount(<span id="spanAmount">@Model.CurrencyCode</span>)</th>
+                                }
+                            }
                             <th>Supplier/Plant</th>
                             <th>Milestone</th>
                             <th>...</th>

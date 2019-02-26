@@ -439,156 +439,246 @@ function DeleteProductionOrderItem(id) {
 
 function BindProductionOrderDetailList(id, IsSaleOrder) {
     debugger;
-    _dataTable.ProductionOrderDetailList = $('#tblProductionOrderDetails').DataTable(
-         {
-             dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
-             order: [],
-             searching: false,
-             paging: false,
-             ordering: false,
-             bInfo: false,
-             data: //id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id),
-                    !IsSaleOrder ? id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id, false) : GetProductionOrderDetailListByProductionOrderID(id, true),
+    if ($('#hdnShowRate').val() == "True") {
+        _dataTable.ProductionOrderDetailList = $('#tblProductionOrderDetails').DataTable(
+             {
+                 dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+                 order: [],
+                 searching: false,
+                 paging: false,
+                 ordering: false,
+                 bInfo: false,
+                 data: //id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id),
+                        !IsSaleOrder ? id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id, false) : GetProductionOrderDetailListByProductionOrderID(id, true),
 
-             language: {
-                 search: "_INPUT_",
-                 searchPlaceholder: "Search"
-             },
-             columns: [
-             {
-                 "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
-                 }, "defaultContent": "<i></i>"
-             },
-             { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
-             {
-                 "data": "SaleOrderQty", render: function (data, type, row) {
-                     return data + " " + row.Unit.Description
-                 }, "defaultContent": "<i></i>"
-             },
-             {
-                 "data": "PrevProdOrderQty", render: function (data, type, row) {
-                     if (row.PrevProdOrderQty != null) {
-                         return data + " " + row.Unit.Description
-                     }
-                     else
-                         return 0 + " " + row.Unit.Description
-                 }, "defaultContent": "<i></i>"
-             },
-             {
-                 "data": "OrderQty", render: function (data, type, row) {
-                     debugger;
-                     //roundoff(parseFloat(row.SaleOrderQty) - parseFloat(row.PrevProducedQty));
-                     if (data > 0) {
-                         return data + " " + row.Unit.Description
-                     }
-                     else
-                         return 0 + " " + row.Unit.Description
-                     //return data + " " + row.Unit.Description
-                 }, "defaultContent": "<i></i>"
-             },
-             {
-                 "data": "ProducedQty", render: function (data, type, row) {
-                     return data + " " + row.Unit.Description
-                 }, "defaultContent": "<i></i>"
-             },
-             {
-                 "data": "Rate", render: function (data, type, row) {
-                     if (row.Rate != null) {
-                         return formatCurrency(data)
-                     }
-                     else
-                         return 0
-                 }, "defaultContent": "<i></i>"
-             },
-             {
-                 "data": "Amount", render: function (data, type, row) {
-                     if (row.Rate != null) {
+                 language: {
+                     search: "_INPUT_",
+                     searchPlaceholder: "Search"
+                 },
+                 columns: [
+                 {
+                     "data": "Product.Code", render: function (data, type, row) {
                          debugger;
-                         //if (row.SaleOrderQty != 0) {
-                         //    var Amount = roundoff(parseFloat(row.SaleOrderQty) * parseFloat(row.Rate));
-                         //    return Amount
-                         //}
-                         if (row.ProducedQty != 0) {
-                             var Amount = roundoff(parseFloat(row.ProducedQty) * parseFloat(row.Rate));
-                             return formatCurrency(Amount)
+                         return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
+                     }, "defaultContent": "<i></i>"
+                 },
+                 { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
+                 {
+                     "data": "SaleOrderQty", render: function (data, type, row) {
+                         return data + " " + row.Unit.Description
+                     }, "defaultContent": "<i></i>"
+                 },
+                 {
+                     "data": "PrevProdOrderQty", render: function (data, type, row) {
+                         if (row.PrevProdOrderQty != null) {
+                             return data + " " + row.Unit.Description
+                         }
+                         else
+                             return 0 + " " + row.Unit.Description
+                     }, "defaultContent": "<i></i>"
+                 },
+                 {
+                     "data": "OrderQty", render: function (data, type, row) {
+                         debugger;
+                         //roundoff(parseFloat(row.SaleOrderQty) - parseFloat(row.PrevProducedQty));
+                         if (data > 0) {
+                             return data + " " + row.Unit.Description
+                         }
+                         else
+                             return 0 + " " + row.Unit.Description
+                         //return data + " " + row.Unit.Description
+                     }, "defaultContent": "<i></i>"
+                 },
+                 {
+                     "data": "ProducedQty", render: function (data, type, row) {
+                         return data + " " + row.Unit.Description
+                     }, "defaultContent": "<i></i>"
+                 },
+                 {
+                     "data": "Rate", render: function (data, type, row) {
+                         if (row.Rate != null) {
+                             return formatCurrency(data)
                          }
                          else
                              return 0
-                     }
-                     else
-                         return 0
-                 }, "defaultContent": "<i></i>"
-             },
-             { "data": "Plant.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
-             {
-                 "data": "result", render: function (data, type, row) {
-                     debugger;
-                     var result = "";
-                     if ((((row.MileStone1FcFinishDtFormatted != null) && (row.MileStone1FcFinishDtFormatted != "")) && ((row.MileStone1AcTFinishDtFormatted != null) && (row.MileStone1AcTFinishDtFormatted != "")))) {
-                         var M1 = '25%'
-                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left> Milestone Reach : ' + M1 + '" data-content="1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M1
-                     }
-                     if (((row.MileStone2FcFinishDtFormatted != null && (row.MileStone2FcFinishDtFormatted != "")) && (row.MileStone2AcTFinishDtFormatted != null && (row.MileStone2AcTFinishDtFormatted != "")))) {
-                         var M2 = '50%'
-                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M2 + '" data-content="2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M2
-                     }
-                     if (((row.MileStone3FcFinishDtFormatted != null && (row.MileStone3FcFinishDtFormatted != "")) && (row.MileStone3AcTFinishDtFormatted != null && (row.MileStone3AcTFinishDtFormatted != "")))) {
-                         var M3 = '75%'
-                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M3 + '" data-content="3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M3
-                     }
-                     if (((row.MileStone4FcFinishDtFormatted != null && (row.MileStone4FcFinishDtFormatted != "")) && (row.MileStone4AcTFinishDtFormatted != null && (row.MileStone4AcTFinishDtFormatted != "")))) {
-                         var M4 = '100%'
-                         result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M4 + '" data-content="4) ⌚ Forecast :  ' + row.MileStone4FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone4AcTFinishDtFormatted + '<br/>3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M4
-                     }
-                     //else
-                     //{
-                     //    result= '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone : % ' + 0 + '" data-content="Forecast Date :  ' + 0 + '<br/>Actual Date :  ' + 0;
-                     //}
+                     }, "defaultContent": "<i></i>"
+                 },
+                 {
+                     "data": "Amount", render: function (data, type, row) {
+                         if (row.Rate != null) {
+                             debugger;
+                             //if (row.SaleOrderQty != 0) {
+                             //    var Amount = roundoff(parseFloat(row.SaleOrderQty) * parseFloat(row.Rate));
+                             //    return Amount
+                             //}
+                             if (row.ProducedQty != 0) {
+                                 var Amount = roundoff(parseFloat(row.ProducedQty) * parseFloat(row.Rate));
+                                 return formatCurrency(Amount)
+                             }
+                             else
+                                 return 0
+                         }
+                         else
+                             return 0
+                     }, "defaultContent": "<i></i>"
+                 },
+                 { "data": "Plant.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                 {
+                     "data": "result", render: function (data, type, row) {
+                         debugger;
+                         var result = "";
+                         if ((((row.MileStone1FcFinishDtFormatted != null) && (row.MileStone1FcFinishDtFormatted != "")) && ((row.MileStone1AcTFinishDtFormatted != null) && (row.MileStone1AcTFinishDtFormatted != "")))) {
+                             var M1 = '25%'
+                             result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left> Milestone Reach : ' + M1 + '" data-content="1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M1
+                         }
+                         if (((row.MileStone2FcFinishDtFormatted != null && (row.MileStone2FcFinishDtFormatted != "")) && (row.MileStone2AcTFinishDtFormatted != null && (row.MileStone2AcTFinishDtFormatted != "")))) {
+                             var M2 = '50%'
+                             result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M2 + '" data-content="2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M2
+                         }
+                         if (((row.MileStone3FcFinishDtFormatted != null && (row.MileStone3FcFinishDtFormatted != "")) && (row.MileStone3AcTFinishDtFormatted != null && (row.MileStone3AcTFinishDtFormatted != "")))) {
+                             var M3 = '75%'
+                             result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M3 + '" data-content="3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M3
+                         }
+                         if (((row.MileStone4FcFinishDtFormatted != null && (row.MileStone4FcFinishDtFormatted != "")) && (row.MileStone4AcTFinishDtFormatted != null && (row.MileStone4AcTFinishDtFormatted != "")))) {
+                             var M4 = '100%'
+                             result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M4 + '" data-content="4) ⌚ Forecast :  ' + row.MileStone4FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone4AcTFinishDtFormatted + '<br/>3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M4
+                         }
+                         //else
+                         //{
+                         //    result= '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone : % ' + 0 + '" data-content="Forecast Date :  ' + 0 + '<br/>Actual Date :  ' + 0;
+                         //}
 
-                     //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
-                     return result;
-                 }, "defaultContent": "<i></i>"
-             },
-             { //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
-                 "data": "OrderQty", "orderable": false, render: function (data, type, row) {
-                     debugger;
-                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
-                         return "-"
-                     }
-                     else {
-                         return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
-                     }
-                 }, "defaultContent": "<i></i>"
-             },
-             ],
-             columnDefs: [
-                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
-                 { className: "text-left", "targets": [0, 8, 1] },
-                 { className: "text-center", "targets": [9, 10] },
-                 { "targets": [0], "width": "20%" },
-                 { "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "width": "8%" },
-             ],
-             rowCallback: function (row, data) {
-                 debugger;
-                 var table = $('#tblProductionOrderDetails').DataTable();
-                 //if ((data.ShowRate == true) || (data.ShowAmount == true)) {
-                 if ($('#hdnShowRate').val() == "True") {
-                     debugger;
-                     $('#prodordRate').show();
-                     table.column(6).visible(true);
-                     $('#prodordAmount').show();
-                     table.column(7).visible(true);
-                 }
-                 else {
-                     $('#prodordRate').hide();
-                     table.column(6).visible(false);
-                     $('#prodordAmount').show();
-                     table.column(7).visible(false);
-                 }
-             }
-         });
+                         //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                         return result;
+                     }, "defaultContent": "<i></i>"
+                 },
+                 { //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
+                     "data": "OrderQty", "orderable": false, render: function (data, type, row) {
+                         debugger;
+                         if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                             return "-"
+                         }
+                         else {
+                             return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                         }
+                     }, "defaultContent": "<i></i>"
+                 },
+                 ],
+                 columnDefs: [
+                     { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
+                     { className: "text-left", "targets": [0, 8, 1] },
+                     { className: "text-center", "targets": [9, 10] },
+                     { "targets": [0], "width": "20%" },
+                     { "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "width": "8%" },
+                 ]
+             });
+    }
+    else {
+        _dataTable.ProductionOrderDetailList = $('#tblProductionOrderDetails').DataTable(
+            {
+                dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+                order: [],
+                searching: false,
+                paging: false,
+                ordering: false,
+                bInfo: false,
+                data: //id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id),
+                       !IsSaleOrder ? id == _emptyGuid ? null : GetProductionOrderDetailListByProductionOrderID(id, false) : GetProductionOrderDetailListByProductionOrderID(id, true),
+
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search"
+                },
+                columns: [
+                {
+                    "data": "Product.Code", render: function (data, type, row) {
+                        debugger;
+                        return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
+                    }, "defaultContent": "<i></i>"
+                },
+                { "data": "Product.HSNCode", "defaultContent": "<i></i>" },
+                {
+                    "data": "SaleOrderQty", render: function (data, type, row) {
+                        return data + " " + row.Unit.Description
+                    }, "defaultContent": "<i></i>"
+                },
+                {
+                    "data": "PrevProdOrderQty", render: function (data, type, row) {
+                        if (row.PrevProdOrderQty != null) {
+                            return data + " " + row.Unit.Description
+                        }
+                        else
+                            return 0 + " " + row.Unit.Description
+                    }, "defaultContent": "<i></i>"
+                },
+                {
+                    "data": "OrderQty", render: function (data, type, row) {
+                        debugger;
+                        //roundoff(parseFloat(row.SaleOrderQty) - parseFloat(row.PrevProducedQty));
+                        if (data > 0) {
+                            return data + " " + row.Unit.Description
+                        }
+                        else
+                            return 0 + " " + row.Unit.Description
+                        //return data + " " + row.Unit.Description
+                    }, "defaultContent": "<i></i>"
+                },
+                {
+                    "data": "ProducedQty", render: function (data, type, row) {
+                        return data + " " + row.Unit.Description
+                    }, "defaultContent": "<i></i>"
+                },
+                { "data": "Plant.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
+                {
+                    "data": "result", render: function (data, type, row) {
+                        debugger;
+                        var result = "";
+                        if ((((row.MileStone1FcFinishDtFormatted != null) && (row.MileStone1FcFinishDtFormatted != "")) && ((row.MileStone1AcTFinishDtFormatted != null) && (row.MileStone1AcTFinishDtFormatted != "")))) {
+                            var M1 = '25%'
+                            result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left> Milestone Reach : ' + M1 + '" data-content="1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M1
+                        }
+                        if (((row.MileStone2FcFinishDtFormatted != null && (row.MileStone2FcFinishDtFormatted != "")) && (row.MileStone2AcTFinishDtFormatted != null && (row.MileStone2AcTFinishDtFormatted != "")))) {
+                            var M2 = '50%'
+                            result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M2 + '" data-content="2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M2
+                        }
+                        if (((row.MileStone3FcFinishDtFormatted != null && (row.MileStone3FcFinishDtFormatted != "")) && (row.MileStone3AcTFinishDtFormatted != null && (row.MileStone3AcTFinishDtFormatted != "")))) {
+                            var M3 = '75%'
+                            result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M3 + '" data-content="3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M3
+                        }
+                        if (((row.MileStone4FcFinishDtFormatted != null && (row.MileStone4FcFinishDtFormatted != "")) && (row.MileStone4AcTFinishDtFormatted != null && (row.MileStone4AcTFinishDtFormatted != "")))) {
+                            var M4 = '100%'
+                            result = '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Milestone Reach : ' + M4 + '" data-content="4) ⌚ Forecast :  ' + row.MileStone4FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone4AcTFinishDtFormatted + '<br/>3) ⌚ Forecast :  ' + row.MileStone3FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone3AcTFinishDtFormatted + '<br/>2) ⌚ Forecast :  ' + row.MileStone2FcFinishDtFormatted + '⌚ Actual :  ' + row.MileStone2AcTFinishDtFormatted + '<br/>1) ⌚ Forecast :  ' + row.MileStone1FcFinishDtFormatted + ' ⌚ Actual :  ' + row.MileStone1AcTFinishDtFormatted + '</p>"/>' + M4
+                        }
+                        //else
+                        //{
+                        //    result= '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Milestone : % ' + 0 + '" data-content="Forecast Date :  ' + 0 + '<br/>Actual Date :  ' + 0;
+                        //}
+
+                        //return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-title="<p align=left>Grand Total : ₹ ' + GrandTotal + '" data-content="Taxable : ₹ ' + TaxableAmt + '<br/>GST : ₹ ' + GSTAmt + '</p>"/>' + GrandTotal
+                        return result;
+                    }, "defaultContent": "<i></i>"
+                },
+                { //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
+                    "data": "OrderQty", "orderable": false, render: function (data, type, row) {
+                        debugger;
+                        if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                            return "-"
+                        }
+                        else {
+                            return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        }
+                    }, "defaultContent": "<i></i>"
+                },
+                ],
+                columnDefs: [
+                    { className: "text-right", "targets": [2, 3, 4, 5] },
+                    { className: "text-left", "targets": [0, 6, 1] },
+                    { className: "text-center", "targets": [7, 8] },
+                    { "targets": [0], "width": "20%" },
+                    { "targets": [1, 2, 3, 4, 5, 6, 7, 8], "width": "8%" },
+                ]
+            });
+    }
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
