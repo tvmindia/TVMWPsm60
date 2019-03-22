@@ -276,5 +276,36 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion DeleteApprover
 
+        #region CheckIsDocumentOwner
+        public bool CheckIsDocumentOwner(string documentTypeCode,string loginName)
+        {
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[CheckIsDocumentOwner]";
+                        cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.VarChar,5).Value = documentTypeCode;
+                        cmd.Parameters.Add("@LoginName", SqlDbType.NVarChar,255).Value = loginName;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        Object res = cmd.ExecuteScalar();
+                        return (res.ToString() == "Exists" ? true : false);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion CheckIsDocumentOwner
+
     }
 }

@@ -13,5 +13,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         object InsertUpdateApprover(Approver approver);
         Approver GetApprover(Guid id);
         object DeleteApprover(Guid id);
+        bool CheckIsDocumentOwner(string documentTypeCode, string loginName);
     }
 }

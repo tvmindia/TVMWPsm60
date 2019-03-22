@@ -111,6 +111,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int IsFileExist { get; set; }
 
         public CurrencyViewModel Currency { get; set; }
+        public bool IsDocumentApprover { get; set; }
     }
     public class QuotationAdvanceSearchViewModel
     {

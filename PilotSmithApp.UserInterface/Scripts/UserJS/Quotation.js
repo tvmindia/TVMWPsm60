@@ -22,6 +22,7 @@ $(document).ready(function () {
                 AddQuotation();
             }
             else {
+                debugger;
                 EditRedirectToDocument($('#RedirectToDocument').val());
             }
         }
@@ -474,7 +475,12 @@ function SaveSuccessQuotation(data, status) {
                     }
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
                 });
-                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
+                if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "False" && $('#IsDocLocked').val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True"))
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "DocumentApproverEdit", id);
+                else if($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True")
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "DocumentOwnerApproverClosedForApprovalEdit", id);
+                else
+                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                 debugger;
                 BindOrReloadQuotationTable('Init');
                 
@@ -577,7 +583,10 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              {
                  "data": "ChargeAmount", "orderable": false, render: function (data, type, row) {
-                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                     if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+                         return '<a href="#" class="actionLink"  onclick="EditQuotationOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                     else if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
                          return "-"
                      }
                      else {
@@ -680,7 +689,10 @@ function BindQuotationDetailList(id, IsEstimated) {
              {
                  "data": "Rate", "orderable": false, render: function (data, type, row) {
                      debugger;
-                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                     if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+                         return '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                     else if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1"  || $('#LatestApprovalStatus').val() == "9"  || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
                          return "-"
                      }
                      else {
@@ -1613,8 +1625,9 @@ function RedirectingCopiedQuotation() {
 }
 
 function EditRedirectToDocument(id) {
-    debugger;
+   
     OnServerCallBegin();
+    debugger;
     var result;
     var data = { "id": id };
     _jsonData = GetDataFromServer("Quotation/GetQuotation/", data);
@@ -1625,11 +1638,11 @@ function EditRedirectToDocument(id) {
 
     var str;
     if (result.copyFrom != _emptyGuid) {
-        str = "Quotation/CopyQuotationForm?copyFrom=&id=" + id;
+        str = "Quotation/CopyQuotationForm?copyFrom=&id=" + id + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
        
     }
     else {
-        str = "Quotation/QuotationForm?id=" + id;
+        str = "Quotation/QuotationForm?id=" + id + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
         
     }
 
@@ -1640,6 +1653,8 @@ function EditRedirectToDocument(id) {
             OnServerCallComplete();
             openNav();
             $('#lblQuotationInfo').text($('#QuoteNo').val());
+            //$('#IsDocumentApprover').val($('#hdnIsDocumentApprover').val());
+            debugger;
             if ($('#IsDocLocked').val() == "True") {
 
                 debugger;
@@ -1649,6 +1664,9 @@ function EditRedirectToDocument(id) {
                         break;
                     case "1":
                         _isApproval = true;
+                        if ($("#hdnIsDocumentApprover").val() == "True")
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "DocumentOwnerApproverClosedForApprovalEdit", id);
+                        else
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "ClosedForApproval", id);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
@@ -1665,8 +1683,15 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Approved", id);
                         break;
                     default:
-
-                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
+                        if ($('#LatestApprovalStatus').val() == 9)
+                        {
+                            if ($("#hdnIsDocumentApprover").val() == "True")
+                                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "DocumentApproverEdit", id);
+                            else
+                                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
+                        }
+                        else
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
                         break;
                 }
             }
@@ -1675,6 +1700,25 @@ function EditRedirectToDocument(id) {
                 $('.switch-input').prop('disabled', true);
                 $('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "1":
+                        if ($("#hdnIsDocumentApprover").val() == "True")
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "DocumentApproverEdit", id);
+                        else
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
+                        break;
+                    default:
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True")
+                                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "DocumentApproverEdit", id);
+                            else
+                                ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
+                        }
+                        else
+                            ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
+                        break;
+                }
+
             }
             BindQuotationDetailList(id);
             BindQuotationOtherChargesDetailList(id);
