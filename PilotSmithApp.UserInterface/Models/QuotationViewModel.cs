@@ -49,7 +49,7 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Term Ref. No")]
         [StringLength(25, ErrorMessage = "Term Ref.No Cannot be longer than 25 characters")]
         public string TermReferenceNo { get; set; }
-        [Display(Name = "General Notes")]
+        [Display(Name = "Internal Notes (Not shown in quote print) ")]
         public string GeneralNotes { get; set; }
         [Display(Name = "Owner")]
         public Guid? DocumentOwnerID { get; set; }

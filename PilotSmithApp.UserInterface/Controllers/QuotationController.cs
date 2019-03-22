@@ -1241,7 +1241,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.PrintBtn.DisableReason = "Document Not Approved";
                     toolboxVM.RecallBtn.Event = "";
                     break;
-                case "DocumentOwnerApproverClosedForApprovalEdit":
+                case "ClosedForApprovalApproverEdit":
                     toolboxVM.addbtn.Visible = true;
                     toolboxVM.addbtn.Text = "Add";
                     toolboxVM.addbtn.Title = "Add New";
