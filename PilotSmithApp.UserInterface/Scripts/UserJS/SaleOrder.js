@@ -507,6 +507,7 @@ function SaveSuccessSaleOrder(data, status) {
                 });
                 ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
                 BindOrReloadSaleOrderTable('Init');
+                 _isCopy = false;
                 notyAlert('success', _result.Message);
                 break;
             case "ERROR":
