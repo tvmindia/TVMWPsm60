@@ -717,7 +717,19 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion CheckRate
-
+        #region Preview Quotation
+        [AuthSecurityFilter(ProjectObject = "Quotation", Mode = "R")]
+        public ActionResult PreviewQuotation(Guid id)
+        {
+            //bool ImageCheck = quotationVM.ImageCheck;
+            QuotationViewModel quotationVM = new QuotationViewModel();
+            quotationVM = Mapper.Map<Quotation, QuotationViewModel>(_quotationBusiness.GetQuotation(id));
+            quotationVM.QuotationDetailList = Mapper.Map<List<QuotationDetail>, List<QuotationDetailViewModel>>(_quotationBusiness.GetQuotationDetailListByQuotationID(id, false));
+            quotationVM.QuotationOtherChargeList = Mapper.Map<List<QuotationOtherCharge>, List<QuotationOtherChargeViewModel>>(_quotationBusiness.GetQuotationOtherChargesDetailListByQuotationID(id, false));
+            quotationVM.ImageCheck = false;
+            return PartialView("_PreviewQuotation", quotationVM);
+        }
+        #endregion Email Quotation
 
 
         #region ButtonStyling
@@ -1191,9 +1203,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Visible = true;
                     toolboxVM.resetbtn.Text = "Reset";
                     toolboxVM.resetbtn.Title = "Reset";
-                    toolboxVM.resetbtn.Disable = true;
-                    toolboxVM.resetbtn.DisableReason = "Document Locked";
-                    toolboxVM.resetbtn.Event = "";
+                    //toolboxVM.resetbtn.Disable = true;
+                    //toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "ResetQuotation();";
 
                     toolboxVM.deletebtn.Visible = true;
                     toolboxVM.deletebtn.Text = "Delete";
@@ -1260,9 +1272,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Visible = true;
                     toolboxVM.resetbtn.Text = "Reset";
                     toolboxVM.resetbtn.Title = "Reset";
-                    toolboxVM.resetbtn.Disable = true;
-                    toolboxVM.resetbtn.DisableReason = "Document Locked";
-                    toolboxVM.resetbtn.Event = "";
+                    //toolboxVM.resetbtn.Disable = true;
+                    //toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "ResetQuotation();";
 
                     toolboxVM.deletebtn.Visible = true;
                     toolboxVM.deletebtn.Text = "Delete";

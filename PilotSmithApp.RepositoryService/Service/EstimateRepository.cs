@@ -216,7 +216,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateDetail.CostRate = (sdr["CostRate"].ToString() != "" ? decimal.Parse(sdr["CostRate"].ToString()) : estimateDetail.ProductModel.CostPrice);
                                         estimateDetail.SellingRate= (sdr["SellingRate"].ToString() != "" ? decimal.Parse(sdr["SellingRate"].ToString()) : estimateDetail.SellingRate);
                                         estimateDetail.DrawingNo = (sdr["DrawingNo"].ToString() != "" ? sdr["DrawingNo"].ToString() : estimateDetail.DrawingNo);
-                                        estimateDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : estimateDetail.ProductSpec);
+                                        estimateDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : estimateDetail.ProductSpec);
                                         estimateDetail.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : estimateDetail.ProductID);
                                         estimateDetail.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : estimateDetail.ProductModelID);
                                         estimateDetail.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : estimateDetail.UnitCode);

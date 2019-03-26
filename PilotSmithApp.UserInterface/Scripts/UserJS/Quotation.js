@@ -1031,7 +1031,7 @@ function EditQuotationDetail(this_Obj) {
             //}
             //   $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
 
-
+            //$('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml.replace("?", "<br>"));
             $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
             $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
             $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
@@ -1174,6 +1174,13 @@ function PrintPreviewQuotation() {
     //}
 //});
 
+}
+function PreviewQuotation()
+{
+    $("#divModelPreviewQuotationBody").load("Quotation/PreviewQuotation?id=" + $('#QuotationForm #ID').val(), function () {
+        $('#lblModelPreviewQuotation').text('Preview Quotation');
+        $('#divModelPeviewQuotation').modal('show');
+    });
 }
 function SendQuotationEmail() {
     debugger;

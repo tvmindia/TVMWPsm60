@@ -83,7 +83,8 @@ namespace PilotSmithApp.BusinessService.Service
                     string name = p.Name;
                     var value = p.GetValue(some_object, null);
                     //result = result + " " + name + @"=""" + value + @""" ";
-                    result = result = result + " " + name + @"=""" + (value != null ? value.ToString().Replace("\"", "&quot;").Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\n", "&#63;") : value) + @""" ";
+                    //result = result = result + " " + name + @"=""" + (value != null ? value.ToString().Replace("\"", "&quot;").Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\n", "&#63;") : value) + @""" ";
+                    result = result = result + " " + name + @"=""" + (value != null ? value.ToString().Replace("\"", "&quot;").Replace("<br>", "$n$").Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\n", "$n$") : value) + @""" ";
 
 
                 }
