@@ -263,6 +263,8 @@
     <Content Include="Content\css\select2.css" />
     <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\images\advace.png" />
+    <Content Include="Content\images\attach.png" />
+    <Content Include="Content\images\file %282%29.png" />
     <Content Include="Content\images\loginuser.png" />
     <Content Include="Content\images\phone.png" />
     <Content Include="Content\images\contact.png" />
@@ -292,6 +294,7 @@
     <Content Include="Content\images\Pilot1.png" />
     <Content Include="Content\images\PilotLogo.png" />
     <Content Include="Content\images\preview.png" />
+    <Content Include="Content\images\previewPDF.png" />
     <Content Include="Content\images\production.png" />
     <Content Include="Content\images\radio-off.png" />
     <Content Include="Content\images\radio-on.png" />
@@ -1144,6 +1147,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Quotation\_PreviewQuotation.cshtml" />
+    <Content Include="Views\SaleOrder\_PreviewSaleOrder.cshtml" />
+    <Content Include="Views\ProductionOrder\_PreviewProductionOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
