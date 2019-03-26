@@ -192,3 +192,18 @@ function EditRedirectFromDocument(DocumentID, ApprovalLogID, DocumentType)
         }, 100);
     });
 }
+function ViewSummaryPreview(DocumentType, DocumentID) {
+	debugger;
+	if (DocumentType == "QUO") {
+		$("#divModelPreviewBody").load("/Quotation/PreviewQuotation?id=" + DocumentID, function () {
+			debugger;
+			$('#lblModelPreview').text('Quotation Preview');
+			$('#divModelPreview').modal('show');
+		});
+	}
+	//else if (DocumentType == "POD") {
+
+	//}
+	
+
+}
