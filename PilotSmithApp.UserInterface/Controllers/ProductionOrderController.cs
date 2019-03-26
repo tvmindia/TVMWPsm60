@@ -607,7 +607,16 @@ namespace PilotSmithApp.UserInterface.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
         #endregion CheckOrderQty
-          
+        #region Preview ProductionOrder
+        [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]
+        public ActionResult PreviewProductionOrder(Guid id)
+        {
+            ProductionOrderViewModel productionOrderVM = new ProductionOrderViewModel();
+            productionOrderVM = Mapper.Map<ProductionOrder, ProductionOrderViewModel>(_productionOrderBusiness.GetProductionOrder(id));
+            productionOrderVM.ProductionOrderDetailList = Mapper.Map<List<ProductionOrderDetail>, List<ProductionOrderDetailViewModel>>(_productionOrderBusiness.GetProductionOrderDetailListByProductionOrderID(id));
+            return PartialView("_PreviewProductionOrder", productionOrderVM);
+        }
+        #endregion Email ProductionOrder
         #region ButtonStyling
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "ProductionOrder", Mode = "R")]

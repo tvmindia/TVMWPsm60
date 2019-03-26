@@ -732,7 +732,17 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_PrintSaleOrder", saleOderVM);
         }
         #endregion Print SaleOrder
-
+        #region Preview SaleOrder
+        public ActionResult PreviewSaleOrder(Guid id)
+        {
+            
+            SaleOrderViewModel saleOrderVM = new SaleOrderViewModel();
+            saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder(id));
+            saleOrderVM.SaleOrderDetailList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(id, false));
+            saleOrderVM.SaleOrderOtherChargeList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(id, false));
+            return PartialView("_PreviewSaleOrder", saleOrderVM);
+        }
+        #endregion Email SaleOrder
         #region CheckQty
         [AcceptVerbs("Get", "Post")]
         public ActionResult CheckQty(decimal Qty)

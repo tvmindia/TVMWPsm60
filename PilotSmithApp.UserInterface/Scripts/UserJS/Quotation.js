@@ -1122,7 +1122,7 @@ function ClearCalculatedFields() {
 //
 function EmailQuotation() {
     debugger;
-    $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=True&ImageCheck=True", function () {
+    $("#divModelEmailQuotationBody").load("Quotation/EmailQuotation?ID=" + $('#QuotationForm #ID').val() + "&EmailFlag=True&ImageCheck=False", function () {
         $('#lblModelEmailQuotation').text('Email Quotation');
         //var mailheader = $('#MailBodyHeader').val();
         //mailheader = mailheader.replace(/\n/g, "<br />");
@@ -1178,7 +1178,7 @@ function PrintPreviewQuotation() {
 function PreviewQuotation()
 {
     $("#divModelPreviewQuotationBody").load("Quotation/PreviewQuotation?id=" + $('#QuotationForm #ID').val(), function () {
-        $('#lblModelPreviewQuotation').text('Preview Quotation');
+        $('#lblModelPreviewQuotation').text('Quotation Preview ');
         $('#divModelPeviewQuotation').modal('show');
     });
 }

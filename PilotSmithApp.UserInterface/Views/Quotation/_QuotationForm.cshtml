@@ -5,7 +5,10 @@
         background: #ffffff;
         border-left: none;
     }
-
+    #previewSpan:hover {
+      display: inline-block;
+      background-color: #eeeeee;
+    }
 
 </style>
 @using (Ajax.BeginForm("InsertUpdateQuotation", "Quotation", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessQuotation", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "QuotationForm" }))
@@ -311,19 +314,7 @@
                                     <span class="switch-handle"></span>
                                 </label>
                             </div>
-                            <div class="col-md-12"></div>
-                            <div class="form-group col-md-12">
-                                <div class="col-md-12 no-padding">
-                                    <div class="col-md-2 no-padding">
-                                        <img src="~/Content/images/preview.png" title="Quotation Preview" />
-                                    </div>
-                                    <div class="col-md-10 no-padding">
-                                        <span style="font-size:24px;"><span style="font-weight:300;">@Model.QuoteNo</span></span><br />
-                                        <a href="#" onclick="PreviewQuotation()"><span style="font-size:18px;">Preview quote</span></a>
-                                    </div>
-                                </div>
-                                
-                            </div>
+                            
 
                         }
                         <div class="form-group col-md-12">
@@ -368,6 +359,15 @@
                         @if (Model.IsUpdate)
                         {
                             <div class="col-md-12"></div>
+                            <div class="form-group col-md-12">
+                                <div id="previewSpan" class="col-md-4 no-padding" style="display:inline-flex;border :0.5px solid grey;border-radius :15px;">
+                                    <div style="display: flex; height: 30px; padding: 0 12px;margin-right: 8px;max-width: 100%;min-width: 100%;align-items: center;">
+                                        <i class="fa fa-file-excel-o text-danger" style="font-size: 18px !important;margin-right: 8px;"></i>
+                                        <a href="#" onclick="PreviewQuotation()"><span style="font-size: 14px;display:block;border: 1px solid double;">Preview quotation</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12"></div>
                                 <div class="form-group col-md-12">
                                     @if (!Model.IsDocLocked)
                                     {
@@ -394,6 +394,7 @@
                                         </div>
                                     }
                                 </div>
+                                
                         }
                     </div>
 
