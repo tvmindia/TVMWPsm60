@@ -192,18 +192,30 @@ function EditRedirectFromDocument(DocumentID, ApprovalLogID, DocumentType)
         }, 100);
     });
 }
-function ViewSummaryPreview(DocumentType, DocumentID) {
+function DocumentPreview(DocumentType, DocumentID) {
 	debugger;
-	if (DocumentType == "QUO") {
-		$("#divModelPreviewBody").load("/Quotation/PreviewQuotation?id=" + DocumentID, function () {
+	switch (DocumentType) {
+		case "QUO":
+			$("#divModelPreviewBody").load("/Quotation/PreviewQuotation?id=" + DocumentID, function () {
 			debugger;
 			$('#lblModelPreview').text('Quotation Preview');
 			$('#divModelPreview').modal('show');
 		});
+			break;
+		case "POD":
+			$("#divModelPreviewBody").load("/ProductionOrder/PreviewProductionOrder?id=" + DocumentID, function () {
+				debugger;
+				$('#lblModelPreview').text('ProductionOrder Preview');
+				$('#divModelPreview').modal('show');
+			});
+			break;
+		case "SOD":
+			$("#divModelPreviewBody").load("/SaleOrder/PreviewSaleOrder?id=" + DocumentID, function () {
+				debugger;
+				$('#lblModelPreview').text('SaleOrder Preview');
+				$('#divModelPreview').modal('show');
+			});
+			break;
 	}
-	//else if (DocumentType == "POD") {
-
-	//}
 	
-
 }

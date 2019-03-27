@@ -98,7 +98,7 @@
                     itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
                     itemgrandTotal = itemtaxableAmount + itemgSTAmount;
                     <tr>
-                        <td style="width:3%;text-align: center;font-size:9px;vertical-align:top;">@slno</td>
+                        <td style="width:3%;text-align: left;font-size:9px;vertical-align:top;">@slno</td>
                         @if (Model.ImageCheck)
                         {
                             if (@mp.ProductModel.ImageURL != null)
@@ -112,11 +112,11 @@
                             }
                             if (@mp.ProductSpecHtml != null)
                             {
-                                <td style="width:29%; text-align: left;font-size:9px;">@Html.Raw(mp.ProductSpecHtml)</td>
+                                <td style="width:29%; text-align: left;font-size:10px;vertical-align:top;">@Html.Raw(mp.ProductSpecHtml)</td>
                             }
                             else
                             {
-                                <td style="width:29%; text-align: left;font-size:9px;">@mp.Product.Name - @mp.ProductModel.Name</td>
+                                <td style="width:29%; text-align: left;font-size:10px;">@mp.Product.Name - @mp.ProductModel.Name</td>
                             }
 
                         }
@@ -124,11 +124,11 @@
                         {
                             if (mp.ProductSpecHtml != null)
                             {
-                                <td style="width:33%; text-align: left;font-size:9px;">@Html.Raw(mp.ProductSpecHtml)</td>
+                                <td style="width:33%; text-align: left;font-size:10px;vertical-align:top; ">@Html.Raw(mp.ProductSpecHtml)</td>
                             }
                             else
                             {
-                                <td style="width:33%; text-align: left;font-size:9px;">@mp.Product.Name - @mp.ProductModel.Name</td>
+                                <td style="width:33%; text-align: left;font-size:9px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name</td>
                             }
                         }
                             <td style="width:6%;text-align:left;font-size:8px;vertical-align:top;">@mp.Product.HSNCode</td>
