@@ -87,6 +87,7 @@ namespace PilotSmithApp.UserInterface.Models
         public bool ShowRate { get; set; }
         public string SaleOrderNo { get; set; }
         public CurrencyViewModel Currency { get; set; }
+        public bool IsDistributor { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel

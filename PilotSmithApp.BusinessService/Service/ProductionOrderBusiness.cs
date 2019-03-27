@@ -71,9 +71,9 @@ namespace PilotSmithApp.BusinessService.Service
                                          Selected = false
                                      }).ToList():new List<SelectListItem>();
         }
-        public object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder)
+        public object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder,int emailSendSuccess)
         {
-            return _productionOrderRepository.UpdateProductionOrderEmailInfo(productionOrder);
+            return _productionOrderRepository.UpdateProductionOrderEmailInfo(productionOrder, emailSendSuccess);
         }
         public async Task<bool> ProductionOrderEmailPush(ProductionOrder productionOrder)
         {

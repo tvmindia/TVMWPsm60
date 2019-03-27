@@ -259,7 +259,20 @@ function EditProductionOrder(this_Obj) {
                 $('.switch-input').prop('disabled', true);
                 $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
                 $('.switch-label').attr('title', 'Document Locked');
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                debugger;
+                //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "4":
+                        _isApproval = true;
+                        if ($('#IsDistributor').val()=="True")
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", productionOrder.ID);
+                        else
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                        break;
+                    default:
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                        break;
+                }
             }
             BindProductionOrderDetailList(productionOrder.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -1245,7 +1258,19 @@ function EditRedirectToDocument(id) {
                 $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
                 $('.switch-input').prop('disabled', true);
                 $('.switch-label').attr('title', 'Document Locked');
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+                //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "4":
+                        _isApproval = true;
+                        if ($('#IsDistributor').val() == "True")
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", id);
+                        else
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+                        break;
+                    default:
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+                        break;
+                }
             }
             BindProductionOrderDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());

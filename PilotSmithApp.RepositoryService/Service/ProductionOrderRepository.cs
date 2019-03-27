@@ -579,7 +579,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetProductionOrderForSelectList
         #region UpdateProductionOrderEmailInfo
-        public object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder)
+        public object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder,int emailSendSuccess=0)
         {
             SqlParameter outputStatus = null;
             try
@@ -601,6 +601,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = productionOrder.Cc;
                         cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = productionOrder.Bcc;
                         cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = productionOrder.Subject;
+                        cmd.Parameters.Add("@emilSendSuccess", SqlDbType.Int).Value = emailSendSuccess;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = productionOrder.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = productionOrder.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
