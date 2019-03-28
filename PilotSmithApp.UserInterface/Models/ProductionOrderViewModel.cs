@@ -88,6 +88,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string SaleOrderNo { get; set; }
         public CurrencyViewModel Currency { get; set; }
         public bool IsDistributor { get; set; }
+        public bool IsMilestoneUpdate { get; set; }
+        public string PreparedByName { get; set; }
     }
 
     public class ProductionOrderAdvanceSearchViewModel
@@ -194,6 +196,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? DelvQty { get; set; }
         public bool ShowRate { get; set; }
         public bool ShowAmount { get; set; }
+        public bool IsMilestoneUpdate { get; set; }
     }
 
     public class ProductionOrderSummaryViewModel

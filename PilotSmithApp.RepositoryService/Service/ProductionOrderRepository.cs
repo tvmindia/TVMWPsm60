@@ -187,6 +187,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : productionOrder.CurrencyRate);
                                     productionOrder.Currency = new Currency();
                                     productionOrder.Currency.Description = (sdr["CurrencyDescription"].ToString() != "" ? sdr["CurrencyDescription"].ToString() : productionOrder.Currency.Description);
+                                    productionOrder.PreparedByName = (sdr["PreparedByName"].ToString() != "" ? (sdr["PreparedByName"].ToString()) : productionOrder.PreparedByName);
                                 }
                         }
                     }
