@@ -389,6 +389,8 @@ function SaveSuccessProductionOrder(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
+                if (_message == "Insertion successfull" && $('#IsUpdate').val()=="False")
+                    $('#IsDocLocked').val("True");
                 $('#IsUpdate').val('True');
                 $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID + "&saleOrderID=" + _result.SaleOrderID, function () {
                     //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
@@ -405,15 +407,21 @@ function SaveSuccessProductionOrder(data, status) {
                     }
 
                 });
+                debugger;
                 if ($('#IsDocLocked').val() == "True") {
-                    if ($('#LatestApprovalStatus').val() == "4")
+                    if ($('#LatestApprovalStatus').val() == "4") {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", _result.ID);
+                        DisableFields();
+                    }
                     else
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                 }
                 else{
-                    if ($('#LatestApprovalStatus').val() == "4" && $('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False")
+                    if ($('#LatestApprovalStatus').val() == "4" && $('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False") {
+                        
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", _result.ID);
+                        
+                    }
                     else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", _result.ID);
                         DisableFields();
