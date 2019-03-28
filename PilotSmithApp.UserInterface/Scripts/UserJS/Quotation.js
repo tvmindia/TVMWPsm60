@@ -576,7 +576,7 @@ function SaveSuccessQuotation(data, status) {
                     ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                 debugger;
                 BindOrReloadQuotationTable('Init');
-                
+                _isCopy = false;
                 notyAlert('success', _result.Message);
                 break;
             case "ERROR":
