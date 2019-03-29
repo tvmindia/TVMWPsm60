@@ -395,7 +395,7 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
+                     return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace("\n", "<br>").replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Product.HSNCode", "defaultContent": "<i></i>" },

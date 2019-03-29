@@ -442,7 +442,7 @@ function BindServiceCallDetailList(id) {
                  "data": null, render: function (data, type, row) {
                      debugger;
                      if (row.Product !== undefined && row.Product !== null && row.Product.Code !== "") {
-                         return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + ((row.ProductSpec!==null&&row.ProductSpec!=='')? row.ProductSpec.replace(/"/g, "&quot"):'') + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name;
+                         return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + ((row.ProductSpec !== null && row.ProductSpec !== '') ? row.ProductSpec.replace("\n", "<br>").replace(/"/g, "&quot") : '') + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name;
                      }
                      if (row.Spare !== undefined && row.Spare !== null && row.Spare.Code !== "") {
                          return '<span>' + row.Spare.Name + '</span>';
