@@ -263,10 +263,10 @@ function EditSaleOrder(this_Obj) {
     var str;
     if (SaleOrder.CopyFrom != _emptyGuid) {
         
-        str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + SaleOrder.ID;
+		str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + SaleOrder.ID + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
     }
     else {
-        str = "SaleOrder/SaleOrderForm?id=" + SaleOrder.ID;
+		str = "SaleOrder/SaleOrderForm?id=" + SaleOrder.ID + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
     }
 
 
@@ -288,7 +288,11 @@ function EditSaleOrder(this_Obj) {
                         break;
                     case "1":
                         _isApproval = true;
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
+                        //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", SaleOrder.ID);
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
                         //}
@@ -302,18 +306,45 @@ function EditSaleOrder(this_Obj) {
                     case "4":
                         _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
-                        break;
+						break;
                     default:
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
-                        break;
+                        //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
+							else
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+						}
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+						break;
+                      
                 }
             }
             else {
                 $('.switch-input').prop('disabled', true);
                 $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
                 $('.switch-label').attr('title', 'Document Locked');
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
-            }
+                //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+				switch ($('#LatestApprovalStatus').val()) {
+					case "1":
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+						break;
+					default:
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
+							else
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+						}
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+						break;
+				}
+			}
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
             CalculateTotal();
@@ -363,58 +394,90 @@ function ResetSaleOrder(event) {
     debugger;
     var str;
     if ($('#hdnCopyFrom').val() == undefined) {
-        str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val()
+		str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
     }
     else if ($('#hdnCopyFrom').val() != _emptyGuid) {
 
-        str = "SaleOrder/CopySaleOrderForm?copyFrom="+$('#hdnCopyFrom').val()+"&id=" + $('#SaleOrderForm #ID').val();
+		str = "SaleOrder/CopySaleOrderForm?copyFrom=" + $('#hdnCopyFrom').val() + "&id=" + $('#SaleOrderForm #ID').val() + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
     }
     else {
-        str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val();
+		str = "SaleOrder/SaleOrderForm?id=" + $('#SaleOrderForm #ID').val() + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
     }
 
     $("#divSaleOrderForm").load(str , function (responseTxt, statusTxt, xhr) {
-        if (statusTxt == "success") {
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+		if (statusTxt == "success") {
+			if ($('#hdnDescription').val() == "OPEN") {
+				$('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+			} else {
+				$('.switch-input').prop('checked', false);
 
-            }
-            if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
-                    //resides in customjs for sliding
-                    openNav();
-            }
-            debugger;
-            switch ($('#LatestApprovalStatus').val()) {
-                case "":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
-                    break;
-                case "0":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
-                    break;
-                case "1":
-                    _isApproval = true;
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", $('#ID').val());
-                    //if ($('#ApproverLevel').val() > 1) {
-                    //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
-                    //}
-                    //else {
-                    //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Recalled", $('#ID').val());
-                    //}
-                    break;
-                case "3":
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
-                    break;
-                case "4":
-                    _isApproval = true;
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
-                    break;
-                default:
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-                    break;
-            }
+			}
+			if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
+				//resides in customjs for sliding
+				openNav();
+			}
+			if ($('#IsDocLocked').val() == "True") {
+
+				debugger;
+				switch ($('#LatestApprovalStatus').val()) {
+					case "0":
+						ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
+						break;
+					case "1":
+						// if ($('#ApproverLevel').val() > 1) {
+						_isApproval = true;
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", $('#ID').val());
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", $('#ID').val());
+
+						//}
+						//else {
+						//    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
+						//}
+
+						break;
+					case "3":
+						ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
+						break;
+					case "4":
+						_isApproval = true;
+						ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
+						break;
+					default:
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
+							else
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+						}
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+						break;
+				}
+			}
+			else {
+				switch ($('#LatestApprovalStatus').val()) {
+					case "1":
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+						break;
+					default:
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
+							else
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+						}
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+						break;
+				}
+			}
+			
             //if ($('#LatestApprovalStatus').val() == "") {
             //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
             //}
@@ -481,15 +544,15 @@ function SaveSuccessSaleOrder(data, status) {
             case "OK":
                 $('#IsUpdate').val('True');
                 if (_result.CopyFrom != _emptyGuid) {
-                    str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + _result.ID;
+					str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + _result.ID+"&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
 
                 }
                 else {
-                    str = "SaleOrder/SaleOrderForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID
+					str = "SaleOrder/SaleOrderForm?id=" + _result.ID + "&estimateID=" + _result.EstimateID+"&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
                 }
 
                 $("#divSaleOrderForm").load(str, function () {
-                    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
+                    //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
                     BindSaleOrderDetailList(_result.ID, false, false);
                     BindSaleOrderOtherChargesDetailList(_result.ID, false);
                     CalculateTotal();
@@ -505,7 +568,15 @@ function SaveSuccessSaleOrder(data, status) {
 
                     }
                 });
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
+                //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
+				debugger;
+				if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "False") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True"))
+					ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", _result.ID);
+				else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True")
+					ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", _result.ID);
+				else
+					ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", _result.ID);
+				debugger;
                 BindOrReloadSaleOrderTable('Init');
                 _isCopy = false;
                 notyAlert('success', _result.Message);
@@ -633,14 +704,24 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                  }, "defaultContent": "<i></i>"
              },
              {
-                 "data": "ChargeAmount", "orderable": false, render: function (data, type, row) {
-                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val()!="")
-                     {
-                         return "-"
-                     }
-                     else {
-                         return '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
-                     }
+				 "data": "ChargeAmount", "orderable": false, render: function (data, type, row) {
+					 debugger;
+                     //if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val()!="")
+                     //{
+                     //    return "-"
+                     //}
+                     //else {
+                     //    return '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     //}
+					 if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+						 return '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+					 }
+					 else if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+						 return "-"
+					 }
+					 else {
+						 return '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+					 }
                  }, "defaultContent": "<i></i>"
              },
                  //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
@@ -764,12 +845,25 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
              },
              {
                  "data": "Rate", "orderable": false, render: function (data, type, row) {
-                     if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
-                         return "-"
-                     }
-                     else {
-                         return '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
-                     }
+					 //if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+						// return "-"
+					 //}
+					 //else if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+						// return '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+					 //}
+					 //else {
+						// return '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+					 //}
+					 if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+						 return '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+					 }
+					 else if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+						 return "-"
+					 }
+					 else {
+						 return '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+					 }
+
                  }, "defaultContent": "<i></i>"
              },
                  
@@ -1615,10 +1709,10 @@ function EditRedirectToDocument(id) {
 
     var str;
     if (result.copyFrom != _emptyGuid) {
-        str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + id;
+		str = "SaleOrder/CopySaleOrderForm?copyFrom=&id=" + id + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
     }
     else {
-        str = "SaleOrder/SaleOrderForm?id=" + id;
+		str = "SaleOrder/SaleOrderForm?id=" + id + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val();
     }
     //this will return form body(html)
     $("#divSaleOrderForm").load(str, function (responseTxt, statusTxt, xhr) {
@@ -1634,7 +1728,11 @@ function EditRedirectToDocument(id) {
                         break;
                     case "1":
                         _isApproval = true;
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
+                        //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", id);
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
                         //}
@@ -1649,17 +1747,45 @@ function EditRedirectToDocument(id) {
                         _isApproval = true;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
                         break;
-                    default:
-                        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
-                        break;
+					default:
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
+							else
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+						}
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+						break;
+                        //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+                        
                 }
             }
             else {
                 $('.switch-input').prop('disabled', true);
                 $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
                 $('.switch-label').attr('title', 'Document Locked');
-                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
-            }
+                //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+				switch ($('#LatestApprovalStatus').val()) {
+					case "1":
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+						break;
+					default:
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
+							else
+								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+						}
+						else
+							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+						break;
+				}
+
+			}
             BindSaleOrderDetailList(id, false, false);
             BindSaleOrderOtherChargesDetailList(id, false);
             CalculateTotal();
