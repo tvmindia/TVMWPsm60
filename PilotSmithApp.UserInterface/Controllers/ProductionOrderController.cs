@@ -71,7 +71,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                     Permission permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "ProductionOrder");
                     if (permission.SubPermissionList.Count > 0)
                     {
-                        string access = permission.SubPermissionList.First(li => li.Name == "IsDistributor")!=null?permission.SubPermissionList.First(li => li.Name == "IsDistributor").AccessCode:"";
+                        string access = "";
+                        if (permission.SubPermissionList.Where(a => a.Name == "IsDistributor").ToList().Count() > 0) {
+                            access = permission.SubPermissionList.First(li => li.Name == "IsDistributor") != null ? permission.SubPermissionList.First(li => li.Name == "IsDistributor").AccessCode : "";
+                        }
                         if (access.Contains("R") || access.Contains("W"))
                         {
                             productionOrderVM.IsDistributor = true;
@@ -80,8 +83,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                         {
                             productionOrderVM.IsDistributor = false;
                         }
-                        
-                        string milestoneaccess = permission.SubPermissionList.First(li => li.Name == "Milestone") != null ? permission.SubPermissionList.First(li => li.Name == "Milestone").AccessCode : "";
+
+                        string milestoneaccess = "";
+                        if (permission.SubPermissionList.Where(a => a.Name == "Milestone").ToList().Count() > 0)
+                        {
+                            milestoneaccess = permission.SubPermissionList.First(li => li.Name == "Milestone") != null ? permission.SubPermissionList.First(li => li.Name == "Milestone").AccessCode : "";
+
+                        }
                         if (milestoneaccess.Contains("R") || milestoneaccess.Contains("W"))
                         {
                             productionOrderVM.IsMilestoneUpdate = true;

@@ -247,9 +247,9 @@ namespace PilotSmithApp.UserInterface.Controllers
             ToolboxViewModel ToolboxViewModelObj = new ToolboxViewModel();
             switch (ActionType)
             {
+                //---- work around added by suvaneeth for enabling the button need to review by angel 29.3.2019----------------
                 case "Default":
-
-                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count > 0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.backbtn.Visible = true;
                     }
@@ -257,23 +257,26 @@ namespace PilotSmithApp.UserInterface.Controllers
                     ToolboxViewModelObj.backbtn.Title = "Back";
                     ToolboxViewModelObj.backbtn.Event = "GobackMangeAccess()";
 
-                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count > 0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonSave").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.savebtn.Visible = true;
                     }
-
-                    ToolboxViewModelObj.savebtn.Disable = true;
+                    ToolboxViewModelObj.savebtn.Title = "Update";
                     ToolboxViewModelObj.savebtn.Text = "Save";
-                    ToolboxViewModelObj.savebtn.DisableReason = "No changes yet";
+                    ToolboxViewModelObj.savebtn.Event = "SaveChanges();";
 
-                    if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
+                    if ((_permission.SubPermissionList.Count > 0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonReset").AccessCode : string.Empty).Contains("R"))
                     {
                         ToolboxViewModelObj.resetbtn.Visible = true;
                     }
-                    ToolboxViewModelObj.resetbtn.Disable = true;
+                    ToolboxViewModelObj.resetbtn.Title = "Reset Changes";
                     ToolboxViewModelObj.resetbtn.Text = "Reset";
-                    ToolboxViewModelObj.resetbtn.DisableReason = "No changes yet";
+                    ToolboxViewModelObj.resetbtn.Event = "Reset();";
                     break;
+
+                //---- -----------------------------------------------------------------------------------------
+
+
                 case "Checked":
 
                     if ((_permission.SubPermissionList.Count>0 ? _permission.SubPermissionList.First(s => s.Name == "ButtonBack").AccessCode : string.Empty).Contains("R"))
