@@ -123,7 +123,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string CopySaleOrderNo { get; set; }
         public CurrencyViewModel Currency { get; set; }
         public int IsFileExist { get; set; }
-    }
+		public bool IsDocumentApprover { get; set; }
+	}
 
     public class SaleOrderAdvanceSearchViewModel
     {

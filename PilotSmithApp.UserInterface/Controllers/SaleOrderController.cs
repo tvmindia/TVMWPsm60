@@ -27,10 +27,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         IDocumentStatusBusiness _documentStatusBusiness;
         SecurityFilter.ToolBarAccess _tool;
         ICurrencyBusiness _currencyBusiness;
-
-        #region Constructor Injection
-        public SaleOrderController(ISaleOrderBusiness saleOrderBusiness, IQuotationBusiness quotationBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
-            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool,ICurrencyBusiness currencyBusiness)
+		IApproverBusiness _approverBusiness;
+		#region Constructor Injection
+		public SaleOrderController(ISaleOrderBusiness saleOrderBusiness, IQuotationBusiness quotationBusiness, IEnquiryBusiness enquiryBusiness, ICommonBusiness commonBusiness,
+            IDocumentStatusBusiness documentStatusBusiness,SecurityFilter.ToolBarAccess tool,ICurrencyBusiness currencyBusiness, IApproverBusiness approverBusiness)
         {
             _saleOrderBusiness = saleOrderBusiness;
             _quotationBusiness = quotationBusiness;
@@ -38,22 +38,26 @@ namespace PilotSmithApp.UserInterface.Controllers
             _commonBusiness = commonBusiness;            
             _documentStatusBusiness = documentStatusBusiness;
             _tool = tool;
-            _currencyBusiness = currencyBusiness;     
-        }
+            _currencyBusiness = currencyBusiness;
+			_approverBusiness = approverBusiness;
+		}
         #endregion Constructor Injection
         // GET: SaleOrder
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
         public ActionResult Index(string id)
         {
             ViewBag.ID = id;
-            SaleOrderAdvanceSearchViewModel saleOrderAdvanceSearchVM = new SaleOrderAdvanceSearchViewModel();           
+			AppUA appUA = Session["AppUA"] as AppUA;
+			bool IsDocumentApprover = _approverBusiness.CheckIsDocumentOwner("SOD", appUA.UserName);
+			ViewBag.IsDocumentApprover = IsDocumentApprover;
+			SaleOrderAdvanceSearchViewModel saleOrderAdvanceSearchVM = new SaleOrderAdvanceSearchViewModel();           
             saleOrderAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             saleOrderAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("SOD");           
             return View(saleOrderAdvanceSearchVM);
         }
         #region SaleOrderForm Form
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
-        public ActionResult SaleOrderForm(Guid id, Guid? quoteID, Guid? enquiryID)
+        public ActionResult SaleOrderForm(Guid id, Guid? quoteID, Guid? enquiryID, string isDocumentApprover = "False")
         {
             SaleOrderViewModel saleOrderVM = null;
             if (id != Guid.Empty)
@@ -73,7 +77,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                     saleOrderVM.QuotationSelectList = _quotationBusiness.GetQuotationForSelectList(quoteID);
                 }
                 saleOrderVM.Currency = new CurrencyViewModel();
-            }
+				saleOrderVM.IsDocumentApprover = isDocumentApprover == "True" ? true : false;
+			}
             else if (id == Guid.Empty && quoteID != null)
             {
                 saleOrderVM = new SaleOrderViewModel();
@@ -151,7 +156,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region Copy SaleOrderForm 
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
-        public ActionResult CopySaleOrderForm(Guid? copyFrom, Guid? id)
+        public ActionResult CopySaleOrderForm(Guid? copyFrom, Guid? id, string isDocumentApprover = "False")
         {
             SaleOrderViewModel saleOrderVM = null;
             try
@@ -190,7 +195,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                    
                     saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder((Guid)id));
                     saleOrderVM.IsUpdate = true;
-                    AppUA appUA = Session["AppUA"] as AppUA;
+					saleOrderVM.IsDocumentApprover = isDocumentApprover == "True" ? true : false;
+					AppUA appUA = Session["AppUA"] as AppUA;
                     saleOrderVM.IsDocLocked = saleOrderVM.DocumentOwners.Contains(appUA.UserName);
                 }
 
@@ -1212,7 +1218,144 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Event = "ResetSaleOrder();";
 
                     break;
-                case "AddSub":
+
+				case "DocumentApproverEdit":
+					toolboxVM.addbtn.Visible = true;
+					toolboxVM.addbtn.Text = "Add";
+					toolboxVM.addbtn.Title = "Add New";
+					toolboxVM.addbtn.Event = "AddSaleOrder();";
+
+					toolboxVM.savebtn.Visible = true;
+					toolboxVM.savebtn.Text = "Save";
+					toolboxVM.savebtn.Title = "Save";
+					toolboxVM.savebtn.Event = "SaveSaleOrder();";
+
+					toolboxVM.CloseBtn.Visible = true;
+					toolboxVM.CloseBtn.Text = "Close";
+					toolboxVM.CloseBtn.Title = "Close";
+					toolboxVM.CloseBtn.Event = "closeNav();";
+
+					toolboxVM.resetbtn.Visible = true;
+					toolboxVM.resetbtn.Text = "Reset";
+					toolboxVM.resetbtn.Title = "Reset";
+					//toolboxVM.resetbtn.Disable = true;
+					//toolboxVM.resetbtn.DisableReason = "Document Locked";
+					toolboxVM.resetbtn.Event = "ResetSaleOrder();";
+
+					toolboxVM.deletebtn.Visible = true;
+					toolboxVM.deletebtn.Text = "Delete";
+					toolboxVM.deletebtn.Title = "Delete";
+					toolboxVM.deletebtn.Disable = true;
+					toolboxVM.deletebtn.DisableReason = "Document Locked";
+					toolboxVM.deletebtn.Event = "";
+
+					toolboxVM.EmailBtn.Visible = true;
+					toolboxVM.EmailBtn.Text = "Email";
+					toolboxVM.EmailBtn.Title = "Email";
+					toolboxVM.EmailBtn.Disable = true;
+					toolboxVM.EmailBtn.DisableReason = "Document Locked";
+					toolboxVM.EmailBtn.Event = "";
+
+					toolboxVM.SendForApprovalBtn.Visible = true;
+					toolboxVM.SendForApprovalBtn.Text = "Send";
+					toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+					toolboxVM.SendForApprovalBtn.Disable = true;
+					toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+					toolboxVM.SendForApprovalBtn.Event = "";
+
+					toolboxVM.TimeLine.Visible = true;
+					toolboxVM.TimeLine.Text = "TimeLn";
+					toolboxVM.TimeLine.Title = "TimeLine";
+					toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SOD');";
+
+					toolboxVM.HistoryBtn.Visible = true;
+					toolboxVM.HistoryBtn.Text = "History";
+					toolboxVM.HistoryBtn.Title = "Document History";
+					toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SOD');";
+
+
+					toolboxVM.PrintBtn.Visible = true;
+					toolboxVM.PrintBtn.Text = "Print";
+					toolboxVM.PrintBtn.Title = "Print Document";
+					toolboxVM.PrintBtn.Disable = true;
+					toolboxVM.PrintBtn.DisableReason = "Document Locked";
+					toolboxVM.PrintBtn.Event = "PrintSaleOrder()";
+
+					toolboxVM.RecallBtn.Visible = true;
+					toolboxVM.RecallBtn.Text = "Recall";
+					toolboxVM.RecallBtn.Title = "Document Recall";
+					toolboxVM.RecallBtn.Disable = true;
+					toolboxVM.PrintBtn.DisableReason = "Document Not Approved";
+					toolboxVM.RecallBtn.Event = "";
+					break;
+				case "ClosedForApprovalApproverEdit":
+					toolboxVM.addbtn.Visible = true;
+					toolboxVM.addbtn.Text = "Add";
+					toolboxVM.addbtn.Title = "Add New";
+					toolboxVM.addbtn.Event = "AddSaleOrder();";
+
+					toolboxVM.savebtn.Visible = true;
+					toolboxVM.savebtn.Text = "Save";
+					toolboxVM.savebtn.Title = "Save";
+					toolboxVM.savebtn.Event = "SaveSaleOrder();";
+
+					toolboxVM.CloseBtn.Visible = true;
+					toolboxVM.CloseBtn.Text = "Close";
+					toolboxVM.CloseBtn.Title = "Close";
+					toolboxVM.CloseBtn.Event = "closeNav();";
+
+					toolboxVM.resetbtn.Visible = true;
+					toolboxVM.resetbtn.Text = "Reset";
+					toolboxVM.resetbtn.Title = "Reset";
+					//toolboxVM.resetbtn.Disable = true;
+					//toolboxVM.resetbtn.DisableReason = "Document Locked";
+					toolboxVM.resetbtn.Event = "ResetSaleOrder();";
+
+					toolboxVM.deletebtn.Visible = true;
+					toolboxVM.deletebtn.Text = "Delete";
+					toolboxVM.deletebtn.Title = "Delete";
+					toolboxVM.deletebtn.Disable = true;
+					toolboxVM.deletebtn.DisableReason = "Document Locked";
+					toolboxVM.deletebtn.Event = "";
+
+					toolboxVM.EmailBtn.Visible = true;
+					toolboxVM.EmailBtn.Text = "Email";
+					toolboxVM.EmailBtn.Title = "Email";
+					toolboxVM.EmailBtn.Disable = true;
+					toolboxVM.EmailBtn.DisableReason = "Document Locked";
+					toolboxVM.EmailBtn.Event = "";
+
+					toolboxVM.SendForApprovalBtn.Visible = true;
+					toolboxVM.SendForApprovalBtn.Text = "Send";
+					toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+					toolboxVM.SendForApprovalBtn.Disable = true;
+					toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+					toolboxVM.SendForApprovalBtn.Event = "";
+
+					toolboxVM.TimeLine.Visible = true;
+					toolboxVM.TimeLine.Text = "TimeLn";
+					toolboxVM.TimeLine.Title = "TimeLine";
+					toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','SOD');";
+
+					toolboxVM.HistoryBtn.Visible = true;
+					toolboxVM.HistoryBtn.Text = "History";
+					toolboxVM.HistoryBtn.Title = "Document History";
+					toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','SOD');";
+
+
+					toolboxVM.PrintBtn.Visible = true;
+					toolboxVM.PrintBtn.Text = "Print";
+					toolboxVM.PrintBtn.Title = "Print Document";
+					toolboxVM.PrintBtn.Disable = true;
+					toolboxVM.PrintBtn.DisableReason = "Document Locked";
+					toolboxVM.PrintBtn.Event = "PrintSaleOrder()";
+
+					toolboxVM.RecallBtn.Visible = true;
+					toolboxVM.RecallBtn.Text = "Recall";
+					toolboxVM.RecallBtn.Title = "Document Recall";
+					toolboxVM.RecallBtn.Event = "RecallDocumentItem('SOD');";
+					break;
+				case "AddSub":
 
                     break;
                 case "tab1":
