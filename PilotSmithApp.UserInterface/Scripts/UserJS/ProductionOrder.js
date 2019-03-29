@@ -249,6 +249,7 @@ function EditProductionOrder(this_Obj) {
                     case "4":
                         _isApproval = true;
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
+                        DisableFields();
                         break;
                     default:
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
@@ -263,9 +264,17 @@ function EditProductionOrder(this_Obj) {
                 //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
                 switch ($('#LatestApprovalStatus').val()) {
                     case "4":
-                        _isApproval = true;
-                        if ($('#IsDistributor').val()=="True")
+                        _isApproval = true; 
+                        if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False")
                             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", productionOrder.ID);
+                        else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", productionOrder.ID);
+                            DisableFields();
+                        }
+                        else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", productionOrder.ID);
+                            DisableFields();
+                        }
                         else
                             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
                         break;
@@ -380,9 +389,11 @@ function SaveSuccessProductionOrder(data, status) {
         _result = _jsonData.Record;
         switch (_status) {
             case "OK":
+                if (_message == "Insertion successfull" && $('#IsUpdate').val()=="False")
+                    $('#IsDocLocked').val("True");
                 $('#IsUpdate').val('True');
                 $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID + "&saleOrderID=" + _result.SaleOrderID, function () {
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+                    //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                     BindProductionOrderDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID, _isApproval);
@@ -396,7 +407,33 @@ function SaveSuccessProductionOrder(data, status) {
                     }
 
                 });
-                ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+                debugger;
+                if ($('#IsDocLocked').val() == "True") {
+                    if ($('#LatestApprovalStatus').val() == "4") {
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", _result.ID);
+                        DisableFields();
+                    }
+                    else
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+                }
+                else{
+                    if ($('#LatestApprovalStatus').val() == "4" && $('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False") {
+                        
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", _result.ID);
+                        
+                    }
+                    else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", _result.ID);
+                        DisableFields();
+                    }
+                    else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", _result.ID);
+                        DisableFields();
+                    }
+                    else
+                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", _result.ID);
+                }
+                
                 BindOrReloadProductionOrderTable('Init');
                 notyAlert('success', _result.Message);
                 break;
@@ -568,11 +605,15 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                  { //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
                      "data": "OrderQty", "orderable": false, render: function (data, type, row) {
                          debugger;
-                         if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                         //if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                         if ((($('#IsDocLocked').val() == "False" && $('#IsMilestoneUpdate').val() == "False") || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9") && $('#LatestApprovalStatus').val() != "") {
                              return "-"
                          }
                          else {
-                             return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                             if ($('#LatestApprovalStatus').val() == "4")
+                                 return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>'
+                             else
+                                 return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                          }
                      }, "defaultContent": "<i></i>"
                  },
@@ -674,11 +715,15 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                 { //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
                     "data": "OrderQty", "orderable": false, render: function (data, type, row) {
                         debugger;
-                        if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                       
+                        if ((($('#IsDocLocked').val() == "False" && $('#IsMilestoneUpdate').val() == "False") || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9") && $('#LatestApprovalStatus').val() != "") {
                             return "-"
                         }
                         else {
-                            return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                            if ($('#LatestApprovalStatus').val() == "4")
+                                return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>'
+                            else
+                                return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                         }
                     }, "defaultContent": "<i></i>"
                 },
@@ -748,171 +793,175 @@ function AddProductionOrderDetailList() {
 function AddProductionOrderDetailToList() {
     debugger;    
     //$('#FormProductionOrderDetail').submit();  // you submit form
-    if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True') {        
-        if (($('#ProductSpec').val().trim() != "") && ($('#UnitCode').val() != "") && ($('#orderQtyID span').text() == "") && ($('#producedQtyID span').text() == "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
-            debugger;
-            var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
-            //productionOrderDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-            //productionOrderDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-            productionOrderDetailList[_datatablerowindex].Product.Code = $("#productName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
-            productionOrderDetailList[_datatablerowindex].Product.Name = $("#productName").text() != "" ? $("#productName").text().split("-")[1].trim() : "";
-            productionOrderDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
-            productionOrderDetailList[_datatablerowindex].ProductID = $("#hdnProductID").val() != "" ? $("#hdnProductID").val() : _emptyGuid;
-            productionOrderDetailList[_datatablerowindex].ProductModelID = $("#hdnProductModelID").val() != "" ? $("#hdnProductModelID").val() : _emptyGuid;
-            ProductModel = new Object;
-            Unit = new Object;
-            Plant = new Object;
-            // ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-            ProductModel.Name = $('#productModelName').text();
-            productionOrderDetailList[_datatablerowindex].ProductModel = ProductModel;
-            productionOrderDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
-            productionOrderDetailList[_datatablerowindex].SaleOrderQty = $('#SaleOrderQty').val();
-            productionOrderDetailList[_datatablerowindex].OrderQty = $('#OrderQty').val();
-            productionOrderDetailList[_datatablerowindex].ProducedQty = $('#ProducedQty').val();
-            productionOrderDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
-            Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-            productionOrderDetailList[_datatablerowindex].Unit = Unit;
-            if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
-                productionOrderDetailList[_datatablerowindex].Rate = parseFloat($('#Rate').val());
-            }
-            else {
-                productionOrderDetailList[_datatablerowindex].Rate = $('#hdnSaleOrderRate').val();
-            }
-            productionOrderDetailList[_datatablerowindex].PlantCode = $('#PlantCode').val();
-            Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
-            productionOrderDetailList[_datatablerowindex].Plant = Plant;
-            productionOrderDetailList[_datatablerowindex].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
-            productionOrderDetailList[_datatablerowindex].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
-            productionOrderDetailList[_datatablerowindex].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
-            productionOrderDetailList[_datatablerowindex].MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
-            productionOrderDetailList[_datatablerowindex].MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
-            productionOrderDetailList[_datatablerowindex].MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
-            productionOrderDetailList[_datatablerowindex].MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
-            productionOrderDetailList[_datatablerowindex].MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
-            _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
-            $('#divModelPopProductionOrder').modal('hide');
-            _datatablerowindex = -1;
-            
-        }
-    }
-    else {
-        if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val().trim() != "") && ($('#UnitCode').val() != "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
-            debugger;
-            if (_dataTable.ProductionOrderDetailList.rows().data().length === 0) {
-                _dataTable.ProductionOrderDetailList.clear().rows.add(GetProductionOrderDetailListByProductionOrderID(_emptyGuid)).draw(false);
-
+        if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True') {
+            if (($('#ProductSpec').val().trim() != "") && ($('#UnitCode').val() != "") && ($('#orderQtyID span').text() == "") && ($('#producedQtyID span').text() == "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
                 debugger;
                 var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
-                productionOrderDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                productionOrderDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                productionOrderDetailList[0].Product.HSNCode = $("#hdnProductHSNCode").val();
-                productionOrderDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                productionOrderDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                ProductModel = new Object;
-                Unit = new Object;
-                Plant = new Object;
-                ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                productionOrderDetailList[0].ProductModel = ProductModel;
-                productionOrderDetailList[0].ProductSpec = $('#ProductSpec').val();
-                productionOrderDetailList[0].SaleOrderQty = $('#SaleOrderQty').val();
-                productionOrderDetailList[0].OrderQty = $('#OrderQty').val();
-                productionOrderDetailList[0].ProducedQty = $('#ProducedQty').val();
-                productionOrderDetailList[0].UnitCode = $('#UnitCode').val();
-                Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                productionOrderDetailList[0].Unit = Unit;
-                if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
-                    productionOrderDetailList[0].Rate = parseFloat($('#Rate').val());
+                if (!(($("#IsMilestoneUpdate").val() == "True" && $('#LatestApprovalStatus').val() == '4') || ($('#IsDocLocked').val() == "True") && $('#LatestApprovalStatus').val() == '4')) {
+                    //productionOrderDetailList[_datatablerowindex].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                    //productionOrderDetailList[_datatablerowindex].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    productionOrderDetailList[_datatablerowindex].Product.Code = $("#productName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
+                    productionOrderDetailList[_datatablerowindex].Product.Name = $("#productName").text() != "" ? $("#productName").text().split("-")[1].trim() : "";
+                    productionOrderDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
+                    productionOrderDetailList[_datatablerowindex].ProductID = $("#hdnProductID").val() != "" ? $("#hdnProductID").val() : _emptyGuid;
+                    productionOrderDetailList[_datatablerowindex].ProductModelID = $("#hdnProductModelID").val() != "" ? $("#hdnProductModelID").val() : _emptyGuid;
+                    ProductModel = new Object;
+                    Unit = new Object;
+                    Plant = new Object;
+                    // ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                    ProductModel.Name = $('#productModelName').text();
+                    productionOrderDetailList[_datatablerowindex].ProductModel = ProductModel;
+                    productionOrderDetailList[_datatablerowindex].ProductSpec = $('#ProductSpec').val();
+                    productionOrderDetailList[_datatablerowindex].SaleOrderQty = $('#SaleOrderQty').val();
+                    productionOrderDetailList[_datatablerowindex].OrderQty = $('#OrderQty').val();
+
+                    productionOrderDetailList[_datatablerowindex].UnitCode = $('#UnitCode').val();
+                    Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                    productionOrderDetailList[_datatablerowindex].Unit = Unit;
+                    if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
+                        productionOrderDetailList[_datatablerowindex].Rate = parseFloat($('#Rate').val());
+                    }
+                    else {
+                        productionOrderDetailList[_datatablerowindex].Rate = $('#hdnSaleOrderRate').val();
+                    }
+                    productionOrderDetailList[_datatablerowindex].PlantCode = $('#PlantCode').val();
+                    Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
+                    productionOrderDetailList[_datatablerowindex].Plant = Plant;
                 }
-                else {
-                    productionOrderDetailList[0].Rate = $('#hdnSellingPrice').val();
-                }
-                productionOrderDetailList[0].PlantCode = $('#PlantCode').val();
-                Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
-                productionOrderDetailList[0].Plant = Plant;
-                productionOrderDetailList[0].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
-                productionOrderDetailList[0].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
-                productionOrderDetailList[0].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
-                productionOrderDetailList[0].MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
-                productionOrderDetailList[0].MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
-                productionOrderDetailList[0].MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
-                productionOrderDetailList[0].MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
-                productionOrderDetailList[0].MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].ProducedQty = $('#ProducedQty').val();
+                productionOrderDetailList[_datatablerowindex].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
+                productionOrderDetailList[_datatablerowindex].MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
                 _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
                 $('#divModelPopProductionOrder').modal('hide');
+                _datatablerowindex = -1;
 
             }
-            else {
-                //if ($('#ProductID').val() != "") {
+        }
+        else {
+            if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val().trim() != "") && ($('#UnitCode').val() != "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
                 debugger;
-                //if (ProductionOrderDetailVM != null) {
-                var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
-                if (productionOrderDetailList.length > 0) {
-                    var checkpoint = 0;
-                    for (var i = 0; i < productionOrderDetailList.length; i++) {
-                        if ((productionOrderDetailList[i].ProductID == $('#ProductID').val()) && (productionOrderDetailList[i].ProductModelID == $('#ProductModelID').val()
-                            && (productionOrderDetailList[i].ProductSpec == $('#ProductSpec').val()) && (productionOrderDetailList[i].UnitCode == $('#UnitCode').val()
-                            && (productionOrderDetailList[i].Rate == parseFloat($('#divModelProductionOrderPopBody #Rate').val()))))) {
-                            productionOrderDetailList[i].ProducedQty = parseFloat(productionOrderDetailList[i].ProducedQty) + parseFloat($('#ProducedQty').val());
-                            checkpoint = 1;
-                            break;
+                if (_dataTable.ProductionOrderDetailList.rows().data().length === 0) {
+                    _dataTable.ProductionOrderDetailList.clear().rows.add(GetProductionOrderDetailListByProductionOrderID(_emptyGuid)).draw(false);
+
+                    debugger;
+                    var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
+                    productionOrderDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                    productionOrderDetailList[0].Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                    productionOrderDetailList[0].Product.HSNCode = $("#hdnProductHSNCode").val();
+                    productionOrderDetailList[0].ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                    productionOrderDetailList[0].ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                    ProductModel = new Object;
+                    Unit = new Object;
+                    Plant = new Object;
+                    ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                    productionOrderDetailList[0].ProductModel = ProductModel;
+                    productionOrderDetailList[0].ProductSpec = $('#ProductSpec').val();
+                    productionOrderDetailList[0].SaleOrderQty = $('#SaleOrderQty').val();
+                    productionOrderDetailList[0].OrderQty = $('#OrderQty').val();
+                    productionOrderDetailList[0].ProducedQty = $('#ProducedQty').val();
+                    productionOrderDetailList[0].UnitCode = $('#UnitCode').val();
+                    Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                    productionOrderDetailList[0].Unit = Unit;
+                    if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
+                        productionOrderDetailList[0].Rate = parseFloat($('#Rate').val());
+                    }
+                    else {
+                        productionOrderDetailList[0].Rate = $('#hdnSellingPrice').val();
+                    }
+                    productionOrderDetailList[0].PlantCode = $('#PlantCode').val();
+                    Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
+                    productionOrderDetailList[0].Plant = Plant;
+                    productionOrderDetailList[0].MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
+                    productionOrderDetailList[0].MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
+                    productionOrderDetailList[0].MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
+                    productionOrderDetailList[0].MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
+                    productionOrderDetailList[0].MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
+                    productionOrderDetailList[0].MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
+                    productionOrderDetailList[0].MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
+                    productionOrderDetailList[0].MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
+                    _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
+                    $('#divModelPopProductionOrder').modal('hide');
+
+                }
+                else {
+                    //if ($('#ProductID').val() != "") {
+                    debugger;
+                    //if (ProductionOrderDetailVM != null) {
+                    var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
+                    if (productionOrderDetailList.length > 0) {
+                        var checkpoint = 0;
+                        for (var i = 0; i < productionOrderDetailList.length; i++) {
+                            if ((productionOrderDetailList[i].ProductID == $('#ProductID').val()) && (productionOrderDetailList[i].ProductModelID == $('#ProductModelID').val()
+                                && (productionOrderDetailList[i].ProductSpec == $('#ProductSpec').val()) && (productionOrderDetailList[i].UnitCode == $('#UnitCode').val()
+                                && (productionOrderDetailList[i].Rate == parseFloat($('#divModelProductionOrderPopBody #Rate').val()))))) {
+                                productionOrderDetailList[i].ProducedQty = parseFloat(productionOrderDetailList[i].ProducedQty) + parseFloat($('#ProducedQty').val());
+                                checkpoint = 1;
+                                break;
+                            }
+                        }
+                        if (checkpoint == 1) {
+                            debugger;
+                            _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
+                            $('#divModelPopProductionOrder').modal('hide');
+                        }
+                        else if (checkpoint == 0) {
+                            var ProductionOrderDetailVM = new Object();
+                            var Product = new Object;
+                            var ProductModel = new Object()
+                            var Unit = new Object();
+                            var Plant = new Object();
+                            ProductionOrderDetailVM.ID = _emptyGuid;
+                            ProductionOrderDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
+                            Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
+                            Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
+                            Product.HSNCode = $("#hdnProductHSNCode").val();
+                            ProductionOrderDetailVM.Product = Product;
+                            ProductionOrderDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
+                            ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
+                            ProductionOrderDetailVM.ProductModel = ProductModel;
+                            ProductionOrderDetailVM.ProductSpec = $('#ProductSpec').val();
+                            ProductionOrderDetailVM.SaleOrderQty = $('#SaleOrderQty').val();
+                            ProductionOrderDetailVM.OrderQty = $('#OrderQty').val();
+                            ProductionOrderDetailVM.ProducedQty = $('#ProducedQty').val();
+                            Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
+                            ProductionOrderDetailVM.Unit = Unit;
+                            ProductionOrderDetailVM.UnitCode = $('#UnitCode').val();
+                            if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
+                                ProductionOrderDetailVM.Rate = parseFloat($('#Rate').val());
+                            }
+                            else {
+                                ProductionOrderDetailVM.Rate = $('#hdnSellingPrice').val();
+                            }
+                            Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
+                            ProductionOrderDetailVM.Plant = Plant;
+                            ProductionOrderDetailVM.PlantCode = $('#PlantCode').val();
+                            ProductionOrderDetailVM.MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
+                            ProductionOrderDetailVM.MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
+                            _dataTable.ProductionOrderDetailList.row.add(ProductionOrderDetailVM).draw(false);
+                            $('#divModelPopProductionOrder').modal('hide');
                         }
                     }
-                    if (checkpoint == 1) {
-                        debugger;
-                        _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
-                        $('#divModelPopProductionOrder').modal('hide');
-                    }
-                    else if (checkpoint == 0) {
-                        var ProductionOrderDetailVM = new Object();
-                        var Product = new Object;
-                        var ProductModel = new Object()
-                        var Unit = new Object();
-                        var Plant = new Object();
-                        ProductionOrderDetailVM.ID = _emptyGuid;
-                        ProductionOrderDetailVM.ProductID = $("#ProductID").val() != "" ? $("#ProductID").val() : _emptyGuid;
-                        Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
-                        Product.Name = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[1].trim() : "";
-                        Product.HSNCode = $("#hdnProductHSNCode").val();
-                        ProductionOrderDetailVM.Product = Product;
-                        ProductionOrderDetailVM.ProductModelID = $("#ProductModelID").val() != "" ? $("#ProductModelID").val() : _emptyGuid;
-                        ProductModel.Name = $("#ProductModelID").val() != "" ? $("#ProductModelID option:selected").text() : "";
-                        ProductionOrderDetailVM.ProductModel = ProductModel;
-                        ProductionOrderDetailVM.ProductSpec = $('#ProductSpec').val();
-                        ProductionOrderDetailVM.SaleOrderQty = $('#SaleOrderQty').val();
-                        ProductionOrderDetailVM.OrderQty = $('#OrderQty').val();
-                        ProductionOrderDetailVM.ProducedQty = $('#ProducedQty').val();
-                        Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                        ProductionOrderDetailVM.Unit = Unit;
-                        ProductionOrderDetailVM.UnitCode = $('#UnitCode').val();
-                        if (($('#Rate').val() !== undefined && $('#Rate').val() !== null && $('#Rate').val() !== "")) {
-                            ProductionOrderDetailVM.Rate = parseFloat($('#Rate').val());
-                        }
-                        else {
-                            ProductionOrderDetailVM.Rate = $('#hdnSellingPrice').val();
-                        }
-                        Plant.Description = $("#PlantCode").val() != "" ? $("#PlantCode option:selected").text().trim() : "";
-                        ProductionOrderDetailVM.Plant = Plant;
-                        ProductionOrderDetailVM.PlantCode = $('#PlantCode').val();
-                        ProductionOrderDetailVM.MileStone1FcFinishDtFormatted = $('#MileStone1FcFinishDtFormatted').val();
-                        ProductionOrderDetailVM.MileStone1AcTFinishDtFormatted = $('#MileStone1AcTFinishDtFormatted').val();
-                        ProductionOrderDetailVM.MileStone2FcFinishDtFormatted = $('#MileStone2FcFinishDtFormatted').val();
-                        ProductionOrderDetailVM.MileStone2AcTFinishDtFormatted = $('#MileStone2AcTFinishDtFormatted').val();
-                        ProductionOrderDetailVM.MileStone3FcFinishDtFormatted = $('#MileStone3FcFinishDtFormatted').val();
-                        ProductionOrderDetailVM.MileStone3AcTFinishDtFormatted = $('#MileStone3AcTFinishDtFormatted').val();
-                        ProductionOrderDetailVM.MileStone4FcFinishDtFormatted = $('#MileStone4FcFinishDtFormatted').val();
-                        ProductionOrderDetailVM.MileStone4AcTFinishDtFormatted = $('#MileStone4AcTFinishDtFormatted').val();
-                        _dataTable.ProductionOrderDetailList.row.add(ProductionOrderDetailVM).draw(false);
-                        $('#divModelPopProductionOrder').modal('hide');
-                    }
+                    //}
                 }
                 //}
+                //else {
+                //    $('#msgQty').append('SaleOrder Qty cannot be less than Production or Curr.Prod Order Qty')
+                //}
             }
-            //}
-            //else {
-            //    $('#msgQty').append('SaleOrder Qty cannot be less than Production or Curr.Prod Order Qty')
-            //}
         }
-    }
+    
     $('[data-toggle="popover"]').popover({
         html: true,
         'trigger': 'hover',
@@ -926,7 +975,10 @@ function EditProductionOrderDetail(this_Obj) {
     debugger;
     _datatablerowindex = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).index();
     var productionOrderDetail = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).data();
-    $("#divModelProductionOrderPopBody").load("ProductionOrder/AddProductionOrderDetail?update=true", function (responseTxt, statusTxt, xhr) {
+    var ismilestoneupdate = 0;
+    if (($("#IsMilestoneUpdate").val() == "True" && $('#LatestApprovalStatus').val() == '4') || ($('#IsDocLocked').val() == "True" && $('#LatestApprovalStatus').val() == '4'))
+        ismilestoneupdate = 1
+    $("#divModelProductionOrderPopBody").load("ProductionOrder/AddProductionOrderDetail?update=true&&IsMilestoneUpdate=" + ismilestoneupdate, function (responseTxt, statusTxt, xhr) {
         $('#divModelPopProductionOrder').modal('show');
         if (statusTxt == 'success') {
             $('#lblModelPopProductionOrder').text('Production Order Detail')
@@ -983,6 +1035,16 @@ function EditProductionOrderDetail(this_Obj) {
             $('#FormProductionOrderDetail #MileStone3AcTFinishDtFormatted').val(productionOrderDetail.MileStone3AcTFinishDtFormatted);
             $('#FormProductionOrderDetail #MileStone4FcFinishDtFormatted').val(productionOrderDetail.MileStone4FcFinishDtFormatted);
             $('#FormProductionOrderDetail #MileStone4AcTFinishDtFormatted').val(productionOrderDetail.MileStone4AcTFinishDtFormatted);
+            debugger;
+            if (($("#IsMilestoneUpdate").val() == "True" && $('#LatestApprovalStatus').val() == '4') || ($('#IsDocLocked').val() == "True") && $('#LatestApprovalStatus').val() == '4') {
+                $('#OrderQty').attr("readonly", true);
+                $('#PlantCode').attr("readonly", true);
+                $('#ProductSpec').attr("readonly", true);
+                $('#UnitCode').attr("disabled", true);
+                $('#Rate').attr("readonly", true); 
+                $('#spnUnitCode').text(productionOrderDetail.Unit.Description);
+                $('#spnPlantCode').text(productionOrderDetail.Plant.Description);
+            }
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -1262,8 +1324,16 @@ function EditRedirectToDocument(id) {
                 switch ($('#LatestApprovalStatus').val()) {
                     case "4":
                         _isApproval = true;
-                        if ($('#IsDistributor').val() == "True")
+                        if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False")
                             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", id);
+                        else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", id);
+                            DisableFields();
+                        }
+                        else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
+                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", id);
+                            DisableFields();
+                        }
                         else
                             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
                         break;
@@ -1295,4 +1365,12 @@ function ClearProdform() {
     debugger;
     ResetProductionOrder();
     $('.showSweetAlert .cancel').click();
+}
+function DisableFields()
+{
+    $('#ProdOrderRefNo').attr("readonly", true);
+    $('#ProdOrderDateFormatted').attr("readonly", true)
+    $('#ExpectedDelvDateFormatted').attr("readonly", true)
+    //$('#PreparedBy').attr("disabled", true)
+    $('#GeneralNotes').attr("readonly", true);
 }

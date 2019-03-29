@@ -5,15 +5,16 @@
     @Html.HiddenFor(model => model.ProdOrderID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.IsUpdate, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.SaleOrderQty, htmlAttributes: new { @class = "" })
-    @Html.HiddenFor(model=>model.SaleOrderID,htmlAttributes:new { @class="",@id="hdnSaleOrderIDForDetail"})
-    @Html.HiddenFor(model=>model.SaleOrderDetailID,htmlAttributes:new { @class="",@id="hdnSaleOrderDetailID"})
+    @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderIDForDetail" })
+    @Html.HiddenFor(model => model.SaleOrderDetailID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderDetailID" })
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "", @id = "hdnProductionOrderDetailID" })
     @*@Html.HiddenFor(model => model.PrevProducedQty, htmlAttributes: new { @class = "",@id="hdnPrevProducedQty" })
-    @Html.HiddenFor(model => model.TotalProducedQty, htmlAttributes: new { @class = "" ,@id="hdnTotalProducedQty"})*@
+        @Html.HiddenFor(model => model.TotalProducedQty, htmlAttributes: new { @class = "" ,@id="hdnTotalProducedQty"})*@
     @Html.HiddenFor(model => model.SaleOrderID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderIDForDetail" })
     @Html.HiddenFor(model => model.SaleOrderDetailID, htmlAttributes: new { @class = "", @id = "hdnSaleOrderDetailID" })
     @Html.HiddenFor(model => model.Rate, htmlAttributes: new { @class = "", @id = "hdnSaleOrderRate" })
-    @Html.HiddenFor(model => model.ShowRate, htmlAttributes: new { @class = "", @id = "hdnShowRate" })  
+    @Html.HiddenFor(model => model.ShowRate, htmlAttributes: new { @class = "", @id = "hdnShowRate" })
+    @*@Html.HiddenFor(model => model.IsMilestoneUpdate, htmlAttributes: new { @class = "" })*@
     <div class="form-group col-md-12 no-padding">
         <div class="col-md-12 no-padding">
             <div class="col-md-12">
@@ -117,12 +118,22 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divUnitSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+
+                    @if (Model.IsMilestoneUpdate == true)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput" id="spnUnitCode" style="background-color:#eeeeee">@Model.UnitCode</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divUnitSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                            </div>
+                        </div>
+                    }
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnUnitRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -135,7 +146,7 @@
                         @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div id="orderQtyID" class="col-md-12">
-                        @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)", @onchange= "$('#ProducedQty').val(this.value)" } })
+                        @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)", @onchange = "$('#ProducedQty').val(this.value)" } })
                         @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -151,7 +162,7 @@
 
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
-                        @*<span class="control-label">Rate (<span class="control-label" id="detailCurRate">INR</span>)</span>*@ 
+                        @*<span class="control-label">Rate (<span class="control-label" id="detailCurRate">INR</span>)</span>*@
                         @Html.LabelFor(model => model.Rate, htmlAttributes: new { @class = "control-label " })  (<span class="control-label" id="detailCurRate"> INR </span>)
                     </div>
                     <div class="col-md-12">
@@ -163,12 +174,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.PlantCode, htmlAttributes: new { @class = "control-label" })
                     </div>
+                    @if (Model.IsMilestoneUpdate == true)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput" id="spnPlantCode" style="background-color:#eeeeee">@Model.PlantCode</span>
+                        </div>
+                    }
+                    else
+                    {
                     <div class="col-md-12">
                         <div class="divPlantSelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             @*@Html.Action("PlantSelectList", "Plant", new { required = "" })*@
                         </div>
                     </div>
+                    }
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnPlantRequired", "")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -186,12 +206,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.UnitCode, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
-                    <div class="col-md-12">
-                        <div class="divUnitSelectList">
-                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                            @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                    @if (Model.IsMilestoneUpdate == true)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput" id="spnUnitCode" style="background-color:#eeeeee">@Model.UnitCode</span>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divUnitSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                @*@Html.Action("UnitSelectList", "Unit", new { required = "required" })*@
+                            </div>
+                        </div>
+                    }
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnUnitRequired", "required")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -204,9 +233,9 @@
                         @Html.LabelFor(model => model.OrderQty, htmlAttributes: new { @class = "control-label " })
                     </div>
                     <div id="orderQtyID" class="col-md-12">
-                            @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
-                            @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
-                        </div>
+                        @Html.EditorFor(model => model.OrderQty, new { htmlAttributes = new { @class = "form-control newinput Amount CalculateGST", @onkeypress = "return isNumber(event)" } })
+                        @Html.ValidationMessageFor(model => model.OrderQty, "", new { @class = "text-danger" })
+                    </div>
                 </div>
                 <div class="col-md-12 no-padding">
                     <div class="col-md-12">
@@ -231,12 +260,21 @@
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.PlantCode, htmlAttributes: new { @class = "control-label" })
                     </div>
+                    @if (Model.IsMilestoneUpdate == true)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput" id="spnPlantCode" style="background-color:#eeeeee">@Model.PlantCode</span>
+                        </div>
+                    }
+                    else
+                    {
                     <div class="col-md-12">
                         <div class="divPlantSelectList">
                             <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
                             @*@Html.Action("PlantSelectList", "Plant", new { required = "" })*@
                         </div>
                     </div>
+                    }
                     <!-- This hidden field will keep the information whether the field is required or not -->
                     @Html.Hidden("hdnPlantRequired", "")
                     <!-- This hidden field will keep the information whether the field is disabled or not -->
@@ -311,7 +349,7 @@
                     <td>
                         <div class="col-md-10 no-padding">
                             <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone2AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off"} })
+                                @Html.EditorFor(model => model.MileStone2AcTFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.MileStone2AcTFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -326,7 +364,7 @@
                     <td>
                         <div class="col-md-10 no-padding">
                             <div class="col-md-12">
-                                @Html.EditorFor(model => model.MileStone3FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off"} })
+                                @Html.EditorFor(model => model.MileStone3FcFinishDtFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.MileStone3FcFinishDtFormatted, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -440,7 +478,13 @@
         catch (e) {
             console.log(e.message);
         }
-
+        debugger;
+        //if($("#IsMilestoneUpdate")=="True")
+        //{
+        //    $('#OrderQty').attr("readonly", true);
+        //    $('#PlantCode').attr("readonly", true);
+        //    $('#ProductSpec').attr("readonly", true);
+        //}
     });
 </script>
 

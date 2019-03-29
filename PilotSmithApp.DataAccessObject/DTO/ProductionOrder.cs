@@ -55,6 +55,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ApprovalStatus ApprovalStatus { get; set; }
         public string SaleOrderNo { get; set; }
         public Currency Currency { get; set; }
+        public string PreparedByName { get; set; }
     }
 
     public class ProductionOrderAdvanceSearch
