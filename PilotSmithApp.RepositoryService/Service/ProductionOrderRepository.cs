@@ -230,7 +230,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         productionOrderDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrderDetail.ID);
                                         productionOrderDetail.ProdOrderID = (sdr["ProdOrderID"].ToString() != "" ? Guid.Parse(sdr["ProdOrderID"].ToString()) : productionOrderDetail.ProdOrderID);
-                                        productionOrderDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionOrderDetail.ProductSpec);
+                                        productionOrderDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : productionOrderDetail.ProductSpec);
                                         productionOrderDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),

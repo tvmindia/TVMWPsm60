@@ -138,7 +138,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productModel.Unit = new Unit();
                                         productModel.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : productModel.Unit.Description);
                                        // productModel.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : productModel.UnitCode);
-                                        productModel.Specification = (sdr["Specification"].ToString() != "" ? sdr["Specification"].ToString() : productModel.Specification);
+                                        productModel.Specification = (sdr["Specification"].ToString() != "" ? sdr["Specification"].ToString().Replace("$n$", "\n") : productModel.Specification);
                                         productModel.CostPrice = (sdr["CostPrice"].ToString() != "" ? Decimal.Parse(sdr["CostPrice"].ToString()) : productModel.CostPrice);
                                         productModel.SellingPrice = (sdr["SellingPrice"].ToString() != "" ? Decimal.Parse(sdr["SellingPrice"].ToString()) : productModel.SellingPrice);                                       
                                         productModel.IntroducedDate = (sdr["IntroducedDate"].ToString() != "" ? DateTime.Parse(sdr["IntroducedDate"].ToString()) : productModel.IntroducedDate);
@@ -193,7 +193,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productModel.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : productModel.ProductID);
                                     productModel.Name = (sdr["Name"].ToString() != "" ? sdr["Name"].ToString() : productModel.Name);
                                     productModel.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : productModel.UnitCode);
-                                    productModel.Specification = (sdr["Specification"].ToString() != "" ? sdr["Specification"].ToString() : productModel.Specification);
+                                    productModel.Specification = (sdr["Specification"].ToString() != "" ? sdr["Specification"].ToString().Replace("$n$", "\n") : productModel.Specification);
                                     productModel.CostPrice = (sdr["CostPrice"].ToString() != "" ? Decimal.Parse(sdr["CostPrice"].ToString()) : productModel.CostPrice);
                                     productModel.SellingPrice = (sdr["SellingPrice"].ToString() != "" ? Decimal.Parse(sdr["SellingPrice"].ToString()) : productModel.SellingPrice);
                                     productModel.IntroducedDate = (sdr["IntroducedDate"].ToString() != "" ? DateTime.Parse(sdr["IntroducedDate"].ToString()) : productModel.IntroducedDate);
