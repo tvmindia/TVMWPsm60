@@ -56,6 +56,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string SaleOrderNo { get; set; }
         public Currency Currency { get; set; }
         public string PreparedByName { get; set; }
+        public string EmailItemList { get; set; }
     }
 
     public class ProductionOrderAdvanceSearch

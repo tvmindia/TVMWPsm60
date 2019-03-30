@@ -62,13 +62,14 @@
                 <tr><td>&nbsp;</td></tr>
             </tbody>
         </table>
-
+        <span style="font-size:10px;" id="spnFilterNote"></span>
         <br />
         @{ decimal @*curProductionQty = 0,*@ amount = 0; string totMilestone;}
         @*<table id="ItemDetailsTable" style="font-family: arial, sans-serif;color: #000;padding-top:10px; border-collapse: collapse; width: 100%; line-height: 14px; text-align: left;" cellspacing="0" width="100%">*@
-        <table style="width:100%;padding-top:30px;">
+        <table id="ItemDetailsTable" style="width:100%;padding-top:30px;">
             <thead>
                 <tr style="border-bottom-style: solid;border-top-style:solid;border-bottom-width: 2px;border-top-width: 2px;border-bottom-color: #eee;border-top-color: #eee;">
+                    <th style="width:5%;text-align: center;padding: 8px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000; "></th>
                     <th style="width:5%;text-align: center;padding: 8px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000; ">No.</th>
                     <th style="width:21%; text-align: left;padding: 8px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">Product</th>
                     <th style="width:12%; text-align: left;padding: 8px;font-size:10px;border-bottom:solid 1.5px;border-bottom-color: #000;border-top:solid 1.5px;border-top-color: #000;">HSN</th>
@@ -117,7 +118,7 @@
                         }
 
                         <tr style="text-align: right;padding: 8px;border-bottom-style: solid;border-bottom-width: 1px;color: #1d1a1a;">
-
+                            <td><input style="align-items: center;margin: 8px;vertical-align:top;" class="SelectProduct" type="checkbox" checked/></td>
                             <td style="width:5%;text-align: center;padding: 8px;font-size:10px;vertical-align:top;">@slno</td>
                             <td style="width:21%; text-align: left;padding: 8px;font-size:10px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
                             <td style="width:12%;text-align:left;padding:8px;font-size:10px;vertical-align:top;">@mp.Product.HSNCode</td>
@@ -168,6 +169,7 @@
                 @Html.HiddenFor(model => model.Cc, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.Bcc, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.Subject, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.EmailItemList, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnProductionOrderEMailContent" })
                 @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
                 @Html.HiddenFor(model => model.ProdOrderNo, htmlAttributes: new { @class = "", @id = "hdnProdOrderNo" })
@@ -221,5 +223,9 @@
         $.validator.unobtrusive.parse("#FormProductionOrderEmailDownload");
         debugger;
         $('#contact').html($('#ContactPerson').text());
+        //$("table td input.SelectProduct").each(function () {
+        //    $(this).is(':checked') ? $(this).parent('td').remove() : $(this).parent('td').parent('tr').remove();
+        //});
+        //$('table').find('th:first-child').remove();
     });
 </script>

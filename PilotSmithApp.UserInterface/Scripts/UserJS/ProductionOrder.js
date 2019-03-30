@@ -1103,10 +1103,33 @@ function EmailProductionOrder() {
         $('#lblModelEmailProductionOrder').text('Email Production Order')
         $('#divModelEmailProductionOrder').modal('show');
     });
-}
+};  
 function SendProductionOrderEmail() {
     debugger;
     if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
+        var filteredFlag = 0;
+        var selectedprodindex=[];
+        $("table td input.SelectProduct").each(function () {
+            if ($(this).is(':checked')) {
+                selectedprodindex.push($(this).closest('tr').find('td:eq(1)').text());
+                $(this).parent('td').remove();
+            }
+            else{
+                $(this).parent('td').parent('tr').remove();
+                filteredFlag = 1;
+            }
+            //$(this).is(':checked') ? $(this).parent('td').remove() : $(this).parent('td').parent('tr').remove();
+        });
+        $('table').find('th:first-child').remove();
+        //var i = 0;
+        if (filteredFlag == "1") {
+            $('#spnFilterNote').text("Filtered Document: Showing Item " + selectedprodindex + " only");
+            $('#EmailItemList').val(selectedprodindex.toString());
+            //$('#ItemDetailsTable tr').each(function () {
+            //    $(this).find('td:eq(0)').html(i);
+            //    i = i + 1;
+            //});
+        }
         $('#hdnProductionOrderEMailContent').val($('#divProductionOrderEmailcontainer').html());
         $('#hdnProdOrderNo').val($('#ProdOrderNo').val());
         $('#hdnContactPerson').val($('#ContactPerson').text());
