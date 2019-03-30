@@ -414,7 +414,7 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' +(row.ProductSpec!==null? row.ProductSpec.replace(/"/g, "&quot"):"") + '</p>"/>' + row.ProductModel.Name
+                     return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace("\n", "<br>").replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
                  }, "defaultContent": "<i></i>"
              },
              { "data": "Product.HSNCode", "defaultContent": "<i></i>" },

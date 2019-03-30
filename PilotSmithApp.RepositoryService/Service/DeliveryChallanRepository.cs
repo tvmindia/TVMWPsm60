@@ -215,7 +215,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         deliveryChallanDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : deliveryChallanDetail.ID);
                                         deliveryChallanDetail.DelvChallanID = (sdr["DelvChallanID"].ToString() != "" ? Guid.Parse(sdr["DelvChallanID"].ToString()) : deliveryChallanDetail.DelvChallanID);
-                                        deliveryChallanDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : deliveryChallanDetail.ProductSpec);
+                                        deliveryChallanDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : deliveryChallanDetail.ProductSpec);
                                         deliveryChallanDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),

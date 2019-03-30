@@ -227,7 +227,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         productionQCDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionQCDetail.ID);
                                         productionQCDetail.ProdQCID = (sdr["ProdQCID"].ToString() != "" ? Guid.Parse(sdr["ProdQCID"].ToString()) : productionQCDetail.ProdQCID);
-                                        productionQCDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionQCDetail.ProductSpec);
+                                        productionQCDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : productionQCDetail.ProductSpec);
                                         productionQCDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),

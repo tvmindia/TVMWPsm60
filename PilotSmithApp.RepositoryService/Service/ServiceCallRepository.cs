@@ -267,7 +267,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         serviceCallDetail.ProductModel = new ProductModel();
                                         serviceCallDetail.ProductModel.ID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : Guid.Empty);
                                         serviceCallDetail.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? (sdr["ProductModelName"].ToString()) : serviceCallDetail.ProductModel.Name);
-                                        serviceCallDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : serviceCallDetail.ProductSpec);
+                                        serviceCallDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : serviceCallDetail.ProductSpec);
                                         serviceCallDetail.GuaranteeYN = (sdr["GuaranteeYN"].ToString() != "" ? bool.Parse(sdr["GuaranteeYN"].ToString()) : serviceCallDetail.GuaranteeYN);
                                         serviceCallDetail.DocumentStatus = new DocumentStatus();
                                         serviceCallDetail.ServiceStatusCode = (sdr["ServiceStatusCode"].ToString() != "" ? int.Parse(sdr["ServiceStatusCode"].ToString()) : serviceCallDetail.ServiceStatusCode);

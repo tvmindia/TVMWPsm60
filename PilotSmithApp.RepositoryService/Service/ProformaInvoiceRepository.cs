@@ -261,7 +261,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     {
                                         proformaInvoiceDetail.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : proformaInvoiceDetail.ID);
                                         proformaInvoiceDetail.ProfInvID = (sdr["ProfInvID"].ToString() != "" ? Guid.Parse(sdr["ProfInvID"].ToString()) : proformaInvoiceDetail.ProfInvID);
-                                        proformaInvoiceDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : proformaInvoiceDetail.ProductSpec);
+                                        proformaInvoiceDetail.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : proformaInvoiceDetail.ProductSpec);
                                         proformaInvoiceDetail.Product = new Product()
                                         {
                                             ID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : Guid.Empty),
