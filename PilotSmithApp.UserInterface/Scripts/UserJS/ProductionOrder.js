@@ -1123,7 +1123,7 @@ function SendProductionOrderEmail() {
         $('table').find('th:first-child').remove();
         //var i = 0;
         if (filteredFlag == "1") {
-            $('#spnFilterNote').text("Filtered Document: Showing Item " + selectedprodindex + " only");
+            $('#spnFilterNote').text("Filtered Document: Showing Item(s) " + selectedprodindex + " only");
             $('#EmailItemList').val(selectedprodindex.toString());
             //$('#ItemDetailsTable tr').each(function () {
             //    $(this).find('td:eq(0)').html(i);
