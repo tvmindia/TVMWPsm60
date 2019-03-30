@@ -286,11 +286,14 @@ function EditProductionOrder(this_Obj) {
 						else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
 							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", productionOrder.ID);
 							DisableFields();
+					
 						}
 						else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
 							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", productionOrder.ID);
 							DisableFields();
 						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
 						break;
 					case "1":
 						if ($("#hdnIsDocumentApprover").val() == "True")
@@ -301,7 +304,7 @@ function EditProductionOrder(this_Obj) {
                         //else
                         //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
                         
-                    default:
+					default:	
                         //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
 						if ($('#LatestApprovalStatus').val() == 9) {
 							if ($("#hdnIsDocumentApprover").val() == "True")
