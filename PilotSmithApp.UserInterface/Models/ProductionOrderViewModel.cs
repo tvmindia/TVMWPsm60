@@ -90,6 +90,8 @@ namespace PilotSmithApp.UserInterface.Models
         public bool IsDistributor { get; set; }
         public bool IsMilestoneUpdate { get; set; }
         public string PreparedByName { get; set; }
+		public bool IsDocumentApprover { get; set; }
+	}
         public string EmailItemList { get; set; }
     }
 

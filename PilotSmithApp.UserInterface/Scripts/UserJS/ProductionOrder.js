@@ -222,7 +222,7 @@ function EditProductionOrder(this_Obj) {
     var productionOrder = _dataTable.ProductionOrderList.row($(this_Obj).parents('tr')).data();
     $('#lblProductionOrderInfo').text(productionOrder.ProdOrderNo);
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID, function (responseTxt, statusTxt, xhr) {
+	$("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + productionOrder.ID+"&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -235,7 +235,11 @@ function EditProductionOrder(this_Obj) {
                         break;
                     case "1":
                         _isApproval = true;
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", productionOrder.ID);
+                        //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", productionOrder.ID);
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApprovalApproverEdit", productionOrder.ID);
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", productionOrder.ID);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", productionOrder.ID);
                         //}
@@ -252,8 +256,20 @@ function EditProductionOrder(this_Obj) {
                         DisableFields();
                         break;
                     default:
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
-                        break;
+                        //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						if ($('#LatestApprovalStatus').val() == 9)
+						{
+
+							if ($("#hdnIsDocumentApprover").val() == "True")
+
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", productionOrder.ID);
+							else
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						break;
+
                 }
             }
             else {
@@ -263,24 +279,42 @@ function EditProductionOrder(this_Obj) {
                 debugger;
                 //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
                 switch ($('#LatestApprovalStatus').val()) {
-                    case "4":
-                        _isApproval = true; 
-                        if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False")
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", productionOrder.ID);
-                        else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", productionOrder.ID);
-                            DisableFields();
-                        }
-                        else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", productionOrder.ID);
-                            DisableFields();
-                        }
-                        else
-                            ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
-                        break;
-                    default:
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
-                        break;
+					case "4":
+						_isApproval = true;
+						if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False")
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", productionOrder.ID);
+						else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", productionOrder.ID);
+							DisableFields();
+					
+						}
+						else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", productionOrder.ID);
+							DisableFields();
+						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						break;
+					case "1":
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", productionOrder.ID);
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						break;
+                        //else
+                        //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+                        
+					default:	
+                        //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", productionOrder.ID);
+							else
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", productionOrder.ID);
+						break;
                 }
             }
             BindProductionOrderDetailList(productionOrder.ID);
@@ -307,7 +341,7 @@ function EditProductionOrder(this_Obj) {
 function ResetProductionOrder() {
     debugger;
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val(), function (responseTxt, statusTxt, xhr) {
+	$("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + $('#ProductionOrderForm #ID').val() + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             if ($('#hdnDescription').val() == "OPEN") {
                 $('.switch-input').prop('checked', true);
@@ -326,35 +360,70 @@ function ResetProductionOrder() {
                 $('#hdnCustomerID').val('');
                 $('#lblProductionOrderInfo').text('<<Production Order No.>>');
             }
-
-            switch ($('#LatestApprovalStatus').val()) {
-                case "":
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
-                    break;
-                case "0":
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", $('#ID').val());
-                    break;
-                case "1":
-                    _isApproval = true;
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", $('#ID').val());
-                    //if ($('#ApproverLevel').val() > 1) {
-                    //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
-                    //}
-                    //else {
-                    //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", $('#ID').val());
-                    //}
-                    break;
-                case "3":
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
-                    break;
-                case "4":
-                    _isApproval = true;
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
-                    break;
-                default:
-                    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
-                    break;
-            }
+			if ($('#IsDocLocked').val() == "True") {
+				debugger;
+				switch ($('#LatestApprovalStatus').val()) {
+					case "":
+						ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Add");
+						break;
+					case "0":
+						ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", $('#ID').val());
+						break;
+					case "1":
+						debugger;
+						_isApproval = true;
+						//ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", $('#ID').val());
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApprovalApproverEdit", $('#ID').val());
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", $('#ID').val());
+						//if ($('#ApproverLevel').val() > 1) {
+						//    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
+						//}
+						//else {
+						//    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Recalled", $('#ID').val());
+						//}
+						break;
+					case "3":
+						ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", $('#ID').val());
+						break;
+					case "4":
+						_isApproval = true;
+						ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", $('#ID').val());
+						break;
+					default:
+						//ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", $('#ID').val());
+							else
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+						break;
+				}
+			}
+			else {
+				switch ($('#LatestApprovalStatus').val()) {
+					case "1":
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", $('#ID').val());
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+						break;
+					default:
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", $('#ID').val());
+							else
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", $('#ID').val());
+						break;
+				}
+			}
             BindProductionOrderDetailList($('#ID').val(), false);
             clearUploadControl();
             PaintImages($('#ProductionOrderForm #ID').val(), _isApproval);
@@ -387,12 +456,13 @@ function SaveSuccessProductionOrder(data, status) {
         _message = _jsonData.Message;
         _status = _jsonData.Status;
         _result = _jsonData.Record;
-        switch (_status) {
+		switch (_status) {
+		
             case "OK":
                 if (_message == "Insertion successfull" && $('#IsUpdate').val()=="False")
                     $('#IsDocLocked').val("True");
                 $('#IsUpdate').val('True');
-                $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID + "&saleOrderID=" + _result.SaleOrderID, function () {
+				$("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID + "&saleOrderID=" + _result.SaleOrderID + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function () {
                     //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                     BindProductionOrderDetailList(_result.ID);
                     clearUploadControl();
@@ -408,30 +478,64 @@ function SaveSuccessProductionOrder(data, status) {
 
                 });
                 debugger;
-                if ($('#IsDocLocked').val() == "True") {
-                    if ($('#LatestApprovalStatus').val() == "4") {
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", _result.ID);
-                        DisableFields();
-                    }
-                    else
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+				if ($('#IsDocLocked').val() == "True")
+				{
+					if ($('#LatestApprovalStatus').val() == "4")
+					{
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", _result.ID);
+							DisableFields();
+					
+				    }
+				    else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" || $('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")
+					  {
+						
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApprovalApproverEdit", _result.ID);
+						
+					   }
+					   
+                       else
+                          ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
                 }
-                else{
-                    if ($('#LatestApprovalStatus').val() == "4" && $('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False") {
+				else
+				{
+     //               if ($('#LatestApprovalStatus').val() == "4" && $('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False") {
                         
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", _result.ID);
+     //                   ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", _result.ID);
                         
-                    }
-                    else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", _result.ID);
-                        DisableFields();
-                    }
-                    else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", _result.ID);
-                        DisableFields();
-                    }
-                    else
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", _result.ID);
+     //               }
+					//else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False" && $('#LatestApprovalStatus').val() == "4") {
+     //                   ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", _result.ID);
+     //                   DisableFields();
+     //               }
+					//else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True" && $('#LatestApprovalStatus').val() == "4") {
+     //                   ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", _result.ID);
+     //                   DisableFields();
+     //               }
+     //               else
+     //                   ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", _result.ID);
+					switch ($('#LatestApprovalStatus').val()) {
+						case "4":
+							if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "False") {
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributorApproveDocument", _result.ID);
+							}
+							else if ($('#IsMilestoneUpdate').val() == "True" && $('#IsDistributor').val() == "False") {
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "MilestoneApproveDocument", _result.ID);
+								DisableFields();
+							}
+							else if ($('#IsDistributor').val() == "True" && $('#IsMilestoneUpdate').val() == "True") {
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DistributerMileStoneApprove", _result.ID);
+								DisableFields();
+							}
+							break;
+						default:
+							debugger;
+							if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "False") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True"))
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", _result.ID);
+							else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True")
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApprovalApproverEdit", _result.ID);
+							else
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+					}
                 }
                 
                 BindOrReloadProductionOrderTable('Init');
@@ -606,7 +710,12 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                      "data": "OrderQty", "orderable": false, render: function (data, type, row) {
                          debugger;
                          //if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
-                         if ((($('#IsDocLocked').val() == "False" && $('#IsMilestoneUpdate').val() == "False") || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9") && $('#LatestApprovalStatus').val() != "") {
+						 if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+							 return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+						 }
+						
+						 
+                         else if ((($('#IsDocLocked').val() == "False" && $('#IsMilestoneUpdate').val() == "False") || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9") && $('#LatestApprovalStatus').val() != "") {
                              return "-"
                          }
                          else {
@@ -715,8 +824,11 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                 { //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False")?'<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>':'-' },
                     "data": "OrderQty", "orderable": false, render: function (data, type, row) {
                         debugger;
-                       
-                        if ((($('#IsDocLocked').val() == "False" && $('#IsMilestoneUpdate').val() == "False") || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9") && $('#LatestApprovalStatus').val() != "") {
+						if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+							return '<a href="#" class="actionLink"  onclick="EditProductionOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+						}
+						
+                       else if ((($('#IsDocLocked').val() == "False" && $('#IsMilestoneUpdate').val() == "False") || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9") && $('#LatestApprovalStatus').val() != "") {
                             return "-"
                         }
                         else {
@@ -1306,7 +1418,7 @@ function EditRedirectToDocument(id) {
     OnServerCallBegin();
 
     //this will return form body(html)
-    $("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+	$("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + id + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -1319,7 +1431,11 @@ function EditRedirectToDocument(id) {
                         break;
                     case "1":
                         _isApproval = true;
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", id);
+                        //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", id);
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							   ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApprovalApproverEdit", id);
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "ClosedForApproval", id);
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
                         //}
@@ -1335,8 +1451,18 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Approved", id);
                         break;
                     default:
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
-                        break;
+                        //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+                        //break;
+						if ($('#LatestApprovalStatus').val() == 9)
+						{
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", id);
+							else
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+						break;
                 }
             }
             else {
@@ -1359,10 +1485,26 @@ function EditRedirectToDocument(id) {
                         }
                         else
                             ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
-                        break;
+						break;
+					case "1":
+						if ($("#hdnIsDocumentApprover").val() == "True")
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", id);
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+						break;
                     default:
-                        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
-                        break;
+                        //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+                        //break;
+						if ($('#LatestApprovalStatus').val() == 9) {
+							if ($("#hdnIsDocumentApprover").val() == "True")
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "DocumentApproverEdit", id);
+							else
+								ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+						}
+						else
+							ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "LockDocument", id);
+						break;
+						
                 }
             }
             BindProductionOrderDetailList(id);
