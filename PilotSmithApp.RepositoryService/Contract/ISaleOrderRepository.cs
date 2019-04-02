@@ -15,9 +15,9 @@ namespace PilotSmithApp.RepositoryService.Contract
         SaleOrder GetSaleOrder(Guid id);
         object InsertUpdateSaleOrder(SaleOrder saleOrder);
         object DeleteSaleOrder(Guid id);
-        object DeleteSaleOrderDetail(Guid id);
+        object DeleteSaleOrderDetail(Guid id, string CreatedBy, DateTime CreatedDate);
         object UpdateSaleOrderEmailInfo(SaleOrder saleOrder);
-        object DeleteSaleOrderOtherChargeDetail(Guid id);
+        object DeleteSaleOrderOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate);
         List<SaleOrderDetail> GetSaleOrderDetailListBySaleOrderID(Guid saleOrderID, bool isCopy);
         List<SaleOrderOtherCharge> GetSaleOrderOtherChargesDetailListBySaleOrderID(Guid SaleOrderID, bool isCopy);
         SaleOrderSummary GetSaleOrderSummaryCount();

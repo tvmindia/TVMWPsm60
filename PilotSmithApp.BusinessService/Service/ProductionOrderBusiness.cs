@@ -51,9 +51,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _productionOrderRepository.DeleteProductionOrder(id);
         }
-        public object DeleteProductionOrderDetail(Guid id)
+        public object DeleteProductionOrderDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
-            return _productionOrderRepository.DeleteProductionOrderDetail(id);
+            return _productionOrderRepository.DeleteProductionOrderDetail(id,CreatedBy,CreatedDate);
         }
         public List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm)
         {

@@ -51,7 +51,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ViewBag.ID = id;
             AppUA appUA = Session["AppUA"] as AppUA;
-            bool IsDocumentApprover = _approverBusiness.CheckIsDocumentOwner("QUO", appUA.UserName);
+            bool IsDocumentApprover = _approverBusiness.CheckIsDocumentApprover("QUO", appUA.UserName);
             ViewBag.IsDocumentApprover = IsDocumentApprover;
             QuotationAdvanceSearchViewModel quotationAdvanceSearchVM = new QuotationAdvanceSearchViewModel();
             quotationAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
@@ -399,7 +399,8 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = _quotationBusiness.DeleteQuotationDetail(id);
+                AppUA appUA = Session["AppUA"] as AppUA;
+                object result = _quotationBusiness.DeleteQuotationDetail(id, appUA.UserName, _pSASysCommon.GetCurrentDateTime());
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }
@@ -420,7 +421,8 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = _quotationBusiness.DeleteQuotationOtherChargeDetail(id);
+                AppUA appUA = Session["AppUA"] as AppUA;
+                object result = _quotationBusiness.DeleteQuotationOtherChargeDetail(id, appUA.UserName, _pSASysCommon.GetCurrentDateTime());
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }

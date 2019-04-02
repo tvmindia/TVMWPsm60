@@ -39,6 +39,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@FileType", SqlDbType.VarChar, 5).Value = fileUpload.FileType;
                         cmd.Parameters.Add("@FileSize", SqlDbType.VarChar, 50).Value = fileUpload.FileSize;
                         cmd.Parameters.Add("@AttachmentURL", SqlDbType.NVarChar, -1).Value = fileUpload.AttachmentURL;
+                        cmd.Parameters.Add("@IsDocumentApprover", SqlDbType.Bit).Value = fileUpload.IsDocumentApprover;
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = fileUpload.PSASysCommon.CreatedBy;
                         cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = fileUpload.PSASysCommon.CreatedDate;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = fileUpload.PSASysCommon.UpdatedBy;
@@ -129,7 +130,7 @@ namespace PilotSmithApp.RepositoryService.Service
 
             return fileUploadList;
         }
-        public object DeleteFile(Guid id)
+        public object DeleteFile(Guid id,string CreatedBy,DateTime CreatedDate)
         {
             AppConst Cobj = new AppConst();
             try
@@ -148,6 +149,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteFile]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         OutparameterURL = cmd.Parameters.Add("@AttacmentURL", SqlDbType.NVarChar, -1);

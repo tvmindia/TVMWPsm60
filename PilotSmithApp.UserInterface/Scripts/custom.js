@@ -552,6 +552,11 @@ function UploadFile(FileObject)
                 // Adding one more key to FormData object  
                 fileData.append('ParentID', FileObject.ParentID);
                 fileData.append('ParentType', FileObject.ParentType);
+                debugger;
+                if (FileObject.IsDocumentApprover !=undefined)
+                    fileData.append('IsDocumentApprover', FileObject.IsDocumentApprover);
+                else
+                    fileData.append('IsDocumentApprover', "False");
                 $.ajax({
                     url: '/' + FileObject.Controller + '/UploadFiles',
                     type: "POST",
@@ -561,6 +566,7 @@ function UploadFile(FileObject)
                     success: function (result) {
                         if (result.Result == "OK")
                         {
+
                             $('#hdnFileDupID').val(result.Records.ParentID);
                             notyAlert('success', result.Message);
                             cancelAll();
@@ -694,12 +700,51 @@ function PaintImages(ID, isApproval)
             //ds.Records
             if (ds.Records != null)
             {
+                debugger;
                 $('#ExistingPreview').empty();
                 var filesize = 0;
                 for (var i = 0; i < ds.Records.length; i++) {
                     var html = "";
-                    if (ds.Records[i].IsDocLocked == false )
-                        html = '<div class="file-preview-thumbnails">'
+                    if (ds.Records[i].IsDocLocked == false) {
+                        if (isApproval == true) {
+                                html = '<div class="file-preview-thumbnails">'
+                                            + '  <div class="file-preview-frame krajee-default  kv-preview-thumb">'
+                                                 + ' <div class="kv-file-content">'
+                                                 + '<a href="/FileUpload/DownloadFile?token=' + ds.Records[i].AttachmentURL + '" style="position: absolute;left: 7%;cursor:pointer;z-index: 900;color: #26a026;"><i class="fa fa-download" aria-hidden="true" ></i></a>'
+                                                     + ' <div class="kv-preview-data file-preview-other-frame">'
+                                                         + ' <div class="file-preview-other">'
+                                                            + '  <span class="file-other-icon">' + validateType(ds.Records[i].FileName) + '</span>'
+                                                         + ' </div>'
+                                                      + '</div>'
+                                                  + '</div>'
+                                                + '  <div class="file-thumbnail-footer">'
+                                                     + ' <div class="file-footer-caption" title="' + ds.Records[i].FileName + '">' + ds.Records[i].FileName + '<br> <samp>(' + bytesToSize(ds.Records[i].FileSize) + ')</samp></div>'
+
+                                               + '   </div>'
+                                           + '   </div>'
+                                          + '</div>'
+                            }
+                        else if (ds.Records[i].IsDocumentApprover == true && isApproval == false) {
+                            html = '<div class="file-preview-thumbnails">'
+                                               + '  <div class="file-preview-frame krajee-default  kv-preview-thumb">'
+                                                    + ' <div class="kv-file-content">'
+                                                    + '<a href="/FileUpload/DownloadFile?token=' + ds.Records[i].AttachmentURL + '" style="position: absolute;left: 7%;cursor:pointer;z-index: 900;color: #26a026;"><i class="fa fa-download" aria-hidden="true" ></i></a>'
+                                                    + '<a style="position: absolute;right: 0%;cursor:pointer;z-index: 900;color: #dc3939;" ><i class="fa fa-trash-o" aria-hidden="true" onclick="DeleteFile(this);" token="' + ds.Records[i].ID + '"></i></a>'
+                                                        + ' <div class="kv-preview-data file-preview-other-frame">'
+                                                            + ' <div class="file-preview-other">'
+                                                               + '  <span class="file-other-icon">' + validateType(ds.Records[i].FileName) + '</span>'
+                                                            + ' </div>'
+                                                         + '</div>'
+                                                     + '</div>'
+                                                   + '  <div class="file-thumbnail-footer">'
+                                                        + ' <div class="file-footer-caption" title="' + ds.Records[i].FileName + '">' + ds.Records[i].FileName + '<br> <samp>(' + bytesToSize(ds.Records[i].FileSize) + ')</samp></div>'
+
+                                                  + '   </div>'
+                                              + '   </div>'
+                                             + '</div>'
+                        }
+                        else {
+                            html = '<div class="file-preview-thumbnails">'
                                         + '  <div class="file-preview-frame krajee-default  kv-preview-thumb">'
                                              + ' <div class="kv-file-content">'
                                              + '<a href="/FileUpload/DownloadFile?token=' + ds.Records[i].AttachmentURL + '" style="position: absolute;left: 7%;cursor:pointer;z-index: 900;color: #26a026;"><i class="fa fa-download" aria-hidden="true" ></i></a>'
@@ -715,7 +760,11 @@ function PaintImages(ID, isApproval)
                                            + '   </div>'
                                        + '   </div>'
                                       + '</div>'
+                        }
+                        //}
+                    }
                     else if (ds.Records[i].IsDocLocked == true) {
+                        //if (isApproval == true && ds.Records[i].IsDocumentApprover == false) {
                         if (isApproval == true) {
                             html = '<div class="file-preview-thumbnails">'
                                                                   + '  <div class="file-preview-frame krajee-default  kv-preview-thumb">'

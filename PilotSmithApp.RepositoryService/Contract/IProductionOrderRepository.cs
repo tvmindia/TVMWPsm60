@@ -14,7 +14,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<ProductionOrderDetail> GetProductionOrderDetailListByProductionOrderID(Guid productionOrderID);
         object InsertUpdateProductionOrder(ProductionOrder productionOrder);
         object DeleteProductionOrder(Guid id);
-        object DeleteProductionOrderDetail(Guid id);
+        object DeleteProductionOrderDetail(Guid id, string CreatedBy, DateTime CreatedDate);
         List<ProductionOrder> GetProductionOrderForSelectListOnDemand(string searchTerm);
         List<ProductionOrder> GetProductionOrderForSelectList(Guid? id);
         object UpdateProductionOrderEmailInfo(ProductionOrder productionOrder, int emailSendSuccess);

@@ -516,7 +516,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion Delete Quotation
         #region Delete Quotation Detail
-        public object DeleteQuotationDetail(Guid id)
+        public object DeleteQuotationDetail(Guid id,string CreatedBy,DateTime CreatedDate)
         {
             SqlParameter outputStatus = null;
             try
@@ -534,6 +534,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteQuotationDetail]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
@@ -735,7 +737,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion GetQuotationOtherChargeListByQuotationID
 
         #region Delete Quotation OtherCharge
-        public object DeleteQuotationOtherChargeDetail(Guid id)
+        public object DeleteQuotationOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
             SqlParameter outputStatus = null;
             try
@@ -753,6 +755,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteQuotationOtherCharge]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();

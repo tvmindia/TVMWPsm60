@@ -276,8 +276,8 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion DeleteApprover
 
-        #region CheckIsDocumentOwner
-        public bool CheckIsDocumentOwner(string documentTypeCode,string loginName)
+        #region CheckIsDocumentApprover
+        public bool CheckIsDocumentApprover(string documentTypeCode,string loginName)
         {
             try
             {
@@ -290,7 +290,7 @@ namespace PilotSmithApp.RepositoryService.Service
                             con.Open();
                         }
                         cmd.Connection = con;
-                        cmd.CommandText = "[PSA].[CheckIsDocumentOwner]";
+                        cmd.CommandText = "[PSA].[CheckIsDocumentApprover]";
                         cmd.Parameters.Add("@DocumentTypeCode", SqlDbType.VarChar,5).Value = documentTypeCode;
                         cmd.Parameters.Add("@LoginName", SqlDbType.NVarChar,255).Value = loginName;
                         cmd.CommandType = CommandType.StoredProcedure;

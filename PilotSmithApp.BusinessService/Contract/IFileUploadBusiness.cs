@@ -8,6 +8,6 @@ namespace PilotSmithApp.BusinessService.Contracts
     {
         FileUpload InsertAttachment(FileUpload fileUploadObj);
         List<FileUpload> GetAttachments(Guid ID);
-        object DeleteFile(Guid ID);
+        object DeleteFile(Guid ID, string CreatedBy, DateTime CreatedDate);
     }
 }

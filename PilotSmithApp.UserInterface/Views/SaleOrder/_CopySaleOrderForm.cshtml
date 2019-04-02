@@ -846,6 +846,8 @@
 
                 FileObject.ParentType = "SaleOrder";
                 FileObject.Controller = "FileUpload";
+                if ($('#LatestApprovalStatus').val() == '1' || $('#LatestApprovalStatus').val() == '9')
+                    FileObject.IsDocumentApprover = "True";
                 UploadFile(FileObject);
             });
         }
@@ -905,7 +907,8 @@
             console.log(e.message);
         }
         try {
-            if ($('#SaleOrderForm #IsDocLocked').val() == "False" && $('#SaleOrderForm #IsUpdate').val() == "True") {
+            //if ($('#SaleOrderForm #IsDocLocked').val() == "False" && $('#SaleOrderForm #IsUpdate').val() == "True") {
+            if (($('#SaleOrderForm #IsDocLocked').val() == "False" && $("#hdnIsDocumentApprover").val() == "False") && $('#SaleOrderForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
@@ -919,21 +922,67 @@
                 $('#btnSelect').prop("onclick", null);
                 $('#btnSelect').css("background", "#b2aca4");
             }
-
+            if (($('#SaleOrderForm #IsDocLocked').val() == "True" && $("#hdnIsDocumentApprover").val() == "False") && $('#SaleOrderForm #IsUpdate').val() == "True") {
+                if ($('#LatestApprovalStatus').val() != '3' && $('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != '0') {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Locked");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Locked");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Locked");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+            }
             debugger;
-            if ($('#LatestApprovalStatus').val() != '0' && $('#LatestApprovalStatus').val()!="") {
-                $('#btnUpload').attr("disabled", "disabled")
-                $('#btnUpload').attr("title", "Document Approved");
-                $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4");
-                $('#btnCancel').attr("disabled", "disabled")
-                $('#btnCancel').attr("title", "Document Approved");
-                $('#btnCancel').prop("onclick", null);
-                $('#btnCancel').css("background", "#b2aca4");
-                $('#btnSelect').attr("disabled", "disabled")
-                $('#btnSelect').attr("title", "Document Approved");
-                $('#btnSelect').prop("onclick", null);
-                $('#btnSelect').css("background", "#b2aca4");
+            if ($('#LatestApprovalStatus').val() != '0' && $('#LatestApprovalStatus').val() != "") {
+                if (($("#hdnIsDocumentApprover").val() == "False" && ($('#LatestApprovalStatus').val() != '9' && ($('#LatestApprovalStatus').val() != '3' && ($('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != ""))))) {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Locked");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Locked");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Locked");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+                if ($("#hdnIsDocumentApprover").val() == "True" && $('#SaleOrderForm #IsDocLocked').val() != "True" && ($('#LatestApprovalStatus').val() == '3' || $('#LatestApprovalStatus').val() == '7')) {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Approved");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Approved");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Approved");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+                if ($('#LatestApprovalStatus').val() == '4') {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Approved");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Approved");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Approved");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+
             }
         }
         catch (e) {

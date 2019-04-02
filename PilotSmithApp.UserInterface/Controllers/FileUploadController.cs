@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using PilotSmithApp.BusinessService.Contract;
 using PilotSmithApp.BusinessService.Contracts;
 using PilotSmithApp.DataAccessObject.DTO;
 using System;
@@ -19,7 +20,8 @@ namespace PilotSmithApp.UserInterface.Controllers
     public class FileUploadController : Controller
     {
         IFileUploadBusiness _fileUploadBusiness;
-        public FileUploadController(IFileUploadBusiness fileUploadBusiness)
+        PSASysCommon _pSASysCommon = new PSASysCommon();
+        public FileUploadController(IFileUploadBusiness fileUploadBusiness, IApproverBusiness approverBusiness)
         {
             _fileUploadBusiness = fileUploadBusiness;
         }
@@ -61,10 +63,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                         fileuploadObj.FileName = fname;
                         fileuploadObj.ParentID = Request["ParentID"].ToString() != "" ? Guid.Parse(Request["ParentID"].ToString()) : FileID;
                         fileuploadObj.ParentType = Request["ParentID"].ToString() != "" ? Request["ParentType"] : null;
+                        fileuploadObj.IsDocumentApprover= Request["IsDocumentApprover"].ToString() == "True" ? true : false;
                         fileuploadObj.PSASysCommon = new PSASysCommon();
                         AppUA _appUA = Session["AppUA"] as AppUA;
                         fileuploadObj.PSASysCommon.CreatedBy = _appUA.UserName;
-                        fileuploadObj.PSASysCommon.CreatedDate = _appUA.LoginDateTime;
+                        //fileuploadObj.PSASysCommon.CreatedDate = _appUA.LoginDateTime;
+                        fileuploadObj.PSASysCommon.CreatedDate = _pSASysCommon.GetCurrentDateTime();
                         fileuploadObj.PSASysCommon.UpdatedBy = _appUA.UserName;
                         fileuploadObj.PSASysCommon.UpdatedDate = _appUA.LoginDateTime;
                         _fileObj = _fileUploadBusiness.InsertAttachment(fileuploadObj);
@@ -109,6 +113,18 @@ namespace PilotSmithApp.UserInterface.Controllers
                         {
                             item.IsDocLocked = true;
                         }
+                        if(item.ParentType=="Quotation"||item.ParentType== "SaleOrder"||item.ParentType== "ProductionOrder")
+                        {
+                            switch (item.ParentType)
+                            {
+                                case "Quotation":
+                                case "SaleOrder":
+                                case "ProductionOrder":
+                                    //item.IsDocumentApprover= _approverBusiness.CheckIsDocumentOwner("QUO", appUA.UserName);
+                                    item.IsDocumentApprover = true;
+                                    break;
+                            }
+                        }
                     }
                 return JsonConvert.SerializeObject(new { Result = "OK", Records = AttachmentList });
             }
@@ -142,7 +158,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             object result = null;
             try
             {
-                result = _fileUploadBusiness.DeleteFile(Guid.Parse(id));
+                AppUA appUA = Session["AppUA"] as AppUA;
+                result = _fileUploadBusiness.DeleteFile(Guid.Parse(id),appUA.UserName, _pSASysCommon.GetCurrentDateTime());
                 return JsonConvert.SerializeObject(new { Result = "OK", Message = c.DeleteSuccess, Records = result });
             }
             catch (Exception ex)

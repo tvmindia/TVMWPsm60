@@ -284,15 +284,20 @@ function EditSaleOrder(this_Obj) {
                 debugger;
                 switch ($('#LatestApprovalStatus').val()) {
                     case "0":
+                        _isApproval = false;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", SaleOrder.ID);
                         break;
                     case "1":
-                        _isApproval = true;
+                        
                         //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
-						if ($("#hdnIsDocumentApprover").val() == "True")
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", SaleOrder.ID);
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            _isApproval = false;
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", SaleOrder.ID);
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", SaleOrder.ID);
+                        }
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", SaleOrder.ID);
                         //}
@@ -301,6 +306,7 @@ function EditSaleOrder(this_Obj) {
                         //}
                         break;
                     case "3":
+                        _isApproval = false;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", SaleOrder.ID);
                         break;
                     case "4":
@@ -309,14 +315,20 @@ function EditSaleOrder(this_Obj) {
 						break;
                     default:
                         //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
-						if ($('#LatestApprovalStatus').val() == 9) {
-							if ($("#hdnIsDocumentApprover").val() == "True")
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
-							else
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
-						}
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True") {
+                                _isApproval = false;
+                                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
+                            }
+                            else {
+                                _isApproval = true;
+                                ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                            }
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+                        }
 						break;
                       
                 }
@@ -328,20 +340,30 @@ function EditSaleOrder(this_Obj) {
                 //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
 				switch ($('#LatestApprovalStatus').val()) {
 					case "1":
-						if ($("#hdnIsDocumentApprover").val() == "True")
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+					    if ($("#hdnIsDocumentApprover").val() == "True") {
+					        _isApproval = false;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
+					    }
+					    else {
+					        _isApproval = true;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+					    }
 						break;
 					default:
-						if ($('#LatestApprovalStatus').val() == 9) {
-							if ($("#hdnIsDocumentApprover").val() == "True")
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
-							else
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
-						}
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+					    if ($('#LatestApprovalStatus').val() == 9) {
+					        if ($("#hdnIsDocumentApprover").val() == "True") {
+					            _isApproval = false;
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", SaleOrder.ID);
+					        }
+					        else {
+					            _isApproval = true;
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+					        }
+					    }
+					    else {
+					        _isApproval = true;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", SaleOrder.ID);
+					    }
 						break;
 				}
 			}
@@ -421,24 +443,28 @@ function ResetSaleOrder(event) {
 
 				debugger;
 				switch ($('#LatestApprovalStatus').val()) {
-					case "0":
+				    case "0":
+				        _isApproval = false;
 						ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", $('#ID').val());
 						break;
 					case "1":
 						// if ($('#ApproverLevel').val() > 1) {
-						_isApproval = true;
-						if ($("#hdnIsDocumentApprover").val() == "True")
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", $('#ID').val());
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", $('#ID').val());
-
+						
+					    if ($("#hdnIsDocumentApprover").val() == "True") {
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", $('#ID').val());
+					        _isApproval = false;
+					    } else {
+					        _isApproval = true;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", $('#ID').val());
+					    }
 						//}
 						//else {
 						//    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Recalled", Quotation.ID);
 						//}
 
 						break;
-					case "3":
+				    case "3":
+				        _isApproval = false;
 						ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", $('#ID').val());
 						break;
 					case "4":
@@ -446,35 +472,55 @@ function ResetSaleOrder(event) {
 						ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", $('#ID').val());
 						break;
 					default:
-						if ($('#LatestApprovalStatus').val() == 9) {
-							if ($("#hdnIsDocumentApprover").val() == "True")
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
-							else
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-						}
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-						break;
+					    if ($('#LatestApprovalStatus').val() == 9) {
+					        if ($("#hdnIsDocumentApprover").val() == "True") {
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
+					            _isApproval = false;
+					        }
+					        else {
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+					            _isApproval = true;
+					        }
+					    }
+					    else {
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+					        _isApproval = true;
+					    }
+					    break;
 				}
 			}
 			else {
-				switch ($('#LatestApprovalStatus').val()) {
+			    switch ($('#LatestApprovalStatus').val()) {
+			        case "":
+			            _isApproval = false;
+			            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add", $('#ID').val());
+			            break;
 					case "1":
-						if ($("#hdnIsDocumentApprover").val() == "True")
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+					    if ($("#hdnIsDocumentApprover").val() == "True") {
+					        _isApproval = false;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
+					    }
+					    else {
+					        _isApproval = true;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+					    }
 						break;
 					default:
-						if ($('#LatestApprovalStatus').val() == 9) {
-							if ($("#hdnIsDocumentApprover").val() == "True")
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
-							else
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-						}
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-						break;
+					    if ($('#LatestApprovalStatus').val() == 9) {
+					        if ($("#hdnIsDocumentApprover").val() == "True") {
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", $('#ID').val());
+					            _isApproval = false;
+					        }
+					        else {
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+					            _isApproval = true;
+					        }
+					    }
+					    else {
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
+					        _isApproval = true;
+					    }
+					    break;
 				}
 			}
 			
@@ -569,13 +615,15 @@ function SaveSuccessSaleOrder(data, status) {
                     }
                 });
                 //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
+                _isApproval = false;
 				debugger;
-				if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "False") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True"))
-					ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", _result.ID);
-				else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True")
-					ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", _result.ID);
-				else
-					ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", _result.ID);
+				if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "False") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) 
+				    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", _result.ID);
+				else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True") 
+				    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", _result.ID);
+				else 
+				    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", _result.ID);
+				
 				debugger;
                 BindOrReloadSaleOrderTable('Init');
                 _isCopy = false;
@@ -1724,15 +1772,20 @@ function EditRedirectToDocument(id) {
                 debugger;
                 switch ($('#LatestApprovalStatus').val()) {
                     case "0":
+                        _isApproval = false;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", id);
                         break;
                     case "1":
-                        _isApproval = true;
+                       
                         //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
-						if ($("#hdnIsDocumentApprover").val() == "True")
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", id);
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", id);
+                            _isApproval = false;
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApproval", id);
+                        }
                         //if ($('#ApproverLevel').val() > 1) {
                         //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
                         //}
@@ -1741,6 +1794,7 @@ function EditRedirectToDocument(id) {
                         //}
                         break;
                     case "3":
+                        _isApproval = false;
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", id);
                         break;
                     case "4":
@@ -1748,14 +1802,20 @@ function EditRedirectToDocument(id) {
                         ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Approved", id);
                         break;
 					default:
-						if ($('#LatestApprovalStatus').val() == 9) {
-							if ($("#hdnIsDocumentApprover").val() == "True")
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
-							else
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
-						}
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					    if ($('#LatestApprovalStatus').val() == 9) {
+					        if ($("#hdnIsDocumentApprover").val() == "True") {
+					            _isApproval = false;
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
+					        }
+					        else {
+					            _isApproval = true;
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					        }
+					    }
+					    else {
+					        _isApproval = true;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					    }
 						break;
                         //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
                         
@@ -1768,20 +1828,30 @@ function EditRedirectToDocument(id) {
                 //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
 				switch ($('#LatestApprovalStatus').val()) {
 					case "1":
-						if ($("#hdnIsDocumentApprover").val() == "True")
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					    if ($("#hdnIsDocumentApprover").val() == "True") {
+					        _isApproval = false;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
+					    }
+					    else {
+					        _isApproval = true;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					    }
 						break;
 					default:
-						if ($('#LatestApprovalStatus').val() == 9) {
-							if ($("#hdnIsDocumentApprover").val() == "True")
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
-							else
-								ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
-						}
-						else
-							ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					    if ($('#LatestApprovalStatus').val() == 9) {
+					        if ($("#hdnIsDocumentApprover").val() == "True") {
+					            _isApproval = false;
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", id);
+					        }
+					        else {
+					            _isApproval = true;
+					            ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					        }
+					    }
+					    else {
+					        _isApproval = true;
+					        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", id);
+					    }
 						break;
 				}
 

@@ -61,9 +61,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _quotationRepository.DeleteQuotation(id);
         }
-        public object DeleteQuotationDetail(Guid id)
+        public object DeleteQuotationDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
-            return _quotationRepository.DeleteQuotationDetail(id);
+            return _quotationRepository.DeleteQuotationDetail(id,CreatedBy,CreatedDate);
         }
         public object UpdateQuotationEmailInfo(Quotation quotation)
         {
@@ -138,9 +138,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _quotationRepository.GetQuotationForSelectListOnDemand(searchTerm);
         }
-        public object DeleteQuotationOtherChargeDetail(Guid id)
+        public object DeleteQuotationOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
-            return _quotationRepository.DeleteQuotationOtherChargeDetail(id);
+            return _quotationRepository.DeleteQuotationOtherChargeDetail(id,CreatedBy, CreatedDate);
         }
         public QuotationSummary GetQuotationSummaryCount()
         {

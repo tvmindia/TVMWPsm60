@@ -16,8 +16,8 @@ namespace PilotSmithApp.BusinessService.Contract
         Quotation GetQuotation(Guid id);
         object InsertUpdateQuotation(Quotation quotation);
         object DeleteQuotation(Guid id);
-        object DeleteQuotationDetail(Guid id);
-        object DeleteQuotationOtherChargeDetail(Guid id);
+        object DeleteQuotationDetail(Guid id, string CreatedBy, DateTime CreatedDate);
+        object DeleteQuotationOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate);
         object UpdateQuotationEmailInfo(Quotation quotation);
         Task<bool> QuoteEmailPush(Quotation quotation);
         List<SelectListItem> GetQuotationForSelectList(Guid? quoteID);

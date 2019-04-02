@@ -646,7 +646,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion Delete SaleOrder
         #region Delete SaleOrder Detail
-        public object DeleteSaleOrderDetail(Guid id)
+        public object DeleteSaleOrderDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
             SqlParameter outputStatus = null;
             try
@@ -664,6 +664,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteSaleOrderDetail]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
@@ -697,7 +699,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion Delete SaleOrder Detail
 
         #region Delete SaleOrder OtherCharge
-        public object DeleteSaleOrderOtherChargeDetail(Guid id)
+        public object DeleteSaleOrderOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
             SqlParameter outputStatus = null;
             try
@@ -715,6 +717,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteSaleOrderOtherCharge]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();

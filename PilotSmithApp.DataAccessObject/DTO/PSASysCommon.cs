@@ -357,6 +357,9 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public PSASysCommon PSASysCommon { get; set; }
         public bool IsDocLocked { get; set; }
         public string[] DocumentOwners { get; set; }
+        //additonalfields
+        //Create a documentlog entry whether file attacment updated by approver
+        public bool IsDocumentApprover { get; set; }
     }
 
     public class RecentDocument

@@ -428,7 +428,7 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion Delete ProductionOrder
         #region Delete ProductionOrder Detail
-        public object DeleteProductionOrderDetail(Guid id)
+        public object DeleteProductionOrderDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
             SqlParameter outputStatus = null;
             try
@@ -446,6 +446,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteProductionOrderDetail]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();

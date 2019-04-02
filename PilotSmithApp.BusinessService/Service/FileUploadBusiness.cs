@@ -21,9 +21,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _fileRepository.GetAttachments(ID);
         }
-        public object DeleteFile(Guid ID)
+        public object DeleteFile(Guid ID, string CreatedBy, DateTime CreatedDate)
         {
-            return _fileRepository.DeleteFile(ID);
+            return _fileRepository.DeleteFile(ID,CreatedBy,CreatedDate);
         }
     }
 }

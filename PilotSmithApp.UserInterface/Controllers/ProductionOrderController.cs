@@ -48,7 +48,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         {
             ViewBag.ID = id;
 			AppUA appUA = Session["AppUA"] as AppUA;
-			bool IsDocumentApprover = _approverBusiness.CheckIsDocumentOwner("POD", appUA.UserName);
+			bool IsDocumentApprover = _approverBusiness.CheckIsDocumentApprover("POD", appUA.UserName);
 			ViewBag.IsDocumentApprover = IsDocumentApprover;
 			ProductionOrderAdvanceSearchViewModel productionOrderAdvanceSearchVM = new ProductionOrderAdvanceSearchViewModel();
             productionOrderAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
@@ -483,7 +483,8 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = _productionOrderBusiness.DeleteProductionOrderDetail(id);
+                AppUA appUA = Session["AppUA"] as AppUA;
+                object result = _productionOrderBusiness.DeleteProductionOrderDetail(id,appUA.UserName, _pSASysCommon.GetCurrentDateTime());
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }

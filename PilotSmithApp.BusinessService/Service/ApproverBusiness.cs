@@ -33,9 +33,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _approverRepository.DeleteApprover(id);
         }
-        public bool CheckIsDocumentOwner(string documentTypeCode, string loginName)
+        public bool CheckIsDocumentApprover(string documentTypeCode, string loginName)
         {
-            return _approverRepository.CheckIsDocumentOwner(documentTypeCode, loginName);
+            return _approverRepository.CheckIsDocumentApprover(documentTypeCode, loginName);
         }
     }
 }

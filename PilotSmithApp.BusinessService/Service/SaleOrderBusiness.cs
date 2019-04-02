@@ -55,13 +55,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _saleOrderRepository.DeleteSaleOrder(id);
         }
-        public object DeleteSaleOrderDetail(Guid id)
+        public object DeleteSaleOrderDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
-            return _saleOrderRepository.DeleteSaleOrderDetail(id);
+            return _saleOrderRepository.DeleteSaleOrderDetail(id,CreatedBy,CreatedDate);
         }
-        public object DeleteSaleOrderOtherChargeDetail(Guid id)
+        public object DeleteSaleOrderOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
-            return _saleOrderRepository.DeleteSaleOrderOtherChargeDetail(id);
+            return _saleOrderRepository.DeleteSaleOrderOtherChargeDetail(id,CreatedBy,CreatedDate);
         }
         public object UpdateSaleOrderEmailInfo(SaleOrder saleOrder)
         {
