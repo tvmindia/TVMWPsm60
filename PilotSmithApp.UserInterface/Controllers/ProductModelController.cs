@@ -94,7 +94,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         //[AuthSecurityFilter(ProjectObject = "ProductModel", Mode = "R")]
         public ActionResult MasterPartial(Guid masterCode)
         {
-            ProductModelViewModel productModelVM = masterCode == Guid.Empty ? new ProductModelViewModel() : Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(masterCode));
+            ProductModelViewModel productModelVM = masterCode == Guid.Empty ? new ProductModelViewModel() : Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(masterCode,true));
             productModelVM.IsUpdate = masterCode == Guid.Empty ? false : true;
             return PartialView("_AddProductModel", productModelVM);
         }
@@ -127,7 +127,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             ProductModelViewModel productModelVM = new ProductModelViewModel();
             if (ID != Guid.Empty)
             {
-                productModelVM = Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(ID));
+                productModelVM = Mapper.Map<ProductModel, ProductModelViewModel>(_productModelBusiness.GetProductModel(ID,false));
                 if (rate != 0)
                 {
                     productModelVM.SellingPrice = productModelVM.SellingPrice!=0? Math.Round(Convert.ToDecimal(productModelVM.SellingPrice / rate),2):0;

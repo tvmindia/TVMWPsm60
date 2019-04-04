@@ -25,9 +25,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _prductModelRepository.GetAllProductModel(productModelAdvanceSearch);
         }
-        public ProductModel GetProductModel(Guid id)
+        public ProductModel GetProductModel(Guid id, bool isMaster)
         {
-            return _prductModelRepository.GetProductModel(id);
+            return _prductModelRepository.GetProductModel(id,isMaster);
         }
         public bool CheckProductModelNameExist(ProductModel productModel)
         {

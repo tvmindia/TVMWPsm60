@@ -771,9 +771,11 @@ function BindQuotationDetailList(id, IsEstimated) {
                      debugger;
                      if (row.ProductModel.ImageURL !== null) {
                          return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + "<div><table><tr><td><img height='80px' src='" + row.ProductModel.ImageURL + "'></td><td>&nbsp;</td><td>" + (row.ProductSpecHtml !== null ? row.ProductSpecHtml.replace(/"/g, "&quot") : "") + '</td></tr></table></div></p>"/>' + row.ProductModel.Name
+                         //return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + "<div><table><tr><td><img height='80px' src='" + row.ProductModel.ImageURL + "'></td><td>&nbsp;</td><td>" + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</td></tr></table></div></p>"/>' + row.ProductModel.Name
                      }
                      else {
-                         return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpecHtml !== null ? row.ProductSpecHtml.replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
+                         return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpecHtml !== null ? row.ProductSpecHtml.replace("\n", "<br>").replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
+                         //return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace("\n", "<br>").replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
                      }
                  }, "defaultContent": "<i></i>"
              },
@@ -922,6 +924,7 @@ function AddQuotationDetailToList() {
             quotationDetailList[_datatablerowindex].ProductModel = ProductModel;
             quotationDetailList[_datatablerowindex].ProductModel.ImageURL = $('#hdnProductModelImage').val();
             quotationDetailList[_datatablerowindex].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
+            quotationDetailList[_datatablerowindex].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
             quotationDetailList[_datatablerowindex].Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() : 0;
             quotationDetailList[_datatablerowindex].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
             Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -956,6 +959,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[0].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                 quotationDetailList[0].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
+                quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
                 quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() : 0;
                 quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                 quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -1011,6 +1015,7 @@ function AddQuotationDetailToList() {
                         QuotationDetailVM.ProductModel = ProductModel;
                         QuotationDetailVM.ProductModel.ImageURL = $('#hdnProductModelImage').val();
                         QuotationDetailVM.ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
+                        QuotationDetailVM.ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val();
                         QuotationDetailVM.Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() : 0;
                         var Unit = new Object();
                         Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -1076,7 +1081,9 @@ function EditQuotationDetail(this_Obj) {
             //   $("#FormQuotationDetail #ProductModelID").val(quotationDetail.ProductModelID);
 
             //$('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml.replace("?", "<br>"));
+
             $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpecHtml);
+            $('#FormQuotationDetail #ProductSpec').val(quotationDetail.ProductSpec);
             $('#FormQuotationDetail #Qty').val(quotationDetail.Qty);
             $('#FormQuotationDetail #UnitCode').val(quotationDetail.UnitCode);
             $('#FormQuotationDetail #hdnUnitCode').val(quotationDetail.UnitCode);

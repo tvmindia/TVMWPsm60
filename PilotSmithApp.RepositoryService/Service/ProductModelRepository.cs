@@ -163,7 +163,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion GetAllProductModel
 
         #region GetProductModel
-        public ProductModel GetProductModel(Guid id)
+        public ProductModel GetProductModel(Guid id, bool isMaster=false)
         {
             ProductModel productModel = null;
             try
@@ -179,6 +179,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Connection = con;
                         cmd.CommandText = "[PSA].[GetProductModel]";
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@IsMaster", SqlDbType.Bit).Value = isMaster;
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (SqlDataReader sdr = cmd.ExecuteReader())
                         {

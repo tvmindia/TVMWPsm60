@@ -12,7 +12,7 @@ namespace PilotSmithApp.BusinessService.Contract
     {
         object InsertUpdateProductModel(ProductModel productModel);
         List<ProductModel> GetAllProductModel(ProductModelAdvanceSearch productModelAdvanceSearch);
-        ProductModel GetProductModel(Guid id);
+        ProductModel GetProductModel(Guid id, bool isMaster);
         bool CheckProductModelNameExist(ProductModel productModel);
         object DeleteProductModel(Guid id);
         List<SelectListItem> GetProductModelForSelectList(Guid productID);
