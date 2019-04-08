@@ -72,10 +72,13 @@ namespace PilotSmithApp.UserInterface.Models
         public string CurrencyCode { get; set; }
         [Display(Name = "Currency rate")]
         public decimal CurrencyRate { get; set; }
+        [Display(Name = "Sale Order Header")]
+        public string MailBodyHeader { get; set; }
+        [Display(Name = "Sale Order Footer")]
+        public string MailBodyFooter { get; set; }
         //Aditional Fields
 
         public string MailFrom { get; set; }
-        public string MailBodyFooter { get; set; }
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }
         public string DocumentType { get; set; }
@@ -124,7 +127,9 @@ namespace PilotSmithApp.UserInterface.Models
         public CurrencyViewModel Currency { get; set; }
         public int IsFileExist { get; set; }
 		public bool IsDocumentApprover { get; set; }
-	}
+        public bool HeaderCheck { get; set; } = true;
+        public bool PrintFlag { get; set; }
+    }
 
     public class SaleOrderAdvanceSearchViewModel
     {

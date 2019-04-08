@@ -50,7 +50,10 @@ namespace PilotSmithApp.UserInterface.Models
         public string CurrencyCode { get; set; }
         [Display(Name = "Currency rate")]
         public decimal CurrencyRate { get; set; }
-
+        //[Display(Name = "Production Order Header")]
+        //public string MailBodyHeader { get; set; }
+        //[Display(Name = "Production Order Footer")]
+        //public string MailBodyFooter { get; set; }
         //Aditional Fields
 
         public string MailFrom { get; set; }

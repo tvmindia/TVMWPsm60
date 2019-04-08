@@ -728,6 +728,42 @@ namespace PilotSmithApp.UserInterface.Controllers
             }
         }
         #endregion EmailSent
+        #region UpdateSaleOrderPrintInfo
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public string UpdateSaleOrderPrintInfo(SaleOrderViewModel saleOrderVM)
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                saleOrderVM.PSASysCommon = new PSASysCommonViewModel();
+                saleOrderVM.PSASysCommon.UpdatedBy = appUA.UserName;
+                saleOrderVM.PSASysCommon.UpdatedDate = _pSASysCommon.GetCurrentDateTime();
+                saleOrderVM.IsPrint = true;
+
+                object result = _saleOrderBusiness.UpdateSaleOrderEmailInfo(Mapper.Map<SaleOrderViewModel, SaleOrder>(saleOrderVM));
+
+                if (saleOrderVM.ID == Guid.Empty)
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Insertion successfull" });
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Updation successfull" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Status = "ERROR", Record = "", Message = cm.Message });
+            }
+
+        }
+
+        #endregion UpdateSaleOrderPrintInfo
         #region Print SaleOrder
         [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
         public ActionResult PrintSaleOrder(SaleOrderViewModel saleOderVM)
@@ -740,6 +776,18 @@ namespace PilotSmithApp.UserInterface.Controllers
             return PartialView("_PrintSaleOrder", saleOderVM);
         }
         #endregion Print SaleOrder
+        public ActionResult PrintDetailSaleOrder(SaleOrderViewModel saleOrderVM)
+        {
+            bool printFlag = saleOrderVM.PrintFlag;
+            //QuotationViewModel quotationVM = new QuotationViewModel();
+            saleOrderVM = Mapper.Map<SaleOrder, SaleOrderViewModel>(_saleOrderBusiness.GetSaleOrder(saleOrderVM.ID));
+            saleOrderVM.SaleOrderDetailList = Mapper.Map<List<SaleOrderDetail>, List<SaleOrderDetailViewModel>>(_saleOrderBusiness.GetSaleOrderDetailListBySaleOrderID(saleOrderVM.ID, false));
+            saleOrderVM.SaleOrderOtherChargeList = Mapper.Map<List<SaleOrderOtherCharge>, List<SaleOrderOtherChargeViewModel>>(_saleOrderBusiness.GetSaleOrderOtherChargesDetailListBySaleOrderID(saleOrderVM.ID, false));
+            saleOrderVM.PrintFlag = printFlag;
+            ViewBag.ImgURL = "http://" + HttpContext.Request.Url.Authority + "/";
+            saleOrderVM.PDFTools = new PDFToolsViewModel();
+            return PartialView("_PrintSaleOrderDetail", saleOrderVM);
+        }
         #region Preview SaleOrder
         public ActionResult PreviewSaleOrder(Guid id)
         {

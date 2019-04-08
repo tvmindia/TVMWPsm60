@@ -30,6 +30,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Subject { get; set; }
         public string CurrencyCode { get; set; }
         public decimal CurrencyRate { get; set; }
+        //public string MailBodyHeader { get; set; }
+        //public string MailBodyFooter { get; set; }
 
         //Aditional Fields
         public string MailFrom { get; set; }

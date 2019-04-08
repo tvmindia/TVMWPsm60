@@ -175,6 +175,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                     productionOrder.Bcc = (sdr["Bcc"].ToString() != "" ? (sdr["Bcc"].ToString()) : productionOrder.Bcc);
                                     productionOrder.Subject = (sdr["Subject"].ToString() != "" ? (sdr["Subject"].ToString()) : productionOrder.Subject);
                                     productionOrder.EmailSentYN = (sdr["EmailSentYN"].ToString() != "" ? bool.Parse(sdr["EmailSentYN"].ToString()) : productionOrder.EmailSentYN);
+                                    //productionOrder.MailBodyHeader = (sdr["MailBodyHeader"].ToString() != "" ? sdr["MailBodyHeader"].ToString() : productionOrder.MailBodyHeader);
+                                    //productionOrder.MailBodyFooter = (sdr["MailBodyFooter"].ToString() != "" ? sdr["MailBodyFooter"].ToString() : productionOrder.MailBodyFooter);
                                     productionOrder.LatestApprovalID = (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : productionOrder.LatestApprovalID);
                                     productionOrder.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : productionOrder.LatestApprovalStatus);
                                     productionOrder.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : productionOrder.LatestApprovalStatusDescription);

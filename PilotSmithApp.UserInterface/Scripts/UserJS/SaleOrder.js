@@ -1311,6 +1311,54 @@ function PrintSaleOrder() {
         $('#divModelPrintSaleOrder').modal('show');
     });
 }
+function SaveSuccessUpdateSaleOrderPrintInfo(data, status) {
+    try {
+        debugger;
+        var _jsonData = JSON.parse(data)
+        //message field will return error msg only
+        _message = _jsonData.Message;
+        _status = _jsonData.Status;
+        _result = _jsonData.Record;
+        switch (_status) {
+            case "OK":
+                //MasterAlert("success", _result.Message)
+
+                $("#divSaleOrderPrintcontainer").load("SaleOrder/PrintDetailSaleOrder?ID=" + $('#SaleOrderForm #ID').val() , function () {
+                    //$('#lblModelPrintQuotation').text('Print Quotation');
+                    var bodyContent = $('#divSaleOrderPrintcontainer').html();
+                    var headerContent = $('#hdnHeadContentPrint').html();
+                    $('#hdnContentPrint').val(bodyContent);
+                    $('#hdnHeadContentPrint').val(headerContent);
+                    var customerName = $("#SaleOrderForm #CustomerID option:selected").text();
+                    $('#hdnCustomerNamePrint').val(customerName);
+
+                    //$('#lblModelPrintQuotation').text('Print Quotation');
+                    // $('#divQuotationPrintcontainer').show();
+
+                    if ($('#HeaderCheck').prop("checked") == true) {
+                        $('#hdnPrintFlag').val(false);
+                        $('#FormPrintSaleOrder').submit();
+                    }
+                    else {
+                        $('#hdnPrintFlag').val(true);
+                        $('#FormPrintSaleOrder').submit();
+                    }
+
+                });
+                break;
+            case "ERROR":
+                //MasterAlert("success", _message)
+                $('#divModelEmailQuotation').modal('hide');
+                break;
+            default:
+                break;
+        }
+    }
+    catch (e) {
+        //this will show the error msg in the browser console(F12) 
+        console.log(e.message);
+    }
+}
 function SaveSuccessUpdateSaleOrderEmailInfo(data, status) {
     try {
         debugger;

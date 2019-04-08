@@ -317,8 +317,12 @@ namespace PilotSmithApp.RepositoryService.Service
                                     };
                                     saleOrder.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : saleOrder.DocumentOwners);
                                     saleOrder.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : saleOrder.DocumentOwner);
-                                    string mailfooter= (sdr["MailBodyFooter"].ToString() != "" ? (sdr["MailBodyFooter"].ToString()) : saleOrder.MailBodyFooter);
-                                    saleOrder.MailBodyFooter = mailfooter.Replace("\n", "<br />");
+                                    //string mailfooter = (sdr["MailBodyFooter"].ToString() != "" ? (sdr["MailBodyFooter"].ToString()) : saleOrder.MailBodyFooter);
+                                    //saleOrder.MailBodyFooter = mailfooter.Replace("\n", "<br />");
+                                    //string mailheader = (sdr["MailBodyHeader"].ToString() != "" ? (sdr["MailBodyHeader"].ToString()) : saleOrder.MailBodyHeader);
+                                    //saleOrder.MailBodyHeader = mailheader.Replace("\n", "<br />");
+                                    saleOrder.MailBodyHeader = (sdr["MailBodyHeader"].ToString() != "" ? sdr["MailBodyHeader"].ToString() : saleOrder.MailBodyHeader);
+                                    saleOrder.MailBodyFooter = (sdr["MailBodyFooter"].ToString() != "" ? sdr["MailBodyFooter"].ToString() : saleOrder.MailBodyFooter);
                                     string mailfrom = (sdr["MailFromAddress"].ToString() != "" ? (sdr["MailFromAddress"].ToString()) : saleOrder.MailFrom);
                                     saleOrder.MailFrom = mailfrom.Replace("\n", "<br />");
                                     saleOrder.ApproverLevel= (sdr["ApproverLevel"].ToString() != "" ? int.Parse(sdr["ApproverLevel"].ToString()) : saleOrder.ApproverLevel);
@@ -555,10 +559,12 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[UpdateSaleOrderEmailInfo]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = saleOrder.ID;
-                        //cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyHeader;
-                        //cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter;
+                        //added null checking to header and footer fields, to allow header and footer to be empty
+                        cmd.Parameters.Add("@MailBodyHeader", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyHeader!=null? saleOrder.MailBodyHeader:" ";
+                        cmd.Parameters.Add("@MailBodyFooter", SqlDbType.NVarChar, -1).Value = saleOrder.MailBodyFooter!=null? saleOrder.MailBodyFooter:" ";
                         cmd.Parameters.Add("@EmailSentYN", SqlDbType.Bit).Value = saleOrder.EmailSentYN;
                         cmd.Parameters.Add("@EmailSentTo", SqlDbType.NVarChar, -1).Value = saleOrder.EmailSentTo;
+                        cmd.Parameters.Add("@IsPrint", SqlDbType.Bit).Value = saleOrder.PrintFlag;
                         cmd.Parameters.Add("@Cc", SqlDbType.NVarChar, -1).Value = saleOrder.Cc;
                         cmd.Parameters.Add("@Bcc", SqlDbType.NVarChar, -1).Value = saleOrder.Bcc;
                         cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = saleOrder.Subject;

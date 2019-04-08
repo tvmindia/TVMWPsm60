@@ -1,48 +1,7 @@
 ﻿@model PilotSmithApp.UserInterface.Models.SaleOrderViewModel
 @using PilotSmithApp.DataAccessObject.DTO;
-@{
-    List<SelectListItem> IsLetterHeadSelectList = new List<SelectListItem>();
-    IsLetterHeadSelectList.Add(new SelectListItem
-    { Text = "Plain paper", Value = "True", Selected = false });
-    IsLetterHeadSelectList.Add(new SelectListItem
-    { Text = "Letter head", Value = "False", Selected = false });
-}
-<div style="padding:0px 30px 0px 30px;">
-    @{
-
-        using (Ajax.BeginForm("UpdateSaleOrderPrintInfo", "SaleOrder", null, new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessUpdateSaleOrderPrintInfo", OnFailure = "", AllowCache = false, LoadingElementId = "", OnBegin = "OnMasterBegin", OnComplete = "OnMasterComplete" }, new { @class = "", role = "form", id = "FormUpdateSaleOrderPrintInfo" }))
-        {
-            @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
-            <table style="width:100%;font-size:12px">
-                <tr>
-                    <td colspan="6">
-                        @Html.LabelFor(model => model.MailBodyHeader, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
-                        @Html.TextAreaFor(model => model.MailBodyHeader, 4, 0, new { @class = "form-control newinput" })
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        @Html.LabelFor(model => model.MailBodyFooter, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
-                        @Html.TextAreaFor(model => model.MailBodyFooter, 4, 0, new { @class = "form-control newinput" })
-                    </td>
-                </tr>
-            </table>
-            <div class="col-md-12" style="padding:0px;">
-                <div class="col-md-8" style="margin-top:2%;margin-left:0px !important;padding:0px;">
-                    @Html.Label("Print on LetterHead:", new { @class = "control-label", @style = "font-weight: bold;font-size:15px" })
-                    @Html.CheckBoxFor(model => model.HeaderCheck, new { @checked = "checked", @id = "HeaderCheck" })
-                </div>
-                <div class="col-md-4 modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="UpdateQuotationPrintInfo()">Save & Print <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
-                </div>
-
-            </div>
-        }
-    }
-    <br />
-</div>
-<div id="divSaleOrderPrintcontainer" style="display:none;">
-        @*@{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0, CESSTotal = 0;
+<div>
+    @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, otherChargeAmt = 0, GSTTotal = 0, CESSTotal = 0;
             var tot = "";
             PSASysCommon pSASysCommon = new PSASysCommon();}
         <table style="width:100%;font-size:11px">
@@ -94,6 +53,14 @@
                 <tr><td colspan="2" style="font-size:11px;">SaleOrder Date  &nbsp;: @Model.SaleOrderDateFormatted</td><td colspan="2"></td><td colspan="2">Delivery Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: @Model.ExpectedDelvDateFormatted</td></tr>
                 <tr><td colspan="2" style="font-size:11px;">Purchase Order No &nbsp;:@Model.PurchaseOrdNo</td><td colspan="2"></td><td colspan="2">Bank : @Model.Bank.Name</td></tr>
                     <tr><td colspan="6">&nbsp;</td></tr>
+                <tr>
+                    @{
+                        var mailBodyHeader = @Model.MailBodyHeader;
+                        mailBodyHeader = mailBodyHeader.Replace("\r\n", "<br />");
+                        <td colspan="6" style="font-size:11px;">@Html.Raw(mailBodyHeader)</td>
+                    }
+                </tr>
+                <tr><td colspan="6">&nbsp;</td></tr>
                 </tbody>
             </table>
             <br />
@@ -204,7 +171,7 @@
                             }
                             </td>
 
-                        
+
                         <td colspan="5" style="font:12px;border-top:solid .5px;padding-top:8px;">
                             <table style="width:100%">
                                 <tr class="">
@@ -305,45 +272,5 @@
                         }
                     </tr>
                 </tbody>
-            </table>*@
+            </table>
 </div>
-@*<table style="width:100%;margin-top:15%;">
-    <thead>
-        <tr><th colspan="2"></th></tr>
-    </thead>
-    <tbody>
-        <tr><td align="center"><a onclick="PostPrint(1)"><img class="printdoc" src="~/Content/images/LetterHeadSelect.jpg" style="width:80%" /></a></td><td align="center"><a onclick="PostPrint(0)"><img class="printdoc" src="~/Content/images/LetterHeadSelect_Blank.jpg" style="width:80%" /></a></td></tr>
-    </tbody>
-</table>*@
-@using (Html.BeginForm("PrintPDFWithTerms", "PDFGenerator", FormMethod.Post, new { @class = "", @style = "position:fixed;bottom:1.5%;right:17%;", role = "form", @id = "FormPrintSaleOrder", target = "_blank" }))
-{
-    @Html.HiddenFor(model => model.PDFTools.Content, htmlAttributes: new { @class = "", Value = "", @id = "hdnContentPrint" })
-    @Html.HiddenFor(model => model.PDFTools.Headcontent, htmlAttributes: new { @class = "", Value = "", @id = "hdnHeadContentPrint" })
-    @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "SaleOrder", @id = "hdnContentFileNamePrint" })
-    @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerNamPrint" })
-    @Html.HiddenFor(model => model.PDFTools.IsWithLetterHead, htmlAttributes: new { @id = "hdnPrintFlag" })
-}
-<script>
-    $(document).ready(function () {
-        var bodyContent = $('#divSaleOrderPrintcontainer').html();
-        var headerContent = $('#hdnHeadContentPrint').html();
-        $('#hdnContentPrint').val(bodyContent);
-        $('#hdnHeadContentPrint').val(headerContent);
-        var customerName = $("#SaleOrderForm #CustomerID option:selected").text();
-        $('#hdnCustomerNamePrint').val(customerName);
-    });
-    function PostPrint(val)
-    {
-        if(val==1)
-        {
-            $('#hdnPrintFlag').val(true);
-            $('#FormPrintSaleOrder').submit();
-        }
-        if(val==0)
-        {
-            $('#hdnPrintFlag').val(false);
-            $('#FormPrintSaleOrder').submit();
-        }
-        $('#divModelPrintSaleOrder').modal('hide');
-    }
-</script>

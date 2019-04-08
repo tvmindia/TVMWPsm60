@@ -1315,6 +1315,22 @@ function UpdateProductionOrderEmailInfo() {
 }
 function DownloadProductionOrder() {
     debugger;
+    var filteredFlag = 0;
+    var selectedprodindex = [];
+    $("table td input.SelectProduct").each(function () {
+        if ($(this).is(':checked')) {
+            selectedprodindex.push($(this).closest('tr').find('td:eq(1)').text());
+            $(this).parent('td').remove();
+        }
+        else{
+            $(this).parent('td').parent('tr').remove();
+            filteredFlag = 1;
+        }
+    });
+    $('table').find('th:first-child').remove();
+    if (filteredFlag == "1") {
+        $('#spnFilterNote').text("Filtered Document: Showing Item(s) " + selectedprodindex + " only");
+    }
     var bodyContent = $('#divProductionOrderEmailcontainer').html();
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);

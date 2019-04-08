@@ -31,6 +31,18 @@
                             @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control newinput" } })
                         </td>
                     </tr>
+                    @*<tr>
+                        <td colspan="6">
+                            @Html.LabelFor(model => model.MailBodyHeader, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
+                            @Html.TextAreaFor(model => model.MailBodyHeader, 4, 0, new { @class = "form-control newinput" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            @Html.LabelFor(model => model.MailBodyFooter, htmlAttributes: new { @class = "control-label ", @style = "font-weight: bold;font-size:15px", @id = "lblheader" })
+                            @Html.TextAreaFor(model => model.MailBodyFooter, 4, 0, new { @class = "form-control newinput" })
+                        </td>
+                    </tr>*@
                 </table>
                 <div class="modal-footer d-flex justify-content-center">
                     <button type="submit" class="btn btn-openid" style="margin-top:2%;color:white;text-decoration:none;" onclick="UpdateProductionOrderEmailInfo()">Preview <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
@@ -58,7 +70,14 @@
                 <tr><td>Production Order No</td><td colspan="2">: @Model.ProdOrderNo</td><td></td><td></td></tr>
                 <tr><td>Production Order Date</td><td colspan="2">: @Model.ProdOrderDateFormatted</td><td></td><td></td></tr>
                 <tr><td colspan="6">&nbsp;</td></tr>
-
+                @*<tr>
+                    @{
+                        var mailBodyHeader = @Model.MailBodyHeader;
+                        mailBodyHeader = mailBodyHeader.Replace("\r\n", "<br />");
+                        <td colspan="6" style="font-size:11px;">@Html.Raw(mailBodyHeader)</td>
+                    }
+                </tr>
+                <tr><td colspan="6">&nbsp;</td></tr>*@
                 <tr><td>&nbsp;</td></tr>
             </tbody>
         </table>
@@ -152,7 +171,19 @@
                 </thead>
             </table>
         }
-       
+       @*<table style="width:100%;margin-top:2%;">
+           <thead>
+               <tr><td colspan="10">&nbsp;</td></tr>
+               <tr>
+                   @{
+                       var mailbodyFooter = @Model.MailBodyFooter;
+                       mailbodyFooter = mailbodyFooter.Replace("\r\n", "<br />");
+                       <td colspan="10" style="font-size:11px;">@Html.Raw(@mailbodyFooter)</td>
+                   }
+               </tr>
+
+           </thead>
+       </table>*@
     </div>
     <div style="padding-top:20px">
         <img style="width:100%;height:150px" src="~/Content/images/LH_Footer.jpg" />

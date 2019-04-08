@@ -42,6 +42,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Subject { get; set; }
         public string CurrencyCode { get; set; }
         public decimal CurrencyRate { get; set; }
+        public string MailBodyHeader { get; set; }
+        public string MailBodyFooter { get; set; }
 
         //Aditional Fields
         public string OtherChargeDetailXML { get; set; }
@@ -69,7 +71,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public ReferencePerson ReferencePerson { get; set; }
         public Bank Bank { get; set; }
         public string SaleOrderAmountWords { get; set; }
-        public string MailBodyFooter { get; set; }
         public string MailFrom { get; set; }
         public Area Area { get; set; }
         public PSAUser PSAUser { get; set; }
@@ -80,7 +81,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string CopySaleOrderNo { get; set; }
         public Currency Currency { get; set; }
         public int IsFileExist { get; set; }
-        
+        public bool PrintFlag { get; set; }
     }
 
     public class SaleOrderAdvanceSearch
