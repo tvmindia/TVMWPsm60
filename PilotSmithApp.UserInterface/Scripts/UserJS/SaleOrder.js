@@ -619,10 +619,14 @@ function SaveSuccessSaleOrder(data, status) {
 				debugger;
 				if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "False") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) 
 				    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "DocumentApproverEdit", _result.ID);
-				else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True") 
+				else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True")
 				    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", _result.ID);
-				else 
-				    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", _result.ID);
+				else {
+				    if ($('#LatestApprovalStatus').val() == "0")
+				        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", _result.ID);
+                    else
+				        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", _result.ID);
+				}
 				
 				debugger;
                 BindOrReloadSaleOrderTable('Init');
@@ -1301,6 +1305,10 @@ function DownloadSaleOrder() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
+    if ($('#LatestApprovalStatus').val() == "0")
+        $('#hdnWaterMarkFlag').val(true);
+    else
+        $('#hdnWaterMarkFlag').val(false);
     //var customerName = $("#SaleOrderForm #CustomerID option:selected").text();
     //$('#hdnCustomerName').val(customerName);
 }
@@ -1334,7 +1342,10 @@ function SaveSuccessUpdateSaleOrderPrintInfo(data, status) {
 
                     //$('#lblModelPrintQuotation').text('Print Quotation');
                     // $('#divQuotationPrintcontainer').show();
-
+                    if ($('#LatestApprovalStatus').val() == "0")
+                        $('#hdnWaterMarkPrintFlag').val(true);
+                    else
+                        $('#hdnWaterMarkPrintFlag').val(false);
                     if ($('#HeaderCheck').prop("checked") == true) {
                         $('#hdnPrintFlag').val(false);
                         $('#FormPrintSaleOrder').submit();

@@ -885,10 +885,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('QUO');";
 
                     toolboxVM.PrintBtn.Visible = true;
-                    toolboxVM.PrintBtn.Disable = true;
                     toolboxVM.PrintBtn.Text = "Print";
-                    toolboxVM.PrintBtn.DisableReason = "Not Approved";
-                    toolboxVM.PrintBtn.Event = "";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintQuotation()";
 
                     toolboxVM.HistoryBtn.Visible = true;
                     toolboxVM.HistoryBtn.Text = "History";

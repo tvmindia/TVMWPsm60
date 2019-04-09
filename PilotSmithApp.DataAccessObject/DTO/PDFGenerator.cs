@@ -16,5 +16,6 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string HeaderText { get; set; }
         public string ContentFileName { get; set; }
         public string CustomerName { get; set; }
+        public bool IsWithWaterMark { get; set; } = false;
     }
 }

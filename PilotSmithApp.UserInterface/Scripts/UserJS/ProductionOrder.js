@@ -541,7 +541,10 @@ function SaveSuccessProductionOrder(data, status) {
 
 					else {
 					    _isApproval = false;
-					    ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+					    if ($('#LatestApprovalStatus').val() == "0")
+					        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", _result.ID);
+                        else
+					        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
 					}
                 }
 				else
@@ -1335,6 +1338,10 @@ function DownloadProductionOrder() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
+    if ($('#LatestApprovalStatus').val() == "0")
+        $('#hdnWaterMarkFlag').val(true);
+    else
+        $('#hdnWaterMarkFlag').val(false);
     //var customerName = $("#ProductionOrderForm #CustomerID option:selected").text();
     //$('#hdnCustomerName').val(customerName);
 }

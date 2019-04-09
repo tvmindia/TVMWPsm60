@@ -330,6 +330,7 @@
     @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnContentFileNamePrint" })
     @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerNamPrint" })
     @Html.HiddenFor(model => model.PDFTools.IsWithLetterHead, htmlAttributes: new { @id = "hdnPrintFlag" })
+    @Html.HiddenFor(model => model.PDFTools.IsWithWaterMark, htmlAttributes: new { @id = "hdnWaterMarkPrintFlag" })
 
     @*<button type="submit" class="btn btn-openid" style="color:white;text-decoration:none;">Continue <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>*@
 

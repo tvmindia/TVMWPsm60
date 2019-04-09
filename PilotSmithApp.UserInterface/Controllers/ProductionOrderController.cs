@@ -738,10 +738,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Event = "EmailProductionOrder();";
 
                     toolboxVM.PrintBtn.Visible = true;
-                    toolboxVM.PrintBtn.Disable = true;
                     toolboxVM.PrintBtn.Text = "Print";
-                    toolboxVM.PrintBtn.DisableReason = "Not Approved";
-                    toolboxVM.PrintBtn.Event = "";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintProductionOrder()";
 
                     toolboxVM.SendForApprovalBtn.Visible = true;
                     toolboxVM.SendForApprovalBtn.Text = "Send";

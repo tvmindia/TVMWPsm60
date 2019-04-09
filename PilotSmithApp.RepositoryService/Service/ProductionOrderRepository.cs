@@ -608,6 +608,7 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@Subject", SqlDbType.NVarChar, -1).Value = productionOrder.Subject;
                         cmd.Parameters.Add("@emilSendSuccess", SqlDbType.Int).Value = emailSendSuccess;
                         cmd.Parameters.Add("@itemlist", SqlDbType.NVarChar, -1).Value = productionOrder.EmailItemList;
+                        cmd.Parameters.Add("@ApprovalStatus", SqlDbType.Int).Value = productionOrder.LatestApprovalStatus;
                         cmd.Parameters.Add("@UpdatedBy", SqlDbType.NVarChar, 250).Value = productionOrder.PSASysCommon.UpdatedBy;
                         cmd.Parameters.Add("@UpdatedDate", SqlDbType.DateTime).Value = productionOrder.PSASysCommon.UpdatedDate;
                         outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);

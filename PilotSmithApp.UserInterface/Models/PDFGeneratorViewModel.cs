@@ -33,5 +33,6 @@ namespace PilotSmithApp.UserInterface.Models
         public string CustomerName { get; set; }        
         [Display(Name ="Print On")]
         public bool IsWithLetterHead { get; set; } = true;
+        public bool IsWithWaterMark { get; set; } = false;
     }
 }

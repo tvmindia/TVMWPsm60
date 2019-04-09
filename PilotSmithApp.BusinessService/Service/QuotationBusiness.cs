@@ -92,6 +92,7 @@ namespace PilotSmithApp.BusinessService.Service
                     _mail.Body = mailBody.Replace("$Customer$", quotation.Customer.ContactPerson).Replace("$Document$", "Quotation").Replace("$DocumentNo$", quotation.QuoteNo).Replace("$DocumentDate$", quotation.QuoteDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = quotation.MailContant;
                     pDFTools.ContentFileName = "Quotation";
+                    pDFTools.IsWithWaterMark = quotation.LatestApprovalStatus == 0 ? true : false;
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), quotation.QuoteNo + ".pdf"));
 
                     _mail.Subject = quotation.Subject;

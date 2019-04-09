@@ -322,6 +322,7 @@
     @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "SaleOrder", @id = "hdnContentFileNamePrint" })
     @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerNamPrint" })
     @Html.HiddenFor(model => model.PDFTools.IsWithLetterHead, htmlAttributes: new { @id = "hdnPrintFlag" })
+    @Html.HiddenFor(model => model.PDFTools.IsWithWaterMark, htmlAttributes: new { @id = "hdnWaterMarkPrintFlag" })
 }
 <script>
     $(document).ready(function () {

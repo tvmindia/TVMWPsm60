@@ -359,6 +359,7 @@
             @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
             @Html.HiddenFor(model => model.SaleOrderNo, htmlAttributes: new { @class = "", @id = "hdnSaleOrderNo" })
             @Html.HiddenFor(model => model.SaleOrderDateFormatted, htmlAttributes: new { @class = "", @id = "hdnSaleOrderDateFormatted" })
+            @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
             <br/>
             <table style="width:50%;font-size:12px">
                 <tbody>
@@ -369,7 +370,7 @@
                 </tbody>
             </table>
             <a class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="EmailSaleOrder()">Back </a>
-                if (Model.LatestApprovalStatus == 4)
+                if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus==0)
                 {
                  <button type="button" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="SendSaleOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
@@ -387,7 +388,8 @@
             @Html.HiddenFor(model => model.PDFTools.HeaderText, htmlAttributes: new { @class = "", Value = "PilotSmith" })
             @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = Model.SaleOrderNo, @id = "hdnContentFileName" })
             @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "",Value=Model.Customer.CompanyName @*@id = "hdnCustomerName"*@ })
-                if (Model.LatestApprovalStatus == 4)
+            @Html.HiddenFor(model => model.PDFTools.IsWithWaterMark, htmlAttributes: new { @id = "hdnWaterMarkFlag" })
+                if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus == 0)
                 {
                 <button type="submit" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="DownloadSaleOrder()">Download <i class="fa fa-spinner fa-spin"  style="display:none;"></i></button>
                 }

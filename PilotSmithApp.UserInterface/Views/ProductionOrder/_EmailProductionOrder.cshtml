@@ -200,6 +200,7 @@
                 @Html.HiddenFor(model => model.Cc, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.Bcc, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.Subject, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.EmailItemList, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.MailContant, htmlAttributes: new { @class = "", @id = "hdnProductionOrderEMailContent" })
                 @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
@@ -215,7 +216,7 @@
                     </tbody>
                 </table>
                 <a class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="EmailProductionOrder()">Back </a>
-                if (Model.LatestApprovalStatus == 4)
+                if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus==0)
                 {
                     <button type="button" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="SendProductionOrderEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
@@ -235,7 +236,8 @@
            {
                @class = "",
                Value = Model.Customer.CompanyName @*@id = "hdnCustomerName"*@ })
-                if (Model.LatestApprovalStatus == 4)
+                @Html.HiddenFor(model => model.PDFTools.IsWithWaterMark, htmlAttributes: new { @id = "hdnWaterMarkFlag" })
+                if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus == 0)
                 {
                     <button type="submit" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="DownloadProductionOrder()">Download <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }

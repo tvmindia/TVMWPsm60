@@ -33,6 +33,7 @@ namespace PilotSmithApp.BusinessService.Service
                     PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
                     Footer footobj = new Footer();
                     footobj.imageURL = System.Web.HttpContext.Current.Server.MapPath("~/Content/images/LetterHead.jpg");
+                    footobj.watermark = pDFTools.IsWithWaterMark ? "DRAFT COPY" : "";
                     writer.PageEvent = footobj;
                     pdfDoc.Open();
                     XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, reader);
@@ -95,6 +96,7 @@ namespace PilotSmithApp.BusinessService.Service
 
         {
             public string imageURL { get; set; }
+            public string watermark { get; set; }
             public string Tableheader { get; set; }
             public ElementList Header;
             public override void OnEndPage(PdfWriter writer, Document doc)
@@ -190,6 +192,24 @@ namespace PilotSmithApp.BusinessService.Service
                 //cell1.PaddingLeft = 19.8425F;
                 //headerSectionTbl.AddCell(cell1);
                 //headerSectionTbl.WriteSelectedRows(0, -1, 0, document.PageSize.Height, writer.DirectContent);
+                var FontColour = new BaseColor(211, 211, 211);
+                PdfPTable headerSectionTbl = new PdfPTable(1);
+                headerSectionTbl.DefaultCell.Border = Rectangle.NO_BORDER;
+                float[] ColumnWidths = new float[] { document.PageSize.Width };
+                headerSectionTbl.SetWidths(ColumnWidths);
+                headerSectionTbl.TotalWidth = document.PageSize.Width;
+                Font myFont = FontFactory.GetFont("OpenSans", 60, iTextSharp.text.Font.NORMAL, FontColour);
+                string line1 = watermark;
+                Paragraph header = new Paragraph();
+                Phrase ph1 = new Phrase(line1, myFont);
+                header.Add(ph1);
+                header.SpacingBefore = 14.1732F;
+                header.Alignment = Element.ALIGN_LEFT;
+                PdfPCell cell1 = new PdfPCell(header);
+                cell1.Border = 0;
+                cell1.PaddingLeft = 19.8425F;
+                headerSectionTbl.AddCell(cell1);
+                headerSectionTbl.WriteSelectedRows(0, -1, 110, (document.PageSize.Height / 2) + 20, writer.DirectContent);
                 iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(imageURL);
                 jpg.ScaleToFit(document.PageSize.Width, document.PageSize.Height);
                 jpg.SetAbsolutePosition(0, 0);

@@ -200,6 +200,8 @@
     @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "ProductionOrder", @id = "hdnContentFileNamePrint" })
     @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "", @id = "hdnCustomerNamPrint" })
     @Html.HiddenFor(model => model.PDFTools.IsWithLetterHead, htmlAttributes: new { @id = "hdnPrintFlag" })
+    @Html.HiddenFor(model => model.PDFTools.IsWithWaterMark, htmlAttributes: new { @id = "hdnWaterMarkPrintFlag" })
+   
 }
 <script>
     $(document).ready(function () {
@@ -212,6 +214,11 @@
     });
     function PostPrint(val)
     {
+        debugger;
+        if ($('#LatestApprovalStatus').val() == "0")
+            $('#hdnWaterMarkPrintFlag').val(true);
+        else
+            $('#hdnWaterMarkPrintFlag').val(false);
         if(val==1)
         {
             $('#hdnPrintFlag').val(true);

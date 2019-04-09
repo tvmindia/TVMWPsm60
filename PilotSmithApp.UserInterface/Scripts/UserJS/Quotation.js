@@ -617,7 +617,10 @@ function SaveSuccessQuotation(data, status) {
                 }
                 else {
                     _isApproval = false;
-                    ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
+                    if ($('#LatestApprovalStatus').val() == "0")
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", _result.ID);
+                    else
+                        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                 }
                 debugger;
                 BindOrReloadQuotationTable('Init');
@@ -1243,6 +1246,10 @@ function SendQuotationEmail() {
         $('#hdnContactPerson').val($('#ContactPerson').text());
         $('#hdnQuoteDate').val($('#QuoteDateFormatted').val());
         $('#FormQuotationEmailSend #ID').val($('#QuotationForm #ID').val());
+        if ($('#LatestApprovalStatus').val() == "0")
+            $('#hdnWaterMarkEmailFlag').val(true);
+        else
+            $('#hdnWaterMarkEmailFlag').val(false);
         $('#FormQuotationEmailSend').submit();
     }
     else {
@@ -1305,6 +1312,10 @@ function DownloadQuotation() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
+    if ($('#LatestApprovalStatus').val() == "0")
+        $('#hdnWaterMarkFlag').val(true);
+    else
+        $('#hdnWaterMarkFlag').val(false);
     //var customerName = $("#QuotationForm #CustomerID option:selected").text();
     //$('#hdnCustomerName').val(customerName);   
 }
@@ -1331,7 +1342,11 @@ function SaveSuccessUpdateQuotationPrintInfo(data, status) {
 
                     //$('#lblModelPrintQuotation').text('Print Quotation');
                     // $('#divQuotationPrintcontainer').show();
-
+                    debugger;
+                    if ($('#LatestApprovalStatus').val() == "0")
+                        $('#hdnWaterMarkPrintFlag').val(true);
+                    else
+                        $('#hdnWaterMarkPrintFlag').val(false);
                     if ($('#HeaderCheck').prop("checked") == true) {
                         $('#hdnPrintFlag').val(false);
                         $('#FormPrintQuotation').submit();

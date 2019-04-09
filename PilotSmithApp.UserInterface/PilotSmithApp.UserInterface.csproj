@@ -1083,7 +1083,6 @@
     <Content Include="Views\ProductionOrder\_EmailProductionOrder.cshtml" />
     <Content Include="Views\Quotation\_QuotationOtherCharge.cshtml" />
     <Content Include="Views\SaleOrder\_SaleOrderOtherCharge.cshtml" />
-    <Content Include="Views\Carrier\_CarrierSelectList.cshtml" />
     <Content Include="Views\SaleOrder\_EmailSaleOrder.cshtml" />
     <Content Include="Views\ServiceCall\_AddServiceCallCharge.cshtml" />
     <Content Include="Views\Bank\_BankSelectList.cshtml" />
@@ -1150,6 +1149,7 @@
     <Content Include="Views\SaleOrder\_PreviewSaleOrder.cshtml" />
     <Content Include="Views\ProductionOrder\_PreviewProductionOrder.cshtml" />
     <Content Include="Views\SaleOrder\_PrintSaleOrderDetail.cshtml" />
+    <Content Include="Views\Carrier\_CarrierSelectList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1163,6 +1163,7 @@
     <Folder Include="Content\ProductImages\" />
     <Folder Include="Content\Uploads\" />
     <Folder Include="Views\ApprovalStatus\" />
+    <Folder Include="Views\Company\Carrier\" />
     <Folder Include="Views\Department\" />
     <Folder Include="Views\FileUpload\" />
     <Folder Include="Views\Position\" />

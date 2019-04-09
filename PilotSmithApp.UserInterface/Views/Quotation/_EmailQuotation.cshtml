@@ -425,6 +425,7 @@
                 @Html.HiddenFor(model => model.Customer.ContactPerson, htmlAttributes: new { @class = "", @id = "hdnContactPerson" })
                 @Html.HiddenFor(model => model.QuoteNo, htmlAttributes: new { @class = "", @id = "hdnQuoteNo" })
                 @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = "Quotation", @id = "hdnEmailContentFileName" })
+                @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
                 @Html.HiddenFor(model => model.QuoteDateFormatted, htmlAttributes: new { @class = "", @id = "hdnQuoteDate" })
                 <br />
                 @*<table style="width:50%;font-size:12px">*@
@@ -438,7 +439,7 @@
                 </table>
 
                 <a class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right" onclick="EmailQuotation()">Back </a>
-                if (Model.LatestApprovalStatus == 4)
+                if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus==0)
                 {
                     <button type="button" class="btn btn-openid" style="margin:5px;color:white;text-decoration:none;float:right;" onclick="SendQuotationEmail()">Send <i class="fa fa-spinner fa-spin" id="icnMasterLoading" style="display:none;"></i></button>
                 }
@@ -456,7 +457,8 @@
                 @Html.HiddenFor(model => model.PDFTools.ContentFileName, htmlAttributes: new { @class = "", Value = Model.QuoteNo, @id = "hdnContentFileName" })
                 @Html.HiddenFor(model => model.PDFTools.CustomerName, htmlAttributes: new { @class = "",Value=Model.Customer.CompanyName })
                 @Html.HiddenFor(model => model.Customer.CompanyName, htmlAttributes: new { @class = "" })
-                if (Model.LatestApprovalStatus == 4)
+                @Html.HiddenFor(model => model.PDFTools.IsWithWaterMark, htmlAttributes: new { @id = "hdnWaterMarkFlag" })
+                if (Model.LatestApprovalStatus == 4 || Model.LatestApprovalStatus == 0)
                 {
                     <button type="submit" class="btn btn-openid" style="margin:5px;float:right;color:white;text-decoration:none;" onclick="DownloadQuotation()">Download <i class="fa fa-spinner fa-spin"  style="display:none;"></i></button>
                 }

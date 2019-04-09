@@ -90,6 +90,7 @@ namespace PilotSmithApp.BusinessService.Service
                     _mail.Body = mailBody.Replace("$Customer$", saleOrder.Customer.ContactPerson).Replace("$Document$", "Sale Order").Replace("$DocumentNo$", saleOrder.SaleOrderNo).Replace("$DocumentDate$",saleOrder.SaleOrderDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = saleOrder.MailContant;
                     pDFTools.ContentFileName = "SaleOrder";
+                    pDFTools.IsWithWaterMark = saleOrder.LatestApprovalStatus == 0 ? true : false;
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pDFGeneratorBusiness.GetPdfAttachment(pDFTools)), saleOrder.SaleOrderNo + ".pdf"));
                     _mail.Subject = saleOrder.Subject;
                     _mail.IsBodyHtml = true;
