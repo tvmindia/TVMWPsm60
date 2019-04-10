@@ -541,7 +541,7 @@ function SaveSuccessProductionOrder(data, status) {
 
 					else {
 					    _isApproval = false;
-					    if ($('#LatestApprovalStatus').val() == "0")
+					    if ($('#LatestApprovalStatus').val() == "0" || $('#LatestApprovalStatus').val() == "")
 					        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Draft", _result.ID);
                         else
 					        ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);

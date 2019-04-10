@@ -622,7 +622,7 @@ function SaveSuccessSaleOrder(data, status) {
 				else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True")
 				    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "ClosedForApprovalApproverEdit", _result.ID);
 				else {
-				    if ($('#LatestApprovalStatus').val() == "0")
+				    if ($('#LatestApprovalStatus').val() == "0" || $('#LatestApprovalStatus').val() == "")
 				        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Draft", _result.ID);
                     else
 				        ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit", _result.ID);
@@ -1275,8 +1275,6 @@ function EmailSaleOrder() {
 }
 function SendSaleOrderEmail() {
     if ($('#hdnEmailSentTo').val() != null && $('#hdnEmailSentTo').val() != "" && $('#Subject').val() != null) {
-        $('#hdnMailBodyHeader').val($('#MailBodyHeader').val());
-        $('#hdnMailBodyFooter').val($('#MailBodyFooter').val());
         $('#hdnSaleOrderEMailContent').val($('#divSaleOrderEmailcontainer').html());
         $('#hdnSaleOrderNo').val($('#SaleOrderNo').val());
         $('#hdnContactPerson').val($('#ContactPerson').text());

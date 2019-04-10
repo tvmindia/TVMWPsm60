@@ -617,7 +617,7 @@ function SaveSuccessQuotation(data, status) {
                 }
                 else {
                     _isApproval = false;
-                    if ($('#LatestApprovalStatus').val() == "0")
+                    if ($('#LatestApprovalStatus').val() == "0" || $('#LatestApprovalStatus').val() == "")
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Draft", _result.ID);
                     else
                         ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
