@@ -112,7 +112,14 @@
                 <tr><td colspan="6">&nbsp;</td></tr>
                 <tr><td colspan="2" style="font-size:11px;">SaleOrder No &nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;<b>@Model.SaleOrderNo</b></td><td colspan="2"></td><td colspan="2">Ref. SaleOrder No.: @Model.SaleOrderRefNo</td></tr>
                 <tr><td  colspan="2" style="font-size:11px;">SaleOrder Date  &nbsp;: @Model.SaleOrderDateFormatted</td><td colspan="2"></td><td colspan="2">Delivery Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: @Model.ExpectedDelvDateFormatted</td></tr>
-                <tr><td colspan="2" style="font-size:11px;">Purchase Order No &nbsp;:@Model.PurchaseOrdNo</td><td colspan="2"></td><td colspan="2">Bank : @Model.Bank.Name</td></tr>
+                <tr><td colspan="2" style="font-size:11px;">Purchase Order No &nbsp;: @Model.PurchaseOrdNo</td><td colspan="2"></td><td colspan="2">Bank : @Model.Bank.Name</td></tr>
+                <tr><td colspan="6" style="font-size:11px;">Purchase Order Date &nbsp;: @Model.PurchaseOrdDateFormatted</td></tr>
+                @{
+                    if (Model.AdvanceAmount > 0)
+                    {
+                        <tr><td colspan="6" style="font-size:11px;">Advance Amount &nbsp;: @Model.AdvanceAmount</td></tr>
+                    }
+                }
                 <tr><td colspan="6">&nbsp;</td></tr>
                 <tr>
                     @{
@@ -160,7 +167,8 @@
                         itemgrandTotal = Math.Round(itemtaxableAmount + itemgSTAmount + (decimal)@mp.CessAmt, 2);
                         <tr>
                             <td style="width:4%;text-align: center;font-size:9px;vertical-align:top;">@slno</td>
-                            <td style="width:21%; text-align: left;font-size:9px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>
+                            @*<td style="width:21%; text-align: left;font-size:9px;vertical-align:top;">@mp.Product.Name - @mp.ProductModel.Name<br />@mp.ProductSpec</td>*@
+                            <td style="width:21%; text-align: left;font-size:9px;vertical-align:top;">@mp.ProductSpec</td>
                             <td style="width:7%; text-align: left;font-size:9px;vertical-align:top;">@mp.Product.HSNCode</td>
                             <td style="width:4%; text-align: left;font-size:9px;vertical-align:top;">@mp.Qty @mp.Unit.Description</td>
                             <td style="width:9%; text-align: right;font-size:9px;vertical-align:top;">@mp.Rate</td>
