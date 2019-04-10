@@ -853,6 +853,20 @@
                 $('#btnSelect').prop("onclick", null);
                 $('#btnSelect').css("background", "#b2aca4");
             }
+            if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True" && $('#LatestApprovalStatus').val() == '0') {
+                $('#btnUpload').attr("disabled", "disabled")
+                $('#btnUpload').attr("title", "Document Locked");
+                $('#btnUpload').prop("onclick", null);
+                $('#btnUpload').css("background", "#b2aca4");
+                $('#btnCancel').attr("disabled", "disabled")
+                $('#btnCancel').attr("title", "Document Locked");
+                $('#btnCancel').prop("onclick", null);
+                $('#btnCancel').css("background", "#b2aca4");
+                $('#btnSelect').attr("disabled", "disabled")
+                $('#btnSelect').attr("title", "Document Locked");
+                $('#btnSelect').prop("onclick", null);
+                $('#btnSelect').css("background", "#b2aca4");
+            }
             if (($('#QuotationForm #IsDocLocked').val() == "True" && $("#hdnIsDocumentApprover").val() == "False") && $('#QuotationForm #IsUpdate').val() == "True") {
                 if ($('#LatestApprovalStatus').val() != '3' && $('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != '0') {
                     $('#btnUpload').attr("disabled", "disabled")
