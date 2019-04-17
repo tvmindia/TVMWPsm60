@@ -227,24 +227,25 @@ function EditEnquiry(this_Obj) {
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", Enquiry.ID);
             }
             else {
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-label').attr('title', 'Document Locked');
+                debugger;
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", Enquiry.ID);
             }
             BindEnquiryDetailList(Enquiry.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(Enquiry.ID);
-            if (Enquiry.DocumentStatus.Description == "OPEN") {
-                $('.switch-input').prop('checked', true);
-                //  $('.switch-input').attr(':checked', ':checked');
-                //$('.switch-input').is(':checked') = true;
-            } else {
-                $('.switch-input').prop('checked', false);
-                //  $('.switch-input').removeAttr(':checked', ':checked');
-                // $('.switch-input').is(':checked') = false;
-            }
+            //if (Enquiry.DocumentStatus.Description == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
+            //    //  $('.switch-input').attr(':checked', ':checked');
+            //    //$('.switch-input').is(':checked') = true;
+            //} else {
+            //    $('.switch-input').prop('checked', false);
+            //    //  $('.switch-input').removeAttr(':checked', ':checked');
+            //    // $('.switch-input').is(':checked') = false;
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -254,13 +255,13 @@ function EditEnquiry(this_Obj) {
 function ResetEnquiry() {
     $("#divEnquiryForm").load("Enquiry/EnquiryForm?id=" + $('#EnquiryForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
               
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
               
-            }
+            //}
             $('#lblEnquiryInfo').text($('#EnquiryNo').val());
             BindEnquiryDetailList($('#ID').val());
             clearUploadControl();
@@ -311,13 +312,13 @@ function SaveSuccessEnquiry(data, status) {
                     clearUploadControl();
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
-                    if ($('#hdnDescription').val() == "OPEN") {
-                        $('.switch-input').prop('checked', true);
+                    //if ($('#hdnDescription').val() == "OPEN") {
+                    //    $('.switch-input').prop('checked', true);
 
-                    } else {
-                        $('.switch-input').prop('checked', false);
+                    //} else {
+                    //    $('.switch-input').prop('checked', false);
 
-                    }
+                    //}
                 });
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", _result.ID);
                 BindOrReloadEnquiryTable('Init');
@@ -762,22 +763,22 @@ function EditRedirectToDocument(id)
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Edit", id);
             }
             else {
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", id);
             }
             BindEnquiryDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
                
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
              
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

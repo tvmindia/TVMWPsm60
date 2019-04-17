@@ -1,9 +1,5 @@
 ﻿@model PilotSmithApp.UserInterface.Models.EnquiryViewModel
 <style>
-    .todo-list > li {
-        background: #ffffff;
-        border-left: none;
-    }
 </style>
 @using (Ajax.BeginForm("InsertUpdateEnquiry", "Enquiry", new AjaxOptions { HttpMethod = "POST", Confirm = "", OnSuccess = "SaveSuccessEnquiry", OnFailure = "NetworkFailure", AllowCache = false, LoadingElementId = "", OnBegin = "OnServerCallBegin", OnComplete = "OnServerCallComplete" }, new { @class = "form-horizontal", role = "form", @id = "EnquiryForm" }))
 {
@@ -13,11 +9,11 @@
     @Html.HiddenFor(model => model.ID, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     @Html.HiddenFor(model => model.DocumentStatus.Description, htmlAttributes: new { @class = "", @id = "hdnDescription" })
-      <div class="col-md-11 divbox1">
+    <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
-                <!--Currency start-->               
+                <!--Currency start-->
                 <div class="col-md-12 no-padding">
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12" style="display:inline-flex">
@@ -25,13 +21,13 @@
                             @Html.HiddenFor(model => model.CurrencyRate, htmlAttributes: new { @class = "", @id = "hdnCurrencyRate" })
                             @Html.Label("Select currency", htmlAttributes: new { @class = "control-label lblrequired" })
                             <label class="control-label lblrequired lblrate">Rate</label>
-                        </div>                      
+                        </div>
                         <div class="col-md-12 no-padding">
                             <div class="col-md-12" style="display:inline-flex;font-weight:500;">
                                 @*<select class="form-control newinput" disabled>
-                            <option>INR</option>
-                        </select>
-                        <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />*@
+                                        <option>INR</option>
+                                    </select>
+                                    <input class="form-control newinput" type="number" value="1" readonly style="width:100%;border-left:1px solid black;text-align:right;" />*@
                                 @if (Model.IsUpdate)
                                 {
                                     <select class="form-control newinput" disabled title="Cannot change currency" style="width:100%;min-width:68px;">
@@ -53,13 +49,13 @@
 
                                     </select>
                                     <span class="form-control newinput" style="margin-left:auto;border-left:1px solid black;text-align:right;border-bottom:none;min-width:70px;"> &nbsp;1&nbsp;&nbsp;<span id="lblCurrencyCode">@Model.CurrencyCode</span>&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;</span>
-                                    <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;min-width:70px;" value="@Model.CurrencyRate"/>
+                                    <input class="form-control newinput changeCurrency" type="number" min="0" id="idCurRateForAutofocus" style="width:100%;text-align:left;min-width:70px;" value="@Model.CurrencyRate" />
 
                                             }
                                 @*<select class="form-control newinput" disabled>
-                                    <option>INR</option>
-                                </select>*@
-                                <input class="form-control newinput" type="text" readonly style="width:100%;text-align:left;background-color:rgba(2, 166, 143, 0.06);border-bottom:none;min-width:45px;" value="INR"/>
+                                        <option>INR</option>
+                                    </select>*@
+                                <input class="form-control newinput" type="text" readonly style="width:100%;text-align:left;background-color:rgba(2, 166, 143, 0.06);border-bottom:none;min-width:45px;" value="INR" />
                             </div>
                         </div>
                     </div>
@@ -87,205 +83,222 @@
                             </div>
                         </div>
                     }
-                    </div>
-                    <!--Currency end-->
+                </div>
+                <!--Currency end-->
 
-                    <div class="col-md-12 no-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.EnquiryNo, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.EnquiryNo, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "readonly", @placeholder = "<<Autogenerated>>" } })
+                            @Html.ValidationMessageFor(model => model.EnquiryNo, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    @if (Model.IsUpdate)
+                    {
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
-                                @Html.LabelFor(model => model.EnquiryNo, htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
                             <div class="col-md-12">
-                                @Html.EditorFor(model => model.EnquiryNo, new { htmlAttributes = new { @class = "form-control newinput", @readonly = "readonly", @placeholder = "<<Autogenerated>>" } })
-                                @Html.ValidationMessageFor(model => model.EnquiryNo, "", new { @class = "text-danger" })
+                                @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off", @data_toggle = "popover", @data_content = "Select date with in financial year", @data_placement = "top" } })
+                                @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
                             </div>
-
                         </div>
-                        @if (Model.IsUpdate)
-                        {
-                            <div class="col-md-6 no-padding">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
-                                </div>
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off", @data_toggle = "popover", @data_content = "Select date with in financial year",@data_placement="top" } })
-                                    @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-6 no-padding">
-                                <div class="col-md-12">
-                                    @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
-                                </div>
-                                <div class="col-md-12">
-                                    @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
-                                    @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                        }
-                    </div>
-
-                    <div class="col-md-12 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
-                        </div>
-                        @if (Model.IsUpdate)
-                        {
-                            <div class="col-md-12">
-                                <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="col-md-12">
-                                <div class="divCustomerSelectList">
-                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                </div>
-                            </div>
-                        }
-                        <!-- This hidden field will keep the information whether the field is required or not -->
-                        @Html.Hidden("hdnCustomerRequired", "required")
-                        <!-- This hidden field will keep the information whether the field is disabled or not -->
-                        @Html.Hidden("hdnCustomerdisabled", false)
-                        @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
-                    </div>
-                    <div id="divCustomerBasicInfo">
-                        @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
-                    </div>
-                    <div class="col-md-12 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.RequirementSpec, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            @Html.TextAreaFor(model => model.RequirementSpec, 5, 0, new { @class = "form-control newinput" })
-                            @Html.ValidationMessageFor(model => model.RequirementSpec, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-md-12 no-padding">
+                    }
+                    else
+                    {
                         <div class="col-md-6 no-padding">
                             <div class="col-md-12">
-                                @Html.LabelFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "control-label" })
+                                @Html.LabelFor(model => model.EnquiryDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
-                            <div class="col-md-12" id="divEnquiryGradeSelectList">
-                                @Html.DropDownListFor(model => model.EnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "--Select grade--", new { @class = "form-control newinput", @onchange = "$('#hdnGradeCode').val(this.value)", @style = "Width:100%;" })
-                                @Html.HiddenFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "", @id = "hdnGradeCode" })
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.EnquiryDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
+                                @Html.ValidationMessageFor(model => model.EnquiryDateFormatted, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        @*<div class="col-md-6 no-padding">
+                    }
+                </div>
+
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
+                    </div>
+                    @if (Model.IsUpdate)
+                    {
+                        <div class="col-md-12">
+                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-12">
+                            <div class="divCustomerSelectList">
+                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            </div>
+                        </div>
+                    }
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnCustomerRequired", "required")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnCustomerdisabled", false)
+                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
+                </div>
+                <div id="divCustomerBasicInfo">
+                    @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.RequirementSpec, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(model => model.RequirementSpec, 5, 0, new { @class = "form-control newinput" })
+                        @Html.ValidationMessageFor(model => model.RequirementSpec, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12" id="divEnquiryGradeSelectList">
+                            @Html.DropDownListFor(model => model.EnquiryGradeCode, Model.EnquiryGrade.EnquiryGradeSelectList, "--Select grade--", new { @class = "form-control newinput", @onchange = "$('#hdnGradeCode').val(this.value)", @style = "Width:100%;" })
+                            @Html.HiddenFor(model => model.EnquiryGradeCode, htmlAttributes: new { @class = "", @id = "hdnGradeCode" })
+                        </div>
+                    </div>
+                    @*<div class="col-md-6 no-padding">
                             <div class="col-md-12">
                                 @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
                             <div class="col-md-12">
                                 <div class="divDocumentStatusSelectList">
                                     <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                    
+
                                 </div>
                             </div>
-                            
+
                             @Html.Hidden("hdnDocumentStatusRequired", "required")
                             @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                         </div>*@
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
-                                @Html.LabelFor(model => model.AttendedByID, htmlAttributes: new { @class = "control-label" })
-                            </div>
-                            <div class="col-md-12">
-                                <div class="divAttendedBySelectList">
-                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                    @*@Html.Action("AttendedBySelectList", "Employee", new { required = "" })*@
-                                </div>
-                            </div>
-                            <!-- This hidden field will keep the information whether the field is required or not -->
-                            @Html.Hidden("hdnAttendedByRequired", "")
-                            <!-- This hidden field will keep the information whether the field is disabled or not -->
-                            @Html.Hidden("hdnAttendedBydisabled", false)
-                            @Html.HiddenFor(model => model.AttendedByID, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
-                        </div>
-                    </div>
-                    <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
                         <div class="col-md-12">
-                            @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
+                            @Html.LabelFor(model => model.AttendedByID, htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-md-12">
-                            <div class="divReferredByCodeSelectList">
+                            <div class="divAttendedBySelectList">
                                 <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                @*@Html.Action("AttendedBySelectList", "Employee", new { required = "" })*@
                             </div>
                         </div>
                         <!-- This hidden field will keep the information whether the field is required or not -->
-                        @Html.Hidden("hdnReferredByRequired", "")
+                        @Html.Hidden("hdnAttendedByRequired", "")
                         <!-- This hidden field will keep the information whether the field is disabled or not -->
-                        @Html.Hidden("hdnReferredBydisabled", false)
-                        @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
-                    </div>
-                    <div class="col-md-12 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            <div class="divResponsiblePersonSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                @*@Html.Action("ResponsiblePersonSelectList", "Employee", new { required = "" })*@
-                            </div>
-                        </div>
-                        <!-- This hidden field will keep the information whether the field is required or not -->
-                        @Html.Hidden("hdnResponsiblePersonRequired", "")
-                        <!-- This hidden field will keep the information whether the field is disabled or not -->
-                        @Html.Hidden("hdnResponsiblePersondisabled", false)
-                        @Html.HiddenFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "", @id = "hdnResponsiblePersonID" })
-                    </div>
-                    <div class="col-md-12 no-padding">
-                        <div class="col-md-6 no-padding">
-                            <div class="col-md-12">
-                                @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                            </div>
-                            @if (Model.IsUpdate)
-                            {
-                                <div class="col-md-12">
-                                    <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="col-md-12">
-                                    <div class="divBranchSelectList">
-                                        <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-                                        @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
-                                    </div>
-                                </div>
-                            }
-                            <!-- This hidden field will keep the information whether the field is required or not -->
-                            @Html.Hidden("hdnBranchRequired", "required")
-                            <!-- This hidden field will keep the information whether the field is disabled or not -->
-                            @Html.Hidden("hdnBranchdisabled", false)
-                            @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
-
-                        </div>
-           
+                        @Html.Hidden("hdnAttendedBydisabled", false)
+                        @Html.HiddenFor(model => model.AttendedByID, htmlAttributes: new { @class = "", @id = "hdnAttendedByID" })
                     </div>
                 </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ReferredByCode, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divReferredByCodeSelectList">
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnReferredByRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnReferredBydisabled", false)
+                    @Html.HiddenFor(model => model.ReferredByCode, htmlAttributes: new { @class = "", @id = "hdnReferredByCode" })
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        <div class="divResponsiblePersonSelectList">
+                            <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                            @*@Html.Action("ResponsiblePersonSelectList", "Employee", new { required = "" })*@
+                        </div>
+                    </div>
+                    <!-- This hidden field will keep the information whether the field is required or not -->
+                    @Html.Hidden("hdnResponsiblePersonRequired", "")
+                    <!-- This hidden field will keep the information whether the field is disabled or not -->
+                    @Html.Hidden("hdnResponsiblePersondisabled", false)
+                    @Html.HiddenFor(model => model.ResponsiblePersonID, htmlAttributes: new { @class = "", @id = "hdnResponsiblePersonID" })
+                </div>
+                <div class="col-md-12 no-padding">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        @if (Model.IsUpdate)
+                        {
+                            <div class="col-md-12">
+                                <span class="form-control newinput" style="background-color:#eeeeee">@Model.Branch.Description</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-12">
+                                <div class="divBranchSelectList">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                    @*@Html.Action("BranchSelectList", "Branch", new { required = "required" })*@
+                                </div>
+                            </div>
+                        }
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnBranchRequired", "required")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnBranchdisabled", false)
+                        @Html.HiddenFor(model => model.BranchCode, htmlAttributes: new { @class = "", @id = "hdnBranchCode" })
+
+                    </div>
+
+                </div>
+            </div>
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
                     <div class="Shadow2data clearfix">
                         @*<div class="form-group col-md-12">
-                            <div class="rightAmtCaption">Document Status</div>
-                        </div>*@
+                                <div class="rightAmtCaption">Document Status</div>
+                            </div>*@
                         @*<div class="form-group col-md-12">
-                            <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
-                        </div>*@
+                                <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                            </div>*@
                         @if (Model.IsUpdate)
                         {
                             <div class="form-group col-md-12">
                                 <div class="rightAmtCaption">Document Status</div>
                             </div>
-                            <div class="form-group col-md-12">
+                            @*<div class="form-group col-md-12">
                                 <label class="switch switch-flat">
                                     <input class="switch-input" type="checkbox" checked />
-                                    <span class="switch-label" data-on="Open" data-off="Closed"></span>
+                                    <span class="switch-label" data-on="Open" data-off=@Model.DocumentStatus.Description></span>
                                     <span class="switch-handle"></span>
                                 </label>
+                            </div>*@
+                        if (Model.IsDocLocked)
+                        {
+                            <div class="form-group col-md-4">
+                                <div class="divDocumentStatusSelectList doc-status">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                </div>
+                                @Html.Hidden("hdnDocumentStatusRequired", "required")
+                                @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                             </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-md-4">
+                                <span class="form-control newinput" style="border-radius: 4px!important;background-color:#eeeeee;color:black;text-align:center;" title="Document Locked">@Model.DocumentStatus.Description</span>
+                            </div>
+                            }
+
                         }
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Branch</div>
@@ -399,26 +412,53 @@
                 }
 <script>
     $(document).ready(function () {
-        $('[data-toggle="popover"]').popover({          
+        $('[data-toggle="popover"]').popover({
         });
         try {
 
-            debugger;
-            $('.switch-input').on('change', function () {
+            //$('.switch-input').on('change', function () {
+            //    debugger;
+                
+            //    //$('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=ENQ&required=' + $('#hdnDocumentStatusRequired').val())
+            //    var isChecked = $(this).is(':checked');
+            //    var selectedData;
+            //    var $switchLabel = $('.switch-label');
+            //    console.log('isChecked: ' + isChecked);
+
+            //    if (isChecked) {
+            //        selectedData = $switchLabel.attr('data-on');
+            //        $.get("DocumentStatus/CloseDocument/?id=" + $('#EnquiryForm #ID').val() + "&doctype=ENQ" + "&docstatus=" + selectedData, function (data) {
+            //            debugger;
+
+            //            if (data == "1") {
+            //                BindOrReloadEnquiryTable();
+            //                //notyAlert('success', "Document status changed successfully!");
+            //            }
+            //            else {
+            //                notyAlert('error', "Failed to change document status!");
+            //            }
+
+            //        });
+
+            //    } else {
+            //        $("#divStatus").show();
+            //        $('#DocumentStatusCode').select2("open");
+            //        //var status = $("#DocumentStatusCode option:selected").text();
+            //        //return false;
+            //    }
+            //});
+        }
+        catch (e) {
+
+        }
+        try {
+            $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
+            
+            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
+            $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('#hdnResponsiblePersonRequired').val())
+            function StatusChange() {
                 debugger;
-                var isChecked = $(this).is(':checked');
-                var selectedData;
-                var $switchLabel = $('.switch-label');
-                console.log('isChecked: ' + isChecked);
-
-                if (isChecked) {
-                    selectedData = $switchLabel.attr('data-on');
-
-                } else {
-                    selectedData = $switchLabel.attr('data-off');
-                }
-
-
+                var selectedData = $("#DocumentStatusCode option:selected").text();
                 $.get("DocumentStatus/CloseDocument/?id=" + $('#EnquiryForm #ID').val() + "&doctype=ENQ" + "&docstatus=" + selectedData, function (data) {
                     debugger;
 
@@ -431,24 +471,13 @@
                     }
 
                 });
-
-            });
-
-
-        }
-        catch (e) {
-
-        }
-        try {
-            $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=ENQ&required=' + $('#hdnDocumentStatusRequired').val())
-            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
-            $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('#hdnResponsiblePersonRequired').val())
+            }
             @if (Model.IsUpdate)
             {
                  <text>
-            if ($('#hdnCurrencyCode').val()=="INR") {
-                $('#idCurRateForAutofocus').prop("disabled",true)
+            
+            if ($('#hdnCurrencyCode').val() == "INR") {
+                $('#idCurRateForAutofocus').prop("disabled", true)
             }
             $('.changeCurrency').change(function () {
                 if (this.nodeName == "INPUT") {
@@ -456,24 +485,22 @@
                 }
             });
             var enqDate = $('#EnquiryDateFormatted').val();
-            function getCurrentFinancialYear(enqDate)
-            {
+            function getCurrentFinancialYear(enqDate) {
                 debugger;
                 var startYear = "";
                 var endYear = "";
                 var docDate = new Date(enqDate);
-                if((docDate.getMonth()+1)<=3)
-                {
-                    startYear = docDate.getFullYear()-1;
+                if ((docDate.getMonth() + 1) <= 3) {
+                    startYear = docDate.getFullYear() - 1;
                     endYear = docDate.getFullYear();
                 }
-                else
-                {
+                else {
                     startYear = docDate.getFullYear();
                     endYear = docDate.getFullYear() + 1;
                 }
                 return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
-            }                    
+            }
+            
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",
                 maxViewMode: 0,
@@ -484,7 +511,8 @@
                 startDate: getCurrentFinancialYear(enqDate).startDate,
                 endDate: getCurrentFinancialYear(enqDate).endDate
             });
-                </text>
+            
+            </text>
             }
             else
             {
@@ -516,14 +544,24 @@
                 }
                 if (this.nodeName == "INPUT") {
                     $('#hdnCurrencyRate').val(this.value)
-                }              
+                }
             });
             if ($('#hdnCurrencyCode').val() == "INR") {
                 $('#idCurRateForAutofocus').prop("disabled", true)
             }
             </text>
             }
+            //DocumentStatusControl
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=ENQ&required=' + $('#hdnDocumentStatusRequired').val(), function (responseTxt, statusTxt, xhr) {
+                $('#DocumentStatusCode').change(function () {
+                    StatusChange();
+                });
+            });
+            $('.select2').addClass('form-control newinput');
             if ($('#EnquiryForm #IsDocLocked').val() == "False" && $('#EnquiryForm #IsUpdate').val() == "True") {
+                debugger;
+                $('#DocumentStatusCode').prop('disabled', true);
+                $('#DocumentStatusCode').attr('title', 'Document Locked');
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
@@ -538,7 +576,6 @@
                 $('#btnSelect').css("background", "#b2aca4");
             }
 
-
         }
         catch (e) {
             console.log(e.message);
@@ -550,14 +587,14 @@
             console.log(e.message);
         }
         try {
-            debugger;          
+            debugger;
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",
                 maxViewMode: 0,
                 todayBtn: "linked",
                 clearBtn: true,
                 autoclose: true,
-                todayHighlight: true             
+                todayHighlight: true
             });
 
         }

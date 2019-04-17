@@ -256,9 +256,9 @@ function EditSaleInvoice(this_Obj) {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", SaleInvoice.ID);
             }
             else {
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", SaleInvoice.ID);
             }
 
@@ -276,13 +276,13 @@ function EditSaleInvoice(this_Obj) {
                 $('#divSaleInvoiceOtherChargesDetailList').hide();
                
             }
-            if (SaleInvoice.DocumentStatus.Description == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if (SaleInvoice.DocumentStatus.Description == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -292,13 +292,13 @@ function EditSaleInvoice(this_Obj) {
 function ResetSaleInvoice(event) {
     $("#divSaleInvoiceForm").load("SaleInvoice/SaleInvoiceForm?id=" + $('#SaleInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
             if ($('#IsUpdate').val() == "False") {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Add", $('#SaleInvoiceForm #ID').val());
             }
@@ -399,12 +399,12 @@ function SaveSuccessSaleInvoice(data, status) {
                         $("#divInvoiceType").hide();
 
                     }
-                    if ($('#hdnDescription').val() == "OPEN") {
-                        $('.switch-input').prop('checked', true);
+                    //if ($('#hdnDescription').val() == "OPEN") {
+                    //    $('.switch-input').prop('checked', true);
 
-                    } else {
-                        $('.switch-input').prop('checked', false);
-                    }
+                    //} else {
+                    //    $('.switch-input').prop('checked', false);
+                    //}
 
 
                 });
@@ -1716,9 +1716,9 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "Edit", id);
             }
             else {
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("SaleInvoice", "btnPatchSaleInvoiceNew", "LockDocument", id);
             }
             BindSaleInvoiceDetailList(id);
@@ -1734,13 +1734,13 @@ function EditRedirectToDocument(id) {
                 $('#divSaleInvoiceOtherChargesDetailList').hide();
 
             }
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

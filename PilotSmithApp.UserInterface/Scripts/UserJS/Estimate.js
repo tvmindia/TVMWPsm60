@@ -218,9 +218,9 @@ function EditEstimate(this_Obj) {
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", Estimate.ID);
         }
         else {
-            $('.switch-input').prop('disabled', true);
-            $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-            $('.switch-label').attr('title', 'Document Locked');
+            //$('.switch-input').prop('disabled', true);
+            //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+            //$('.switch-label').attr('title', 'Document Locked');
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument", Estimate.ID);
         }
         BindEstimateDetailList(Estimate.ID);
@@ -228,13 +228,13 @@ function EditEstimate(this_Obj) {
         clearUploadControl();
         PaintImages(Estimate.ID);        
         $("#divEstimateForm #EnquiryID").prop('disabled', true);
-        if (Estimate.DocumentStatus.Description == "OPEN") {
-            $('.switch-input').prop('checked', true);
+        //if (Estimate.DocumentStatus.Description == "OPEN") {
+        //    $('.switch-input').prop('checked', true);
 
-        } else {
-            $('.switch-input').prop('checked', false);
+        //} else {
+        //    $('.switch-input').prop('checked', false);
 
-        }
+        //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -250,13 +250,13 @@ function ResetEstimate() {
     //this will return form body(html)
     $("#divEstimateForm").load("Estimate/EstimateForm?id=" + $('#EstimateForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
                
@@ -309,13 +309,13 @@ function SaveSuccessEstimate(data, status) {
                     PaintImages(_result.ID);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EstimateForm #hdnCustomerID').val());
                     $('#lblEstimateInfo').text(_result.EstimateNo);
-                    if ($('#hdnDescription').val() == "OPEN") {
-                        $('.switch-input').prop('checked', true);
+                    //if ($('#hdnDescription').val() == "OPEN") {
+                    //    $('.switch-input').prop('checked', true);
 
-                    } else {
-                        $('.switch-input').prop('checked', false);
+                    //} else {
+                    //    $('.switch-input').prop('checked', false);
 
-                    }
+                    //}
 
                 });               
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", _result.ID);
@@ -780,9 +780,9 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", id);
             }
             else {
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument", id);
             }
             BindEstimateDetailList(id);
@@ -790,13 +790,13 @@ function EditRedirectToDocument(id) {
             clearUploadControl();
             PaintImages(id);
             $("#divEstimateForm #EnquiryID").prop('disabled', true);
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

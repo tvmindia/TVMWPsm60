@@ -228,9 +228,9 @@ function EditProformaInvoice(this_Obj) {
                 ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", ProformaInvoice.ID);
             }
             else {
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
             }
             BindProformaInvoiceDetailList(ProformaInvoice.ID);
@@ -245,13 +245,13 @@ function EditProformaInvoice(this_Obj) {
                 $('#btnAddOtherExpenses').css("display", "none");
                 $('#divProformaInvoiceOtherChargesDetailList').hide();
             }
-            if (ProformaInvoice.DocumentStatus.Description == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if (ProformaInvoice.DocumentStatus.Description == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -262,15 +262,15 @@ function EditProformaInvoice(this_Obj) {
 function ResetProformaInvoice(event) {
     $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + $('#ProformaInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
-                //  $('.switch-input').attr(':checked', ':checked');
-                //$('.switch-input').is(':checked') = true;
-            } else {
-                $('.switch-input').prop('checked', false);
-                //  $('.switch-input').removeAttr(':checked', ':checked');
-                // $('.switch-input').is(':checked') = false;
-            }
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
+            //    //  $('.switch-input').attr(':checked', ':checked');
+            //    //$('.switch-input').is(':checked') = true;
+            //} else {
+            //    $('.switch-input').prop('checked', false);
+            //    //  $('.switch-input').removeAttr(':checked', ':checked');
+            //    // $('.switch-input').is(':checked') = false;
+            //}
 
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
@@ -360,13 +360,13 @@ function SaveSuccessProformaInvoice(data, status) {
                         $('#divProformaInvoiceOtherChargesDetailList').hide();
 
                     }
-                    if ($('#hdnDescription').val() == "OPEN") {
-                        $('.switch-input').prop('checked', true);
+                    //if ($('#hdnDescription').val() == "OPEN") {
+                    //    $('.switch-input').prop('checked', true);
 
-                    } else {
-                        $('.switch-input').prop('checked', false);
+                    //} else {
+                    //    $('.switch-input').prop('checked', false);
 
-                    }
+                    //}
                 });
                 ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", _result.ID);
                 BindOrReloadProformaInvoiceTable('Init');
@@ -1578,9 +1578,9 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", id);
             }
             else {
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
             }
             BindProformaInvoiceDetailList(id);
@@ -1594,13 +1594,13 @@ function EditRedirectToDocument(id) {
                 $('#btnAddOtherExpenses').css("display", "none");
                 $('#divProformaInvoiceOtherChargesDetailList').hide();
             }
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

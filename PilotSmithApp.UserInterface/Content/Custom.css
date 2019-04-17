@@ -1612,3 +1612,48 @@ select{
    background: #dadada !important;
 
  }
+ /*Document status css*/
+ .doc-status .newinput {
+    border: 0px!important;
+    border-radius: 4px!important;
+    height: 30px;
+    border-bottom: 1px solid #4bd24b;
+    background-color: #119564;
+    color:white;
+    padding-left: 50px !important;
+}
+    .doc-status select>option{
+        background-color:white;
+        color:gray;
+    }
+    .doc-status select>option:hover,.doc-status select>option:focus{
+        background:green !important;
+    }
+    .doc-status input.select2-search__field{
+        display:none;
+    }
+    .doc-statuts-span{
+        background-color:#119564;
+        color:white;
+        text-align:center;
+    }
+    .doc-status li.select2-results__option{
+        margin:0!important;
+        text-align:center;
+    }
+    .doc-status li.select2-results__option:hover{
+       background-color: #119564;
+       color:white;
+    }
+    .doc-status .select2-container .select2-selection--single .select2-selection__rendered{
+        color:white;
+        padding:0px !important;
+    }
+.doc-status .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    border-color: transparent transparent white transparent;
+}
+.doc-status .select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: white transparent transparent transparent;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+}

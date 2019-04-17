@@ -445,13 +445,29 @@
                             <div class="form-group col-md-12">
                                 <div class="rightAmtCaption">Document Status</div>
                             </div>
-                            <div class="form-group col-md-12">
+                            @*<div class="form-group col-md-12">
                                 <label class="switch switch-flat">
                                     <input class="switch-input" type="checkbox" checked />
                                     <span class="switch-label" data-on="Open" data-off="Closed"></span>
                                     <span class="switch-handle"></span>
                                 </label>
+                            </div>*@
+                        if (Model.IsDocLocked)
+                        {
+                            <div class="form-group col-md-4">
+                                <div class="divDocumentStatusSelectList doc-status">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                </div>
+                                @Html.Hidden("hdnDocumentStatusRequired", "required")
+                                @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
                             </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-md-4">
+                                <span class="form-control newinput" style="border-radius: 4px!important;background-color:#eeeeee;color:black;text-align:center;" title="Document Locked">@Model.DocumentStatus.Description</span>
+                            </div>
+                            }
                         }
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Email Status</div>
@@ -755,40 +771,40 @@
         try {
 
             debugger;
-            $('.switch-input').on('change', function () {
-                debugger;
-                var isChecked = $(this).is(':checked');
-                var selectedData;
-                var $switchLabel = $('.switch-label');
-                console.log('isChecked: ' + isChecked);
+            //$('.switch-input').on('change', function () {
+            //    debugger;
+            //    var isChecked = $(this).is(':checked');
+            //    var selectedData;
+            //    var $switchLabel = $('.switch-label');
+            //    console.log('isChecked: ' + isChecked);
 
-                if (isChecked) {
-                    selectedData = $switchLabel.attr('data-on');
+            //    if (isChecked) {
+            //        selectedData = $switchLabel.attr('data-on');
 
-                } else {
-                    selectedData = $switchLabel.attr('data-off');
-                }
+            //    } else {
+            //        selectedData = $switchLabel.attr('data-off');
+            //    }
 
-                $.get("DocumentStatus/CloseDocument/?id=" + $('#SaleInvoiceForm #ID').val() + "&doctype=SIV" + "&docstatus=" + selectedData, function (data) {
-                    debugger;
-                    // var JsonResult = JSON.parse(data)
-                    if (data == "1") {
-                        //   $('#anchorOpenSODInTab').trigger('click');
-                        BindOrReloadSaleInvoiceTable();
-                        // notyAlert('success', "Document status changed successfully!");
-                    }
-                    else {
-                        notyAlert('error', "Failed to change document status!");
+            //    $.get("DocumentStatus/CloseDocument/?id=" + $('#SaleInvoiceForm #ID').val() + "&doctype=SIV" + "&docstatus=" + selectedData, function (data) {
+            //        debugger;
+            //        // var JsonResult = JSON.parse(data)
+            //        if (data == "1") {
+            //            //   $('#anchorOpenSODInTab').trigger('click');
+            //            BindOrReloadSaleInvoiceTable();
+            //            // notyAlert('success', "Document status changed successfully!");
+            //        }
+            //        else {
+            //            notyAlert('error', "Failed to change document status!");
 
-                        //  alert("Quotation not exist!");
-                    }
+            //            //  alert("Quotation not exist!");
+            //        }
 
-                });
+            //    });
 
 
-                //  console.log('Selected data: ' + selectedData);
-                //  alert(selectedData);
-            });
+            //    //  console.log('Selected data: ' + selectedData);
+            //    //  alert(selectedData);
+            //});
 
 
         }
@@ -797,9 +813,27 @@
         }
         try {
             $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val())
+            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=SIV&required=' + $('#hdnDocumentStatusRequired').val(), function (responseTxt, statusTxt, xhr) {
+                $('#DocumentStatusCode').change(function () {
+                    StatusChange();
+                });
+            });
             $('.divBillLocationSelectList').load('/BillLocation/BillLocationSelectList?required=' + $('#hdnBillLocationRequired').val())
+            function StatusChange() {
+                var selectedData = $("#DocumentStatusCode option:selected").text();
+                $.get("DocumentStatus/CloseDocument/?id=" + $('#SaleInvoiceForm #ID').val() + "&doctype=SIV" + "&docstatus=" + selectedData, function (data) {
+                    debugger;
+
+                    if (data == "1") {
+                        BindOrReloadSaleInvoiceTable();
+                        //notyAlert('success', "Document status changed successfully!");
+                    }
+                    else {
+                        notyAlert('error', "Failed to change document status!");
+                    }
+
+                });
+            }
             @if (Model.IsUpdate||Model.QuoteID!=null||Model.SaleOrderID!=null||Model.ProfInvID!=null)
          {
                   <text>

@@ -236,22 +236,22 @@ function EditProductionQC(this_Obj) {
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", ProductionQC.ID);
             }
             else {
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument", ProductionQC.ID);
             }
             BindProductionQCDetailList(ProductionQC.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(ProductionQC.ID);
-            if (ProductionQC.DocumentStatus.Description == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if (ProductionQC.DocumentStatus.Description == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -261,13 +261,13 @@ function EditProductionQC(this_Obj) {
 function ResetProductionQC() {
     $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + $('#ProductionQCForm #ID').val() , function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
                
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
                
-            }
+            //}
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 //resides in customjs for sliding
                 $("#divProductionQCForm #ProdOrderID").prop('disabled', true);
@@ -317,13 +317,13 @@ function SaveSuccessProductionQC(data, status) {
                     clearUploadControl();
                     PaintImages(_result.ID);                   
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProductionQCForm #hdnCustomerID').val());
-                    if ($('#hdnDescription').val() == "OPEN") {
-                        $('.switch-input').prop('checked', true);
+                    //if ($('#hdnDescription').val() == "OPEN") {
+                    //    $('.switch-input').prop('checked', true);
 
-                    } else {
-                        $('.switch-input').prop('checked', false);
+                    //} else {
+                    //    $('.switch-input').prop('checked', false);
 
-                    }
+                    //}
                 });
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", _result.ID);
                 BindOrReloadProductionQCTable('Init');
@@ -599,22 +599,22 @@ function EditRedirectToDocument(id) {
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", id);
             }
             else {
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument", id);
             }
             BindProductionQCDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
             PaintImages(id);
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);

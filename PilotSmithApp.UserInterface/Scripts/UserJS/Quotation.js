@@ -307,9 +307,9 @@ function EditQuotation(this_Obj) {
             }
             else {
 
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-label').attr('title', 'Document Locked');
                 switch ($('#LatestApprovalStatus').val()) {
                     case "1":
                         if ($("#hdnIsDocumentApprover").val() == "True") {
@@ -348,13 +348,13 @@ function EditQuotation(this_Obj) {
             $("#divQuotationForm #EstimateID").prop('disabled', true);
             debugger;
 
-            if (Quotation.DocumentStatus.Description == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if (Quotation.DocumentStatus.Description == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
@@ -402,15 +402,15 @@ function ResetQuotation() {
     }
     $("#divQuotationForm").load(str, function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
-                //  $('.switch-input').attr(':checked', ':checked');
-                //$('.switch-input').is(':checked') = true;
-            } else {
-                $('.switch-input').prop('checked', false);
-                //  $('.switch-input').removeAttr(':checked', ':checked');
-                // $('.switch-input').is(':checked') = false;
-            }
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
+            //    //  $('.switch-input').attr(':checked', ':checked');
+            //    //$('.switch-input').is(':checked') = true;
+            //} else {
+            //    $('.switch-input').prop('checked', false);
+            //    //  $('.switch-input').removeAttr(':checked', ':checked');
+            //    // $('.switch-input').is(':checked') = false;
+            //}
             if ($('#ID').val() != _emptyGuid && $('#ID').val() != null) {
                 $("#divQuotationForm #EstimateID").prop('disabled', true);
                 //resides in customjs for sliding
@@ -478,9 +478,9 @@ function ResetQuotation() {
             }
             else {
 
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-label').attr('title', 'Document Locked');
                 switch ($('#LatestApprovalStatus').val()) {
                     case "":
                         _isApproval = false;
@@ -597,13 +597,13 @@ function SaveSuccessQuotation(data, status) {
                     CalculateTotal();
                     clearUploadControl();
                     PaintImages(_result.ID, _isApproval);
-                    if ($('#hdnDescription').val() == "OPEN") {
-                        $('.switch-input').prop('checked', true);
+                    //if ($('#hdnDescription').val() == "OPEN") {
+                    //    $('.switch-input').prop('checked', true);
 
-                    } else {
-                        $('.switch-input').prop('checked', false);
+                    //} else {
+                    //    $('.switch-input').prop('checked', false);
 
-                    }
+                    //}
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val());
                 });
                 debugger;
@@ -962,7 +962,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[0].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                 quotationDetailList[0].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
-                //quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val().replace('<b>/g','').replace('</b>/g','').replace('<i>/g','').replace('</i>/g','');
+                quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val().replace('<b>/g','').replace('</b>/g','').replace('<i>/g','').replace('</i>/g','');
                 quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() : 0;
                 quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                 quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -985,7 +985,8 @@ function AddQuotationDetailToList() {
                     var checkpoint = 0;
                     //var productSpec = $('#ProductSpec').val().replace('<b>', '').replace('</b>', '').replace('<i>', '').replace('</i>', '');
                     //productSpec.split(' ').join(productSpec.toString());
-                    var productSpec = $('#ProductSpec').val();
+                    var productSpec = $('#ProductSpec').val().replace(/\<\b>/g, '');
+                    //var productSpec = $('#ProductSpec').val();
                     productSpec = productSpec.replace(/ /g, '').replace(/\n/g, '');
                     for (var i = 0; i < quotationDetailList.length; i++) {
                         if ((quotationDetailList[i].ProductID == $('#ProductID').val()) && (quotationDetailList[i].ProductModelID == $('#ProductModelID').val()
@@ -1873,9 +1874,9 @@ function EditRedirectToDocument(id) {
                 }
             }
             else {
-                $('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                $('.switch-input').prop('disabled', true);
-                $('.switch-label').attr('title', 'Document Locked');
+                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+                //$('.switch-input').prop('disabled', true);
+                //$('.switch-label').attr('title', 'Document Locked');
                 //ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", id);
                 switch ($('#LatestApprovalStatus').val()) {
                     case "1":
@@ -1914,13 +1915,13 @@ function EditRedirectToDocument(id) {
             clearUploadControl();
             PaintImages(id, _isApproval);
             $("#divQuotationForm #EstimateID").prop('disabled', true);
-            if ($('#hdnDescription').val() == "OPEN") {
-                $('.switch-input').prop('checked', true);
+            //if ($('#hdnDescription').val() == "OPEN") {
+            //    $('.switch-input').prop('checked', true);
 
-            } else {
-                $('.switch-input').prop('checked', false);
+            //} else {
+            //    $('.switch-input').prop('checked', false);
 
-            }
+            //}
 
         }
         else {
