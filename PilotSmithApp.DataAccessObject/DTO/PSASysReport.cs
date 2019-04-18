@@ -564,6 +564,57 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? PendingQty { get; set; }
         public List<PendingProductionQCReport> PendingProductionQCReportList { get; set; }
     }
-
+    public class QuotationDetailReport
+    {
+        public string QuotationNo { get; set; }
+        public DateTime QuoteDate { get; set; }
+        public string QuoteDateFormatted { get; set; }
+        public Guid? ProductID { get; set; }
+        public Guid? ProductModelID { get; set; }
+        public string ProductSpec { get; set; }
+        public string ProductName { get; set; }
+        public string ProdModel { get; set; }
+        public decimal? Qty { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? TaxableAmount { get; set; }
+        public int? UnitCode { get; set; }
+        public ProductModel ProductModel { get; set; }
+        public Unit Unit { get; set; }
+        public Customer Customer { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
+        public string AdvFromDate { get; set; }
+        public string AdvToDate { get; set; }
+        public string AdvCustomer { get; set; }
+        public Guid AdvPreparedBy { get; set; }
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
+        public decimal? AdvAmountFrom { get; set; }
+        public decimal? AdvAmountTo { get; set; }
+        public int? AdvDistrictCode { get; set; }
+        public int? AdvStateCode { get; set; }
+        public int? AdvCountryCode { get; set; }
+        public int? AdvAreaCode { get; set; }
+        public int? AdvCustomerCategoryCode { get; set; }
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public Product Product { get; set; }
+        public Guid AdvProduct { get; set; }
+        public Guid AdvProductModel { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        public int? AdvApprovalStatusCode { get; set; }
+        public string SearchTerm { get; set; }
+        public int? AdvReportType { get; set; }
+        public Employee Employee { get; set; }
+        public List<QuotationDetailReport> QuotationReportList { get; set; }
+        public string QuoteNo { get; set; }
+        public string DateFilter { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
+    }
 
 }

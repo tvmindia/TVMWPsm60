@@ -732,6 +732,7 @@
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderReport.js" />
     <Content Include="Scripts\UserJS\Report\ProductionOrderStandardReport.js" />
     <Content Include="Scripts\UserJS\Report\ProductionQCStandardReport.js" />
+    <Content Include="Scripts\UserJS\Report\QuotationDetailReport.js" />
     <Content Include="Scripts\UserJS\Report\QuotationReport.js" />
     <Content Include="Scripts\UserJS\Report\Report.js" />
     <Content Include="Scripts\UserJS\Report\ReportAdvanceSelectList.js" />
@@ -1150,6 +1151,7 @@
     <Content Include="Views\ProductionOrder\_PreviewProductionOrder.cshtml" />
     <Content Include="Views\SaleOrder\_PrintSaleOrderDetail.cshtml" />
     <Content Include="Views\Carrier\_CarrierSelectList.cshtml" />
+    <Content Include="Views\Report\QuotationDetailReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

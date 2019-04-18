@@ -750,6 +750,77 @@ namespace PilotSmithApp.UserInterface.Models
         public List<PendingProductionQCReportViewModel> PendingProductionQCReportList { get; set; }
     }
 
-
+    public class QuotationDetailReportViewModel
+    {
+        public string QuotationNo { get; set; }
+        public DateTime QuoteDate { get; set; }
+        public string QuoteDateFormatted { get; set; }
+        public Guid? ProductID { get; set; }
+        public Guid? ProductModelID { get; set; }
+        public string ProductSpec { get; set; }
+        public string ProductName { get; set; }
+        public string ProdModel { get; set; }
+        public decimal? Qty { get; set; }
+        public decimal? Amount { get; set; }
+        public decimal? TaxableAmount { get; set; }
+        public int? UnitCode { get; set; }
+        public ProductModelViewModel ProductModel { get; set; }
+        public UnitViewModel Unit { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Quotation From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Quotation To")]
+        public string AdvToDate { get; set; }
+        [Display(Name = "Customer")]
+        public string AdvCustomer { get; set; }
+        [Display(Name = "Prepared By")]
+        public Guid AdvPreparedBy { get; set; }
+        [Display(Name = "Referred By")]
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePersonViewModel ReferencePerson { get; set; }
+        [Display(Name = "Total Amount (Incl.Tax) >=")]
+        public decimal? AdvAmountFrom { get; set; }
+        [Display(Name = "Total Amount (Incl.Tax) <=")]
+        public decimal? AdvAmountTo { get; set; }
+        [Display(Name = "District")]
+        public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? AdvCountryCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        [Display(Name = "Customer Category")]
+        public int? AdvCustomerCategoryCode { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public ProductViewModel Product { get; set; }
+        [Display(Name = "Product")]
+        public string AdvProduct { get; set; }
+        [Display(Name = "Product Model")]
+        public string AdvProductModel { get; set; }
+        public ApprovalStatusViewModel ApprovalStatus { get; set; }
+        [Display(Name = "Approval Status")]
+        public int? AdvApprovalStatusCode { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
+        [Display(Name = "Report Type")]
+        public int? AdvReportType { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        public List<QuotationDetailReportViewModel> QuotationReportList { get; set; }
+        public string QuoteNo { get; set; }
+        public string DateFilter { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
+    }
 
 }

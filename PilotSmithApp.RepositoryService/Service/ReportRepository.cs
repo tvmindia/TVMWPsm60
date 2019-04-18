@@ -758,6 +758,110 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetSaleOrderStandardReport
 
+        #region GetQuotationDetailReport
+        public List<QuotationDetailReport> GetQuotationDetailReport(QuotationDetailReport quotationDetailReport)
+        {
+
+            List<QuotationDetailReport> quotationDetailReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetQuotationDetailReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(quotationDetailReport.SearchTerm) ? "" : quotationDetailReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = quotationDetailReport.DataTablePaging.Start;
+                        if (quotationDetailReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = quotationDetailReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = quotationDetailReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = quotationDetailReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = quotationDetailReport.AdvCustomer;
+                        if (quotationDetailReport.AdvPreparedBy != Guid.Empty)
+                            cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = quotationDetailReport.AdvPreparedBy;
+                        cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = quotationDetailReport.AdvReferencePersonCode;
+                        if (quotationDetailReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = quotationDetailReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = quotationDetailReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = quotationDetailReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = quotationDetailReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = quotationDetailReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = quotationDetailReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = quotationDetailReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = quotationDetailReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@ApprovalStatus", SqlDbType.Int).Value = quotationDetailReport.AdvApprovalStatusCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = quotationDetailReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = quotationDetailReport.AdvAmountTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = quotationDetailReport.AdvReportType;
+                        if (quotationDetailReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = quotationDetailReport.AdvProduct;
+                        if (quotationDetailReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = quotationDetailReport.AdvProductModel;
+
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                quotationDetailReportList = new List<QuotationDetailReport>();
+                                while (sdr.Read())
+                                {
+                                    QuotationDetailReport quotationDetailReportObj = new QuotationDetailReport();
+                                    {
+                                        quotationDetailReportObj.QuotationNo = (sdr["QuotationNo"].ToString() != "" ? (sdr["QuotationNo"].ToString()) : quotationDetailReportObj.QuotationNo);
+                                        quotationDetailReportObj.QuoteNo = (sdr["QuoteNo"].ToString() != "" ? (sdr["QuoteNo"].ToString()) : quotationDetailReportObj.QuoteNo);
+                                        quotationDetailReportObj.QuoteDate = (sdr["QuoteDate"].ToString() != "" ? DateTime.Parse(sdr["QuoteDate"].ToString()) : quotationDetailReportObj.QuoteDate);
+                                        quotationDetailReportObj.QuoteDateFormatted = (sdr["QuoteDate"].ToString() != "" ? DateTime.Parse(sdr["QuoteDate"].ToString()).ToString(_settings.DateFormat) : quotationDetailReportObj.QuoteDateFormatted);
+                                        quotationDetailReportObj.Customer = new Customer();
+                                        quotationDetailReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : quotationDetailReportObj.Customer.CompanyName);
+                                        quotationDetailReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : quotationDetailReportObj.Customer.ContactPerson);
+                                        quotationDetailReportObj.Branch = new Branch();
+                                        quotationDetailReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : quotationDetailReportObj.Branch.Description);
+                                        quotationDetailReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : quotationDetailReportObj.Amount);
+                                        quotationDetailReportObj.TaxableAmount = (sdr["TaxableAmount"].ToString() != "" ? decimal.Parse(sdr["TaxableAmount"].ToString()) : quotationDetailReportObj.TaxableAmount);
+                                        quotationDetailReportObj.PSAUser = new PSAUser();
+                                        quotationDetailReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : quotationDetailReportObj.PSAUser.LoginName);
+                                        quotationDetailReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : quotationDetailReportObj.TotalCount);
+                                        quotationDetailReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : quotationDetailReportObj.FilteredCount);
+                                        quotationDetailReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : quotationDetailReportObj.Qty);
+                                        quotationDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : quotationDetailReportObj.ProductSpec);
+                                        quotationDetailReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : quotationDetailReportObj.ProductID);
+                                        quotationDetailReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : quotationDetailReportObj.ProductModelID);
+                                        quotationDetailReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : quotationDetailReportObj.UnitCode);
+                                        quotationDetailReportObj.Product = new Product();
+                                        quotationDetailReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : quotationDetailReportObj.Product.Name);
+                                        quotationDetailReportObj.ProductModel = new ProductModel();
+                                        quotationDetailReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : quotationDetailReportObj.ProductModel.Name);
+                                        quotationDetailReportObj.Unit = new Unit();
+                                        quotationDetailReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : quotationDetailReportObj.Unit.Description);
+                                    }
+                                    quotationDetailReportList.Add(quotationDetailReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return quotationDetailReportList;
+        }
+        #endregion GetQuotationDetailReport
 
         #region GetProductionOrderStandardReport
 

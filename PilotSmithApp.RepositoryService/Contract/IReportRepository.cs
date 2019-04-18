@@ -21,5 +21,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<PendingProductionOrderReport> GetPendingProductionOrderReport(PendingProductionOrderReport pendingProductionOrderReport);
         List<ProductionQCStandardReport> GetProductionQCStandardReport(ProductionQCStandardReport productionQCStandardReport);
         List<PendingProductionQCReport> GetPendingProductionQCReport(PendingProductionQCReport pendingProductionQCReport);
+        List<QuotationDetailReport> GetQuotationDetailReport(QuotationDetailReport quotationDetailReport);
     }
 }

@@ -284,6 +284,26 @@ namespace PilotSmithApp.UserInterface.Controllers
             return View(SaleOrderReportVM);
         }
 
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "QuotationDetailReport", Mode = "R")]
+        public ActionResult QuotationDetailReport()
+        {
+
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            QuotationDetailReportViewModel SaleOrderReportVM = new QuotationDetailReportViewModel();
+            SaleOrderReportVM.DocumentStatus = new DocumentStatusViewModel();
+            SaleOrderReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");
+            SaleOrderReportVM.Employee = new EmployeeViewModel();
+            SaleOrderReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            SaleOrderReportVM.Customer = new CustomerViewModel();
+            SaleOrderReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            SaleOrderReportVM.Product = new ProductViewModel();
+            SaleOrderReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            SaleOrderReportVM.ProductModel = new ProductModelViewModel();
+            SaleOrderReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(SaleOrderReportVM);
+        }
+
 
         #region GetSaleOrderStandardReport
         public JsonResult GetSaleOrderStandardReport(DataTableAjaxPostModel model, SaleOrderReportViewModel saleOrderReportVM)
@@ -330,6 +350,29 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #endregion GetSaleOrderStandardReport
 
+        #region GetQuotationDetailReport
+        public JsonResult GetQuotationDetailReport(DataTableAjaxPostModel model, QuotationDetailReportViewModel quotationDetailReportVM)
+        {
+            quotationDetailReportVM.DataTablePaging.Start = model.start;
+            quotationDetailReportVM.DataTablePaging.Length = (quotationDetailReportVM.DataTablePaging.Length == 0 ? model.length : quotationDetailReportVM.DataTablePaging.Length);
+
+            List<QuotationDetailReportViewModel> quotationDetailReportList = Mapper.Map<List<QuotationDetailReport>, List<QuotationDetailReportViewModel>>(_reportBusiness.GetQuotationDetailReport(Mapper.Map<QuotationDetailReportViewModel, QuotationDetailReport>(quotationDetailReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = quotationDetailReportList.Count != 0 ? quotationDetailReportList[0].TotalCount : 0,
+                recordsFiltered = quotationDetailReportList.Count != 0 ? quotationDetailReportList[0].FilteredCount : 0,
+                data = quotationDetailReportList
+            });
+        }
+
+        #endregion GetQuotationDetailReport
 
 
         [HttpGet]
@@ -1070,7 +1113,56 @@ namespace PilotSmithApp.UserInterface.Controllers
                         pendingproductionqcreportworkSheet.Column(20).Style.WrapText = true;
 
                         break;
+                    case "QuotationDetailReport":
+                        fileName = "QuotationDetailReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        QuotationDetailReportViewModel quotationDetailReportVM = new QuotationDetailReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        quotationDetailReportVM = JsonConvert.DeserializeObject<QuotationDetailReportViewModel>(ReadableFormat);
+                        List<QuotationDetailReportViewModel> quotationDetailReportList = Mapper.Map<List<QuotationDetailReport>, List<QuotationDetailReportViewModel>>(_reportBusiness.GetQuotationDetailReport(Mapper.Map<QuotationDetailReportViewModel, QuotationDetailReport>(quotationDetailReportVM)));
+                        var quotationdetailreportworkSheet = excel.Workbook.Worksheets.Add("QuotationDetailReport");
+                        QuotationDetailReportViewModel[] quotationDetailReportVMListArray = quotationDetailReportList.ToArray();
+                        quotationdetailreportworkSheet.Cells[1, 1].LoadFromCollection(quotationDetailReportVMListArray.Select(x => new {
+                            QuotationNo = x.QuoteNo,
+                            QuotationDate = x.QuoteDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ProductName = x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification = x.ProductSpec,
+                            Qty = x.Qty,
+                            Unit = x.Unit.Description,
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
+                            TaxableAmount=x.TaxableAmount,
+                            TotalAmount = x.Amount
 
+                        }), true, TableStyles.Light1);
+
+
+                        int finalRowsQuotationDetailReport = quotationdetailreportworkSheet.Dimension.End.Row;
+                        string columnStringQuotationDetailReport = columnString + finalRowsQuotationDetailReport.ToString();
+                        quotationdetailreportworkSheet.Cells[columnStringQuotationDetailReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
+                        quotationdetailreportworkSheet.Column(1).AutoFit();
+                        quotationdetailreportworkSheet.Column(2).AutoFit();
+                        quotationdetailreportworkSheet.Column(3).Width = 40;
+                        quotationdetailreportworkSheet.Column(4).AutoFit();
+                        quotationdetailreportworkSheet.Column(5).AutoFit();
+                        quotationdetailreportworkSheet.Column(6).AutoFit();
+                        quotationdetailreportworkSheet.Column(7).Width = 40;
+                        quotationdetailreportworkSheet.Column(7).Style.WrapText = true;
+                        quotationdetailreportworkSheet.Column(8).AutoFit();
+                        quotationdetailreportworkSheet.Column(9).AutoFit();
+                        quotationdetailreportworkSheet.Column(10).AutoFit();
+                        quotationdetailreportworkSheet.Column(11).AutoFit();
+                        quotationdetailreportworkSheet.Column(12).AutoFit();
+                        quotationdetailreportworkSheet.Column(13).AutoFit();
+
+                        quotationdetailreportworkSheet.Column(2).AutoFit();
+
+
+                        break;
 
                     default: break;
                 }
