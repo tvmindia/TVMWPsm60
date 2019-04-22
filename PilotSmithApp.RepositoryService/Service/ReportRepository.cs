@@ -863,6 +863,112 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetQuotationDetailReport
 
+        #region GetEnquiryDetailReport
+        public List<EnquiryDetailReport> GetEnquiryDetailReport(EnquiryDetailReport enquiryDetailReport)
+        {
+
+            List<EnquiryDetailReport> enquiryDetailReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEnquiryDetailReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(enquiryDetailReport.SearchTerm) ? "" : enquiryDetailReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = enquiryDetailReport.DataTablePaging.Start;
+                        if (enquiryDetailReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = enquiryDetailReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = enquiryDetailReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryDetailReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = enquiryDetailReport.AdvCustomer;
+                        if (enquiryDetailReport.AdvAttendedBy != Guid.Empty)
+                            cmd.Parameters.Add("@AttendedBy", SqlDbType.UniqueIdentifier).Value = enquiryDetailReport.AdvAttendedBy;
+                        cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = enquiryDetailReport.AdvReferencePersonCode;
+                        if (enquiryDetailReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiryDetailReport.AdvDocumentOwnerID;
+                        if (enquiryDetailReport.AdvResponsibleBy != Guid.Empty)
+                            cmd.Parameters.Add("@ResponsibleBy", SqlDbType.UniqueIdentifier).Value = enquiryDetailReport.AdvResponsibleBy;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = enquiryDetailReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = enquiryDetailReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = enquiryDetailReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = enquiryDetailReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = enquiryDetailReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = enquiryDetailReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = enquiryDetailReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@GradeCode", SqlDbType.Int).Value = enquiryDetailReport.AdvEnquiryGradeCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = enquiryDetailReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = enquiryDetailReport.AdvAmountTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = enquiryDetailReport.AdvReportType;
+                        if (enquiryDetailReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = enquiryDetailReport.AdvProduct;
+                        if (enquiryDetailReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = enquiryDetailReport.AdvProductModel;
+
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                enquiryDetailReportList = new List<EnquiryDetailReport>();
+                                while (sdr.Read())
+                                {
+                                    EnquiryDetailReport enquiryDetailReportObj = new EnquiryDetailReport();
+                                    {
+                                        enquiryDetailReportObj.EnquiryNo = (sdr["EnquiryNo"].ToString() != "" ? (sdr["EnquiryNo"].ToString()) : enquiryDetailReportObj.EnquiryNo);
+                                        enquiryDetailReportObj.EnqNo = (sdr["EnqNo"].ToString() != "" ? (sdr["EnqNo"].ToString()) : enquiryDetailReportObj.EnqNo);
+                                        enquiryDetailReportObj.EnquiryDate = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()) : enquiryDetailReportObj.EnquiryDate);
+                                        enquiryDetailReportObj.EnquiryDateFormatted = (sdr["EnquiryDate"].ToString() != "" ? DateTime.Parse(sdr["EnquiryDate"].ToString()).ToString(_settings.DateFormat) : enquiryDetailReportObj.EnquiryDateFormatted);
+                                        enquiryDetailReportObj.Customer = new Customer();
+                                        enquiryDetailReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiryDetailReportObj.Customer.CompanyName);
+                                        enquiryDetailReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiryDetailReportObj.Customer.ContactPerson);
+                                        enquiryDetailReportObj.Branch = new Branch();
+                                        enquiryDetailReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : enquiryDetailReportObj.Branch.Description);
+                                        enquiryDetailReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : enquiryDetailReportObj.Amount);
+                                        enquiryDetailReportObj.PSAUser = new PSAUser();
+                                        enquiryDetailReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : enquiryDetailReportObj.PSAUser.LoginName);
+                                        enquiryDetailReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryDetailReportObj.TotalCount);
+                                        enquiryDetailReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryDetailReportObj.FilteredCount);
+                                        enquiryDetailReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : enquiryDetailReportObj.Qty);
+                                        enquiryDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : enquiryDetailReportObj.ProductSpec);
+                                        enquiryDetailReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : enquiryDetailReportObj.ProductID);
+                                        enquiryDetailReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : enquiryDetailReportObj.ProductModelID);
+                                        enquiryDetailReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetailReportObj.UnitCode);
+                                        enquiryDetailReportObj.Product = new Product();
+                                        enquiryDetailReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : enquiryDetailReportObj.Product.Name);
+                                        enquiryDetailReportObj.ProductModel = new ProductModel();
+                                        enquiryDetailReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : enquiryDetailReportObj.ProductModel.Name);
+                                        enquiryDetailReportObj.Unit = new Unit();
+                                        enquiryDetailReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : enquiryDetailReportObj.Unit.Description);
+                                    }
+                                    enquiryDetailReportList.Add(enquiryDetailReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return enquiryDetailReportList;
+        }
+        #endregion GetEnquiryDetailReport
+
         #region GetProductionOrderStandardReport
 
         public List<ProductionOrderReport> GetProductionOrderStandardReport(ProductionOrderReport productionOrderReport)

@@ -182,7 +182,49 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetEnquiryFollowupReport
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "EnquiryDetailReport", Mode = "R")]
+        public ActionResult EnquiryDetailReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            EnquiryDetailReportViewModel EnquiryDetailReportVM = new EnquiryDetailReportViewModel();
+            EnquiryDetailReportVM.DocumentStatus = new DocumentStatusViewModel();
+            EnquiryDetailReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
+            EnquiryDetailReportVM.EnquiryGrade = new EnquiryGradeViewModel();
+            EnquiryDetailReportVM.EnquiryGrade.EnquiryGradeSelectList = _enquiryGradeBusiness.GetEnquiryGradeSelectList();
+            EnquiryDetailReportVM.Employee = new EmployeeViewModel();
+            EnquiryDetailReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            EnquiryDetailReportVM.Customer = new CustomerViewModel();
+            EnquiryDetailReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            EnquiryDetailReportVM.Product = new ProductViewModel();
+            EnquiryDetailReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            EnquiryDetailReportVM.ProductModel = new ProductModelViewModel();
+            EnquiryDetailReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(EnquiryDetailReportVM);
+        }
+        #region GetEnquiryDetailReport
+        public JsonResult GetEnquiryDetailReport(DataTableAjaxPostModel model, EnquiryDetailReportViewModel enquiryDetailReportVM)
+        {
+            enquiryDetailReportVM.DataTablePaging.Start = model.start;
+            enquiryDetailReportVM.DataTablePaging.Length = (enquiryDetailReportVM.DataTablePaging.Length == 0 ? model.length : enquiryDetailReportVM.DataTablePaging.Length);
 
+            List<EnquiryDetailReportViewModel> enquiryDetailReportList = Mapper.Map<List<EnquiryDetailReport>, List<EnquiryDetailReportViewModel>>(_reportBusiness.GetEnquiryDetailReport(Mapper.Map<EnquiryDetailReportViewModel, EnquiryDetailReport>(enquiryDetailReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = enquiryDetailReportList.Count != 0 ? enquiryDetailReportList[0].TotalCount : 0,
+                recordsFiltered = enquiryDetailReportList.Count != 0 ? enquiryDetailReportList[0].FilteredCount : 0,
+                data = enquiryDetailReportList
+            });
+        }
+
+        #endregion GetEnquiryDetailReport
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "EstimateReport", Mode = "R")]
         public ActionResult EstimateReport()
@@ -1160,6 +1202,54 @@ namespace PilotSmithApp.UserInterface.Controllers
                         quotationdetailreportworkSheet.Column(13).AutoFit();
 
                         quotationdetailreportworkSheet.Column(2).AutoFit();
+
+
+                        break;
+                    case "EnquiryDetailReport":
+                        fileName = "EnquiryDetailReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        EnquiryDetailReportViewModel enquiryDetailReportVM = new EnquiryDetailReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        enquiryDetailReportVM = JsonConvert.DeserializeObject<EnquiryDetailReportViewModel>(ReadableFormat);
+                        List<EnquiryDetailReportViewModel> enquiryDetailReportList = Mapper.Map<List<EnquiryDetailReport>, List<EnquiryDetailReportViewModel>>(_reportBusiness.GetEnquiryDetailReport(Mapper.Map<EnquiryDetailReportViewModel, EnquiryDetailReport>(enquiryDetailReportVM)));
+                        var enquirydetailreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryDetailReport");
+                        EnquiryDetailReportViewModel[] enquiryDetailReportVMListArray = enquiryDetailReportList.ToArray();
+                        enquirydetailreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryDetailReportVMListArray.Select(x => new {
+                            EnquiryNo = x.EnquiryNo,
+                            EnquiryDate = x.EnquiryDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ProductName = x.Product.Name,
+                            ProductModel = x.ProductModel.Name,
+                            ProductSpecification = x.ProductSpec,
+                            Qty = x.Qty,
+                            Unit = x.Unit.Description,
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
+                            Amount = x.Amount
+
+                        }), true, TableStyles.Light1);
+
+
+                        int finalRowsEnquiryDetailReport = enquirydetailreportworkSheet.Dimension.End.Row;
+                        string columnStringEnquiryDetailReport = columnString + finalRowsEnquiryDetailReport.ToString();
+                        enquirydetailreportworkSheet.Cells[columnStringEnquiryDetailReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
+                        enquirydetailreportworkSheet.Column(1).AutoFit();
+                        enquirydetailreportworkSheet.Column(2).AutoFit();
+                        enquirydetailreportworkSheet.Column(3).Width = 40;
+                        enquirydetailreportworkSheet.Column(4).AutoFit();
+                        enquirydetailreportworkSheet.Column(5).AutoFit();
+                        enquirydetailreportworkSheet.Column(6).AutoFit();
+                        enquirydetailreportworkSheet.Column(7).Width = 40;
+                        enquirydetailreportworkSheet.Column(7).Style.WrapText = true;
+                        enquirydetailreportworkSheet.Column(8).AutoFit();
+                        enquirydetailreportworkSheet.Column(9).AutoFit();
+                        enquirydetailreportworkSheet.Column(10).AutoFit();
+                        enquirydetailreportworkSheet.Column(11).AutoFit();
+                        enquirydetailreportworkSheet.Column(12).AutoFit();
+
+                        enquirydetailreportworkSheet.Column(2).AutoFit();
 
 
                         break;

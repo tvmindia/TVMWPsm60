@@ -723,6 +723,7 @@
     <Content Include="Scripts\UserJS\RecentDocument.js" />
     <Content Include="Scripts\UserJS\ProformaInvoice.js" />
     <Content Include="Scripts\UserJS\ReferencePerson.js" />
+    <Content Include="Scripts\UserJS\Report\EnquiryDetailReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryFollowupReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
     <Content Include="Scripts\UserJS\Report\EstimateReport.js" />
@@ -1152,6 +1153,7 @@
     <Content Include="Views\SaleOrder\_PrintSaleOrderDetail.cshtml" />
     <Content Include="Views\Carrier\_CarrierSelectList.cshtml" />
     <Content Include="Views\Report\QuotationDetailReport.cshtml" />
+    <Content Include="Views\Report\EnquiryDetailReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
