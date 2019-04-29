@@ -222,12 +222,12 @@ function BindOrReloadQuotationDetailReportTable(action) {
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                {
                    "data": "TaxableAmount", render: function (data, type, row) {
-                       return formatCurrency(row.TaxableAmount)
+                       return formatCurrency(roundoff(row.TaxableAmount))
                    }, "defaultContent": "<i>-</i>"
                },
                {
                    "data": "Amount", render: function (data, type, row) {
-                       return formatCurrency(row.Amount)
+                       return formatCurrency(roundoff(row.Amount))
                    }, "defaultContent": "<i>-</i>"
                },
             ],

@@ -14,6 +14,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Table;
 using System.IO;
 using System.Web.SessionState;
+using SAMTool.DataAccessObject.DTO;
 
 namespace PilotSmithApp.UserInterface.Controllers
 {
@@ -265,7 +266,58 @@ namespace PilotSmithApp.UserInterface.Controllers
 
 
         #endregion GetEstimateReport
+        [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "EstimateDetailReport", Mode = "R")]
+        public ActionResult EstimateDetailReport()
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            EstimateDetailReportViewModel EstimateDetailReportVM = new EstimateDetailReportViewModel();
+            AppUA appUA = Session["AppUA"] as AppUA;
+            EstimateDetailReportVM.DocumentStatus = new DocumentStatusViewModel();
+            EstimateDetailReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("ENQ");
+            EstimateDetailReportVM.Employee = new EmployeeViewModel();
+            EstimateDetailReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
+            EstimateDetailReportVM.Customer = new CustomerViewModel();
+            EstimateDetailReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            EstimateDetailReportVM.Product = new ProductViewModel();
+            EstimateDetailReportVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            EstimateDetailReportVM.ProductModel = new ProductModelViewModel();
+            EstimateDetailReportVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "CostPrice");
+            string p = _permission.AccessCode;
+            if ((p.Contains("R") || p.Contains("W")))
+            {
+                EstimateDetailReportVM.CostPriceHasAccess = true;
+            }
+            else
+            {
+                EstimateDetailReportVM.CostPriceHasAccess = false;
+            }
+            return View(EstimateDetailReportVM);
+        }
+        #region GetEstimateDetailReport
+        public JsonResult GetEstimateDetailReport(DataTableAjaxPostModel model, EstimateDetailReportViewModel estimateDetailReportVM)
+        {
+            estimateDetailReportVM.DataTablePaging.Start = model.start;
+            estimateDetailReportVM.DataTablePaging.Length = (estimateDetailReportVM.DataTablePaging.Length == 0 ? model.length : estimateDetailReportVM.DataTablePaging.Length);
 
+            List<EstimateDetailReportViewModel> estimateDetailReportList = Mapper.Map<List<EstimateDetailReport>, List<EstimateDetailReportViewModel>>(_reportBusiness.GetEstimateDetailReport(Mapper.Map<EstimateDetailReportViewModel, EstimateDetailReport>(estimateDetailReportVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = estimateDetailReportList.Count != 0 ? estimateDetailReportList[0].TotalCount : 0,
+                recordsFiltered = estimateDetailReportList.Count != 0 ? estimateDetailReportList[0].FilteredCount : 0,
+                data = estimateDetailReportList
+            });
+        }
+
+        #endregion GetEstimateDetailReport
 
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "QuotationReport", Mode = "R")]
@@ -1176,8 +1228,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Unit = x.Unit.Description,
                             Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            TaxableAmount=x.TaxableAmount,
-                            TotalAmount = x.Amount
+                            TaxableAmount= Math.Round(Convert.ToDecimal(x.TaxableAmount),2).ToString(),
+                            TotalAmount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString()
 
                         }), true, TableStyles.Light1);
 
@@ -1200,7 +1252,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         quotationdetailreportworkSheet.Column(11).AutoFit();
                         quotationdetailreportworkSheet.Column(12).AutoFit();
                         quotationdetailreportworkSheet.Column(13).AutoFit();
-
+                        quotationdetailreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                        quotationdetailreportworkSheet.Column(13).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                         quotationdetailreportworkSheet.Column(2).AutoFit();
 
 
@@ -1226,7 +1279,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Unit = x.Unit.Description,
                             Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            Amount = x.Amount
+                            Amount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString()
 
                         }), true, TableStyles.Light1);
 
@@ -1248,8 +1301,81 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquirydetailreportworkSheet.Column(10).AutoFit();
                         enquirydetailreportworkSheet.Column(11).AutoFit();
                         enquirydetailreportworkSheet.Column(12).AutoFit();
+                        enquirydetailreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
 
-                        enquirydetailreportworkSheet.Column(2).AutoFit();
+                        break;
+                    case "EstimateDetailReport":
+                        fileName = "EstimateDetailReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        EstimateDetailReportViewModel estimateDetailReportVM = new EstimateDetailReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        estimateDetailReportVM = JsonConvert.DeserializeObject<EstimateDetailReportViewModel>(ReadableFormat);
+                        List<EstimateDetailReportViewModel> estimateDetailReportList = Mapper.Map<List<EstimateDetailReport>, List<EstimateDetailReportViewModel>>(_reportBusiness.GetEstimateDetailReport(Mapper.Map<EstimateDetailReportViewModel, EstimateDetailReport>(estimateDetailReportVM)));
+                        var estimatedetailreportworkSheet = excel.Workbook.Worksheets.Add("EstimateDetailReport");
+                        EstimateDetailReportViewModel[] estimateDetailReportVMListArray = estimateDetailReportList.ToArray();
+                        AppUA appUA = Session["AppUA"] as AppUA;
+                        Permission _permission = _pSASysCommon.GetSecurityCode(appUA.UserName, "CostPrice");
+                        string p = _permission.AccessCode;
+                        if ((p.Contains("R") || p.Contains("W")))
+                        {
+                            estimatedetailreportworkSheet.Cells[1, 1].LoadFromCollection(estimateDetailReportVMListArray.Select(x => new {
+                                EstimateNo = x.EstimateNo,
+                                EstimateDate = x.EstimateDateFormatted,
+                                CompanyName = x.Customer.CompanyName,
+                                ContactPerson = x.Customer.ContactPerson,
+                                ProductName = x.Product.Name,
+                                ProductModel = x.ProductModel.Name,
+                                ProductSpecification = x.ProductSpec,
+                                Qty = x.Qty,
+                                Unit = x.Unit.Description,
+                                Branch = x.Branch.Description,
+                                DocumentOwner = x.PSAUser.LoginName,
+                                TotalCostRate = Math.Round(Convert.ToDecimal(x.TotalCostRate),2).ToString(),
+                                TotalSellingRate = Math.Round(Convert.ToDecimal(x.TotalSellingRate), 2).ToString()
+
+                            }), true, TableStyles.Light1);
+                        }
+                        else
+                        {
+                            estimatedetailreportworkSheet.Cells[1, 1].LoadFromCollection(estimateDetailReportVMListArray.Select(x => new {
+                                EstimateNo = x.EstimateNo,
+                                EstimateDate = x.EstimateDateFormatted,
+                                CompanyName = x.Customer.CompanyName,
+                                ContactPerson = x.Customer.ContactPerson,
+                                ProductName = x.Product.Name,
+                                ProductModel = x.ProductModel.Name,
+                                ProductSpecification = x.ProductSpec,
+                                Qty = x.Qty,
+                                Unit = x.Unit.Description,
+                                Branch = x.Branch.Description,
+                                DocumentOwner = x.PSAUser.LoginName,
+                                TotalCostRate = "****",
+                                TotalSellingRate = Math.Round(Convert.ToDecimal(x.TotalSellingRate),2).ToString()
+                            }), true, TableStyles.Light1);
+                        }
+
+
+                        int finalRowsEstimateDetailReport = estimatedetailreportworkSheet.Dimension.End.Row;
+                        string columnStringEstimateDetailReport = columnString + finalRowsEstimateDetailReport.ToString();
+                        estimatedetailreportworkSheet.Cells[columnStringEstimateDetailReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+
+                        estimatedetailreportworkSheet.Column(1).AutoFit();
+                        estimatedetailreportworkSheet.Column(2).AutoFit();
+                        estimatedetailreportworkSheet.Column(3).Width = 40;
+                        estimatedetailreportworkSheet.Column(4).AutoFit();
+                        estimatedetailreportworkSheet.Column(5).AutoFit();
+                        estimatedetailreportworkSheet.Column(6).AutoFit();
+                        estimatedetailreportworkSheet.Column(7).Width = 40;
+                        estimatedetailreportworkSheet.Column(7).Style.WrapText = true;
+                        estimatedetailreportworkSheet.Column(8).AutoFit();
+                        estimatedetailreportworkSheet.Column(9).AutoFit();
+                        estimatedetailreportworkSheet.Column(10).AutoFit();
+                        estimatedetailreportworkSheet.Column(11).AutoFit();
+                        estimatedetailreportworkSheet.Column(12).AutoFit();
+                        estimatedetailreportworkSheet.Column(13).AutoFit();
+                        estimatedetailreportworkSheet.Column(13).Style.HorizontalAlignment= OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                        estimatedetailreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                        estimatedetailreportworkSheet.Column(2).AutoFit();
 
 
                         break;

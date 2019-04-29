@@ -731,7 +731,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : saleOrderReportObj.TotalCount);
                                         saleOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : saleOrderReportObj.FilteredCount);
                                         saleOrderReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : saleOrderReportObj.Qty);
-                                        saleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : saleOrderReportObj.ProductSpec);
+                                        //saleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : saleOrderReportObj.ProductSpec);
+                                        saleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : saleOrderReportObj.ProductSpec);
                                         saleOrderReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : saleOrderReportObj.ProductID);
                                         saleOrderReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : saleOrderReportObj.ProductModelID);
                                         saleOrderReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : saleOrderReportObj.UnitCode);
@@ -836,7 +837,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationDetailReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : quotationDetailReportObj.TotalCount);
                                         quotationDetailReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : quotationDetailReportObj.FilteredCount);
                                         quotationDetailReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : quotationDetailReportObj.Qty);
-                                        quotationDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : quotationDetailReportObj.ProductSpec);
+                                        //quotationDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : quotationDetailReportObj.ProductSpec);
+                                        quotationDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : quotationDetailReportObj.ProductSpec);
                                         quotationDetailReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : quotationDetailReportObj.ProductID);
                                         quotationDetailReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : quotationDetailReportObj.ProductModelID);
                                         quotationDetailReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : quotationDetailReportObj.UnitCode);
@@ -942,7 +944,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryDetailReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryDetailReportObj.TotalCount);
                                         enquiryDetailReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryDetailReportObj.FilteredCount);
                                         enquiryDetailReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : enquiryDetailReportObj.Qty);
-                                        enquiryDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : enquiryDetailReportObj.ProductSpec);
+                                        //enquiryDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : enquiryDetailReportObj.ProductSpec);
+                                        enquiryDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : enquiryDetailReportObj.ProductSpec);
                                         enquiryDetailReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : enquiryDetailReportObj.ProductID);
                                         enquiryDetailReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : enquiryDetailReportObj.ProductModelID);
                                         enquiryDetailReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : enquiryDetailReportObj.UnitCode);
@@ -1462,7 +1465,113 @@ namespace PilotSmithApp.RepositoryService.Service
         }
         #endregion GetPendingProductionQCReport
 
+        #region GetEstimateDetailReport
+        public List<EstimateDetailReport> GetEstimateDetailReport(EstimateDetailReport estimateDetailReport)
+        {
 
+            List<EstimateDetailReport> estimateDetailReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetEstimateDetailReport]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(estimateDetailReport.SearchTerm) ? "" : estimateDetailReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = estimateDetailReport.DataTablePaging.Start;
+                        if (estimateDetailReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = estimateDetailReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = estimateDetailReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = estimateDetailReport.AdvToDate;
+                        cmd.Parameters.Add("@ValidDateFrom", SqlDbType.DateTime).Value = estimateDetailReport.AdvValidFromDate;
+                        cmd.Parameters.Add("@ValidDateTo", SqlDbType.DateTime).Value = estimateDetailReport.AdvValidToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = estimateDetailReport.AdvCustomer;
+                        if (estimateDetailReport.AdvPreparedBy != Guid.Empty)
+                            cmd.Parameters.Add("@PreparedBy", SqlDbType.UniqueIdentifier).Value = estimateDetailReport.AdvPreparedBy;
+                        if (estimateDetailReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = estimateDetailReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = estimateDetailReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = estimateDetailReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = estimateDetailReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = estimateDetailReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = estimateDetailReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = estimateDetailReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = estimateDetailReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@TotalCostRateFrom", SqlDbType.Decimal).Value = estimateDetailReport.AdvTotalCostRateFrom;
+                        cmd.Parameters.Add("@TotalCostRateTo", SqlDbType.Decimal).Value = estimateDetailReport.AdvTotalCostRateTo;
+                        cmd.Parameters.Add("@TotalSellingRateFrom", SqlDbType.Decimal).Value = estimateDetailReport.AdvTotalSellingRateFrom;
+                        cmd.Parameters.Add("@TotalSellingRateTo", SqlDbType.Decimal).Value = estimateDetailReport.AdvTotalSellingRateTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = estimateDetailReport.AdvReportType;
+                        if (estimateDetailReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = estimateDetailReport.AdvProduct;
+                        if (estimateDetailReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = estimateDetailReport.AdvProductModel;
+
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                estimateDetailReportList = new List<EstimateDetailReport>();
+                                while (sdr.Read())
+                                {
+                                    EstimateDetailReport estimateDetailReportObj = new EstimateDetailReport();
+                                    {
+                                        estimateDetailReportObj.EstimateNo = (sdr["EstimateNo"].ToString() != "" ? (sdr["EstimateNo"].ToString()) : estimateDetailReportObj.EstimateNo);
+                                        estimateDetailReportObj.EstNo = (sdr["EstNo"].ToString() != "" ? (sdr["EstNo"].ToString()) : estimateDetailReportObj.EstNo);
+                                        estimateDetailReportObj.EstimateDate = (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()) : estimateDetailReportObj.EstimateDate);
+                                        estimateDetailReportObj.EstimateDateFormatted = (sdr["EstimateDate"].ToString() != "" ? DateTime.Parse(sdr["EstimateDate"].ToString()).ToString(_settings.DateFormat) : estimateDetailReportObj.EstimateDateFormatted);
+                                        estimateDetailReportObj.Customer = new Customer();
+                                        estimateDetailReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : estimateDetailReportObj.Customer.CompanyName);
+                                        estimateDetailReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : estimateDetailReportObj.Customer.ContactPerson);
+                                        estimateDetailReportObj.Branch = new Branch();
+                                        estimateDetailReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : estimateDetailReportObj.Branch.Description);
+                                        estimateDetailReportObj.TotalCostRate = (sdr["TotalCostRate"].ToString() != "" ? decimal.Parse(sdr["TotalCostRate"].ToString()) : estimateDetailReportObj.TotalCostRate);
+                                        estimateDetailReportObj.TotalSellingRate = (sdr["TotalSellingRate"].ToString() != "" ? decimal.Parse(sdr["TotalSellingRate"].ToString()) : estimateDetailReportObj.TotalSellingRate);
+                                        estimateDetailReportObj.PSAUser = new PSAUser();
+                                        estimateDetailReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : estimateDetailReportObj.PSAUser.LoginName);
+                                        estimateDetailReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : estimateDetailReportObj.TotalCount);
+                                        estimateDetailReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : estimateDetailReportObj.FilteredCount);
+                                        estimateDetailReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : estimateDetailReportObj.Qty);
+                                        //estimateDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : estimateDetailReportObj.ProductSpec);
+                                        estimateDetailReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : estimateDetailReportObj.ProductSpec);
+                                        estimateDetailReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : estimateDetailReportObj.ProductID);
+                                        estimateDetailReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : estimateDetailReportObj.ProductModelID);
+                                        estimateDetailReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : estimateDetailReportObj.UnitCode);
+                                        estimateDetailReportObj.Product = new Product();
+                                        estimateDetailReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : estimateDetailReportObj.Product.Name);
+                                        estimateDetailReportObj.ProductModel = new ProductModel();
+                                        estimateDetailReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : estimateDetailReportObj.ProductModel.Name);
+                                        estimateDetailReportObj.Unit = new Unit();
+                                        estimateDetailReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : estimateDetailReportObj.Unit.Description);
+                                    }
+                                    estimateDetailReportList.Add(estimateDetailReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return estimateDetailReportList;
+        }
+        #endregion GetEstimateDetailReport
 
     }
 }
