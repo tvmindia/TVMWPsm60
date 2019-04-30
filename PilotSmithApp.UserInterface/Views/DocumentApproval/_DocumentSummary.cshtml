@@ -13,47 +13,77 @@
     int i;
     for (i = 0; i < Dt.Columns.Count; i++)
     {
+        @*<div class="col-md-12 row SummaryRow">*@
+if (Dt.Columns[i].Caption != "Warning" && Dt.Columns[i].Caption != "Remarks" && Dt.Columns[i].Caption != "Advance Amount")
+{
+    <div class="col-md-12 row SummaryRow">
+        <div class="col-md-5 SummaryCaption">
+            @Dt.Columns[i].ColumnName
+        </div>
+
+        <div class="col-md-7 SummaryValue">
+            :&nbsp;   @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
+        </div>
+    </div>
+}
+else if (Dt.Columns[i].Caption == "Advance Amount")
+{
+    if (Dt.Rows[0][Dt.Columns[i].ColumnName].ToString() != "" && Dt.Rows[0][Dt.Columns[i].ColumnName].ToString() != null)
+    {
         <div class="col-md-12 row SummaryRow">
-            @{if (Dt.Columns[i].Caption != "Warning" && Dt.Columns[i].Caption != "Remarks")
-                {
-                    <div class="col-md-5 SummaryCaption">
-                        @Dt.Columns[i].ColumnName
+            <div class="col-md-5 SummaryCaption">
+                @Dt.Columns[i].ColumnName
+            </div>
+
+            <div class="col-md-7 SummaryValue">
+                :&nbsp;   @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
+            </div>
+        </div>
+    }
+}
+else if (Dt.Columns[i].Caption == "Remarks")
+{
+    <div class="col-md-12 row SummaryRow">
+        <div class="col-md-5 SummaryCaption">
+            @Dt.Columns[i].ColumnName
+        </div>
+        @{if (Dt.Rows[0][Dt.Columns[i].ColumnName].ToString() != "-")
+            {
+                <div class="col-md-7 SummaryValue">
+                    :<div class="col-md-12" style="max-height:80px;overflow-y: auto;position:relative;top:-18px;">
+                        @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
                     </div>
 
-                    <div class="col-md-7 SummaryValue">
-                        :&nbsp;   @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
-                    </div>
-                }
-                else if (Dt.Columns[i].Caption == "Remarks")
+                </div>
+            }
+            else
+            {
+                <div class="col-md-7 SummaryValue">
+                    :&nbsp;   @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
+                </div>
+            }
+        }
+    </div>
+            }
+            else
+            {
+                if (Dt.Rows[0][Dt.Columns[i].ColumnName].ToString() != "")
                 {
-                    <div class="col-md-5 SummaryCaption">
-                        @Dt.Columns[i].ColumnName
-                    </div>
-                    <div class="col-md-7 SummaryValue">
-                        :
-                        <div class="col-md-12" style="max-height:80px;overflow-y: auto;position:relative;top:-18px;">
-                            @Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())
-                        </div>
-
-                    </div>
-                }
-                else
-                {
-                    if (Dt.Rows[0][Dt.Columns[i].ColumnName].ToString() != "")
-                    {
+                    <div class="col-md-12 row SummaryRow">
                         <div class="col-md-5 SummaryCaption">
                             <span style="color:red;font-size:x-large">&#9888;</span>&nbsp;<span style="color:red;">@Dt.Columns[i].ColumnName </span>
                         </div>
                         <div class="col-md-7 SummaryValue">
                             <span style="color:red">@Html.Raw(Dt.Rows[0][Dt.Columns[i].ColumnName].ToString())</span>
                         </div>
+                    </div>
                     }
                 }
             }
-        </div>
+            @*</div>*@
 
 
-                }
+
 
 }
 
