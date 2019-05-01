@@ -726,6 +726,7 @@
     <Content Include="Scripts\UserJS\Report\EnquiryDetailReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryFollowupReport.js" />
     <Content Include="Scripts\UserJS\Report\EnquiryReport.js" />
+    <Content Include="Scripts\UserJS\Report\EstimateDetailReport.js" />
     <Content Include="Scripts\UserJS\Report\EstimateReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingProductionOrderReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingProductionQCReport.js" />
@@ -1154,6 +1155,7 @@
     <Content Include="Views\Carrier\_CarrierSelectList.cshtml" />
     <Content Include="Views\Report\QuotationDetailReport.cshtml" />
     <Content Include="Views\Report\EnquiryDetailReport.cshtml" />
+    <Content Include="Views\Report\EstimateDetailReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

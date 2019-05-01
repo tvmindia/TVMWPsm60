@@ -1620,7 +1620,8 @@ select{
     border-bottom: 1px solid #4bd24b;
     background-color: #119564;
     color:white;
-    padding-left: 50px !important;
+    /*padding-left: 50px !important;*/
+    text-align:left !important;
 }
     .doc-status select>option{
         background-color:white;
@@ -1639,7 +1640,7 @@ select{
     }
     .doc-status li.select2-results__option{
         margin:0!important;
-        text-align:center;
+        text-align:left;
     }
     .doc-status li.select2-results__option:hover{
        background-color: #119564;

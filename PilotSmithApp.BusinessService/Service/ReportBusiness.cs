@@ -94,6 +94,12 @@ namespace PilotSmithApp.BusinessService.Service
             return _reportRepository.GetEnquiryDetailReport(enquiryDetailReport);
         }
         #endregion GetEnquiryDetailReport
+        #region GetEstimateDetailReport
+        public List<EstimateDetailReport> GetEstimateDetailReport(EstimateDetailReport estimateDetailReport)
+        {
+            return _reportRepository.GetEstimateDetailReport(estimateDetailReport);
+        }
+        #endregion GetEstimateDetailReport
         #region  GetProductionOrderStandardReport
 
         public List<ProductionOrderReport> GetProductionOrderStandardReport(ProductionOrderReport productionOrderReport)
