@@ -49,6 +49,12 @@ else
                     $('#UnitCode').trigger('change');
                     debugger;
                     if ($('#FormQuotationDetail').length != 0) {
+                        var content = $('#ProductSpec');
+                        var contentPar = content.parent()
+                        contentPar.find('.wysihtml5-toolbar').remove()
+                        contentPar.find('iframe').remove()
+                        contentPar.find('input[name*="wysihtml5"]').remove()
+                        content.show();
                         var editor = new wysihtml5.Editor("ProductSpec", {
                             toolbar: "toolbar",
                             //stylesheets: "css/stylesheet.css",

@@ -342,7 +342,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                                       ProductID = estimateDetailVM.ProductID,
                                                       ProductModelID = estimateDetailVM.ProductModelID,
                                                       ProductSpec = estimateDetailVM.ProductSpec,
-                                                      ProductSpecHtml = estimateDetailVM.ProductSpec,
+                                                      ProductSpecHtml = estimateDetailVM.ProductSpec.Replace("\n","<br>"),
                                                       Qty = estimateDetailVM.Qty,
                                                       UnitCode = estimateDetailVM.UnitCode,
                                                       Rate = estimateDetailVM.SellingRate,

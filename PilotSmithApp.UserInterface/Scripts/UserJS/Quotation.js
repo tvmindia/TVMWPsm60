@@ -560,6 +560,25 @@ function ResetQuotation() {
 function SaveQuotation() {
     debugger;
     var quotationDetailList = _dataTable.QuotationDetailList.rows().data().toArray();
+    for (var i = 0; i < quotationDetailList.length; i++) {
+        if (quotationDetailList[i].ProductSpec != null && quotationDetailList[i].ProductSpec != '') {
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\<br>/g, "#br#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\<b>/g, "#bs#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/<\/b>/g, "#be#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\<i>/g, "#is#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/<\/i>/g, "#ie#");
+            quotationDetailList[i].ProductSpec = quotationDetailList[i].ProductSpec.replace(/\<br>/g, "#br#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/(<([^>]+)>)/ig, '');
+            quotationDetailList[i].ProductSpec = quotationDetailList[i].ProductSpec.replace(/(<([^>]+)>)/ig, '');
+            //quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\/o/g, "<br>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#bs#/g, "<b>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#be#/g, "</b>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#is#/g, "<i>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#ie#/g, "</i>");
+            quotationDetailList[i].ProductSpec = quotationDetailList[i].ProductSpec.replace(/#br#/g, "<br>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#br#/g, "<br>");
+        }
+    }
     $('#DetailJSON').val(JSON.stringify(quotationDetailList));
     var otherChargesDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data().toArray();
     $('#OtherChargesDetailJSON').val(JSON.stringify(otherChargesDetailList));
@@ -771,7 +790,6 @@ function BindQuotationDetailList(id, IsEstimated) {
              columns: [
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
                      if (row.ProductModel.ImageURL !== null) {
                          return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + "<div><table><tr><td><img height='80px' src='" + row.ProductModel.ImageURL + "'></td><td>&nbsp;</td><td>" + (row.ProductSpecHtml !== null ? row.ProductSpecHtml.replace(/"/g, "&quot") : "") + '</td></tr></table></div></p>"/>' + row.ProductModel.Name
                          //return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + "<div><table><tr><td><img height='80px' src='" + row.ProductModel.ImageURL + "'></td><td>&nbsp;</td><td>" + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</td></tr></table></div></p>"/>' + row.ProductModel.Name
@@ -800,7 +818,6 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              {
                  "data": "Rate", render: function (data, type, row) {
-                     debugger;
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
                      var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
                      var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
@@ -816,7 +833,6 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              {
                  "data": "Rate", render: function (data, type, row) {
-                     debugger;
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
                      var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
                      var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
@@ -831,7 +847,6 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              {
                  "data": "Rate", "orderable": false, render: function (data, type, row) {
-                     debugger;
                      if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
                          return '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                      }
@@ -962,7 +977,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[0].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                 quotationDetailList[0].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
-                quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val().replace('<b>/g','').replace('</b>/g','').replace('<i>/g','').replace('</i>/g','');
+                quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val().replace('<b>/g', '').replace('</b>/g', '').replace('<i>/g', '').replace('</i>/g', '');
                 quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() : 0;
                 quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                 quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
