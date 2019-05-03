@@ -7,6 +7,7 @@ var _status = "";
 var _result = "";
 var _isCopy = false;
 var _isApproval = false;
+var _SlNo = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -366,7 +367,8 @@ function EditSaleOrder(this_Obj) {
 					    }
 						break;
 				}
-			}
+            }
+            _SlNo = 1;
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
             CalculateTotal();
@@ -399,6 +401,7 @@ function CopySaleOrder(this_Obj) {
             $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
             ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
             _isCopy = true;
+            _SlNo = 1;
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
             // $('#hdnQuoteNo').val(Quotation.QuoteNo);
@@ -535,7 +538,8 @@ function ResetSaleOrder(event) {
             //}
             //else {
             //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-            //}
+		    //}
+			_SlNo = 1;
             BindSaleOrderDetailList($('#ID').val(), false, false);
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
             CalculateTotal();
@@ -599,6 +603,7 @@ function SaveSuccessSaleOrder(data, status) {
 
                 $("#divSaleOrderForm").load(str, function () {
                     //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
+                    _SlNo = 1;
                     BindSaleOrderDetailList(_result.ID, false, false);
                     BindSaleOrderOtherChargesDetailList(_result.ID, false);
                     CalculateTotal();
@@ -823,6 +828,11 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNo++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      debugger;
@@ -922,12 +932,12 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                  //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "20%" },
-                 { "targets": [3, 5, 2, 4, 8, 6, 7], "width": "10%" },
-                 { "targets": [ 1,9], "width": "5%" },
-                 { className: "text-right", "targets": [2,3, 4, 5, 6, 7, 8] },
-                 { className: "text-left", "targets": [0,1] },
-                 { className: "text-center", "targets": [ 9] }
+                 { "targets": [1], "width": "20%" },
+                 { "targets": [4, 6, 3, 5, 9, 7, 8], "width": "10%" },
+                 { "targets": [ 2,10], "width": "5%" },
+                 { className: "text-right", "targets": [3,4, 5, 6, 7, 8, 9] },
+                 { className: "text-left", "targets": [1,2] },
+                 { className: "text-center", "targets": [0,10] }
              ],
              //rowCallback: function (row, data, index) {
              //    debugger;
@@ -965,7 +975,10 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
 function GetSaleOrderDetailListBySaleOrderID(id, IsEnquiry, IsQuotation) {
     try {
         debugger;
-
+        if (IsEnquiry == undefined || IsQuotation==undefined)
+            _SlNo = 0;
+        else
+            _SlNo = 1;
         var saleOrderDetailList = [];
         if (IsEnquiry) {
             var data = { "enquiryID": $('#SaleOrderForm #hdnEnquiryID').val() };
@@ -1011,6 +1024,7 @@ function AddSaleOrderDetailToList() {
     $("#FormSaleOrderDetail").submit(function () { });
     debugger;
     if ($('#FormSaleOrderDetail #IsUpdate').val() == 'True') {
+        _SlNo = 1;
         if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() >0) && ($('#divModelSaleOrderPopBody #Qty').val() >0) && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
@@ -1053,6 +1067,7 @@ function AddSaleOrderDetailToList() {
         if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() >0) && ($('#divModelSaleOrderPopBody #Qty').val() >0) && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             if (_dataTable.SaleOrderDetailList.rows().data().length === 0) {
+                _SlNo = 0;
                 _dataTable.SaleOrderDetailList.clear().rows.add(GetSaleOrderDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
                 debugger;
                 var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
@@ -1097,6 +1112,7 @@ function AddSaleOrderDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
+                        _SlNo = 1;
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
@@ -1104,6 +1120,8 @@ function AddSaleOrderDetailToList() {
                         $('#divModelPopSaleOrder').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        if ($('#SaleOrderForm #IsUpdate').val() == 'True' || ($('#SaleOrderForm #EnquiryID') != null && $('#SaleOrderForm #EnquiryID') != ''))
+                            _SlNo = _dataTable.SaleOrderDetailList.rows().data().length + 1;
                         ClearCalculatedFields();
                         var SaleOrderDetailVM = new Object();
                         SaleOrderDetailVM.ID = _emptyGuid;
@@ -1217,6 +1235,7 @@ function EditSaleOrderDetail(this_Obj) {
 }
 function ConfirmDeleteSaleOrderDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderDetail = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).data();
     if (saleOrderDetail.ID === _emptyGuid) {
@@ -1912,7 +1931,8 @@ function EditRedirectToDocument(id) {
 						break;
 				}
 
-			}
+            }
+            _SlNo = 1;
             BindSaleOrderDetailList(id, false, false);
             BindSaleOrderOtherChargesDetailList(id, false);
             CalculateTotal();
