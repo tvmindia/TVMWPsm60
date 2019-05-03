@@ -5,6 +5,7 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _SlNo = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -233,6 +234,7 @@ function EditEnquiry(this_Obj) {
                 //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", Enquiry.ID);
             }
+            _SlNo = 1;
             BindEnquiryDetailList(Enquiry.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
@@ -263,6 +265,7 @@ function ResetEnquiry() {
               
             //}
             $('#lblEnquiryInfo').text($('#EnquiryNo').val());
+            _SlNo = 1;
             BindEnquiryDetailList($('#ID').val());
             clearUploadControl();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#EnquiryForm #hdnCustomerID').val());
@@ -307,7 +310,7 @@ function SaveSuccessEnquiry(data, status) {
                     {
                         ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", _result.ID);
                     }
-                    
+                    _SlNo = 1;
                     BindEnquiryDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
@@ -357,6 +360,7 @@ function DeleteEnquiryItem(id) {
                     $('#ID').val(_emptyGuid);
                     ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "Add");
                     ResetEnquiry();
+                    
                     BindOrReloadEnquiryTable('Init');
                     break;
                 case "ERROR":
@@ -373,7 +377,7 @@ function DeleteEnquiryItem(id) {
     }
 }
 function BindEnquiryDetailList(id) {
-    
+    debugger;
     _dataTable.EnquiryDetailList = $('#tblEnquiryDetails').DataTable(
          {
              dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
@@ -388,6 +392,12 @@ function BindEnquiryDetailList(id) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                 {
+                     "data": "", render: function (data, type, row) {
+                         debugger;
+                         return _SlNo++
+                     }, "defaultContent": "<i></i>", "width": "2%"
+                 },
              {
                  "data": "Product.Code", render: function (data, type, row) {                   
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace("\n", "<br>").replace(/"/g, "&quot") : "") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
@@ -413,10 +423,10 @@ function BindEnquiryDetailList(id) {
              columnDefs: [
                  { "targets": [5,2,3], "width": "10%" },
                  { "targets": [1,4], "width": "20%" },
-                 { "targets": [0], "width": "30%" },
-                 { className: "text-right", "targets": [2,3,4] },
-                 { className: "text-left", "targets": [0, 1] },
-                 { className: "text-center", "targets": [5] }
+                 { "targets": [0], "width": "28%" },
+                 { className: "text-right", "targets": [3,4,5] },
+                 { className: "text-left", "targets": [1, 2] },
+                 { className: "text-center", "targets": [0,6] }
              ]
          });
     $('[data-toggle="popover"]').popover({
@@ -458,6 +468,7 @@ function AddEnquiryDetailList()
 }
 function AddEnquiryDetailToList() {
     debugger;
+   
     $("#FormEnquiryDetail").submit(function () { });
         
         if($('#FormEnquiryDetail #IsUpdate').val()=='True')
@@ -488,6 +499,7 @@ function AddEnquiryDetailToList() {
                 Unit.Description=$("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
                 enquiryDetailList[_datatablerowindex].Unit = Unit;
                 enquiryDetailList[_datatablerowindex].Rate = $('#Rate').val() != "" ? $('#Rate').val() : 0;
+                
                 _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
                 $('#divModelPopEnquiry').modal('hide');
                 _datatablerowindex = -1;
@@ -498,6 +510,7 @@ function AddEnquiryDetailToList() {
             if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Rate').val() > 0) && ($('#Qty').val() > 0) && ($('#UnitCode').val() != ""))
             {
                 if (_dataTable.EnquiryDetailList.rows().data().length === 0) {
+                    _SlNo = 0;
                     _dataTable.EnquiryDetailList.clear().rows.add(GetEnquiryDetailListByEnquiryID(_emptyGuid)).draw(false);
                     
                     var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
@@ -512,14 +525,15 @@ function AddEnquiryDetailToList() {
                     enquiryDetailList[0].Qty = $('#Qty').val() != "" ? $('#Qty').val() : 0;
                     enquiryDetailList[0].UnitCode = $('#UnitCode').val();
                     enquiryDetailList[0].Unit.Description = $("#UnitCode").val() != "" ? $("#UnitCode option:selected").text().trim() : "";
-                    enquiryDetailList[0].Rate = $('#Rate').val() != "" ? $('#Rate').val() :0;
+                    enquiryDetailList[0].Rate = $('#Rate').val() != "" ? $('#Rate').val() : 0;
+                   
                     _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
                     $('#divModelPopEnquiry').modal('hide');
                 }
                 else {
+                    
                     var enquiryDetailList = _dataTable.EnquiryDetailList.rows().data();
                     if (enquiryDetailList.length > 0) {
-                        
                         var checkpoint = 0;
                         var productSpec = $('#ProductSpec').val();
                         productSpec = productSpec.replace(/\n/g, ' ');
@@ -533,11 +547,13 @@ function AddEnquiryDetailToList() {
                             }
                         }
                         if (checkpoint == 1) {
+                            _SlNo = 1;
                             _dataTable.EnquiryDetailList.clear().rows.add(enquiryDetailList).draw(false);
                             $('#divModelPopEnquiry').modal('hide');
                         }
                         else if (checkpoint == 0) {
-                            
+                            if ($('#EnquiryForm #IsUpdate').val() == 'True')
+                                _SlNo = _dataTable.EnquiryDetailList.rows().data().length + 1;
                             var EnquiryDetailVM = new Object();
                             var Product = new Object;
                             var ProductModel = new Object()
@@ -558,6 +574,7 @@ function AddEnquiryDetailToList() {
                             EnquiryDetailVM.Unit = Unit;
                             EnquiryDetailVM.UnitCode = $('#UnitCode').val();
                             EnquiryDetailVM.Rate = $('#Rate').val() != "" ? $('#Rate').val() : 0;
+                           
                             _dataTable.EnquiryDetailList.row.add(EnquiryDetailVM).draw(true);
                             $('#divModelPopEnquiry').modal('hide');
                         }
@@ -574,6 +591,7 @@ function AddEnquiryDetailToList() {
 function EditEnquiryDetail(this_Obj)
 {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
     var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelEnquiryPopBody").load("Enquiry/AddEnquiryDetail?update=true", function (responseTxt, statusTxt, xhr) {
@@ -624,7 +642,7 @@ function EditEnquiryDetail(this_Obj)
     });
 }
 function ConfirmDeleteEnquiryDetail(this_Obj) {
-    
+    _SlNo = 1;
     _datatablerowindex = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).index();
     var enquiryDetail = _dataTable.EnquiryDetailList.row($(this_Obj).parents('tr')).data();
     if (enquiryDetail.ID === _emptyGuid) {
@@ -768,6 +786,7 @@ function EditRedirectToDocument(id)
                 //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Enquiry", "btnPatchEnquiryNew", "LockDocument", id);
             }
+            _SlNo = 1;
             BindEnquiryDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
