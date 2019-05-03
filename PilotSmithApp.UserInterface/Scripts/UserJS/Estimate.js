@@ -5,6 +5,7 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _SlNo = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -223,6 +224,7 @@ function EditEstimate(this_Obj) {
             //$('.switch-label').attr('title', 'Document Locked');
             ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument", Estimate.ID);
         }
+        _SlNo = 1;
         BindEstimateDetailList(Estimate.ID);
         $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
         clearUploadControl();
@@ -269,6 +271,7 @@ function ResetEstimate() {
                 $("#EstimateForm #CustomerID").prop('disabled', false);
                 $('#lblEstimateInfo').text('<<Estimate No.>>');
             }
+            _SlNo = 1;
             BindEstimateDetailList($('#ID').val(), false);
             clearUploadControl();
             PaintImages($('#EstimateForm #ID').val());
@@ -304,6 +307,7 @@ function SaveSuccessEstimate(data, status) {
                 $('#IsUpdate').val('True');
                 $("#divEstimateForm").load("Estimate/EstimateForm?id=" + _result.ID+"&enquiryID="+_result.EnquiryID, function () {
                     ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "Edit", _result.ID);
+                    _SlNo = 1;
                     BindEstimateDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);
@@ -390,6 +394,11 @@ function BindEstimateDetailList(id,IsEnquiry) {
                      searchPlaceholder: "Search"
                  },
                  columns: [
+                      {
+                          "data": "", render: function (data, type, row) {
+                              return _SlNo++
+                          }, "defaultContent": "<i></i>", "width": "2%"
+                      },
                  {
                      "data": "Product.Code", render: function (data, type, row) {
                          debugger;
@@ -433,12 +442,12 @@ function BindEstimateDetailList(id,IsEnquiry) {
                 { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
                  ],
                  columnDefs: [
-                     { "targets": [0], "width": "23%" },
-                     { "targets": [1, 2, 3, 4, 5, 6, 7], "width": "10%" },
-                     { "targets": [8], "width": "7%" },
-                     { className: "text-left", "targets": [0, 1, 5] },
-                     { className: "text-right", "targets": [2, 4, 3, 6, 7] },
-                     { className: "text-center", "targets": [8] }
+                     { "targets": [1], "width": "23%" },
+                     { "targets": [2, 3, 4, 5, 6, 7, 8], "width": "10%" },
+                     { "targets": [9], "width": "7%" },
+                     { className: "text-left", "targets": [1, 2, 6] },
+                     { className: "text-right", "targets": [3, 5, 4, 7, 8] },
+                     { className: "text-center", "targets": [0,9] }
                  ],
                  destroy: true
              });
@@ -458,6 +467,12 @@ function BindEstimateDetailList(id,IsEnquiry) {
                      searchPlaceholder: "Search"
                  },
                  columns: [
+                      {
+                          "data": "", render: function (data, type, row) {
+                              debugger;
+                              return _SlNo++
+                          }, "defaultContent": "<i></i>", "width": "2%"
+                      },
                  {
                      "data": "Product.Code", render: function (data, type, row) {
                          debugger;
@@ -482,12 +497,12 @@ function BindEstimateDetailList(id,IsEnquiry) {
                 { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditEstimateDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteEstimateDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
                  ],
                  columnDefs: [
-                     { "targets": [0], "width": "23%" },
-                     { "targets": [1, 2, 3, 4, 5], "width": "10%" },
-                     { "targets": [6], "width": "7%" },
-                     { className: "text-left", "targets": [0, 1, 5] },
-                     { className: "text-right", "targets": [2, 4, 3] },
-                     { className: "text-center", "targets": [6] }
+                     { "targets": [1], "width": "23%" },
+                     { "targets": [2, 3, 4, 5, 6], "width": "10%" },
+                     { "targets": [7], "width": "7%" },
+                     { className: "text-left", "targets": [1, 2, 6] },
+                     { className: "text-right", "targets": [3, 5, 4] },
+                     { className: "text-center", "targets": [0,7] }
                  ],
                  destroy: true
              });
@@ -502,7 +517,10 @@ function BindEstimateDetailList(id,IsEnquiry) {
 function GetEstimateDetailListByEstimateID(id,IsEnquiry) {
     try {
         debugger;
-       
+        if (IsEnquiry == undefined)
+            _SlNo = 0;
+        else
+            _SlNo = 1;
         var estimateDetailList = [];
         if (IsEnquiry)
         {
@@ -585,6 +603,7 @@ function AddEstimateDetailToList() {
             if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#Qty').val() > 0) && ($('#UnitCode').val() != ""))
             {
                 if (_dataTable.EstimateDetailList.rows().data().length === 0) {
+                    _SlNo = 0;
                     _dataTable.EstimateDetailList.clear().rows.add(GetEstimateDetailListByEstimateID(_emptyGuid)).draw(false);
                     debugger;
                     var estimateDetailList = _dataTable.EstimateDetailList.rows().data();
@@ -625,11 +644,14 @@ function AddEstimateDetailToList() {
                             }
                         }
                         if (checkpoint == 1) {
+                            _SlNo = 1;
                             debugger;
                             _dataTable.EstimateDetailList.clear().rows.add(estimateDetailList).draw(false);
                             $('#divModelPopEstimate').modal('hide');
                         }
                         else if (checkpoint == 0) {
+                            if ($('#EstimateForm #IsUpdate').val() == 'True' || ($('#EstimateForm #EnquiryID') != null && $('#EstimateForm #EnquiryID') != ''))                              
+                            _SlNo = _dataTable.EstimateDetailList.rows().data().length + 1;
                             var EstimateDetailVM = new Object();
                             var Product = new Object;
                             var ProductModel = new Object()
@@ -670,6 +692,7 @@ function AddEstimateDetailToList() {
 
 function EditEstimateDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).index();
     var estimateDetail = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).data();
     $("#divModelEstimatePopBody").load("Estimate/AddEstimateDetail?update=true", function (responseTxt, statusTxt, xhr) {
@@ -727,6 +750,7 @@ function EditEstimateDetail(this_Obj) {
 
 function ConfirmDeleteEstimateDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).index();
     var estimateDetail = _dataTable.EstimateDetailList.row($(this_Obj).parents('tr')).data();
     if (estimateDetail.ID === _emptyGuid) {
@@ -785,6 +809,7 @@ function EditRedirectToDocument(id) {
                 //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("Estimate", "btnPatchEstimateNew", "LockDocument", id);
             }
+            _SlNo = 1;
             BindEstimateDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();

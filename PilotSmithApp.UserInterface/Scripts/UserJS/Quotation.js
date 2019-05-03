@@ -7,6 +7,7 @@ var _status = "";
 var _result = "";
 var _isCopy = false;
 var _isApproval = false;
+var _SlNo = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -374,6 +375,7 @@ function CopyQuotation(this_Obj) {
             ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
             // $('#hdnQuoteNo').val(Quotation.QuoteNo);
             _isCopy = true;
+            _SlNo = 1;
             BindQuotationDetailList(Quotation.ID);
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
@@ -543,6 +545,7 @@ function ResetQuotation() {
             //        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", $('#ID').val());
             //        break;
             //}
+            _SlNo = 1;
             BindQuotationDetailList($('#ID').val(), false);
             BindQuotationOtherChargesDetailList($('#ID').val());
             CalculateTotal();
@@ -611,6 +614,7 @@ function SaveSuccessQuotation(data, status) {
                 $("#divQuotationForm").load(str, function () {
                     //ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                     $('#lblQuotationInfo').text(_result.QuotationNo);
+                    _SlNo = 1;
                     BindQuotationDetailList(_result.ID);
                     BindQuotationOtherChargesDetailList(_result.ID);
                     CalculateTotal();
@@ -788,6 +792,11 @@ function BindQuotationDetailList(id, IsEstimated) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNo++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      if (row.ProductModel.ImageURL !== null) {
@@ -861,12 +870,12 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "23%" },
-                 { "targets": [1, 2, 3, 4, 5, 6, 7], "width": "10%" },
-                 { "targets": [8], "width": "7%" },
-                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
-                 { className: "text-left", "targets": [1, 4, 0] },
-                 { className: "text-center", "targets": [8] }
+                 { "targets": [1], "width": "23%" },
+                 { "targets": [2, 3, 4, 5, 6, 7, 8], "width": "10%" },
+                 { "targets": [9], "width": "7%" },
+                 { className: "text-right", "targets": [3, 4, 5, 6, 7, 8] },
+                 { className: "text-left", "targets": [2, 5, 1] },
+                 { className: "text-center", "targets": [0,9] }
              ],
              initComplete: function (settings, json) {
                  $('#QuotationForm #Discount').trigger('change');
@@ -881,7 +890,10 @@ function BindQuotationDetailList(id, IsEstimated) {
 function GetQuotationDetailListByQuotationID(id, IsEstimated) {
     try {
         debugger;
-
+        if (id == _emptyGuid &&(IsEstimated == true && $('#QuotationForm #IsUpdate').val() == "False"))
+            _SlNo = 1;
+        else if ($('#QuotationForm #IsUpdate').val() == "True")
+            _SlNo = 1;
         var quotationDetailList = [];
         if (IsEstimated) {
             var data = { "estimateID": $('#QuotationForm #hdnEstimateID').val() };
@@ -922,6 +934,7 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () { });
     debugger;
     if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
+        _SlNo = 1;
         if (($('#divModelQuotationPopBody #Rate').val() > 0) && ($('#divModelQuotationPopBody #Qty').val() > 0) && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
             debugger;
             var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
@@ -967,6 +980,7 @@ function AddQuotationDetailToList() {
             debugger;
             if (_dataTable.QuotationDetailList.rows().data().length === 0) {
                 _dataTable.QuotationDetailList.clear().rows.add(GetQuotationDetailListByQuotationID(_emptyGuid, false)).draw(false);
+                _SlNo = 1;
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 quotationDetailList[0].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -1014,6 +1028,7 @@ function AddQuotationDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
+                        _SlNo = 1;
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
@@ -1021,6 +1036,8 @@ function AddQuotationDetailToList() {
                         $('#divModelPopQuotation').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        if ($('#QuotationForm #IsUpdate').val() == 'True' || ($('#QuotationForm #EstimateID') != null && $('#QuotationForm #EstimateID') != ''))
+                            _SlNo = _dataTable.QuotationDetailList.rows().data().length + 1;
                         ClearCalculatedFields();
                         var QuotationDetailVM = new Object();
                         QuotationDetailVM.ID = _emptyGuid;
@@ -1136,6 +1153,7 @@ function EditQuotationDetail(this_Obj) {
 }
 function ConfirmDeleteQuotationDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).index();
     var quotationDetail = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationDetail.ID === _emptyGuid) {
@@ -1923,6 +1941,7 @@ function EditRedirectToDocument(id) {
                 }
 
             }
+            _SlNo = 1;
             BindQuotationDetailList(id);
             BindQuotationOtherChargesDetailList(id);
             CalculateTotal();
