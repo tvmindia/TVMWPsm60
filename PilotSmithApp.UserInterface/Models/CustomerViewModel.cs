@@ -69,8 +69,10 @@ namespace PilotSmithApp.UserInterface.Models
         public List<SelectListItem> CustomerSelectList { get; set; }
         public TitlesViewModel Titles { get; set; }
         public PaymentTermViewModel PaymentTerm { get; set; }
+        [Required(ErrorMessage = "Area is missing")]
         [Display(Name ="Area")]
         public int? AreaCode { get; set; }
+        [Required(ErrorMessage = "District is missing")]
         [Display(Name = "District")]
         public int? DistrictCode { get; set; }
         [Display(Name = "State")]
@@ -87,6 +89,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
         public bool IsUpdate { get; set; }
+        [Required(ErrorMessage = "Category is missing")]
         [Display(Name ="Category")]
         public int[] CustomerCategoryList { get; set; }
         public CustomerCategoryViewModel CustomerCategory { get; set; }

@@ -163,6 +163,12 @@ function SaveSuccessState(data, status) {
                                         StateCodeOnChange();
                                 });
                             }
+                            if ($('FormCustomerMaster')[0]) {
+                                $('#FormCustomerMaster #StateCode').change(function () {
+                                    if (this.value !== "")
+                                        StateCodeOnChange();
+                                });
+                            }
                     });
                 });
                 $('#' + _parentFormID + '#CountryCode').val($('#' + _parentFormID + '#hdnCountryCode').val()).trigger('change');
@@ -247,7 +253,13 @@ function SaveSuccessDistrict(data, status) {
                                 if (this.value !== "")
                                     DistrictCodeOnChange();
                             });
-                        }
+                            }
+                            if ($('FormCustomerMaster')[0]) {
+                                $('#FormCustomerMaster #DistrictCode').change(function () {
+                                    if (this.value !== "")
+                                        DistrictCodeOnChange();
+                                });
+                            }
                         });
                 });
                 $('#' + _parentFormID + '#CountryCode').val($('#' + _parentFormID + '#hdnCountryCode').val()).trigger('change');
@@ -315,6 +327,21 @@ function SaveSuccessArea(data, status) {
                         , function () {
                             debugger;
                             $('#CustomerForm #AreaCode').change(function () {
+                                if (this.value !== "")
+                                    AreaCodeOnChange();
+                            });
+                        });
+                }
+                else if ($('#FormCustomerMaster')[0]) {
+                    _parentFormID = "FormCustomerMaster";
+                    var countryCode = $('#FormCustomerMaster #CountryCode').val();
+                    var stateCode = $('#FormCustomerMaster #StateCode').val();
+                    var districtCode = $('#FormCustomerMaster #DistrictCode').val();
+                    $('#FormCustomerMaster .divAreaSelectList').load('/Area/AreaSelectList?required=' + $('#hdnAreaRequired').val() +
+                        '&districtCode=' + districtCode + '&stateCode=' + stateCode + '&countryCode=' + countryCode
+                        , function () {
+                            debugger;
+                            $('#FormCustomerMaster #AreaCode').change(function () {
                                 if (this.value !== "")
                                     AreaCodeOnChange();
                             });
