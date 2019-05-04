@@ -7,6 +7,8 @@ var _status = "";
 var _result = "";
 var _isCopy = false;
 var _isApproval = false;
+var _SlNo = 1;
+var _SlNoOtherCharge = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -366,8 +368,10 @@ function EditSaleOrder(this_Obj) {
 					    }
 						break;
 				}
-			}
+            }
+            _SlNo = 1;
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
+            _SlNoOtherCharge = 1;
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {
@@ -399,7 +403,9 @@ function CopySaleOrder(this_Obj) {
             $('#lblSaleOrderInfo').text('<<Sale Order No.>>');
             ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Add");
             _isCopy = true;
+            _SlNo = 1;
             BindSaleOrderDetailList(SaleOrder.ID, false, false);
+            _SlNoOtherCharge = 1;
             BindSaleOrderOtherChargesDetailList(SaleOrder.ID, false);
             // $('#hdnQuoteNo').val(Quotation.QuoteNo);
             CalculateTotal();
@@ -535,8 +541,10 @@ function ResetSaleOrder(event) {
             //}
             //else {
             //    ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "LockDocument", $('#ID').val());
-            //}
-            BindSaleOrderDetailList($('#ID').val(), false, false);
+		    //}
+			_SlNo = 1;
+			BindSaleOrderDetailList($('#ID').val(), false, false);
+			_SlNoOtherCharge = 1;
             BindSaleOrderOtherChargesDetailList($('#ID').val(), false);
             CalculateTotal();
             clearUploadControl();
@@ -599,7 +607,9 @@ function SaveSuccessSaleOrder(data, status) {
 
                 $("#divSaleOrderForm").load(str, function () {
                     //ChangeButtonPatchView("SaleOrder", "btnPatchSaleOrderNew", "Edit",_result.ID);
+                    _SlNo = 1;
                     BindSaleOrderDetailList(_result.ID, false, false);
+                    _SlNoOtherCharge = 1;
                     BindSaleOrderOtherChargesDetailList(_result.ID, false);
                     CalculateTotal();
                     clearUploadControl();
@@ -709,6 +719,11 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNoOtherCharge++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "OtherCharge.SACCode", "defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return formatCurrency(data) }, "defaultContent": "<i></i>" },
@@ -779,12 +794,12 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                  //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "30%" },
-                 { "targets": [1, 2, 3,4], "width": "15%" },
-                 { "targets": [5], "width": "10%" },
-                 { className: "text-left", "targets": [0,1] },
-                 { className: "text-right", "targets": [ 2, 3,4] },
-                 { className: "text-center", "targets": [5] }
+                 { "targets": [1], "width": "30%" },
+                 { "targets": [2, 3, 4,5], "width": "15%" },
+                 { "targets": [6], "width": "10%" },
+                 { className: "text-left", "targets": [1,2] },
+                 { className: "text-right", "targets": [ 3, 4,5] },
+                 { className: "text-center", "targets": [0,6] }
              ],
              destroy: true,
          });
@@ -823,6 +838,11 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNo++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      debugger;
@@ -922,12 +942,12 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                  //"data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditSaleOrderDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteSaleOrderDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "20%" },
-                 { "targets": [3, 5, 2, 4, 8, 6, 7], "width": "10%" },
-                 { "targets": [ 1,9], "width": "5%" },
-                 { className: "text-right", "targets": [2,3, 4, 5, 6, 7, 8] },
-                 { className: "text-left", "targets": [0,1] },
-                 { className: "text-center", "targets": [ 9] }
+                 { "targets": [1], "width": "20%" },
+                 { "targets": [4, 6, 3, 5, 9, 7, 8], "width": "10%" },
+                 { "targets": [ 2,10], "width": "5%" },
+                 { className: "text-right", "targets": [3,4, 5, 6, 7, 8, 9] },
+                 { className: "text-left", "targets": [1,2] },
+                 { className: "text-center", "targets": [0,10] }
              ],
              //rowCallback: function (row, data, index) {
              //    debugger;
@@ -965,7 +985,10 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
 function GetSaleOrderDetailListBySaleOrderID(id, IsEnquiry, IsQuotation) {
     try {
         debugger;
-
+        if (IsEnquiry == undefined || IsQuotation==undefined)
+            _SlNo = 0;
+        else
+            _SlNo = 1;
         var saleOrderDetailList = [];
         if (IsEnquiry) {
             var data = { "enquiryID": $('#SaleOrderForm #hdnEnquiryID').val() };
@@ -1011,13 +1034,14 @@ function AddSaleOrderDetailToList() {
     $("#FormSaleOrderDetail").submit(function () { });
     debugger;
     if ($('#FormSaleOrderDetail #IsUpdate').val() == 'True') {
+        _SlNo = 1;
         if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() >0) && ($('#divModelSaleOrderPopBody #Qty').val() >0) && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
             //saleOrderDetailList[_datatablerowindex].Product.Code = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
             //saleOrderDetailList[_datatablerowindex].Product.Name = $("#divModelSaleOrderPopBody #ProductID").val() != "" ? $("#divModelSaleOrderPopBody #ProductID option:selected").text().split("-")[1].trim() : "";
-            saleOrderDetailList[_datatablerowindex].Product.Code = $("#productName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
-            saleOrderDetailList[_datatablerowindex].Product.Name = $("#productName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
+            saleOrderDetailList[_datatablerowindex].Product.Code = $("#ProductName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
+            saleOrderDetailList[_datatablerowindex].Product.Name = $("#ProductName").text() != "" ? $("#productName").text().split("-")[0].trim() : "";
             saleOrderDetailList[_datatablerowindex].Product.HSNCode = $("#hdnProductHSNCode").val();
             saleOrderDetailList[_datatablerowindex].ProductID = $("#hdnProductID").val() != "" ? $("#hdnProductID").val() : _emptyGuid;
             saleOrderDetailList[_datatablerowindex].ProductModelID = $("#hdnProductModelID").val() != "" ? $("#hdnProductModelID").val() : _emptyGuid;
@@ -1053,6 +1077,7 @@ function AddSaleOrderDetailToList() {
         if (($('#divModelSaleOrderPopBody #ProductID').val() != "") && ($('#divModelSaleOrderPopBody #ProductModelID').val() != "") && ($('#divModelSaleOrderPopBody #Rate').val() >0) && ($('#divModelSaleOrderPopBody #Qty').val() >0) && ($('#divModelSaleOrderPopBody #UnitCode').val() != "")) {
             debugger;
             if (_dataTable.SaleOrderDetailList.rows().data().length === 0) {
+                _SlNo = 0;
                 _dataTable.SaleOrderDetailList.clear().rows.add(GetSaleOrderDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
                 debugger;
                 var saleOrderDetailList = _dataTable.SaleOrderDetailList.rows().data();
@@ -1097,6 +1122,7 @@ function AddSaleOrderDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
+                        _SlNo = 1;
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.SaleOrderDetailList.clear().rows.add(saleOrderDetailList).draw(false);
@@ -1104,6 +1130,7 @@ function AddSaleOrderDetailToList() {
                         $('#divModelPopSaleOrder').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        _SlNo = _dataTable.SaleOrderDetailList.rows().data().length + 1;
                         ClearCalculatedFields();
                         var SaleOrderDetailVM = new Object();
                         SaleOrderDetailVM.ID = _emptyGuid;
@@ -1217,6 +1244,7 @@ function EditSaleOrderDetail(this_Obj) {
 }
 function ConfirmDeleteSaleOrderDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderDetail = _dataTable.SaleOrderDetailList.row($(this_Obj).parents('tr')).data();
     if (saleOrderDetail.ID === _emptyGuid) {
@@ -1522,6 +1550,7 @@ function AddOtherExpenseDetailToList() {
     $("#FormOtherExpenseDetail").submit(function () { });
     debugger;
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
+        _SlNoOtherCharge = 1;
         if (($('#divModelSaleOrderPopBody #OtherChargeCode').val() != "") && ($('#divModelSaleOrderPopBody #ChargeAmount').val() != "")) {
             debugger;
             var saleOrderOtherExpenseDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
@@ -1552,6 +1581,7 @@ function AddOtherExpenseDetailToList() {
             debugger;
             if (_dataTable.SaleOrderOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(GetSaleOrderOtherChargesDetailListBySaleOrderID(_emptyGuid, false)).draw(false);
+                _SlNoOtherCharge = 1;
                 debugger;
                 var saleOrderOtherExpenseDetailList = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
                 saleOrderOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelSaleOrderPopBody #OtherChargeCode").val() != "" ? $("#divModelSaleOrderPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
@@ -1586,6 +1616,7 @@ function AddOtherExpenseDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
+                        _SlNoOtherCharge = 1;
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.SaleOrderOtherChargesDetailList.clear().rows.add(saleOrderOtherExpenseDetailList).draw(false);
@@ -1593,6 +1624,7 @@ function AddOtherExpenseDetailToList() {
                         $('#divModelPopSaleOrder').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        _SlNoOtherCharge = _dataTable.SaleOrderOtherChargesDetailList.rows().data().length + 1;
                         ClearCalculatedFields();
                         var SaleOrderOtherChargesDetailVM = new Object();
                         SaleOrderOtherChargesDetailVM.ID = _emptyGuid;
@@ -1629,7 +1661,10 @@ function AddOtherExpenseDetailToList() {
 function GetSaleOrderOtherChargesDetailListBySaleOrderID(id, IsQuotation) {
     try {
         debugger;
-
+        if (IsQuotation == undefined)
+            _SlNoOtherCharge = 0;
+        else
+            _SlNoOtherCharge = 1;
         var SaleOrderOtherChargesDetailList = [];
         if (IsQuotation) {
             var data = { "quoteID": $('#SaleOrderForm #hdnQuoteID').val() };
@@ -1694,6 +1729,7 @@ function EditSaleOrderOtherChargesDetail(this_Obj) {
 }
 function ConfirmDeleteSaleOrderOtherChargeDetail(this_Obj) {
     debugger;
+    _SlNoOtherCharge = 1;
     _datatablerowindex = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var saleOrderOtherChargeDetail = _dataTable.SaleOrderOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (saleOrderOtherChargeDetail.ID === _emptyGuid) {
@@ -1912,8 +1948,10 @@ function EditRedirectToDocument(id) {
 						break;
 				}
 
-			}
+            }
+            _SlNo = 1;
             BindSaleOrderDetailList(id, false, false);
+            _SlNoOtherCharge = 1;
             BindSaleOrderOtherChargesDetailList(id, false);
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val(), function () {

@@ -5,6 +5,7 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _SlNo = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -241,6 +242,7 @@ function EditProductionQC(this_Obj) {
                 //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument", ProductionQC.ID);
             }
+            _SlNo = 1;
             BindProductionQCDetailList(ProductionQC.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
@@ -278,7 +280,8 @@ function ResetProductionQC() {
                 $('#hdnCustomerID').val('');
                 $("#ProductionQCForm #CustomerID").prop('disabled', false);
                 $('#lblProductionQCInfo').text('<<ProductionQC No.>>');
-            }            
+            }
+            _SlNo = 1;
             BindProductionQCDetailList($('#ID').val());
             clearUploadControl();
             PaintImages($('#ProductionQCForm #ID').val());
@@ -313,6 +316,7 @@ function SaveSuccessProductionQC(data, status) {
                 $('#lblProductionQCInfo').text(_result.ProdQCNo);
                 $("#divProductionQCForm").load("ProductionQC/ProductionQCForm?id=" + _result.ID, function () {
                     ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "Edit", _result.ID);
+                    _SlNo = 1;
                     BindProductionQCDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID);                   
@@ -393,6 +397,11 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNo++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      return '<div style="width:100%" class="show-popover" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + row.ProductSpec.replace("\n", "<br>").replace(/"/g, "&quot") + '</p>"/>' + row.Product.Name + "<br/>" + row.ProductModel.Name
@@ -419,14 +428,14 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
              { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProductionQCDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProductionQCDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : '-' },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "30%" },
-                 { "targets": [1, 2], "width": "10%" },
-                 { "targets": [3, 4], "width": "10%" },
-                 { "targets": [5], "width": "10%" },
-                 { "targets": [7], "width": "10%" },
-                 { className: "text-left", "targets": [0, 1,6] },
-                 {className:"text-right","targets":[2,3,4]},
-                 { className: "text-center", "targets": [ 5,7] }
+                 { "targets": [1], "width": "30%" },
+                 { "targets": [2, 3], "width": "10%" },
+                 { "targets": [4, 5], "width": "10%" },
+                 { "targets": [6], "width": "10%" },
+                 { "targets": [8], "width": "10%" },
+                 { className: "text-left", "targets": [1, 2,7] },
+                 {className:"text-right","targets":[3,4,5]},
+                 { className: "text-center", "targets": [0, 6,8] }
              ]
          });
     $('[data-toggle="popover"]').popover({
@@ -436,6 +445,13 @@ function BindProductionQCDetailList(id, IsProductioOrder) {
 }
 function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {
     try {
+        debugger;
+        if ((IsProductioOrder == undefined) && id != _emptyGuid)
+            _SlNo = 1;
+        else if ((IsProductioOrder == undefined) && id == _emptyGuid)
+            _SlNo = 0;
+        else
+            _SlNo = 1;
         var productionQCDetailList = [];
         if (IsProductioOrder) {
             var data = { "productionOrderID": $('#ProductionQCForm #hdnProdOrderID').val() };
@@ -473,6 +489,7 @@ function GetProductionQCDetailListByProductionQCID(id, IsProductioOrder) {
 function AddProductionQCDetailToList() {
     $("#FormProductionQCDetail").submit(function () { });
     if ($('#FormProductionQCDetail #IsUpdate').val() == 'True') {
+        _SlNo = 1;
         if (($('#QCDateFormatted').val() != "") && ($('#QCBy').val() != "") && ($('#divQCQty span').text() == "")) {
             debugger;
             var productionQCDetailList = _dataTable.ProductionQCDetailList.rows().data();
@@ -547,6 +564,7 @@ function EditProductionQCDetail(this_Obj) {
 }
 function ConfirmDeleteProductionQCDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).index();
     var productionQCDetail = _dataTable.ProductionQCDetailList.row($(this_Obj).parents('tr')).data();
     if (productionQCDetail.ID === _emptyGuid) {
@@ -604,6 +622,7 @@ function EditRedirectToDocument(id) {
                 //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ProductionQC", "btnPatchProductionQCNew", "LockDocument", id);
             }
+            _SlNo = 1;
             BindProductionQCDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
