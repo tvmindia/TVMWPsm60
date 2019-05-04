@@ -8,6 +8,7 @@ var _result = "";
 var _isCopy = false;
 var _isApproval = false;
 var _SlNo = 1;
+var _SlNoOtherCharge = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -340,7 +341,9 @@ function EditQuotation(this_Obj) {
                         break;
                 }
             }
+            
             BindQuotationDetailList(Quotation.ID);
+            _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -377,6 +380,7 @@ function CopyQuotation(this_Obj) {
             _isCopy = true;
             _SlNo = 1;
             BindQuotationDetailList(Quotation.ID);
+          _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
             clearUploadControl();
@@ -547,6 +551,7 @@ function ResetQuotation() {
             //}
             _SlNo = 1;
             BindQuotationDetailList($('#ID').val(), false);
+            _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList($('#ID').val());
             CalculateTotal();
             clearUploadControl();
@@ -616,6 +621,7 @@ function SaveSuccessQuotation(data, status) {
                     $('#lblQuotationInfo').text(_result.QuotationNo);
                     _SlNo = 1;
                     BindQuotationDetailList(_result.ID);
+                    _SlNoOtherCharge = 1;
                     BindQuotationOtherChargesDetailList(_result.ID);
                     CalculateTotal();
                     clearUploadControl();
@@ -715,6 +721,11 @@ function BindQuotationOtherChargesDetailList(id) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNoOtherCharge++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "OtherCharge.SACCode", "defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
@@ -762,12 +773,12 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "30%" },
-                 { "targets": [1, 2, 4], "width": "20%" },
-                 { "targets": [3, 5], "width": "20%" },
-                 { className: "text-right", "targets": [2, 3, 4] },
-                 { className: "text-left", "targets": [0, 1] },
-                 { className: "text-center", "targets": [5] }
+                 { "targets": [1], "width": "30%" },
+                 { "targets": [2, 3, 5], "width": "20%" },
+                 { "targets": [4, 6], "width": "20%" },
+                 { className: "text-right", "targets": [3, 4, 5] },
+                 { className: "text-left", "targets": [1, 2] },
+                 { className: "text-center", "targets": [6,0] }
              ],
              destroy: true,
          });
@@ -1566,6 +1577,7 @@ function AddOtherExpenseDetailToList() {
     $("#FormOtherExpenseDetail").submit(function () { });
     debugger;
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
+        _SlNoOtherCharge = 1;
         if (($('#divModelQuotationPopBody #OtherChargeCode').val() != "") && ($('#divModelQuotationPopBody #ChargeAmount').val() != "")) {
             debugger;
             var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
@@ -1594,6 +1606,7 @@ function AddOtherExpenseDetailToList() {
             debugger;
             if (_dataTable.QuotationOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.QuotationOtherChargesDetailList.clear().rows.add(GetQuotationOtherChargesDetailListByQuotationID(_emptyGuid, false)).draw(false);
+                _SlNoOtherCharge = 1;
                 debugger;
                 var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
                 quotationOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
@@ -1626,6 +1639,7 @@ function AddOtherExpenseDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
+                        _SlNoOtherCharge = 1;
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
@@ -1633,6 +1647,7 @@ function AddOtherExpenseDetailToList() {
                         $('#divModelPopQuotation').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        _SlNoOtherCharge = _dataTable.QuotationOtherChargesDetailList.rows().data().length + 1;
                         ClearCalculatedFields();
                         var QuotationOtherChargesDetailVM = new Object();
                         QuotationOtherChargesDetailVM.ID = _emptyGuid;
@@ -1668,7 +1683,7 @@ function AddOtherExpenseDetailToList() {
 function GetQuotationOtherChargesDetailListByQuotationID(id) {
     try {
         debugger;
-
+        _SlNoOtherCharge = 1;
         var quotationOtherChargesDetailList = [];
 
         var data = { "quotationID": id };
@@ -1725,6 +1740,7 @@ function EditQuotationOtherChargesDetail(this_Obj) {
 }
 function ConfirmDeleteQuotationOtherChargeDetail(this_Obj) {
     debugger;
+    _SlNoOtherCharge = 1;
     _datatablerowindex = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationOtherChargeDetail.ID === _emptyGuid) {
@@ -1950,6 +1966,7 @@ function EditRedirectToDocument(id) {
             }
             _SlNo = 1;
             BindQuotationDetailList(id);
+            _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList(id);
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
