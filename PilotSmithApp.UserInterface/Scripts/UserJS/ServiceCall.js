@@ -5,6 +5,8 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _SlNo = 1;
+var _SlNoOtherCharge = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -230,7 +232,9 @@ function EditServiceCall(this_Obj) {
                 //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",ServiceCall.ID);
             }
+            _SlNo = 1;
             BindServiceCallDetailList(ServiceCall.ID);
+            _SlNoOtherCharge = 1;
             BindServiceCallChargeDetailList(ServiceCall.ID)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             $('#divModelInvoicesPopBody').load('/ServiceCall/GetSaleInvoiceByCustomerID?customerID=' + $('#hdnCustomerID').val());
@@ -262,7 +266,9 @@ function ResetServiceCall() {
 
             //}
             $('#lblServiceCallInfo').text(($('#ServiceCallNo').val() !== "") ? $('#ServiceCallNo').val() : "Service Call Information");
+            _SlNo = 1;
             BindServiceCallDetailList($('#ID').val());
+            _SlNoOtherCharge = 1;
             BindServiceCallChargeDetailList($('#ID').val());
             clearUploadControl();
             CalculateTotal();
@@ -438,6 +444,11 @@ function BindServiceCallDetailList(id) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                   {
+                       "data": "", render: function (data, type, row) {
+                           return _SlNo++
+                       }, "defaultContent": "<i></i>", "width": "2%"
+                   },
              {
                  "data": null, render: function (data, type, row) {
                      debugger;
@@ -468,8 +479,8 @@ function BindServiceCallDetailList(id) {
                  { "targets": [5], "width": "5%" },
                  { "targets": [0], "width": "35%" },
 
-                 { className: "text-left", "targets": [0, 1,2,4] },
-                 { className: "text-center", "targets": [5,3] }
+                 { className: "text-left", "targets": [1, 2,3,4] },
+                 { className: "text-center", "targets": [0,6,4] }
              ]
          });
     $('[data-toggle="popover"]').popover({
@@ -494,6 +505,7 @@ function AddServiceCallDetailToList() {
         $("#FormServiceCallDetail").submit(function () { });
 
         if ($('#FormServiceCallDetail #IsUpdate').val() == 'True') {
+            _SlNo = 1;
             //if (($('#spanProductName').text() != "") && ($('#spanProductModelName').text() != "") && ($('#InstalledDate').val() != "") && ($('#ProductModelID').length <= 1 || ($('#spanProductModelName').length > 1 && $('#spanProductModelName').val() != "")))
             if (($('#spanProductName').text() != "") && (($('#spanProductModelName').text() != "") || ($('#ProductModelID').val() != "")) && ($('#InstalledDate').val() != ""))
             {
@@ -545,7 +557,8 @@ function AddServiceCallDetailToList() {
         else {
             if (($('#ProductID').val() != "") && (($('#ProductModelID').val() != "") || ($('#spanProductModelName').text() != ""))  && ($('#InstalledDate').val() != "")) {
                     if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
-                    _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
+                        _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
+                        _SlNo = 1;
                     debugger;
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                     serviceCallDetailList[0].Product = new Object();
@@ -584,9 +597,11 @@ function AddServiceCallDetailToList() {
                             }
                         }
                         if (checkpoint == 1) {
+                            _SlNo = 1;
                             _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
                         }
                         else if (checkpoint == 0) {
+                            _SlNo = _dataTable.ServiceCallDetailList.rows().data().length + 1;
                             var serviceCallDetailVM = new Object();
                             var Product = new Object;
                             var ProductModel = new Object();
@@ -646,6 +661,7 @@ function AddServiceCallDetailToList() {
 //Get ServiceCallDetailList By ServiceCallID
 function GetServiceCallDetailListByServiceCallID(id) {
     try {
+        _SlNo = 1;
         debugger;
             var data = { "serviceCallID": id };
             var serviceCallDetailList = [];
@@ -686,6 +702,11 @@ function BindServiceCallChargeDetailList(id) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNoOtherCharge++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data":"OtherCharge.SACCode","defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return formatCurrency(data) }, "defaultContent": "<i></i>" },
@@ -726,9 +747,9 @@ function BindServiceCallChargeDetailList(id) {
                  { "targets": [2], "width": "12%" },
                  { "targets": [3,4,5], "width": "10%" },
                  { "targets": [6], "width": "5%" },
-                 { className: "text-right", "targets": [ 2, 3, 4, 5] },
-                 { className: "text-left", "targets": [0,1] },
-                 { className: "text-center", "targets": [6] }
+                 { className: "text-right", "targets": [ 3, 4, 5, 6] },
+                 { className: "text-left", "targets": [1,2] },
+                 { className: "text-center", "targets": [0,7] }
              ],
              destroy: true,
          });
@@ -758,6 +779,7 @@ function AddServiceCallChargeDetailToList() {
         $("#FormServiceCallChargeDetail").submit(function () { });
         debugger;
         if ($('#FormServiceCallChargeDetail #IsUpdate').val() == 'True') {
+            _SlNoOtherCharge = 1;
             if (($('#divModelCallChargesPopBody #OtherChargeCode').val() != "") && ($('#divModelCallChargesPopBody #ChargeAmount').val() != "")) {
                 debugger;
                 var serviceCallChargeDetailList = _dataTable.ServiceCallChargeDetailList.rows().data();
@@ -789,6 +811,7 @@ function AddServiceCallChargeDetailToList() {
                 debugger;
                 if (_dataTable.ServiceCallChargeDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallChargeDetailList.clear().rows.add(GetServiceCallChargeDetailListByServiceCallID(_emptyGuid, false)).draw(false);
+                    _SlNoOtherCharge = 1;
                     debugger;
                     var serviceCallChargeDetailList = _dataTable.ServiceCallChargeDetailList.rows().data();
                     serviceCallChargeDetailList[0].OtherCharge.Description = $("#divModelCallChargesPopBody #OtherChargeCode").val() != "" ? $("#divModelCallChargesPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
@@ -824,6 +847,7 @@ function AddServiceCallChargeDetailToList() {
                             }
                         }
                         if (checkpoint == 1) {
+                            _SlNoOtherCharge = 1;
                             debugger;
                             ClearCalculatedFields();
                             _dataTable.ServiceCallChargeDetailList.clear().rows.add(serviceCallChargeDetailList).draw(false);
@@ -831,6 +855,7 @@ function AddServiceCallChargeDetailToList() {
                             $('#divModelPopCallCharges').modal('hide');
                         }
                         else if (checkpoint == 0) {
+                            _SlNoOtherCharge = _dataTable.ServiceCallChargeDetailList.rows().data().length + 1;
                             ClearCalculatedFields();
                             var ServiceCallChargeDetailVM = new Object();
                             ServiceCallChargeDetailVM.ID = _emptyGuid;
@@ -873,8 +898,9 @@ function AddServiceCallChargeDetailToList() {
 }
 
 //Get ServiceCallChargeList By ServiceCallID
-function GetServiceCallChargeDetailListByServiceCallID(id) {
+function GetServiceCallChargeDetailListByServiceCallID(id) {   
     try {
+        _SlNoOtherCharge = 1;
         debugger;
         var data = { "serviceCallID": id };
         var serviceCallDetailList = [];
@@ -992,7 +1018,7 @@ function DeleteServiceCallItem(id) {
 }
 
 function ConfirmDeleteServiceCallDetail(this_Obj) {
-
+    _SlNo = 1;
     _datatablerowindex = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).index();
     var serviceCallDetail = _dataTable.ServiceCallDetailList.row($(this_Obj).parents('tr')).data();
     if (serviceCallDetail.ID === _emptyGuid) {
@@ -1032,8 +1058,9 @@ function DeleteServiceCallDetail(ID) {
     }
 }
 
-function ConfirmDeleteServiceCallChargeDetail(this_Obj) {
+function ConfirmDeleteServiceCallChargeDetail(this_Obj) {    
     debugger;
+    _SlNoOtherCharge = 1;
     _datatablerowindex = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).index();
     var serviceCallChargeDetail = _dataTable.ServiceCallChargeDetailList.row($(this_Obj).parents('tr')).data();
     if (serviceCallChargeDetail.ID === _emptyGuid) {
@@ -1095,7 +1122,9 @@ function EditRedirectToDocument(id) {
                 //$('.switch-label').attr('title', 'Document Locked');
                 ChangeButtonPatchView("ServiceCall", "btnPatchServiceCallNew", "LockDocument",id);
             }
+            _SlNo = 1;
             BindServiceCallDetailList(id);
+            _SlNoOtherCharge = 1;
             BindServiceCallChargeDetailList(id)
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
@@ -1142,8 +1171,8 @@ function AddServiceCallDetailSpareToList() {
         debugger;
 
         $("#FormServiceCallDetailSpare").submit(function () { });
-
         if ($('#FormServiceCallDetailSpare #IsUpdate').val() == 'True') {
+            _SlNo = 1;
             if ($('#SpareID').val() != "") {
 
                 var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
@@ -1184,6 +1213,7 @@ function AddServiceCallDetailSpareToList() {
             if ($('#SpareID').val() != "") {
                 if (_dataTable.ServiceCallDetailList.rows().data().length === 0) {
                     _dataTable.ServiceCallDetailList.clear().rows.add(GetServiceCallDetailListByServiceCallID(_emptyGuid)).draw(false);
+                    _SlNo = 1;
                     var serviceCallDetailList = _dataTable.ServiceCallDetailList.rows().data();
                     serviceCallDetailList[0].Spare = new Object();
                     serviceCallDetailList[0].Spare.Code = $("#SpareID").val() != "" ? $("#SpareID option:selected").text().split("-")[0].trim() : "";
@@ -1214,9 +1244,11 @@ function AddServiceCallDetailSpareToList() {
                             }
                         }
                         if (checkpoint == 1) {
+                            _SlNo = 1;
                             _dataTable.ServiceCallDetailList.clear().rows.add(serviceCallDetailList).draw(false);
                         }
                         else if (checkpoint == 0) {
+                            _SlNo = _dataTable.ServiceCallDetailList.rows().data().length + 1;
                             var serviceCallDetailVM = new Object();
                             var Spare = new Object;
                             var DocumentStatus = new Object;

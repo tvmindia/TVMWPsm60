@@ -5,6 +5,7 @@ var _jsonData = {};
 var _message = "";
 var _status = "";
 var _result = "";
+var _SlNo = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -258,6 +259,7 @@ function EditDeliveryChallan(this_Obj) {
             else {
                 ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument", DeliveryChallan.ID);
             }
+            _SlNo = 1;
             BindDeliveryChallanDetailList(DeliveryChallan.ID, false, false);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
@@ -280,6 +282,7 @@ function ResetDeliveryChallan() {
                 //resides in customjs for sliding
                 openNav();
             }
+            _SlNo = 1;
             BindDeliveryChallanDetailList($('#ID').val(), false, false);
             $('#lblDeliveryChallanInfo').text('<<Challan No.>>');
             clearUploadControl();
@@ -316,6 +319,7 @@ function SaveSuccessDeliveryChallan(data, status) {
                 $('#IsUpdate').val('True');
                 $("#divDeliveryChallanForm").load("DeliveryChallan/DeliveryChallanForm?id=" + _result.ID +"&prodOrderID="+_result.ProdOrderID, function () {
                     ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "Edit", _result.ID);
+                    _SlNo = 1;
                     BindDeliveryChallanDetailList(_result.ID,false,false);
                     clearUploadControl();
                     PaintImages(_result.ID);
@@ -412,6 +416,11 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNo++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              {
                  "data": "Product.Code", render: function (data, type, row) {
                      return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-title="<p align=left>Product Specification" data-content="' + (row.ProductSpec !== null ? row.ProductSpec.replace("\n", "<br>").replace(/"/g, "&quot") : "") + '</p>"/>' + row.ProductModel.Name
@@ -450,12 +459,12 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditDeliveryChallanDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteDeliveryChallanDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : '-' },
              ],
              columnDefs: [
-                  { className: "text-left", "targets": [0,1] },
-                 { className: "text-right", "targets": [2, 3,4] },
-                 { className: "text-center", "targets": [5] },
-                 { "targets": [0], "width": "30%" },
-                 { "targets": [1,2,3,4], "width": "10%" },                 
-                 { "targets": [5], "width": "10%" },                                
+                  { className: "text-left", "targets": [1,2] },
+                 { className: "text-right", "targets": [3, 4,5] },
+                 { className: "text-center", "targets": [6,0] },
+                 { "targets": [1], "width": "30%" },
+                 { "targets": [2,3,4,5], "width": "10%" },                 
+                 { "targets": [6], "width": "10%" },                                
              ],
              destroy: true
          });
@@ -469,7 +478,12 @@ function BindDeliveryChallanDetailList(id,IsProdOrder,IsSaleOrder) {
 function GetDeliveryChallanDetailListByDeliveryChallanID(id, IsProdOrder, IsSaleOrder) {
     try {
         debugger;
-
+        if ((IsSaleOrder == undefined || IsProdOrder == undefined) && id != _emptyGuid)
+            _SlNo = 1;
+        else if ((IsSaleOrder == undefined || IsProdOrder == undefined) && id == _emptyGuid)
+            _SlNo = 0;
+        else
+            _SlNo = 1;
         var deliveryChallanDetailList = [];
         if (IsProdOrder) {
             debugger;
@@ -519,6 +533,7 @@ function AddDeliveryChallanDetailToList() {
     debugger;
     //$("#FormProductionOrderDetail").submit(function () { });
     if ($('#FormDeliveryChallanDetail #IsUpdate').val() == 'True') {
+        _SlNo = 1;
         if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val() != "") && ($('#UnitCode').val() != "")) {
             if (parseInt($('#DelvQty').val()) <= parseInt($('#OrderQty').val())) {
                 debugger;
@@ -554,6 +569,7 @@ function AddDeliveryChallanDetailToList() {
                 debugger;
                 if (_dataTable.DeliveryChallanDetailList.rows().data().length === 0) {
                     _dataTable.DeliveryChallanDetailList.clear().rows.add(GetDeliveryChallanDetailListByDeliveryChallanID(_emptyGuid)).draw(false);
+                    _SlNo = 1;
                     debugger;
                     var deliveryChallanDetailList = _dataTable.DeliveryChallanDetailList.rows().data();
                     deliveryChallanDetailList[0].Product.Code = $("#ProductID").val() != "" ? $("#ProductID option:selected").text().split("-")[0].trim() : "";
@@ -592,11 +608,13 @@ function AddDeliveryChallanDetailToList() {
                             }
                         }
                         if (checkpoint == 1) {
+                            _SlNo = 1;
                             debugger;
                             _dataTable.DeliveryChallanDetailList.clear().rows.add(deliveryChallanDetailList).draw(false);
                             $('#divModelPopDeliveryChallan').modal('hide');
                         }
                         else if (checkpoint == 0) {
+                            _SlNo = _dataTable.DeliveryChallanDetailList.rows().data().length + 1;
                             var DeliveryChallanDetailVM = new Object();
                             var Product = new Object;
                             var ProductModel = new Object()
@@ -693,6 +711,7 @@ function EditDeliveryChallanDetail(this_Obj) {
 
 function ConfirmDeleteDeliveryChallanDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).index();
     var deliveryChallanDetail = _dataTable.DeliveryChallanDetailList.row($(this_Obj).parents('tr')).data();
     if (deliveryChallanDetail.ID === _emptyGuid) {
@@ -747,6 +766,7 @@ function EditRedirectToDocument(id) {
             else {
                 ChangeButtonPatchView("DeliveryChallan", "btnPatchDeliveryChallanNew", "LockDocument", id);
             }
+            _SlNo = 1;
             BindDeliveryChallanDetailList(id, false, false);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();

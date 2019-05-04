@@ -6,6 +6,7 @@ var _message = "";
 var _status = "";
 var _result = "";
 var _isApproval = false;
+var _SlNo = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -336,6 +337,7 @@ function EditProductionOrder(this_Obj) {
 						break;
                 }
             }
+            _SlNo = 1;
             BindProductionOrderDetailList(productionOrder.ID);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
@@ -470,6 +472,7 @@ function ResetProductionOrder() {
 						break;
 				}
 			}
+			_SlNo = 1;
             BindProductionOrderDetailList($('#ID').val(), false);
             clearUploadControl();
             PaintImages($('#ProductionOrderForm #ID').val(), _isApproval);
@@ -509,7 +512,8 @@ function SaveSuccessProductionOrder(data, status) {
                     $('#IsDocLocked').val("True");
                 $('#IsUpdate').val('True');
 				$("#divProductionOrderForm").load("ProductionOrder/ProductionOrderForm?id=" + _result.ID + "&saleOrderID=" + _result.SaleOrderID + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function () {
-                    //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+				    //ChangeButtonPatchView("ProductionOrder", "btnPatchProductionOrderNew", "Edit", _result.ID);
+				    _SlNo = 1;
                     BindProductionOrderDetailList(_result.ID);
                     clearUploadControl();
                     PaintImages(_result.ID, _isApproval);
@@ -663,6 +667,11 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                      searchPlaceholder: "Search"
                  },
                  columns: [
+                      {
+                          "data": "", render: function (data, type, row) {
+                              return _SlNo++
+                          }, "defaultContent": "<i></i>", "width": "2%"
+                      },
                  {
                      "data": "Product.Code", render: function (data, type, row) {
                          debugger;
@@ -781,11 +790,11 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                  },
                  ],
                  columnDefs: [
-                     { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
-                     { className: "text-left", "targets": [0, 8, 1] },
-                     { className: "text-center", "targets": [9, 10] },
-                     { "targets": [0], "width": "20%" },
-                     { "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "width": "8%" },
+                     { className: "text-right", "targets": [3, 4, 5, 6, 7, 8] },
+                     { className: "text-left", "targets": [1, 9, 2] },
+                     { className: "text-center", "targets": [10, 11,0] },
+                     { "targets": [1], "width": "20%" },
+                     { "targets": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "width": "8%" },
                  ]
              });
     }
@@ -806,6 +815,11 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                     searchPlaceholder: "Search"
                 },
                 columns: [
+                     {
+                         "data": "", render: function (data, type, row) {
+                             return _SlNo++
+                         }, "defaultContent": "<i></i>", "width": "2%"
+                     },
                 {
                     "data": "Product.Code", render: function (data, type, row) {
                         debugger;
@@ -894,11 +908,11 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
                 },
                 ],
                 columnDefs: [
-                    { className: "text-right", "targets": [2, 3, 4, 5] },
-                    { className: "text-left", "targets": [0, 6, 1] },
-                    { className: "text-center", "targets": [7, 8] },
-                    { "targets": [0], "width": "20%" },
-                    { "targets": [1, 2, 3, 4, 5, 6, 7, 8], "width": "8%" },
+                    { className: "text-right", "targets": [3, 4, 5, 6] },
+                    { className: "text-left", "targets": [1, 7, 2] },
+                    { className: "text-center", "targets": [8, 9,0] },
+                    { "targets": [1], "width": "20%" },
+                    { "targets": [2, 3, 4, 5, 6, 7, 8, 9], "width": "8%" },
                 ]
             });
     }
@@ -913,7 +927,10 @@ function BindProductionOrderDetailList(id, IsSaleOrder) {
 function GetProductionOrderDetailListByProductionOrderID(id, IsSaleOrder) {
     try {
         debugger;
-
+        if (IsSaleOrder == undefined)
+            _SlNo = 0;
+        else
+            _SlNo = 1;
         var productionOrderDetailList = [];
         if (IsSaleOrder) {
             var data = { "saleOrderID": $('#ProductionOrderForm #hdnSaleOrderID').val() };
@@ -958,7 +975,8 @@ function AddProductionOrderDetailList() {
 function AddProductionOrderDetailToList() {
     debugger;    
     //$('#FormProductionOrderDetail').submit();  // you submit form
-        if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True') {
+    if ($('#FormProductionOrderDetail #IsUpdate').val() == 'True') {
+        _SlNo = 1;
             if (($('#ProductSpec').val().trim() != "") && ($('#UnitCode').val() != "") && ($('#orderQtyID span').text() == "") && ($('#producedQtyID span').text() == "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
                 debugger;
                 var productionOrderDetailList = _dataTable.ProductionOrderDetailList.rows().data();
@@ -1012,6 +1030,7 @@ function AddProductionOrderDetailToList() {
             if (($('#ProductID').val() != "") && ($('#ProductModelID').val() != "") && ($('#ProductSpec').val().trim() != "") && ($('#UnitCode').val() != "") && ((parseFloat($('#SaleOrderQty').val()) == 0) || (parseFloat($('#ProducedQty').val()) <= parseFloat($('#OrderQty').val())))) {
                 debugger;
                 if (_dataTable.ProductionOrderDetailList.rows().data().length === 0) {
+                    _SlNo = 0;
                     _dataTable.ProductionOrderDetailList.clear().rows.add(GetProductionOrderDetailListByProductionOrderID(_emptyGuid)).draw(false);
 
                     debugger;
@@ -1071,11 +1090,13 @@ function AddProductionOrderDetailToList() {
                             }
                         }
                         if (checkpoint == 1) {
+                            _SlNo = 1;
                             debugger;
                             _dataTable.ProductionOrderDetailList.clear().rows.add(productionOrderDetailList).draw(false);
                             $('#divModelPopProductionOrder').modal('hide');
                         }
                         else if (checkpoint == 0) {
+                            _SlNo = _dataTable.ProductionOrderDetailList.rows().data().length + 1;
                             var ProductionOrderDetailVM = new Object();
                             var Product = new Object;
                             var ProductModel = new Object()
@@ -1220,6 +1241,7 @@ function EditProductionOrderDetail(this_Obj) {
 
 function ConfirmDeleteProductionOrderDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).index();
     var productionOrderDetail = _dataTable.ProductionOrderDetailList.row($(this_Obj).parents('tr')).data();
     if (productionOrderDetail.ID === _emptyGuid) {
@@ -1601,6 +1623,7 @@ function EditRedirectToDocument(id) {
 						
                 }
             }
+            _SlNo = 1;
             BindProductionOrderDetailList(id);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
