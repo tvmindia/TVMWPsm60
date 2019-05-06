@@ -163,6 +163,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                 TitlesSelectList = _customerBusiness.GetTitleSelectList()
             };
             customerVM.IsUpdate = false;
+            customerVM.CustomerCategory = new CustomerCategoryViewModel()
+            {
+                CustomerCategorySelectList = _customerCategoryBusiness.GetCustomerCategoryForSelectList()
+            };
             return PartialView("_AddCustomerMaster", customerVM);
         }
         #endregion AddCustomerPartial

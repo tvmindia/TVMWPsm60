@@ -7,6 +7,8 @@ var _status = "";
 var _result = "";
 var _isCopy = false;
 var _isApproval = false;
+var _SlNo = 1;
+var _SlNoOtherCharge = 1;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -339,7 +341,9 @@ function EditQuotation(this_Obj) {
                         break;
                 }
             }
+            
             BindQuotationDetailList(Quotation.ID);
+            _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
@@ -374,7 +378,9 @@ function CopyQuotation(this_Obj) {
             ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Add");
             // $('#hdnQuoteNo').val(Quotation.QuoteNo);
             _isCopy = true;
+            _SlNo = 1;
             BindQuotationDetailList(Quotation.ID);
+          _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList(Quotation.ID);
             CalculateTotal();
             clearUploadControl();
@@ -543,7 +549,9 @@ function ResetQuotation() {
             //        ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "LockDocument", $('#ID').val());
             //        break;
             //}
+            _SlNo = 1;
             BindQuotationDetailList($('#ID').val(), false);
+            _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList($('#ID').val());
             CalculateTotal();
             clearUploadControl();
@@ -560,6 +568,25 @@ function ResetQuotation() {
 function SaveQuotation() {
     debugger;
     var quotationDetailList = _dataTable.QuotationDetailList.rows().data().toArray();
+    for (var i = 0; i < quotationDetailList.length; i++) {
+        if (quotationDetailList[i].ProductSpec != null && quotationDetailList[i].ProductSpec != '') {
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\<br>/g, "#br#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\<b>/g, "#bs#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/<\/b>/g, "#be#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\<i>/g, "#is#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/<\/i>/g, "#ie#");
+            quotationDetailList[i].ProductSpec = quotationDetailList[i].ProductSpec.replace(/\<br>/g, "#br#");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/(<([^>]+)>)/ig, '');
+            quotationDetailList[i].ProductSpec = quotationDetailList[i].ProductSpec.replace(/(<([^>]+)>)/ig, '');
+            //quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/\/o/g, "<br>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#bs#/g, "<b>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#be#/g, "</b>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#is#/g, "<i>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#ie#/g, "</i>");
+            quotationDetailList[i].ProductSpec = quotationDetailList[i].ProductSpec.replace(/#br#/g, "<br>");
+            quotationDetailList[i].ProductSpecHtml = quotationDetailList[i].ProductSpecHtml.replace(/#br#/g, "<br>");
+        }
+    }
     $('#DetailJSON').val(JSON.stringify(quotationDetailList));
     var otherChargesDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data().toArray();
     $('#OtherChargesDetailJSON').val(JSON.stringify(otherChargesDetailList));
@@ -592,7 +619,9 @@ function SaveSuccessQuotation(data, status) {
                 $("#divQuotationForm").load(str, function () {
                     //ChangeButtonPatchView("Quotation", "btnPatchQuotationNew", "Edit", _result.ID);
                     $('#lblQuotationInfo').text(_result.QuotationNo);
+                    _SlNo = 1;
                     BindQuotationDetailList(_result.ID);
+                    _SlNoOtherCharge = 1;
                     BindQuotationOtherChargesDetailList(_result.ID);
                     CalculateTotal();
                     clearUploadControl();
@@ -692,6 +721,11 @@ function BindQuotationOtherChargesDetailList(id) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNoOtherCharge++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              { "data": "OtherCharge.Description", render: function (data, type, row) { return data }, "defaultContent": "<i></i>" },
              { "data": "OtherCharge.SACCode", "defaultContent": "<i></i>" },
              { "data": "ChargeAmount", render: function (data, type, row) { return formatCurrency(roundoff(data)) }, "defaultContent": "<i></i>" },
@@ -705,7 +739,8 @@ function BindQuotationOtherChargesDetailList(id) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     var GSTPerc = CGST + SGST + IGST
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt) + '<br/><i style="font-size:10px;color:brown">GST(%) -</i>' + GSTPerc
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -738,12 +773,12 @@ function BindQuotationOtherChargesDetailList(id) {
              },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "30%" },
-                 { "targets": [1, 2, 4], "width": "20%" },
-                 { "targets": [3, 5], "width": "20%" },
-                 { className: "text-right", "targets": [2, 3, 4] },
-                 { className: "text-left", "targets": [0, 1] },
-                 { className: "text-center", "targets": [5] }
+                 { "targets": [1], "width": "30%" },
+                 { "targets": [2, 3, 5], "width": "20%" },
+                 { "targets": [4, 6], "width": "20%" },
+                 { className: "text-right", "targets": [3, 4, 5] },
+                 { className: "text-left", "targets": [1, 2] },
+                 { className: "text-center", "targets": [6,0] }
              ],
              destroy: true,
          });
@@ -769,9 +804,13 @@ function BindQuotationDetailList(id, IsEstimated) {
                  searchPlaceholder: "Search"
              },
              columns: [
+                  {
+                      "data": "", render: function (data, type, row) {
+                          return _SlNo++
+                      }, "defaultContent": "<i></i>", "width": "2%"
+                  },
              {
                  "data": "Product.Code", render: function (data, type, row) {
-                     debugger;
                      if (row.ProductModel.ImageURL !== null) {
                          return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + "<div><table><tr><td><img height='80px' src='" + row.ProductModel.ImageURL + "'></td><td>&nbsp;</td><td>" + (row.ProductSpecHtml !== null ? row.ProductSpecHtml.replace(/"/g, "&quot") : "") + '</td></tr></table></div></p>"/>' + row.ProductModel.Name
                          //return row.Product.Name + "<br/>" + '<div style="width:100%" class="show-popover" data-placement="top" data-html="true" data-toggle="popover" data-placement="top" data-title="<p align=left>Product Specification" data-content="' + "<div><table><tr><td><img height='80px' src='" + row.ProductModel.ImageURL + "'></td><td>&nbsp;</td><td>" + (row.ProductSpec !== null ? row.ProductSpec.replace(/"/g, "&quot") : "") + '</td></tr></table></div></p>"/>' + row.ProductModel.Name
@@ -811,12 +850,12 @@ function BindQuotationDetailList(id, IsEstimated) {
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     var GSTPerc = CGST + SGST + IGST
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt) + '<br/><i style="font-size:10px;color:brown">GST(%) -</i>' + GSTPerc
                  }, "defaultContent": "<i></i>"
              },
              {
                  "data": "Rate", render: function (data, type, row) {
-                     debugger;
                      var CGST = parseFloat(row.CGSTPerc != "" ? row.CGSTPerc : 0);
                      var SGST = parseFloat(row.SGSTPerc != "" ? row.SGSTPerc : 0);
                      var IGST = parseFloat(row.IGSTPerc != "" ? row.IGSTPerc : 0);
@@ -831,7 +870,6 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              {
                  "data": "Rate", "orderable": false, render: function (data, type, row) {
-                     debugger;
                      if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
                          return '<a href="#" class="actionLink"  onclick="EditQuotationDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteQuotationDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
                      }
@@ -846,12 +884,12 @@ function BindQuotationDetailList(id, IsEstimated) {
              },
              ],
              columnDefs: [
-                 { "targets": [0], "width": "23%" },
-                 { "targets": [1, 2, 3, 4, 5, 6, 7], "width": "10%" },
-                 { "targets": [8], "width": "7%" },
-                 { className: "text-right", "targets": [2, 3, 4, 5, 6, 7] },
-                 { className: "text-left", "targets": [1, 4, 0] },
-                 { className: "text-center", "targets": [8] }
+                 { "targets": [1], "width": "23%" },
+                 { "targets": [2, 3, 4, 5, 6, 7, 8], "width": "10%" },
+                 { "targets": [9], "width": "7%" },
+                 { className: "text-right", "targets": [3, 4, 5, 6, 7, 8] },
+                 { className: "text-left", "targets": [2, 5, 1] },
+                 { className: "text-center", "targets": [0,9] }
              ],
              initComplete: function (settings, json) {
                  $('#QuotationForm #Discount').trigger('change');
@@ -866,7 +904,10 @@ function BindQuotationDetailList(id, IsEstimated) {
 function GetQuotationDetailListByQuotationID(id, IsEstimated) {
     try {
         debugger;
-
+        if (id == _emptyGuid &&(IsEstimated == true && $('#QuotationForm #IsUpdate').val() == "False"))
+            _SlNo = 1;
+        else if ($('#QuotationForm #IsUpdate').val() == "True")
+            _SlNo = 1;
         var quotationDetailList = [];
         if (IsEstimated) {
             var data = { "estimateID": $('#QuotationForm #hdnEstimateID').val() };
@@ -907,6 +948,7 @@ function AddQuotationDetailToList() {
     $("#FormQuotationDetail").submit(function () { });
     debugger;
     if ($('#FormQuotationDetail #IsUpdate').val() == 'True') {
+        _SlNo = 1;
         if (($('#divModelQuotationPopBody #Rate').val() > 0) && ($('#divModelQuotationPopBody #Qty').val() > 0) && ($('#divModelQuotationPopBody #UnitCode').val() != "")) {
             debugger;
             var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
@@ -952,6 +994,7 @@ function AddQuotationDetailToList() {
             debugger;
             if (_dataTable.QuotationDetailList.rows().data().length === 0) {
                 _dataTable.QuotationDetailList.clear().rows.add(GetQuotationDetailListByQuotationID(_emptyGuid, false)).draw(false);
+                _SlNo = 1;
                 debugger;
                 var quotationDetailList = _dataTable.QuotationDetailList.rows().data();
                 quotationDetailList[0].Product.Code = $("#divModelQuotationPopBody #ProductID").val() != "" ? $("#divModelQuotationPopBody #ProductID option:selected").text().split("-")[0].trim() : "";
@@ -962,7 +1005,7 @@ function AddQuotationDetailToList() {
                 quotationDetailList[0].ProductModel.Name = $("#divModelQuotationPopBody #ProductModelID").val() != "" ? $("#divModelQuotationPopBody #ProductModelID option:selected").text() : "";
                 quotationDetailList[0].ProductModel.ImageURL = $('#hdnProductModelImage').val();
                 quotationDetailList[0].ProductSpecHtml = $('#divModelQuotationPopBody #ProductSpec').val();
-                quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val().replace('<b>/g','').replace('</b>/g','').replace('<i>/g','').replace('</i>/g','');
+                quotationDetailList[0].ProductSpec = $('#divModelQuotationPopBody #ProductSpec').val().replace('<b>/g', '').replace('</b>/g', '').replace('<i>/g', '').replace('</i>/g', '');
                 quotationDetailList[0].Qty = $('#divModelQuotationPopBody #Qty').val() != "" ? $('#divModelQuotationPopBody #Qty').val() : 0;
                 quotationDetailList[0].UnitCode = $('#divModelQuotationPopBody #UnitCode').val();
                 quotationDetailList[0].Unit.Description = $("#divModelQuotationPopBody #UnitCode").val() != "" ? $("#divModelQuotationPopBody #UnitCode option:selected").text().trim() : "";
@@ -999,6 +1042,7 @@ function AddQuotationDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
+                        _SlNo = 1;
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.QuotationDetailList.clear().rows.add(quotationDetailList).draw(false);
@@ -1006,6 +1050,8 @@ function AddQuotationDetailToList() {
                         $('#divModelPopQuotation').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        if ($('#QuotationForm #IsUpdate').val() == 'True' || ($('#QuotationForm #EstimateID') != null && $('#QuotationForm #EstimateID') != ''))
+                            _SlNo = _dataTable.QuotationDetailList.rows().data().length + 1;
                         ClearCalculatedFields();
                         var QuotationDetailVM = new Object();
                         QuotationDetailVM.ID = _emptyGuid;
@@ -1121,6 +1167,7 @@ function EditQuotationDetail(this_Obj) {
 }
 function ConfirmDeleteQuotationDetail(this_Obj) {
     debugger;
+    _SlNo = 1;
     _datatablerowindex = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).index();
     var quotationDetail = _dataTable.QuotationDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationDetail.ID === _emptyGuid) {
@@ -1168,6 +1215,7 @@ function CalculateGrandTotal(value) {
     $('#lblGrandTotal').text(formatCurrency(GrandTotal));
 }
 function ClearCalculatedFields() {
+    $('#lblTotalItemAmount').text('0.00');
     $('#lblTaxTotal').text('0.00');
     $('#lblItemTotal').text('0.00');
     $('#lblGrossAmount').text('0.00');
@@ -1529,6 +1577,7 @@ function AddOtherExpenseDetailToList() {
     $("#FormOtherExpenseDetail").submit(function () { });
     debugger;
     if ($('#FormOtherExpenseDetail #IsUpdate').val() == 'True') {
+        _SlNoOtherCharge = 1;
         if (($('#divModelQuotationPopBody #OtherChargeCode').val() != "") && ($('#divModelQuotationPopBody #ChargeAmount').val() != "")) {
             debugger;
             var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
@@ -1557,6 +1606,7 @@ function AddOtherExpenseDetailToList() {
             debugger;
             if (_dataTable.QuotationOtherChargesDetailList.rows().data().length === 0) {
                 _dataTable.QuotationOtherChargesDetailList.clear().rows.add(GetQuotationOtherChargesDetailListByQuotationID(_emptyGuid, false)).draw(false);
+                _SlNoOtherCharge = 1;
                 debugger;
                 var quotationOtherExpenseDetailList = _dataTable.QuotationOtherChargesDetailList.rows().data();
                 quotationOtherExpenseDetailList[0].OtherCharge.Description = $("#divModelQuotationPopBody #OtherChargeCode").val() != "" ? $("#divModelQuotationPopBody #OtherChargeCode option:selected").text().split("-")[0].trim() : "";
@@ -1589,6 +1639,7 @@ function AddOtherExpenseDetailToList() {
                         }
                     }
                     if (checkpoint == 1) {
+                        _SlNoOtherCharge = 1;
                         debugger;
                         ClearCalculatedFields();
                         _dataTable.QuotationOtherChargesDetailList.clear().rows.add(quotationOtherExpenseDetailList).draw(false);
@@ -1596,6 +1647,7 @@ function AddOtherExpenseDetailToList() {
                         $('#divModelPopQuotation').modal('hide');
                     }
                     else if (checkpoint == 0) {
+                        _SlNoOtherCharge = _dataTable.QuotationOtherChargesDetailList.rows().data().length + 1;
                         ClearCalculatedFields();
                         var QuotationOtherChargesDetailVM = new Object();
                         QuotationOtherChargesDetailVM.ID = _emptyGuid;
@@ -1631,7 +1683,7 @@ function AddOtherExpenseDetailToList() {
 function GetQuotationOtherChargesDetailListByQuotationID(id) {
     try {
         debugger;
-
+        _SlNoOtherCharge = 1;
         var quotationOtherChargesDetailList = [];
 
         var data = { "quotationID": id };
@@ -1688,6 +1740,7 @@ function EditQuotationOtherChargesDetail(this_Obj) {
 }
 function ConfirmDeleteQuotationOtherChargeDetail(this_Obj) {
     debugger;
+    _SlNoOtherCharge = 1;
     _datatablerowindex = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).index();
     var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.row($(this_Obj).parents('tr')).data();
     if (quotationOtherChargeDetail.ID === _emptyGuid) {
@@ -1732,10 +1785,11 @@ function DeleteQuotationOtherChargeDetail(ID) {
 }
 function CalculateTotal() {
     debugger;
-    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, TotalDiscount = 0.00;
+    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, TotalDiscount = 0.00,TotalItemAmt=0.00;
     var quotationDetail = _dataTable.QuotationDetailList.rows().data();
     var quotationOtherChargeDetail = _dataTable.QuotationOtherChargesDetailList.rows().data();
     for (var i = 0; i < quotationDetail.length; i++) {
+        var itemTotal = parseFloat(quotationDetail[i].Rate != "" ? quotationDetail[i].Rate : 0) * parseInt(quotationDetail[i].Qty != "" ? quotationDetail[i].Qty : 0);
         var TaxableAmt = (parseFloat(quotationDetail[i].Rate != "" ? quotationDetail[i].Rate : 0) * parseInt(quotationDetail[i].Qty != "" ? quotationDetail[i].Qty : 1)) - parseFloat(quotationDetail[i].Discount != "" ? quotationDetail[i].Discount : 0)
         var ItemDiscount = (parseFloat(quotationDetail[i].Discount != "" ? quotationDetail[i].Discount : 0));
         var CGST = parseFloat(quotationDetail[i].CGSTPerc != "" ? quotationDetail[i].CGSTPerc : 0);
@@ -1746,6 +1800,7 @@ function CalculateTotal() {
         var IGSTAmt = parseFloat(TaxableAmt * IGST / 100);
         var GSTAmt = parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt)
         var GrossTotalAmt = TaxableAmt + GSTAmt
+        TotalItemAmt = roundoff(parseFloat(TotalItemAmt) + parseFloat(itemTotal));
         TotalDiscount = roundoff(parseFloat(TotalDiscount) + parseFloat(ItemDiscount));
         TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
         TaxableTotal = roundoff(parseFloat(TaxableTotal) + parseFloat(TaxableAmt))
@@ -1763,6 +1818,7 @@ function CalculateTotal() {
         OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(Total))
     }
     GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt))
+    $('#lblTotalItemAmount').text(roundoff(TotalItemAmt));
     $('#lblTaxTotal').text(roundoff(TaxTotal));
     $('#lblItemTotal').text(roundoff(TaxableTotal));
     $('#lblDiscountTotal').text(roundoff(TotalDiscount));
@@ -1908,7 +1964,9 @@ function EditRedirectToDocument(id) {
                 }
 
             }
+            _SlNo = 1;
             BindQuotationDetailList(id);
+            _SlNoOtherCharge = 1;
             BindQuotationOtherChargesDetailList(id);
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());

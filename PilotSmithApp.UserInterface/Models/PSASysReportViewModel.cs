@@ -896,5 +896,79 @@ namespace PilotSmithApp.UserInterface.Models
         public string DateFilter { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
     }
-
+    public class EstimateDetailReportViewModel
+    {
+        public string EstimateNo { get; set; }
+        public DateTime EstimateDate { get; set; }
+        public string EstimateDateFormatted { get; set; }
+        public Guid? ProductID { get; set; }
+        public Guid? ProductModelID { get; set; }
+        public string ProductSpec { get; set; }
+        public string ProductName { get; set; }
+        public string ProdModel { get; set; }
+        public decimal? Qty { get; set; }
+        public decimal? TotalCostRate { get; set; }
+        public decimal? TotalSellingRate { get; set; }
+        public int? UnitCode { get; set; }
+        public ProductModelViewModel ProductModel { get; set; }
+        public UnitViewModel Unit { get; set; }
+        public CustomerViewModel Customer { get; set; }
+        public DataTablePagingViewModel DataTablePaging { get; set; }
+        [Display(Name = "Estimate From")]
+        public string AdvFromDate { get; set; }
+        [Display(Name = "Estimate To")]
+        public string AdvToDate { get; set; }
+        [Display(Name = "Estimate Valid From")]
+        public string AdvValidFromDate { get; set; }
+        [Display(Name = "Estimate Valid To")]
+        public string AdvValidToDate { get; set; }
+        [Display(Name = "Customer")]
+        public string AdvCustomer { get; set; }
+        [Display(Name = "Prepared By")]
+        public Guid AdvPreparedBy { get; set; }
+        [Display(Name = "Total Cost Rate >=")]
+        public decimal? AdvTotalCostRateFrom { get; set; }
+        [Display(Name = "Total Cost Rate <=")]
+        public decimal? AdvTotalCostRateTo { get; set; }
+        [Display(Name = "Total Selling Rate >=")]
+        public decimal? AdvTotalSellingRateFrom { get; set; }
+        [Display(Name = "Total Selling Rate <=")]
+        public decimal? AdvTotalSellingRateTo { get; set; }
+        [Display(Name = "District")]
+        public int? AdvDistrictCode { get; set; }
+        [Display(Name = "State")]
+        public int? AdvStateCode { get; set; }
+        [Display(Name = "Country")]
+        public int? AdvCountryCode { get; set; }
+        [Display(Name = "Area")]
+        public int? AdvAreaCode { get; set; }
+        [Display(Name = "Customer Category")]
+        public int? AdvCustomerCategoryCode { get; set; }
+        [Display(Name = "Branch")]
+        public int? AdvBranchCode { get; set; }
+        public BranchViewModel Branch { get; set; }
+        [Display(Name = "Document Status")]
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatusViewModel DocumentStatus { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUserViewModel PSAUser { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+        public ProductViewModel Product { get; set; }
+        [Display(Name = "Product")]
+        public string AdvProduct { get; set; }
+        [Display(Name = "Product Model")]
+        public string AdvProductModel { get; set; }
+        [Display(Name = "Search")]
+        public string SearchTerm { get; set; }
+        [Display(Name = "Report Type")]
+        public int? AdvReportType { get; set; }
+        public EmployeeViewModel Employee { get; set; }
+        public List<EstimateDetailReportViewModel> EstimateReportList { get; set; }
+        public string EstNo { get; set; }
+        public string DateFilter { get; set; }
+        public PSASysCommonViewModel PSASysCommon { get; set; }
+        public bool CostPriceHasAccess { get; set; }
+    }
 }

@@ -50,12 +50,12 @@ else
 
                     if ($(parent + '.divStateSelectList')[0]) {
                         $(parent + '.divStateSelectList').load('State/StateSelectList?countryCode=' + countryCode + '&required=' + $('#hdnStateRequired').val(), function () {
-                            $('#CustomerForm #StateCode').change(function () {
+                            $('#CustomerForm #StateCode,#FormCustomerMaster #StateCode').change(function () {
                                 $(parent + ' #hdnDistrictCode').val('');
                                 $(parent + ' #hdnAreaCode').val('');
                                 $(parent + ' #DistrictCode').val('');
                                 $(parent + ' #AreaCode').val('');
-                                if (_parentFormID === 'CustomerForm') {
+                                if (_parentFormID === 'CustomerForm' || _parentFormID === 'FormCustomerMaster') {
                                     if (this.value !== "")
                                         StateCodeOnChange();
                                 }
@@ -65,10 +65,10 @@ else
                     if ($(parent + '.divDistrictSelectList')[0]) {
                         $(parent + '.divDistrictSelectList').load('District/DistrictSelectList?countryCode=' + countryCode + '&required=' + $('#hdnDistrictRequired').val(), function () {
                             //$('#CustomerForm #DistrictCode').val($('#CustomerForm #hdnDistrictCode').val());
-                            $('#CustomerForm #DistrictCode').change(function () {
+                            $('#CustomerForm #DistrictCode,#FormCustomerMaster #DistrictCode').change(function () {
                                 $(parent + ' #hdnAreaCode').val('');
                                 $(parent + ' #AreaCode').val('');
-                                if (_parentFormID === 'CustomerForm') {
+                                if (_parentFormID === 'CustomerForm' || _parentFormID === 'FormCustomerMaster') {
                                     if (this.value !== "")
                                         DistrictCodeOnChange();
                                 }
@@ -83,8 +83,8 @@ else
                         //});
                         $(parent + '.divAreaSelectList').load('Area/AreaSelectList?countryCode=' + countryCode + '&required=' + $('#hdnAreaRequired').val(), function () {
                             //$('#CustomerForm #AreaCode').val($('#CustomerForm #hdnAreaCodeCode').val());
-                            $('#CustomerForm #AreaCode').change(function () {
-                                if (_parentFormID === 'CustomerForm') {
+                            $('#CustomerForm #AreaCode,#FormCustomerMaster #AreaCode').change(function () {
+                                if (_parentFormID === 'CustomerForm' || _parentFormID === 'FormCustomerMaster') {
                                     if (this.value !== "")
                                         AreaCodeOnChange();
                                 }
