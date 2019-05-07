@@ -76,7 +76,7 @@
             </tr>
         </tbody>
     </table>
-    @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, totalCess = 0, otherChargeAmt = 0, totalGSTAmt = 0;
+    @{ decimal itemtaxableAmount = 0, itemDiscountAmount = 0, totalItemDiscountAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, totalCess = 0, otherChargeAmt = 0, totalGSTAmt = 0, itemTotal = 0;
         var tot = "";
         PSASysCommon pSASysCommon = new PSASysCommon();
     }
@@ -104,7 +104,9 @@
                 int slno = 1;
                 foreach (var mp in Model.ProformaInvoiceDetailList)
                 {
-                    decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, CessAmt = 0;
+                    decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, CessAmt = 0, itemTotalAmt = 0;
+                    itemTotalAmt = (decimal)mp.Qty * (decimal)mp.Rate;
+                    itemDiscountAmount = Math.Round((decimal)mp.Discount, 2);
                     itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
                     CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
                     SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
@@ -137,17 +139,20 @@
                         @*<td style="width:8%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@CessAmt</td>*@
                         <td style="width:13%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
                     </tr>
-                    slno = slno + 1;
-                    totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
-                    totalCess = totalCess + (decimal)mp.CessAmt;
-                    totalCGST = totalCGST + (decimal)CGSTAmt;
-                    totalSGST = totalSGST + (decimal)SGSTAmt;
-                    totalIGST = totalIGST + (decimal)IGSTAmt;
-                }
-                grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST + totalCess, 2);
-                grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
-                totalGSTAmt = Math.Round(totalGSTAmt + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
-            }
+                                    slno = slno + 1;
+                                    totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
+                                    itemTotal = itemTotal + (decimal)@itemTotalAmt;
+                                    totalItemDiscountAmount = totalItemDiscountAmount + (decimal)@itemDiscountAmount;
+                                    totalCess = totalCess + (decimal)mp.CessAmt;
+                                    totalCGST = totalCGST + (decimal)CGSTAmt;
+                                    totalSGST = totalSGST + (decimal)SGSTAmt;
+                                    totalIGST = totalIGST + (decimal)IGSTAmt;
+                                }
+                                itemTotal = Math.Round(itemTotal, 2);
+                                grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST + totalCess, 2);
+                                grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
+                                totalGSTAmt = Math.Round(totalGSTAmt + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
+                            }
             <tr>
                 @{
                     var table1Sum = pSASysCommon.ConvertToCurrencyStandards((double)grossAmt, "IND");
@@ -225,6 +230,29 @@
                 <td colspan="5" style="font:12px;padding-top:20px;">
                     <table style="width:100%;line-height: 20px;">
                         <tr class="">
+                            <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;" valign="top">
+                                Total Item Amount
+                            </td>
+
+                            <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid .5px" align="right" valign="top">
+                                @itemTotal
+                            </td>
+                        </tr>
+                        @{
+                            if (@totalItemDiscountAmount > 0)
+                            {
+                                <tr class="">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;" valign="top">
+                                        Total Item Discount
+                                    </td>
+
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid .5px" align="right" valign="top">
+                                        @totalItemDiscountAmount
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        <tr class="">
                             <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left" valign="top">
                                 Total Taxable Amount
                             </td>
@@ -268,15 +296,22 @@
                                 @grossAmt
                             </td>
                         </tr>
-                        <tr class="item">
-                            <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px;text-align:left" valign="top">
-                                Cash Discount
-                            </td>
+                       
+                        @{
+                            if (Model.Discount > 0)
+                            {
+                                <tr class="item">
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px;text-align:left" valign="top">
+                                        Cash Discount
+                                    </td>
 
-                            <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid 1.5px" align="right" valign="top">
-                                @Model.Discount
-                            </td>
-                        </tr>
+                                    <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid 1.5px" align="right" valign="top">
+                                        @Model.Discount
+                                    </td>
+                                </tr>
+                            }
+                        }
+
 
                         <tr class="total">
                             <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:14px;text-align:left;font-weight:bold;" valign="top">Grand Total</td>

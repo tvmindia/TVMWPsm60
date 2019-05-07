@@ -563,12 +563,13 @@ function BindSaleInvoiceDetailList(id, IsSaleOrder, IsQuotation, IsProformaInvoi
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     var GSTPerc = CGST + SGST + IGST
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt) + '<br/><i style="font-size:10px;color:brown">GST(%) -</i>' + GSTPerc
                  }, "defaultContent": "<i></i>"
              },
             {//Cess
                 "data": "CessAmt", render: function (data, type, row) {
-                    return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess -</i>' + formatCurrency(data)
+                    return formatCurrency(data)+'<br/><i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc 
                 }, "defaultContent": "<i></i>"
             },
             {
@@ -1102,7 +1103,8 @@ function BindSaleInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder, IsP
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     var GSTPerc = CGST + SGST + IGST
+                     return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total GST : ₹ ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% : ₹ ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt) + '<br/><i style="font-size:10px;color:brown">GST(%) -</i>' + GSTPerc
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -1366,10 +1368,12 @@ function DeleteSaleInvoiceOtherChargeDetail(ID) {
 
 //Calculations Methods
 function CalculateTotal() {
-    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, CessAmt = 0.00;
+    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, CessAmt = 0.00, TotalDiscount = 0.00, TotalItemAmt = 0.00;
     var saleInvoiceDetail = _dataTable.SaleInvoiceDetailList.rows().data();
     var saleInvoiceOtherChargeDetail = _dataTable.SaleInvoiceOtherChargesDetailList.rows().data();
     for (var i = 0; i < saleInvoiceDetail.length; i++) {
+        var ItemDiscount = (parseFloat(saleInvoiceDetail[i].Discount != "" ? saleInvoiceDetail[i].Discount : 0));
+        var itemTotal = parseFloat(saleInvoiceDetail[i].Rate != "" ? saleInvoiceDetail[i].Rate : 0) * parseInt(saleInvoiceDetail[i].Qty != "" ? saleInvoiceDetail[i].Qty : 0);
         var TaxableAmt = (parseFloat(saleInvoiceDetail[i].Rate != "" ? saleInvoiceDetail[i].Rate : 0) * parseInt(saleInvoiceDetail[i].Qty != "" ? saleInvoiceDetail[i].Qty : 1)) - parseFloat(saleInvoiceDetail[i].Discount != "" ? saleInvoiceDetail[i].Discount : 0)
         var CGST = parseFloat(saleInvoiceDetail[i].CGSTPerc != "" ? saleInvoiceDetail[i].CGSTPerc : 0);
         var SGST = parseFloat(saleInvoiceDetail[i].SGSTPerc != "" ? saleInvoiceDetail[i].SGSTPerc : 0);
@@ -1382,6 +1386,8 @@ function CalculateTotal() {
         var Cess = roundoff(parseFloat(GSTAmt * saleInvoiceDetail[i].CessPerc / 100));
         CessAmt = roundoff(parseFloat(CessAmt) + parseFloat(Cess));
         var GrossTotalAmt = TaxableAmt + GSTAmt
+        TotalItemAmt = roundoff(parseFloat(TotalItemAmt) + parseFloat(itemTotal));
+        TotalDiscount = roundoff(parseFloat(TotalDiscount) + parseFloat(ItemDiscount));
         TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
         TaxableTotal = roundoff(parseFloat(TaxableTotal) + parseFloat(TaxableAmt))
         GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(GrossTotalAmt))
@@ -1400,6 +1406,8 @@ function CalculateTotal() {
         OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(Total))
     }
     GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt) + parseFloat(CessAmt))
+    $('#lblTotalItemAmount').text(roundoff(TotalItemAmt));
+    $('#lblDiscountTotal').text(roundoff(TotalDiscount));
     $('#lblTaxTotal').text(TaxTotal);
     $('#lblItemTotal').text(TaxableTotal);
     $('#lblGrossAmount').text(GrossAmount);
