@@ -289,14 +289,14 @@
                 </div>
 
 
-                <div class="col-md-6">
+                <div class="col-md-6 no-left-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvProductModel, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-md-12">
-                    </div>@Html.DropDownListFor(model => model.AdvProductModel, Model.ProductModel.ProductModelSelectList, "Select product model", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                    @Html.DropDownListFor(model => model.AdvProductModel, Model.ProductModel.ProductModelSelectList, "Select product model", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                 </div>
-
+                </div>
                 <div class="col-md-12">&nbsp;</div>
 
             </div>
@@ -323,7 +323,8 @@
                         <th>Product Spec.</th>
                         <th>Sale Order Qty</th>
                         <th>Pending Qty</th>
-                        <th>Sale Order Amount</th>
+                        <th>Sale Order Taxable Amount</th>
+                        <th>Sale Order Amount (Incl.Tax)</th>
                         <th>Branch</th>
                         <th>Document Owner</th>
                     </tr>

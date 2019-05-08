@@ -273,6 +273,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string ProductName { get; set; }
         public string ProdModel { get; set; }
         public decimal? Qty { get; set; }
+        public decimal? TaxableAmount { get; set; }
         public decimal? Amount { get; set; }
         public int? UnitCode { get; set; }            
         public UnitViewModel Unit { get; set; }
@@ -293,9 +294,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Referred By")]
         public int? AdvReferencePersonCode { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }
-        [Display(Name = "Amount >=")]
+        [Display(Name = "Sale Order Amount (Incl.Tax) >=")]
         public decimal? AdvAmountFrom { get; set; }
-        [Display(Name = "Amount <=")]
+        [Display(Name = "Sale Order Amount (Incl.Tax) <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }
@@ -351,6 +352,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string ProdModel { get; set; }
         public decimal? Qty { get; set; }
         public decimal? Amount { get; set; }
+        public decimal? TaxableAmount { get; set; }
         public int? UnitCode { get; set; }
         public ProductModelViewModel ProductModel { get; set; }
         public UnitViewModel Unit { get; set; }
@@ -371,9 +373,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Referred By")]
         public int? AdvReferencePersonCode { get; set; }
         public ReferencePersonViewModel ReferencePerson { get; set; }
-        [Display(Name = "Amount >=")]
+        [Display(Name = "Total Amount (Incl.Tax) >=")]
         public decimal? AdvAmountFrom { get; set; }
-        [Display(Name = "Amount <=")]
+        [Display(Name = "Total Amount (Incl.Tax) <=")]
         public decimal? AdvAmountTo { get; set; }
         [Display(Name = "District")]
         public int? AdvDistrictCode { get; set; }

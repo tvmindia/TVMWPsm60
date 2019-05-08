@@ -616,6 +616,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingSaleOrderReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : pendingSaleOrderReportObj.Customer.ContactPerson);                                       
                                         pendingSaleOrderReportObj.Branch = new Branch();
                                         pendingSaleOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingSaleOrderReportObj.Branch.Description);
+                                        pendingSaleOrderReportObj.TaxableAmount = (sdr["TaxableAmount"].ToString() != "" ? decimal.Parse(sdr["TaxableAmount"].ToString()) : pendingSaleOrderReportObj.TaxableAmount);
                                         pendingSaleOrderReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : pendingSaleOrderReportObj.Amount);
                                         pendingSaleOrderReportObj.PSAUser = new PSAUser();
                                         pendingSaleOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingSaleOrderReportObj.PSAUser.LoginName);                                       
@@ -725,6 +726,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : saleOrderReportObj.Customer.ContactPerson);
                                         saleOrderReportObj.Branch = new Branch();
                                         saleOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : saleOrderReportObj.Branch.Description);
+                                        saleOrderReportObj.TaxableAmount = (sdr["TaxableAmount"].ToString() != "" ? decimal.Parse(sdr["TaxableAmount"].ToString()) : saleOrderReportObj.TaxableAmount);
                                         saleOrderReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : saleOrderReportObj.Amount);
                                         saleOrderReportObj.PSAUser = new PSAUser();
                                         saleOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : saleOrderReportObj.PSAUser.LoginName);

@@ -235,13 +235,18 @@ function BindOrReloadSaleOrderReportTable(action) {
                },
                { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
+                {
+                    "data": "TaxableAmount", render: function (data, type, row) {
+                        return formatCurrency(roundoff(row.TaxableAmount))
+                    }, "defaultContent": "<i>-</i>"
+                },
                {
                      "data": "Amount", render: function (data, type, row) {
-                         return formatCurrency(row.Amount)
+                         return formatCurrency(roundoff(row.Amount))
                      }, "defaultContent": "<i>-</i>"
                 },
             ],
-            columnDefs: [{ className: "text-right", "targets": [7] },
+            columnDefs: [{ className: "text-right", "targets": [7,8] },
                          { className: "text-left", "targets": [1, 3, 4, 6, 5] },
                          { className: "text-center", "targets": [0,] },
                            { "targets": [0], "width": "15%" },
@@ -252,6 +257,7 @@ function BindOrReloadSaleOrderReportTable(action) {
                            { "targets": [6], "width": "8%" },
                            { "targets": [5], "width": "5%" },
                            { "targets": [7], "width": "10%" },
+                           { "targets": [8], "width": "10%" },
             ],
             destroy: true,
             rowCallback: function (row, data) {
