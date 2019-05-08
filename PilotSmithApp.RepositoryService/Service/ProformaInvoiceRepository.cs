@@ -218,6 +218,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                     proformaInvoice.CurrencyRate = (sdr["CurrencyRate"].ToString() != "" ? Decimal.Parse(sdr["CurrencyRate"].ToString()) : proformaInvoice.CurrencyRate);
                                     proformaInvoice.Currency = new Currency();
                                     proformaInvoice.Currency.Description = (sdr["CurrencyDescription"].ToString() != "" ? sdr["CurrencyDescription"].ToString() : proformaInvoice.Currency.Description);
+                                    proformaInvoice.LatestApprovalID = (sdr["LatestApprovalID"].ToString() != "" ? Guid.Parse(sdr["LatestApprovalID"].ToString()) : proformaInvoice.LatestApprovalID);
+                                    proformaInvoice.LatestApprovalStatus = (sdr["LatestApprovalStatus"].ToString() != "" ? int.Parse(sdr["LatestApprovalStatus"].ToString()) : proformaInvoice.LatestApprovalStatus);
+                                    proformaInvoice.LatestApprovalStatusDescription = (sdr["ApprovalDescription"].ToString() != "" ? (sdr["ApprovalDescription"].ToString()) : proformaInvoice.LatestApprovalStatusDescription);
                                 }
                         }
                     }
@@ -470,7 +473,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion Delete ProformaInvoice
 
         #region Delete ProformaInvoice Detail
-        public object DeleteProformaInvoiceDetail(Guid id)
+        public object DeleteProformaInvoiceDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
             SqlParameter outputStatus = null;
             try
@@ -488,6 +491,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteProformaInvoiceDetail]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();
@@ -637,7 +642,7 @@ namespace PilotSmithApp.RepositoryService.Service
         #endregion Update Proforma Invoice Email Info
 
         #region Delete Proforma Invoice OtherCharge Detail
-        public object DeleteProformaInvoiceOtherChargeDetail(Guid id)
+        public object DeleteProformaInvoiceOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
             SqlParameter outputStatus = null;
             try
@@ -655,6 +660,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.CommandText = "[PSA].[DeleteProformaInvoiceOtherCharge]";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.Add("@ID", SqlDbType.UniqueIdentifier).Value = id;
+                        cmd.Parameters.Add("@CreatedBy", SqlDbType.NVarChar, 250).Value = CreatedBy;
+                        cmd.Parameters.Add("@CreatedDate", SqlDbType.DateTime).Value = CreatedDate;
                         outputStatus = cmd.Parameters.Add("@Status", SqlDbType.SmallInt);
                         outputStatus.Direction = ParameterDirection.Output;
                         cmd.ExecuteNonQuery();

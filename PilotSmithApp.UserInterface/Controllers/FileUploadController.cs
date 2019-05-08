@@ -113,12 +113,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                         {
                             item.IsDocLocked = true;
                         }
-                        if(item.ParentType=="Quotation"||item.ParentType== "SaleOrder"||item.ParentType== "ProductionOrder")
+                        if(item.ParentType=="Quotation"||item.ParentType== "SaleOrder"||item.ParentType== "ProductionOrder"|| item.ParentType == "ProformaInvoice")
                         {
                             switch (item.ParentType)
                             {
                                 case "Quotation":
                                 case "SaleOrder":
+                                case "ProformaInvoice":
                                 case "ProductionOrder":
                                     //item.IsDocumentApprover= _approverBusiness.CheckIsDocumentOwner("QUO", appUA.UserName);
                                     item.IsDocumentApprover = true;

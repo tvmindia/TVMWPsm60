@@ -64,7 +64,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string CIN { get; set; }
         public string PAN { get; set; }
         public string EmailID { get; set; }
-
+        public string LatestApprovalStatusDescription { get; set; }
         public string DocumentType { get; set; }
         public string[] DocumentOwners { get; set; }
         public string DocumentOwner { get; set; }

@@ -7,6 +7,7 @@ var _status = "";
 var _result = "";
 var _SlNo = 1;
 var _SlNoOtherCharge = 1;
+var _isApproval = false;
 //---------------------------------------Docuement Ready--------------------------------------------------//
 $(document).ready(function () {
     try {
@@ -218,7 +219,7 @@ function EditProformaInvoice(this_Obj) {
     $('#lblProformaInvoiceInfo').text(ProformaInvoice.ProfInvNo);
     //this will return form body(html)
 
-    $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + ProformaInvoice.ID, function (responseTxt, statusTxt, xhr) {
+    $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + ProformaInvoice.ID + "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
@@ -226,14 +227,88 @@ function EditProformaInvoice(this_Obj) {
             // $('#spanSaleOrderID').text(ProformaInvoice.SaleOrder.SaleOrderNo);
             //$('#CustomerID').trigger('change');
             debugger;
+            //if ($('#IsDocLocked').val() == "True") {
+            //    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", ProformaInvoice.ID);
+            //}
+            //else {
+            //    //$('.switch-input').prop('disabled', true);
+            //    //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+            //    //$('.switch-label').attr('title', 'Document Locked');
+            //    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
+            //}
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", ProformaInvoice.ID);
+
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        _isApproval = false;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Draft", ProformaInvoice.ID);
+                        break;
+                    case "1":
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            _isApproval = false;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "ClosedForApprovalApproverEdit", ProformaInvoice.ID);
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "ClosedForApproval", ProformaInvoice.ID);
+                        }
+                        break;
+                    case "3":
+                        _isApproval = false;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", ProformaInvoice.ID);
+                        break;
+                    case "4":
+                        _isApproval = true;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Approved", ProformaInvoice.ID);
+                        break;
+                    default:
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True") {
+                                _isApproval = false;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", ProformaInvoice.ID);
+                            }
+                            else {
+                                _isApproval = true;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
+                            }
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
+                        }
+                        break;
+                }
             }
             else {
-                //$('.switch-input').prop('disabled', true);
-                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                //$('.switch-label').attr('title', 'Document Locked');
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "1":
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            _isApproval = false;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", ProformaInvoice.ID);
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
+                        }
+                        break;
+                    default:
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True") {
+                                _isApproval = false;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", ProformaInvoice.ID);
+                            }
+                            else {
+                                _isApproval = true;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
+                            }
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", ProformaInvoice.ID);
+                        }
+                        break;
+                }
             }
             _SlNo = 1;
             BindProformaInvoiceDetailList(ProformaInvoice.ID);
@@ -242,7 +317,7 @@ function EditProformaInvoice(this_Obj) {
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(ProformaInvoice.ID);
+            PaintImages(ProformaInvoice.ID, _isApproval);
             $('#hdnInvoiceType').val(ProformaInvoice.InvoiceType);
             if (ProformaInvoice.InvoiceType == "SB") {
                 $('#btnAddItems').css("display", "none");
@@ -264,7 +339,7 @@ function EditProformaInvoice(this_Obj) {
     });
 }
 function ResetProformaInvoice(event) {
-    $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + $('#ProformaInvoiceForm #ID').val(), function (responseTxt, statusTxt, xhr) {
+    $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + $('#ProformaInvoiceForm #ID').val()+ "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             //if ($('#hdnDescription').val() == "OPEN") {
             //    $('.switch-input').prop('checked', true);
@@ -281,28 +356,109 @@ function ResetProformaInvoice(event) {
                 openNav();
             }
             debugger;
-            if ($('#IsUpdate').val() == "False") {
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Add", $('#ProformaInvoiceForm #ID').val());
-            }
-            else if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", $('#ProformaInvoiceForm #ID').val());
+            //if ($('#IsUpdate').val() == "False") {
+            //    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Add", $('#ProformaInvoiceForm #ID').val());
+            //}
+            //else if ($('#IsDocLocked').val() == "True") {
+            //    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", $('#ProformaInvoiceForm #ID').val());
+            //}
+            //else {
+            //    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", $('#ProformaInvoiceForm #ID').val());
+            //}
+            if ($('#IsDocLocked').val() == "True") {
+
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        _isApproval = false;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Draft", $('#ID').val());
+                        break;
+                    case "1":
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            _isApproval = false;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "ClosedForApprovalApproverEdit", $('#ID').val());
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "ClosedForApproval", $('#ID').val());
+                        }
+                        break;
+                    case "3":
+                        _isApproval = false;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", $('#ID').val());
+                        break;
+                    case "4":
+                        _isApproval = true;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Approved", $('#ID').val());
+                        break;
+                    default:
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True") {
+                                _isApproval = false;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", $('#ID').val());
+                            }
+                            else {
+                                _isApproval = true;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", $('#ID').val());
+                            }
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", $('#ID').val());
+                        }
+                        break;
+                }
             }
             else {
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", $('#ProformaInvoiceForm #ID').val());
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "":
+                        _isApproval = false;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Add", $('#ID').val());
+                        break;
+                    case "1":
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            _isApproval = false;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", $('#ID').val());
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", $('#ID').val());
+                        }
+                        break;
+                    default:
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True") {
+                                _isApproval = false;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", $('#ID').val());
+                            }
+                            else {
+                                _isApproval = true;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", $('#ID').val());
+                            }
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", $('#ID').val());
+                        }
+                        break;
+                }
             }
+
             _SlNo = 1;
             BindProformaInvoiceDetailList($('#ID').val());
             _SlNoOtherCharge = 1;
             BindProformaInvoiceOtherChargesDetailList($('#ID').val());
             CalculateTotal();
             clearUploadControl();
-            PaintImages($('#ProformaInvoiceForm #ID').val());
+            PaintImages($('#ProformaInvoiceForm #ID').val(), _isApproval);
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProformaInvoiceForm #hdnCustomerID').val());
         }
         else {
             console.log("Error: " + xhr.status + ": " + xhr.statusText);
         }
         if ($('#hdnInvoiceType').val() == "SB") {
+            $('#btnAddItems').css("display", "none");
+            $('#btnAddOtherExpenses').css("display", "none");
             $('#divProformaInvoiceOtherChargesDetailList').hide();
         }
         if (event.value == "SaleOrder") {
@@ -349,8 +505,8 @@ function SaveSuccessProformaInvoice(data, status) {
         switch (_status) {
             case "OK":
                 $('#IsUpdate').val('True');
-                $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + _result.ID, function () {
-                    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", _result.ID);
+                $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + _result.ID+ "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function () {
+                    //ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", _result.ID);
                     _SlNo = 1;
                     BindProformaInvoiceDetailList(_result.ID);
                     if ($("#hdnInvoiceType").val() == "RB") {
@@ -359,7 +515,7 @@ function SaveSuccessProformaInvoice(data, status) {
                     }
                     CalculateTotal();
                     clearUploadControl();
-                    PaintImages(_result.ID);
+                    PaintImages(_result.ID, _isApproval);
                     $('#lblProformaInvoiceInfo').text(_result.ProformaInvoiceNo);
                     $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#ProformaInvoiceForm #hdnCustomerID').val());
                     if ($("#hdnInvoiceType").val() == "SB") {
@@ -376,7 +532,21 @@ function SaveSuccessProformaInvoice(data, status) {
 
                     //}
                 });
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", _result.ID);
+                if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "False") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+                    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", _result.ID);
+                    _isApproval = false;
+                }
+                else if ($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True" && $('#IsDocLocked').val() == "True") {
+                    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "ClosedForApprovalApproverEdit", _result.ID);
+                    _isApproval = false;
+                }
+                else {
+                    _isApproval = false;
+                    if ($('#LatestApprovalStatus').val() == "0" || $('#LatestApprovalStatus').val() == "")
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Draft", _result.ID);
+                    else
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", _result.ID);
+                }
                 BindOrReloadProformaInvoiceTable('Init');
                 notyAlert('success', _result.Message);
                 break;
@@ -545,10 +715,28 @@ function BindProformaInvoiceDetailList(id, IsSaleOrder, IsQuotation) {
             {
                 "data": null, "orderable": false, render: function (data, type, row) {
                     if (row.Product.Code != "" && row.Product.Code != null) {
-                        return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProformaInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"
+                        if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+                            return '<a href="#" class="actionLink"  onclick="EditProformaInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        }
+                        else if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                            return "-"
+                        }
+                        else {
+                            return '<a href="#" class="actionLink"  onclick="EditProformaInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        }
+                        //return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProformaInvoiceDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"
                     }
                     else {
-                        return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProformaInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"
+                        if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+                            return '<a href="#" class="actionLink"  onclick="EditProformaInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        }
+                        else if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                            return "-"
+                        }
+                        else {
+                            return '<a href="#" class="actionLink"  onclick="EditProformaInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                        }
+                        //return ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProformaInvoiceServiceBill(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-"
                     }
                 }, "defaultContent": "<i></i>"
             },
@@ -1091,7 +1279,19 @@ function BindProformaInvoiceOtherChargesDetailList(id, IsQuotation, IsSaleOrder)
                      return '<div class="show-popover text-right" data-html="true" data-placement="left" data-toggle="popover" data-title="<p align=left>Total :  ' + formatCurrency(Total) + '" data-content="Charge Amount :  ' + formatCurrency(data) + '<br/>GST :  ' + formatCurrency(GSTAmt) + '<br/>Additional Tax :  ' + formatCurrency(row.AddlTaxAmt) + '</p>"/>' + formatCurrency(Total)
                  }, "defaultContent": "<i></i>"
              },
-             { "data": null, "orderable": false, "defaultContent": ($('#IsDocLocked').val() == "True" || $('#IsUpdate').val() == "False") ? '<a href="#" class="actionLink"  onclick="EditProformaInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>' : "-" },
+             {
+                 "data": null, "orderable": false, render: function (data, type, row) {
+                     if (($('#LatestApprovalStatus').val() == "1" && $("#hdnIsDocumentApprover").val() == "True") || ($('#LatestApprovalStatus').val() == "9" && $("#hdnIsDocumentApprover").val() == "True")) {
+                         return '<a href="#" class="actionLink"  onclick="EditProformaInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                     else if (($('#IsDocLocked').val() == "False" || $('#IsUpdate').val() == "False" || $('#LatestApprovalStatus').val() == "1" || $('#LatestApprovalStatus').val() == "9" || $('#LatestApprovalStatus').val() == "4") && $('#LatestApprovalStatus').val() != "") {
+                         return "-"
+                     }
+                     else {
+                         return '<a href="#" class="actionLink"  onclick="EditProformaInvoiceOtherChargesDetail(this)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> <a href="#" class="DeleteLink"  onclick="ConfirmDeleteProformaInvoiceOtherChargeDetail(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></a>'
+                     }
+                 }, "defaultContent": "<i></i>"
+             },
              ],
              columnDefs: [
                  //{ "targets": [0], "width": "30%" },
@@ -1335,6 +1535,10 @@ function DownloadProformaInvoice() {
     var headerContent = $('#hdnHeadContent').html();
     $('#hdnContent').val(bodyContent);
     $('#hdnHeadContent').val(headerContent);
+    if ($('#LatestApprovalStatus').val() == "0")
+        $('#hdnWaterMarkFlag').val(true);
+    else
+        $('#hdnWaterMarkFlag').val(false);
     //var customerName = $("#ProformaInvoiceForm #CustomerID option:selected").text();
     //$('#hdnCustomerName').val(customerName);
 }
@@ -1610,19 +1814,94 @@ function EditRedirectToDocument(id) {
     debugger;
     OnServerCallBegin();
 
-    $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + id, function (responseTxt, statusTxt, xhr) {
+    $("#divProformaInvoiceForm").load("ProformaInvoice/ProformaInvoiceForm?id=" + id+ "&&isDocumentApprover=" + $("#hdnIsDocumentApprover").val(), function (responseTxt, statusTxt, xhr) {
         if (statusTxt == "success") {
             OnServerCallComplete();
             openNav();
             $('#lblProformaInvoiceInfo').text($('#ProfInvNo').val());
+            //if ($('#IsDocLocked').val() == "True") {
+            //    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", id);
+            //}
+            //else {
+            //    //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
+            //    //$('.switch-input').prop('disabled', true);
+            //    //$('.switch-label').attr('title', 'Document Locked');
+            //    ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
+            //}
             if ($('#IsDocLocked').val() == "True") {
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", id);
+
+                debugger;
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "0":
+                        _isApproval = false;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Draft", id);
+                        break;
+                    case "1":
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            _isApproval = false;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "ClosedForApprovalApproverEdit", id);
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "ClosedForApproval", id);
+                        }
+                        break;
+                    case "3":
+                        _isApproval = false;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Edit", id);
+                        break;
+                    case "4":
+                        _isApproval = true;
+                        ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "Approved", id);
+                        break;
+                    default:
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True") {
+                                _isApproval = false;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", id);
+                            }
+                            else {
+                                _isApproval = true;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
+                            }
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
+                        }
+                        break;
+                }
             }
             else {
-                //$('.switch-label,.switch-handle').addClass('switch-disabled').addClass('disabled');
-                //$('.switch-input').prop('disabled', true);
-                //$('.switch-label').attr('title', 'Document Locked');
-                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
+                switch ($('#LatestApprovalStatus').val()) {
+                    case "1":
+                        if ($("#hdnIsDocumentApprover").val() == "True") {
+                            _isApproval = false;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", id);
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
+                        }
+                        break;
+                    default:
+                        if ($('#LatestApprovalStatus').val() == 9) {
+                            if ($("#hdnIsDocumentApprover").val() == "True") {
+                                _isApproval = false;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "DocumentApproverEdit", id);
+                            }
+                            else {
+                                _isApproval = true;
+                                ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
+                            }
+                        }
+                        else {
+                            _isApproval = true;
+                            ChangeButtonPatchView("ProformaInvoice", "btnPatchProformaInvoiceNew", "LockDocument", id);
+                        }
+                        break;
+                }
+
             }
             _SlNo = 1;
             BindProformaInvoiceDetailList(id);
@@ -1631,7 +1910,7 @@ function EditRedirectToDocument(id) {
             CalculateTotal();
             $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#hdnCustomerID').val());
             clearUploadControl();
-            PaintImages(id);
+            PaintImages(id, _isApproval);
             if ($("#hdnInvoiceType").val() == "SB") {
                 $('#btnAddItems').css("display", "none");
                 $('#btnAddOtherExpenses').css("display", "none");
@@ -1683,4 +1962,87 @@ function ClearProformaInvoiceform() {
     debugger;
     ResetProformaInvoice();
     $('.showSweetAlert .cancel').click();
+}
+//--Approval section---//
+function ShowSendForApproval(documentTypeCode) {
+    debugger;
+    $("#SendApprovalModalBody").load("DocumentApproval/GetApprovers?documentTypeCode=PIV", function () {
+        debugger;
+        if ($('#LatestApprovalStatus').val() == 3) {
+            var documentID = $('#ProformaInvoiceForm #ID').val();
+            var latestApprovalID = $('#LatestApprovalID').val();
+            ReSendDocForApproval(documentID, documentTypeCode, latestApprovalID);
+            ResetProformaInvoice();
+
+        }
+        else {
+            $('#SendApprovalModal').modal('show');
+        }
+    });
+}
+
+
+
+function SendForApproval(documentTypeCode) {
+    debugger;
+
+    var documentID = $('#ProformaInvoiceForm #ID').val();
+    var approversCSV;
+    var count = $('#ApproversCount').val();
+
+    for (i = 0; i < count; i++) {
+        if (i == 0)
+            approversCSV = $('#ApproverLevel' + i).val();
+        else
+            approversCSV = approversCSV + ',' + $('#ApproverLevel' + i).val();
+    }
+    SendDocForApproval(documentID, documentTypeCode, approversCSV);
+    $('#SendApprovalModal').modal('hide');
+    ResetProformaInvoice();
+    //BindPurchaseOrder($('#ID').val());
+
+}
+function RecallDocumentItem(documentTypeCode) {
+    debugger;
+    notyConfirmRecall('Are you sure to recall document?', 'RecallDoc("' + documentTypeCode + '")');
+}
+function RecallDoc(documentTypeCode) {
+    debugger;
+    try {
+        if (documentTypeCode) {
+            $('#ProformaInvoiceForm').load("DocumentApproval/RecallDocument?documentID=" + $('#ProformaInvoiceForm #ID').val() + "&documentTypeCode=" + "PIV" + "&documentNo=" + $('#ProformaInvoiceForm #ProfInvNo').val(), function () {
+            });
+            var data = { "documentID": $('#ProformaInvoiceForm #ID').val() };
+            _jsonData = GetDataFromServer("DocumentApproval/RecallDocument/", data);
+            if (_jsonData != '') {
+                _jsonData = JSON.parse(_jsonData);
+                _message = _jsonData.Message;
+                _status = _jsonData.Status;
+                _result = _jsonData.Record;
+            }
+            switch (_status) {
+                case "OK":
+                    notyAlert('success', _message);
+                    _isApproval = false;
+                    ResetProformaInvoice();
+                    break;
+                case "ERROR":
+                    notyAlert('error', _message);
+                    ResetProformaInvoice();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+    catch (e) {
+        console.log(e.message);
+    }
+}
+function PreviewQuotation() {
+    $("#divModelPreviewProformaInvoiceBody").load("ProformaInvoice/PreviewProformaInvoice?id=" + $('#ProformaInvoiceForm #ID').val(), function () {
+        $('#lblModelPreviewProformaInvoice').text('ProformaInvoice Preview ');
+        $('#divModelPeviewProformaInvoice').modal('show');
+    });
 }

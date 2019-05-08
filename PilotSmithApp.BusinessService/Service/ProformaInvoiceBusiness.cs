@@ -56,13 +56,13 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _proforaInvoiceRepository.DeleteProformaInvoice(id);
         }
-        public object DeleteProformaInvoiceDetail(Guid id)
+        public object DeleteProformaInvoiceDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
-            return _proforaInvoiceRepository.DeleteProformaInvoiceDetail(id);
+            return _proforaInvoiceRepository.DeleteProformaInvoiceDetail(id, CreatedBy, CreatedDate);
         }
-        public object DeleteProformaInvoiceOtherChargeDetail(Guid id)
+        public object DeleteProformaInvoiceOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate)
         {
-            return _proforaInvoiceRepository.DeleteProformaInvoiceOtherChargeDetail(id);
+            return _proforaInvoiceRepository.DeleteProformaInvoiceOtherChargeDetail(id, CreatedBy, CreatedDate);
         }
         public List<ProformaInvoiceOtherCharge> GetProformaInvoiceOtherChargesDetailListByProformaInvoiceID(Guid proformaInvoiceID)
         {
@@ -90,6 +90,7 @@ namespace PilotSmithApp.BusinessService.Service
                     _mail.Body = mailBody.Replace("$Customer$", proformaInvoice.Customer.ContactPerson).Replace("$Document$", "Proforma Invoice").Replace("$DocumentNo$", proformaInvoice.ProfInvNo).Replace("$DocumentDate$", proformaInvoice.ProfInvDateFormatted).Replace("$Logo$", link);
                     pDFTools.Content = proformaInvoice.MailContant;
                     pDFTools.ContentFileName = "ProformaInvoice";
+                    pDFTools.IsWithWaterMark = proformaInvoice.LatestApprovalStatus == 0 ? true : false;
                     _mail.Attachments.Add(new Attachment(new MemoryStream(_pdfGeneratorBusiness.GetPdfAttachment(pDFTools)), proformaInvoice.ProfInvNo + ".pdf"));
                     _mail.Subject = proformaInvoice.Subject;
                     _mail.IsBodyHtml = true;

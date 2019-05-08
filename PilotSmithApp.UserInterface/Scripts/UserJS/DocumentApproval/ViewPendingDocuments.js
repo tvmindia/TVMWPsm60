@@ -216,6 +216,13 @@ function DocumentPreview(DocumentType, DocumentID) {
 				$('#divModelPreview').modal('show');
 			});
 			break;
+	    case "PIV":
+	        $("#divModelPreviewBody").load("/ProformaInvoice/PreviewProformaInvoice?id=" + DocumentID, function () {
+	            debugger;
+	            $('#lblModelPreview').text('ProformaInvoice Preview');
+	            $('#divModelPreview').modal('show');
+	        });
+	        break;
 	}
 	
 }

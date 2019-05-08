@@ -14,8 +14,8 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<ProformaInvoiceDetail> GetProformaInvoiceDetailListByProformaInvoiceID(Guid proformaInvoiceID);
         object InsertUpdateProformaInvoice(ProformaInvoice proformaInvoice);
         object DeleteProformaInvoice(Guid id);
-        object DeleteProformaInvoiceDetail(Guid id);
-        object DeleteProformaInvoiceOtherChargeDetail(Guid id);        
+        object DeleteProformaInvoiceDetail(Guid id, string CreatedBy, DateTime CreatedDate);
+        object DeleteProformaInvoiceOtherChargeDetail(Guid id, string CreatedBy, DateTime CreatedDate);        
         List<ProformaInvoiceOtherCharge> GetProformaInvoiceOtherChargesDetailListByProformaInvoiceID(Guid proformaInvoiceID);
         object UpdateProformaInvoiceEmailInfo(ProformaInvoice proformaInvoice);
         List<ProformaInvoice> GetProformaInvoiceForSelectListOnDemand(string searchTerm);

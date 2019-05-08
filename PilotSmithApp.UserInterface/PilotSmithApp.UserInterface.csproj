@@ -1156,6 +1156,7 @@
     <Content Include="Views\Report\QuotationDetailReport.cshtml" />
     <Content Include="Views\Report\EnquiryDetailReport.cshtml" />
     <Content Include="Views\Report\EstimateDetailReport.cshtml" />
+    <Content Include="Views\ProformaInvoice\_PreviewProformaInvoice.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
