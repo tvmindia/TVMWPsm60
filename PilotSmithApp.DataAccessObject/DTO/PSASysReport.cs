@@ -213,6 +213,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ProductName { get; set; }
         public string ProdModel { get; set; }
         public decimal? Qty { get; set; }
+        public decimal? TaxableAmount { get; set; }
         public decimal? Amount { get; set; }
         public int? UnitCode { get; set; }        
         public ProductModel ProductModel { get; set; }
@@ -270,6 +271,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string ProductName { get; set; }
         public string ProdModel { get; set; }
         public decimal? Qty { get; set; }
+        public decimal? TaxableAmount { get; set; }
         public decimal? Amount { get; set; }
         public int? UnitCode { get; set; }
         public ProductModel ProductModel { get; set; }

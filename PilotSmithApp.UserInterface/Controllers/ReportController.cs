@@ -892,8 +892,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Unit = x.Unit.Description,
                             Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            Amount = x.Amount
- 
+                            TaxableAmount = Math.Round(Convert.ToDecimal(x.TaxableAmount), 2).ToString(),
+                            Amount = Math.Round(Convert.ToDecimal(x.Amount), 2).ToString(),
+
                         }), true, TableStyles.Light1);
 
 
@@ -914,8 +915,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                         saleorderreportworkSheet.Column(10).AutoFit();
                         saleorderreportworkSheet.Column(11).AutoFit();
                         saleorderreportworkSheet.Column(12).AutoFit();
-
-
+                        saleorderreportworkSheet.Column(13).AutoFit();
+                        saleorderreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                        saleorderreportworkSheet.Column(13).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                         saleorderreportworkSheet.Column(2).AutoFit();
 
 
@@ -942,8 +944,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                             SaleOrderQty = x.Qty,
                             PendingQty=x.PendingQty,
                             Unit = x.Unit.Description,
-                            SaleOrderAmount = x.Amount,
-                            Branch = x.Branch.Description,
+                            SaleOrderTaxableAmount = Math.Round(Convert.ToDecimal(x.TaxableAmount), 2).ToString(),
+                            SaleOrderAmount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString(),
+                            Branch = x.Branch.Description,                    
                             DocumentOwner = x.PSAUser.LoginName
 
                         }), true, TableStyles.Light1);
@@ -966,8 +969,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                         pendingSaleorderreportworkSheet.Column(11).AutoFit();
                         pendingSaleorderreportworkSheet.Column(12).AutoFit();
                         pendingSaleorderreportworkSheet.Column(13).AutoFit();
-
-
+                        pendingSaleorderreportworkSheet.Column(11).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                        pendingSaleorderreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
+                        pendingSaleorderreportworkSheet.Column(14).AutoFit();
                         break;
                     case "ProductionOrderReport":
                         fileName = "ProductionOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -996,7 +1000,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             DocumentStatus=x.DocumentStatus.Description,
                             Branch=x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            GeneralNotes = x.Remarks
+                            GeneralNotes = x.Remarks                            
                         }), true, TableStyles.Light1);
 
                         int finalRowsProductionOrderReport = productionorderreportworkSheet.Dimension.End.Row;

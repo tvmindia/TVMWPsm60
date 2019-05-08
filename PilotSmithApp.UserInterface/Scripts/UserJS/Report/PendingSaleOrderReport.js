@@ -235,17 +235,23 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                         return data + "&nbsp;" + row.Unit.Description;
                     }, "defaultContent": "<i>-</i>"
                 },
+                {
+                    "data": "TaxableAmount", render: function (data, type, row) {
+                        return formatCurrency(roundoff(row.TaxableAmount))
+                    }, "defaultContent": "<i>-</i>"
+                },
+
                  {
                      "data": "Amount", render: function (data, type, row) {
-                         return formatCurrency(row.Amount)
+                         return formatCurrency(roundoff(row.Amount))
                      }, "defaultContent": "<i>-</i>"
                  },
                  { "data": "Branch.Description", "defaultContent": "<i>-</i>" },
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
 
             ],
-            columnDefs: [{ className: "text-right", "targets": [6] },
-                         { className: "text-left", "targets": [1, 2, 3, 4, 5, 7,8] },
+            columnDefs: [{ className: "text-right", "targets": [6,7] },
+                         { className: "text-left", "targets": [1, 2, 3, 4, 5, 9,8] },
                          { className: "text-center", "targets": [0] },
                            { "targets": [0], "width": "15%" },
                            { "targets": [1], "width": "15%" },
@@ -255,7 +261,9 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                            { "targets": [5], "width": "5%" },
                            { "targets": [6], "width": "8%" },
                            { "targets": [7], "width": "7%" },
-                            { "targets": [8], "width":"5%" }
+                           { "targets": [8], "width": "7%"  },
+                           { "targets": [9], "width": "5%" } 
+
             ],
             destroy: true,
             rowCallback: function (row, data) {

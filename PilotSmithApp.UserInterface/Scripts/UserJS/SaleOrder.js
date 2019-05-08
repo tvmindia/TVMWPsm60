@@ -737,7 +737,8 @@ function BindSaleOrderOtherChargesDetailList(id, IsQuotation) {
                      var SGSTAmt = parseFloat(data * SGST / 100)
                      var IGSTAmt = parseFloat(data * IGST / 100)
                      var GSTAmt = roundoff(parseFloat(CGSTAmt) + parseFloat(SGSTAmt) + parseFloat(IGSTAmt))
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     var GSTPerc = CGST + SGST + IGST
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(parseFloat(SGSTAmt))) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt) + '<br/><i style="font-size:10px;color:brown">GST(%) -</i>' + GSTPerc
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -878,7 +879,8 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      var SGSTAmt = parseFloat(Taxable * SGST / 100)
                      var IGSTAmt = parseFloat(Taxable * IGST / 100)
                      var GSTAmt = roundoff(CGSTAmt + SGSTAmt + IGSTAmt)
-                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt)
+                     var GSTPerc = CGST + SGST + IGST
+                     return '<div class="show-popover text-right" data-html="true" data-toggle="popover" data-placement="left" data-title="<p align=left>Total GST :  ' + formatCurrency(GSTAmt) + '" data-content=" SGST ' + SGST + '% :  ' + formatCurrency(roundoff(SGSTAmt)) + '<br/>CGST ' + CGST + '% :  ' + formatCurrency(roundoff(parseFloat(CGSTAmt))) + '<br/> IGST ' + IGST + '% :  ' + formatCurrency(roundoff(parseFloat(IGSTAmt))) + '</p>"/>' + formatCurrency(GSTAmt) + '<br/><i style="font-size:10px;color:brown">GST(%) -</i>' + GSTPerc
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -896,7 +898,7 @@ function BindSaleOrderDetailList(id, IsEnquiry, IsQuotation) {
                      var GSTAmt = CGSTAmt + SGSTAmt + IGSTAmt;
                      //var TaxAmount = Taxable + parseFloat(GSTAmt);
                      var Cess = roundoff(parseFloat(GSTAmt * row.CessPerc / 100));
-                     return '<i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc + '<br/><i style="font-size:10px;color:brown">Cess -</i>' + formatCurrency(Cess)
+                     return formatCurrency(Cess) + '<br/> <i style="font-size:10px;color:brown">Cess(%) -</i>' + row.CessPerc
                  }, "defaultContent": "<i></i>"
              },
              {
@@ -1774,11 +1776,13 @@ function DeleteSaleOrderOtherChargeDetail(ID) {
 }
 function CalculateTotal() {
     debugger;
-    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, CessAmt=0.00;
+    var TaxTotal = 0.00, TaxableTotal = 0.00, GrossAmount = 0.00, GrandTotal = 0.00, OtherChargeAmt = 0.00, CessAmt = 0.00, TotalDiscount = 0.00, TotalItemAmt = 0.00;
     var saleOrderDetail = _dataTable.SaleOrderDetailList.rows().data();
     var saleOrderOtherChargeDetail = _dataTable.SaleOrderOtherChargesDetailList.rows().data();
     for (var i = 0; i < saleOrderDetail.length; i++) {
+        var itemTotal = parseFloat(saleOrderDetail[i].Rate != "" ? saleOrderDetail[i].Rate : 0) * parseInt(saleOrderDetail[i].Qty != "" ? saleOrderDetail[i].Qty : 0);
         var TaxableAmt = (parseFloat(saleOrderDetail[i].Rate != "" ? saleOrderDetail[i].Rate : 0) * parseInt(saleOrderDetail[i].Qty != "" ? saleOrderDetail[i].Qty : 1)) - parseFloat(saleOrderDetail[i].Discount != "" ? saleOrderDetail[i].Discount : 0)
+        var ItemDiscount = (parseFloat(saleOrderDetail[i].Discount != "" ? saleOrderDetail[i].Discount : 0));
         var CGST = parseFloat(saleOrderDetail[i].CGSTPerc != "" ? saleOrderDetail[i].CGSTPerc : 0);
         var SGST = parseFloat(saleOrderDetail[i].SGSTPerc != "" ? saleOrderDetail[i].SGSTPerc : 0);
         var IGST = parseFloat(saleOrderDetail[i].IGSTPerc != "" ? saleOrderDetail[i].IGSTPerc : 0);
@@ -1790,6 +1794,8 @@ function CalculateTotal() {
         var Cess = roundoff(parseFloat(GSTAmt * saleOrderDetail[i].CessPerc / 100));
         CessAmt = roundoff(parseFloat(CessAmt) + parseFloat(Cess));
         var GrossTotalAmt = TaxableAmt + GSTAmt
+        TotalItemAmt = roundoff(parseFloat(TotalItemAmt) + parseFloat(itemTotal));
+        TotalDiscount = roundoff(parseFloat(TotalDiscount) + parseFloat(ItemDiscount));
         TaxTotal = roundoff(parseFloat(TaxTotal) + parseFloat(GSTAmt))
         TaxableTotal = roundoff(parseFloat(TaxableTotal) + parseFloat(TaxableAmt))
         GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(GrossTotalAmt))
@@ -1808,8 +1814,10 @@ function CalculateTotal() {
         OtherChargeAmt = roundoff(parseFloat(OtherChargeAmt) + parseFloat(Total))
     }
     GrossAmount = roundoff(parseFloat(GrossAmount) + parseFloat(OtherChargeAmt) + parseFloat(CessAmt))
+    $('#lblTotalItemAmount').text(roundoff(TotalItemAmt));
     $('#lblTaxTotal').text(roundoff(TaxTotal));
     $('#lblItemTotal').text(roundoff(TaxableTotal));
+    $('#lblDiscountTotal').text(roundoff(TotalDiscount));
     $('#lblGrossAmount').text(GrossAmount);  
     $('#lblGrandTotal').text(formatCurrency(GrossAmount));
     $('#lblOtherChargeAmount').text(roundoff(OtherChargeAmt));
