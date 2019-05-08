@@ -89,6 +89,7 @@ namespace PilotSmithApp.UserInterface.Models
         public ApprovalStatusViewModel ApprovalStatus { get; set; }
         public bool ShowRate { get; set; }
         public string SaleOrderNo { get; set; }
+        public string SaleOrderRefNo { get; set; }
         public CurrencyViewModel Currency { get; set; }
         public bool IsDistributor { get; set; }
         public bool IsMilestoneUpdate { get; set; }
