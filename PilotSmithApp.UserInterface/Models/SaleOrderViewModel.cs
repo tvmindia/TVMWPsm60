@@ -62,7 +62,7 @@ namespace PilotSmithApp.UserInterface.Models
         public int? BranchCode { get; set; }
         public decimal Discount { get; set; }
         [Display(Name = "Advance Amount")]
-        public decimal? AdvanceAmount { get; set; }
+        public decimal AdvanceAmount { get; set; }
         public string Cc { get; set; }
         public string Bcc { get; set; }
         //[Required(ErrorMessage = "subject is missing")]

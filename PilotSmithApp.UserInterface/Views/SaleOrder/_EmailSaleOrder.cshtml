@@ -114,12 +114,12 @@
                 <tr><td  colspan="2" style="font-size:11px;">SaleOrder Date  &nbsp;: @Model.SaleOrderDateFormatted</td><td colspan="2"></td><td colspan="2">Delivery Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: @Model.ExpectedDelvDateFormatted</td></tr>
                 <tr><td colspan="2" style="font-size:11px;">Purchase Order No &nbsp;: @Model.PurchaseOrdNo</td><td colspan="2"></td><td colspan="2">Bank : @Model.Bank.Name</td></tr>
                 <tr><td colspan="6" style="font-size:11px;">Purchase Order Date &nbsp;: @Model.PurchaseOrdDateFormatted</td></tr>
-                @{
+                @*@{
                     if (Model.AdvanceAmount > 0)
                     {
                         <tr><td colspan="6" style="font-size:11px;">Advance Amount &nbsp;: @Model.AdvanceAmount</td></tr>
                     }
-                }
+                }*@
                 <tr><td colspan="6">&nbsp;</td></tr>
                 <tr>
                     @{
@@ -191,7 +191,7 @@
                     }
                     itemTotal = Math.Round(@itemTotal, 2);
                     grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST + CESSTotal, 2);
-                    grandTotal = grossAmt - ((decimal)Model.Discount);
+                    //grandTotal = grossAmt - ((decimal)Model.Discount);
                     GSTTotal = Math.Round(GSTTotal + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
                 }
                 <tr>
@@ -236,7 +236,7 @@
                                             otherChargeAmt = otherChargeAmt + Total;
                                         }
                                         grossAmt = Math.Round(grossAmt + otherChargeAmt, 2);
-                                        grandTotal = grossAmt - ((decimal)Model.Discount);
+                                        //grandTotal = grossAmt - ((decimal)Model.Discount);
                                     }
 
                                 </thead>
@@ -244,7 +244,9 @@
                         }
                     </td>
 
-                    
+                    @{ 
+                        grandTotal = grossAmt - ((decimal)Model.Discount) - ((decimal)Model.AdvanceAmount);
+                    }
                     
                     <td colspan="5" style="font:12px;border-top:solid .5px;padding-top:8px;">
                         <table style="width:100%">
@@ -343,13 +345,25 @@
                                         </td>
                                     </tr>
                                 }
+                                if (Model.AdvanceAmount > 0)
+                                {
+                                    <tr class="item">
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:9px;border-bottom:solid 1.5px;text-align:left" valign="top">
+                                            Advance Amount
+                                        </td>
+
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:9px;border-bottom:solid 1.5px" align="right" valign="top">
+                                            @Model.AdvanceAmount
+                                        </td>
+                                    </tr>
+                                }
                             }
 
 
                             <tr class="total">
                                 <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:11px;text-align:left;font-weight:bold;" valign="top">Grand Total</td>
                                 @{
-                                    var total = pSASysCommon.ConvertToCurrencyStandards((double)grandTotal, "IND");
+                                    var total = pSASysCommon.ConvertToCurrencyStandards((double)grandTotal, Model.CurrencyCode);
                                 }
                                 <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:11px;text-align:right;font-weight:bold;" align="right" valign="top">
                                     @total

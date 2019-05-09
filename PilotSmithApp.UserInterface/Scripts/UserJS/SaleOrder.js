@@ -1289,8 +1289,10 @@ function DeleteSaleOrderDetail(ID) {
         }
     }
 }
-function CalculateGrandTotal(value) {
-    var GrandTotal = roundoff(parseFloat($('#lblGrossAmount').text()) - parseFloat(value != "" ? value : 0))
+function CalculateGrandTotal() {
+    debugger;
+    //var GrandTotal = roundoff(parseFloat($('#lblGrossAmount').text()) - parseFloat(value != "" ? value : 0))
+    var GrandTotal = roundoff(parseFloat($('#lblGrossAmount').text()) - parseFloat($('#Discount').val() != "" ? $('#Discount').val() : 0) - parseFloat($('#AdvanceAmount').val() != "" ? $('#AdvanceAmount').val() : 0))
     $('#lblGrandTotal').text(formatCurrency(GrandTotal));
 }
 //=========================================================================================================================
