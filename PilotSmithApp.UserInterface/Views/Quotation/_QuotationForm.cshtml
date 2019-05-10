@@ -427,610 +427,630 @@
             <div class="col-md-12 headSeperator">Customer Details</div>
             <div class="form-group col-md-6">
                 <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
-                    </div>
-                    @if (Model.IsUpdate || Model.EstimateID != null)
-                    {
-                        <div class="col-md-12">
-                            <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
+                    <div class="col-md-12 no-padding">
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                         </div>
-                    }
-                    else
-                    {
-                        <div class="col-md-12">
-                            <div class="divCustomerSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                        <div class="col-md-6" style="text-align:center;">
+                            <div class="col-md-12" style="margin-top:5px; font-size: 12px!important;background-color:#f7d1a7 !important;cursor:pointer;border-bottom:1px solid #e66911;border-left:3px solid #e66911;border-radius:3px;">
+                                <a style="font-size:12px;" onclick="ViewCustomerHistory()"><i class="fa fa-history" aria-hidden="true"></i> View Customer History</a>
                             </div>
                         </div>
-                    }
-                    <!-- This hidden field will keep the information whether the field is required or not -->
-                    @Html.Hidden("hdnCustomerRequired", "required")
-                    <!-- This hidden field will keep the information whether the field is disabled or not -->
-                    @Html.Hidden("hdnCustomerdisabled", false)
-                    @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
-                </div>
-                <div id="divCustomerBasicInfo">
-                    @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
-                </div>
-            </div>
-            <div class="form-group col-md-12">
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.MailingAddress, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        @if (Model.IsUpdate || Model.EstimateID != null)
+                        {
+                            <div class="col-md-12">
+                                <span class="form-control newinput" style="background-color:#eeeeee">@Model.Customer.CompanyName</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-12">
+                                <div class="divCustomerSelectList">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+                                </div>
+                            </div>
+                        }
+                        <!-- This hidden field will keep the information whether the field is required or not -->
+                        @Html.Hidden("hdnCustomerRequired", "required")
+                        <!-- This hidden field will keep the information whether the field is disabled or not -->
+                        @Html.Hidden("hdnCustomerdisabled", false)
+                        @Html.HiddenFor(model => model.CustomerID, htmlAttributes: new { @class = "", @id = "hdnCustomerID" })
                     </div>
-                    <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.MailingAddress, 5, 60, new { @class = "form-control newinput" })
-                        @Html.ValidationMessageFor(model => model.MailingAddress, "", new { @class = "text-danger" })
+                    <div id="divCustomerBasicInfo">
+                        @Html.Action("CustomerBasicInfo", "Customer", Model.Customer)
                     </div>
                 </div>
-                <div class="col-md-6 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
+                <div class="form-group col-md-12">
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.MailingAddress, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.MailingAddress, 5, 60, new { @class = "form-control newinput" })
+                            @Html.ValidationMessageFor(model => model.MailingAddress, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.ShippingAddress, 5, 60, new { @class = "form-control newinput" })
-                        @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
+                    <div class="col-md-6 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.ShippingAddress, 5, 60, new { @class = "form-control newinput" })
+                            @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-11 divbox1">
-        <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">
-                Quotation Details
-                @{
-                    if (Model.IsDocLocked || !Model.IsUpdate)
-                    {
-                        if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null || (Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+        <div class="col-md-11 divbox1">
+            <div class="col-md-12 divbox2">
+                <div class="col-md-12 headSeperator">
+                    Quotation Details
+                    @{
+                        if (Model.IsDocLocked || !Model.IsUpdate)
                         {
-                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        }
-                        else if ((Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
-                        {
-                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        }
-                    }
-                    else
-                    {
-                        if ((Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
-                        {
-                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null || (Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else if ((Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
                         }
                         else
                         {
-                            <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            if ((Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddQuotationDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+
                         }
 
                     }
+                </div>
+
+                @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
+                @Html.HiddenFor(model => model.OtherChargesDetailJSON, htmlAttributes: new { @class = "" })
+                <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
+                    <table id="tblQuotationDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                        <thead>
+                            <tr class="text-center TableHead">
+                                <th style="width:2%">Sl.No</th>
+                                <th style="width:23%">Product Code</th>
+                                <th style="width:10%">HSN Code</th>
+                                <th style="width:10%">Quantity</th>
+                                <th style="width:10%">Rate(<span id="spanRate">@Model.CurrencyCode</span>)</th>
+                                <th style="width:10%">Discount(<span id="spanDiscound">@Model.CurrencyCode</span>)</th>
+                                <th style="width:10%">Taxable(<span id="spanTaxable">@Model.CurrencyCode</span>)</th>
+                                <th style="width:10%">GST</th>
+                                <th style="width:10%">Total(<span id="spanTotal">@Model.CurrencyCode</span>)</th>
+                                <th style="width:7%">...</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="form-group col-md-7 ">
+                    <table id="tblQuotationOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
+                        <thead>
+                            <tr class="text-center TableHead">
+                                <th style="width:2%">Sl.No</th>
+                                <th style="width:20%">Other Charge</th>
+                                <th style="width:20%">SAC Code</th>
+                                <th style="width:20%">Charge Amount(<span id="spanchargeAmount">@Model.CurrencyCode</span>)</th>
+                                <th style="width:10%">GST</th>
+                                <th style="width:20%">Total(<span id="spanOCTotal">@Model.CurrencyCode</span>)</th>
+                                <th style="width:10%">...</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-md-5" style="padding-right:1.5%">
+                    <table class="table dataTable no-footer DetailSummerybox">
+                        <tbody>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblDiscountTotal">Total Item Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblTotalItemAmount">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblDiscountTotal">Total Item Discount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblDiscountTotal">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblItemTotal">Total Taxable Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblItemTotal">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblTaxTotal">Total GST Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblTaxTotal">00.00</label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblGrossAmount">Other Charge Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label" for="lblGrossAmount">Gross Amount</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblGrossAmount">00.00</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">
+                                    <label class="control-label " for="Discount">Cash Discount</label>
+                                </td>
+                                <td style="text-align: right;padding: 0px!important">
+                                    @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal(this.value)", @onkeypress = "return isNumber(event)" } })
+                                </td>
+                            </tr>
+                            <tr class="odd">
+                                <td style="text-align: right">
+                                    <label class="control-label " for="lblGrandTotal">Grand Total</label>
+                                </td>
+                                <td class="ApplyCurrency" style="text-align: right">
+                                    <label class="control-label " for="" id="lblGrandTotal" style="font-weight: bold !important;">00.00</label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11 divbox1">
+            <div class="col-md-12 divbox2">
+                <div class="col-md-12 headSeperator">Notes</div>
+                <div class="form-group col-md-12">
+                    <div class="col-md-12 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
+                            @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-12">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11 divbox1">
+            <div class="col-md-12 divbox2">
+                <div class="col-md-12 headSeperator">Attachments</div>
+                @Html.Partial("_Fileupload")
+            </div>
+        </div>
+        <div class="" hidden="hidden">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="btnInsertUpdateQuotation" type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+        }
+        <script>
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover({
+                });
+                try {
+
+                    //$('.switch-input').on('change', function () {
+                    //    debugger;
+                    //    var isChecked = $(this).is(':checked');
+                    //    var selectedData;
+                    //    var $switchLabel = $('.switch-label');
+                    //    console.log('isChecked: ' + isChecked);
+
+                    //    if (isChecked) {
+                    //        selectedData = $switchLabel.attr('data-on');
+
+                    //    } else {
+                    //        selectedData = $switchLabel.attr('data-off');
+                    //    }
+
+
+                    //    $.get("DocumentStatus/CloseDocument/?id=" + $('#QuotationForm #ID').val() + "&doctype=QUO" + "&docstatus=" + selectedData, function (data) {
+                    //        debugger;
+
+                    //        if (data == "1") {
+                    //            BindOrReloadQuotationTable();
+                    //            //notyAlert('success', "Document status changed successfully!");
+                    //        }
+                    //        else {
+                    //            notyAlert('error', "Failed to change document status!");
+                    //        }
+
+                    //    });
+
+                    //});
+
 
                 }
-            </div>
+                catch (e) {
 
-            @Html.HiddenFor(model => model.DetailJSON, htmlAttributes: new { @class = "" })
-            @Html.HiddenFor(model => model.OtherChargesDetailJSON, htmlAttributes: new { @class = "" })
-            <div class="col-md-12 no-left-padding" style="padding-right:3.7%">
-                <table id="tblQuotationDetails" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                    <thead>
-                        <tr class="text-center TableHead">
-                            <th style="width:2%">Sl.No</th>
-                            <th style="width:23%">Product Code</th>
-                            <th style="width:10%">HSN Code</th>
-                            <th style="width:10%">Quantity</th>
-                            <th style="width:10%">Rate(<span id="spanRate">@Model.CurrencyCode</span>)</th>
-                            <th style="width:10%">Discount(<span id="spanDiscound">@Model.CurrencyCode</span>)</th>
-                            <th style="width:10%">Taxable(<span id="spanTaxable">@Model.CurrencyCode</span>)</th>
-                            <th style="width:10%">GST</th>
-                            <th style="width:10%">Total(<span id="spanTotal">@Model.CurrencyCode</span>)</th>
-                            <th style="width:7%">...</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="form-group col-md-7 ">
-                <table id="tblQuotationOtherChargesDetailList" class="table table-striped table-bordered table-hover customgrd" cellspacing="0" style="width:100%;">
-                    <thead>
-                        <tr class="text-center TableHead">
-                            <th style="width:2%">Sl.No</th>
-                            <th style="width:20%">Other Charge</th>
-                            <th style="width:20%">SAC Code</th>
-                            <th style="width:20%">Charge Amount(<span id="spanchargeAmount">@Model.CurrencyCode</span>)</th>
-                            <th style="width:10%">GST</th>
-                            <th style="width:20%">Total(<span id="spanOCTotal">@Model.CurrencyCode</span>)</th>
-                            <th style="width:10%">...</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="col-md-5" style="padding-right:1.5%">
-                <table class="table dataTable no-footer DetailSummerybox">
-                    <tbody>
-                        <tr>
-                            <td style="text-align: right">
-                                <label class="control-label" for="lblDiscountTotal">Total Item Amount</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblTotalItemAmount">00.00</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right">
-                                <label class="control-label" for="lblDiscountTotal">Total Item Discount</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblDiscountTotal">00.00</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right">
-                                <label class="control-label" for="lblItemTotal">Total Taxable Amount</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblItemTotal">00.00</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right">
-                                <label class="control-label" for="lblTaxTotal">Total GST Amount</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblTaxTotal">00.00</label>
-                            </td>
-                        </tr>
+                }
+                try {
+                    $.validator.unobtrusive.parse("#QuotationForm");
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+                try {
+                    $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
+                    $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val(), function (responseTxt, statusTxt, xhr) {
+                        $('#DocumentStatusCode').change(function () {
+                            StatusChange();
+                        });
+                    });
+                    $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
+                    function StatusChange() {
+                        var selectedData = $("#DocumentStatusCode option:selected").text();
+                        $.get("DocumentStatus/CloseDocument/?id=" + $('#QuotationForm #ID').val() + "&doctype=QUO" + "&docstatus=" + selectedData, function (data) {
+                            debugger;
 
-                        <tr>
-                            <td style="text-align: right">
-                                <label class="control-label" for="lblGrossAmount">Other Charge Amount</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblOtherChargeAmount">00.00</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right">
-                                <label class="control-label" for="lblGrossAmount">Gross Amount</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblGrossAmount">00.00</label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: right">
-                                <label class="control-label " for="Discount">Cash Discount</label>
-                            </td>
-                            <td style="text-align: right;padding: 0px!important">
-                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal(this.value)", @onkeypress = "return isNumber(event)" } })
-                            </td>
-                        </tr>
-                        <tr class="odd">
-                            <td style="text-align: right">
-                                <label class="control-label " for="lblGrandTotal">Grand Total</label>
-                            </td>
-                            <td class="ApplyCurrency" style="text-align: right">
-                                <label class="control-label " for="" id="lblGrandTotal" style="font-weight: bold !important;">00.00</label>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-11 divbox1">
-        <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Notes</div>
-            <div class="form-group col-md-12">
-                <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.GeneralNotes, htmlAttributes: new { @class = "control-label" })
-                    </div>
-                    <div class="col-md-12">
-                        @Html.TextAreaFor(model => model.GeneralNotes, 5, 0, new { @class = "form-control newinput" })
-                        @Html.ValidationMessageFor(model => model.GeneralNotes, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-md-12">&nbsp;</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-11 divbox1">
-        <div class="col-md-12 divbox2">
-            <div class="col-md-12 headSeperator">Attachments</div>
-            @Html.Partial("_Fileupload")
-        </div>
-    </div>
-    <div class="" hidden="hidden">
-        <div class="col-md-offset-2 col-md-10">
-            <input id="btnInsertUpdateQuotation" type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
+                            if (data == "1") {
+                                BindOrReloadQuotationTable();
+                                //notyAlert('success', "Document status changed successfully!");
+                            }
+                            else {
+                                notyAlert('error', "Failed to change document status!");
+                            }
+
+                        });
                     }
-<script>
-    $(document).ready(function () {
-        $('[data-toggle="popover"]').popover({
-        });
-        try {
-
-            //$('.switch-input').on('change', function () {
-            //    debugger;
-            //    var isChecked = $(this).is(':checked');
-            //    var selectedData;
-            //    var $switchLabel = $('.switch-label');
-            //    console.log('isChecked: ' + isChecked);
-
-            //    if (isChecked) {
-            //        selectedData = $switchLabel.attr('data-on');
-
-            //    } else {
-            //        selectedData = $switchLabel.attr('data-off');
-            //    }
-
-
-            //    $.get("DocumentStatus/CloseDocument/?id=" + $('#QuotationForm #ID').val() + "&doctype=QUO" + "&docstatus=" + selectedData, function (data) {
-            //        debugger;
-
-            //        if (data == "1") {
-            //            BindOrReloadQuotationTable();
-            //            //notyAlert('success', "Document status changed successfully!");
-            //        }
-            //        else {
-            //            notyAlert('error', "Failed to change document status!");
-            //        }
-
-            //    });
-
-            //});
-
-
-        }
-        catch (e) {
-
-        }
-        try {
-            $.validator.unobtrusive.parse("#QuotationForm");
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            $('.divPreparedBySelectList').load('/Employee/PreparedBySelectList?required=' + $('#hdnPreparedByRequired').val())
-            $('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=QUO&required=' + $('#hdnDocumentStatusRequired').val(), function (responseTxt, statusTxt, xhr) {
-                $('#DocumentStatusCode').change(function () {
-                    StatusChange();
-                });
-            });
-            $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
-            function StatusChange() {
-                var selectedData = $("#DocumentStatusCode option:selected").text();
-                $.get("DocumentStatus/CloseDocument/?id=" + $('#QuotationForm #ID').val() + "&doctype=QUO" + "&docstatus=" + selectedData, function (data) {
-                    debugger;
-
-                    if (data == "1") {
-                        BindOrReloadQuotationTable();
-                        //notyAlert('success', "Document status changed successfully!");
-                    }
-                    else {
-                        notyAlert('error', "Failed to change document status!");
-                    }
-
-                });
-            }
-            @if (Model.IsUpdate||Model.EstimateID!=null)
+                    @if (Model.IsUpdate||Model.EstimateID!=null)
             {
                   <text>
-            if ($('#hdnCurrencyCode').val() == "INR") {
-                $('#idCurRateForAutofocus').prop("disabled", true)
-            }
-            $('.changeCurrency').change(function () {
-                if (this.nodeName == "INPUT") {
-                    $('#hdnCurrencyRate').val(this.value)
-                }
-            });
-            var quoteDate = $('#QuoteDateFormatted').val();
-            if (quoteDate != "") {
+                    if ($('#hdnCurrencyCode').val() == "INR") {
+                        $('#idCurRateForAutofocus').prop("disabled", true)
+                    }
+                    $('.changeCurrency').change(function () {
+                        if (this.nodeName == "INPUT") {
+                            $('#hdnCurrencyRate').val(this.value)
+                        }
+                    });
+                    var quoteDate = $('#QuoteDateFormatted').val();
+                    if (quoteDate != "") {
 
-                function getCurrentFinancialYear(quoteDate) {
-                    debugger;
-                    var startYear = "";
-                    var endYear = "";
-                    var docDate = new Date(quoteDate);
-                    if ((docDate.getMonth() + 1) <= 3) {
-                        startYear = docDate.getFullYear() - 1;
-                        endYear = docDate.getFullYear();
+                        function getCurrentFinancialYear(quoteDate) {
+                            debugger;
+                            var startYear = "";
+                            var endYear = "";
+                            var docDate = new Date(quoteDate);
+                            if ((docDate.getMonth() + 1) <= 3) {
+                                startYear = docDate.getFullYear() - 1;
+                                endYear = docDate.getFullYear();
+                            }
+                            else {
+                                startYear = docDate.getFullYear();
+                                endYear = docDate.getFullYear() + 1;
+                            }
+                            return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
+                        }
+                        $('#QuoteDateFormatted').datepicker({
+                            format: "dd-M-yyyy",
+                            maxViewMode: 0,
+                            todayBtn: "linked",
+                            clearBtn: true,
+                            autoclose: true,
+                            todayHighlight: true,
+                            startDate: getCurrentFinancialYear(quoteDate).startDate,
+                            endDate: getCurrentFinancialYear(quoteDate).endDate
+                        });
                     }
-                    else {
-                        startYear = docDate.getFullYear();
-                        endYear = docDate.getFullYear() + 1;
-                    }
-                    return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
-                }
-                $('#QuoteDateFormatted').datepicker({
-                    format: "dd-M-yyyy",
-                    maxViewMode: 0,
-                    todayBtn: "linked",
-                    clearBtn: true,
-                    autoclose: true,
-                    todayHighlight: true,
-                    startDate: getCurrentFinancialYear(quoteDate).startDate,
-                    endDate: getCurrentFinancialYear(quoteDate).endDate
-                });
-            }
-            </text>
+                    </text>
             }
             else
             {
                 <text>
-            debugger;
-            $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
-                //$('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-                //$('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
-            });
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
+                    debugger;
+                    $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
+                        //$('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                        //$('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+                    });
+                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () { });
 
-            $('.changeCurrency').change(function () {
-                if (_dataTable.QuotationDetailList.rows().count() > 0) {
-                    notyConfirm('Do you want to continue?', 'ClearQuotationform();', 'This will reset the form !', "Continue");
-                    return false;
-                }
-                if (this.nodeName == "SELECT") {
-                    $('#hdnCurrencyCode').val(this.value)
-                    if (this.value != "INR") {
-                        $('#idCurRateForAutofocus').prop("disabled", false)
+                    $('.changeCurrency').change(function () {
+                        if (_dataTable.QuotationDetailList.rows().count() > 0) {
+                            notyConfirm('Do you want to continue?', 'ClearQuotationform();', 'This will reset the form !', "Continue");
+                            return false;
+                        }
+                        if (this.nodeName == "SELECT") {
+                            $('#hdnCurrencyCode').val(this.value)
+                            if (this.value != "INR") {
+                                $('#idCurRateForAutofocus').prop("disabled", false)
+                            }
+                            $('#spanRate').text(this.value)
+                            $('#spanDiscound').text(this.value)
+                            $('#spanTaxable').text(this.value)
+                            $('#spanTotal').text(this.value)
+                            $('#spanchargeAmount').text(this.value)
+                            $('#spanOCTotal').text(this.value)
+                            $('#idCurRateForAutofocus').focus();
+                            $('#idCurRateForAutofocus').val(1);
+                            $('#hdnCurrencyRate').val(1);
+                        }
+                        if (this.nodeName == "INPUT") {
+                            $('#hdnCurrencyRate').val(this.value)
+                        }
+                    });
+                    if ($('#hdnCurrencyCode').val() == "INR") {
+                        $('#idCurRateForAutofocus').prop("disabled", true)
                     }
-                    $('#spanRate').text(this.value)
-                    $('#spanDiscound').text(this.value)
-                    $('#spanTaxable').text(this.value)
-                    $('#spanTotal').text(this.value)
-                    $('#spanchargeAmount').text(this.value)
-                    $('#spanOCTotal').text(this.value)
-                    $('#idCurRateForAutofocus').focus();
-                    $('#idCurRateForAutofocus').val(1);
-                    $('#hdnCurrencyRate').val(1);
-                }
-                if (this.nodeName == "INPUT") {
-                    $('#hdnCurrencyRate').val(this.value)
-                }
-            });
-            if ($('#hdnCurrencyCode').val() == "INR") {
-                $('#idCurRateForAutofocus').prop("disabled", true)
+                    </text>
             }
-            </text>
-            }
-            @if (!Model.IsUpdate&&Model.EstimateID!=null)
+                    @if (!Model.IsUpdate&&Model.EstimateID!=null)
              {
                 <text>
-            $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
-            });
+                    $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
+                    });
 
-            $('.changeCurrency').change(function () {
-                if (this.nodeName == "INPUT") {
-                    $('#hdnCurrencyRate').val(this.value)
-                }
-            });
+                    $('.changeCurrency').change(function () {
+                        if (this.nodeName == "INPUT") {
+                            $('#hdnCurrencyRate').val(this.value)
+                        }
+                    });
 
-            </text>
+                    </text>
              }
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            $('#QuoteDateFormatted,#ValidUpToDateFormatted').datepicker({
-                format: "dd-M-yyyy",
-                maxViewMode: 0,
-                todayBtn: "linked",
-                clearBtn: true,
-                autoclose: true,
-                todayHighlight: true
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            //Fileupload
-            $('#btnUpload').click(function () {
-                debugger;
-                //Pass the controller name
-                var FileObject = new Object;
-                if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
-                    FileObject.ParentID = (($('#QuotationForm #ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#QuotationForm #ID').val()) : $('#hdnFileDupID').val());
                 }
-                else {
-                    FileObject.ParentID = ($('#QuotationForm #ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#QuotationForm #ID').val();
+                catch (e) {
+                    console.log(e.message);
                 }
-
-
-                FileObject.ParentType = "Quotation";
-                FileObject.Controller = "FileUpload";
-                if ($('#LatestApprovalStatus').val() == '1' || $('#LatestApprovalStatus').val() == '9')
-                    FileObject.IsDocumentApprover = "True";
-                UploadFile(FileObject);
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            $('#QuotationGradeCode').select2({});
-            $('.select2').addClass('form-control newinput');
-
-
-            $(document).on('focus', '.select2', function (e) {
-                if (e.originalEvent) {
-                    var s2element = $(this).siblings('select');
-                    s2element.select2('open');
-                    // Set focus back to select2 element on closing.
-                    s2element.on('select2:closing', function (e) {
-                        s2element.select2('focus');
+                try {
+                    $('#QuoteDateFormatted,#ValidUpToDateFormatted').datepicker({
+                        format: "dd-M-yyyy",
+                        maxViewMode: 0,
+                        todayBtn: "linked",
+                        clearBtn: true,
+                        autoclose: true,
+                        todayHighlight: true
                     });
                 }
-            });
+                catch (e) {
+                    console.log(e.message);
+                }
+                try {
+                    //Fileupload
+                    $('#btnUpload').click(function () {
+                        debugger;
+                        //Pass the controller name
+                        var FileObject = new Object;
+                        if ($('#hdnFileDupID').val() != "00000000-0000-0000-0000-000000000000") {
+                            FileObject.ParentID = (($('#QuotationForm #ID').val()) != "00000000-0000-0000-0000-000000000000" ? ($('#QuotationForm #ID').val()) : $('#hdnFileDupID').val());
+                        }
+                        else {
+                            FileObject.ParentID = ($('#QuotationForm #ID').val() == "00000000-0000-0000-0000-000000000000") ? "" : $('#QuotationForm #ID').val();
+                        }
 
-            $(document).on("select2-open", function () {
-                $(this).select2('positionDropdown', true);
-            });
 
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            $('#QuotationForm #EstimateID').change(function () {
-                debugger;
-                OnServerCallBegin();
-                $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function (responseTxt, statusTxt, xhr) {
-                    if (statusTxt == "success") {
-                        OnServerCallComplete();
-                        $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val(), function () {
-                            $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
-                            $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+                        FileObject.ParentType = "Quotation";
+                        FileObject.Controller = "FileUpload";
+                        if ($('#LatestApprovalStatus').val() == '1' || $('#LatestApprovalStatus').val() == '9')
+                            FileObject.IsDocumentApprover = "True";
+                        UploadFile(FileObject);
+                    });
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+                try {
+                    $('#QuotationGradeCode').select2({});
+                    $('.select2').addClass('form-control newinput');
+
+
+                    $(document).on('focus', '.select2', function (e) {
+                        if (e.originalEvent) {
+                            var s2element = $(this).siblings('select');
+                            s2element.select2('open');
+                            // Set focus back to select2 element on closing.
+                            s2element.on('select2:closing', function (e) {
+                                s2element.select2('focus');
+                            });
+                        }
+                    });
+
+                    $(document).on("select2-open", function () {
+                        $(this).select2('positionDropdown', true);
+                    });
+
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+                try {
+                    $('#QuotationForm #EstimateID').change(function () {
+                        debugger;
+                        OnServerCallBegin();
+                        $("#divQuotationForm").load("Quotation/QuotationForm?id=" + _emptyGuid + "&estimateID=" + this.value, function (responseTxt, statusTxt, xhr) {
+                            if (statusTxt == "success") {
+                                OnServerCallComplete();
+                                $('#divCustomerBasicInfo').load("Customer/CustomerBasicInfo?ID=" + $('#QuotationForm #hdnCustomerID').val(), function () {
+                                    $('#MailingAddress').val($('#hdnCustomerBillingAddress').val());
+                                    $('#ShippingAddress').val($('#hdnCustomerShippingAddress').val());
+                                });
+                                ClearCalculatedFields();
+                                BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
+                                BindQuotationOtherChargesDetailList("00000000-0000-0000-0000-000000000000");
+                                CalculateTotal();
+                            }
                         });
-                        ClearCalculatedFields();
-                        BindQuotationDetailList("00000000-0000-0000-0000-000000000000", true);
-                        BindQuotationOtherChargesDetailList("00000000-0000-0000-0000-000000000000");
-                        CalculateTotal();
+                    });
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+                try {
+                    $('#EstimateID').val($('#hdnEstimateID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEstimateID').val());
+                    $('#EstimateID').select2({
+                        language: {
+                            noResults: function (params) {
+                                return "Search result will shows here";
+                            }
+                        },
+                        ajax: {
+                            type: 'POST',
+                            dataType: 'json',
+                            url: "Estimate/GetEstimateForSelectListOnDemand/",
+                            delay: 250,
+                            data: function (term) {
+                                return {
+                                    'searchTerm': term.term //search term
+                                };
+                            },
+                            processResults: function (data) {
+                                return {
+                                    results: data.items
+                                };
+                            },
+                        }
+                    });
+                    $('.select2').addClass('form-control newinput');
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+                try {
+                    //if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True") {
+                    if (($('#QuotationForm #IsDocLocked').val() == "False" && $("#hdnIsDocumentApprover").val() == "False") && $('#QuotationForm #IsUpdate').val() == "True") {
+                        $('#btnUpload').attr("disabled", "disabled")
+                        $('#btnUpload').attr("title", "Document Locked");
+                        $('#btnUpload').prop("onclick", null);
+                        $('#btnUpload').css("background", "#b2aca4");
+                        $('#btnCancel').attr("disabled", "disabled")
+                        $('#btnCancel').attr("title", "Document Locked");
+                        $('#btnCancel').prop("onclick", null);
+                        $('#btnCancel').css("background", "#b2aca4");
+                        $('#btnSelect').attr("disabled", "disabled")
+                        $('#btnSelect').attr("title", "Document Locked");
+                        $('#btnSelect').prop("onclick", null);
+                        $('#btnSelect').css("background", "#b2aca4");
                     }
-                });
-            });
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            $('#EstimateID').val($('#hdnEstimateID').val() == "00000000-0000-0000-0000-000000000000" ? null : $('#hdnEstimateID').val());
-            $('#EstimateID').select2({
-                language: {
-                    noResults: function (params) {
-                        return "Search result will shows here";
+                    if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True" && $('#LatestApprovalStatus').val() == '0') {
+                        $('#btnUpload').attr("disabled", "disabled")
+                        $('#btnUpload').attr("title", "Document Locked");
+                        $('#btnUpload').prop("onclick", null);
+                        $('#btnUpload').css("background", "#b2aca4");
+                        $('#btnCancel').attr("disabled", "disabled")
+                        $('#btnCancel').attr("title", "Document Locked");
+                        $('#btnCancel').prop("onclick", null);
+                        $('#btnCancel').css("background", "#b2aca4");
+                        $('#btnSelect').attr("disabled", "disabled")
+                        $('#btnSelect').attr("title", "Document Locked");
+                        $('#btnSelect').prop("onclick", null);
+                        $('#btnSelect').css("background", "#b2aca4");
                     }
-                },
-                ajax: {
-                    type: 'POST',
-                    dataType: 'json',
-                    url: "Estimate/GetEstimateForSelectListOnDemand/",
-                    delay: 250,
-                    data: function (term) {
-                        return {
-                            'searchTerm': term.term //search term
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.items
-                        };
-                    },
-                }
-            });
-            $('.select2').addClass('form-control newinput');
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-        try {
-            //if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True") {
-            if (($('#QuotationForm #IsDocLocked').val() == "False" && $("#hdnIsDocumentApprover").val() == "False") && $('#QuotationForm #IsUpdate').val() == "True") {
-                $('#btnUpload').attr("disabled", "disabled")
-                $('#btnUpload').attr("title", "Document Locked");
-                $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4");
-                $('#btnCancel').attr("disabled", "disabled")
-                $('#btnCancel').attr("title", "Document Locked");
-                $('#btnCancel').prop("onclick", null);
-                $('#btnCancel').css("background", "#b2aca4");
-                $('#btnSelect').attr("disabled", "disabled")
-                $('#btnSelect').attr("title", "Document Locked");
-                $('#btnSelect').prop("onclick", null);
-                $('#btnSelect').css("background", "#b2aca4");
-            }
-            if ($('#QuotationForm #IsDocLocked').val() == "False" && $('#QuotationForm #IsUpdate').val() == "True" && $('#LatestApprovalStatus').val() == '0') {
-                $('#btnUpload').attr("disabled", "disabled")
-                $('#btnUpload').attr("title", "Document Locked");
-                $('#btnUpload').prop("onclick", null);
-                $('#btnUpload').css("background", "#b2aca4");
-                $('#btnCancel').attr("disabled", "disabled")
-                $('#btnCancel').attr("title", "Document Locked");
-                $('#btnCancel').prop("onclick", null);
-                $('#btnCancel').css("background", "#b2aca4");
-                $('#btnSelect').attr("disabled", "disabled")
-                $('#btnSelect').attr("title", "Document Locked");
-                $('#btnSelect').prop("onclick", null);
-                $('#btnSelect').css("background", "#b2aca4");
-            }
-            if (($('#QuotationForm #IsDocLocked').val() == "True" && $("#hdnIsDocumentApprover").val() == "False") && $('#QuotationForm #IsUpdate').val() == "True") {
-                if ($('#LatestApprovalStatus').val() != '3' && $('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != '0') {
-                    $('#btnUpload').attr("disabled", "disabled")
-                    $('#btnUpload').attr("title", "Document Locked");
-                    $('#btnUpload').prop("onclick", null);
-                    $('#btnUpload').css("background", "#b2aca4");
-                    $('#btnCancel').attr("disabled", "disabled")
-                    $('#btnCancel').attr("title", "Document Locked");
-                    $('#btnCancel').prop("onclick", null);
-                    $('#btnCancel').css("background", "#b2aca4");
-                    $('#btnSelect').attr("disabled", "disabled")
-                    $('#btnSelect').attr("title", "Document Locked");
-                    $('#btnSelect').prop("onclick", null);
-                    $('#btnSelect').css("background", "#b2aca4");
-                }
-            }
-            debugger;
-            if ($('#LatestApprovalStatus').val() != '0' && $('#LatestApprovalStatus').val() != "") {
-                if (($("#hdnIsDocumentApprover").val() == "False" && ($('#LatestApprovalStatus').val() != '9' && ($('#LatestApprovalStatus').val() != '3' && ($('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != ""))))) {
-                    $('#btnUpload').attr("disabled", "disabled")
-                    $('#btnUpload').attr("title", "Document Locked");
-                    $('#btnUpload').prop("onclick", null);
-                    $('#btnUpload').css("background", "#b2aca4");
-                    $('#btnCancel').attr("disabled", "disabled")
-                    $('#btnCancel').attr("title", "Document Locked");
-                    $('#btnCancel').prop("onclick", null);
-                    $('#btnCancel').css("background", "#b2aca4");
-                    $('#btnSelect').attr("disabled", "disabled")
-                    $('#btnSelect').attr("title", "Document Locked");
-                    $('#btnSelect').prop("onclick", null);
-                    $('#btnSelect').css("background", "#b2aca4");
-                }
-                if ($("#hdnIsDocumentApprover").val() == "True" && $('#QuotationForm #IsDocLocked').val() != "True" && ($('#LatestApprovalStatus').val() == '3' || $('#LatestApprovalStatus').val() == '7')) {
-                    $('#btnUpload').attr("disabled", "disabled")
-                    $('#btnUpload').attr("title", "Document Approved");
-                    $('#btnUpload').prop("onclick", null);
-                    $('#btnUpload').css("background", "#b2aca4");
-                    $('#btnCancel').attr("disabled", "disabled")
-                    $('#btnCancel').attr("title", "Document Approved");
-                    $('#btnCancel').prop("onclick", null);
-                    $('#btnCancel').css("background", "#b2aca4");
-                    $('#btnSelect').attr("disabled", "disabled")
-                    $('#btnSelect').attr("title", "Document Approved");
-                    $('#btnSelect').prop("onclick", null);
-                    $('#btnSelect').css("background", "#b2aca4");
-                }
-                if ($('#LatestApprovalStatus').val() == '4') {
-                    $('#btnUpload').attr("disabled", "disabled")
-                    $('#btnUpload').attr("title", "Document Approved");
-                    $('#btnUpload').prop("onclick", null);
-                    $('#btnUpload').css("background", "#b2aca4");
-                    $('#btnCancel').attr("disabled", "disabled")
-                    $('#btnCancel').attr("title", "Document Approved");
-                    $('#btnCancel').prop("onclick", null);
-                    $('#btnCancel').css("background", "#b2aca4");
-                    $('#btnSelect').attr("disabled", "disabled")
-                    $('#btnSelect').attr("title", "Document Approved");
-                    $('#btnSelect').prop("onclick", null);
-                    $('#btnSelect').css("background", "#b2aca4");
-                }
+                    if (($('#QuotationForm #IsDocLocked').val() == "True" && $("#hdnIsDocumentApprover").val() == "False") && $('#QuotationForm #IsUpdate').val() == "True") {
+                        if ($('#LatestApprovalStatus').val() != '3' && $('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != '0') {
+                            $('#btnUpload').attr("disabled", "disabled")
+                            $('#btnUpload').attr("title", "Document Locked");
+                            $('#btnUpload').prop("onclick", null);
+                            $('#btnUpload').css("background", "#b2aca4");
+                            $('#btnCancel').attr("disabled", "disabled")
+                            $('#btnCancel').attr("title", "Document Locked");
+                            $('#btnCancel').prop("onclick", null);
+                            $('#btnCancel').css("background", "#b2aca4");
+                            $('#btnSelect').attr("disabled", "disabled")
+                            $('#btnSelect').attr("title", "Document Locked");
+                            $('#btnSelect').prop("onclick", null);
+                            $('#btnSelect').css("background", "#b2aca4");
+                        }
+                    }
+                    debugger;
+                    if ($('#LatestApprovalStatus').val() != '0' && $('#LatestApprovalStatus').val() != "") {
+                        if (($("#hdnIsDocumentApprover").val() == "False" && ($('#LatestApprovalStatus').val() != '9' && ($('#LatestApprovalStatus').val() != '3' && ($('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != ""))))) {
+                            $('#btnUpload').attr("disabled", "disabled")
+                            $('#btnUpload').attr("title", "Document Locked");
+                            $('#btnUpload').prop("onclick", null);
+                            $('#btnUpload').css("background", "#b2aca4");
+                            $('#btnCancel').attr("disabled", "disabled")
+                            $('#btnCancel').attr("title", "Document Locked");
+                            $('#btnCancel').prop("onclick", null);
+                            $('#btnCancel').css("background", "#b2aca4");
+                            $('#btnSelect').attr("disabled", "disabled")
+                            $('#btnSelect').attr("title", "Document Locked");
+                            $('#btnSelect').prop("onclick", null);
+                            $('#btnSelect').css("background", "#b2aca4");
+                        }
+                        if ($("#hdnIsDocumentApprover").val() == "True" && $('#QuotationForm #IsDocLocked').val() != "True" && ($('#LatestApprovalStatus').val() == '3' || $('#LatestApprovalStatus').val() == '7')) {
+                            $('#btnUpload').attr("disabled", "disabled")
+                            $('#btnUpload').attr("title", "Document Approved");
+                            $('#btnUpload').prop("onclick", null);
+                            $('#btnUpload').css("background", "#b2aca4");
+                            $('#btnCancel').attr("disabled", "disabled")
+                            $('#btnCancel').attr("title", "Document Approved");
+                            $('#btnCancel').prop("onclick", null);
+                            $('#btnCancel').css("background", "#b2aca4");
+                            $('#btnSelect').attr("disabled", "disabled")
+                            $('#btnSelect').attr("title", "Document Approved");
+                            $('#btnSelect').prop("onclick", null);
+                            $('#btnSelect').css("background", "#b2aca4");
+                        }
+                        if ($('#LatestApprovalStatus').val() == '4') {
+                            $('#btnUpload').attr("disabled", "disabled")
+                            $('#btnUpload').attr("title", "Document Approved");
+                            $('#btnUpload').prop("onclick", null);
+                            $('#btnUpload').css("background", "#b2aca4");
+                            $('#btnCancel').attr("disabled", "disabled")
+                            $('#btnCancel').attr("title", "Document Approved");
+                            $('#btnCancel').prop("onclick", null);
+                            $('#btnCancel').css("background", "#b2aca4");
+                            $('#btnSelect').attr("disabled", "disabled")
+                            $('#btnSelect').attr("title", "Document Approved");
+                            $('#btnSelect').prop("onclick", null);
+                            $('#btnSelect').css("background", "#b2aca4");
+                        }
 
+                    }
+                }
+                catch (e) {
+                    console.log(e.message);
+                }
+            });
+            function ViewCustomerHistory() {
+                debugger;
+                if ($('#CustomerID').val() != '') {
+                    BindCustomerHistory($('#hdnCustomerID').val());
+                    _SlNo = 1;
+                    $('#lblModelPopCustomerHistory').text('Customer History');
+                    $('#divModelEnquiryPopBody').show();
+                    $('#divModelPopCustomerHistory').modal('show');
+                }
+                else {
+                    notyAlert('warning', 'Please Select Customer');
+                }
             }
-        }
-        catch (e) {
-            console.log(e.message);
-        }
-    });
-</script>
+        </script>

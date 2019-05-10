@@ -476,14 +476,13 @@ function BindCustomerHistory(id) {
                { "targets": [1, 4,2,3], "width": "23%" },
                { "targets": [0], "width": "15%" },
                { className: "text-right", "targets": [4] },
-               { className: "text-left", "targets": [1, 2,3] },
-               { className: "text-center", "targets": [0] }
+               { className: "text-center", "targets": [0,1,2,3] }
            ],
            destroy: true,
            initComplete: function (settings, json) {
                debugger;
                $('#lblTotalSaleOrderCount').text(json.data.length);
-               $('#lblTotalSaleOrderValue').text(roundoff(json.data[0].TotalOrderValue));
+               $('#lblTotalSaleOrderValue').text(formatCurrency(roundoff(json.data[0].TotalOrderValue)));
            },
        });
     $('[data-toggle="popover"]').popover({
