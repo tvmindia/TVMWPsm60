@@ -186,6 +186,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                     proformaInvoice.Branch.Description = (sdr["BranchDescription"].ToString() != "" ? sdr["BranchDescription"].ToString() : proformaInvoice.Branch.Description);
                                     proformaInvoice.PreparedBy = (sdr["PreparedBy"].ToString() != "" ? Guid.Parse(sdr["PreparedBy"].ToString()) : proformaInvoice.PreparedBy);
                                     proformaInvoice.Discount = (sdr["Discount"].ToString() != "" ? decimal.Parse(sdr["Discount"].ToString()) : proformaInvoice.Discount);
+                                    proformaInvoice.AdvanceAmount = (sdr["AdvanceAmount"].ToString() != "" ? decimal.Parse(sdr["AdvanceAmount"].ToString()) : proformaInvoice.AdvanceAmount);
                                     proformaInvoice.DocumentOwners = (sdr["DocumentOwners"].ToString() != "" ? (sdr["DocumentOwners"].ToString()).Split(',') : proformaInvoice.DocumentOwners);
                                     proformaInvoice.DocumentOwner = (sdr["DocumentOwner"].ToString() != "" ? (sdr["DocumentOwner"].ToString()) : proformaInvoice.DocumentOwner);
                                     string mailfooter = (sdr["MailBodyFooter"].ToString() != "" ? (sdr["MailBodyFooter"].ToString()) : proformaInvoice.MailBodyFooter);

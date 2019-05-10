@@ -54,8 +54,8 @@ namespace PilotSmithApp.UserInterface.Models
         public int? BillLocationCode { get; set; }
         [Display(Name = "Select Invoice Type")]
         public string InvoiceType { get; set; }
-        public decimal? Discount { get; set; }
-        public decimal? AdvanceAmount { get; set; }
+        public decimal Discount { get; set; }
+        public decimal AdvanceAmount { get; set; }
         public string Cc { get; set; }
         public string Bcc { get; set; }
         [Required(ErrorMessage = "subject is missing")]

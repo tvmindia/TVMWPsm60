@@ -145,6 +145,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     proformaInvoiceVM.Branch.Description = "-";
                     proformaInvoiceVM.Customer = saleorderVM.Customer;
                     proformaInvoiceVM.IsDocLocked = false;
+                    proformaInvoiceVM.AdvanceAmount = saleorderVM.AdvanceAmount;
                     proformaInvoiceVM.CurrencyCode = saleorderVM.CurrencyCode;
                     proformaInvoiceVM.CurrencyRate = saleorderVM.CurrencyRate;
                     proformaInvoiceVM.Currency = new CurrencyViewModel()

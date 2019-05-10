@@ -74,7 +74,7 @@
                 </tr>
             </tbody>
         </table>
-        @{ decimal itemtaxableAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, totalCess = 0, otherChargeAmt = 0, totalGSTAmt = 0;
+        @{ decimal itemtaxableAmount = 0, itemDiscountAmount = 0, totalItemDiscountAmount = 0, itemgSTAmount = 0, itemgrandTotal = 0, totaltaxable = 0, totalCGST = 0, totalSGST = 0, totalIGST = 0, grandTotal = 0, grossAmt = 0, totalCess = 0, otherChargeAmt = 0, totalGSTAmt = 0, itemTotal = 0;
             var tot = "";
             PSASysCommon pSASysCommon = new PSASysCommon();
         }
@@ -102,12 +102,14 @@
                     int slno = 1;
                     foreach (var mp in Model.ProformaInvoiceDetailList)
                     {
-                        decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0;
+                        decimal CGSTAmt = 0, SGSTAmt = 0, IGSTAmt = 0, itemTotalAmt = 0;
+                        itemDiscountAmount = Math.Round((decimal)mp.Discount, 2);
                         itemtaxableAmount = Math.Round(((decimal)mp.Qty * (decimal)mp.Rate) - (decimal)mp.Discount, 2);
                         CGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.CGSTPerc / (decimal)100), 2);
                         SGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.SGSTPerc / (decimal)100), 2);
                         IGSTAmt = Math.Round((decimal)itemtaxableAmount * ((decimal)mp.IGSTPerc / (decimal)100), 2);
                         itemgSTAmount = Math.Round((decimal)SGSTAmt + (decimal)CGSTAmt + (decimal)IGSTAmt, 2);
+                        itemTotalAmt = (decimal)mp.Qty * (decimal)mp.Rate;
                         itemgrandTotal = itemtaxableAmount + itemgSTAmount + (decimal)mp.CessAmt;
                         //   CessAmt = Math.Round((decimal)mp.CessAmt, 2);
                         <tr style="text-align: right;font-family: Arial; color: #000;padding: 4px">
@@ -144,19 +146,22 @@
                             <td style="width:12%; text-align: right;padding: 4px;font-size:10px;vertical-align:top;">@itemgrandTotal</td>
                         </tr>
                                         slno = slno + 1;
+                                        itemTotal = itemTotal + (decimal)@itemTotalAmt;
+                                        totalItemDiscountAmount = totalItemDiscountAmount + (decimal)@itemDiscountAmount;
                                         totaltaxable = totaltaxable + (decimal)@itemtaxableAmount;
                                         totalCess = totalCess + (decimal)mp.CessAmt;
                                         totalCGST = totalCGST + (decimal)CGSTAmt;
                                         totalSGST = totalSGST + (decimal)SGSTAmt;
                                         totalIGST = totalIGST + (decimal)IGSTAmt;
                                     }
+                                    itemTotal = Math.Round(@itemTotal, 2);
                                     grossAmt = Math.Round(totaltaxable + totalCGST + totalSGST + totalIGST + totalCess, 2);
-                                    grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
+                                    //grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
                                     totalGSTAmt = Math.Round(totalGSTAmt + (decimal)totalCGST + (decimal)totalSGST + (decimal)totalIGST, 2);
                                 }
                 <tr>
                     @{
-                        var table1Sum = pSASysCommon.ConvertToCurrencyStandards((double)grossAmt, "IND");
+                        var table1Sum = pSASysCommon.ConvertToCurrencyStandards((double)grossAmt,Model.CurrencyCode);
                     }
                     <td colspan="10" style="border-top:solid 1.5px;border-top-color: #000;font-size:10px;text-align:right;padding-top: 5px">
                         <b>@table1Sum</b>
@@ -209,13 +214,13 @@
                                             sum = sum + Math.Round((decimal)Total, 2);
                                         }
                                         grossAmt = Math.Round(grossAmt + otherChargeAmt, 2);
-                                        grandTotal = grossAmt - (Model.Discount != null ? (decimal)Model.Discount : 0);
+                                        //grandTotal = grossAmt - ((decimal)Model.Discount);
                                     }
 
-
+                                   
                                     <tr>
                                         @{
-                                            var table2Sum = pSASysCommon.ConvertToCurrencyStandards((double)sum, "IND");
+                                            var table2Sum = pSASysCommon.ConvertToCurrencyStandards((double)sum, Model.CurrencyCode);
                                         }
                                         <td colspan="7" style="border-top:solid 1.5px;border-top-color: #000;vertical-align:top;text-align:right;font-size:10px;padding-top: 5px;">
                                             <b>@table2Sum</b>
@@ -226,10 +231,37 @@
                                             }
                     </td>
                 </tr>
+                @{
+                    grandTotal = grossAmt - ((decimal)Model.Discount) - ((decimal)Model.AdvanceAmount);
+                }
                 <tr>
                     <td colspan="5"></td>
                     <td colspan="5" style="font:12px;padding-top:20px;">
                         <table style="width:100%;line-height: 20px;">
+                            <tr class="">
+                                <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;" valign="top">
+                                    Total Item Amount
+                                </td>
+
+                                <td style="vertical-align: top; padding-top: 1px;text-align:right;font-size:12px;border-bottom:solid .5px" align="right" valign="top">
+                                    @itemTotal
+                                </td>
+
+                            </tr>
+                            @{
+                                if (@totalItemDiscountAmount > 0)
+                                {
+                                    <tr class="">
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left;" valign="top">
+                                            Total Item Discount
+                                        </td>
+
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid .5px" align="right" valign="top">
+                                            @totalItemDiscountAmount
+                                        </td>
+                                    </tr>
+                                }
+                            }
                             <tr class="">
                                 <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid .5px;text-align:left" valign="top">
                                     Total Taxable Amount
@@ -274,20 +306,38 @@
                                     @grossAmt
                                 </td>
                             </tr>
-                            <tr class="item">
-                                <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px;text-align:left" valign="top">
-                                    Cash Discount
-                                </td>
+                            @{
+                                if (Model.Discount > 0)
+                                {
+                                    <tr class="item">
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px;text-align:left" valign="top">
+                                            Cash Discount
+                                        </td>
 
-                                <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid 1.5px" align="right" valign="top">
-                                    @Model.Discount
-                                </td>
-                            </tr>
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid 1.5px" align="right" valign="top">
+                                            @Model.Discount
+                                        </td>
+                                    </tr>
+                                }
+                                if (Model.AdvanceAmount > 0)
+                                {
+                                    <tr class="item">
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;border-bottom:solid 1.5px;text-align:left" valign="top">
+                                            Advance Amount
+                                        </td>
+
+                                        <td style="vertical-align: top; padding-top: 1px;font-size:12px;text-align:right;border-bottom:solid 1.5px" align="right" valign="top">
+                                            @Model.AdvanceAmount
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
 
                             <tr class="total">
                                 <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:14px;text-align:left;font-weight:bold;" valign="top">Grand Total</td>
                                 @{
-                                    var total = pSASysCommon.ConvertToCurrencyStandards((double)grandTotal, "IND");
+                                    var total = pSASysCommon.ConvertToCurrencyStandards((double)grandTotal, Model.CurrencyCode);
                                 }
                                 <td style="vertical-align: top; padding-top: 1px;border-top-color: #eee;font-size:14px;text-align:right;font-weight:bold;" align="right" valign="top">
                                     @total
