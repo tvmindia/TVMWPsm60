@@ -10,7 +10,7 @@
 <div style="min-height:200px;background-color:#eef5f9;">
     @Html.HiddenFor(model => model.DocumentID, htmlAttributes: new { @class = "", Value = @ViewBag.DocumentID })
     @Html.HiddenFor(model => model.DocumentType, htmlAttributes: new { @class = "", Value = @ViewBag.DocumentType })
-    @if (ViewBag.DocumentType != "ENQ" && ViewBag.DocumentType != "EST" && ViewBag.DocumentType != "PIV" && ViewBag.DocumentType != "SIV" && ViewBag.DocumentType != "DLC" && ViewBag.DocumentType != "SRC")
+    @if (ViewBag.DocumentType != "ENQ" && ViewBag.DocumentType != "EST" && ViewBag.DocumentType != "SIV" && ViewBag.DocumentType != "DLC" && ViewBag.DocumentType != "SRC")
     {
         <section class="content" style="min-height:30vh;margin-top: 5%;">
 
@@ -145,7 +145,7 @@
 <script>
     $(document).ready(function () {
         debugger;
-        @if (ViewBag.DocumentType != "ENQ" && ViewBag.DocumentType != "EST" && ViewBag.DocumentType != "PIV" && ViewBag.DocumentType != "SIV" && ViewBag.DocumentType != "DLC" && ViewBag.DocumentType != "SRC")
+        @if (ViewBag.DocumentType != "ENQ" && ViewBag.DocumentType != "EST" && ViewBag.DocumentType != "SIV" && ViewBag.DocumentType != "DLC" && ViewBag.DocumentType != "SRC")
         {
             <text>
         BindApprovalHistoryTable();

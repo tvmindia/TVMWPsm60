@@ -613,7 +613,15 @@
                                 <label class="control-label " for="Discount">Cash Discount</label>
                             </td>
                             <td style="text-align: right;padding: 0px!important">
-                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal(this.value)", @onkeypress = "return isNumber(event)" } })
+                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal()", @onkeypress = "return isNumber(event)" } })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label " for="Discount">Advance Amount</label>
+                            </td>
+                            <td style="text-align: right;padding: 0px!important">
+                                @Html.EditorFor(model => model.AdvanceAmount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal()", @onkeypress = "return isNumber(event)" } })
                             </td>
                         </tr>
                         <tr class="odd">
@@ -652,19 +660,6 @@
                         @Html.ValidationMessageFor(model => model.PurchaseOrdDateFormatted, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-            </div>
-
-            <div class="form-group col-md-12">
-                @*<div class="col-md-4 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.CarrierCode, htmlAttributes: new { @class = "control-label" })
-                        </div>
-                        <div class="col-md-12">
-                            @Html.Action("CarrierSelectList", "Carrier", new { required = "" })
-                            @Html.HiddenFor(model => model.CarrierCode, htmlAttributes: new { @class = "", @id = "hdnCarrierCode" })
-                        </div>
-                    </div>*@
                 <div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.TermReferenceNo, htmlAttributes: new { @class = "control-label" })
@@ -674,7 +669,20 @@
                         @Html.ValidationMessageFor(model => model.TermReferenceNo, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-4 no-padding">
+            </div>
+
+            @*<div class="form-group col-md-12">*@
+                @*<div class="col-md-4 no-padding">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.CarrierCode, htmlAttributes: new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.Action("CarrierSelectList", "Carrier", new { required = "" })
+                            @Html.HiddenFor(model => model.CarrierCode, htmlAttributes: new { @class = "", @id = "hdnCarrierCode" })
+                        </div>
+                    </div>*@
+                
+                @*<div class="col-md-4 no-padding">
                     <div class="col-md-12">
                         @Html.LabelFor(model => model.AdvanceAmount, htmlAttributes: new { @class = "control-label" })
                     </div>
@@ -682,8 +690,8 @@
                         @Html.EditorFor(model => model.AdvanceAmount, new { htmlAttributes = new { @class = "form-control newinput Amount", @onkeypress = "return isNumber(event)" } })
                         @Html.ValidationMessageFor(model => model.AdvanceAmount, "", new { @class = "text-danger" })
                     </div>
-                </div>
-            </div>
+                </div>*@
+            @*</div>*@
 
         </div>
     </div>

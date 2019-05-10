@@ -14,7 +14,9 @@
     @Html.HiddenFor(model => model.IsDocLocked, htmlAttributes: new { @class = "" })
     @Html.HiddenFor(model => model.hdnFileID, htmlAttributes: new { @class = "", @id = "hdnFileDupID", @value = Guid.Empty })
     @Html.HiddenFor(model => model.DocumentStatus.Description, htmlAttributes: new { @class = "", @id = "hdnDescription" })
-     <div class="col-md-11 divbox1">
+    @Html.HiddenFor(model => model.LatestApprovalStatus, htmlAttributes: new { @class = "" })
+    @Html.HiddenFor(model => model.LatestApprovalID, htmlAttributes: new { @class = "" })
+    <div class="col-md-11 divbox1">
         <div class="col-md-12 divbox2">
             <div class="col-md-12 headSeperator">General Details</div>
             <div class="form-group col-md-6">
@@ -217,7 +219,7 @@
                                 @Html.LabelFor(model => model.ProfInvDateFormatted, htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
                             <div class="col-md-12">
-                                @Html.EditorFor(model => model.ProfInvDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off"} })
+                                @Html.EditorFor(model => model.ProfInvDateFormatted, new { htmlAttributes = new { @class = "form-control newinput datepicker", @autocomplete = "off" } })
                                 @Html.ValidationMessageFor(model => model.ProfInvDateFormatted, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -243,23 +245,23 @@
                         </div>
                     </div>
                     @*<div class="col-md-6 no-padding">
-                        <div class="col-md-12">
-                            @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
-                        </div>
-                        <div class="col-md-12">
-                            <div class="divDocumentStatusSelectList">
-                                <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
-
-                               
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "control-label lblrequired" })
                             </div>
-                        </div>
-                       
-                        @Html.Hidden("hdnDocumentStatusRequired", "required")
-                        @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
-                    </div>*@
+                            <div class="col-md-12">
+                                <div class="divDocumentStatusSelectList">
+                                    <span class="form-control newinput"> <i class="fa fa-spinner fa-spin"> </i></span>
+
+
+                                </div>
+                            </div>
+
+                            @Html.Hidden("hdnDocumentStatusRequired", "required")
+                            @Html.HiddenFor(model => model.DocumentStatusCode, htmlAttributes: new { @class = "", @id = "hdnDocumentStatusCode" })
+                        </div>*@
                 </div>
                 <div class="form-group col-md-12 no-right-padding">
-                   
+
                     <div class="col-md-6 no-padding">
                         <div class="col-md-12">
                             @Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label" })
@@ -357,28 +359,28 @@
                     </div>
                 </div>
 
-                
+
 
             </div>
             <div class="form-group col-md-6 stausCombined">
                 <div class="boxstatus boxstatus2 shadow2">
                     <div class="Shadow2data clearfix">
-                        
+
                         @*<div class="form-group col-md-12">
-                            <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
-                        </div>*@
+                                <div class="lblStatusDisplay">@Model.DocumentStatus.Description</div>
+                            </div>*@
                         @if (Model.IsUpdate)
                         {
                             <div class="form-group col-md-12">
                                 <div class="rightAmtCaption">Document Status</div>
                             </div>
                             @*<div class="form-group col-md-12">
-                                <label class="switch switch-flat">
-                                    <input class="switch-input" type="checkbox" checked />
-                                    <span class="switch-label" data-on="Open" data-off="Closed"></span>
-                                    <span class="switch-handle"></span>
-                                </label>
-                            </div>*@
+                                    <label class="switch switch-flat">
+                                        <input class="switch-input" type="checkbox" checked />
+                                        <span class="switch-label" data-on="Open" data-off="Closed"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>*@
                         if (Model.IsDocLocked)
                         {
                             <div class="form-group col-md-4">
@@ -413,20 +415,20 @@
                                 <div class="lblStatusDisplay">EMAIL NOT SEND</div>
                             }
                         </div>
-                        @*<div class="form-group col-md-12">
-                                <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus)</div>
-                            </div>*@
-                        @*<div class="form-group col-md-12">
+                        <div class="form-group col-md-12">
+                            <div class="rightAmtCaption">@Html.DisplayNameFor(Model => Model.LatestApprovalStatus)</div>
+                        </div>
+                        <div class="form-group col-md-12">
 
-                                @if (Model.LatestApprovalStatus == null)
-                                {
-                                    <div class="lblStatusDisplay">DRAFTED DOCUMENT</div>
-                                }
-                                else
-                                {
-                                    <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
-                                }
-                            </div>*@
+                            @if (Model.LatestApprovalStatus == null)
+                            {
+                                <div class="lblStatusDisplay">-</div>
+                            }
+                            else
+                            {
+                                <div class="lblStatusDisplay">@Model.LatestApprovalStatusDescription</div>
+                            }
+                        </div>
                         <div class="form-group col-md-12">
                             <div class="rightAmtCaption">Branch</div>
                         </div>
@@ -536,24 +538,78 @@
                     {
                         if (Model.InvoiceType == "SB")
                         {
-                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null || (Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else if ((Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            @*<a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>*@
 
                         }
                         else
                         {
-                            <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                            <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            if (Model.LatestApprovalStatus == 3 || Model.LatestApprovalStatus == 0 || Model.LatestApprovalStatus == null || (Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else if ((Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            @*<a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>*@
 
                         }
                     }
                     else
                     {
-                        <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
-                        <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
-                        <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                        if ((Model.LatestApprovalStatus == 1 && Model.IsDocumentApprover == true) || (Model.LatestApprovalStatus == 9 && Model.IsDocumentApprover == true))
+                        {
+                            if (Model.InvoiceType == "SB")
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="display:none;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-openid pull-right" onclick="AddOtherExpenseDetailList()" id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceDetailList()" id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                                <a class="btn btn-openid pull-right" onclick="AddProformaInvoiceServiceBillList()" id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            }
+                        }
+                        else
+                        {
+                            <a class="btn btn-openid pull-right" disabled id="btnAddOtherExpenses" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Other Expenses</a>
+                            <a class="btn btn-openid pull-right" disabled id="btnAddItems" style="color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                            <a class="btn btn-openid pull-right" disabled id="btnAddServiceBill" style="display:none ;color:white;font-weight:bold;margin-bottom:.9%;text-decoration:none;margin-right: 2.7%;"><i class="fa fa-plus-circle"></i> Add Detail</a>
+                        }
                     }
                 }
             </div>
@@ -662,7 +718,15 @@
                                 <label class="control-label " for="Discount">Cash Discount</label>
                             </td>
                             <td style="text-align: right;padding: 0px!important">
-                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal(this.value)", @onkeypress = "return isNumber(event)" } })
+                                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal()", @onkeypress = "return isNumber(event)" } })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right">
+                                <label class="control-label " for="Discount">Advance Amount</label>
+                            </td>
+                            <td style="text-align: right;padding: 0px!important">
+                                @Html.EditorFor(model => model.AdvanceAmount, new { htmlAttributes = new { @class = "form-control newinput ApplyCurrency Amount", onchange = "CalculateGrandTotal()", @onkeypress = "return isNumber(event)" } })
                             </td>
                         </tr>
                         <tr class="odd">
@@ -711,8 +775,8 @@
 <script>
     $(document).ready(function () {
         $('[data-toggle="popover"]').popover({
-        });       
-         try {
+        });
+        try {
 
             debugger;
             //$('.switch-input').on('change', function () {
@@ -745,7 +809,7 @@
 
             //    });
 
-               
+
             //  //  console.log('Selected data: ' + selectedData);
             //  //  alert(selectedData);
             //});
@@ -784,14 +848,14 @@
             if ($('#hdnCurrencyCode').val() == "INR") {
                 $('#idCurRateForAutofocus').prop("disabled", true)
             }
-     
+
             $('.changeCurrency').change(function () {
                 if (this.nodeName == "INPUT") {
                     $('#hdnCurrencyRate').val(this.value)
                 }
             });
             var profInvDate = $('#ProfInvDateFormatted').val();
-            if(profInvDate!=""){         
+            if (profInvDate != "") {
                 function getCurrentFinancialYear(profInvDate) {
                     debugger;
                     var startYear = "";
@@ -839,7 +903,7 @@
                         $('#idCurRateForAutofocus').prop("disabled", false)
                     }
                     $('#spanRate').text(this.value)
-                    $('#spanDiscound').text(this.value)
+                    $('#spanDiscount').text(this.value)
                     $('#spanTaxable').text(this.value)
                     $('#spanTotal').text(this.value)
                     $('#spanchargeAmount').text(this.value)
@@ -908,6 +972,8 @@
                 }
                 FileObject.ParentType = "ProformaInvoice";
                 FileObject.Controller = "FileUpload";
+                if ($('#LatestApprovalStatus').val() == '1' || $('#LatestApprovalStatus').val() == '9')
+                    FileObject.IsDocumentApprover = "True";
                 UploadFile(FileObject);
             });
         }
@@ -1060,7 +1126,7 @@
             console.log(e.message);
         }
         try {
-            if ($('#ProformaInvoiceForm #IsDocLocked').val() == "False" && $('#ProformaInvoiceForm #IsUpdate').val() == "True") {
+            if (($('#ProformaInvoiceForm #IsDocLocked').val() == "False" && $("#hdnIsDocumentApprover").val() == "False") && $('#ProformaInvoiceForm #IsUpdate').val() == "True") {
                 $('#btnUpload').attr("disabled", "disabled")
                 $('#btnUpload').attr("title", "Document Locked");
                 $('#btnUpload').prop("onclick", null);
@@ -1073,6 +1139,82 @@
                 $('#btnSelect').attr("title", "Document Locked");
                 $('#btnSelect').prop("onclick", null);
                 $('#btnSelect').css("background", "#b2aca4");
+            }
+            if ($('#ProformaInvoiceForm #IsDocLocked').val() == "False" && $('#ProformaInvoiceForm #IsUpdate').val() == "True" && $('#LatestApprovalStatus').val() == '0') {
+                $('#btnUpload').attr("disabled", "disabled")
+                $('#btnUpload').attr("title", "Document Locked");
+                $('#btnUpload').prop("onclick", null);
+                $('#btnUpload').css("background", "#b2aca4");
+                $('#btnCancel').attr("disabled", "disabled")
+                $('#btnCancel').attr("title", "Document Locked");
+                $('#btnCancel').prop("onclick", null);
+                $('#btnCancel').css("background", "#b2aca4");
+                $('#btnSelect').attr("disabled", "disabled")
+                $('#btnSelect').attr("title", "Document Locked");
+                $('#btnSelect').prop("onclick", null);
+                $('#btnSelect').css("background", "#b2aca4");
+            }
+            if (($('#ProformaInvoiceForm #IsDocLocked').val() == "True" && $("#hdnIsDocumentApprover").val() == "False") && $('#ProformaInvoiceForm #IsUpdate').val() == "True") {
+                if ($('#LatestApprovalStatus').val() != '3' && $('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != '0') {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Locked");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Locked");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Locked");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+            }
+            debugger;
+            if ($('#LatestApprovalStatus').val() != '0' && $('#LatestApprovalStatus').val() != "") {
+                if (($("#hdnIsDocumentApprover").val() == "False" && ($('#LatestApprovalStatus').val() != '9' && ($('#LatestApprovalStatus').val() != '3' && ($('#LatestApprovalStatus').val() != '7' && $('#LatestApprovalStatus').val() != ""))))) {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Locked");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Locked");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Locked");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+                if ($("#hdnIsDocumentApprover").val() == "True" && $('#ProformaInvoiceForm #IsDocLocked').val() != "True" && ($('#LatestApprovalStatus').val() == '3' || $('#LatestApprovalStatus').val() == '7')) {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Approved");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Approved");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Approved");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+                if ($('#LatestApprovalStatus').val() == '4') {
+                    $('#btnUpload').attr("disabled", "disabled")
+                    $('#btnUpload').attr("title", "Document Approved");
+                    $('#btnUpload').prop("onclick", null);
+                    $('#btnUpload').css("background", "#b2aca4");
+                    $('#btnCancel').attr("disabled", "disabled")
+                    $('#btnCancel').attr("title", "Document Approved");
+                    $('#btnCancel').prop("onclick", null);
+                    $('#btnCancel').css("background", "#b2aca4");
+                    $('#btnSelect').attr("disabled", "disabled")
+                    $('#btnSelect').attr("title", "Document Approved");
+                    $('#btnSelect').prop("onclick", null);
+                    $('#btnSelect').css("background", "#b2aca4");
+                }
+
             }
         }
         catch (e) {

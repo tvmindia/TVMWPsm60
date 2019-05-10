@@ -148,6 +148,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                 {
                                     productionOrder.ID = (sdr["ID"].ToString() != "" ? Guid.Parse(sdr["ID"].ToString()) : productionOrder.ID);
                                     productionOrder.SaleOrderID= (sdr["SaleOrderID"].ToString() != "" ? Guid.Parse(sdr["SaleOrderID"].ToString()) : productionOrder.SaleOrderID);
+                                    productionOrder.SaleOrderRefNo = (sdr["SaleOrderRefNo"].ToString() != "" ? sdr["SaleOrderRefNo"].ToString() : productionOrder.SaleOrderRefNo);
                                     productionOrder.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? sdr["ProdOrderNo"].ToString() : productionOrder.ProdOrderNo);
                                     productionOrder.ProdOrderRefNo = (sdr["ProdOrderRefNo"].ToString() != "" ? sdr["ProdOrderRefNo"].ToString() : productionOrder.ProdOrderRefNo);
                                     productionOrder.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrder.ProdOrderDate);

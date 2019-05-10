@@ -38,7 +38,9 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Email Sent")]
         public bool? EmailSentYN { get; set; }
         public Guid? LatestApprovalID { get; set; }
+        [Display(Name = "Approval Status")]
         public int? LatestApprovalStatus { get; set; }
+        [Display(Name = "Final Approval")]
         public bool? IsFinalApproved { get; set; }
         public string EmailSentTo { get; set; }
         public string PrintRemark { get; set; }
@@ -52,8 +54,8 @@ namespace PilotSmithApp.UserInterface.Models
         public int? BillLocationCode { get; set; }
         [Display(Name = "Select Invoice Type")]
         public string InvoiceType { get; set; }
-        public decimal? Discount { get; set; }
-        public decimal? AdvanceAmount { get; set; }
+        public decimal Discount { get; set; }
+        public decimal AdvanceAmount { get; set; }
         public string Cc { get; set; }
         public string Bcc { get; set; }
         [Required(ErrorMessage = "subject is missing")]
@@ -97,6 +99,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string ExpectedDelvDateFormatted { get; set; }
         [Display(Name = "Purchase Order Date")]
         public string PurchaseOrdDateFormatted { get; set; }
+        public string LatestApprovalStatusDescription { get; set; }
+        public bool IsDocumentApprover { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public CustomerViewModel Customer { get; set; }
         public DocumentStatusViewModel DocumentStatus { get; set; }

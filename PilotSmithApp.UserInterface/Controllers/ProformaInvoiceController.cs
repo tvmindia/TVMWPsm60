@@ -27,10 +27,12 @@ namespace PilotSmithApp.UserInterface.Controllers
         IDocumentStatusBusiness _documentStatusBusiness;
         SecurityFilter.ToolBarAccess _tool;
         ICurrencyBusiness _currencyBusiness;
+        IApproverBusiness _approverBusiness;
         public ProformaInvoiceController(IProformaInvoiceBusiness proformaInvoiceBusiness,
             ISaleOrderBusiness saleOrderBusiness,
             IQuotationBusiness quotationBusiness,
             ICommonBusiness commonBusiness,
+            IApproverBusiness approverBusiness,
             IDocumentStatusBusiness documentBusiness,SecurityFilter.ToolBarAccess tool,
             ICurrencyBusiness currencyBusiness
             )
@@ -42,6 +44,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             _documentStatusBusiness = documentBusiness;
             _tool = tool;
             _currencyBusiness = currencyBusiness;
+            _approverBusiness = approverBusiness;
         }
         // GET: ProformaInvoice
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
@@ -51,6 +54,9 @@ namespace PilotSmithApp.UserInterface.Controllers
             ProformaInvoiceAdvanceSearchViewModel proformaInvoiceAdvanceSearchVM = new ProformaInvoiceAdvanceSearchViewModel();
             proformaInvoiceAdvanceSearchVM.DocumentStatus = new DocumentStatusViewModel();
             proformaInvoiceAdvanceSearchVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("PIV");
+            AppUA appUA = Session["AppUA"] as AppUA;
+            bool IsDocumentApprover = _approverBusiness.CheckIsDocumentApprover("PIV", appUA.UserName);
+            ViewBag.IsDocumentApprover = IsDocumentApprover;
             return View(proformaInvoiceAdvanceSearchVM);
         }
 
@@ -66,7 +72,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         #region ProformaInvoice Form
         [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
-        public ActionResult ProformaInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID)
+        public ActionResult ProformaInvoiceForm(Guid id, Guid? saleorderID, Guid? quotationID, string isDocumentApprover = "False")
         {
             ProformaInvoiceViewModel proformaInvoiceVM = null;
             try
@@ -89,6 +95,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         proformaInvoiceVM.DocumentType = "SaleOrder";
                         proformaInvoiceVM.SaleOrderSelectList = _saleOrderBusiness.GetSaleOrderForSelectList(saleorderID);
                     }
+                    proformaInvoiceVM.IsDocumentApprover = isDocumentApprover == "True" ? true : false;
                     proformaInvoiceVM.Currency = new CurrencyViewModel();
                 }
                 else if (id == Guid.Empty && quotationID != null)
@@ -138,6 +145,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                     proformaInvoiceVM.Branch.Description = "-";
                     proformaInvoiceVM.Customer = saleorderVM.Customer;
                     proformaInvoiceVM.IsDocLocked = false;
+                    proformaInvoiceVM.AdvanceAmount = saleorderVM.AdvanceAmount;
                     proformaInvoiceVM.CurrencyCode = saleorderVM.CurrencyCode;
                     proformaInvoiceVM.CurrencyRate = saleorderVM.CurrencyRate;
                     proformaInvoiceVM.Currency = new CurrencyViewModel()
@@ -548,7 +556,8 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = _proformaInvoiceBusiness.DeleteProformaInvoiceDetail(id);
+                AppUA appUA = Session["AppUA"] as AppUA;
+                object result = _proformaInvoiceBusiness.DeleteProformaInvoiceDetail(id, appUA.UserName, _pSASysCommon.GetCurrentDateTime());
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }
@@ -570,7 +579,8 @@ namespace PilotSmithApp.UserInterface.Controllers
 
             try
             {
-                object result = _proformaInvoiceBusiness.DeleteProformaInvoiceOtherChargeDetail(id);
+                AppUA appUA = Session["AppUA"] as AppUA;
+                object result = _proformaInvoiceBusiness.DeleteProformaInvoiceOtherChargeDetail(id, appUA.UserName, _pSASysCommon.GetCurrentDateTime());
                 return JsonConvert.SerializeObject(new { Status = "OK", Record = result, Message = "Sucess" });
 
             }
@@ -818,7 +828,18 @@ namespace PilotSmithApp.UserInterface.Controllers
         }
 
         #endregion CheckRate
-        
+        #region Preview ProformaInvoice
+        [AuthSecurityFilter(ProjectObject = "ProformaInvoice", Mode = "R")]
+        public ActionResult PreviewProformaInvoice(Guid id)
+        {
+            //bool ImageCheck = quotationVM.ImageCheck;
+            ProformaInvoiceViewModel proformaInvoiceVM = new ProformaInvoiceViewModel();
+            proformaInvoiceVM = Mapper.Map<ProformaInvoice, ProformaInvoiceViewModel>(_proformaInvoiceBusiness.GetProformaInvoice(id));
+            proformaInvoiceVM.ProformaInvoiceDetailList = Mapper.Map<List<ProformaInvoiceDetail>, List<ProformaInvoiceDetailViewModel>>(_proformaInvoiceBusiness.GetProformaInvoiceDetailListByProformaInvoiceID(id));
+            proformaInvoiceVM.ProformaInvoiceOtherChargeDetailList = Mapper.Map<List<ProformaInvoiceOtherCharge>, List<ProformaInvoiceOtherChargeViewModel>>(_proformaInvoiceBusiness.GetProformaInvoiceOtherChargesDetailListByProformaInvoiceID(id));
+            return PartialView("_PreviewProformaInvoice", proformaInvoiceVM);
+        }
+        #endregion Preview ProformaInvoice
 
 
         #region ButtonStyling
@@ -896,6 +917,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.EmailBtn.Title = "Email";
                     toolboxVM.EmailBtn.Event = "EmailProformaInvoice();";
 
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('PIV');";
+
                     toolboxVM.PrintBtn.Visible = true;
                     toolboxVM.PrintBtn.Text = "Print";
                     toolboxVM.PrintBtn.Title = "Print Document";
@@ -910,6 +936,263 @@ namespace PilotSmithApp.UserInterface.Controllers
                     //toolboxVM.SendForApprovalBtn.Text = "Send";
                     //toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
                     //toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('PIV');";
+                    break;
+                case "Draft":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProformaInvoice();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Event = "SaveProformaInvoice();";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Event = "ResetProformaInvoice();";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PIV');";
+
+                    if (_commonBusiness.CheckDocumentIsDeletable("PIV", id))
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Disable = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.DisableReason = "Document Used";
+                        toolboxVM.deletebtn.Event = "";
+                    }
+                    else
+                    {
+                        toolboxVM.deletebtn.Visible = true;
+                        toolboxVM.deletebtn.Text = "Delete";
+                        toolboxVM.deletebtn.Title = "Delete";
+                        toolboxVM.deletebtn.Event = "DeleteProformaInvoice();";
+                    }
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Event = "EmailProformaInvoice();";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Event = "ShowSendForApproval('PIV');";
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintProformaInvoice()";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PIV');";
+                    break;
+                case "Approved":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProformaInvoice();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Event = "EmailProformaInvoice();";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PIV');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PIV');";
+
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Event = "PrintProformaInvoice()";
+                    break;
+                case "ClosedForApproval":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProformaInvoice();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Event = "EmailProformaInvoice();";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PIV');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PIV');";
+
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.DisableReason = "Document Locked";
+                    toolboxVM.PrintBtn.Event = "PrintProformaInvoice()";
+
+                    toolboxVM.RecallBtn.Visible = true;
+                    toolboxVM.RecallBtn.Text = "Recall";
+                    toolboxVM.RecallBtn.Title = "Document Recall";
+                    toolboxVM.RecallBtn.Event = "RecallDocumentItem('PIV');";
+                    break;
+                case "Recalled":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProformaInvoice();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Disable = true;
+                    toolboxVM.savebtn.DisableReason = "Document Locked";
+                    toolboxVM.savebtn.Event = "";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    toolboxVM.resetbtn.Disable = true;
+                    toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Event = "EmailProformaInvoice();";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PIV');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PIV');";
+
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.DisableReason = "Document Locked";
+                    toolboxVM.PrintBtn.Event = "PrintProformaInvoice()";
+
+                    toolboxVM.RecallBtn.Visible = true;
+                    toolboxVM.RecallBtn.Text = "Recall";
+                    toolboxVM.RecallBtn.Title = "Document Recall";
+                    toolboxVM.RecallBtn.Event = "RecallDocumentItem('PIV');";
                     break;
                 case "LockDocument":
                     toolboxVM.addbtn.Visible = true;
@@ -983,6 +1266,142 @@ namespace PilotSmithApp.UserInterface.Controllers
                     toolboxVM.resetbtn.Title = "Reset";
                     toolboxVM.resetbtn.Event = "ResetProformaInvoice();";
 
+                    break;
+                case "DocumentApproverEdit":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProformaInvoice();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Event = "SaveProformaInvoice();";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    //toolboxVM.resetbtn.Disable = true;
+                    //toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "ResetProformaInvoice();";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Disable = true;
+                    toolboxVM.EmailBtn.DisableReason = "Document Locked";
+                    toolboxVM.EmailBtn.Event = "";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PIV');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PIV');";
+
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.DisableReason = "Document Locked";
+                    toolboxVM.PrintBtn.Event = "PrintProformaInvoice()";
+
+                    toolboxVM.RecallBtn.Visible = true;
+                    toolboxVM.RecallBtn.Text = "Recall";
+                    toolboxVM.RecallBtn.Title = "Document Recall";
+                    toolboxVM.RecallBtn.Disable = true;
+                    toolboxVM.PrintBtn.DisableReason = "Document Not Approved";
+                    toolboxVM.RecallBtn.Event = "";
+                    break;
+                case "ClosedForApprovalApproverEdit":
+                    toolboxVM.addbtn.Visible = true;
+                    toolboxVM.addbtn.Text = "Add";
+                    toolboxVM.addbtn.Title = "Add New";
+                    toolboxVM.addbtn.Event = "AddProformaInvoice();";
+
+                    toolboxVM.savebtn.Visible = true;
+                    toolboxVM.savebtn.Text = "Save";
+                    toolboxVM.savebtn.Title = "Save";
+                    toolboxVM.savebtn.Event = "SaveProformaInvoice();";
+
+                    toolboxVM.CloseBtn.Visible = true;
+                    toolboxVM.CloseBtn.Text = "Close";
+                    toolboxVM.CloseBtn.Title = "Close";
+                    toolboxVM.CloseBtn.Event = "closeNav();";
+
+                    toolboxVM.resetbtn.Visible = true;
+                    toolboxVM.resetbtn.Text = "Reset";
+                    toolboxVM.resetbtn.Title = "Reset";
+                    //toolboxVM.resetbtn.Disable = true;
+                    //toolboxVM.resetbtn.DisableReason = "Document Locked";
+                    toolboxVM.resetbtn.Event = "ResetProformaInvoice();";
+
+                    toolboxVM.deletebtn.Visible = true;
+                    toolboxVM.deletebtn.Text = "Delete";
+                    toolboxVM.deletebtn.Title = "Delete";
+                    toolboxVM.deletebtn.Disable = true;
+                    toolboxVM.deletebtn.DisableReason = "Document Locked";
+                    toolboxVM.deletebtn.Event = "";
+
+                    toolboxVM.EmailBtn.Visible = true;
+                    toolboxVM.EmailBtn.Text = "Email";
+                    toolboxVM.EmailBtn.Title = "Email";
+                    toolboxVM.EmailBtn.Disable = true;
+                    toolboxVM.EmailBtn.DisableReason = "Document Locked";
+                    toolboxVM.EmailBtn.Event = "";
+
+                    toolboxVM.SendForApprovalBtn.Visible = true;
+                    toolboxVM.SendForApprovalBtn.Text = "Send";
+                    toolboxVM.SendForApprovalBtn.Title = "Send For Approval";
+                    toolboxVM.SendForApprovalBtn.Disable = true;
+                    toolboxVM.SendForApprovalBtn.DisableReason = "Document Locked";
+                    toolboxVM.SendForApprovalBtn.Event = "";
+
+                    toolboxVM.TimeLine.Visible = true;
+                    toolboxVM.TimeLine.Text = "TimeLn";
+                    toolboxVM.TimeLine.Title = "TimeLine";
+                    toolboxVM.TimeLine.Event = "GetTimeLine('" + id.ToString() + "','PIV');";
+
+                    toolboxVM.HistoryBtn.Visible = true;
+                    toolboxVM.HistoryBtn.Text = "History";
+                    toolboxVM.HistoryBtn.Title = "Document History";
+                    toolboxVM.HistoryBtn.Event = "ApprovalHistoryList('" + id.ToString() + "','PIV');";
+
+
+                    toolboxVM.PrintBtn.Visible = true;
+                    toolboxVM.PrintBtn.Text = "Print";
+                    toolboxVM.PrintBtn.Title = "Print Document";
+                    toolboxVM.PrintBtn.Disable = true;
+                    toolboxVM.PrintBtn.DisableReason = "Document Locked";
+                    toolboxVM.PrintBtn.Event = "PrintProformaInvoice()";
+
+                    toolboxVM.RecallBtn.Visible = true;
+                    toolboxVM.RecallBtn.Text = "Recall";
+                    toolboxVM.RecallBtn.Title = "Document Recall";
+                    toolboxVM.RecallBtn.Event = "RecallDocumentItem('PIV');";
                     break;
                 case "AddSub":
 
