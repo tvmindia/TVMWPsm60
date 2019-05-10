@@ -76,8 +76,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string MailBodyHeader { get; set; }
         [Display(Name = "Sale Order Footer")]
         public string MailBodyFooter { get; set; }
-        //Aditional Fields
-
+        //Aditional Fields        
         public string MailFrom { get; set; }
         public string MailContant { get; set; }
         public bool EmailFlag { get; set; }

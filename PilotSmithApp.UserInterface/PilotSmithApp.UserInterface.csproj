@@ -530,6 +530,7 @@
     <Content Include="Content\tether\tether-theme-basic.min.css" />
     <Content Include="Content\tether\tether.css" />
     <Content Include="Content\tether\tether.min.css" />
+    <Content Include="Content\Uploads\history-icon.png" />
     <Content Include="Content\UserCSS\Login.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
@@ -1167,7 +1168,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\ProductImage\" />
     <Folder Include="Content\ProductImages\" />
-    <Folder Include="Content\Uploads\" />
     <Folder Include="Views\ApprovalStatus\" />
     <Folder Include="Views\Company\Carrier\" />
     <Folder Include="Views\Department\" />

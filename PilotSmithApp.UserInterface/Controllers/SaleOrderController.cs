@@ -7,10 +7,12 @@ using PilotSmithApp.UserInterface.SecurityFilter;
 using SAMTool.DataAccessObject.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.SessionState;
 
 namespace PilotSmithApp.UserInterface.Controllers
@@ -298,6 +300,24 @@ namespace PilotSmithApp.UserInterface.Controllers
             });
         }
         #endregion GetAllSaleOrder
+        [HttpPost]
+        [AuthSecurityFilter(ProjectObject = "SaleOrder", Mode = "R")]
+        public JsonResult GetCustomerHistory(string CustomerID)
+        {
+            Guid customerID = Guid.Parse(CustomerID);
+            DataSet dsTask = _saleOrderBusiness.GetCustomerHistory(customerID);
+            JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+            object routes_list = (object)json_serializer.DeserializeObject(JsonConvert.SerializeObject(dsTask.Tables[0]));
+            var settings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.None
+            };
+            return Json(new
+            {
+                data = routes_list
+            });
+        }
+
 
         #region GetSaleOrderDetailListBySaleOrderID
         [HttpGet]

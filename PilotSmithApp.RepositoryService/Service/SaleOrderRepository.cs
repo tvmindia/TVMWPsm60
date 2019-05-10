@@ -139,6 +139,39 @@ namespace PilotSmithApp.RepositoryService.Service
             return saleOrderList;
         }
         #endregion Get All SaleOrder
+
+        public DataSet GetCustomerHistory(Guid customerID)
+        {
+            using (SqlConnection con = _databaseFactory.GetDBConnection())
+            {
+                con.Open();
+                DataSet ds = new DataSet();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("[PSA].[GetCustomerHistory]", con);
+                    cmd.CommandText = "[PSA].[GetCustomerHistory]";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@CustomerID", SqlDbType.UniqueIdentifier).Value = customerID;
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    ds.Tables.Add("TableSaleOrder");
+                    ds.Tables[0].Load(sdr);
+                    if (ds.Tables.Count > 0)
+                    {
+                        return ds;
+                    }
+                    else
+                    {
+                        return ds = null;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         #region GetSaleOrderForSelectListOnDemand
         public List<SaleOrder> GetSaleOrderForSelectListOnDemand(string searchTerm)
         {

@@ -34,7 +34,7 @@ $(document).ready(function () {
     $('.select2').addClass('form-control newinput');
 });
 //function bind the Enquiry list checking search and filter
-function BindOrReloadEnquiryTable(action) {
+ function BindOrReloadEnquiryTable(action) {
     try {
         
         //creating advancesearch object
@@ -434,6 +434,65 @@ function BindEnquiryDetailList(id) {
         'trigger': 'hover'
     });
 }
+function BindCustomerHistory(id) {
+    _SlNo = 1;
+    _dataTable.CustomerHistory = $('#tblCustomerHistory').DataTable(
+       {
+           dom: '<"pull-right"f>rt<"bottom"ip><"clear">',
+           order: [],
+           searching: false,
+           paging: true,
+           ordering: false,
+           bInfo: false,
+           ajax: {
+               url: "SaleOrder/GetCustomerHistory/",
+               data: { "CustomerID": id },
+               type: 'POST'
+           },
+         pageLength:5,
+           language: {
+               search: "_INPUT_",
+               searchPlaceholder: "Search"
+           },
+           columns: [
+               {
+                   "data": "", render: function (data, type, row) {
+                       debugger;
+                       return _SlNo++;
+                       
+                   }, "defaultContent": "<i></i>", "width": "2%"
+               },
+            { "data": "SaleOrderNo", "defaultContent": "<i></i>" },
+             { "data": "SaleOrderDate", "defaultContent": "<i></i>" },
+              { "data": "CurrencyCode", "defaultContent": "<i></i>" },
+             {
+                 "data": "SaleOrderValue", render: function (data, type, row) {
+                     return roundoff(data)
+                 }, "defaultContent": "<i></i>"
+             },
+
+           ],
+           columnDefs: [             
+               { "targets": [1, 4,2,3], "width": "23%" },
+               { "targets": [0], "width": "15%" },
+               { className: "text-right", "targets": [4] },
+               { className: "text-left", "targets": [1, 2,3] },
+               { className: "text-center", "targets": [0] }
+           ],
+           destroy: true,
+           initComplete: function (settings, json) {
+               debugger;
+               $('#lblTotalSaleOrderCount').text(json.data.length);
+               $('#lblTotalSaleOrderValue').text(roundoff(json.data[0].TotalOrderValue));
+           },
+       });
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        'trigger': 'hover'
+    });
+}
+
+
 function GetEnquiryDetailListByEnquiryID(id) {
     try {
         
@@ -684,7 +743,6 @@ function DeleteEnquiryDetail(ID) {
 //EnquiryFollowup Section
 function AddEnquiryFollowUp()
 {
-    
     $("#divModelEnquiryPopBody").load("EnquiryFollowup/AddEnquiryFollowup?id="+_emptyGuid+ "&enquiryID=" + $('#EnquiryForm input[type="hidden"]#ID').val()+"&customerID=" + ($('#EnquiryForm #hdnCustomerID').val()!=""?$('#EnquiryForm #hdnCustomerID').val():_emptyGuid), function () {
         $('#lblModelPopEnquiry').text('Add Enquiry Followup')
         $('#btnresetEnquiryFollowup').trigger('click');

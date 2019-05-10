@@ -124,9 +124,15 @@
                 </div>
 
                 <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
+
+                    <div class="col-md-7">
                         @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
                     </div>
+                    <div class="col-md-5" style="text-align:center;">
+                    <div class="col-md-12" style="margin-top:5px; font-size: 12px!important;background-color:#f7d1a7 !important;cursor:pointer;border-bottom:1px solid #e66911;;border-left:3px solid #e66911;border-radius:3px;">
+                        <a style="font-size:12px;" onclick="ViewCustomerHistory()"><i class="fa fa-history" aria-hidden="true"></i> View Customer History</a>
+                    </div>
+                </div>
                     @if (Model.IsUpdate)
                     {
                         <div class="col-md-12">
@@ -276,12 +282,12 @@
                                 <div class="rightAmtCaption">Document Status</div>
                             </div>
                             @*<div class="form-group col-md-12">
-                                <label class="switch switch-flat">
-                                    <input class="switch-input" type="checkbox" checked />
-                                    <span class="switch-label" data-on="Open" data-off=@Model.DocumentStatus.Description></span>
-                                    <span class="switch-handle"></span>
-                                </label>
-                            </div>*@
+                                    <label class="switch switch-flat">
+                                        <input class="switch-input" type="checkbox" checked />
+                                        <span class="switch-label" data-on="Open" data-off=@Model.DocumentStatus.Description></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>*@
                         if (Model.IsDocLocked)
                         {
                             <div class="form-group col-md-4">
@@ -419,7 +425,7 @@
 
             //$('.switch-input').on('change', function () {
             //    debugger;
-                
+
             //    //$('.divDocumentStatusSelectList').load('/DocumentStatus/DocumentStatusSelectList?code=ENQ&required=' + $('#hdnDocumentStatusRequired').val())
             //    var isChecked = $(this).is(':checked');
             //    var selectedData;
@@ -454,7 +460,7 @@
         }
         try {
             $('.divAttendedBySelectList').load('/Employee/AttendedBySelectList?required=' + $('#hdnAttendedByRequired').val())
-            
+
             $('.divReferredByCodeSelectList').load('/ReferencePerson/ReferencePersonSelectList?required=' + $('#hdnReferredByRequired').val())
             $('.divResponsiblePersonSelectList').load('/Employee/ResponsiblePersonSelectList?required=' + $('#hdnResponsiblePersonRequired').val())
             function StatusChange() {
@@ -476,7 +482,7 @@
             @if (Model.IsUpdate)
             {
                  <text>
-            
+
             if ($('#hdnCurrencyCode').val() == "INR") {
                 $('#idCurRateForAutofocus').prop("disabled", true)
             }
@@ -501,7 +507,7 @@
                 }
                 return { startDate: "01-Apr-" + startYear, endDate: "31-Mar-" + endYear };
             }
-            
+
             $('input.datepicker').datepicker({
                 format: "dd-M-yyyy",
                 maxViewMode: 0,
@@ -512,18 +518,16 @@
                 startDate: getCurrentFinancialYear(enqDate).startDate,
                 endDate: getCurrentFinancialYear(enqDate).endDate
             });
-            
+
             </text>
             }
             else
             {
                 <text>
             $('.divCustomerSelectList').load('/Customer/CustomerSelectList?required=' + $('#hdnCustomerRequired').val(), function () {
-
             });
             $('.divBranchSelectList').load('/Branch/BranchSelectList?required=' + $('#hdnBranchRequired').val(), function () {
             });
-
             $(".changeCurrency").change(function () {
                 debugger;
                 if (_dataTable.EnquiryDetailList.rows().count() > 0) {
@@ -649,5 +653,20 @@
         catch (e) {
             console.log(e.message);
         }
+
     });
+    function ViewCustomerHistory() {
+        debugger;
+        if ($('#CustomerID').val() != '') {
+            BindCustomerHistory($('#hdnCustomerID').val());
+            _SlNo = 1;
+            $('#lblModelPopCustomerHistory').text('Customer History');
+            $('#divModelEnquiryPopBody').show();
+            $('#divModelPopCustomerHistory').modal('show');
+        }
+        else {
+            notyAlert('warning', 'Please Select Customer');
+        }
+    }
+
 </script>
