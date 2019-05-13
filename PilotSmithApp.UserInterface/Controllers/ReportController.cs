@@ -730,7 +730,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsENQ = enquiryreportworkSheet.Dimension.End.Row;
                         string columnStringENQ = columnString + finalRowsENQ.ToString();
                         enquiryreportworkSheet.Cells[columnStringENQ].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange amountSum = enquiryreportworkSheet.Cells[finalRowsENQ + 1, 13];
+                        amountSum.Formula = "SUM(M2:M" + finalRowsENQ + ")";
+                        amountSum.Calculate();
+                        enquiryreportworkSheet.Cells[finalRowsENQ + 1, 12].Value = "Totals";
                         enquiryreportworkSheet.Column(1).AutoFit();
                         enquiryreportworkSheet.Column(2).AutoFit();
                         enquiryreportworkSheet.Column(3).AutoFit();
@@ -744,7 +747,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryreportworkSheet.Column(10).AutoFit();
                         enquiryreportworkSheet.Column(11).AutoFit();
                         enquiryreportworkSheet.Column(12).AutoFit();
-                        enquiryreportworkSheet.Column(13).AutoFit();                      
+                        enquiryreportworkSheet.Column(13).AutoFit();
+                        enquiryreportworkSheet.Row(finalRowsENQ + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        enquiryreportworkSheet.Column(13).Style.Numberformat.Format = "0.00";
                         break;
                     case "EnquiryFollowUp":
                         fileName = "EnquiryFollowupReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -1380,8 +1385,6 @@ namespace PilotSmithApp.UserInterface.Controllers
                         estimatedetailreportworkSheet.Column(13).Style.HorizontalAlignment= OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                         estimatedetailreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                         estimatedetailreportworkSheet.Column(2).AutoFit();
-
-
                         break;
 
                     default: break;
