@@ -473,8 +473,8 @@ function BindCustomerHistory(id) {
 
            ],
            columnDefs: [             
-               { "targets": [1, 4,2,3], "width": "23%" },
-               { "targets": [0], "width": "15%" },
+               { "targets": [1, 4,2,3], "width": "22%" },
+               { "targets": [0], "width": "12%" },
                { className: "text-right", "targets": [4] },
                { className: "text-center", "targets": [0,1,2,3] }
            ],
