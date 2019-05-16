@@ -33,9 +33,10 @@ namespace PilotSmithApp.UserInterface.Controllers
         IEmployeeBusiness _employeeBusiness;
         ICustomerBusiness _customerBusiness;
         IProductModelBusiness _productModelBusiness;
+        IUserBusiness _userBusiness;
         public ReportController(IReportBusiness reportBusiness, IProductBusiness productBusiness, IDocumentStatusBusiness documentStatusBusiness, IReferenceTypeBusiness referenceTypeBusiness,
         ICustomerCategoryBusiness customerCategoryBusiness, IEnquiryGradeBusiness enquiryGradeBusiness,
-        IEmployeeBusiness employeeBusiness, ICustomerBusiness customerBusiness, IProductModelBusiness productModelBusiness)
+        IEmployeeBusiness employeeBusiness, ICustomerBusiness customerBusiness, IProductModelBusiness productModelBusiness, IUserBusiness userBusiness)
         {
             _reportBusiness = reportBusiness;
             _productBusiness = productBusiness;
@@ -46,17 +47,25 @@ namespace PilotSmithApp.UserInterface.Controllers
             _employeeBusiness = employeeBusiness;
             _customerBusiness = customerBusiness;
             _productModelBusiness = productModelBusiness;
+            _userBusiness = userBusiness;
         }
         #endregion Constructor Injection  
         // GET: Report
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Report", Mode = "R")]
-        public ActionResult Index(string searchTerm)
+        public ActionResult Index(string searchTerm,string DocumentOwnerID)
         {
-            PSASysReportViewModel PSASysReport = new PSASysReportViewModel();
-            PSASysReport.PSASysReportList = Mapper.Map<List<PSASysReport>, List<PSASysReportViewModel>>(_reportBusiness.GetAllReport(searchTerm));
-            PSASysReport.PSASysReportList = PSASysReport.PSASysReportList != null ? PSASysReport.PSASysReportList.OrderBy(s => s.GroupOrder).ToList() : null;
-            return View(PSASysReport);
+            if (DocumentOwnerID != null)
+            {
+                return RedirectToAction("EnquiryFollowupReport", new { DocumentOwnerID = DocumentOwnerID });
+            }
+            else
+            {
+                PSASysReportViewModel PSASysReport = new PSASysReportViewModel();
+                PSASysReport.PSASysReportList = Mapper.Map<List<PSASysReport>, List<PSASysReportViewModel>>(_reportBusiness.GetAllReport(searchTerm));
+                PSASysReport.PSASysReportList = PSASysReport.PSASysReportList != null ? PSASysReport.PSASysReportList.OrderBy(s => s.GroupOrder).ToList() : null;
+                return View(PSASysReport);
+            }
         }
 
         //[HttpGet]
@@ -151,11 +160,36 @@ namespace PilotSmithApp.UserInterface.Controllers
         [HttpGet]
 
         [AuthSecurityFilter(ProjectObject = "EnquiryFollowupReport", Mode = "R")]
-        public ActionResult EnquiryFollowupReport()
+        public ActionResult EnquiryFollowupReport(string DocumentOwnerID)
         {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
             EnquiryFollowupReportViewModel EnquiryFollowupReportVM = new EnquiryFollowupReportViewModel();
             EnquiryFollowupReportVM.Customer = new CustomerViewModel();
             EnquiryFollowupReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            
+            if (DocumentOwnerID!=null)
+            {
+                List<PSAUserViewModel> UserVMList = Mapper.Map<List<User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
+
+                if (UserVMList != null)
+                    foreach (PSAUserViewModel uVM in UserVMList)
+                    {
+                        selectListItem.Add(new SelectListItem
+                        {
+                            Text = uVM.UserName,
+                            Value = uVM.ID.ToString(),
+                            Selected = false
+                        });
+                    }
+                EnquiryFollowupReportVM.DocumentOwnerList = selectListItem;
+                EnquiryFollowupReportVM.AdvDocumentOwnerID = Guid.Parse(DocumentOwnerID);
+                EnquiryFollowupReportVM.AdvToDate = DateTime.Parse(_pSASysCommon.GetCurrentDateTime().ToString()).ToString("dd-MMM-yyyy");
+                EnquiryFollowupReportVM.AdvStatus = "Open";
+            }
+            else
+            {
+                EnquiryFollowupReportVM.DocumentOwnerList = new List<SelectListItem>();
+            }
             return View(EnquiryFollowupReportVM);
         }
 
@@ -770,8 +804,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                            ContactPerson = x.Customer.ContactPerson,
                            ContactNo = x.ContactNo,
                            FollowupStatus = x.Status,
-                           GeneralNotes = x.FollowupRemarks                            
-                            
+                           GeneralNotes = x.FollowupRemarks,
+                           DocumentOwner = x.DocumentOwnerName
                         }), true, TableStyles.Light1);
 
                         int finalRowsEnquiryFollowUp = enquiryfollowupreportworkSheet.Dimension.End.Row;
@@ -789,7 +823,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryfollowupreportworkSheet.Column(9).AutoFit();   
                         enquiryfollowupreportworkSheet.Column(10).Width = 40;
                         enquiryfollowupreportworkSheet.Column(10).Style.WrapText = true;
-
+                        enquiryfollowupreportworkSheet.Column(11).AutoFit();
                         break;
                     case "EstimateReport":
                         fileName = "EstimateReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");

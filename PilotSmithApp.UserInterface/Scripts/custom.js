@@ -20,6 +20,7 @@ $(document).ready(function () {
             $("#divStatus").show();
         }
     });
+    GetPendingFollowUpCount();
     $('input.datepicker').datepicker({
         format: "dd-M-yyyy",//",
         maxViewMode: 0,
@@ -1198,5 +1199,31 @@ function TakeOwnershipSuccess(data, status) {
         default:
             MasterAlert("danger", JsonResult.Message)
             break;
+    }
+}
+//Followup notification//
+function GetPendingFollowUpCount() {
+    try {
+        debugger;
+        var data = {};
+        var ds = {};
+        ds = GetDataFromServer("EnquiryFollowup/GetPendingFollowUpCount/", data);
+        if (ds != '') {
+            ds = JSON.parse(ds);
+        }
+        debugger;
+        if (ds.Result == "OK") {
+            debugger;
+            $('#RecentFollowUpCount').text(ds.Records.Count);
+            if (ds.Records.Count !="0" )
+            $("#reportRedirectLink").attr("href", "/Report/Index?searchTerm=" + '' + "&DocumentOwnerID=" + ds.Records.ID);
+            $('#reportRedirectLink').attr('title', ds.Records.Count + ' Pending FollowUp(s) ');
+        }
+        if (ds.Result == "ERROR") {
+            $('#RecentFollowUpCount').text("0");
+        }
+    }
+    catch (e) {
+
     }
 }

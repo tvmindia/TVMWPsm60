@@ -150,6 +150,11 @@ namespace PilotSmithApp.UserInterface.Models
         [Display(Name = "Priority")]
         public int? AdvFollowupPriority { get; set; }
         public string FollowupRemarks { get; set; }
+        [Display(Name = "Document Owner")]
+        public Guid AdvDocumentOwnerID { get; set; }
+        public Guid hdnAdvDocumentOwnerID { get; set; }
+        public string DocumentOwnerName { get; set; }
+        public List<SelectListItem> DocumentOwnerList { get; set; }
         public List<EnquiryFollowupReportViewModel> EnquiryFollowupReportList { get; set; }
     }
 

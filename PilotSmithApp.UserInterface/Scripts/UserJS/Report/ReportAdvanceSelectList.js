@@ -180,26 +180,29 @@ function BindBranchSelectList() {
         }
     });
 }
+
 // DocumentOwner SelectList //
 function BindDocumentOwnerSelectList() {
-    $('#AdvDocumentOwnerID').select2({
-        ajax: {
-            type: 'POST',
-            dataType: 'json',
-            url: "/DocumentOwner/GetDocumentOwnerForSelectListOnDemand/",
-            delay: 50,
-            data: function (term) {
-                return {
-                    'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data.items
-                };
-            },
-        }
-    });
+        if (window.location.search.split('DocumentOwnerID=')[1]==undefined){
+        $('#AdvDocumentOwnerID').select2({
+            ajax: {
+                type: 'POST',
+                dataType: 'json',
+                url: "/DocumentOwner/GetDocumentOwnerForSelectListOnDemand/",
+                delay: 50,
+                data: function (term) {
+                    return {
+                        'searchTerm': term.term = (term.term == null ? "" : term.term)//search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.items
+                    };
+                },
+            }
+        });
+    }
 }
 
 // ApprovalStatus SelectList //

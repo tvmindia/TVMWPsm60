@@ -149,5 +149,21 @@ namespace PilotSmithApp.UserInterface.Controllers
 
         }
         #endregion Delete EnquiryFollowup
+        #region GetPendingFollowupCount
+        public string GetPendingFollowUpCount()
+        {
+            try
+            {
+                AppUA appUA = Session["AppUA"] as AppUA;
+                var followupCount = _enquiryFollowupBusiness.GetPendingFollowUpCount(appUA.UserName, _pSASysCommon.GetCurrentDateTime());
+                return JsonConvert.SerializeObject(new { Result = "OK", Records = followupCount });
+            }
+            catch (Exception ex)
+            {
+                AppConstMessage cm = _appConstant.GetMessage(ex.Message);
+                return JsonConvert.SerializeObject(new { Result = "ERROR", Message = cm.Message });
+            }
+        }
+        #endregion GetFollowupCount
     }
 }

@@ -283,6 +283,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvFromDate;
                         cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvToDate;                       
                         cmd.Parameters.Add("@Customer", SqlDbType.NVarChar,100).Value = enquiryFollowupReport.AdvCustomer;
+                        if (enquiryFollowupReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiryFollowupReport.AdvDocumentOwnerID;
                         cmd.Parameters.Add("@PriorityCode", SqlDbType.Int).Value = enquiryFollowupReport.AdvFollowupPriority;
                         cmd.Parameters.Add("@Status", SqlDbType.NVarChar).Value = enquiryFollowupReport.AdvStatus;
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -315,6 +317,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryFollowupReportObj.Customer = new Customer();
                                         enquiryFollowupReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiryFollowupReportObj.Customer.CompanyName);
                                         enquiryFollowupReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiryFollowupReportObj.Customer.ContactPerson);
+                                        enquiryFollowupReportObj.DocumentOwnerName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : enquiryFollowupReportObj.DocumentOwnerName);
                                         enquiryFollowupReportObj.TotalCount=(sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryFollowupReportObj.TotalCount);
                                         enquiryFollowupReportObj.FilteredCount=(sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryFollowupReportObj.FilteredCount);
 

@@ -120,6 +120,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string AdvStatus { get; set; }
         public int? AdvFollowupPriority { get; set; }
         public string FollowupRemarks { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public string DocumentOwnerName { get; set; }
         public List<EnquiryFollowupReport> EnquiryFollowupReportList { get; set;}
     }
 
