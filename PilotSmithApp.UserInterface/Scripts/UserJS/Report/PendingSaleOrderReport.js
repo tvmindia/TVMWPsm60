@@ -116,7 +116,7 @@ function BindOrReloadPendingSaleOrderReportTable(action) {
                     && ($('.divboxASearch #AdvDelToDate').val() == "")
                     && ($('.divboxASearch #AdvProduct').val() == "")
                     && ($('.divboxASearch #AdvProductModel').val() == "")                                
-                    && ($('#ReportType').val() == "1")||($('#ReportType').val() == "2")
+                    && (($('#ReportType').val() == "1")||($('#ReportType').val() == "2"))
                     &&($('#DateFilter').val() == "")
                     
                     ) {

@@ -256,5 +256,66 @@ namespace PilotSmithApp.RepositoryService.Service
             };
         }
         #endregion Delete EnquiryFollowup
+        #region GetPendingFollowUpCount
+        public object GetPendingFollowUpCount(string user,DateTime DateTo)
+        {
+            SqlParameter outputFollowUpCount,outputStatus, outputID = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetPendingFollowupCount]";
+                        cmd.Parameters.Add("@DocumentOwnerName", SqlDbType.NVarChar, 250).Value = user;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = DateTo;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        outputStatus = cmd.Parameters.Add("@StatusOut", SqlDbType.SmallInt);
+                        outputStatus.Direction = ParameterDirection.Output;
+                        outputID = cmd.Parameters.Add("@DocumentOwnerIDOut", SqlDbType.UniqueIdentifier);
+                        outputID.Direction = ParameterDirection.Output;
+                        outputFollowUpCount = cmd.Parameters.Add("@CountOut", SqlDbType.SmallInt);
+                        outputFollowUpCount.Direction = ParameterDirection.Output;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                switch (outputStatus.Value.ToString())
+                {
+                    case "0":
+                        return new
+                        {
+                            ID = Guid.Empty,
+                            Status = outputStatus.Value.ToString(),
+                            Count = outputFollowUpCount.Value.ToString()
+                        };
+                    case "1":
+                        return new
+                        {
+                            ID = outputID.Value.ToString(),
+                            Status = outputStatus.Value.ToString(),
+                            Count= outputFollowUpCount.Value.ToString()
+                        };
+                    default:
+                        break;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return new
+            {
+                ID = outputID.Value.ToString(),
+                Status = outputStatus.Value.ToString(),
+                Count = outputFollowUpCount.Value.ToString()
+            };
+        }
+        #endregion GetPendingFollowUpCount
     }
 }

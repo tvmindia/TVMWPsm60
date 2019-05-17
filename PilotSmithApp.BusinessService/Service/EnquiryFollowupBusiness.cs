@@ -32,5 +32,9 @@ namespace PilotSmithApp.BusinessService.Service
         {
             return _enquiryFollowupRepository.DeleteEnquiryFollowup(id);
         }
+        public object GetPendingFollowUpCount(string user, DateTime DateTo)
+        {
+            return _enquiryFollowupRepository.GetPendingFollowUpCount(user, DateTo);
+        }
     }
 }

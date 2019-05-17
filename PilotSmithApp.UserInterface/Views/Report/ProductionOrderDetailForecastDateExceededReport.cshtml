@@ -1,16 +1,10 @@
-﻿
-@model PilotSmithApp.UserInterface.Models.ProductionQCStandardReportViewModel
+﻿@model PilotSmithApp.UserInterface.Models.ProductionOrderDetailForecastDateExceededReportViewModel
 @using PilotSmithApp.UserInterface.App_Start
 @using PilotSmithApp.DataAccessObject.DTO;
-
-
-
 @{
-    ViewBag.Title = "Production QC Standard Report";
+    ViewBag.Title = "Production Order Detail-Forecast Date Exceeded Report";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
-
-
 
 @section styles {
     @Styles.RenderFormat(SiteKeys.StyleVersion, "~/Content/DataTables/css/datatable")
@@ -21,7 +15,11 @@
 @{
     List<SelectListItem> EmptySelectList = new List<SelectListItem>();
 }
-
+<style>
+    .main-header .title{
+        width: 634px !important;
+    }
+</style>
 <section class="content" id="main">
     <div class="row">
         <div class="form-group col-md-6">
@@ -33,8 +31,8 @@
                     <label class="searchicon" for="textbox">
                         <img src="~/Content/images/advace.png" title="Advance search" onclick="$('.divboxASearch').toggle(10);" />
                     </label>
-                    <div class="input-group-btn">
-                        <button class="btn searchbtn" type="submit" onclick="BindOrReloadProductionQCReportTable('Search')"><i class="fa fa-search" style="font-size:18px;"></i></button>
+                    <div class="input-group-btn"> 
+                        <button class="btn searchbtn" type="submit" onclick="BindOrReloadProductionOrderDetailForecastDateExceededReportTable('Search')"><i class="fa fa-search" style="font-size:18px;"></i></button>
                     </div>
                 </div>
             </div>
@@ -43,26 +41,26 @@
             <div class="col-md-12">
                 @*@Html.LabelFor(model => model.DateFilter, htmlAttributes: new { @class = "control-label" })*@
             </div>
-            <div class="col-md-12">
-                @{
-                    PSASysCommon pSASysCommon = new PSASysCommon();
-                    DateTime dt = pSASysCommon.GetCurrentDateTime();
-                    List<SelectListItem> productionOrderDateRange = new List<SelectListItem>();
-                    productionOrderDateRange.Add(new SelectListItem
-                    { Text = "ALL", Value = "", Selected = true });
-                    productionOrderDateRange.Add(new SelectListItem
-                    { Text = "Last 3 Months", Value = dt.AddMonths(-3).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
-                    productionOrderDateRange.Add(new SelectListItem
-                    { Text = "Last 6 Months", Value = dt.AddMonths(-6).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
-                    productionOrderDateRange.Add(new SelectListItem
-                    { Text = "Last 12 Months", Value = dt.AddMonths(-12).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+            @*<div class="col-md-12">
+                    @{
+                        PSASysCommon pSASysCommon = new PSASysCommon();
+                        DateTime dt = pSASysCommon.GetCurrentDateTime();
+                        List<SelectListItem> productionOrderDateRange = new List<SelectListItem>();
+                        productionOrderDateRange.Add(new SelectListItem
+                        { Text = "ALL", Value = "", Selected = true });
+                        productionOrderDateRange.Add(new SelectListItem
+                        { Text = "Last 3 Months", Value = dt.AddMonths(-3).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+                        productionOrderDateRange.Add(new SelectListItem
+                        { Text = "Last 6 Months", Value = dt.AddMonths(-6).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
+                        productionOrderDateRange.Add(new SelectListItem
+                        { Text = "Last 12 Months", Value = dt.AddMonths(-12).ToString("dd-MMM-yyyy") + "||" + dt.ToString("dd-MMM-yyyy") });
 
-                }
-                @Html.DropDownListFor(model => model.DateFilter, productionOrderDateRange, "--- Quick Filter ---", new { @class = "form-control newinput ", @style = "width:100 % !important", @onchange = "DateFilterOnchange('Search');", @id = "DateFilter" })
-            </div>
+                    }
+                    @Html.DropDownListFor(model => model.DateFilter, productionOrderDateRange, "--- Quick Filter ---", new { @class = "form-control newinput ", @style = "width:100 % !important", @onchange = "DateFilterOnchange('Search');", @id = "DateFilter" })
+                </div>*@
         </div>
 
-        <div class="col-md-3" id="btnPatchProductionQCList" style="min-height:25px">
+        <div class="col-md-3" id="btnPatchProductionOrderList" style="min-height:25px">
 
             @{
                 @Html.Action("ChangeButtonStyle", "Report", new { actionType = "List" });
@@ -231,7 +229,12 @@
 
 
                 <div class="col-md-12">&nbsp;</div>
+                @*<div class="col-md-12 no-left-padding">
+                        <div class="col-md-12">
+                            <button class="btn searchbtn" type="submit" onclick="ApplyFilterThenSearch()" style="width: 60px;"><i class="fa fa-search" style="font-size:18px;"></i></button>
 
+                        </div>
+                    </div>*@
             </div>
             <div class="col-md-12">&nbsp;</div>
             <div class="col-md-12">
@@ -244,25 +247,53 @@
             <div class="col-md-12">&nbsp;</div>
         </div>
     </div>
+
+    <div class="col-md-9">
+        <div class="col-md-6">
+            <div class="col-md-10">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="GroupSelect" id="ForecastIsNotNull" value="2" checked onclick="RadioButtonOnChange();">
+                        <b>Forecast Date Exceeded Report</b>
+                    </label>
+                </div>
+            </div>
+            @*</div>*@
+        </div>
+        <div class="col-md-6">
+            <div class="col-md-10">
+                @*<div class="row">*@
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="GroupSelect" id="ForecastIsNull" value="1" onclick="RadioButtonOnChange();">
+                        <b>Forecast Date Expecting Report</b>
+                    </label>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.ReportValue, htmlAttributes: new { @class = "" })
+
+    </div>
     <div class="row tableContainer">
         <div class="excelExport" style="display:none;"></div>
-        <div class="col-md-12" style="overflow-x:auto;">
-            <table id="tblProductionQCReport" class="table table-striped" cellspacing="0" style="width:2200px!important;display:none;">
+        <div class="col-md-12" style="overflow-x: scroll;overflow-y: hidden;height: inherit;">
+            <table id="tblProductionOrderDetailForecastDateExceededReport" class="table table-striped" cellspacing="0" style="width:200%;">
                 <thead>
                     <tr class="text-center TableHead">
                         <th class="sortitemasc">Prodn. Ord. Date &<br />No.</th>
                         <th>Customer</th>
-                        <th>Exptd. Delv. Date</th>
+                        <th>Expected. Delv. Date</th>
+                        <th>Current Progress(%)</th>
+                        <th>Expected Progress(%)</th>
+                        <th>Expected Progress Date</th>
                         <th>Product</th>
                         <th>Product Spec.</th>
-                        <th>Prodn. Ord. Qty</th>
-                        <th>Prodn. QC Qty</th>
-                        <th>Prodn. QC No.</th>
+                        <th>Ordered. Qty</th>
+                        <th>Produced Qty</th>
+                        <th>Amount</th>
                         <th>Plant/Supplier</th>
                         <th>Area</th>
-                        <th>Referred By</th>
                         <th>Document Status</th>
-                        <th>Amount</th>
                         <th>Branch</th>
                         <th>Document Owner</th>
                         <th>General Notes</th>
@@ -274,16 +305,20 @@
 
 </section>
 
+
 @using (Html.BeginForm("DownloadExcel", "Report", FormMethod.Post, new { id = "FormExcelExport" }))
 {
     @Html.Hidden("AdvanceSearch", null, htmlAttributes: new { @class = "control-label" })
-    @Html.Hidden("DocumentType", null, htmlAttributes: new { @class = "control-label", Value = "ProductionQCStandardReport" })
+    @Html.Hidden("DocumentType", null, htmlAttributes: new { @class = "control-label", Value = "ProductionOrderDetailForcastDateExceededReport" })
+    @Html.Hidden("OptionValue", null, htmlAttributes: new { @class = "control-label" })
 }
 @section Scripts {
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/datatable")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/jqueryunobtrusiveajaxvalidate")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/select2")
     @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/ReportAdvanceSelectList")
-    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/ProductionQCStandardReport")
+    @Scripts.RenderFormat(SiteKeys.ScriptVersion, "~/bundles/UserJS/Report/ProductionOrderDetailForecastDateExceededReport")
+
 }
+
 

@@ -108,6 +108,15 @@ namespace PilotSmithApp.BusinessService.Service
         }
         #endregion GetProductionOrderStandardReport 
 
+        #region  GetProductionOrderDetailForecastDateExceededReport
+
+        public List<ProductionOrderDetailForecastDateExceededReport> GetProductionOrderDetailForecastDateExceededReport(ProductionOrderDetailForecastDateExceededReport productionOrderdetailForecastDateReport)
+        {
+            return _reportRepository.GetProductionOrderDetailForecastDateExceededReport(productionOrderdetailForecastDateReport);
+        }
+        #endregion GetProductionOrderDetailForecastDateExceededReport 
+
+
 
         #region GetPendingProductionOrderReport
         public List<PendingProductionOrderReport> GetPendingProductionOrderReport(PendingProductionOrderReport pendingProductionOrderReport)

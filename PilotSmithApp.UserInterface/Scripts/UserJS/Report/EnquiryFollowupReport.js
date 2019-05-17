@@ -8,7 +8,11 @@ var _jsonData = {};
 $(document).ready(function () {
     debugger;
     try {
-
+        if ($('#AdvDocumentOwnerID').val() != _emptyGuid && $('#AdvDocumentOwnerID').val() != null && $('#AdvDocumentOwnerID').val() !="") {
+            $('#AdvDocumentOwnerID').select2({
+            });
+            $(".searchicon").addClass('filterApplied');
+        }
         BindOrReloadEnquiryFollowupReportTable('Init');
         $('#AdvStatus,#AdvFollowupPriority,#AdvCustomer').select2({
             dropdownParent: $(".divboxASearch")
@@ -41,7 +45,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                 $('.divboxASearch #AdvCustomer').val('').trigger('change');              
                 $('.divboxASearch #AdvStatus').val('').trigger('change');              
                 $('.divboxASearch #AdvFollowupPriority').val('').trigger('change');
-               
+                $('.divboxASearch #AdvDocumentOwnerID').val('').trigger('change');
 
 
 
@@ -49,17 +53,18 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
             case 'Init':
                 $('#SearchTerm').val('');
                 $('.divboxASearch #AdvFromDate').val('');
-                $('.divboxASearch #AdvToDate').val('');               
+                //$('.divboxASearch #AdvToDate').val('');               
                 $('.divboxASearch #AdvCustomer').val('');              
                 $('.divboxASearch #AdvStatus');              
                 $('.divboxASearch #AdvFollowupPriority').val('');
-
+                //$('.divboxASearch #AdvDocumentOwnerID').val('');
                 break;
             case 'Search':
                 if ((SearchTerm == SerachValue) && ($('.divboxASearch #AdvFromDate').val() == "")
                     && ($('.divboxASearch #AdvToDate').val() == "") &&                   
                     ($('.divboxASearch #AdvCustomer').val() == "") &&                   
                     ($('.divboxASearch #AdvStatus').val() == "") &&
+                    ($('.divboxASearch #AdvDocumentOwnerID').val() == "") &&
                     ($('.divboxASearch #AdvFollowupPriority').val() == "")
 
                     ) {
@@ -74,7 +79,8 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                 EnquiryFollowupReportViewModel.AdvToDate = $('.divboxASearch #AdvToDate').val() == "" ? null : $('.divboxASearch #AdvToDate').val();               
                 EnquiryFollowupReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val() == "" ? null : $('.divboxASearch #AdvCustomer').val();
                 EnquiryFollowupReportViewModel.AdvStatus = $('.divboxASearch #AdvStatus').val() == "" ? null : $('.divboxASearch #AdvStatus').val();          
-                EnquiryFollowupReportViewModel.AdvFollowupPriority = $('.divboxASearch #AdvFollowupPriority').val() == "" ? null : $('.divboxASearch #AdvFollowupPriority').val();               
+                EnquiryFollowupReportViewModel.AdvFollowupPriority = $('.divboxASearch #AdvFollowupPriority').val() == "" ? null : $('.divboxASearch #AdvFollowupPriority').val();
+                EnquiryFollowupReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val() == "" ? _emptyGuid : $('.divboxASearch #AdvDocumentOwnerID').val();
                 $('#AdvanceSearch').val(JSON.stringify(EnquiryFollowupReportViewModel));
                 $('#FormExcelExport').submit();
                 return true;
@@ -89,7 +95,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
         EnquiryFollowupReportViewModel.AdvCustomer = $('.divboxASearch #AdvCustomer').val();       
         EnquiryFollowupReportViewModel.AdvStatus = $('.divboxASearch #AdvStatus').val();
         EnquiryFollowupReportViewModel.AdvFollowupPriority = $('.divboxASearch #AdvFollowupPriority').val();
-
+        EnquiryFollowupReportViewModel.AdvDocumentOwnerID = $('.divboxASearch #AdvDocumentOwnerID').val();
 
         debugger;
         //apply datatable plugin on enquiry followup report table
@@ -133,18 +139,19 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
                        return '<div class="show-popover" data-html="true" data-toggle="popover" data-content="<p align=left>' + (data === null ? "-" : data.replace(/"/g, '”')) + '</p>"/>' + (data == null ? " " : data.substring(0, 50) + (data.length > 50 ? '...' : ''))
                    }, "defaultContent": "<i>-</i>"
                },
+               { "data": "DocumentOwnerName", "defaultContent": "<i>-</i>" },
             ],
             columnDefs: [{ className: "text-right", "targets": [] },
-                         { className: "text-left", "targets": [ 3,4,6] },
+                         { className: "text-left", "targets": [ 3,4,6,7] },
                          { className: "text-center", "targets": [0,1,5,2] },
-                           { "targets": [0], "width": "20%" },
+                           { "targets": [0], "width": "15%" },
                            { "targets": [1], "width": "10%" },
                            { "targets": [5], "width": "10%" },
                            { "targets": [4], "width": "13%" },
                            { "targets": [3], "width": "17%" },
                            { "targets": [2], "width": "10%" },
-                           { "targets": [6], "width": "20%" },
-                           //{ "targets": [7], "width": "10%" },
+                           { "targets": [6], "width": "15%" },
+                           { "targets": [7], "width": "10%" },
                            //{ "targets": [8], "width": "17%" }
                           //{
                           //    targets: [2],
@@ -190,6 +197,7 @@ function BindOrReloadEnquiryFollowupReportTable(action) {
 //function reset the list to initial
 function ResetReportList() {
     $(".searchicon").removeClass('filterApplied');
+    window.location.href = window.location.pathname;
     BindOrReloadEnquiryFollowupReportTable('Reset');
 }
 //function export data to excel

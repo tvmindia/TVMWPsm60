@@ -13,5 +13,6 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<EnquiryFollowup> GetAllEnquiryFollowup(EnquiryFollowup enquiryFollowup);
         EnquiryFollowup GetEnquiryFollowup(Guid id);
         object DeleteEnquiryFollowup(Guid id);
+        object GetPendingFollowUpCount(string user, DateTime DateTo);
     }
 }

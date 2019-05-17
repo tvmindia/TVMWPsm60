@@ -657,6 +657,7 @@
     });
     function ViewCustomerHistory() {
         debugger;
+        $('#lblTotalSaleOrderValue').text('0.00')
         if ($('#CustomerID').val() != '') {
             BindCustomerHistory($('#hdnCustomerID').val());
             _SlNo = 1;

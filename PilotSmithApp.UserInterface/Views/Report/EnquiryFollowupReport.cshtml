@@ -78,7 +78,7 @@
                     <div class="col-md-12">
                         @{
                             List<SelectListItem>
-                           PrioritySelectList = new List<SelectListItem>
+                            PrioritySelectList = new List<SelectListItem>
                                ();
                             PrioritySelectList.Add(new SelectListItem
                             { Text = "Low", Value = "3", Selected = false });
@@ -106,7 +106,22 @@
                         @Html.DropDownListFor(model => model.AdvStatus, FollowUpStatusSelectList, "Select status", new { @class = "form-control newinput ", @style = "width:100 % !important" })
                     </div>
                 </div>
-
+                <div class="col-md-6 no-right-padding">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.AdvDocumentOwnerID, htmlAttributes: new { @class = "control-label" })
+                    </div>
+                    <div class="col-md-12">
+                        @{if (@Model.AdvDocumentOwnerID != Guid.Empty)
+                            {
+                                @Html.DropDownListFor(model => model.AdvDocumentOwnerID, Model.DocumentOwnerList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(model => model.AdvDocumentOwnerID, EmptySelectList, "Select owner", new { @class = "form-control newinput ", @style = "width:100 % !important" })
+                            }
+                        }
+                    </div>
+                </div>
 
                 <div class="col-md-12">&nbsp;</div>
                 <div class="col-md-12 no-left-padding">
@@ -133,6 +148,7 @@
                         <th>Contact Details</th>
                         <th>Followup<br /> Status</th>
                         <th>General Notes</th>
+                        <th>Document Owner</th>
                     </tr>
                 </thead>
             </table>

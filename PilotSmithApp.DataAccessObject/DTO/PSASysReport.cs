@@ -120,6 +120,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string AdvStatus { get; set; }
         public int? AdvFollowupPriority { get; set; }
         public string FollowupRemarks { get; set; }
+        public Guid AdvDocumentOwnerID { get; set; }
+        public string DocumentOwnerName { get; set; }
         public List<EnquiryFollowupReport> EnquiryFollowupReportList { get; set;}
     }
 
@@ -373,7 +375,94 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Employee Employee { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
         public Plant Plant { get; set; }
+        public decimal? Qty { get; set; }       
+    }
+    public class ProductionOrderDetailForecastDateExceededReport
+    {
+        public string ProdOrderNo { get; set; }
+        public string ProductionOrderNo { get; set; }
+        public string SaleOrderNo { get; set; }
+        public string SaleOrdNo { get; set; }
+        public DateTime ProdOrderDate { get; set; }
+        public string ProdOrderDateFormatted { get; set; }
+        public Guid? SaleOrderID { get; set; }
+        public Guid? CustomerID { get; set; }
+        public DateTime? ExpectedDelvDate { get; set; }
+        public string ExpectedDelvDateFormatted { get; set; }
+        public int? AdvReferencePersonCode { get; set; }
+        public ReferencePerson ReferencePerson { get; set; }
+        public Customer Customer { get; set; }
+
+        
+        public string AdvFromDate { get; set; }
+        
+        public string AdvToDate { get; set; }
+        
+        public string AdvDelFromDate { get; set; }
+        
+        public string AdvDelToDate { get; set; }
+        
+        public string AdvCustomer { get; set; }
+        public Area Area { get; set; }
+        
+        public decimal? AdvAmountFrom { get; set; }
+        
+        public decimal? AdvAmountTo { get; set; }
+        
+        public int? AdvDistrictCode { get; set; }
+        
+        public int? AdvStateCode { get; set; }
+        
+        public int? AdvCountryCode { get; set; }
+        
+        public int? AdvAreaCode { get; set; }
+        
+        public int? AdvCustomerCategoryCode { get; set; }
+       
+        public int? AdvBranchCode { get; set; }
+        public Branch Branch { get; set; }
+        
+        public int? AdvDocumentStatusCode { get; set; }
+        public DocumentStatus DocumentStatus { get; set; }
+        
+        public Guid AdvDocumentOwnerID { get; set; }
+        public PSAUser PSAUser { get; set; }
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
+       
+        public Guid AdvProduct { get; set; }
+        public Product Product { get; set; }
+        
+        public Guid AdvProductModel { get; set; }
+        public ProductModel ProductModel { get; set; }
+        public ApprovalStatus ApprovalStatus { get; set; }
+        
+        public int? AdvApprovalStatusCode { get; set; }
+       
+        public string SearchTerm { get; set; }
+        public string ProductSpec { get; set; }
+        public string ProductName { get; set; }
+        public string ProdModel { get; set; }
+        public decimal? Amount { get; set; }
+        public string Remarks { get; set; }
+        public int? AdvReportType { get; set; }
+        public int? AdvProgress { get; set; }
+        public Plant Plant { get; set; }
+        
+        public int? AdvPlantCode { get; set; }
+        public string PreparedBy { get; set; }
+        public string DateFilter { get; set; }
+        public PSASysCommon PSASysCommon { get; set; }
+       
+        public Guid AdvPreparedBy { get; set; }
+        public Employee Employee { get; set; }
+        public DataTablePaging DataTablePaging { get; set; }
         public decimal? Qty { get; set; }
+        public decimal? ProducedQty { get; set; }
+        public int? Progress { get; set; }
+        public int? ExptProgress { get; set; }
+        public int? ReportValue { get; set; }
+        public string ExptCompletionDate { get; set; }
     }
 
     public class PendingProductionOrderReport

@@ -283,6 +283,8 @@ namespace PilotSmithApp.RepositoryService.Service
                         cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvFromDate;
                         cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = enquiryFollowupReport.AdvToDate;                       
                         cmd.Parameters.Add("@Customer", SqlDbType.NVarChar,100).Value = enquiryFollowupReport.AdvCustomer;
+                        if (enquiryFollowupReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = enquiryFollowupReport.AdvDocumentOwnerID;
                         cmd.Parameters.Add("@PriorityCode", SqlDbType.Int).Value = enquiryFollowupReport.AdvFollowupPriority;
                         cmd.Parameters.Add("@Status", SqlDbType.NVarChar).Value = enquiryFollowupReport.AdvStatus;
                         cmd.CommandType = CommandType.StoredProcedure;
@@ -315,6 +317,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryFollowupReportObj.Customer = new Customer();
                                         enquiryFollowupReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : enquiryFollowupReportObj.Customer.CompanyName);
                                         enquiryFollowupReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : enquiryFollowupReportObj.Customer.ContactPerson);
+                                        enquiryFollowupReportObj.DocumentOwnerName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : enquiryFollowupReportObj.DocumentOwnerName);
                                         enquiryFollowupReportObj.TotalCount=(sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : enquiryFollowupReportObj.TotalCount);
                                         enquiryFollowupReportObj.FilteredCount=(sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryFollowupReportObj.FilteredCount);
 
@@ -624,7 +627,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingSaleOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : pendingSaleOrderReportObj.FilteredCount);
                                         pendingSaleOrderReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : pendingSaleOrderReportObj.Qty);
                                         pendingSaleOrderReportObj.PendingQty = (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingSaleOrderReportObj.PendingQty);
-                                        pendingSaleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingSaleOrderReportObj.ProductSpec);
+                                        pendingSaleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : pendingSaleOrderReportObj.ProductSpec);
                                         pendingSaleOrderReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : pendingSaleOrderReportObj.ProductID);
                                         pendingSaleOrderReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : pendingSaleOrderReportObj.ProductModelID);
                                         pendingSaleOrderReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : pendingSaleOrderReportObj.UnitCode);
@@ -1065,7 +1068,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionOrderReportObj.FilteredCount);
                                         productionOrderReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionOrderReportObj.Qty);
 
-                                        productionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionOrderReportObj.ProductSpec);
+                                        productionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : productionOrderReportObj.ProductSpec);
                                        
                                         productionOrderReportObj.Product = new Product();
                                         productionOrderReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : productionOrderReportObj.Product.Name);
@@ -1097,6 +1100,135 @@ namespace PilotSmithApp.RepositoryService.Service
 
 
         #endregion GetProductionOrderStandardReport
+
+        #region GetProductionOrderDetailForecastDateExceededReport
+
+        public List<ProductionOrderDetailForecastDateExceededReport> GetProductionOrderDetailForecastDateExceededReport(ProductionOrderDetailForecastDateExceededReport productionOrderdetailForecastDateReport)
+        {
+
+            List<ProductionOrderDetailForecastDateExceededReport> productionOrderDetailForecastDateExceededReportList = null;
+            try
+            {
+                using (SqlConnection con = _databaseFactory.GetDBConnection())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        cmd.Connection = con;
+                        cmd.CommandText = "[PSA].[GetProductionOrderDetailForecastDateExceeded]";
+                        cmd.Parameters.Add("@SearchTerm", SqlDbType.NVarChar, -1).Value = string.IsNullOrEmpty(productionOrderdetailForecastDateReport.SearchTerm) ? "" : productionOrderdetailForecastDateReport.SearchTerm;
+                        cmd.Parameters.Add("@RowStart", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.DataTablePaging.Start;
+                        if (productionOrderdetailForecastDateReport.DataTablePaging.Length == -1)
+                        {
+                            cmd.Parameters.AddWithValue("@Length", DBNull.Value);
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@Length", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.DataTablePaging.Length;
+                        }
+                        cmd.Parameters.Add("@CurrentDate", SqlDbType.DateTime).Value = DateTime.Today.ToString("dd-MMM-yyyy");
+                        cmd.Parameters.Add("@DateFrom", SqlDbType.DateTime).Value = productionOrderdetailForecastDateReport.AdvFromDate;
+                        cmd.Parameters.Add("@DateTo", SqlDbType.DateTime).Value = productionOrderdetailForecastDateReport.AdvToDate;
+                        cmd.Parameters.Add("@Customer", SqlDbType.NVarChar, 100).Value = productionOrderdetailForecastDateReport.AdvCustomer;
+                        if (productionOrderdetailForecastDateReport.AdvDocumentOwnerID != Guid.Empty)
+                            cmd.Parameters.Add("@DocumentOwnerID", SqlDbType.UniqueIdentifier).Value = productionOrderdetailForecastDateReport.AdvDocumentOwnerID;
+                        cmd.Parameters.Add("@DocumentStatusCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvDocumentStatusCode;
+                        cmd.Parameters.Add("@CustAreaCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvAreaCode;
+                        cmd.Parameters.Add("@BranchCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvBranchCode;
+                        cmd.Parameters.Add("@CustCountryCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvCountryCode;
+                        cmd.Parameters.Add("@CustStateCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvStateCode;
+                        cmd.Parameters.Add("@CustDistCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvDistrictCode;
+                        cmd.Parameters.Add("@CustCategoryCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvCustomerCategoryCode;
+                        cmd.Parameters.Add("@AmountFrom", SqlDbType.Decimal).Value = productionOrderdetailForecastDateReport.AdvAmountFrom;
+                        cmd.Parameters.Add("@AmountTo", SqlDbType.Decimal).Value = productionOrderdetailForecastDateReport.AdvAmountTo;
+                        cmd.Parameters.Add("@ReportType", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvReportType;
+                        cmd.Parameters.Add("@ReportValue", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.ReportValue;
+                        //cmd.Parameters.Add("@ExpDelDateFrom", SqlDbType.DateTime).Value = productionOrderReport.AdvDelFromDate;
+                        //cmd.Parameters.Add("@ExpDelDateTo", SqlDbType.DateTime).Value = productionOrderReport.AdvDelToDate;
+                        if (productionOrderdetailForecastDateReport.AdvProduct != Guid.Empty)
+                            cmd.Parameters.Add("@ProductID", SqlDbType.UniqueIdentifier).Value = productionOrderdetailForecastDateReport.AdvProduct;
+                        if (productionOrderdetailForecastDateReport.AdvProductModel != Guid.Empty)
+                            cmd.Parameters.Add("@ProductModelID", SqlDbType.UniqueIdentifier).Value = productionOrderdetailForecastDateReport.AdvProductModel;
+                        cmd.Parameters.Add("@Progress", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvProgress;
+                        cmd.Parameters.Add("@PlantCode", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvPlantCode;
+                        cmd.Parameters.Add("@ReferredBy", SqlDbType.Int).Value = productionOrderdetailForecastDateReport.AdvReferencePersonCode;
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        {
+                            if ((sdr != null) && (sdr.HasRows))
+                            {
+                                productionOrderDetailForecastDateExceededReportList = new List<ProductionOrderDetailForecastDateExceededReport>();
+                                while (sdr.Read())
+                                {
+                                    ProductionOrderDetailForecastDateExceededReport productionOrderReportObj = new ProductionOrderDetailForecastDateExceededReport();
+                                    {
+                                        productionOrderReportObj.ProdOrderNo = (sdr["ProdOrderNo"].ToString() != "" ? (sdr["ProdOrderNo"].ToString()) : productionOrderReportObj.ProdOrderNo);
+                                        productionOrderReportObj.ProductionOrderNo = (sdr["ProductionOrdNo"].ToString() != "" ? (sdr["ProductionOrdNo"].ToString()) : productionOrderReportObj.ProductionOrderNo);
+
+                                        productionOrderReportObj.ProdOrderDate = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()) : productionOrderReportObj.ProdOrderDate);
+                                        productionOrderReportObj.ProdOrderDateFormatted = (sdr["ProdOrderDate"].ToString() != "" ? DateTime.Parse(sdr["ProdOrderDate"].ToString()).ToString(_settings.DateFormat) : productionOrderReportObj.ProdOrderDateFormatted);
+                                        //productionOrderReportObj.SaleOrderNo = (sdr["SaleOrderNo"].ToString() != "" ? (sdr["SaleOrderNo"].ToString()) : productionOrderReportObj.SaleOrderNo);
+                                        //productionOrderReportObj.SaleOrdNo = (sdr["SaleOrdNo"].ToString() != "" ? (sdr["SaleOrdNo"].ToString()) : productionOrderReportObj.SaleOrdNo);
+                                        productionOrderReportObj.ExpectedDelvDate = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()) : productionOrderReportObj.ExpectedDelvDate);
+                                        productionOrderReportObj.ExpectedDelvDateFormatted = (sdr["ExpectedDelvDate"].ToString() != "" ? DateTime.Parse(sdr["ExpectedDelvDate"].ToString()).ToString(_settings.DateFormat) : productionOrderReportObj.ExpectedDelvDateFormatted);
+                                        productionOrderReportObj.ExptCompletionDate = (sdr["ExptCompletionDate"].ToString() != "" ? DateTime.Parse(sdr["ExptCompletionDate"].ToString()).ToString(_settings.DateFormat) : productionOrderReportObj.ExptCompletionDate);
+                                        productionOrderReportObj.PreparedBy = (sdr["PreparedByName"].ToString() != "" ? sdr["PreparedByName"].ToString() : productionOrderReportObj.PreparedBy);
+
+                                        productionOrderReportObj.Area = new Area();
+                                        productionOrderReportObj.Area.Description = (sdr["AreaName"].ToString() != "" ? sdr["AreaName"].ToString() : productionOrderReportObj.Area.Description);
+                                        productionOrderReportObj.DocumentStatus = new DocumentStatus();
+                                        productionOrderReportObj.DocumentStatus.Description = (sdr["DocumentStatusName"].ToString() != "" ? sdr["DocumentStatusName"].ToString() : productionOrderReportObj.DocumentStatus.Description);
+                                        productionOrderReportObj.Remarks = (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : productionOrderReportObj.Remarks);
+                                        productionOrderReportObj.Customer = new Customer();
+                                        productionOrderReportObj.Customer.CompanyName = (sdr["CompanyName"].ToString() != "" ? sdr["CompanyName"].ToString() : productionOrderReportObj.Customer.CompanyName);
+                                        productionOrderReportObj.Customer.ContactPerson = (sdr["ContactPerson"].ToString() != "" ? sdr["ContactPerson"].ToString() : productionOrderReportObj.Customer.ContactPerson);
+                                        productionOrderReportObj.Branch = new Branch();
+                                        productionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionOrderReportObj.Branch.Description);
+                                        productionOrderReportObj.Amount = (sdr["Amount"].ToString() != "" ? decimal.Parse(sdr["Amount"].ToString()) : productionOrderReportObj.Amount);
+                                        productionOrderReportObj.PSAUser = new PSAUser();
+                                        productionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionOrderReportObj.PSAUser.LoginName);
+                                        productionOrderReportObj.TotalCount = (sdr["TotalCount"].ToString() != "" ? int.Parse(sdr["TotalCount"].ToString()) : productionOrderReportObj.TotalCount);
+                                        productionOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionOrderReportObj.FilteredCount);
+                                        productionOrderReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionOrderReportObj.Qty);
+                                        productionOrderReportObj.ProducedQty = (sdr["ProducedQty"].ToString() != "" ? decimal.Parse(sdr["ProducedQty"].ToString()) : productionOrderReportObj.Qty);
+                                        productionOrderReportObj.Progress = (sdr["progressPerc"].ToString() != "" ? int.Parse(sdr["progressPerc"].ToString()) : productionOrderReportObj.Progress);
+                                        productionOrderReportObj.ExptProgress = (sdr["ExptProgressPerc"].ToString() != "" ? int.Parse(sdr["ExptProgressPerc"].ToString()) : productionOrderReportObj.Progress);
+                                        productionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionOrderReportObj.ProductSpec);
+
+                                        productionOrderReportObj.Product = new Product();
+                                        productionOrderReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : productionOrderReportObj.Product.Name);
+                                        productionOrderReportObj.ProductModel = new ProductModel();
+                                        productionOrderReportObj.ProductModel.Name = (sdr["ProductModelName"].ToString() != "" ? sdr["ProductModelName"].ToString() : productionOrderReportObj.ProductModel.Name);
+                                        productionOrderReportObj.Plant = new Plant();
+                                        productionOrderReportObj.Plant.Description = (sdr["PlantName"].ToString() != "" ? sdr["PlantName"].ToString() : productionOrderReportObj.Plant.Description);
+                                        productionOrderReportObj.ReferencePerson = new ReferencePerson();
+                                        //productionOrderReportObj.ReferencePerson.Name = (sdr["ReferedByName"].ToString() != "" ? sdr["ReferedByName"].ToString() : productionOrderReportObj.ReferencePerson.Name);
+                                        productionOrderReportObj.Branch = new Branch();
+                                        productionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionOrderReportObj.Branch.Description);
+                                        productionOrderReportObj.PSAUser = new PSAUser();
+                                        productionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionOrderReportObj.PSAUser.LoginName);
+                                    }
+                                    productionOrderDetailForecastDateExceededReportList.Add(productionOrderReportObj);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return productionOrderDetailForecastDateExceededReportList;
+        }
+
+
+        #endregion GetProductionOrderDetailForecastDateExceededReport
 
 
 
@@ -1196,7 +1328,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionOrderReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : pendingProductionOrderReportObj.Qty);
                                         pendingProductionOrderReportObj.PendingQty= (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingProductionOrderReportObj.PendingQty);
                                         pendingProductionOrderReportObj.SaleOrderQty= (sdr["SaleOrderQty"].ToString() != "" ? decimal.Parse(sdr["SaleOrderQty"].ToString()) : pendingProductionOrderReportObj.SaleOrderQty);
-                                        pendingProductionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingProductionOrderReportObj.ProductSpec);
+                                        pendingProductionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : pendingProductionOrderReportObj.ProductSpec);
                                         pendingProductionOrderReportObj.Progress = (sdr["progressPerc"].ToString() != "" ? int.Parse(sdr["progressPerc"].ToString()) : pendingProductionOrderReportObj.Progress);
 
                                         pendingProductionOrderReportObj.Product = new Product();
@@ -1317,7 +1449,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                       //  productionQCReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionQCReportObj.Qty);
                                         productionQCReportObj.ProdOrdQty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionQCReportObj.ProdOrdQty);
                                         productionQCReportObj.ProdQCQty = (sdr["QCQty"].ToString() != "" ? decimal.Parse(sdr["QCQty"].ToString()) : productionQCReportObj.ProdQCQty);
-                                        productionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionQCReportObj.ProductSpec);
+                                        productionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : productionQCReportObj.ProductSpec);
                                        // productionQCReportObj.Progress = (sdr["progressPerc"].ToString() != "" ? int.Parse(sdr["progressPerc"].ToString()) : productionQCReportObj.Progress);
 
                                         productionQCReportObj.Product = new Product();
@@ -1436,7 +1568,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionQCReportObj.PendingQty = (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingProductionQCReportObj.PendingQty);
                                         pendingProductionQCReportObj.ProdOrdQty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : pendingProductionQCReportObj.ProdOrdQty);
                                         pendingProductionQCReportObj.ProdQCQty = (sdr["QCQty"].ToString() != "" ? decimal.Parse(sdr["QCQty"].ToString()) : pendingProductionQCReportObj.ProdQCQty);
-                                        pendingProductionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingProductionQCReportObj.ProductSpec);
+                                        pendingProductionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : pendingProductionQCReportObj.ProductSpec);
                                     
                                         pendingProductionQCReportObj.Product = new Product();
                                         pendingProductionQCReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : pendingProductionQCReportObj.Product.Name);
