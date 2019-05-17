@@ -557,6 +557,45 @@ namespace PilotSmithApp.UserInterface.Controllers
 
 
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrderReport", Mode = "R")]
+        public ActionResult ProductionOrderDetailForecastDateExceededReport()           
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            ProductionOrderDetailForecastDateExceededReportViewModel productionOrderReportDetailForecastDateExceededVM = new ProductionOrderDetailForecastDateExceededReportViewModel();
+            productionOrderReportDetailForecastDateExceededVM.DocumentStatus = new DocumentStatusViewModel();
+            productionOrderReportDetailForecastDateExceededVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
+            productionOrderReportDetailForecastDateExceededVM.Customer = new CustomerViewModel();
+            productionOrderReportDetailForecastDateExceededVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            productionOrderReportDetailForecastDateExceededVM.Product = new ProductViewModel();
+            productionOrderReportDetailForecastDateExceededVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            productionOrderReportDetailForecastDateExceededVM.ProductModel = new ProductModelViewModel();
+            productionOrderReportDetailForecastDateExceededVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(productionOrderReportDetailForecastDateExceededVM);
+        }
+
+
+        public JsonResult GetProductionOrderDetailForecastDateExceededReport(DataTableAjaxPostModel model, ProductionOrderDetailForecastDateExceededReportViewModel productionOrderReportDetailForecastDateExceededVM)
+        {
+            productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Start = model.start;
+            productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Length = (productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Length == 0 ? model.length : productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Length);
+
+            List<ProductionOrderDetailForecastDateExceededReportViewModel> productionOrderDetailForecastDateExceededReportList = Mapper.Map<List<ProductionOrderDetailForecastDateExceededReport>, List<ProductionOrderDetailForecastDateExceededReportViewModel>>(_reportBusiness.GetProductionOrderDetailForecastDateExceededReport(Mapper.Map<ProductionOrderDetailForecastDateExceededReportViewModel, ProductionOrderDetailForecastDateExceededReport>(productionOrderReportDetailForecastDateExceededVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = productionOrderDetailForecastDateExceededReportList.Count != 0 ? productionOrderDetailForecastDateExceededReportList[0].TotalCount : 0,
+                recordsFiltered = productionOrderDetailForecastDateExceededReportList.Count != 0 ? productionOrderDetailForecastDateExceededReportList[0].FilteredCount : 0,
+                data = productionOrderDetailForecastDateExceededReportList
+            });
+        }
+
+        [HttpGet]
         [AuthSecurityFilter(ProjectObject = "PendingProductionOrderReport", Mode = "R")]
         public ActionResult PendingProductionOrderReport()
         {
@@ -712,19 +751,19 @@ namespace PilotSmithApp.UserInterface.Controllers
                         var enquiryreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryReport");
                         EnquiryReportViewModel[] enquiryReportVMListArray = enquiryReportList.ToArray();
                         enquiryreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryReportVMListArray.Select(x => new {
-                        EnquiryNo = x.EnqNo,
-                        EnquiryDate=x.EnquiryDateFormatted,
-                        ContactPerson = x.Customer.ContactPerson,
-                        CompanyName = x.Customer.CompanyName,
-                        RequirementSpecification = x.RequirementSpec,
-                        Grade = x.EnquiryGrade.Description,
-                        Area = x.Area.Description,
-                        ReferredBy = x.ReferencePerson.Name,
-                        AttendedBy = x.Employee.Name,
-                        DocumentStatus = x.DocumentStatus.Description,
-                        Branch = x.Branch.Description,
-                        DocumentOwner = x.PSAUser.LoginName,                       
-                        Amount =x.Amount
+                            EnquiryNo = x.EnqNo,
+                            EnquiryDate = x.EnquiryDateFormatted,
+                            ContactPerson = x.Customer.ContactPerson,
+                            CompanyName = x.Customer.CompanyName,
+                            RequirementSpecification = x.RequirementSpec,
+                            Grade = x.EnquiryGrade.Description,
+                            Area = x.Area.Description,
+                            ReferredBy = x.ReferencePerson.Name,
+                            AttendedBy = x.Employee.Name,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
+                            Amount = x.Amount
                         }), true, TableStyles.Light1);
 
                         int finalRowsENQ = enquiryreportworkSheet.Dimension.End.Row;
@@ -744,7 +783,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryreportworkSheet.Column(10).AutoFit();
                         enquiryreportworkSheet.Column(11).AutoFit();
                         enquiryreportworkSheet.Column(12).AutoFit();
-                        enquiryreportworkSheet.Column(13).AutoFit();                      
+                        enquiryreportworkSheet.Column(13).AutoFit();
                         break;
                     case "EnquiryFollowUp":
                         fileName = "EnquiryFollowupReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -756,17 +795,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                         var enquiryfollowupreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryFollowUp");
                         EnquiryFollowupReportViewModel[] enquiryFollowupReportVMListArray = enquiryFollowupReportList.ToArray();
                         enquiryfollowupreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryFollowupReportVMListArray.Select(x => new {
-                           Followupdate = x.FollowupDateFormatted,
-                           FollowupTime = x.FollowupTimeFormatted,
-                           EnquiryNo = x.EnqNo,
-                           Priority =x.Priority,
-                           EnquiryDate = x.EnquiryDateFormatted,
-                           CompanyName = x.Customer.CompanyName,
-                           ContactPerson = x.Customer.ContactPerson,
-                           ContactNo = x.ContactNo,
-                           FollowupStatus = x.Status,
-                           GeneralNotes = x.FollowupRemarks                            
-                            
+                            Followupdate = x.FollowupDateFormatted,
+                            FollowupTime = x.FollowupTimeFormatted,
+                            EnquiryNo = x.EnqNo,
+                            Priority = x.Priority,
+                            EnquiryDate = x.EnquiryDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ContactNo = x.ContactNo,
+                            FollowupStatus = x.Status,
+                            GeneralNotes = x.FollowupRemarks
+
                         }), true, TableStyles.Light1);
 
                         int finalRowsEnquiryFollowUp = enquiryfollowupreportworkSheet.Dimension.End.Row;
@@ -781,7 +820,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryfollowupreportworkSheet.Column(6).AutoFit();
                         enquiryfollowupreportworkSheet.Column(7).AutoFit();
                         enquiryfollowupreportworkSheet.Column(8).Width = 40;
-                        enquiryfollowupreportworkSheet.Column(9).AutoFit();   
+                        enquiryfollowupreportworkSheet.Column(9).AutoFit();
                         enquiryfollowupreportworkSheet.Column(10).Width = 40;
                         enquiryfollowupreportworkSheet.Column(10).Style.WrapText = true;
 
@@ -796,17 +835,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                         var estimatereportworkSheet = excel.Workbook.Worksheets.Add("EstimateReport");
                         EstimateReportViewModel[] estimateReportVMListArray = estimateReportList.ToArray();
                         estimatereportworkSheet.Cells[1, 1].LoadFromCollection(estimateReportVMListArray.Select(x => new {
-                           EstimateNo=x.EstNo,
-                           EstimateDate=x.EstimateDateFormatted,
-                           CompanyName =x.Customer.CompanyName ,
-                           ContactPerson =x.Customer.ContactPerson,
-                           Area = x.Area.Description,
-                           PreparedBy =x.PreparedBy,
-                           DocumentStatus=x.DocumentStatus.Description,
-                           Branch = x.Branch.Description,
-                           DocumentOwner=x.PSAUser.LoginName,
-                           Amount = x.Amount,
-                           GeneralNotes = x.Notes
+                            EstimateNo = x.EstNo,
+                            EstimateDate = x.EstimateDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            Area = x.Area.Description,
+                            PreparedBy = x.PreparedBy,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
+                            Amount = x.Amount,
+                            GeneralNotes = x.Notes
                         }), true, TableStyles.Light1);
 
                         int finalRowsEstimateReport = estimatereportworkSheet.Dimension.End.Row;
@@ -845,8 +884,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             PreparedBy = x.PreparedBy,
                             DocumentStatus = x.DocumentStatus.Description,
                             ApprovalStatus = x.ApprovalStatus.Description,
-                            Branch = x.Branch.Description,                                                
-                            DocumentOwner = x.PSAUser.LoginName,    
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
                             Amount = x.Amount,
                             GeneralNotes = x.Notes
                         }), true, TableStyles.Light1);
@@ -877,17 +916,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
                         ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                         saleOrderReportVM = JsonConvert.DeserializeObject<SaleOrderReportViewModel>(ReadableFormat);
-                        List<SaleOrderReportViewModel> saleOrderReportList = Mapper.Map<List<SaleOrderReport>, List<SaleOrderReportViewModel>>(_reportBusiness.GetSaleOrderStandardReport(Mapper.Map<SaleOrderReportViewModel,SaleOrderReport>(saleOrderReportVM)));                        
+                        List<SaleOrderReportViewModel> saleOrderReportList = Mapper.Map<List<SaleOrderReport>, List<SaleOrderReportViewModel>>(_reportBusiness.GetSaleOrderStandardReport(Mapper.Map<SaleOrderReportViewModel, SaleOrderReport>(saleOrderReportVM)));
                         var saleorderreportworkSheet = excel.Workbook.Worksheets.Add("SaleOrderReport");
                         SaleOrderReportViewModel[] saleOrderReportVMListArray = saleOrderReportList.ToArray();
                         saleorderreportworkSheet.Cells[1, 1].LoadFromCollection(saleOrderReportVMListArray.Select(x => new {
-                            SaleOrderNo=x.SaleOrdNo,
-                            SaleOrderDate=x.SaleOrderDateFormatted,
-                            CompanyName=x.Customer.CompanyName,
-                            ContactPerson=x.Customer.ContactPerson,
-                            ProductName=x.Product.Name,
+                            SaleOrderNo = x.SaleOrdNo,
+                            SaleOrderDate = x.SaleOrderDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ProductName = x.Product.Name,
                             ProductModel = x.ProductModel.Name,
-                            ProductSpecification=x.ProductSpec,
+                            ProductSpecification = x.ProductSpec,
                             Qty = x.Qty,
                             Unit = x.Unit.Description,
                             Branch = x.Branch.Description,
@@ -942,11 +981,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                             ProductModel = x.ProductModel.Name,
                             ProductSpecification = x.ProductSpec,
                             SaleOrderQty = x.Qty,
-                            PendingQty=x.PendingQty,
+                            PendingQty = x.PendingQty,
                             Unit = x.Unit.Description,
                             SaleOrderTaxableAmount = Math.Round(Convert.ToDecimal(x.TaxableAmount), 2).ToString(),
-                            SaleOrderAmount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString(),
-                            Branch = x.Branch.Description,                    
+                            SaleOrderAmount = Math.Round(Convert.ToDecimal(x.Amount), 2).ToString(),
+                            Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName
 
                         }), true, TableStyles.Light1);
@@ -983,12 +1022,12 @@ namespace PilotSmithApp.UserInterface.Controllers
                         var productionorderreportworkSheet = excel.Workbook.Worksheets.Add("ProductionOrderReport");
                         ProductionOrderReportViewModel[] productionOrderReportVMListArray = productionOrderReportList.ToArray();
                         productionorderreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderReportVMListArray.Select(x => new {
-                            ProductionOrderNo=x.ProdOrderNo,
-                            ProductionOrderDate=x.ProdOrderDateFormatted,                           
+                            ProductionOrderNo = x.ProdOrderNo,
+                            ProductionOrderDate = x.ProdOrderDateFormatted,
                             CompanyName = x.Customer.CompanyName,
                             ContactPerson = x.Customer.ContactPerson,
                             SaleOrderNo = x.SaleOrderNo,
-                            ExpectedDeliveryDate =x.ExpectedDelvDateFormatted,
+                            ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
                             ProductName = x.Product.Name,
                             ProductModel = x.ProductModel.Name,
                             ProductSpecification = x.ProductSpec,
@@ -996,11 +1035,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Amount = x.Amount,
                             Plant = x.Plant.Description,
                             Area = x.Area.Description,
-                            ReferredBy =x.ReferencePerson.Name,                           
-                            DocumentStatus=x.DocumentStatus.Description,
-                            Branch=x.Branch.Description,
+                            ReferredBy = x.ReferencePerson.Name,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            GeneralNotes = x.Remarks                            
+                            GeneralNotes = x.Remarks
                         }), true, TableStyles.Light1);
 
                         int finalRowsProductionOrderReport = productionorderreportworkSheet.Dimension.End.Row;
@@ -1012,7 +1051,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionorderreportworkSheet.Column(3).Width = 40;
                         productionorderreportworkSheet.Column(4).AutoFit();
                         productionorderreportworkSheet.Column(5).AutoFit();
-                        productionorderreportworkSheet.Column(6).AutoFit(); 
+                        productionorderreportworkSheet.Column(6).AutoFit();
                         productionorderreportworkSheet.Column(7).AutoFit();
                         productionorderreportworkSheet.Column(8).AutoFit();
                         productionorderreportworkSheet.Column(9).Width = 40;
@@ -1030,6 +1069,126 @@ namespace PilotSmithApp.UserInterface.Controllers
 
                         break;
 
+                    case "ProductionOrderDetailForcastDateExceededReport":
+                        fileName = "ProductionOrderDetailForcastDateExceededReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        ProductionOrderDetailForecastDateExceededReportViewModel ProductionOrderDetailForcastDateExceededVM = new ProductionOrderDetailForecastDateExceededReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        ProductionOrderDetailForcastDateExceededVM = JsonConvert.DeserializeObject<ProductionOrderDetailForecastDateExceededReportViewModel>(ReadableFormat);
+                        List<ProductionOrderDetailForecastDateExceededReportViewModel> productionOrderDetailForecastDateExceededReportList = Mapper.Map<List<ProductionOrderDetailForecastDateExceededReport>, List<ProductionOrderDetailForecastDateExceededReportViewModel>>(_reportBusiness.GetProductionOrderDetailForecastDateExceededReport(Mapper.Map<ProductionOrderDetailForecastDateExceededReportViewModel, ProductionOrderDetailForecastDateExceededReport>(ProductionOrderDetailForcastDateExceededVM)));
+                        var productionorderdetailforcastdateexceededreportworkSheet = excel.Workbook.Worksheets.Add("ProductionOrderReport");
+                        ProductionOrderDetailForecastDateExceededReportViewModel[] productionOrderDetailForcastDateExceededReportVMListArray = productionOrderDetailForecastDateExceededReportList.ToArray();
+                        if (excelExportVM.OptionValue == "2")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderDetailForcastDateExceededReportVMListArray.Select(x => new
+                            {
+                                ProductionOrderNo = x.ProdOrderNo,
+                                ProductionOrderDate = x.ProdOrderDateFormatted,
+                                CompanyName = x.Customer.CompanyName,
+                                ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
+                                CurrentProgress = x.Progress,
+                                ExpectedProgress = x.ExptProgress,
+                                ExpectedCompletionDate = x.ExptCompletionDate,
+                                ProductName = x.Product.Name,
+                                ProductModel = x.ProductModel.Name,
+                                ProductSpecification = x.ProductSpec,
+                                ProdnOrdQty = x.Qty,
+                                ProducedOrdQty = x.ProducedQty,
+                                Amount = x.Amount,
+                                Plant = x.Plant.Description,
+                                Area = x.Area.Description,
+                                DocumentStatus = x.DocumentStatus.Description,
+                                Branch = x.Branch.Description,
+                                DocumentOwner = x.PSAUser.LoginName,
+                                GeneralNotes = x.Remarks
+                            }), true, TableStyles.Light1);
+                        }
+                        if (excelExportVM.OptionValue == "1")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderDetailForcastDateExceededReportVMListArray.Select(x => new
+                            {
+                                ProductionOrderNo = x.ProdOrderNo,
+                                ProductionOrderDate = x.ProdOrderDateFormatted,
+                                CompanyName = x.Customer.CompanyName,
+                                ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
+                                CurrentProgress = x.Progress,
+                                //ExpectedProgress = x.ExptProgress,
+                                //ExpectedCompletionDate = x.ExptCompletionDate,
+                                //ContactPerson = x.Customer.ContactPerson,                        
+                                ProductName = x.Product.Name,
+                                ProductModel = x.ProductModel.Name,
+                                ProductSpecification = x.ProductSpec,
+                                ProdnOrdQty = x.Qty,
+                                ProducedOrdQty = x.ProducedQty,
+                                Amount = x.Amount,
+                                Plant = x.Plant.Description,
+                                Area = x.Area.Description,
+                                DocumentStatus = x.DocumentStatus.Description,
+                                Branch = x.Branch.Description,
+                                DocumentOwner = x.PSAUser.LoginName,
+                                GeneralNotes = x.Remarks
+                            }), true, TableStyles.Light1);
+                        }
+                        int finalRowsProductionOrderDetailForcastDateExceededReport = productionorderdetailforcastdateexceededreportworkSheet.Dimension.End.Row;
+                        string columnStringProductionOrderDetailForcastDateExceededReport = columnString + finalRowsProductionOrderDetailForcastDateExceededReport.ToString();
+                        if (excelExportVM.OptionValue == "2")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[columnStringProductionOrderDetailForcastDateExceededReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+                            ExcelRange productionorderdetailforcastdateexceedamountSum = productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 13];
+                            productionorderdetailforcastdateexceedamountSum.Formula = "SUM(M2:M" + finalRowsProductionOrderDetailForcastDateExceededReport + ")";
+                            productionorderdetailforcastdateexceedamountSum.Calculate();
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 12].Value = "Totals";
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(1).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(2).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(3).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(4).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(5).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(6).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(7).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(8).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(9).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(10).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(11).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(13).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(14).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(15).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(16).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(17).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(18).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(18).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(19).Style.WrapText = true;
+                            productionorderdetailforcastdateexceededreportworkSheet.Row(finalRowsProductionOrderDetailForcastDateExceededReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(13).Style.Numberformat.Format = "0.00";
+                        }
+                        if (excelExportVM.OptionValue == "1")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[columnStringProductionOrderDetailForcastDateExceededReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+                            ExcelRange productionorderdetailforcastdateexceededreportamountSum = productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 11];
+                            productionorderdetailforcastdateexceededreportamountSum.Formula = "SUM(k2:k" + finalRowsProductionOrderDetailForcastDateExceededReport + ")";
+                            productionorderdetailforcastdateexceededreportamountSum.Calculate();
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 10].Value = "Totals";
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(1).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(2).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(3).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(4).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(5).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(6).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(7).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(8).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(9).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(10).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(13).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(12).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(14).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(15).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(16).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(17).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(18).Style.WrapText = true;
+                            productionorderdetailforcastdateexceededreportworkSheet.Row(finalRowsProductionOrderDetailForcastDateExceededReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(11).Style.Numberformat.Format = "0.00";
+                        }
+                        break;                    
+                
                     case "PendingProductionOrderReport":
                         fileName = "PendingProductionOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
                         PendingProductionOrderReportViewModel pendingProductionOrderReportVM = new PendingProductionOrderReportViewModel();

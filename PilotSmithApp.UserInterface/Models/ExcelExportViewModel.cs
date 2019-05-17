@@ -11,5 +11,6 @@ namespace PilotSmithApp.UserInterface.Models
         public string DocumentType { get; set; }
         public string[] TableHeaderColumns { get; set; }
         public string[] TableHeaderColumnsWidth { get; set; }
+        public string OptionValue { get; set; }
     }
 }
