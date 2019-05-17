@@ -591,6 +591,45 @@ namespace PilotSmithApp.UserInterface.Controllers
 
 
         [HttpGet]
+        [AuthSecurityFilter(ProjectObject = "ProductionOrderReport", Mode = "R")]
+        public ActionResult ProductionOrderDetailForecastDateExceededReport()           
+        {
+            List<SelectListItem> selectListItem = new List<SelectListItem>();
+            ProductionOrderDetailForecastDateExceededReportViewModel productionOrderReportDetailForecastDateExceededVM = new ProductionOrderDetailForecastDateExceededReportViewModel();
+            productionOrderReportDetailForecastDateExceededVM.DocumentStatus = new DocumentStatusViewModel();
+            productionOrderReportDetailForecastDateExceededVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
+            productionOrderReportDetailForecastDateExceededVM.Customer = new CustomerViewModel();
+            productionOrderReportDetailForecastDateExceededVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
+            productionOrderReportDetailForecastDateExceededVM.Product = new ProductViewModel();
+            productionOrderReportDetailForecastDateExceededVM.Product.ProductSelectList = _productBusiness.GetProductForSelectList();
+            productionOrderReportDetailForecastDateExceededVM.ProductModel = new ProductModelViewModel();
+            productionOrderReportDetailForecastDateExceededVM.ProductModel.ProductModelSelectList = _productModelBusiness.GetProductModelSelectList();
+            return View(productionOrderReportDetailForecastDateExceededVM);
+        }
+
+
+        public JsonResult GetProductionOrderDetailForecastDateExceededReport(DataTableAjaxPostModel model, ProductionOrderDetailForecastDateExceededReportViewModel productionOrderReportDetailForecastDateExceededVM)
+        {
+            productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Start = model.start;
+            productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Length = (productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Length == 0 ? model.length : productionOrderReportDetailForecastDateExceededVM.DataTablePaging.Length);
+
+            List<ProductionOrderDetailForecastDateExceededReportViewModel> productionOrderDetailForecastDateExceededReportList = Mapper.Map<List<ProductionOrderDetailForecastDateExceededReport>, List<ProductionOrderDetailForecastDateExceededReportViewModel>>(_reportBusiness.GetProductionOrderDetailForecastDateExceededReport(Mapper.Map<ProductionOrderDetailForecastDateExceededReportViewModel, ProductionOrderDetailForecastDateExceededReport>(productionOrderReportDetailForecastDateExceededVM)));
+            var settings = new JsonSerializerSettings
+            {
+                //ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Formatting = Formatting.None
+            };
+
+            return Json(new
+            {
+                draw = model.draw,
+                recordsTotal = productionOrderDetailForecastDateExceededReportList.Count != 0 ? productionOrderDetailForecastDateExceededReportList[0].TotalCount : 0,
+                recordsFiltered = productionOrderDetailForecastDateExceededReportList.Count != 0 ? productionOrderDetailForecastDateExceededReportList[0].FilteredCount : 0,
+                data = productionOrderDetailForecastDateExceededReportList
+            });
+        }
+
+        [HttpGet]
         [AuthSecurityFilter(ProjectObject = "PendingProductionOrderReport", Mode = "R")]
         public ActionResult PendingProductionOrderReport()
         {
@@ -1103,6 +1142,126 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionorderreportworkSheet.Column(11).Style.Numberformat.Format = "0.00";
                         break;
 
+                    case "ProductionOrderDetailForcastDateExceededReport":
+                        fileName = "ProductionOrderDetailForcastDateExceededReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
+                        ProductionOrderDetailForecastDateExceededReportViewModel ProductionOrderDetailForcastDateExceededVM = new ProductionOrderDetailForecastDateExceededReportViewModel();
+                        ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
+                        ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
+                        ProductionOrderDetailForcastDateExceededVM = JsonConvert.DeserializeObject<ProductionOrderDetailForecastDateExceededReportViewModel>(ReadableFormat);
+                        List<ProductionOrderDetailForecastDateExceededReportViewModel> productionOrderDetailForecastDateExceededReportList = Mapper.Map<List<ProductionOrderDetailForecastDateExceededReport>, List<ProductionOrderDetailForecastDateExceededReportViewModel>>(_reportBusiness.GetProductionOrderDetailForecastDateExceededReport(Mapper.Map<ProductionOrderDetailForecastDateExceededReportViewModel, ProductionOrderDetailForecastDateExceededReport>(ProductionOrderDetailForcastDateExceededVM)));
+                        var productionorderdetailforcastdateexceededreportworkSheet = excel.Workbook.Worksheets.Add("ProductionOrderReport");
+                        ProductionOrderDetailForecastDateExceededReportViewModel[] productionOrderDetailForcastDateExceededReportVMListArray = productionOrderDetailForecastDateExceededReportList.ToArray();
+                        if (excelExportVM.OptionValue == "2")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderDetailForcastDateExceededReportVMListArray.Select(x => new
+                            {
+                                ProductionOrderNo = x.ProdOrderNo,
+                                ProductionOrderDate = x.ProdOrderDateFormatted,
+                                CompanyName = x.Customer.CompanyName,
+                                ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
+                                CurrentProgress = x.Progress,
+                                ExpectedProgress = x.ExptProgress,
+                                ExpectedCompletionDate = x.ExptCompletionDate,
+                                ProductName = x.Product.Name,
+                                ProductModel = x.ProductModel.Name,
+                                ProductSpecification = x.ProductSpec,
+                                ProdnOrdQty = x.Qty,
+                                ProducedOrdQty = x.ProducedQty,
+                                Amount = x.Amount,
+                                Plant = x.Plant.Description,
+                                Area = x.Area.Description,
+                                DocumentStatus = x.DocumentStatus.Description,
+                                Branch = x.Branch.Description,
+                                DocumentOwner = x.PSAUser.LoginName,
+                                GeneralNotes = x.Remarks
+                            }), true, TableStyles.Light1);
+                        }
+                        if (excelExportVM.OptionValue == "1")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderDetailForcastDateExceededReportVMListArray.Select(x => new
+                            {
+                                ProductionOrderNo = x.ProdOrderNo,
+                                ProductionOrderDate = x.ProdOrderDateFormatted,
+                                CompanyName = x.Customer.CompanyName,
+                                ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
+                                CurrentProgress = x.Progress,
+                                //ExpectedProgress = x.ExptProgress,
+                                //ExpectedCompletionDate = x.ExptCompletionDate,
+                                //ContactPerson = x.Customer.ContactPerson,                        
+                                ProductName = x.Product.Name,
+                                ProductModel = x.ProductModel.Name,
+                                ProductSpecification = x.ProductSpec,
+                                ProdnOrdQty = x.Qty,
+                                ProducedOrdQty = x.ProducedQty,
+                                Amount = x.Amount,
+                                Plant = x.Plant.Description,
+                                Area = x.Area.Description,
+                                DocumentStatus = x.DocumentStatus.Description,
+                                Branch = x.Branch.Description,
+                                DocumentOwner = x.PSAUser.LoginName,
+                                GeneralNotes = x.Remarks
+                            }), true, TableStyles.Light1);
+                        }
+                        int finalRowsProductionOrderDetailForcastDateExceededReport = productionorderdetailforcastdateexceededreportworkSheet.Dimension.End.Row;
+                        string columnStringProductionOrderDetailForcastDateExceededReport = columnString + finalRowsProductionOrderDetailForcastDateExceededReport.ToString();
+                        if (excelExportVM.OptionValue == "2")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[columnStringProductionOrderDetailForcastDateExceededReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+                            ExcelRange productionorderdetailforcastdateexceedamountSum = productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 13];
+                            productionorderdetailforcastdateexceedamountSum.Formula = "SUM(M2:M" + finalRowsProductionOrderDetailForcastDateExceededReport + ")";
+                            productionorderdetailforcastdateexceedamountSum.Calculate();
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 12].Value = "Totals";
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(1).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(2).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(3).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(4).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(5).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(6).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(7).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(8).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(9).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(10).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(11).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(13).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(14).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(15).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(16).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(17).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(18).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(18).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(19).Style.WrapText = true;
+                            productionorderdetailforcastdateexceededreportworkSheet.Row(finalRowsProductionOrderDetailForcastDateExceededReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(13).Style.Numberformat.Format = "0.00";
+                        }
+                        if (excelExportVM.OptionValue == "1")
+                        {
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[columnStringProductionOrderDetailForcastDateExceededReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+                            ExcelRange productionorderdetailforcastdateexceededreportamountSum = productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 11];
+                            productionorderdetailforcastdateexceededreportamountSum.Formula = "SUM(k2:k" + finalRowsProductionOrderDetailForcastDateExceededReport + ")";
+                            productionorderdetailforcastdateexceededreportamountSum.Calculate();
+                            productionorderdetailforcastdateexceededreportworkSheet.Cells[finalRowsProductionOrderDetailForcastDateExceededReport + 1, 10].Value = "Totals";
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(1).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(2).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(3).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(4).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(5).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(6).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(7).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(8).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(9).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(10).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(13).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(12).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(14).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(15).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(16).AutoFit();
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(17).Width = 40;
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(18).Style.WrapText = true;
+                            productionorderdetailforcastdateexceededreportworkSheet.Row(finalRowsProductionOrderDetailForcastDateExceededReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                            productionorderdetailforcastdateexceededreportworkSheet.Column(11).Style.Numberformat.Format = "0.00";
+                        }
+                        break;                    
+                
                     case "PendingProductionOrderReport":
                         fileName = "PendingProductionOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
                         PendingProductionOrderReportViewModel pendingProductionOrderReportVM = new PendingProductionOrderReportViewModel();

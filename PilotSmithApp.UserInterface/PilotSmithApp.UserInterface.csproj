@@ -730,6 +730,7 @@
     <Content Include="Scripts\UserJS\Report\PendingProductionQCReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderProductionReport.js" />
     <Content Include="Scripts\UserJS\Report\PendingSaleOrderReport.js" />
+    <Content Include="Scripts\UserJS\Report\ProductionOrderDetailForecastDateExceededReport.js" />
     <Content Include="Scripts\UserJS\Report\ProductionOrderStandardReport.js" />
     <Content Include="Scripts\UserJS\Report\ProductionQCStandardReport.js" />
     <Content Include="Scripts\UserJS\Report\QuotationDetailReport.js" />
@@ -1153,6 +1154,7 @@
     <Content Include="Views\Report\EnquiryDetailReport.cshtml" />
     <Content Include="Views\Report\EstimateDetailReport.cshtml" />
     <Content Include="Views\ProformaInvoice\_PreviewProformaInvoice.cshtml" />
+    <Content Include="Views\Report\ProductionOrderDetailForecastDateExceededReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

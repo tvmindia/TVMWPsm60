@@ -445,8 +445,15 @@
             <div class="col-md-12 headSeperator">Customer Details</div>
             <div class="form-group col-md-6">
                 <div class="col-md-12 no-padding">
-                    <div class="col-md-12">
-                        @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
+                    <div class="col-md-12  no-padding">
+                        <div class="col-md-6">
+                            @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label lblrequired" })
+                        </div>
+                        <div class="col-md-6" style="text-align:center;">
+                            <div class="col-md-12" style="margin-top:5px; font-size: 12px!important;background-color:#f7d1a7 !important;cursor:pointer;border-bottom:1px solid #e66911;border-left:3px solid #e66911;border-radius:3px;">
+                                <a style="font-size:12px;" onclick="ViewCustomerHistory()"><i class="fa fa-history" aria-hidden="true"></i> View Customer History</a>
+                            </div>
+                        </div>
                     </div>
                     @if (Model.IsUpdate)
                     {
@@ -978,4 +985,17 @@
             console.log(e.message);
         }
     });
+    function ViewCustomerHistory() {
+        $('#lblTotalSaleOrderValue').text('0.00')
+        if ($('#CustomerID').val() != '') {
+            BindCustomerHistory($('#hdnCustomerID').val());
+            _SlNo = 1;
+            $('#lblModelPopCustomerHistory').text('Customer History');
+            $('#divModelEnquiryPopBody').show();
+            $('#divModelPopCustomerHistory').modal('show');
+        }
+        else {
+            notyAlert('warning', 'Please Select Customer');
+        }
+    }
 </script>

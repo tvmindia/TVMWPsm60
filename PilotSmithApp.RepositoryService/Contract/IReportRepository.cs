@@ -18,6 +18,7 @@ namespace PilotSmithApp.RepositoryService.Contract
         List<PendingSaleOrderReport> GetPendingSaleOrderReport(PendingSaleOrderReport pendingSaleOrderReport);
         List<SaleOrderReport> GetSaleOrderStandardReport(SaleOrderReport saleOrderReport);
         List<ProductionOrderReport> GetProductionOrderStandardReport(ProductionOrderReport productionOrderReport);
+        List<ProductionOrderDetailForecastDateExceededReport> GetProductionOrderDetailForecastDateExceededReport(ProductionOrderDetailForecastDateExceededReport productionOrderdetailForecastDateReport);
         List<PendingProductionOrderReport> GetPendingProductionOrderReport(PendingProductionOrderReport pendingProductionOrderReport);
         List<ProductionQCStandardReport> GetProductionQCStandardReport(ProductionQCStandardReport productionQCStandardReport);
         List<PendingProductionQCReport> GetPendingProductionQCReport(PendingProductionQCReport pendingProductionQCReport);
