@@ -53,7 +53,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         // GET: Report
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "Report", Mode = "R")]
-        public ActionResult Index(string searchTerm,string DocumentOwnerID)
+        public ActionResult Index(string searchTerm, string DocumentOwnerID)
         {
             if (DocumentOwnerID != null)
             {
@@ -166,8 +166,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             EnquiryFollowupReportViewModel EnquiryFollowupReportVM = new EnquiryFollowupReportViewModel();
             EnquiryFollowupReportVM.Customer = new CustomerViewModel();
             EnquiryFollowupReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
-            
-            if (DocumentOwnerID!=null)
+
+            if (DocumentOwnerID != null)
             {
                 List<PSAUserViewModel> UserVMList = Mapper.Map<List<User>, List<PSAUserViewModel>>(_userBusiness.GetAllUsers());
 
@@ -274,8 +274,8 @@ namespace PilotSmithApp.UserInterface.Controllers
             EstimateReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             EstimateReportVM.Customer = new CustomerViewModel();
             EstimateReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
-            return View(EstimateReportVM);       
-    }
+            return View(EstimateReportVM);
+        }
         #region GetEstimateReport      
         public JsonResult GetEstimateReport(DataTableAjaxPostModel model, EstimateReportViewModel estimateReportVM)
         {
@@ -360,7 +360,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             QuotationReportViewModel QuotationReportVM = new QuotationReportViewModel();
             QuotationReportVM.DocumentStatus = new DocumentStatusViewModel();
-            QuotationReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");           
+            QuotationReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("QUO");
             QuotationReportVM.Employee = new EmployeeViewModel();
             QuotationReportVM.Employee.EmployeeSelectList = _employeeBusiness.GetEmployeeSelectList();
             QuotationReportVM.Customer = new CustomerViewModel();
@@ -395,7 +395,7 @@ namespace PilotSmithApp.UserInterface.Controllers
         [HttpGet]
         [AuthSecurityFilter(ProjectObject = "SaleOrderReport", Mode = "R")]
         public ActionResult SaleOrderReport()
-        {        
+        {
 
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             SaleOrderReportViewModel SaleOrderReportVM = new SaleOrderReportViewModel();
@@ -554,7 +554,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             List<SelectListItem> selectListItem = new List<SelectListItem>();
             ProductionOrderReportViewModel ProductionOrderReportVM = new ProductionOrderReportViewModel();
             ProductionOrderReportVM.DocumentStatus = new DocumentStatusViewModel();
-            ProductionOrderReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");         
+            ProductionOrderReportVM.DocumentStatus.DocumentStatusSelectList = _documentStatusBusiness.GetSelectListForDocumentStatus("POD");
             ProductionOrderReportVM.Customer = new CustomerViewModel();
             ProductionOrderReportVM.Customer.CustomerList = _customerBusiness.GetCustomerSelectListOnDemand();
             ProductionOrderReportVM.Product = new ProductViewModel();
@@ -571,7 +571,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             productionOrderReportVM.DataTablePaging.Start = model.start;
             productionOrderReportVM.DataTablePaging.Length = (productionOrderReportVM.DataTablePaging.Length == 0 ? model.length : productionOrderReportVM.DataTablePaging.Length);
 
-            List<ProductionOrderReportViewModel>productionOrderReportList = Mapper.Map<List<ProductionOrderReport>, List<ProductionOrderReportViewModel>>(_reportBusiness.GetProductionOrderStandardReport(Mapper.Map<ProductionOrderReportViewModel, ProductionOrderReport>(productionOrderReportVM)));
+            List<ProductionOrderReportViewModel> productionOrderReportList = Mapper.Map<List<ProductionOrderReport>, List<ProductionOrderReportViewModel>>(_reportBusiness.GetProductionOrderStandardReport(Mapper.Map<ProductionOrderReportViewModel, ProductionOrderReport>(productionOrderReportVM)));
             var settings = new JsonSerializerSettings
             {
                 //ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -654,7 +654,7 @@ namespace PilotSmithApp.UserInterface.Controllers
 
 
         #region GetProductionQCStandardReport
-        public JsonResult GetProductionQCStandardReport(DataTableAjaxPostModel model,ProductionQCStandardReportViewModel productionQCReportVM)
+        public JsonResult GetProductionQCStandardReport(DataTableAjaxPostModel model, ProductionQCStandardReportViewModel productionQCReportVM)
         {
             productionQCReportVM.DataTablePaging.Start = model.start;
             productionQCReportVM.DataTablePaging.Length = (productionQCReportVM.DataTablePaging.Length == 0 ? model.length : productionQCReportVM.DataTablePaging.Length);
@@ -745,20 +745,21 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<EnquiryReportViewModel> enquiryReportList = Mapper.Map<List<EnquiryReport>, List<EnquiryReportViewModel>>(_reportBusiness.GetEnquiryReport(Mapper.Map<EnquiryReportViewModel, EnquiryReport>(enquiryReportVM)));
                         var enquiryreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryReport");
                         EnquiryReportViewModel[] enquiryReportVMListArray = enquiryReportList.ToArray();
-                        enquiryreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryReportVMListArray.Select(x => new {
-                        EnquiryNo = x.EnqNo,
-                        EnquiryDate=x.EnquiryDateFormatted,
-                        ContactPerson = x.Customer.ContactPerson,
-                        CompanyName = x.Customer.CompanyName,
-                        RequirementSpecification = x.RequirementSpec,
-                        Grade = x.EnquiryGrade.Description,
-                        Area = x.Area.Description,
-                        ReferredBy = x.ReferencePerson.Name,
-                        AttendedBy = x.Employee.Name,
-                        DocumentStatus = x.DocumentStatus.Description,
-                        Branch = x.Branch.Description,
-                        DocumentOwner = x.PSAUser.LoginName,                       
-                        Amount =x.Amount
+                        enquiryreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryReportVMListArray.Select(x => new
+                        {
+                            EnquiryNo = x.EnqNo,
+                            EnquiryDate = x.EnquiryDateFormatted,
+                            ContactPerson = x.Customer.ContactPerson,
+                            CompanyName = x.Customer.CompanyName,
+                            RequirementSpecification = x.RequirementSpec,
+                            Grade = x.EnquiryGrade.Description,
+                            Area = x.Area.Description,
+                            ReferredBy = x.ReferencePerson.Name,
+                            AttendedBy = x.Employee.Name,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
+                            Amount = x.Amount
                         }), true, TableStyles.Light1);
 
                         int finalRowsENQ = enquiryreportworkSheet.Dimension.End.Row;
@@ -794,18 +795,19 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<EnquiryFollowupReportViewModel> enquiryFollowupReportList = Mapper.Map<List<EnquiryFollowupReport>, List<EnquiryFollowupReportViewModel>>(_reportBusiness.GetEnquiryFollowupReport(Mapper.Map<EnquiryFollowupReportViewModel, EnquiryFollowupReport>(enquiryFollowupReportVM)));
                         var enquiryfollowupreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryFollowUp");
                         EnquiryFollowupReportViewModel[] enquiryFollowupReportVMListArray = enquiryFollowupReportList.ToArray();
-                        enquiryfollowupreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryFollowupReportVMListArray.Select(x => new {
-                           Followupdate = x.FollowupDateFormatted,
-                           FollowupTime = x.FollowupTimeFormatted,
-                           EnquiryNo = x.EnqNo,
-                           Priority =x.Priority,
-                           EnquiryDate = x.EnquiryDateFormatted,
-                           CompanyName = x.Customer.CompanyName,
-                           ContactPerson = x.Customer.ContactPerson,
-                           ContactNo = x.ContactNo,
-                           FollowupStatus = x.Status,
-                           GeneralNotes = x.FollowupRemarks,
-                           DocumentOwner = x.DocumentOwnerName
+                        enquiryfollowupreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryFollowupReportVMListArray.Select(x => new
+                        {
+                            Followupdate = x.FollowupDateFormatted,
+                            FollowupTime = x.FollowupTimeFormatted,
+                            EnquiryNo = x.EnqNo,
+                            Priority = x.Priority,
+                            EnquiryDate = x.EnquiryDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ContactNo = x.ContactNo,
+                            FollowupStatus = x.Status,
+                            GeneralNotes = x.FollowupRemarks,
+                            DocumentOwner = x.DocumentOwnerName
                         }), true, TableStyles.Light1);
 
                         int finalRowsEnquiryFollowUp = enquiryfollowupreportworkSheet.Dimension.End.Row;
@@ -820,7 +822,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquiryfollowupreportworkSheet.Column(6).AutoFit();
                         enquiryfollowupreportworkSheet.Column(7).AutoFit();
                         enquiryfollowupreportworkSheet.Column(8).Width = 40;
-                        enquiryfollowupreportworkSheet.Column(9).AutoFit();   
+                        enquiryfollowupreportworkSheet.Column(9).AutoFit();
                         enquiryfollowupreportworkSheet.Column(10).Width = 40;
                         enquiryfollowupreportworkSheet.Column(10).Style.WrapText = true;
                         enquiryfollowupreportworkSheet.Column(11).AutoFit();
@@ -834,23 +836,28 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<EstimateReportViewModel> estimateReportList = Mapper.Map<List<EstimateReport>, List<EstimateReportViewModel>>(_reportBusiness.GetEstimateReport(Mapper.Map<EstimateReportViewModel, EstimateReport>(estimateReportVM)));
                         var estimatereportworkSheet = excel.Workbook.Worksheets.Add("EstimateReport");
                         EstimateReportViewModel[] estimateReportVMListArray = estimateReportList.ToArray();
-                        estimatereportworkSheet.Cells[1, 1].LoadFromCollection(estimateReportVMListArray.Select(x => new {
-                           EstimateNo=x.EstNo,
-                           EstimateDate=x.EstimateDateFormatted,
-                           CompanyName =x.Customer.CompanyName ,
-                           ContactPerson =x.Customer.ContactPerson,
-                           Area = x.Area.Description,
-                           PreparedBy =x.PreparedBy,
-                           DocumentStatus=x.DocumentStatus.Description,
-                           Branch = x.Branch.Description,
-                           DocumentOwner=x.PSAUser.LoginName,
-                           Amount = x.Amount,
-                           GeneralNotes = x.Notes
+                        estimatereportworkSheet.Cells[1, 1].LoadFromCollection(estimateReportVMListArray.Select(x => new
+                        {
+                            EstimateNo = x.EstNo,
+                            EstimateDate = x.EstimateDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            Area = x.Area.Description,
+                            PreparedBy = x.PreparedBy,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
+                            Amount = x.Amount,
+                            GeneralNotes = x.Notes
                         }), true, TableStyles.Light1);
 
                         int finalRowsEstimateReport = estimatereportworkSheet.Dimension.End.Row;
                         string columnStringEstimateReport = columnString + finalRowsEstimateReport.ToString();
                         estimatereportworkSheet.Cells[columnStringEstimateReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+                        ExcelRange estimatereportamountSum = estimatereportworkSheet.Cells[finalRowsEstimateReport + 1, 10];
+                        estimatereportamountSum.Formula = "SUM(J2:J" + finalRowsEstimateReport + ")";
+                        estimatereportamountSum.Calculate();
+                        estimatereportworkSheet.Cells[finalRowsEstimateReport + 1, 9].Value = "Totals";
 
                         estimatereportworkSheet.Column(1).AutoFit();
                         estimatereportworkSheet.Column(2).AutoFit();
@@ -864,6 +871,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         estimatereportworkSheet.Column(10).AutoFit();
                         estimatereportworkSheet.Column(11).AutoFit();
                         estimatereportworkSheet.Column(11).Style.WrapText = true;
+
+                        estimatereportworkSheet.Row(finalRowsEstimateReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        estimatereportworkSheet.Column(10).Style.Numberformat.Format = "0.00";
+
                         break;
                     case "QuotationReport":
                         fileName = "QuotationReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -874,7 +885,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<QuotationReportViewModel> quotationReportList = Mapper.Map<List<QuotationReport>, List<QuotationReportViewModel>>(_reportBusiness.GetQuotationReport(Mapper.Map<QuotationReportViewModel, QuotationReport>(quotationReportVM)));
                         var quotationreportworkSheet = excel.Workbook.Worksheets.Add("QuotationReport");
                         QuotationReportViewModel[] quotationReportVMListArray = quotationReportList.ToArray();
-                        quotationreportworkSheet.Cells[1, 1].LoadFromCollection(quotationReportVMListArray.Select(x => new {
+                        quotationreportworkSheet.Cells[1, 1].LoadFromCollection(quotationReportVMListArray.Select(x => new
+                        {
                             QuotationNo = x.QuotationNo,
                             QuotationDate = x.QuoteDateFormatted,
                             CompanyName = x.Customer.CompanyName,
@@ -884,8 +896,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             PreparedBy = x.PreparedBy,
                             DocumentStatus = x.DocumentStatus.Description,
                             ApprovalStatus = x.ApprovalStatus.Description,
-                            Branch = x.Branch.Description,                                                
-                            DocumentOwner = x.PSAUser.LoginName,    
+                            Branch = x.Branch.Description,
+                            DocumentOwner = x.PSAUser.LoginName,
                             Amount = x.Amount,
                             GeneralNotes = x.Notes
                         }), true, TableStyles.Light1);
@@ -893,7 +905,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsQuotationReport = quotationreportworkSheet.Dimension.End.Row;
                         string columnStringQuotationReport = columnString + finalRowsQuotationReport.ToString();
                         quotationreportworkSheet.Cells[columnStringQuotationReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange quotationreportamountSum = quotationreportworkSheet.Cells[finalRowsQuotationReport + 1, 12];
+                        quotationreportamountSum.Formula = "SUM(L2:L" + finalRowsQuotationReport + ")";
+                        quotationreportamountSum.Calculate();
+                        quotationreportworkSheet.Cells[finalRowsQuotationReport + 1, 11].Value = "Totals";
                         quotationreportworkSheet.Column(1).AutoFit();
                         quotationreportworkSheet.Column(2).AutoFit();
                         quotationreportworkSheet.Column(3).AutoFit();
@@ -908,7 +923,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         quotationreportworkSheet.Column(12).AutoFit();
                         quotationreportworkSheet.Column(13).Width = 40;
                         quotationreportworkSheet.Column(13).Style.WrapText = true;
-
+                        quotationreportworkSheet.Row(finalRowsQuotationReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        quotationreportworkSheet.Column(12).Style.Numberformat.Format = "0.00";
                         break;
                     case "SaleOrderReport":
                         fileName = "SaleOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -916,23 +932,24 @@ namespace PilotSmithApp.UserInterface.Controllers
                         ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
                         ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                         saleOrderReportVM = JsonConvert.DeserializeObject<SaleOrderReportViewModel>(ReadableFormat);
-                        List<SaleOrderReportViewModel> saleOrderReportList = Mapper.Map<List<SaleOrderReport>, List<SaleOrderReportViewModel>>(_reportBusiness.GetSaleOrderStandardReport(Mapper.Map<SaleOrderReportViewModel,SaleOrderReport>(saleOrderReportVM)));                        
+                        List<SaleOrderReportViewModel> saleOrderReportList = Mapper.Map<List<SaleOrderReport>, List<SaleOrderReportViewModel>>(_reportBusiness.GetSaleOrderStandardReport(Mapper.Map<SaleOrderReportViewModel, SaleOrderReport>(saleOrderReportVM)));
                         var saleorderreportworkSheet = excel.Workbook.Worksheets.Add("SaleOrderReport");
                         SaleOrderReportViewModel[] saleOrderReportVMListArray = saleOrderReportList.ToArray();
-                        saleorderreportworkSheet.Cells[1, 1].LoadFromCollection(saleOrderReportVMListArray.Select(x => new {
-                            SaleOrderNo=x.SaleOrdNo,
-                            SaleOrderDate=x.SaleOrderDateFormatted,
-                            CompanyName=x.Customer.CompanyName,
-                            ContactPerson=x.Customer.ContactPerson,
-                            ProductName=x.Product.Name,
+                        saleorderreportworkSheet.Cells[1, 1].LoadFromCollection(saleOrderReportVMListArray.Select(x => new
+                        {
+                            SaleOrderNo = x.SaleOrdNo,
+                            SaleOrderDate = x.SaleOrderDateFormatted,
+                            CompanyName = x.Customer.CompanyName,
+                            ContactPerson = x.Customer.ContactPerson,
+                            ProductName = x.Product.Name,
                             ProductModel = x.ProductModel.Name,
-                            ProductSpecification=x.ProductSpec,
+                            ProductSpecification = x.ProductSpec,
                             Qty = x.Qty,
                             Unit = x.Unit.Description,
                             Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            TaxableAmount = Math.Round(Convert.ToDecimal(x.TaxableAmount), 2).ToString(),
-                            Amount = Math.Round(Convert.ToDecimal(x.Amount), 2).ToString(),
+                            TaxableAmount = x.TaxableAmount,
+                            Amount = x.Amount,
 
                         }), true, TableStyles.Light1);
 
@@ -940,7 +957,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsSaleOrderReport = saleorderreportworkSheet.Dimension.End.Row;
                         string columnStringSaleOrderReport = columnString + finalRowsSaleOrderReport.ToString();
                         saleorderreportworkSheet.Cells[columnStringSaleOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange saleorderreportamountSum = saleorderreportworkSheet.Cells[finalRowsSaleOrderReport + 1, 13];
+                        saleorderreportamountSum.Formula = "SUM(M2:M" + finalRowsSaleOrderReport + ")";
+                        saleorderreportamountSum.Calculate();
+                        saleorderreportworkSheet.Cells[finalRowsSaleOrderReport + 1, 11].Value = "Totals";
+                        ExcelRange saleorderreportTaxableamountSum = saleorderreportworkSheet.Cells[finalRowsSaleOrderReport + 1, 12];
+                        saleorderreportTaxableamountSum.Formula = "SUM(L2:L" + finalRowsSaleOrderReport + ")";
+                        saleorderreportTaxableamountSum.Calculate();
                         saleorderreportworkSheet.Column(1).AutoFit();
                         saleorderreportworkSheet.Column(2).AutoFit();
                         saleorderreportworkSheet.Column(3).Width = 40;
@@ -955,11 +978,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                         saleorderreportworkSheet.Column(11).AutoFit();
                         saleorderreportworkSheet.Column(12).AutoFit();
                         saleorderreportworkSheet.Column(13).AutoFit();
-                        saleorderreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                        saleorderreportworkSheet.Column(13).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                        saleorderreportworkSheet.Column(2).AutoFit();
-
-
+                        saleorderreportworkSheet.Row(finalRowsSaleOrderReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        saleorderreportworkSheet.Column(13).Style.Numberformat.Format = "0.00";
+                        saleorderreportworkSheet.Column(12).Style.Numberformat.Format = "0.00";
                         break;
 
 
@@ -972,7 +993,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<PendingSaleOrderReportViewModel> pendingSaleOrderReportList = Mapper.Map<List<PendingSaleOrderReport>, List<PendingSaleOrderReportViewModel>>(_reportBusiness.GetPendingSaleOrderReport(Mapper.Map<PendingSaleOrderReportViewModel, PendingSaleOrderReport>(pendingSaleOrderReportVM)));
                         var pendingSaleorderreportworkSheet = excel.Workbook.Worksheets.Add("PendingSaleOrderReport");
                         PendingSaleOrderReportViewModel[] pendingSaleOrderReportVMListArray = pendingSaleOrderReportList.ToArray();
-                        pendingSaleorderreportworkSheet.Cells[1, 1].LoadFromCollection(pendingSaleOrderReportVMListArray.Select(x => new {
+                        pendingSaleorderreportworkSheet.Cells[1, 1].LoadFromCollection(pendingSaleOrderReportVMListArray.Select(x => new
+                        {
                             SaleOrderNo = x.SaleOrdNo,
                             SaleOrderDate = x.SaleOrderDateFormatted,
                             CompanyName = x.Customer.CompanyName,
@@ -981,11 +1003,11 @@ namespace PilotSmithApp.UserInterface.Controllers
                             ProductModel = x.ProductModel.Name,
                             ProductSpecification = x.ProductSpec,
                             SaleOrderQty = x.Qty,
-                            PendingQty=x.PendingQty,
+                            PendingQty = x.PendingQty,
                             Unit = x.Unit.Description,
-                            SaleOrderTaxableAmount = Math.Round(Convert.ToDecimal(x.TaxableAmount), 2).ToString(),
-                            SaleOrderAmount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString(),
-                            Branch = x.Branch.Description,                    
+                            SaleOrderTaxableAmount =x.TaxableAmount,
+                            SaleOrderAmount = x.Amount,
+                            Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName
 
                         }), true, TableStyles.Light1);
@@ -993,7 +1015,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsPendingSaleOrderReport = pendingSaleorderreportworkSheet.Dimension.End.Row;
                         string columnStringPendingSaleOrderReport = columnString + finalRowsPendingSaleOrderReport.ToString();
                         pendingSaleorderreportworkSheet.Cells[columnStringPendingSaleOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange pendingSaleorderreportamountSum = pendingSaleorderreportworkSheet.Cells[finalRowsPendingSaleOrderReport + 1, 12];
+                        pendingSaleorderreportamountSum.Formula = "SUM(L2:L" + finalRowsPendingSaleOrderReport + ")";
+                        pendingSaleorderreportamountSum.Calculate();
+                        pendingSaleorderreportworkSheet.Cells[finalRowsPendingSaleOrderReport + 1, 10].Value = "Totals";
+                        ExcelRange pendingSaleorderreportTaxableamountSum = pendingSaleorderreportworkSheet.Cells[finalRowsPendingSaleOrderReport + 1, 11];
+                        pendingSaleorderreportTaxableamountSum.Formula = "SUM(K2:K" + finalRowsPendingSaleOrderReport + ")";
+                        pendingSaleorderreportTaxableamountSum.Calculate();
                         pendingSaleorderreportworkSheet.Column(1).AutoFit();
                         pendingSaleorderreportworkSheet.Column(2).AutoFit();
                         pendingSaleorderreportworkSheet.Column(3).Width = 40;
@@ -1008,9 +1036,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         pendingSaleorderreportworkSheet.Column(11).AutoFit();
                         pendingSaleorderreportworkSheet.Column(12).AutoFit();
                         pendingSaleorderreportworkSheet.Column(13).AutoFit();
-                        pendingSaleorderreportworkSheet.Column(11).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                        pendingSaleorderreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
                         pendingSaleorderreportworkSheet.Column(14).AutoFit();
+                        pendingSaleorderreportworkSheet.Row(finalRowsPendingSaleOrderReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        pendingSaleorderreportworkSheet.Column(12).Style.Numberformat.Format = "0.00";
+                        pendingSaleorderreportworkSheet.Column(11).Style.Numberformat.Format = "0.00";
                         break;
                     case "ProductionOrderReport":
                         fileName = "ProductionOrderReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -1021,13 +1050,14 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<ProductionOrderReportViewModel> productionOrderReportList = Mapper.Map<List<ProductionOrderReport>, List<ProductionOrderReportViewModel>>(_reportBusiness.GetProductionOrderStandardReport(Mapper.Map<ProductionOrderReportViewModel, ProductionOrderReport>(productionOrderReportVM)));
                         var productionorderreportworkSheet = excel.Workbook.Worksheets.Add("ProductionOrderReport");
                         ProductionOrderReportViewModel[] productionOrderReportVMListArray = productionOrderReportList.ToArray();
-                        productionorderreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderReportVMListArray.Select(x => new {
-                            ProductionOrderNo=x.ProdOrderNo,
-                            ProductionOrderDate=x.ProdOrderDateFormatted,                           
+                        productionorderreportworkSheet.Cells[1, 1].LoadFromCollection(productionOrderReportVMListArray.Select(x => new
+                        {
+                            ProductionOrderNo = x.ProdOrderNo,
+                            ProductionOrderDate = x.ProdOrderDateFormatted,
                             CompanyName = x.Customer.CompanyName,
                             ContactPerson = x.Customer.ContactPerson,
                             SaleOrderNo = x.SaleOrderNo,
-                            ExpectedDeliveryDate =x.ExpectedDelvDateFormatted,
+                            ExpectedDeliveryDate = x.ExpectedDelvDateFormatted,
                             ProductName = x.Product.Name,
                             ProductModel = x.ProductModel.Name,
                             ProductSpecification = x.ProductSpec,
@@ -1035,23 +1065,26 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Amount = x.Amount,
                             Plant = x.Plant.Description,
                             Area = x.Area.Description,
-                            ReferredBy =x.ReferencePerson.Name,                           
-                            DocumentStatus=x.DocumentStatus.Description,
-                            Branch=x.Branch.Description,
+                            ReferredBy = x.ReferencePerson.Name,
+                            DocumentStatus = x.DocumentStatus.Description,
+                            Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            GeneralNotes = x.Remarks                            
+                            GeneralNotes = x.Remarks
                         }), true, TableStyles.Light1);
 
                         int finalRowsProductionOrderReport = productionorderreportworkSheet.Dimension.End.Row;
                         string columnStringProductionOrderReport = columnString + finalRowsProductionOrderReport.ToString();
                         productionorderreportworkSheet.Cells[columnStringProductionOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange productionorderreportamountSum = productionorderreportworkSheet.Cells[finalRowsProductionOrderReport + 1, 11];
+                        productionorderreportamountSum.Formula = "SUM(K2:K" + finalRowsProductionOrderReport + ")";
+                        productionorderreportamountSum.Calculate();
+                        productionorderreportworkSheet.Cells[finalRowsProductionOrderReport + 1, 10].Value = "Totals";
                         productionorderreportworkSheet.Column(1).AutoFit();
                         productionorderreportworkSheet.Column(2).AutoFit();
                         productionorderreportworkSheet.Column(3).Width = 40;
                         productionorderreportworkSheet.Column(4).AutoFit();
                         productionorderreportworkSheet.Column(5).AutoFit();
-                        productionorderreportworkSheet.Column(6).AutoFit(); 
+                        productionorderreportworkSheet.Column(6).AutoFit();
                         productionorderreportworkSheet.Column(7).AutoFit();
                         productionorderreportworkSheet.Column(8).AutoFit();
                         productionorderreportworkSheet.Column(9).Width = 40;
@@ -1066,7 +1099,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionorderreportworkSheet.Column(17).AutoFit();
                         productionorderreportworkSheet.Column(18).Width = 40;
                         productionorderreportworkSheet.Column(18).Style.WrapText = true;
-
+                        productionorderreportworkSheet.Row(finalRowsProductionOrderReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        productionorderreportworkSheet.Column(11).Style.Numberformat.Format = "0.00";
                         break;
 
                     case "PendingProductionOrderReport":
@@ -1078,7 +1112,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<PendingProductionOrderReportViewModel> pendingProductionOrderReportList = Mapper.Map<List<PendingProductionOrderReport>, List<PendingProductionOrderReportViewModel>>(_reportBusiness.GetPendingProductionOrderReport(Mapper.Map<PendingProductionOrderReportViewModel, PendingProductionOrderReport>(pendingProductionOrderReportVM)));
                         var pendingproductionorderreportworkSheet = excel.Workbook.Worksheets.Add("PendingProductionOrderReport");
                         PendingProductionOrderReportViewModel[] pendingProductionOrderReportVMListArray = pendingProductionOrderReportList.ToArray();
-                        pendingproductionorderreportworkSheet.Cells[1, 1].LoadFromCollection(pendingProductionOrderReportVMListArray.Select(x => new {
+                        pendingproductionorderreportworkSheet.Cells[1, 1].LoadFromCollection(pendingProductionOrderReportVMListArray.Select(x => new
+                        {
                             ProductionOrderNo = x.ProdOrderNo,
                             ProductionOrderDate = x.ProdOrderDateFormatted,
                             CompanyName = x.Customer.CompanyName,
@@ -1104,7 +1139,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsPendingProductionOrderReport = pendingproductionorderreportworkSheet.Dimension.End.Row;
                         string columnStringPendingProductionOrderReport = columnString + finalRowsPendingProductionOrderReport.ToString();
                         pendingproductionorderreportworkSheet.Cells[columnStringPendingProductionOrderReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange pendingproductionorderreportamountSum = pendingproductionorderreportworkSheet.Cells[finalRowsPendingProductionOrderReport + 1, 13];
+                        pendingproductionorderreportamountSum.Formula = "SUM(M2:M" + finalRowsPendingProductionOrderReport + ")";
+                        pendingproductionorderreportamountSum.Calculate();
+                        pendingproductionorderreportworkSheet.Cells[finalRowsPendingProductionOrderReport + 1, 12].Value = "Totals";
 
                         pendingproductionorderreportworkSheet.Column(1).AutoFit();
                         pendingproductionorderreportworkSheet.Column(2).AutoFit();
@@ -1127,17 +1165,20 @@ namespace PilotSmithApp.UserInterface.Controllers
                         pendingproductionorderreportworkSheet.Column(18).AutoFit();
                         pendingproductionorderreportworkSheet.Column(19).AutoFit();
                         pendingproductionorderreportworkSheet.Column(20).AutoFit();
+                        pendingproductionorderreportworkSheet.Row(finalRowsPendingProductionOrderReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        pendingproductionorderreportworkSheet.Column(13).Style.Numberformat.Format = "0.00";
                         break;
                     case "ProductionQCStandardReport":
                         fileName = "ProductionQCStandardReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
-                       ProductionQCStandardReportViewModel productionQCReportVM = new ProductionQCStandardReportViewModel();
+                        ProductionQCStandardReportViewModel productionQCReportVM = new ProductionQCStandardReportViewModel();
                         ResultFromJS = JsonConvert.DeserializeObject(excelExportVM.AdvanceSearch);
                         ReadableFormat = JsonConvert.SerializeObject(ResultFromJS);
                         productionQCReportVM = JsonConvert.DeserializeObject<ProductionQCStandardReportViewModel>(ReadableFormat);
                         List<ProductionQCStandardReportViewModel> productionQCReportList = Mapper.Map<List<ProductionQCStandardReport>, List<ProductionQCStandardReportViewModel>>(_reportBusiness.GetProductionQCStandardReport(Mapper.Map<ProductionQCStandardReportViewModel, ProductionQCStandardReport>(productionQCReportVM)));
                         var productionqcreportworkSheet = excel.Workbook.Worksheets.Add("ProductionQCStandardReport");
                         ProductionQCStandardReportViewModel[] productionQCReportVMListArray = productionQCReportList.ToArray();
-                        productionqcreportworkSheet.Cells[1, 1].LoadFromCollection(productionQCReportVMListArray.Select(x => new {
+                        productionqcreportworkSheet.Cells[1, 1].LoadFromCollection(productionQCReportVMListArray.Select(x => new
+                        {
                             ProductionOrderNo = x.ProdOrderNo,
                             ProductionOrderDate = x.ProdOrderDateFormatted,
                             CompanyName = x.Customer.CompanyName,
@@ -1152,7 +1193,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Plant = x.Plant.Description,
                             Area = x.Area.Description,
                             ReferredBy = x.ReferencePerson.Name,
-                            DocumentStatus = x.DocumentStatus.Description,                          
+                            DocumentStatus = x.DocumentStatus.Description,
                             Amount = x.Amount,
                             Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
@@ -1162,7 +1203,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsProductionQCStandardReport = productionqcreportworkSheet.Dimension.End.Row;
                         string columnStringProductionQCStandardReport = columnString + finalRowsProductionQCStandardReport.ToString();
                         productionqcreportworkSheet.Cells[columnStringProductionQCStandardReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange productionqcreportamountSum = productionqcreportworkSheet.Cells[finalRowsProductionQCStandardReport + 1, 16];
+                        productionqcreportamountSum.Formula = "SUM(P2:P" + finalRowsProductionQCStandardReport + ")";
+                        productionqcreportamountSum.Calculate();
+                        productionqcreportworkSheet.Cells[finalRowsProductionQCStandardReport + 1, 15].Value = "Totals";
 
                         productionqcreportworkSheet.Column(1).AutoFit();
                         productionqcreportworkSheet.Column(2).AutoFit();
@@ -1185,6 +1229,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         productionqcreportworkSheet.Column(18).AutoFit();
                         productionqcreportworkSheet.Column(19).Width = 40;
                         productionqcreportworkSheet.Column(19).Style.WrapText = true;
+                        productionqcreportworkSheet.Row(finalRowsProductionQCStandardReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        productionqcreportworkSheet.Column(16).Style.Numberformat.Format = "0.00";
 
 
                         break;
@@ -1198,7 +1244,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<PendingProductionQCReportViewModel> pendingproductionQCReportList = Mapper.Map<List<PendingProductionQCReport>, List<PendingProductionQCReportViewModel>>(_reportBusiness.GetPendingProductionQCReport(Mapper.Map<PendingProductionQCReportViewModel, PendingProductionQCReport>(pendingProductionQCReportVM)));
                         var pendingproductionqcreportworkSheet = excel.Workbook.Worksheets.Add("PendingProductionQCReport");
                         PendingProductionQCReportViewModel[] pendingProductionQCReportVMListArray = pendingproductionQCReportList.ToArray();
-                        pendingproductionqcreportworkSheet.Cells[1, 1].LoadFromCollection(pendingProductionQCReportVMListArray.Select(x => new {
+                        pendingproductionqcreportworkSheet.Cells[1, 1].LoadFromCollection(pendingProductionQCReportVMListArray.Select(x => new
+                        {
                             ProductionOrderNo = x.ProdOrderNo,
                             ProductionOrderDate = x.ProdOrderDateFormatted,
                             CompanyName = x.Customer.CompanyName,
@@ -1224,7 +1271,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsPendingProductionQCReport = pendingproductionqcreportworkSheet.Dimension.End.Row;
                         string columnStringPendingProductionQCReport = columnString + finalRowsPendingProductionQCReport.ToString();
                         pendingproductionqcreportworkSheet.Cells[columnStringPendingProductionQCReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange pendingproductionqcreporamountSum = pendingproductionqcreportworkSheet.Cells[finalRowsPendingProductionQCReport + 1, 17];
+                        pendingproductionqcreporamountSum.Formula = "SUM(Q2:Q" + finalRowsPendingProductionQCReport + ")";
+                        pendingproductionqcreporamountSum.Calculate();
+                        pendingproductionqcreportworkSheet.Cells[finalRowsPendingProductionQCReport + 1, 16].Value = "Totals";
 
                         pendingproductionqcreportworkSheet.Column(1).AutoFit();
                         pendingproductionqcreportworkSheet.Column(2).AutoFit();
@@ -1248,7 +1298,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         pendingproductionqcreportworkSheet.Column(19).AutoFit();
                         pendingproductionqcreportworkSheet.Column(20).Width = 40;
                         pendingproductionqcreportworkSheet.Column(20).Style.WrapText = true;
-
+                        pendingproductionqcreportworkSheet.Row(finalRowsPendingProductionQCReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        pendingproductionqcreportworkSheet.Column(17).Style.Numberformat.Format = "0.00";
                         break;
                     case "QuotationDetailReport":
                         fileName = "QuotationDetailReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -1259,7 +1310,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<QuotationDetailReportViewModel> quotationDetailReportList = Mapper.Map<List<QuotationDetailReport>, List<QuotationDetailReportViewModel>>(_reportBusiness.GetQuotationDetailReport(Mapper.Map<QuotationDetailReportViewModel, QuotationDetailReport>(quotationDetailReportVM)));
                         var quotationdetailreportworkSheet = excel.Workbook.Worksheets.Add("QuotationDetailReport");
                         QuotationDetailReportViewModel[] quotationDetailReportVMListArray = quotationDetailReportList.ToArray();
-                        quotationdetailreportworkSheet.Cells[1, 1].LoadFromCollection(quotationDetailReportVMListArray.Select(x => new {
+                        quotationdetailreportworkSheet.Cells[1, 1].LoadFromCollection(quotationDetailReportVMListArray.Select(x => new
+                        {
                             QuotationNo = x.QuoteNo,
                             QuotationDate = x.QuoteDateFormatted,
                             CompanyName = x.Customer.CompanyName,
@@ -1271,8 +1323,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Unit = x.Unit.Description,
                             Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            TaxableAmount= Math.Round(Convert.ToDecimal(x.TaxableAmount),2).ToString(),
-                            TotalAmount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString()
+                            TaxableAmount = x.TaxableAmount,
+                            TotalAmount = x.Amount
 
                         }), true, TableStyles.Light1);
 
@@ -1280,6 +1332,13 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsQuotationDetailReport = quotationdetailreportworkSheet.Dimension.End.Row;
                         string columnStringQuotationDetailReport = columnString + finalRowsQuotationDetailReport.ToString();
                         quotationdetailreportworkSheet.Cells[columnStringQuotationDetailReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
+                        ExcelRange quotationdetailamountSum = quotationdetailreportworkSheet.Cells[finalRowsQuotationDetailReport + 1, 13];
+                        quotationdetailamountSum.Formula = "SUM(M2:M" + finalRowsQuotationDetailReport + ")";
+                        quotationdetailamountSum.Calculate();
+                        quotationdetailreportworkSheet.Cells[finalRowsQuotationDetailReport + 1, 11].Value = "Totals";
+                        ExcelRange quotationdetailTaxableamountSum = quotationdetailreportworkSheet.Cells[finalRowsQuotationDetailReport + 1, 12];
+                        quotationdetailTaxableamountSum.Formula = "SUM(L2:L" + finalRowsQuotationDetailReport + ")";
+                        quotationdetailTaxableamountSum.Calculate();
 
                         quotationdetailreportworkSheet.Column(1).AutoFit();
                         quotationdetailreportworkSheet.Column(2).AutoFit();
@@ -1295,11 +1354,9 @@ namespace PilotSmithApp.UserInterface.Controllers
                         quotationdetailreportworkSheet.Column(11).AutoFit();
                         quotationdetailreportworkSheet.Column(12).AutoFit();
                         quotationdetailreportworkSheet.Column(13).AutoFit();
-                        quotationdetailreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                        quotationdetailreportworkSheet.Column(13).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                        quotationdetailreportworkSheet.Column(2).AutoFit();
-
-
+                        quotationdetailreportworkSheet.Row(finalRowsQuotationDetailReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        quotationdetailreportworkSheet.Column(13).Style.Numberformat.Format = "0.00";
+                        quotationdetailreportworkSheet.Column(12).Style.Numberformat.Format = "0.00";
                         break;
                     case "EnquiryDetailReport":
                         fileName = "EnquiryDetailReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -1310,7 +1367,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         List<EnquiryDetailReportViewModel> enquiryDetailReportList = Mapper.Map<List<EnquiryDetailReport>, List<EnquiryDetailReportViewModel>>(_reportBusiness.GetEnquiryDetailReport(Mapper.Map<EnquiryDetailReportViewModel, EnquiryDetailReport>(enquiryDetailReportVM)));
                         var enquirydetailreportworkSheet = excel.Workbook.Worksheets.Add("EnquiryDetailReport");
                         EnquiryDetailReportViewModel[] enquiryDetailReportVMListArray = enquiryDetailReportList.ToArray();
-                        enquirydetailreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryDetailReportVMListArray.Select(x => new {
+                        enquirydetailreportworkSheet.Cells[1, 1].LoadFromCollection(enquiryDetailReportVMListArray.Select(x => new
+                        {
                             EnquiryNo = x.EnquiryNo,
                             EnquiryDate = x.EnquiryDateFormatted,
                             CompanyName = x.Customer.CompanyName,
@@ -1322,7 +1380,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                             Unit = x.Unit.Description,
                             Branch = x.Branch.Description,
                             DocumentOwner = x.PSAUser.LoginName,
-                            Amount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString()
+                            //Amount = Math.Round(Convert.ToDecimal(x.Amount),2).ToString()
+                            Amount = x.Amount
 
                         }), true, TableStyles.Light1);
 
@@ -1330,7 +1389,10 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsEnquiryDetailReport = enquirydetailreportworkSheet.Dimension.End.Row;
                         string columnStringEnquiryDetailReport = columnString + finalRowsEnquiryDetailReport.ToString();
                         enquirydetailreportworkSheet.Cells[columnStringEnquiryDetailReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange enquriydetailamountSum = enquirydetailreportworkSheet.Cells[finalRowsEnquiryDetailReport + 1, 12];
+                        enquriydetailamountSum.Formula = "SUM(L2:L" + finalRowsEnquiryDetailReport + ")";
+                        enquriydetailamountSum.Calculate();
+                        enquirydetailreportworkSheet.Cells[finalRowsEnquiryDetailReport + 1, 11].Value = "Totals";
                         enquirydetailreportworkSheet.Column(1).AutoFit();
                         enquirydetailreportworkSheet.Column(2).AutoFit();
                         enquirydetailreportworkSheet.Column(3).Width = 40;
@@ -1345,7 +1407,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         enquirydetailreportworkSheet.Column(11).AutoFit();
                         enquirydetailreportworkSheet.Column(12).AutoFit();
                         enquirydetailreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-
+                        enquirydetailreportworkSheet.Row(finalRowsEnquiryDetailReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        enquirydetailreportworkSheet.Column(12).Style.Numberformat.Format = "0.00";
                         break;
                     case "EstimateDetailReport":
                         fileName = "EstimateDetailReport" + pSASysCommon.GetCurrentDateTime().ToString("dd|MMM|yy|hh:mm:ss");
@@ -1361,7 +1424,8 @@ namespace PilotSmithApp.UserInterface.Controllers
                         string p = _permission.AccessCode;
                         if ((p.Contains("R") || p.Contains("W")))
                         {
-                            estimatedetailreportworkSheet.Cells[1, 1].LoadFromCollection(estimateDetailReportVMListArray.Select(x => new {
+                            estimatedetailreportworkSheet.Cells[1, 1].LoadFromCollection(estimateDetailReportVMListArray.Select(x => new
+                            {
                                 EstimateNo = x.EstimateNo,
                                 EstimateDate = x.EstimateDateFormatted,
                                 CompanyName = x.Customer.CompanyName,
@@ -1373,14 +1437,15 @@ namespace PilotSmithApp.UserInterface.Controllers
                                 Unit = x.Unit.Description,
                                 Branch = x.Branch.Description,
                                 DocumentOwner = x.PSAUser.LoginName,
-                                TotalCostRate = Math.Round(Convert.ToDecimal(x.TotalCostRate),2).ToString(),
-                                TotalSellingRate = Math.Round(Convert.ToDecimal(x.TotalSellingRate), 2).ToString()
+                                TotalCostRate = x.TotalCostRate,
+                                TotalSellingRate = x.TotalSellingRate
 
                             }), true, TableStyles.Light1);
                         }
                         else
                         {
-                            estimatedetailreportworkSheet.Cells[1, 1].LoadFromCollection(estimateDetailReportVMListArray.Select(x => new {
+                            estimatedetailreportworkSheet.Cells[1, 1].LoadFromCollection(estimateDetailReportVMListArray.Select(x => new
+                            {
                                 EstimateNo = x.EstimateNo,
                                 EstimateDate = x.EstimateDateFormatted,
                                 CompanyName = x.Customer.CompanyName,
@@ -1393,7 +1458,7 @@ namespace PilotSmithApp.UserInterface.Controllers
                                 Branch = x.Branch.Description,
                                 DocumentOwner = x.PSAUser.LoginName,
                                 TotalCostRate = "****",
-                                TotalSellingRate = Math.Round(Convert.ToDecimal(x.TotalSellingRate),2).ToString()
+                                TotalSellingRate = x.TotalSellingRate
                             }), true, TableStyles.Light1);
                         }
 
@@ -1401,7 +1466,17 @@ namespace PilotSmithApp.UserInterface.Controllers
                         int finalRowsEstimateDetailReport = estimatedetailreportworkSheet.Dimension.End.Row;
                         string columnStringEstimateDetailReport = columnString + finalRowsEstimateDetailReport.ToString();
                         estimatedetailreportworkSheet.Cells[columnStringEstimateDetailReport].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Top;
-
+                        ExcelRange estimatedetailreportamountSum = estimatedetailreportworkSheet.Cells[finalRowsEstimateDetailReport + 1, 13];
+                        estimatedetailreportamountSum.Formula = "SUM(M2:M" + finalRowsEstimateDetailReport + ")";
+                        estimatedetailreportamountSum.Calculate();
+                        estimatedetailreportworkSheet.Cells[finalRowsEstimateDetailReport + 1, 11].Value = "Totals";
+                        if ((p.Contains("R") || p.Contains("W")))
+                        {
+                            ExcelRange estimatedetailreportCostRateSum = estimatedetailreportworkSheet.Cells[finalRowsEstimateDetailReport + 1, 12];
+                            estimatedetailreportCostRateSum.Formula = "SUM(L2:L" + finalRowsEstimateDetailReport + ")";
+                            estimatedetailreportCostRateSum.Calculate();
+                            estimatedetailreportworkSheet.Column(12).Style.Numberformat.Format = "0.00";
+                        }
                         estimatedetailreportworkSheet.Column(1).AutoFit();
                         estimatedetailreportworkSheet.Column(2).AutoFit();
                         estimatedetailreportworkSheet.Column(3).Width = 40;
@@ -1416,26 +1491,26 @@ namespace PilotSmithApp.UserInterface.Controllers
                         estimatedetailreportworkSheet.Column(11).AutoFit();
                         estimatedetailreportworkSheet.Column(12).AutoFit();
                         estimatedetailreportworkSheet.Column(13).AutoFit();
-                        estimatedetailreportworkSheet.Column(13).Style.HorizontalAlignment= OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                        estimatedetailreportworkSheet.Column(12).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Right;
-                        estimatedetailreportworkSheet.Column(2).AutoFit();
+                        estimatedetailreportworkSheet.Row(finalRowsEstimateDetailReport + 1).Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                        estimatedetailreportworkSheet.Column(13).Style.Numberformat.Format = "0.00";
+
                         break;
 
                     default: break;
                 }
                 using (var memoryStream = new MemoryStream())
-                        {
-                            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                            Response.AddHeader("content-disposition", "attachment;  filename=" + fileName + ".xlsx");
-                            excel.SaveAs(memoryStream);
-                            memoryStream.WriteTo(Response.OutputStream);
-                            Response.Flush();
-                            Response.End();
-                            memoryStream.Close();
-                            memoryStream.Dispose();
-                        }
-
+                {
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;  filename=" + fileName + ".xlsx");
+                    excel.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                    memoryStream.Close();
+                    memoryStream.Dispose();
                 }
+
+            }
             catch (Exception ex)
             {
                 throw ex;
@@ -1453,7 +1528,7 @@ namespace PilotSmithApp.UserInterface.Controllers
             switch (actionType)
             {
                 case "List":
-                 
+
                     toolboxVM.ExportBtn.Visible = true;
                     toolboxVM.ExportBtn.Text = "Export";
                     toolboxVM.ExportBtn.Title = "Export to excel";

@@ -231,7 +231,7 @@ function BindOrReloadProductionQCReportTable(action) {
                { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },
                {
                    "data": "Amount", render: function (data, type, row) {
-                       return formatCurrency(row.Amount)
+                       return formatCurrency(roundoff(row.Amount))
                    }, "defaultContent": "<i>-</i>"
                },
                { "data": "Branch.Description", "defaultContent": "<i>-</i>" },

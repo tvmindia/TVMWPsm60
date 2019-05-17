@@ -189,7 +189,7 @@ function BindOrReloadQuotationReportTable(action) {
                { "data": "PSAUser.LoginName", "defaultContent": "<i>-</i>" },
                {
                     "data": "Amount", render: function (data, type, row) {
-                        return formatCurrency(row.Amount)
+                        return formatCurrency(roundoff(row.Amount))
                     }, "defaultContent": "<i>-</i>"
                },
                {

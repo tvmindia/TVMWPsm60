@@ -627,7 +627,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingSaleOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : pendingSaleOrderReportObj.FilteredCount);
                                         pendingSaleOrderReportObj.Qty = (sdr["Qty"].ToString() != "" ? decimal.Parse(sdr["Qty"].ToString()) : pendingSaleOrderReportObj.Qty);
                                         pendingSaleOrderReportObj.PendingQty = (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingSaleOrderReportObj.PendingQty);
-                                        pendingSaleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingSaleOrderReportObj.ProductSpec);
+                                        pendingSaleOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : pendingSaleOrderReportObj.ProductSpec);
                                         pendingSaleOrderReportObj.ProductID = (sdr["ProductID"].ToString() != "" ? Guid.Parse(sdr["ProductID"].ToString()) : pendingSaleOrderReportObj.ProductID);
                                         pendingSaleOrderReportObj.ProductModelID = (sdr["ProductModelID"].ToString() != "" ? Guid.Parse(sdr["ProductModelID"].ToString()) : pendingSaleOrderReportObj.ProductModelID);
                                         pendingSaleOrderReportObj.UnitCode = (sdr["UnitCode"].ToString() != "" ? int.Parse(sdr["UnitCode"].ToString()) : pendingSaleOrderReportObj.UnitCode);
@@ -1068,7 +1068,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : productionOrderReportObj.FilteredCount);
                                         productionOrderReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionOrderReportObj.Qty);
 
-                                        productionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionOrderReportObj.ProductSpec);
+                                        productionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : productionOrderReportObj.ProductSpec);
                                        
                                         productionOrderReportObj.Product = new Product();
                                         productionOrderReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : productionOrderReportObj.Product.Name);
@@ -1199,7 +1199,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionOrderReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : pendingProductionOrderReportObj.Qty);
                                         pendingProductionOrderReportObj.PendingQty= (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingProductionOrderReportObj.PendingQty);
                                         pendingProductionOrderReportObj.SaleOrderQty= (sdr["SaleOrderQty"].ToString() != "" ? decimal.Parse(sdr["SaleOrderQty"].ToString()) : pendingProductionOrderReportObj.SaleOrderQty);
-                                        pendingProductionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingProductionOrderReportObj.ProductSpec);
+                                        pendingProductionOrderReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : pendingProductionOrderReportObj.ProductSpec);
                                         pendingProductionOrderReportObj.Progress = (sdr["progressPerc"].ToString() != "" ? int.Parse(sdr["progressPerc"].ToString()) : pendingProductionOrderReportObj.Progress);
 
                                         pendingProductionOrderReportObj.Product = new Product();
@@ -1320,7 +1320,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                       //  productionQCReportObj.Qty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionQCReportObj.Qty);
                                         productionQCReportObj.ProdOrdQty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : productionQCReportObj.ProdOrdQty);
                                         productionQCReportObj.ProdQCQty = (sdr["QCQty"].ToString() != "" ? decimal.Parse(sdr["QCQty"].ToString()) : productionQCReportObj.ProdQCQty);
-                                        productionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : productionQCReportObj.ProductSpec);
+                                        productionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : productionQCReportObj.ProductSpec);
                                        // productionQCReportObj.Progress = (sdr["progressPerc"].ToString() != "" ? int.Parse(sdr["progressPerc"].ToString()) : productionQCReportObj.Progress);
 
                                         productionQCReportObj.Product = new Product();
@@ -1439,7 +1439,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionQCReportObj.PendingQty = (sdr["PendingQty"].ToString() != "" ? decimal.Parse(sdr["PendingQty"].ToString()) : pendingProductionQCReportObj.PendingQty);
                                         pendingProductionQCReportObj.ProdOrdQty = (sdr["OrderQty"].ToString() != "" ? decimal.Parse(sdr["OrderQty"].ToString()) : pendingProductionQCReportObj.ProdOrdQty);
                                         pendingProductionQCReportObj.ProdQCQty = (sdr["QCQty"].ToString() != "" ? decimal.Parse(sdr["QCQty"].ToString()) : pendingProductionQCReportObj.ProdQCQty);
-                                        pendingProductionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString() : pendingProductionQCReportObj.ProductSpec);
+                                        pendingProductionQCReportObj.ProductSpec = (sdr["ProductSpec"].ToString() != "" ? sdr["ProductSpec"].ToString().Replace("$n$", "\n") : pendingProductionQCReportObj.ProductSpec);
                                     
                                         pendingProductionQCReportObj.Product = new Product();
                                         pendingProductionQCReportObj.Product.Name = (sdr["ProductName"].ToString() != "" ? sdr["ProductName"].ToString() : pendingProductionQCReportObj.Product.Name);

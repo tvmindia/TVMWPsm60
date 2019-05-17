@@ -230,7 +230,7 @@ function BindOrReloadPendingProductionQCReportTable(action) {
                { "data": "DocumentStatus.Description", "defaultContent": "<i>-</i>" },//, "width": "50px" }1,
                 {
                     "data": "Amount", render: function (data, type, row) {
-                        return formatCurrency(row.Amount)
+                        return formatCurrency(roundoff(row.Amount))
                     }, "defaultContent": "<i>-</i>"
                 },//, "width": "50px" }11,
                { "data": "Branch.Description", "defaultContent": "<i>-</i>" },

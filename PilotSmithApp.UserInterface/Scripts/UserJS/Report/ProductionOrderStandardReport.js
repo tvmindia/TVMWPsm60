@@ -241,7 +241,7 @@ function BindOrReloadProductionOrderReportTable(action) {
                { "data": "Qty", "defaultContent": "<i>-</i>" },
                {
                       "data": "Amount", render: function (data, type, row) {
-                          return formatCurrency(row.Amount)
+                          return formatCurrency(roundoff(row.Amount))
                       }, "defaultContent": "<i>-</i>"
                },
                { "data": "Plant.Description", "defaultContent": "<i>-</i>" },
