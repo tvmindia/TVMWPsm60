@@ -263,7 +263,14 @@ function BindOrReloadQuotationDetailReportTable(action) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
                 }
-
+                if (json.data[0] != undefined && json.data[0] != null) {
+                    $('#lblTotalAmount').text(formatCurrency(roundoff(json.data[0].TotalAmount)));
+                    $('#lblTotalTaxableAmount').text(formatCurrency(roundoff(json.data[0].TotalTaxableAmount)));
+                }
+                else {
+                    $('#lblTotalAmount').text("0.00");
+                    $('#lblTotalTaxableAmount').text("0.00");
+                }
             }
         });
 

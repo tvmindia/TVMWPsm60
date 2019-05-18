@@ -235,6 +235,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : enquiryReportObj.FilteredCount);
                                         enquiryReportObj.Employee = new Employee();
                                         enquiryReportObj.Employee.Name = (sdr["EmployeeName"].ToString() != "" ? sdr["EmployeeName"].ToString() : enquiryReportObj.Employee.Name);
+                                        enquiryReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : enquiryReportObj.TotalAmount);
                                     }
                                     enquiryReportList.Add(enquiryReportObj);
                                 }
@@ -421,6 +422,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateReportObj.FilteredCount = (sdr["FilteredCount"].ToString() != "" ? int.Parse(sdr["FilteredCount"].ToString()) : estimateReportObj.FilteredCount);
                                         estimateReportObj.Notes= (sdr["GeneralNotes"].ToString() != "" ? sdr["GeneralNotes"].ToString() : estimateReportObj.Notes);
                                         estimateReportObj.PreparedBy = (sdr["PreparedByName"].ToString() != "" ? sdr["PreparedByName"].ToString() : estimateReportObj.PreparedBy);
+                                        estimateReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : estimateReportObj.TotalAmount);
                                     }
                                     estimateReportList.Add(estimateReportObj);
                                 }
@@ -526,6 +528,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationReportObj.ReferencePerson.Name = (sdr["ReferredByName"].ToString() != "" ? sdr["ReferredByName"].ToString() : quotationReportObj.ReferencePerson.Name);
                                         quotationReportObj.ApprovalStatus = new ApprovalStatus();
                                         quotationReportObj.ApprovalStatus.Description = (sdr["LatestApprovalStatusName"].ToString() != "" ? sdr["LatestApprovalStatusName"].ToString() : quotationReportObj.ApprovalStatus.Description);
+                                        quotationReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : quotationReportObj.TotalAmount);
                                     }
                                     quotationReportList.Add(quotationReportObj);
                                 }
@@ -637,7 +640,9 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingSaleOrderReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : pendingSaleOrderReportObj.ProductModel.Name);
                                         pendingSaleOrderReportObj.Unit = new Unit();
                                         pendingSaleOrderReportObj.Unit.Description= (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : pendingSaleOrderReportObj.Unit.Description);
-                                        
+                                        pendingSaleOrderReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : pendingSaleOrderReportObj.TotalAmount);
+                                        pendingSaleOrderReportObj.TotalTaxableAmount = (sdr["TotalTaxableAmount"].ToString() != "" ? decimal.Parse(sdr["TotalTaxableAmount"].ToString()) : pendingSaleOrderReportObj.TotalTaxableAmount);
+
                                     }
                                     pendingSaleOrderReportList.Add(pendingSaleOrderReportObj);
                                 }
@@ -747,6 +752,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         saleOrderReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : saleOrderReportObj.ProductModel.Name);
                                         saleOrderReportObj.Unit = new Unit();
                                         saleOrderReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : saleOrderReportObj.Unit.Description);
+                                        saleOrderReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : saleOrderReportObj.TotalAmount);
+                                        saleOrderReportObj.TotalTaxableAmount = (sdr["TotalTaxableAmount"].ToString() != "" ? decimal.Parse(sdr["TotalTaxableAmount"].ToString()) : saleOrderReportObj.TotalTaxableAmount);
                                     }
                                     saleOrderReportList.Add(saleOrderReportObj);
                                 }
@@ -853,6 +860,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         quotationDetailReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : quotationDetailReportObj.ProductModel.Name);
                                         quotationDetailReportObj.Unit = new Unit();
                                         quotationDetailReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : quotationDetailReportObj.Unit.Description);
+                                        quotationDetailReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : quotationDetailReportObj.TotalAmount);
+                                        quotationDetailReportObj.TotalTaxableAmount = (sdr["TotalTaxableAmount"].ToString() != "" ? decimal.Parse(sdr["TotalTaxableAmount"].ToString()) : quotationDetailReportObj.TotalTaxableAmount);
                                     }
                                     quotationDetailReportList.Add(quotationDetailReportObj);
                                 }
@@ -960,6 +969,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         enquiryDetailReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : enquiryDetailReportObj.ProductModel.Name);
                                         enquiryDetailReportObj.Unit = new Unit();
                                         enquiryDetailReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : enquiryDetailReportObj.Unit.Description);
+                                        enquiryDetailReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : enquiryDetailReportObj.TotalAmount);
                                     }
                                     enquiryDetailReportList.Add(enquiryDetailReportObj);
                                 }
@@ -1082,6 +1092,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionOrderReportObj.Branch.Description);
                                         productionOrderReportObj.PSAUser = new PSAUser();
                                         productionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionOrderReportObj.PSAUser.LoginName);
+                                        productionOrderReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : productionOrderReportObj.TotalAmount);
                                     }
                                     productionOrderReportList.Add(productionOrderReportObj);
                                 }
@@ -1211,6 +1222,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionOrderReportObj.Branch.Description);
                                         productionOrderReportObj.PSAUser = new PSAUser();
                                         productionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionOrderReportObj.PSAUser.LoginName);
+                                        productionOrderReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : productionOrderReportObj.TotalAmount);
                                     }
                                     productionOrderDetailForecastDateExceededReportList.Add(productionOrderReportObj);
                                 }
@@ -1343,6 +1355,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionOrderReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingProductionOrderReportObj.Branch.Description);
                                         pendingProductionOrderReportObj.PSAUser = new PSAUser();
                                         pendingProductionOrderReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingProductionOrderReportObj.PSAUser.LoginName);
+                                        pendingProductionOrderReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : pendingProductionOrderReportObj.TotalAmount);
                                     }
                                     pendingProductionOrderReportList.Add(pendingProductionOrderReportObj);
                                 }
@@ -1464,6 +1477,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         productionQCReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : productionQCReportObj.Branch.Description);
                                         productionQCReportObj.PSAUser = new PSAUser();
                                         productionQCReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : productionQCReportObj.PSAUser.LoginName);
+                                        productionQCReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : productionQCReportObj.TotalAmount);
                                     }
                                     productionQCStandardReportList.Add(productionQCReportObj);
                                 }
@@ -1582,6 +1596,7 @@ namespace PilotSmithApp.RepositoryService.Service
                                         pendingProductionQCReportObj.Branch.Description = (sdr["BranchName"].ToString() != "" ? sdr["BranchName"].ToString() : pendingProductionQCReportObj.Branch.Description);
                                         pendingProductionQCReportObj.PSAUser = new PSAUser();
                                         pendingProductionQCReportObj.PSAUser.LoginName = (sdr["DocumentOwnerName"].ToString() != "" ? sdr["DocumentOwnerName"].ToString() : pendingProductionQCReportObj.PSAUser.LoginName);
+                                        pendingProductionQCReportObj.TotalAmount = (sdr["TotalAmount"].ToString() != "" ? decimal.Parse(sdr["TotalAmount"].ToString()) : pendingProductionQCReportObj.TotalAmount);
                                     }
                                     pendingroductionQCReportList.Add(pendingProductionQCReportObj);
                                 }
@@ -1690,6 +1705,8 @@ namespace PilotSmithApp.RepositoryService.Service
                                         estimateDetailReportObj.ProductModel.Name = (sdr["ProductModalName"].ToString() != "" ? sdr["ProductModalName"].ToString() : estimateDetailReportObj.ProductModel.Name);
                                         estimateDetailReportObj.Unit = new Unit();
                                         estimateDetailReportObj.Unit.Description = (sdr["Unit"].ToString() != "" ? sdr["Unit"].ToString() : estimateDetailReportObj.Unit.Description);
+                                        estimateDetailReportObj.TotalCostAmount = (sdr["TotalCostAmount"].ToString() != "" ? decimal.Parse(sdr["TotalCostAmount"].ToString()) : estimateDetailReportObj.TotalCostAmount);
+                                        estimateDetailReportObj.TotalSellingAmount = (sdr["TotalSellingAmount"].ToString() != "" ? decimal.Parse(sdr["TotalSellingAmount"].ToString()) : estimateDetailReportObj.TotalSellingAmount);
                                     }
                                     estimateDetailReportList.Add(estimateDetailReportObj);
                                 }
