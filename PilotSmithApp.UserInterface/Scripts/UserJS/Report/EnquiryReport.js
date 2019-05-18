@@ -235,7 +235,10 @@ function BindOrReloadEnquiryReportTable(action) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
                 }
-
+                if (json.data[0] != undefined && json.data[0] != null)
+                    $('#lblTotalAmount').text(formatCurrency(roundoff(json.data[0].TotalAmount)));
+                else
+                    $('#lblTotalAmount').text("0.00");
             }
         });
 

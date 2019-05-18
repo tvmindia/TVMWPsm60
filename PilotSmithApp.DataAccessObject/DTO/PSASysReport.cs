@@ -92,6 +92,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public List<EnquiryReport> EnquiryReportList { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
+        public decimal TotalAmount { get; set; }
     }
     
     public class EnquiryFollowupReport
@@ -160,6 +161,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string Notes { get; set; }
         public List<EstimateReport> EstimateReportList { get; set; }
         public string PreparedBy { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
 
@@ -201,6 +203,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? Amount { get; set; }        
         public decimal? AdvAmountFrom { get; set; }
         public decimal? AdvAmountTo { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class PendingSaleOrderReport
@@ -258,6 +261,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public List<PendingSaleOrderReport> PendingSaleOrderReportList { get; set; }
         public int? ReportType { get; set; }
         public int? hdnReportType { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTaxableAmount { get; set; }
     }
 
 
@@ -314,6 +319,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public List<SaleOrderReport> SaleOrderReportList { get; set; }
         public string DateFilter { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTaxableAmount { get; set; }
     }
 
     public class ProductionOrderReport
@@ -375,7 +382,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public Employee Employee { get; set; }
         public DataTablePaging DataTablePaging { get; set; }
         public Plant Plant { get; set; }
-        public decimal? Qty { get; set; }       
+        public decimal? Qty { get; set; }
+        public decimal TotalAmount { get; set; }
     }
     public class ProductionOrderDetailForecastDateExceededReport
     {
@@ -463,6 +471,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public int? ExptProgress { get; set; }
         public int? ReportValue { get; set; }
         public string ExptCompletionDate { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class PendingProductionOrderReport
@@ -531,6 +540,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? SaleOrderQty { get; set; }
         public int? Progress { get; set; }
         public List<PendingProductionOrderReport> PendingProductionOrderReportList { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class ProductionQCStandardReport
@@ -592,6 +602,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? ProdOrdQty { get; set; }
         public decimal? ProdQCQty { get; set; }      
         public List<ProductionQCStandardReport> ProductionQCStandardReportList { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class PendingProductionQCReport
@@ -654,6 +665,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public decimal? ProdQCQty { get; set; }
         public decimal? PendingQty { get; set; }
         public List<PendingProductionQCReport> PendingProductionQCReportList { get; set; }
+        public decimal TotalAmount { get; set; }
     }
     public class QuotationDetailReport
     {
@@ -706,6 +718,8 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string QuoteNo { get; set; }
         public string DateFilter { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTaxableAmount { get; set; }
     }
     public class EnquiryDetailReport
     {
@@ -758,6 +772,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string EnqNo { get; set; }
         public string DateFilter { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
+        public decimal TotalAmount { get; set; }
     }
     public class EstimateDetailReport
     {
@@ -811,5 +826,7 @@ namespace PilotSmithApp.DataAccessObject.DTO
         public string DateFilter { get; set; }
         public PSASysCommon PSASysCommon { get; set; }
         public bool CostPriceHasAccess { get; set; }
+        public decimal TotalCostAmount { get; set; }
+        public decimal TotalSellingAmount { get; set; }
     }
 }

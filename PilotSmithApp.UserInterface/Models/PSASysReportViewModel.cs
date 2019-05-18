@@ -116,6 +116,7 @@ namespace PilotSmithApp.UserInterface.Models
         public List<EnquiryReportViewModel> EnquiryReportList { get; set; }
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class EnquiryFollowupReportViewModel
@@ -208,6 +209,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string Notes { get; set; }
         public string PreparedBy { get; set; }
         public List<EstimateReportViewModel> EstimateReportList { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class QuotationReportViewModel
@@ -265,6 +267,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? AdvAmountFrom { get; set; }
         [Display(Name = "Amount <=")]
         public decimal? AdvAmountTo { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class PendingSaleOrderReportViewModel
@@ -343,6 +346,8 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? PendingQty { get; set; }
         public string DateFilter { get; set; }
         public int? ReportType { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTaxableAmount { get; set; }
 
     }
     public class SaleOrderReportViewModel
@@ -420,6 +425,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string SaleOrdNo { get; set; }        
         public string DateFilter { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTaxableAmount { get; set; }
     }
 
 
@@ -505,6 +512,7 @@ namespace PilotSmithApp.UserInterface.Models
         public EmployeeViewModel Employee { get; set; }
         public DataTablePagingViewModel DataTablePaging { get; set; }
         public decimal? Qty { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class ProductionOrderDetailForecastDateExceededReportViewModel
@@ -594,7 +602,7 @@ namespace PilotSmithApp.UserInterface.Models
             public int? ExptProgress { get; set; }
             public int? ReportValue { get; set; }
             public string ExptCompletionDate { get; set; }
-
+            public decimal TotalAmount { get; set; }
     }
 
 
@@ -685,6 +693,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? SaleOrderQty { get; set; }
         public int? Progress { get; set; }
         public List<PendingProductionOrderReportViewModel> PendingProductionOrderReportList { get; set; }
+        public decimal TotalAmount { get; set; }
 
     }
 
@@ -765,6 +774,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? ProdOrdQty { get; set; }
         public decimal? ProdQCQty { get; set; }
         public List<ProductionQCStandardReportViewModel> ProductionQCStandardReportList { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class PendingProductionQCReportViewModel
@@ -845,6 +855,7 @@ namespace PilotSmithApp.UserInterface.Models
         public decimal? ProdQCQty { get; set; }
         public decimal? PendingQty { get; set; }
         public List<PendingProductionQCReportViewModel> PendingProductionQCReportList { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
     public class QuotationDetailReportViewModel
@@ -918,6 +929,8 @@ namespace PilotSmithApp.UserInterface.Models
         public string QuoteNo { get; set; }
         public string DateFilter { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal TotalTaxableAmount { get; set; }
     }
 
     public class EnquiryDetailReportViewModel
@@ -992,6 +1005,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string EnqNo { get; set; }
         public string DateFilter { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
+        public decimal TotalAmount { get; set; }
     }
     public class EstimateDetailReportViewModel
     {
@@ -1067,5 +1081,7 @@ namespace PilotSmithApp.UserInterface.Models
         public string DateFilter { get; set; }
         public PSASysCommonViewModel PSASysCommon { get; set; }
         public bool CostPriceHasAccess { get; set; }
+        public decimal TotalCostAmount { get; set; }
+        public decimal TotalSellingAmount { get; set; }
     }
 }

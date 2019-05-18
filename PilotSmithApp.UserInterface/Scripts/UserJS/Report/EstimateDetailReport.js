@@ -276,7 +276,14 @@ function BindOrReloadEstimateDetailReportTable(action) {
                     $('.excelExport').hide();
                     OnServerCallComplete();
                 }
-
+                if (json.data[0] != undefined && json.data[0] != null) {
+                    $('#lblTotalCostAmount').text(formatCurrency(roundoff(json.data[0].TotalCostAmount)));
+                    $('#lblTotalSellingAmount').text(formatCurrency(roundoff(json.data[0].TotalSellingAmount)));
+                }
+                else {
+                    $('#lblTotalCostAmount').text("0.00");
+                    $('#lblTotalSellingAmount').text("0.00");
+                }
             }
         });
 
